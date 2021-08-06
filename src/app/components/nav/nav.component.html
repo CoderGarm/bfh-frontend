@@ -2,15 +2,18 @@
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>
     </button>
-    <span>Battle for Honor</span>
+    <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">Battle for Honor</button>
     <span class="example-spacer"></span>
-    <button mat-flat-button color="primary" routerLink='/register'>
+    <button mat-flat-button color="primary" routerLink='/register' *ngIf='!isLoggedIn'>
         Register
     </button>
-    <button mat-flat-button color="primary" routerLink='/login'>
+    <button mat-flat-button color="primary" routerLink='/login' *ngIf='!isLoggedIn'>
         Login
     </button>
-    <button mat-flat-button color="primary" (click)='logout()'>
+    <button mat-flat-button color="primary" routerLink='/profile' *ngIf='isLoggedIn'>
+        Profile
+    </button>
+    <button mat-flat-button color="primary" (click)='logout()' *ngIf='isLoggedIn'>
         Logout
     </button>
 </mat-toolbar>

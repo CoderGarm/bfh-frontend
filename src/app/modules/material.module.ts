@@ -14,7 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -66,7 +66,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatInputModule,
         MatExpansionModule,
         MatSelectModule,
-        MatFormFieldModule,
+        MatFormFieldModule,    
         MatTabsModule,
         MatTableModule,
         MatNativeDateModule,
