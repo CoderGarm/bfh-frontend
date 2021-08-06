@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>Battle for Honor</span>
+    <span class="example-spacer"></span>
+    <button mat-flat-button color="primary" routerLink='/register'>
+        Register
+    </button>
+    <button mat-flat-button color="primary" routerLink='/login'>
+        Login
+    </button>
+    <button mat-flat-button color="primary" (click)='logout()'>
+        Logout
+    </button>
+</mat-toolbar>
