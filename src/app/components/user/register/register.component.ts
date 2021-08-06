@@ -7,6 +7,8 @@ import { Component, OnInit, Type } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
+  public static path : string = 'register';
+
   constructor() { }
 
   ngOnInit(): void {

@@ -1,1 +1,27 @@
-<p>login works!</p>
+<div id="loginDiv">
+    <h2 id="loginHeader">Anmelden</h2>
+
+    <form [formGroup]="loginForm">
+
+        <mat-grid-list cols="1" rowHeight="40px">
+
+            <mat-grid-tile>
+                <input matInput placeholder="Login" type="text" formControlName="login" min="0" required
+                    autocomplete="off">
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <input matInput placeholder="Passwort" type="password" formControlName="pass" min="0" required
+                    autocomplete="off">
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <button mat-raised-button color="secondary" type="submit" class="formularButton" (click)="submitLogin()"
+                    [disabled]="isAuthenticated">Absenden</button>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+
+    </form>
+</div>
