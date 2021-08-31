@@ -1,7 +1,9 @@
+import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
+import { CustomErrorHandler } from './services/customErrorHandler.service';
 import { ApiModule } from './services/swagger/api.module';
 import { PasswordPatternValidatorDirective, PasswordEqualityValidatorDirective } from './validators/passwordValidator';
 import { AuthenticationModule } from './services/authentication/authentication.module';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -42,7 +44,8 @@ import { HttpClientModule } from '@angular/common/http';
     MaterialComponentsModule,
     ApiModule
   ],
-  providers: [NgxPermissionsModule],
+  providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
+  entryComponents: [ErrorDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

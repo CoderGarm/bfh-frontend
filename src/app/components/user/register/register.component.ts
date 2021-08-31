@@ -1,3 +1,4 @@
+import { CustomErrorHandler } from './../../../services/customErrorHandler.service';
 import { UserJsonReq } from './../../../services/swagger/model/userJsonReq';
 import { UserApiService } from './../../../services/swagger/api/userApi.service';
 import { PasswordErrorMessages } from './../../../validators/passwordValidator';
@@ -16,7 +17,7 @@ export class RegisterComponent implements OnInit {
   errors = PasswordErrorMessages;
   public registerForm: FormGroup;
 
-  constructor(private userApiService : UserApiService) {
+  constructor(/* private errorHandler: CustomErrorHandler, */ private userApiService : UserApiService) {
     this.registerForm = new FormGroup({
       login: new FormControl('', Validators.required),
       pass: new FormControl('', [Validators.required]),
@@ -39,7 +40,7 @@ export class RegisterComponent implements OnInit {
     console.log(newUser);
     this.userApiService.createUser(newUser).subscribe(
       resp => console.log(resp),
-      error => console.log(error)            
+      //error => this.errorHandler.handleError(error)            
     );
   }
 

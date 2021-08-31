@@ -1,0 +1,45 @@
+<div *ngIf="errorData.code != 204 && errorData.code != 200" class="errorDiv">
+  <!-- <h1 mat-dialog-title>An Error has occured</h1> -->
+
+  <div mat-dialog-content>
+    
+    <div class="trenner"></div>
+    <!-- <label>Fehlercode: </label><label class="error">{{errorData.code}}</label>
+    <br> -->
+    <!-- <label>Message: </label> --><label class="error">{{errorData.message}}</label>
+    <div class="trenner"></div>
+    <div *ngIf="errorData.validationResults.items.length > 0">
+      <br>
+      <div *ngFor="let det of errorData.validationResults" style="margin-left: 15px;">
+        <label>Feld: </label><label class="error">{{det.property}}</label>
+        <br>
+        <label>Fehler: </label><label class="error">{{det.message}}</label>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="errorData.code == 204">
+  <h1 mat-dialog-title>Serverantwort</h1>
+
+  <div mat-dialog-content>
+    <label class="reply">{{errorData.message}}</label>
+  </div>
+</div>
+
+<div *ngIf="errorData.code == 200">
+    <h1 mat-dialog-title>Operation erfolgreich</h1>
+  
+    <div mat-dialog-content>
+      <label class="successful">{{errorData.message}}</label>
+    </div>
+</div>
+
+
+<div mat-dialog-actions>
+  <div class="button-div">
+    <button class="mat-raised-button" (click)="close()">Schließen</button>
+  </div>
+</div>
