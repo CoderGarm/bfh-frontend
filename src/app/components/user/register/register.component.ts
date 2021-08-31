@@ -1,3 +1,5 @@
+import { UserJsonReq } from './../../../services/swagger/model/userJsonReq';
+import { UserApiService } from './../../../services/swagger/api/userApi.service';
 import { PasswordErrorMessages } from './../../../validators/passwordValidator';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Type } from '@angular/core';
@@ -14,7 +16,7 @@ export class RegisterComponent implements OnInit {
   errors = PasswordErrorMessages;
   public registerForm: FormGroup;
 
-  constructor() {
+  constructor(private userApiService : UserApiService) {
     this.registerForm = new FormGroup({
       login: new FormControl('', Validators.required),
       pass: new FormControl('', [Validators.required]),
@@ -28,11 +30,24 @@ export class RegisterComponent implements OnInit {
 
 
   public submitRegister(): void {
-    console.log("create user")
+    console.log("create user");
+    let newUser : UserJsonReq = {
+      email: this.registerForm.controls.email.value,
+      password: this.registerForm.controls.pass.value,
+      username: this.registerForm.controls.login.value  
+    };
+    console.log(newUser);
+    this.userApiService.createUser(newUser).subscribe(
+      resp => console.log(resp),
+      error => console.log(error)            
+    );
   }
 
   public clear(): void {
-
+    this.registerForm.controls.login.setValue('');
+    this.registerForm.controls.pass.setValue('');
+    this.registerForm.controls.passRepeat.setValue('');
+    this.registerForm.controls.email.setValue('');
   }
 
 }

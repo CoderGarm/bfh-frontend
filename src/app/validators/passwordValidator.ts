@@ -54,13 +54,7 @@ export function passPattern(control: FormGroup): ValidationErrors {
 
 	if (!!passControl) {
 		let passString: string = passControl.value;
-
-		const exec = regex.exec(passString);
-		console.log("exec");
-		console.log(exec);
-
 		const matchRegex = regex.test(passString);
-		console.log(passString + " matches: " + matchRegex);
 
 		if (passControl.dirty && !matchRegex) {
 			passControl.markAsTouched();

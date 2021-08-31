@@ -43,3 +43,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+swagger/typescript-angular-client-generated/git_push.sh
+swagger/typescript-angular-client-generated/.swagger-codegen/VERSION
+src/app/services/swagger/git_push.sh
+swagger/swaggerGenerated
+swagger/.swagger-codegen/VERSION

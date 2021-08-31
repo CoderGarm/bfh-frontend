@@ -1,3 +1,4 @@
+import { ApiModule } from './services/swagger/api.module';
 import { PasswordPatternValidatorDirective, PasswordEqualityValidatorDirective } from './validators/passwordValidator';
 import { AuthenticationModule } from './services/authentication/authentication.module';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { HomeComponent } from './components/home/home.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -29,14 +31,16 @@ import { HomeComponent } from './components/home/home.component';
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     NgxPermissionsModule.forRoot(),
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     AuthenticationModule,
-    BrowserAnimationsModule,
-    MaterialComponentsModule
+    MaterialComponentsModule,
+    ApiModule
   ],
   providers: [NgxPermissionsModule],
   bootstrap: [AppComponent]
