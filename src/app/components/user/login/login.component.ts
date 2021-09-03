@@ -62,12 +62,11 @@ export class LoginComponent implements OnInit {
     this.authService.login(login).subscribe(
       resp => {
         this.isAuthenticated = !!resp;
-        console.log(this.isAuthenticated ? "login successful" : "logout successful");
       },
       error => {
+        console.log("auth error");
         this.clear();
         this.setPermissionsByRole(0);
-        console.log("error handler einbauen");
       }
     );
 

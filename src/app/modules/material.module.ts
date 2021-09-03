@@ -14,8 +14,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -24,6 +24,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -57,7 +58,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatGridListModule,
         MatMenuModule,
         MatSortModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatSnackBarModule
     ],
     exports:[
         MatButtonModule,
@@ -86,7 +88,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatListModule,
         MatMenuModule,
         MatSortModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatSnackBarModule
     ],
     providers: [
     ]

@@ -86,7 +86,7 @@ export class AuthenticationService implements AuthService {
    * @returns {boolean}
    */
   public refreshShouldHappen(response: HttpErrorResponse): boolean {
-    //console.log("unauthorized detected " + (response.status === 401));
+    console.log("unauthorized detected " + (response.status === 401));
     return response.status === 401
   }
 

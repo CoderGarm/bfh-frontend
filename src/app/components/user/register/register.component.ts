@@ -17,12 +17,12 @@ export class RegisterComponent implements OnInit {
   errors = PasswordErrorMessages;
   public registerForm: FormGroup;
 
-  constructor(/* private errorHandler: CustomErrorHandler, */ private userApiService : UserApiService) {
+  constructor(private userApiService : UserApiService) {
     this.registerForm = new FormGroup({
-      login: new FormControl('', Validators.required),
-      pass: new FormControl('', [Validators.required]),
-      passRepeat: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.email)
+      login: new FormControl('fds', Validators.required), // todo validate username - good for error component check
+      pass: new FormControl('12457aA!', [Validators.required]),
+      passRepeat: new FormControl('12457aA!', Validators.required),
+      email: new FormControl('k@k', Validators.email)
     });
   }
 
@@ -31,16 +31,13 @@ export class RegisterComponent implements OnInit {
 
 
   public submitRegister(): void {
-    console.log("create user");
     let newUser : UserJsonReq = {
       email: this.registerForm.controls.email.value,
       password: this.registerForm.controls.pass.value,
       username: this.registerForm.controls.login.value  
     };
-    console.log(newUser);
     this.userApiService.createUser(newUser).subscribe(
-      resp => console.log(resp),
-      //error => this.errorHandler.handleError(error)            
+      resp => console.log(resp)           
     );
   }
 

@@ -1,6 +1,10 @@
+import { ValidationResult } from './../../../../swagger/swaggerGenerated/model/validationResult';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { FrontendError } from './../../services/swagger/model/frontendError';
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import {Observable, of, ReplaySubject} from 'rxjs'
+import { DataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-error-dialog',
@@ -9,18 +13,41 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ErrorDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.errorData = new Object();
-    this.errorData.message = this.data.message;
-    this.errorData.validationResults = this.data.validationResults;
+  public errorData: FrontendError = {};
+
+  displayedColumns: string[] = ['property', 'message'];
+  dataSource = new ValidationResultDataSource([]);
+
+  constructor(private snackBarRef: MatSnackBarRef<ErrorDialogComponent>, @Inject(MAT_SNACK_BAR_DATA) private data: any) {  
+    this.errorData = data;
+    if (!!this.errorData.validationResults) {
+      this.dataSource.setData(this.errorData.validationResults);
+    }
    }
 
-  ngOnInit() {}
-
-  errorData: FrontendError;
+  ngOnInit() { }
 
   close() {
-    this.dialogRef.close(); // todo https://medium.com/angular-in-depth/expecting-the-unexpected-best-practices-for-error-handling-in-angular-21c3662ef9e4
+    this.snackBarRef.dismiss();
   }
 
+}
+
+class ValidationResultDataSource extends DataSource<ValidationResult> {
+  private _dataStream = new ReplaySubject<ValidationResult[]>();
+
+  constructor(initialData: ValidationResult[]) {
+    super();
+    this.setData(initialData);
+  }
+
+  connect(): Observable<ValidationResult[]> {
+    return this._dataStream;
+  }
+
+  disconnect() {}
+
+  setData(data: ValidationResult[]) {
+    this._dataStream.next(data);
+  }
 }

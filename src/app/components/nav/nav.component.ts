@@ -19,16 +19,12 @@ export class NavComponent implements OnInit {
     this.authenticationService.getAccessData().subscribe(loggedIn => {
       this.isLoggedIn = !!loggedIn;
       if (this.isLoggedIn) {
-        console.log("logged in");
         this.router.navigateByUrl(ProfileComponent.path);
       }
     });
-
-    console.log("nav component on init");
   }
 
   public logout() {
-    console.log('logout');
     this.isLoggedIn = false;
     this.authenticationService.logout();
   }

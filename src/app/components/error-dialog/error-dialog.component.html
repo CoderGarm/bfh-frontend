@@ -1,45 +1,22 @@
-<div *ngIf="errorData.code != 204 && errorData.code != 200" class="errorDiv">
-  <!-- <h1 mat-dialog-title>An Error has occured</h1> -->
-
-  <div mat-dialog-content>
-    
-    <div class="trenner"></div>
-    <!-- <label>Fehlercode: </label><label class="error">{{errorData.code}}</label>
-    <br> -->
-    <!-- <label>Message: </label> --><label class="error">{{errorData.message}}</label>
-    <div class="trenner"></div>
-    <div *ngIf="errorData.validationResults.items.length > 0">
-      <br>
-      <div *ngFor="let det of errorData.validationResults" style="margin-left: 15px;">
-        <label>Feld: </label><label class="error">{{det.property}}</label>
-        <br>
-        <label>Fehler: </label><label class="error">{{det.message}}</label>
-        <br>
-        <br>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="errorData.code == 204">
-  <h1 mat-dialog-title>Serverantwort</h1>
-
-  <div mat-dialog-content>
-    <label class="reply">{{errorData.message}}</label>
-  </div>
-</div>
-
-<div *ngIf="errorData.code == 200">
-    <h1 mat-dialog-title>Operation erfolgreich</h1>
+<mat-form-field appearance="fill" id="mainMessage">
+  <mat-label>Message</mat-label>
+  <input matInput disabled [value]="errorData.message">
+</mat-form-field>
+<br>
+<div *ngIf="!!errorData.validationResults && errorData.validationResults.length > 0">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 error-table">
+    <ng-container matColumnDef="property">
+      <th mat-header-cell *matHeaderCellDef>Property</th>
+      <td mat-cell *matCellDef="let validationResult"> {{validationResult.property}} </td>
+    </ng-container>
   
-    <div mat-dialog-content>
-      <label class="successful">{{errorData.message}}</label>
-    </div>
+    <ng-container matColumnDef="message">
+      <th mat-header-cell *matHeaderCellDef>Message</th>
+      <td mat-cell *matCellDef="let validationResult"> {{validationResult.message}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 </div>
-
-
-<div mat-dialog-actions>
-  <div class="button-div">
-    <button class="mat-raised-button" (click)="close()">Schließen</button>
-  </div>
-</div>
+<br>
+<button mat-raised-button color="secondary" (click)="close()">Schließen</button>

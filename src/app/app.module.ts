@@ -23,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
+    ErrorDialogComponent,
     NavComponent,
     LoginComponent,
     RegisterComponent,
@@ -40,12 +41,12 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    AuthenticationModule,
     MaterialComponentsModule,
+    AuthenticationModule,
     ApiModule
   ],
   providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
-  entryComponents: [ErrorDialogComponent],
+  //entryComponents: [ErrorDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

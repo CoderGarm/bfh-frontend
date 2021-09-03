@@ -1,32 +1,17 @@
-.button-div {
-    text-align: center;
-    margin: auto;
+#mainMessage {
+    width: 100%;
 }
 
+.error-table {
+    width: 100%;
+  }
 
-.error {
-    color: red;
-    font-weight:bold;
-    margin: 15px;
+.mat-column-property {
+border-right: 1px solid currentColor;
+padding-right: 12px;
+text-align: center;
 }
 
-
-
-.reply {
-    color: #CCCC00;
-    font-weight:bold
-}
-
-.successful {
-    color: green;
-    font-weight:bold
-}
-
-.errorDiv {
-    border: 2px solid #f16624;
-    border-radius: 5px;    
-}
-
-.trenner {
-    height: 15px;
+.mat-column-message {
+padding-left: 16px;
 }
