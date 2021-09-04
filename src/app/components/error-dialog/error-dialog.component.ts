@@ -1,10 +1,9 @@
-import { ValidationResult } from './../../../../swagger/swaggerGenerated/model/validationResult';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { FrontendError } from './../../services/swagger/model/frontendError';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import {Observable, of, ReplaySubject} from 'rxjs'
+import { Component, Inject, OnInit } from '@angular/core';
+import {Observable, ReplaySubject} from 'rxjs'
 import { DataSource } from '@angular/cdk/collections';
+import { ValidationResult } from 'src/app/services/swagger';
 
 @Component({
   selector: 'app-error-dialog',

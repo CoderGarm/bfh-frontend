@@ -1,4 +1,7 @@
 <app-nav></app-nav>
-<router-outlet></router-outlet>
-
-<!-- todo make https://material.angular.io/components/sidenav/examples usable -->
+<mat-drawer-container id="main-drawer">
+    <mat-drawer mode="side" opened>This will be the navigation drawer. </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>

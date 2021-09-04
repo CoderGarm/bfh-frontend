@@ -3,6 +3,7 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
+import { AuthApiService } from './api/authApi.service';
 import { UserApiService } from './api/userApi.service';
 
 @NgModule({
@@ -10,6 +11,7 @@ import { UserApiService } from './api/userApi.service';
   declarations: [],
   exports:      [],
   providers: [
+    AuthApiService,
     UserApiService ]
 })
 export class ApiModule {

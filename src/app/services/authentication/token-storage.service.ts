@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { JWTRes } from '../swagger/model/models';
 
 @Injectable()
 export class TokenStorage {
@@ -17,13 +18,8 @@ export class TokenStorage {
    * Get refresh token
    * @returns {Observable<string>}
    */
-  public getPassword(): Observable<string> {
-    const token: string = <string>localStorage.getItem('password');
-    return of(token);
-  }
-
-  public getName(): Observable<string> {
-    const token: string = <string>localStorage.getItem('name');
+  public getRefreshToken(): Observable<string> {
+    const token: string = <string>localStorage.getItem('refreshToken');
     return of(token);
   }
 
@@ -37,14 +33,10 @@ export class TokenStorage {
     return of(token);
   }
 
-  public getEmail(): Observable<string> {
-    const token: string = <string>localStorage.getItem('email');
-    return of(token);
-  }
-
-  public getUserID(): Observable<string> {
+  public getUserID(): Observable<number> {
     const token: string = <string>localStorage.getItem('userID');
-    return of(token);
+    const userID: number = Number(token);
+    return of(userID);
   }
 
   /**
@@ -57,14 +49,8 @@ export class TokenStorage {
     return this;
   }
 
-  public setRole(role: number): TokenStorage {
-    localStorage.setItem('role', ""+role);
-
-    return this;
-  }
-
-  public setName(name: string): TokenStorage {
-    localStorage.setItem('name', name);
+  public setRole(role: JWTRes.RoleEnum): TokenStorage {
+    localStorage.setItem('role', role);
 
     return this;
   }
@@ -75,24 +61,18 @@ export class TokenStorage {
     return this;
   }
 
-  public setEmail(email: string): TokenStorage {
-    localStorage.setItem('email', email);
+  public setUserID(idUser: number): TokenStorage {
+    localStorage.setItem('userID', String(idUser));
 
     return this;
   }
 
-  public setUserID(email: string): TokenStorage {
-    localStorage.setItem('userID', email);
-
-    return this;
-  }
-
-   /**
+  /**
    * Set refresh token
    * @returns {TokenStorage}
    */
-  public setPassword(token: string): TokenStorage {
-    localStorage.setItem('password', token);
+  public setRefreshToken(token: string): TokenStorage {
+    localStorage.setItem('refreshToken', token);
 
     return this;
   }
@@ -102,11 +82,9 @@ export class TokenStorage {
    */
   public clear() {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('password');
-    localStorage.removeItem('name');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('login');
     localStorage.removeItem('role');
-    localStorage.removeItem('email');
     localStorage.removeItem('userID');
   }
 }

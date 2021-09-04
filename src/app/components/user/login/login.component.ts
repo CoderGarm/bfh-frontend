@@ -1,7 +1,9 @@
-import { AuthenticationService, LoginRequest } from './../../../services/authentication/authentication.service';
+import { JWTRes } from './../../../services/swagger/model/jWTRes';
+import { AuthRequest } from './../../../services/swagger/model/authRequest';
+import { AuthenticationService } from './../../../services/authentication/authentication.service';
 
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
@@ -25,48 +27,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void { }
 
-
-  setPermissionsByRole(role: number) {
-
-    let permissions: string[] = [];
-
-    switch (role) {
-      case 1:
-        permissions.push("ZNL");
-        break;
-      case 2:
-        permissions.push("BUSINESS");
-        break;
-      case 4:
-        permissions.push("ADMINISTRATOR");
-        break;
-      case 256:
-        permissions.push("SUPERUSER");
-        break;
-      default:
-        permissions.push("GUEST");
-        break;
-    }
-
-    this.permissionsService.loadPermissions(permissions);
-
-  }
-
   submitLogin() {
 
-    const login: LoginRequest = {
-      login: this.loginForm.controls.login.value,
+    const login: AuthRequest = {
+      username: this.loginForm.controls.login.value,
       password: this.loginForm.controls.pass.value,
     }
 
     this.authService.login(login).subscribe(
       resp => {
-        this.isAuthenticated = !!resp;
+        this.isAuthenticated = !!resp;        
       },
       error => {
         console.log("auth error");
         this.clear();
-        this.setPermissionsByRole(0);
       }
     );
 
@@ -76,6 +50,7 @@ export class LoginComponent implements OnInit {
   clear() {
 
     this.authService.clear();
+    this.permissionsService.flushPermissions();
 
     this.loginForm = new FormGroup({
       login: new FormControl(''),

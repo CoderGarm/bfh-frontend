@@ -1,26 +1,29 @@
+import { JWTReq } from './../swagger/model/jWTReq';
+import { AuthRequest } from './../swagger/model/authRequest';
+import { AuthApiService } from './../swagger/api/authApi.service';
+import { UserApiService } from './../swagger/api/userApi.service';
 import { HomeComponent } from './../../components/home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ngx-auth';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessData } from './accessData.model';
 import { TokenStorage } from './token-storage.service';
 import { Router } from '@angular/router';
-
-export interface LoginRequest {
-  login?: string;
-  password?: string;
-}
+import { JWTRes } from '../swagger/model/models';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Injectable()
 export class AuthenticationService implements AuthService {
 
-  constructor(private router: Router, private tokenStorage: TokenStorage) { }
+  constructor(private router: Router, private tokenStorage: TokenStorage, 
+              private userApi: UserApiService,
+              private authService: AuthApiService, 
+              private permissionsService: NgxPermissionsService) { }
 
-  private subjectAccessData = new Subject<AccessData>();
+  private subjectAccessData = new Subject<JWTRes>();
 
-  setAccessData(access: AccessData) {
+  setAccessData(access: JWTRes) {
     this.subjectAccessData.next(access);
   }
 
@@ -28,7 +31,7 @@ export class AuthenticationService implements AuthService {
     this.subjectAccessData.next();
   }
 
-  getAccessData(): Observable<AccessData> {
+  getAccessData(): Observable<JWTRes> {
     return this.subjectAccessData.asObservable();
   }
 
@@ -58,23 +61,17 @@ export class AuthenticationService implements AuthService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  public refreshToken(): Observable<AccessData> {
+  public refreshToken(): Observable<JWTRes> {
 
-    let login: LoginRequest = {};
-    this.tokenStorage.getPassword().subscribe(pass => login.password = pass);
-    this.tokenStorage.getLogin().subscribe(lo => login.login = lo);
-
-    let tokens: AccessData = {
-      accessToken: 'resp.token',
-      password: 'login.password',
-      role: 1,
-      name: 'resp.user.name',
-      login: 'resp.user.login',
-      email: 'resp.user.email',
-      userID: 1
-    }
-    this.saveAccessData(tokens)
-
+    this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
+      
+      this.authService.refresh(refreshToken).subscribe(resp => {
+        this.saveAccessData(resp)
+      });
+    });
+    
+    
+    
     return this.getAccessData().pipe(map(tokens => tokens));
   }
 
@@ -122,23 +119,23 @@ export class AuthenticationService implements AuthService {
     };
   */
 
+    private setPermissionsByRole(role: JWTRes.RoleEnum) {
+      let permissions: string[] = [];
+      permissions.push(role);            
+      this.permissionsService.loadPermissions(permissions);  
+    }
+
 
   /**
    * EXTRA AUTH METHODS
    */
 
-  public login(login: LoginRequest): Observable<AccessData> {
-    let tokens: AccessData = {
-      accessToken: 'resp.token',
-      password: 'login.password',
-      role: 1,
-      name: 'resp.user.name',
-      login: 'resp.user.login',
-      email: 'resp.user.email',
-      userID: 1
-    }
-    this.saveAccessData(tokens);
-    this.setAccessData(tokens);
+  public login(login: AuthRequest): Observable<JWTRes> {
+
+    this.authService.login(login).subscribe(resp => {       // todo sync objects and refresh and so on          
+        this.setPermissionsByRole(resp.role);
+        this.saveAccessData(resp);
+      });
     return this.getAccessData();
   }
 
@@ -147,6 +144,7 @@ export class AuthenticationService implements AuthService {
    */
   public logout(): void {
     this.tokenStorage.clear();
+    this.permissionsService.flushPermissions();
     this.clearAccessData();
     this.router.navigateByUrl(HomeComponent.path);
   }
@@ -162,20 +160,13 @@ export class AuthenticationService implements AuthService {
    * @private
    * @param {AccessData} data
    */
-  private saveAccessData(token: AccessData) {
+  private saveAccessData(token: JWTRes) {
     this.tokenStorage
       .setAccessToken(token.accessToken)
-      .setPassword(token.password)
-      .setName(token.name)
-      .setLogin(token.login)
+      .setLogin(token.username)
       .setRole(token.role)
-      .setEmail(token.email)
-      .setUserID("" + token.userID);
+      .setUserID(token.idUser);
 
     this.setAccessData(token);
   }
-
-
-
-
 }

@@ -1,3 +1,5 @@
+import { AuthApiService } from './../../../services/swagger/api/authApi.service';
+import { AuthService } from 'ngx-auth';
 import { CustomErrorHandler } from './../../../services/customErrorHandler.service';
 import { UserJsonReq } from './../../../services/swagger/model/userJsonReq';
 import { UserApiService } from './../../../services/swagger/api/userApi.service';
@@ -17,7 +19,7 @@ export class RegisterComponent implements OnInit {
   errors = PasswordErrorMessages;
   public registerForm: FormGroup;
 
-  constructor(private userApiService : UserApiService) {
+  constructor(private userApiService : UserApiService, private authService: AuthApiService) {
     this.registerForm = new FormGroup({
       login: new FormControl('fds', Validators.required), // todo validate username - good for error component check
       pass: new FormControl('12457aA!', [Validators.required]),
@@ -36,7 +38,7 @@ export class RegisterComponent implements OnInit {
       password: this.registerForm.controls.pass.value,
       username: this.registerForm.controls.login.value  
     };
-    this.userApiService.createUser(newUser).subscribe(
+    this.authService.createUser(newUser).subscribe(
       resp => console.log(resp)           
     );
   }

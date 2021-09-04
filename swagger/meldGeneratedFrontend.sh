@@ -1,5 +1,12 @@
 #!/bin/bash
 
+rm -rf swaggerGenerated/
+if [ ! -f ~/Downloads/typescript-angular-client-generated.zip ]; then
+	echo "typescript extract not present - cancel"
+	exit 1;
+fi
 unzip ~/Downloads/typescript-angular-client-generated.zip -d swaggerGenerated/
-meld swaggerGenerated/ ~/vs_workspace/bfh-fe/src/app/services/swagger/
-echo "done"
+meld swaggerGenerated/ ~/vs_workspace/bfh-fe/src/app/services/swagger/ ;
+rm -rf ~/Downloads/typescript-angular-client-generated.zip
+rm -rf swaggerGenerated/
+echo "done and typescript extract deleted in download folder"

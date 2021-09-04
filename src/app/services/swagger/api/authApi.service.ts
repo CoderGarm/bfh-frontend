@@ -17,7 +17,9 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { AuthRequest } from '../model/authRequest';
 import { FrontendError } from '../model/frontendError';
+import { JWTRes } from '../model/jWTRes';
 import { UserJsonReq } from '../model/userJsonReq';
 import { UserJsonRes } from '../model/userJsonRes';
 
@@ -26,7 +28,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable()
-export class UserApiService {
+export class AuthApiService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -58,137 +60,16 @@ export class UserApiService {
 
 
     /**
-     * Deletes a single user
-     * Deletes a user which is not any longer registered in the system
-     * @param idUser idUser
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public deleteUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling deleteUser.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*',
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<any>('delete',`${this.basePath}/api/private/user/${encodeURIComponent(String(idUser))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get the list of users
-     * Get the list of users registered in the system
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAllUsers(observe?: 'body', reportProgress?: boolean): Observable<Array<UserJsonRes>>;
-    public getAllUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJsonRes>>>;
-    public getAllUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJsonRes>>>;
-    public getAllUsers(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<UserJsonRes>>('get',`${this.basePath}/api/private/user/`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get a single user by it&#x27;s idUser
-     * Returns a user which is  registered in the system
-     * @param idUser idUser
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getSingleUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<UserJsonRes>;
-    public getSingleUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJsonRes>>;
-    public getSingleUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJsonRes>>;
-    public getSingleUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getSingleUser.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<UserJsonRes>('get',`${this.basePath}/api/private/user/${encodeURIComponent(String(idUser))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Updates a single user
-     * Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.
+     * Creates a single user
+     * Creates and returns a user which is now registered in the system
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUser(body?: UserJsonReq, observe?: 'body', reportProgress?: boolean): Observable<UserJsonRes>;
-    public updateUser(body?: UserJsonReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJsonRes>>;
-    public updateUser(body?: UserJsonReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJsonRes>>;
-    public updateUser(body?: UserJsonReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createUser(body?: UserJsonReq, observe?: 'body', reportProgress?: boolean): Observable<UserJsonRes>;
+    public createUser(body?: UserJsonReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJsonRes>>;
+    public createUser(body?: UserJsonReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJsonRes>>;
+    public createUser(body?: UserJsonReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let headers = this.defaultHeaders;
@@ -212,9 +93,99 @@ export class UserApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<UserJsonRes>('put',`${this.basePath}/api/private/user/`,
+        return this.httpClient.request<UserJsonRes>('post',`${this.basePath}/api/public/auth/create`,
             {
                 body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Does a login
+     * Takes parameters and tries to create a valid login from it.
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public login(body?: AuthRequest, observe?: 'body', reportProgress?: boolean): Observable<JWTRes>;
+    public login(body?: AuthRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<JWTRes>>;
+    public login(body?: AuthRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<JWTRes>>;
+    public login(body?: AuthRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<JWTRes>('post',`${this.basePath}/api/public/auth/login`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Does a refresh of the access token
+     * Takes the refresh token and tries to create a valid login from it.
+     * @param refreshToken refresh-token
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public refresh(refreshToken: string, observe?: 'body', reportProgress?: boolean): Observable<JWTRes>;
+    public refresh(refreshToken: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<JWTRes>>;
+    public refresh(refreshToken: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<JWTRes>>;
+    public refresh(refreshToken: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (refreshToken === null || refreshToken === undefined) {
+            throw new Error('Required parameter refreshToken was null or undefined when calling refresh.');
+        }
+
+        let headers = this.defaultHeaders;
+        if (refreshToken !== undefined && refreshToken !== null) {
+            headers = headers.set('refresh-token', String(refreshToken));
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<JWTRes>('get',`${this.basePath}/api/public/auth/refresh`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
