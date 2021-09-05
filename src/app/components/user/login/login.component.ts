@@ -20,8 +20,8 @@ export class LoginComponent implements OnInit {
 
   constructor(protected authService: AuthenticationService, private permissionsService: NgxPermissionsService) {
     this.loginForm = new FormGroup({
-      login: new FormControl(''),
-      pass: new FormControl('')
+      login: new FormControl('flashkid'),
+      pass: new FormControl('12457aA!')
     });
   }
 

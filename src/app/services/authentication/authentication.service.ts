@@ -16,8 +16,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 @Injectable()
 export class AuthenticationService implements AuthService {
 
-  constructor(private router: Router, private tokenStorage: TokenStorage, 
-              private userApi: UserApiService,
+  constructor(private router: Router, private tokenStorage: TokenStorage,
               private authService: AuthApiService, 
               private permissionsService: NgxPermissionsService) { }
 
@@ -158,11 +157,12 @@ export class AuthenticationService implements AuthService {
    * Save access data in the storage
    *
    * @private
-   * @param {AccessData} data
+   * @param {JWTRes} data
    */
   private saveAccessData(token: JWTRes) {
     this.tokenStorage
       .setAccessToken(token.accessToken)
+      .setRefreshToken(token.refreshToken)
       .setLogin(token.username)
       .setRole(token.role)
       .setUserID(token.idUser);
