@@ -2,7 +2,7 @@
 
 <mat-form-field appearance="fill">
     <mat-label>Search user</mat-label>
-    <input matInput placeholder="Username ..." (keypress)="onSearchChange()" [(ngModel)]="searchUsername">
+    <input matInput autocomplete="off" placeholder="Username ..." (keypress)="onSearchChange()" [(ngModel)]="searchUsername">
   </mat-form-field>
 
 <mat-selection-list [multiple]="false">
@@ -10,5 +10,3 @@
       {{user.username}}
     </mat-list-option>
   </mat-selection-list>
-
-  {{searchUsername}}

@@ -10,7 +10,6 @@ import {AuthenticationModule} from "../../services/authentication";
 import {ApiModule} from "../../services/swagger";
 
 
-
 @NgModule({
   declarations: [],
   imports: [

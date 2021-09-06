@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { AuthApiService } from './api/authApi.service';
+import { ChatApiService } from './api/chatApi.service';
 import { UserApiService } from './api/userApi.service';
 
 @NgModule({
@@ -12,6 +13,7 @@ import { UserApiService } from './api/userApi.service';
   exports:      [],
   providers: [
     AuthApiService,
+    ChatApiService,
     UserApiService ]
 })
 export class ApiModule {

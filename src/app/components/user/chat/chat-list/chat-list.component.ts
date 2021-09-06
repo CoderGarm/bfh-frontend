@@ -15,23 +15,23 @@ export class ChatListComponent implements OnInit {
   public searchUsername?: string;
 
   @Output()
-  public selectedValue: EventEmitter<string>  = new EventEmitter<string>();
+  public selectedUser: EventEmitter<UserJsonRes>  = new EventEmitter<UserJsonRes>();
 
   constructor(private userApi: UserApiService) { }
-
-  // todo databinding sinnvoll so? output to implementing component
-  // todo shared module
 
   ngOnInit(): void {
   }
 
-  openChat(user:any) {
-    console.log(user);
+  openChat(user:UserJsonRes) {
+    this.selectedUser.emit(user!);
   }
 
   onSearchChange(): void {
-    console.log(this.searchUsername);
-    this.selectedValue.emit(this.searchUsername!);
+    if (!!this.searchUsername) {
+      this.userApi.getUsersByLikeUserName(this.searchUsername).subscribe(resp => this.users = resp);
+    } else {
+      this.users = [];
+    }
   }
 
 }
