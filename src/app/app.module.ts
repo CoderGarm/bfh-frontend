@@ -1,3 +1,4 @@
+import { ChatModule } from './modules/chat/chat.module';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { CustomErrorHandler } from './services/customErrorHandler.service';
 import { ApiModule } from './services/swagger/api.module';
@@ -19,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PlanetsComponent } from './components/planets/planets.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
     ProfileComponent,
     HomeComponent,
     PasswordEqualityValidatorDirective,
-    PasswordPatternValidatorDirective
+    PasswordPatternValidatorDirective,
+    PlanetsComponent
   ],
   imports: [
     CommonModule,
@@ -43,10 +46,10 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     MaterialComponentsModule,
     AuthenticationModule,
-    ApiModule
+    ApiModule,
+    ChatModule
   ],
   providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
-  //entryComponents: [ErrorDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

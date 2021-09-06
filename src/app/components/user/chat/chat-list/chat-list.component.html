@@ -1,0 +1,14 @@
+<p>chat-list works!</p>
+
+<mat-form-field appearance="fill">
+    <mat-label>Search user</mat-label>
+    <input matInput placeholder="Username ..." (keypress)="onSearchChange()" [(ngModel)]="searchUsername">
+  </mat-form-field>
+
+<mat-selection-list [multiple]="false">
+    <mat-list-option *ngFor="let user of users" (click)="openChat(user)">
+      {{user.username}}
+    </mat-list-option>
+  </mat-selection-list>
+
+  {{searchUsername}}

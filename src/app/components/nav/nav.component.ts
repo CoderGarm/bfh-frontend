@@ -1,8 +1,8 @@
-import { MatButtonModule } from '@angular/material/button';
 import { ProfileComponent } from './../user/profile/profile.component';
 import { AuthenticationService } from './../../services/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-nav',

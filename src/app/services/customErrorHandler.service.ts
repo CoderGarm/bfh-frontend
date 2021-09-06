@@ -17,7 +17,8 @@ export class CustomErrorHandler implements ErrorHandler {
   handleError(receivedError: any) {
 
     if (!!receivedError) {
-      if (receivedError.error.message == null) {      
+      if (receivedError.error.message == null) { 
+        console.log(receivedError);     
         receivedError.error.message = "server not reachable - try it later or write a mail";
         receivedError.error.validationResults = [];
       }

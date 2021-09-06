@@ -1,6 +1,12 @@
 <app-nav></app-nav>
 <mat-drawer-container id="main-drawer">
-    <mat-drawer mode="side" opened>This will be the navigation drawer. </mat-drawer>
+    <mat-drawer mode="side" [opened]="isLoggedIn">        
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let route of routes" (click)="navigate(route)">
+              {{route.path}}
+            </mat-list-option>
+          </mat-selection-list>
+    </mat-drawer>
     <mat-drawer-content>
         <router-outlet></router-outlet>
     </mat-drawer-content>
