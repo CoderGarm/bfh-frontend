@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -9,9 +9,13 @@ export class ChatComponent implements OnInit {
 
   public static path : string = 'chat';
 
+  @Input()
+  public typed?: string;
+
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.typed);
   }
 
 }

@@ -1,6 +1,6 @@
-import { UserJsonRes } from './../../../../services/swagger/model/userJsonRes';
-import { UserApiService } from './../../../../services/swagger/api/userApi.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { UserJsonRes } from '../../../../services/swagger';
+import { UserApiService } from '../../../../services/swagger';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-chat-list',
@@ -12,7 +12,10 @@ export class ChatListComponent implements OnInit {
   public users : UserJsonRes[] = [];
 
   @Input()
-  public searchUsername?: Event;
+  public searchUsername?: string;
+
+  @Output()
+  public selectedValue: EventEmitter<string>  = new EventEmitter<string>();
 
   constructor(private userApi: UserApiService) { }
 
@@ -26,8 +29,9 @@ export class ChatListComponent implements OnInit {
     console.log(user);
   }
 
-  onSearchChange(): void {  
+  onSearchChange(): void {
     console.log(this.searchUsername);
+    this.selectedValue.emit(this.searchUsername!);
   }
 
 }

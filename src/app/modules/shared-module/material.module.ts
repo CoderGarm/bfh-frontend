@@ -24,7 +24,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -68,7 +68,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
         MatInputModule,
         MatExpansionModule,
         MatSelectModule,
-        MatFormFieldModule,    
+        MatFormFieldModule,
         MatTabsModule,
         MatTableModule,
         MatNativeDateModule,

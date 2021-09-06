@@ -1,11 +1,11 @@
 <p>chat works!</p>
 
 <mat-drawer-container id="chat-drawer">
-    <mat-drawer mode="side" opened="true">        
-        <app-chat-list></app-chat-list>
+    <mat-drawer mode="side" opened="true">
+        <app-chat-list (selectedValue)="typed = $event "></app-chat-list>
     </mat-drawer>
     <mat-drawer-content>
-        Chat Output
+        Chat Output + {{typed}}
     </mat-drawer-content>
   </mat-drawer-container>
 
