@@ -6,7 +6,7 @@ if [ ! -f ~/Downloads/typescript-angular-client-generated.zip ]; then
 	exit 1;
 fi
 unzip ~/Downloads/typescript-angular-client-generated.zip -d swaggerGenerated/
-meld swaggerGenerated/ ~/vs_workspace/bfh-fe/src/app/services/swagger/ ;
+meld swaggerGenerated/ ../src/app/services/swagger/ ;
 rm -rf ~/Downloads/typescript-angular-client-generated.zip
 rm -rf swaggerGenerated/
 echo "done and typescript extract deleted in download folder"

@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {UserJsonRes} from "../../../../services/swagger";
 
 @Component({
   selector: 'app-chat',
@@ -10,12 +11,10 @@ export class ChatComponent implements OnInit {
   public static path : string = 'chat';
 
   @Input()
-  public typed?: string;
+  public selectedUser?: UserJsonRes;
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.typed);
   }
-
 }

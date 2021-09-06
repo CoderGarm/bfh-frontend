@@ -2,9 +2,10 @@ import { ChatListComponent } from '../../components/user/chat/chat-list/chat-lis
 import { ChatComponent } from '../../components/user/chat/chat/chat.component';
 import { NgModule } from '@angular/core';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
+import {ChatHistoryComponent} from "../../components/user/chat/chat-history/chat-history.component";
 
 @NgModule({
-  declarations: [ChatComponent, ChatListComponent],
+  declarations: [ChatComponent, ChatListComponent, ChatHistoryComponent],
   imports: [
     SharedModuleModule
   ]

@@ -2,10 +2,10 @@
 
 <mat-drawer-container id="chat-drawer">
     <mat-drawer mode="side" opened="true">
-        <app-chat-list (selectedValue)="typed = $event "></app-chat-list>
+        <app-chat-list (selectedUser)="selectedUser = $event"></app-chat-list>
     </mat-drawer>
     <mat-drawer-content>
-        Chat Output + {{typed}}
+      <app-chat-history [typed]="selectedUser"></app-chat-history>
     </mat-drawer-content>
   </mat-drawer-container>
 
