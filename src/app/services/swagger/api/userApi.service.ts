@@ -223,7 +223,7 @@ export class UserApiService {
     /**
      * Updates a single user
      * Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.
-     * @param body 
+     * @param body
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
