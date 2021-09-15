@@ -1,0 +1,24 @@
+$black: #000;
+$white: #fff;
+
+/* Text colors */
+$body-text-color: rgba(255, 255, 255, 1);
+$secondary-text-color: rgba(255, 255, 255, 0.7);
+$disabled-text-color: rgba(255, 255, 255, 0.5);
+
+/* Primary colors */
+$primary-color: #7e3ff2;
+$primary-text-color: #b794f6;
+
+/* Error colors */
+$error-color: #de2839;
+$error-text-color: $error-color;
+
+/* Background colors */
+$background-color: #383838;
+$secondary-background-color: #3b3b3b;
+$tertiary-background-color: hsla(214, 90%, 52%, 0.1);
+$disabled-color: rgba(255, 255, 255, 0.3);
+
+/* Divider colors */
+$divider-color: rgba(255, 255, 255, 0.12);

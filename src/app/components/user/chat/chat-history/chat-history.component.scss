@@ -1,14 +1,46 @@
+@import "src/styles/variables";
+
 .avatar-image {
   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
 }
 
-.set-right {
-  background-color: red;
+.chat-card {
+  width: 70%;
+  margin-top:15px;
+  padding: 15px;
+  border: solid $secondary-background-color 2px;
+  border-radius: 5px;
+}
+
+mat-card.chat-card.set-right > mat-card-header {
+  justify-content: right;
+  padding-left: 15px;
+  border: solid #3b3b3b;
+  border-width: 0 0 2px 2px;
   float: right;
+  margin-left: 10px;
+}
+
+mat-card.chat-card.set-left > mat-card-header {
+  justify-content: left;
+  padding-left: 15px;
+  border: solid #3b3b3b;
+  border-width: 0 2px 2px 0;
+  float: left;
+  margin-right: 10px;
+}
+
+.set-right {
+  float: right;
+  background: linear-gradient(45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
+  border-radius: 0 0 0 5px;
+  margin-right: 15px;
 }
 
 .set-left {
-  background-color: green;
   float: left;
+  background: linear-gradient(-45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
+  border-radius: 0 0 5px 0;
+  margin-left: 15px;
 }

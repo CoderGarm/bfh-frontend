@@ -31,23 +31,34 @@ export class CustomErrorHandler implements ErrorHandler {
   handleError(receivedError: any) {
 
     if (!!receivedError) {
-      console.log(receivedError);
-      if (receivedError.error.message == null) {
-        receivedError.error.message = "server not reachable - try it later or write a mail";
-        receivedError.error.validationResults = [];
-      }
-
-      if (receivedError.error.code == 403) {
-        /* todo: commented out while the server cannot respond with 401
-        this.tokenStorage.getRole().subscribe(role => {
-           this.navigateToLandingPage(role);
-         });
-         */
-      }
-
-      let errorData: FrontendError = receivedError.error;
       let snack = new MatSnackBarConfig();
-      snack.data = errorData;
+
+      if (receivedError instanceof Error) {
+        let error: Error = receivedError;
+        const feError: FrontendError = {
+          message: error.message,
+          validationResults: [{property: error.name}]
+        }
+        console.log(error);
+        snack.data = feError;
+      } else {
+        if (receivedError.error.message == null) {
+          receivedError.error.message = "server not reachable - try it later or write a mail";
+          receivedError.error.validationResults = [];
+        }
+
+        if (receivedError.error.code == 403) {
+          /* todo: commented out while the server cannot respond with 401
+          this.tokenStorage.getRole().subscribe(role => {
+             this.navigateToLandingPage(role);
+           });
+           */
+          return;
+        }
+
+        let errorData: FrontendError = receivedError.error;
+        snack.data = errorData;
+      }
       snack.horizontalPosition = this.horizontalPosition;
       snack.verticalPosition = this.verticalPosition;
       snack.panelClass = "error-snackbar";

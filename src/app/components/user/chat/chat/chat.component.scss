@@ -1,3 +1,7 @@
 #chat-drawer {
-    height: 100%;
+    height: -webkit-fill-available;
+}
+
+#chat-list-drawer {
+  padding: 15px;
 }

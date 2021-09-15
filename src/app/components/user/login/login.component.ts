@@ -5,6 +5,7 @@ import { AuthenticationService } from './../../../services/authentication/authen
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NgxPermissionsService } from 'ngx-permissions';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,8 @@ import { NgxPermissionsService } from 'ngx-permissions';
 export class LoginComponent implements OnInit {
 
   public static path: string = 'login';
+
+  private subscription?: Subscription;
 
   public loginForm: FormGroup;
   public isAuthenticated: boolean = false;
@@ -34,9 +37,9 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.controls.pass.value,
     }
 
-    this.authService.login(login).subscribe(
+    this.subscription = this.authService.login(login).subscribe(
       resp => {
-        this.isAuthenticated = !!resp;        
+        this.isAuthenticated = !!resp;
       },
       error => {
         console.log("auth error");
@@ -58,4 +61,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    if (!!this.subscription) {
+      this.subscription.unsubscribe()
+    }
+  }
 }

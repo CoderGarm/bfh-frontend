@@ -1,9 +1,9 @@
 <mat-drawer-container id="chat-drawer">
-    <mat-drawer mode="side" opened="true">
-        <app-chat-list (selectedUser)="selectedUser = $event"></app-chat-list>
-    </mat-drawer>
-    <mat-drawer-content>
-      <app-chat-history [user]="selectedUser"></app-chat-history>
-    </mat-drawer-content>
-  </mat-drawer-container>
+  <mat-drawer mode="side" opened="true" id="chat-list-drawer">
+    <app-chat-list (selectedUser)="selectedUser = $event"></app-chat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-chat-history [user]="selectedUser"></app-chat-history>
+  </mat-drawer-content>
+</mat-drawer-container>
 

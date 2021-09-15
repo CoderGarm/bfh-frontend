@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Route, Router, Routes } from '@angular/router';
 import { AuthenticationService } from './services/authentication';
 import { NavigationCreationService } from './services/navigation-creation.service';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,10 @@ import { NavigationCreationService } from './services/navigation-creation.servic
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'bfh-fe';
+
+  public title: string = 'bfh-fe';
+
+  private subscription?: Subscription;
 
   public routes: Routes = NavigationCreationService.createNavDrawerRoutes();
 
@@ -20,14 +24,20 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.authenticationService.getAccessData().subscribe(loggedIn => this.isLoggedIn = !!loggedIn);
+    this.subscription = this.authenticationService.getAccessData().subscribe(loggedIn => this.isLoggedIn = !!loggedIn);
   }
-  
+
   navigate(route?: Route) {
     if (!route) {
       route = NavigationCreationService.getLoginRoute();
     }
     this.activeRoute = route;
     this.router.navigateByUrl("/" + route.path);
+  }
+
+  ngOnDestroy() {
+    if (!!this.subscription) {
+      this.subscription.unsubscribe()
+    }
   }
 }

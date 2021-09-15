@@ -45,8 +45,15 @@ export class TokenStorage {
     return Number(token);
   }
 
-  public getInterruptedURL(): string {
-    return <string>localStorage.getItem(this.interruptedURL);
+  /**
+   * Returns, if a refresh call happened and interrupted the ordinary web-call.
+   *
+   * @return true if a refresh call happened in this browser session
+   */
+  public getInterruptedURL(): boolean {
+    let item = <string>localStorage.getItem(this.interruptedURL);
+    return !!item;
+
   }
 
 
@@ -86,7 +93,6 @@ export class TokenStorage {
     localStorage.setItem(this.refreshToken, token);
     return this;
   }
-
 
   public setInterruptedURL(url: string): TokenStorage {
     localStorage.setItem(this.interruptedURL, url);

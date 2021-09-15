@@ -34,9 +34,9 @@ export class ChatHistoryComponent implements OnInit, OnChanges {
   chooseStyleFromSender(sender: ChatUser): string {
     let userID: number = this.tokenStorage.getUserID();
     if (sender.idUser === userID) {
-      return "set-right";
+      return "chat-card set-right";
     }
-    return "set-left";
+    return "chat-card set-left";
   }
 
   ngOnInit(): void {

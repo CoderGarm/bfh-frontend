@@ -6,6 +6,7 @@ import { UserApiService } from './../../../services/swagger/api/userApi.service'
 import { PasswordErrorMessages } from './../../../validators/passwordValidator';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Type } from '@angular/core';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,8 @@ import { Component, OnInit, Type } from '@angular/core';
 export class RegisterComponent implements OnInit {
 
   public static path: string = 'register';
+
+  private subscription?: Subscription;
 
   errors = PasswordErrorMessages;
   public registerForm: FormGroup;
@@ -36,10 +39,10 @@ export class RegisterComponent implements OnInit {
     let newUser : UserJsonReq = {
       email: this.registerForm.controls.email.value,
       password: this.registerForm.controls.pass.value,
-      username: this.registerForm.controls.login.value  
+      username: this.registerForm.controls.login.value
     };
-    this.authService.createUser(newUser).subscribe(
-      resp => console.log(resp)           
+    this.subscription = this.authService.createUser(newUser).subscribe(
+      resp => console.log(resp)
     );
   }
 
@@ -50,4 +53,9 @@ export class RegisterComponent implements OnInit {
     this.registerForm.controls.email.setValue('');
   }
 
+  ngOnDestroy() {
+    if (!!this.subscription) {
+      this.subscription.unsubscribe()
+    }
+  }
 }

@@ -4,7 +4,7 @@ import {HomeComponent} from '../../components/home/home.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {AuthService} from 'ngx-auth';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TokenStorage} from './token-storage.service';
 import {Router} from '@angular/router';
@@ -13,6 +13,8 @@ import {NgxPermissionsService} from 'ngx-permissions';
 
 @Injectable()
 export class AuthenticationService implements AuthService {
+
+  private subscriptions: Subscription[] = [];
 
   constructor(private router: Router,
               private tokenStorage: TokenStorage,
@@ -62,12 +64,12 @@ export class AuthenticationService implements AuthService {
    * @returns {Observable<any>}
    */
   public refreshToken(): Observable<JWTRes> {
-    this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
-      this.authService.refresh(refreshToken).subscribe(resp => {
+    this.subscriptions.push(this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
+      this.subscriptions.push(this.authService.refresh(refreshToken).subscribe(resp => {
         this.tokenStorage.setInterruptedURL("true")
         this.saveAccessData(resp)
-      });
-    });
+      }));
+    }));
 
 
     return this.getAccessData().pipe(map(tokens => tokens));
@@ -102,20 +104,13 @@ export class AuthenticationService implements AuthService {
   }
 
 
-  /**
-   * EXTRA AUTH METHODS
-   */
-
   public login(login: AuthRequest): Observable<JWTRes> {
-    this.authService.login(login).subscribe(resp => {
+    this.subscriptions.push(this.authService.login(login).subscribe(resp => {
       this.saveAccessData(resp);
-    });
+    }));
     return this.getAccessData();
   }
 
-  /**
-   * Logout
-   */
   public logout(): void {
     this.tokenStorage.clear();
     this.permissionsService.flushPermissions();
@@ -127,13 +122,6 @@ export class AuthenticationService implements AuthService {
     this.tokenStorage.clear();
   }
 
-
-  /**
-   * Save access data in the storage
-   *
-   * @private
-   * @param {JWTRes} data
-   */
   private saveAccessData(token: JWTRes) {
     this.tokenStorage
       .setAccessToken(token.accessToken)
@@ -143,5 +131,9 @@ export class AuthenticationService implements AuthService {
       .setUserID(token.idUser);
 
     this.setAccessData(token);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
