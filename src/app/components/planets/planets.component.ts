@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-planets',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlanetsComponent implements OnInit {
 
-  public static path : string = 'planets';
+  static path: string = 'planets';
 
   constructor() { }
 

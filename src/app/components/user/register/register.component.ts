@@ -1,11 +1,7 @@
-import { AuthApiService } from './../../../services/swagger/api/authApi.service';
-import { AuthService } from 'ngx-auth';
-import { CustomErrorHandler } from './../../../services/customErrorHandler.service';
-import { UserJsonReq } from './../../../services/swagger/model/userJsonReq';
-import { UserApiService } from './../../../services/swagger/api/userApi.service';
-import { PasswordErrorMessages } from './../../../validators/passwordValidator';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Type } from '@angular/core';
+import {AuthApiService, UserApiService, UserReq} from '../../../services/swagger';
+import {PasswordErrorMessages} from '../../../validators/passwordValidator';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 
 @Component({
@@ -15,12 +11,12 @@ import {Subscription} from "rxjs";
 })
 export class RegisterComponent implements OnInit {
 
-  public static path: string = 'register';
+  static path: string = 'register';
 
   private subscription?: Subscription;
 
   errors = PasswordErrorMessages;
-  public registerForm: FormGroup;
+  registerForm: FormGroup;
 
   constructor(private userApiService : UserApiService, private authService: AuthApiService) {
     this.registerForm = new FormGroup({
@@ -35,8 +31,8 @@ export class RegisterComponent implements OnInit {
   }
 
 
-  public submitRegister(): void {
-    let newUser : UserJsonReq = {
+  submitRegister(): void {
+    let newUser: UserReq = {
       email: this.registerForm.controls.email.value,
       password: this.registerForm.controls.pass.value,
       username: this.registerForm.controls.login.value
@@ -46,7 +42,7 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  public clear(): void {
+  clear(): void {
     this.registerForm.controls.login.setValue('');
     this.registerForm.controls.pass.setValue('');
     this.registerForm.controls.passRepeat.setValue('');

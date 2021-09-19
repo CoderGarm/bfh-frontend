@@ -1,5 +1,4 @@
-import {AuthRequest} from '../swagger';
-import {AuthApiService} from '../swagger';
+import {AuthApiService, AuthRequest, JWTRes} from '../swagger';
 import {HomeComponent} from '../../components/home/home.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -8,7 +7,6 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TokenStorage} from './token-storage.service';
 import {Router} from '@angular/router';
-import {JWTRes} from '../swagger';
 import {NgxPermissionsService} from 'ngx-permissions';
 
 @Injectable()
@@ -43,7 +41,7 @@ export class AuthenticationService implements AuthService {
    * @returns {Observable<boolean>}
    * @memberOf AuthService
    */
-  public isAuthorized(): Observable<boolean> {
+  isAuthorized(): Observable<boolean> {
     return this.tokenStorage.getAccessToken().pipe(map(token => !!token));
   }
 
@@ -53,7 +51,7 @@ export class AuthenticationService implements AuthService {
    * localStorage
    * @returns {Observable<string>}
    */
-  public getAccessToken(): Observable<string> {
+  getAccessToken(): Observable<string> {
     return this.tokenStorage.getAccessToken();
   }
 
@@ -63,7 +61,7 @@ export class AuthenticationService implements AuthService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  public refreshToken(): Observable<JWTRes> {
+  refreshToken(): Observable<JWTRes> {
     this.subscriptions.push(this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
       this.subscriptions.push(this.authService.refresh(refreshToken).subscribe(resp => {
         this.tokenStorage.setInterruptedURL("true")
@@ -82,7 +80,7 @@ export class AuthenticationService implements AuthService {
    * @param {Response} response
    * @returns {boolean}
    */
-  public refreshShouldHappen(response: HttpErrorResponse): boolean {
+  refreshShouldHappen(response: HttpErrorResponse): boolean {
     return response.status === 401 || response.status === 403;
   }
 
@@ -92,7 +90,7 @@ export class AuthenticationService implements AuthService {
    * @param {string} url
    * @returns {boolean}
    */
-  public verifyTokenRequest(url: string): boolean {
+  verifyTokenRequest(url: string): boolean {
     return url.endsWith('/refresh');
   }
 
@@ -104,21 +102,21 @@ export class AuthenticationService implements AuthService {
   }
 
 
-  public login(login: AuthRequest): Observable<JWTRes> {
+  login(login: AuthRequest): Observable<JWTRes> {
     this.subscriptions.push(this.authService.login(login).subscribe(resp => {
       this.saveAccessData(resp);
     }));
     return this.getAccessData();
   }
 
-  public logout(): void {
+  logout(): void {
     this.tokenStorage.clear();
     this.permissionsService.flushPermissions();
     this.clearAccessData();
     this.router.navigateByUrl(HomeComponent.path);
   }
 
-  public clear(): void {
+  clear(): void {
     this.tokenStorage.clear();
   }
 

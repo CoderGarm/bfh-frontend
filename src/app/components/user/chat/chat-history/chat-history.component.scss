@@ -7,7 +7,7 @@
 
 .chat-card {
   width: 70%;
-  margin-top:15px;
+  margin-top: 15px;
   padding: 15px;
   border: solid $secondary-background-color 2px;
   border-radius: 5px;
@@ -43,4 +43,34 @@ mat-card.chat-card.set-left > mat-card-header {
   background: linear-gradient(-45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
   border-radius: 0 0 5px 0;
   margin-left: 15px;
+}
+
+#send-chat-message-button {
+  float: right;
+}
+
+#chat-message-form-field {
+  float: left;
+  padding-left: 50px;
+  width: 90%;
+}
+
+.message {
+  word-wrap: break-word
+}
+
+.message-field-on-hold {
+  position: absolute;
+  bottom: 15px;
+  width: -webkit-fill-available;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.message-field-in-flow {
+  position: sticky;
+  bottom: 15px;
+  width: -webkit-fill-available;
+  margin-left: 40px;
+  margin-right: 40px;
 }

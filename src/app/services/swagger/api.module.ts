@@ -1,28 +1,28 @@
-import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { Configuration } from './configuration';
-import { HttpClient } from '@angular/common/http';
+import {ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
+import {Configuration} from './configuration';
+import {HttpClient} from '@angular/common/http';
 
 
-import { AuthApiService } from './api/authApi.service';
-import { ChatApiService } from './api/chatApi.service';
-import { UserApiService } from './api/userApi.service';
+import {AuthApiService} from './api/authApi.service';
+import {ChatApiService} from './api/chatApi.service';
+import {UserApiService} from './api/userApi.service';
 
 @NgModule({
-  imports:      [],
+  imports: [],
   declarations: [],
-  exports:      [],
+  exports: [],
   providers: [
     AuthApiService,
     ChatApiService,
-    UserApiService ]
+    UserApiService]
 })
 export class ApiModule {
-    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
-        return {
-            ngModule: ApiModule,
-            providers: [ { provide: Configuration, useFactory: configurationFactory } ]
-        };
-    }
+  static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
+    return {
+      ngModule: ApiModule,
+      providers: [{provide: Configuration, useFactory: configurationFactory}]
+    };
+  }
 
     constructor( @Optional() @SkipSelf() parentModule: ApiModule,
                  @Optional() http: HttpClient) {

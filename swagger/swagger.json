@@ -1,1 +1,758 @@
-{"swagger":"2.0","info":{"description":"description","version":"0.0.1","title":"BoF REST API","contact":{"name":"team","email":"bla@bla.com"},"license":{"name":"Apache 2","url":"https://www.apache.org/licenses/LICENSE-2.0"}},"host":"localhost:8080","basePath":"/","tags":[{"name":"AuthApi","description":"Auth Api"},{"name":"UserApi","description":"User Api"}],"schemes":["http"],"consumes":["application/json"],"produces":["application/json"],"paths":{"/api/private/user/":{"get":{"tags":["UserApi"],"summary":"Get the list of users","description":"Get the list of users registered in the system","operationId":"getAllUsers","responses":{"200":{"description":"successful","schema":{"type":"array","items":{"$ref":"#/definitions/UserJsonRes"}}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}},"security":[{"JWT":[]}]},"put":{"tags":["UserApi"],"summary":"Updates a single user","description":"Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.","operationId":"updateUser","parameters":[{"in":"body","name":"userJson","description":"userJson","required":true,"schema":{"$ref":"#/definitions/UserJsonReq"}}],"responses":{"200":{"description":"successful","schema":{"$ref":"#/definitions/UserJsonRes"}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}},"security":[{"JWT":[]}]}},"/api/private/user/{idUser}":{"get":{"tags":["UserApi"],"summary":"Get a single user by it's idUser","description":"Returns a user which is  registered in the system","operationId":"getSingleUser","parameters":[{"name":"idUser","in":"path","description":"idUser","required":true,"type":"integer","format":"int32"}],"responses":{"200":{"description":"successful","schema":{"$ref":"#/definitions/UserJsonRes"}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}},"security":[{"JWT":[]}]},"delete":{"tags":["UserApi"],"summary":"Deletes a single user","description":"Deletes a user which is not any longer registered in the system","operationId":"deleteUser","parameters":[{"name":"idUser","in":"path","description":"idUser","required":true,"type":"integer","format":"int32"}],"responses":{"200":{"description":"successful","schema":{"type":"object"}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}},"security":[{"JWT":[]}]}},"/api/private/user/{username}":{"get":{"tags":["UserApi"],"summary":"Get a single user by it's idUser","description":"Returns a list of users which usernames matches the search string","operationId":"getUsersByLikeUserName","parameters":[{"name":"username","in":"path","description":"username","required":true,"type":"string"}],"responses":{"200":{"description":"successful","schema":{"type":"array","items":{"$ref":"#/definitions/UserJsonRes"}}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}},"security":[{"JWT":[]}]}},"/api/public/auth/create":{"post":{"tags":["AuthApi"],"summary":"Creates a single user","description":"Creates and returns a user which is now registered in the system","operationId":"createUser","parameters":[{"in":"body","name":"userJson","description":"userJson","required":true,"schema":{"$ref":"#/definitions/UserJsonReq"}}],"responses":{"200":{"description":"successful","schema":{"$ref":"#/definitions/UserJsonRes"}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}}}},"/api/public/auth/login":{"post":{"tags":["AuthApi"],"summary":"Does a login","description":"Takes parameters and tries to create a valid login from it.","operationId":"login","parameters":[{"in":"body","name":"request","description":"request","required":true,"schema":{"$ref":"#/definitions/AuthRequest"}}],"responses":{"200":{"description":"successful","schema":{"$ref":"#/definitions/JWTRes"}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}}}},"/api/public/auth/refresh":{"get":{"tags":["AuthApi"],"summary":"Does a refresh of the access token","description":"Takes the refresh token and tries to create a valid login from it.","operationId":"refresh","parameters":[{"name":"refresh-token","in":"header","description":"refresh-token","required":true,"type":"string"}],"responses":{"200":{"description":"successful","schema":{"$ref":"#/definitions/JWTRes"}},"400":{"description":"an error occurred","schema":{"$ref":"#/definitions/FrontendError"}}}}}},"securityDefinitions":{"JWT":{"type":"apiKey","name":"Authorization","in":"header"}},"definitions":{"AuthRequest":{"type":"object","required":["password","username"],"properties":{"password":{"type":"string","pattern":"((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})"},"username":{"type":"string","pattern":"[a-zA-Z0-9]{3,30}"}},"title":"AuthRequest"},"FrontendError":{"type":"object","properties":{"message":{"type":"string","description":"The Error message."},"validationResults":{"type":"array","description":"If it's not empty, some validation shows violations.","items":{"$ref":"#/definitions/ValidationResult"}}},"title":"FrontendError"},"JWTReq":{"type":"object","properties":{"accessToken":{"type":"string","description":"The access token to authenticate every request against the backend."},"idUser":{"type":"integer","format":"int32","description":"The user's ID."},"refreshToken":{"type":"string","description":"The access token to authenticate every request against the backend."},"role":{"type":"string","description":"The user's role.","enum":["USER"]},"username":{"type":"string","description":"The user's name."}},"title":"JWTReq"},"JWTRes":{"type":"object","properties":{"accessToken":{"type":"string","description":"The access token to authenticate every request against the backend."},"idUser":{"type":"integer","format":"int32","description":"The user's ID."},"refreshToken":{"type":"string","description":"The access token to authenticate every request against the backend."},"role":{"type":"string","description":"The user's role.","enum":["USER"]},"username":{"type":"string","description":"The user's name."}},"title":"JWTRes"},"UserJsonReq":{"type":"object","required":["email","password","username"],"properties":{"email":{"type":"string","minLength":1,"maxLength":50},"idAlliance":{"type":"integer","format":"int32"},"idUser":{"type":"integer","format":"int32"},"password":{"type":"string","pattern":"((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})"},"username":{"type":"string","pattern":"[a-zA-Z0-9]{3,30}"}},"title":"UserJsonReq"},"UserJsonRes":{"type":"object","required":["email","username"],"properties":{"email":{"type":"string","minLength":1,"maxLength":50},"idAlliance":{"type":"integer","format":"int32"},"idUser":{"type":"integer","format":"int32"},"username":{"type":"string","pattern":"[a-zA-Z0-9]{3,30}"}},"title":"UserJsonRes"},"ValidationResult":{"type":"object","properties":{"message":{"type":"string"},"property":{"type":"string"}},"title":"ValidationResult"}}}
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "description",
+    "version": "0.0.1",
+    "title": "BoF REST API",
+    "contact": {
+      "name": "team",
+      "email": "bla@bla.com"
+    },
+    "license": {
+      "name": "Apache 2",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "AuthApi",
+      "description": "Auth Api"
+    },
+    {
+      "name": "ChatApi",
+      "description": "Chat Api"
+    },
+    {
+      "name": "UserApi",
+      "description": "User Api"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/private/chat/createMessageThread": {
+      "post": {
+        "tags": [
+          "ChatApi"
+        ],
+        "summary": "Creates a chat message thread",
+        "description": "Creates a chat message thread",
+        "operationId": "createChatMessageThread",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "chatHistory",
+            "description": "chatHistory",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChatHistory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/ChatHistory"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/private/chat/sendMessage": {
+      "put": {
+        "tags": [
+          "ChatApi"
+        ],
+        "summary": "Creates a chat message",
+        "description": "Creates a chat message",
+        "operationId": "sendChatMessage",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "message",
+            "description": "message",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChatMessage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/ChatHistory"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/private/chat/{idUserOne}/{idUserTwo}": {
+      "get": {
+        "tags": [
+          "ChatApi"
+        ],
+        "summary": "Get the chat history of the users and marks them as read",
+        "description": "Get the chat between the users and marks them as read",
+        "operationId": "getChatByUsers",
+        "parameters": [
+          {
+            "name": "idUserOne",
+            "in": "path",
+            "description": "idUserOne",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "idUserTwo",
+            "in": "path",
+            "description": "idUserTwo",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/ChatHistory"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/private/chat/{idUser}": {
+      "get": {
+        "tags": [
+          "ChatApi"
+        ],
+        "summary": "Get all active chats of the user without the messages",
+        "description": "Get all active chats of the user without the messages",
+        "operationId": "getChatByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ChatHistory"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/private/user/": {
+      "get": {
+        "tags": [
+          "UserApi"
+        ],
+        "summary": "Get the list of users",
+        "description": "Get the list of users registered in the system",
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserJson"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "UserApi"
+        ],
+        "summary": "Updates a single user",
+        "description": "Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userJson",
+            "description": "userJson",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/UserJson"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/private/user/byNameLike/{username}": {
+      "get": {
+        "tags": [
+          "UserApi"
+        ],
+        "summary": "Get a single user by it's idUser",
+        "description": "Returns a list of users which usernames matches the search string",
+        "operationId": "getUsersByLikeUserName",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "username",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserJson"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/private/user/{idUser}": {
+      "get": {
+        "tags": [
+          "UserApi"
+        ],
+        "summary": "Get a single user by it's idUser",
+        "description": "Returns a user which is  registered in the system",
+        "operationId": "getSingleUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/UserJson"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "UserApi"
+        ],
+        "summary": "Deletes a single user",
+        "description": "Deletes a user which is not any longer registered in the system",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/public/auth/create": {
+      "post": {
+        "tags": [
+          "AuthApi"
+        ],
+        "summary": "Creates a single user",
+        "description": "Creates and returns a user which is now registered in the system",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userJson",
+            "description": "userJson",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/UserJson"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/public/auth/login": {
+      "post": {
+        "tags": [
+          "AuthApi"
+        ],
+        "summary": "Does a login",
+        "description": "Takes parameters and tries to create a valid login from it.",
+        "operationId": "login",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/JWTRes"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/public/auth/refresh": {
+      "get": {
+        "tags": [
+          "AuthApi"
+        ],
+        "summary": "Does a refresh of the access token",
+        "description": "Takes the refresh token and tries to create a valid login from it.",
+        "operationId": "refresh",
+        "parameters": [
+          {
+            "name": "refresh-token",
+            "in": "header",
+            "description": "refresh-token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/JWTRes"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "AuthRequest": {
+      "type": "object",
+      "required": [
+        "password",
+        "username"
+      ],
+      "properties": {
+        "password": {
+          "type": "string",
+          "pattern": "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})"
+        },
+        "username": {
+          "type": "string",
+          "pattern": "[a-zA-Z0-9]{3,30}"
+        }
+      },
+      "title": "AuthRequest"
+    },
+    "ChatHistory": {
+      "type": "object",
+      "required": [
+        "messages",
+        "userOne",
+        "userTwo"
+      ],
+      "properties": {
+        "idChatHistory": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id of this chat history"
+        },
+        "messages": {
+          "type": "array",
+          "description": "The amount of messages.",
+          "items": {
+            "$ref": "#/definitions/ChatMessage"
+          }
+        },
+        "userOne": {
+          "description": "One of the involved users.",
+          "$ref": "#/definitions/UserJson"
+        },
+        "userTwo": {
+          "description": "The other involved user.",
+          "$ref": "#/definitions/UserJson"
+        }
+      },
+      "title": "ChatHistory"
+    },
+    "ChatMessage": {
+      "type": "object",
+      "required": [
+        "message",
+        "sender",
+        "sentAt"
+      ],
+      "properties": {
+        "idUserMessage": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id of this message."
+        },
+        "message": {
+          "type": "string",
+          "description": "The message itself"
+        },
+        "receivedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp on which the message was read."
+        },
+        "sender": {
+          "description": "The message's sender.",
+          "$ref": "#/definitions/UserJson"
+        },
+        "sentAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp on which the message was sent."
+        }
+      },
+      "title": "ChatMessage"
+    },
+    "FrontendError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "The Error message."
+        },
+        "validationResults": {
+          "type": "array",
+          "description": "If it's not empty, some validation shows violations.",
+          "items": {
+            "$ref": "#/definitions/ValidationResult"
+          }
+        }
+      },
+      "title": "FrontendError"
+    },
+    "JWTReq": {
+      "type": "object",
+      "required": [
+        "accessToken",
+        "idUser",
+        "refreshToken",
+        "role",
+        "username"
+      ],
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "description": "The access token to authenticate every request against the backend."
+        },
+        "idUser": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user's ID."
+        },
+        "refreshToken": {
+          "type": "string",
+          "description": "The access token to authenticate every request against the backend."
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role.",
+          "enum": [
+            "USER"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's name."
+        }
+      },
+      "title": "JWTReq"
+    },
+    "JWTRes": {
+      "type": "object",
+      "required": [
+        "accessToken",
+        "idUser",
+        "refreshToken",
+        "role",
+        "username"
+      ],
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "description": "The access token to authenticate every request against the backend."
+        },
+        "idUser": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user's ID."
+        },
+        "refreshToken": {
+          "type": "string",
+          "description": "The access token to authenticate every request against the backend."
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role.",
+          "enum": [
+            "USER"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's name."
+        }
+      },
+      "title": "JWTRes"
+    },
+    "UserJson": {
+      "type": "object",
+      "required": [
+        "idUser",
+        "username"
+      ],
+      "properties": {
+        "idAlliance": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user's alliance."
+        },
+        "idUser": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user's database id."
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's name",
+          "pattern": "[a-zA-Z0-9]{3,30}"
+        }
+      },
+      "title": "UserJson"
+    },
+    "UserReq": {
+      "type": "object",
+      "required": [
+        "email",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The user's e-mail - only shipped in a creation process",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "idAlliance": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "idUser": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user's database id."
+        },
+        "password": {
+          "type": "string",
+          "description": "The user's password - only shipped in a creation process",
+          "pattern": "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})"
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's name",
+          "pattern": "[a-zA-Z0-9]{3,30}"
+        }
+      },
+      "title": "UserReq"
+    },
+    "ValidationResult": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "property": {
+          "type": "string"
+        }
+      },
+      "title": "ValidationResult"
+    }
+  }
+}

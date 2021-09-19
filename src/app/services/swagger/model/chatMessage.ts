@@ -9,12 +9,24 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ChatUser } from './chatUser';
+import {UserJson} from './userJson';
 
 export interface ChatMessage {
-    idUserMessage: number;
-    message: string;
-    receivedAt?: Date;
-    sender: ChatUser;
-    sentAt: Date;
+  /**
+   * The id of this message.
+   */
+  idUserMessage?: number;
+  /**
+   * The message itself
+   */
+  message: string;
+  /**
+   * The timestamp on which the message was read.
+   */
+  receivedAt?: Date;
+  sender: UserJson;
+  /**
+   * The timestamp on which the message was sent.
+   */
+  sentAt: Date;
 }

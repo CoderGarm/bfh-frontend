@@ -10,31 +10,28 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpResponse} from '@angular/common/http';
 
-import { Observable }                                        from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { AuthRequest } from '../model/authRequest';
-import { FrontendError } from '../model/frontendError';
-import { JWTRes } from '../model/jWTRes';
-import { UserJsonReq } from '../model/userJsonReq';
-import { UserJsonRes } from '../model/userJsonRes';
+import {AuthRequest} from '../model/authRequest';
+import {JWTRes} from '../model/jWTRes';
+import {UserJson} from '../model/userJson';
+import {UserReq} from '../model/userReq';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable()
 export class AuthApiService {
 
-    protected basePath = 'http://localhost:8080';
-    public defaultHeaders = new HttpHeaders();
-    public configuration = new Configuration();
+  protected basePath = 'http://localhost:8080';
+  public defaultHeaders = new HttpHeaders();
+  public configuration = new Configuration();
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+  constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
             this.basePath = basePath;
         }
@@ -59,27 +56,27 @@ export class AuthApiService {
     }
 
 
-    /**
-     * Creates a single user
-     * Creates and returns a user which is now registered in the system
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public createUser(body?: UserJsonReq, observe?: 'body', reportProgress?: boolean): Observable<UserJsonRes>;
-    public createUser(body?: UserJsonReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJsonRes>>;
-    public createUser(body?: UserJsonReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJsonRes>>;
-    public createUser(body?: UserJsonReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+  /**
+   * Creates a single user
+   * Creates and returns a user which is now registered in the system
+   * @param body
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public createUser(body?: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
+  public createUser(body?: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
+  public createUser(body?: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
+  public createUser(body?: UserReq, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
 
-        let headers = this.defaultHeaders;
+    let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
+      'application/json',
+      '*/*'
+    ];
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -93,24 +90,24 @@ export class AuthApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<UserJsonRes>('post',`${this.basePath}/api/public/auth/create`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
+    return this.httpClient.request<UserJson>('post', `${this.basePath}/api/public/auth/create`,
+      {
+        body: body,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
     }
 
-    /**
-     * Does a login
-     * Takes parameters and tries to create a valid login from it.
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
+  /**
+   * Does a login
+   * Takes parameters and tries to create a valid login from it.
+   * @param body
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
     public login(body?: AuthRequest, observe?: 'body', reportProgress?: boolean): Observable<JWTRes>;
     public login(body?: AuthRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<JWTRes>>;
     public login(body?: AuthRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<JWTRes>>;

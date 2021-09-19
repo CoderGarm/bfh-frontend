@@ -10,28 +10,26 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpResponse} from '@angular/common/http';
 
-import { Observable }                                        from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { ChatHistory } from '../model/chatHistory';
-import { FrontendError } from '../model/frontendError';
+import {ChatHistory} from '../model/chatHistory';
+import {ChatMessage} from '../model/chatMessage';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable()
 export class ChatApiService {
 
-    protected basePath = 'http://localhost:8080';
-    public defaultHeaders = new HttpHeaders();
-    public configuration = new Configuration();
+  protected basePath = 'http://localhost:8080';
+  public defaultHeaders = new HttpHeaders();
+  public configuration = new Configuration();
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+  constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
             this.basePath = basePath;
         }
@@ -47,35 +45,80 @@ export class ChatApiService {
      */
     private canConsumeForm(consumes: string[]): boolean {
         const form = 'multipart/form-data';
-        for (const consume of consumes) {
-            if (form === consume) {
-                return true;
-            }
+      for (const consume of consumes) {
+        if (form === consume) {
+          return true;
         }
-        return false;
+      }
+      return false;
     }
 
 
-    /**
-     * Get the chat history of the users
-     * Get the chat between the users
-     * @param idUser idUser
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getChatByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
-    public getChatByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
-    public getChatByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
-    public getChatByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+  /**
+   * Creates a chat message thread
+   * Creates a chat message thread
+   * @param body
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public createChatMessageThread(body?: ChatHistory, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
+  public createChatMessageThread(body?: ChatHistory, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
+  public createChatMessageThread(body?: ChatHistory, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
+  public createChatMessageThread(body?: ChatHistory, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getChatByUser.');
-        }
 
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
+    let headers = this.defaultHeaders;
+
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
+      'application/json',
+      '*/*'
+    ];
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    if (httpHeaderAcceptSelected != undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = [
+      'application/json'
+    ];
+    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected != undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    return this.httpClient.request<ChatHistory>('post', `${this.basePath}/api/private/chat/createMessageThread`,
+      {
+        body: body,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * Get all active chats of the user without the messages
+   * Get all active chats of the user without the messages
+   * @param idUser idUser
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getChatByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ChatHistory>>;
+  public getChatByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ChatHistory>>>;
+  public getChatByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ChatHistory>>>;
+  public getChatByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+
+    if (idUser === null || idUser === undefined) {
+      throw new Error('Required parameter idUser was null or undefined when calling getChatByUser.');
+    }
+
+    let headers = this.defaultHeaders;
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
+      'application/json',
             '*/*'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
@@ -87,24 +130,24 @@ export class ChatApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ChatHistory>('get',`${this.basePath}/api/private/chat/${encodeURIComponent(String(idUser))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
+    return this.httpClient.request<Array<ChatHistory>>('get', `${this.basePath}/api/private/chat/${encodeURIComponent(String(idUser))}`,
+      {
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
     }
 
-    /**
-     * Get the chat history of the users
-     * Get the chat between the users
-     * @param idUserOne idUserOne
-     * @param idUserTwo idUserTwo
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
+  /**
+   * Get the chat history of the users and marks them as read
+   * Get the chat between the users and marks them as read
+   * @param idUserOne idUserOne
+   * @param idUserTwo idUserTwo
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
     public getChatByUsers(idUserOne: number, idUserTwo: number, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
     public getChatByUsers(idUserOne: number, idUserTwo: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
     public getChatByUsers(idUserOne: number, idUserTwo: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
@@ -130,17 +173,61 @@ export class ChatApiService {
         }
 
         // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
+      const consumes: string[] = [];
 
-        return this.httpClient.request<ChatHistory>('get',`${this.basePath}/api/private/chat/${encodeURIComponent(String(idUserOne))}/${encodeURIComponent(String(idUserTwo))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
+      return this.httpClient.request<ChatHistory>('get', `${this.basePath}/api/private/chat/${encodeURIComponent(String(idUserOne))}/${encodeURIComponent(String(idUserTwo))}`,
+        {
+          withCredentials: this.configuration.withCredentials,
+          headers: headers,
+          observe: observe,
+          reportProgress: reportProgress
+        }
+      );
     }
+
+  /**
+   * Creates a chat message
+   * Creates a chat message
+   * @param body
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public sendChatMessage(body?: ChatMessage, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
+  public sendChatMessage(body?: ChatMessage, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
+  public sendChatMessage(body?: ChatMessage, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
+  public sendChatMessage(body?: ChatMessage, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+
+
+    let headers = this.defaultHeaders;
+
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
+      'application/json',
+      '*/*'
+    ];
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    if (httpHeaderAcceptSelected != undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = [
+      'application/json'
+    ];
+    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected != undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    return this.httpClient.request<ChatHistory>('put', `${this.basePath}/api/private/chat/sendMessage`,
+      {
+        body: body,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
 
 }

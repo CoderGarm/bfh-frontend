@@ -10,29 +10,25 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpResponse} from '@angular/common/http';
 
-import { Observable }                                        from 'rxjs';
+import {Observable} from 'rxjs';
+import {UserJson} from '../model/userJson';
+import {UserReq} from '../model/userReq';
 
-import { FrontendError } from '../model/frontendError';
-import { UserJsonReq } from '../model/userJsonReq';
-import { UserJsonRes } from '../model/userJsonRes';
-
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable()
 export class UserApiService {
 
-    protected basePath = 'http://localhost:8080';
-    public defaultHeaders = new HttpHeaders();
-    public configuration = new Configuration();
+  protected basePath = 'http://localhost:8080';
+  public defaultHeaders = new HttpHeaders();
+  public configuration = new Configuration();
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+  constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
             this.basePath = basePath;
         }
@@ -99,21 +95,63 @@ export class UserApiService {
         );
     }
 
-    /**
-     * Get the list of users
-     * Get the list of users registered in the system
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAllUsers(observe?: 'body', reportProgress?: boolean): Observable<Array<UserJsonRes>>;
-    public getAllUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJsonRes>>>;
-    public getAllUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJsonRes>>>;
-    public getAllUsers(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+  /**
+   * Get the list of users
+   * Get the list of users registered in the system
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getAllUsers(observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
+  public getAllUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
+  public getAllUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+  public getAllUsers(observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
-        let headers = this.defaultHeaders;
+    let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
+      'application/json',
+      '*/*'
+    ];
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+    return this.httpClient.request<Array<UserJson>>('get', `${this.basePath}/api/private/user/`,
+      {
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * Get a single user by it&#x27;s idUser
+   * Returns a user which is  registered in the system
+   * @param idUser idUser
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getSingleUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
+  public getSingleUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
+  public getSingleUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
+  public getSingleUser(idUser: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+
+    if (idUser === null || idUser === undefined) {
+      throw new Error('Required parameter idUser was null or undefined when calling getSingleUser.');
+    }
+
+    let headers = this.defaultHeaders;
+
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
             'application/json',
             '*/*'
         ];
@@ -126,36 +164,36 @@ export class UserApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<UserJsonRes>>('get',`${this.basePath}/api/private/user/`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
+    return this.httpClient.request<UserJson>('get', `${this.basePath}/api/private/user/${encodeURIComponent(String(idUser))}`,
+      {
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
+  /**
+   * Get a single user by it&#x27;s idUser
+   * Returns a list of users which usernames matches the search string
+   * @param username username
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getUsersByLikeUserName(username: string, observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
+  public getUsersByLikeUserName(username: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
+  public getUsersByLikeUserName(username: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+  public getUsersByLikeUserName(username: string, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+
+    if (username === null || username === undefined) {
+      throw new Error('Required parameter username was null or undefined when calling getUsersByLikeUserName.');
     }
 
-    /**
-     * Get a single user by it&#x27;s idUser
-     * Returns a user which is  registered in the system
-     * @param idUser idUser
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getSingleUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<UserJsonRes>;
-    public getSingleUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJsonRes>>;
-    public getSingleUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJsonRes>>;
-    public getSingleUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    let headers = this.defaultHeaders;
 
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getSingleUser.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
             'application/json',
             '*/*'
         ];
@@ -168,79 +206,37 @@ export class UserApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<UserJsonRes>('get',`${this.basePath}/api/private/user/${encodeURIComponent(String(idUser))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
+    return this.httpClient.request<Array<UserJson>>('get', `${this.basePath}/api/private/user/byNameLike/${encodeURIComponent(String(username))}`,
+      {
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
 
-    /**
-     * Get a single user by it&#x27;s idUser
-     * Returns a list of users which usernames matches the search string
-     * @param username username
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getUsersByLikeUserName(username: string, observe?: 'body', reportProgress?: boolean): Observable<Array<UserJsonRes>>;
-    public getUsersByLikeUserName(username: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJsonRes>>>;
-    public getUsersByLikeUserName(username: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJsonRes>>>;
-    public getUsersByLikeUserName(username: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (username === null || username === undefined) {
-            throw new Error('Required parameter username was null or undefined when calling getUsersByLikeUserName.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<UserJsonRes>>('get',`${this.basePath}/api/private/user/byNameLike/${encodeURIComponent(String(username))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Updates a single user
-     * Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.
-     * @param body
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updateUser(body?: UserJsonReq, observe?: 'body', reportProgress?: boolean): Observable<UserJsonRes>;
-    public updateUser(body?: UserJsonReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJsonRes>>;
-    public updateUser(body?: UserJsonReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJsonRes>>;
-    public updateUser(body?: UserJsonReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+  /**
+   * Updates a single user
+   * Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.
+   * @param body
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateUser(body?: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
+  public updateUser(body?: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
+  public updateUser(body?: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
+  public updateUser(body?: UserReq, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
 
-        let headers = this.defaultHeaders;
+    let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [
+      'application/json',
+      '*/*'
+    ];
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -254,15 +250,15 @@ export class UserApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<UserJsonRes>('put',`${this.basePath}/api/private/user/`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
+    return this.httpClient.request<UserJson>('put', `${this.basePath}/api/private/user/`,
+      {
+        body: body,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
     }
 
 }

@@ -1,7 +1,7 @@
-import { ProfileComponent } from './../user/profile/profile.component';
-import { AuthenticationService } from './../../services/authentication/authentication.service';
+import {ProfileComponent} from './../user/profile/profile.component';
+import {AuthenticationService} from './../../services/authentication/authentication.service';
 import {Component, HostListener, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {TokenStorage} from "../../services/authentication/token-storage.service";
 import {Subscription} from "rxjs";
 
@@ -13,7 +13,7 @@ import {Subscription} from "rxjs";
 })
 export class NavComponent implements OnInit {
 
-  public isLoggedIn: boolean = false;
+  isLoggedIn: boolean = false;
 
   private subscription?: Subscription;
 
@@ -30,7 +30,7 @@ export class NavComponent implements OnInit {
     });
   }
 
-  public logout() {
+  logout() {
     this.isLoggedIn = false;
     this.authenticationService.logout();
   }

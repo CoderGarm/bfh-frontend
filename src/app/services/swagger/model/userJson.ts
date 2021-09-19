@@ -10,10 +10,17 @@
  * Do not edit the class manually.
  */
 
-export interface UserJsonReq { 
-    email: string;
-    idAlliance?: number;
-    idUser?: number;
-    password: string;
-    username: string;
+export interface UserJson {
+  /**
+   * The user's alliance.
+   */
+  idAlliance?: number;
+  /**
+   * The user's database id.
+   */
+  idUser: number;
+  /**
+   * The user's name
+   */
+  username: string;
 }

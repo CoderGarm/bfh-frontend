@@ -10,9 +10,9 @@ import {FrontendError, JWTRes} from './swagger';
 import {ErrorHandler, Injectable, NgZone} from '@angular/core';
 import {ErrorDialogComponent} from '../components/error-dialog/error-dialog.component';
 import {TokenStorage} from "./authentication/token-storage.service";
-import RoleEnum = JWTRes.RoleEnum;
 import {Router} from "@angular/router";
 import {ProfileComponent} from "../components/user/profile/profile.component";
+import RoleEnum = JWTRes.RoleEnum;
 
 @Injectable({
   providedIn: 'root'
@@ -22,15 +22,21 @@ export class CustomErrorHandler implements ErrorHandler {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
+  errorDialog?: MatSnackBarRef<ErrorDialogComponent>;
+
   constructor(private snackBar: MatSnackBar,
               private zone: NgZone,
               private tokenStorage: TokenStorage,
               private router: Router) {
   }
 
+  /**
+   * This will open only
+   * @param receivedError
+   */
   handleError(receivedError: any) {
 
-    if (!!receivedError) {
+    if (!!receivedError && !this.errorDialog) {
       let snack = new MatSnackBarConfig();
 
       if (receivedError instanceof Error) {
@@ -63,7 +69,7 @@ export class CustomErrorHandler implements ErrorHandler {
       snack.verticalPosition = this.verticalPosition;
       snack.panelClass = "error-snackbar";
       this.zone.run(() => {
-        this.snackBar.openFromComponent(ErrorDialogComponent, snack);
+        this.errorDialog = this.snackBar.openFromComponent(ErrorDialogComponent, snack);
       });
     }
   }

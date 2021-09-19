@@ -1,9 +1,9 @@
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { FrontendError } from './../../services/swagger/model/frontendError';
-import { Component, Inject, OnInit } from '@angular/core';
+import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
+import {FrontendError} from './../../services/swagger/model/frontendError';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs'
-import { DataSource } from '@angular/cdk/collections';
-import { ValidationResult } from 'src/app/services/swagger';
+import {DataSource} from '@angular/cdk/collections';
+import {ValidationResult} from 'src/app/services/swagger';
 
 @Component({
   selector: 'app-error-dialog',
@@ -12,17 +12,17 @@ import { ValidationResult } from 'src/app/services/swagger';
 })
 export class ErrorDialogComponent implements OnInit {
 
-  public errorData: FrontendError = {};
+  errorData: FrontendError = {};
 
   displayedColumns: string[] = ['property', 'message'];
   dataSource = new ValidationResultDataSource([]);
 
-  constructor(private snackBarRef: MatSnackBarRef<ErrorDialogComponent>, @Inject(MAT_SNACK_BAR_DATA) private data: any) {  
+  constructor(private snackBarRef: MatSnackBarRef<ErrorDialogComponent>, @Inject(MAT_SNACK_BAR_DATA) private data: any) {
     this.errorData = data;
     if (!!this.errorData.validationResults) {
       this.dataSource.setData(this.errorData.validationResults);
     }
-   }
+  }
 
   ngOnInit() { }
 

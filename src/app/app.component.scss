@@ -1,7 +1,8 @@
 @import "src/styles/variables";
 
 #main-drawer {
-    height: -webkit-fill-available;
+  // 64 px is mat-toolbar-row height
+  height: calc(100% - 64px);
 }
 
 #nav-drawer {

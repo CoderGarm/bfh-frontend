@@ -1,10 +1,9 @@
-import { JWTRes } from './../../../services/swagger/model/jWTRes';
-import { AuthRequest } from './../../../services/swagger/model/authRequest';
-import { AuthenticationService } from './../../../services/authentication/authentication.service';
+import {AuthRequest} from '../../../services/swagger';
+import {AuthenticationService} from '../../../services/authentication';
 
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { NgxPermissionsService } from 'ngx-permissions';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {NgxPermissionsService} from 'ngx-permissions';
 import {Subscription} from "rxjs";
 
 @Component({
@@ -14,12 +13,12 @@ import {Subscription} from "rxjs";
 })
 export class LoginComponent implements OnInit {
 
-  public static path: string = 'login';
+  static path: string = 'login';
 
   private subscription?: Subscription;
 
-  public loginForm: FormGroup;
-  public isAuthenticated: boolean = false;
+  loginForm: FormGroup;
+  isAuthenticated: boolean = false;
 
   constructor(protected authService: AuthenticationService, private permissionsService: NgxPermissionsService) {
     this.loginForm = new FormGroup({
@@ -28,7 +27,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   submitLogin() {
 

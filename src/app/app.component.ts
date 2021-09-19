@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Route, Router, Routes } from '@angular/router';
-import { AuthenticationService } from './services/authentication';
-import { NavigationCreationService } from './services/navigation-creation.service';
+import {Component, OnInit} from '@angular/core';
+import {Route, Router, Routes} from '@angular/router';
+import {AuthenticationService} from './services/authentication';
+import {NavigationCreationService} from './services/navigation-creation.service';
 import {Subscription} from "rxjs";
 
 @Component({
@@ -11,15 +11,15 @@ import {Subscription} from "rxjs";
 })
 export class AppComponent implements OnInit {
 
-  public title: string = 'bfh-fe';
+  title: string = 'bfh-fe';
 
   private subscription?: Subscription;
 
-  public routes: Routes = NavigationCreationService.createNavDrawerRoutes();
+  routes: Routes = NavigationCreationService.createNavDrawerRoutes();
 
-  public isLoggedIn: boolean = false;
+  isLoggedIn: boolean = false;
 
-  public activeRoute? : Route;
+  activeRoute?: Route;
 
   constructor(private router: Router, private authenticationService: AuthenticationService) { }
 

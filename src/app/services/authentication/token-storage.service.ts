@@ -16,7 +16,7 @@ export class TokenStorage {
    * Get access token
    * @returns {Observable<string>}
    */
-  public getAccessToken(): Observable<string> {
+  getAccessToken(): Observable<string> {
     const token: string = <string>localStorage.getItem(this.accessToken);
     return of(token);
   }
@@ -25,22 +25,21 @@ export class TokenStorage {
    * Get refresh token
    * @returns {Observable<string>}
    */
-  public getRefreshToken(): Observable<string> {
+  getRefreshToken(): Observable<string> {
     const token: string = <string>localStorage.getItem(this.refreshToken);
     return of(token);
   }
 
-  public getLogin(): Observable<string> {
-    const token: string = <string>localStorage.getItem(this.login);
-    return of(token);
+  getLogin(): string {
+    return <string>localStorage.getItem(this.login);
   }
 
-  public getRole(): Observable<string> {
+  getRole(): Observable<string> {
     const token: string = <string>localStorage.getItem(this.role);
     return of(token);
   }
 
-  public getUserID(): number {
+  getUserID(): number {
     const token: string = <string>localStorage.getItem(this.userID);
     return Number(token);
   }
@@ -50,7 +49,7 @@ export class TokenStorage {
    *
    * @return true if a refresh call happened in this browser session
    */
-  public getInterruptedURL(): boolean {
+  getInterruptedURL(): boolean {
     let item = <string>localStorage.getItem(this.interruptedURL);
     return !!item;
 
@@ -61,25 +60,25 @@ export class TokenStorage {
    * Set access token
    * @returns {TokenStorage}
    */
-  public setAccessToken(token: string): TokenStorage {
+  setAccessToken(token: string): TokenStorage {
     localStorage.setItem(this.accessToken, token);
     return this;
   }
 
 
-  public setRole(role: JWTRes.RoleEnum): TokenStorage {
+  setRole(role: JWTRes.RoleEnum): TokenStorage {
     localStorage.setItem(this.role, role);
     return this;
   }
 
 
-  public setLogin(login: string): TokenStorage {
+  setLogin(login: string): TokenStorage {
     localStorage.setItem(this.login, login);
     return this;
   }
 
 
-  public setUserID(idUser: number): TokenStorage {
+  setUserID(idUser: number): TokenStorage {
     localStorage.setItem(this.userID, String(idUser));
     return this;
   }
@@ -89,12 +88,12 @@ export class TokenStorage {
    * Set refresh token
    * @returns {TokenStorage}
    */
-  public setRefreshToken(token: string): TokenStorage {
+  setRefreshToken(token: string): TokenStorage {
     localStorage.setItem(this.refreshToken, token);
     return this;
   }
 
-  public setInterruptedURL(url: string): TokenStorage {
+  setInterruptedURL(url: string): TokenStorage {
     localStorage.setItem(this.interruptedURL, url);
     return this;
   }
@@ -102,7 +101,7 @@ export class TokenStorage {
   /**
    * Remove tokens
    */
-  public clear() {
+  clear() {
     localStorage.removeItem(this.accessToken);
     localStorage.removeItem(this.refreshToken);
     localStorage.removeItem(this.login);

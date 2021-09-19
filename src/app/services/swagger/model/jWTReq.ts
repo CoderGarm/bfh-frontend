@@ -10,27 +10,27 @@
  * Do not edit the class manually.
  */
 
-export interface JWTReq { 
-    /**
-     * The access token to authenticate every request against the backend.
-     */
-    accessToken?: string;
-    /**
-     * The user's ID.
-     */
-    idUser?: number;
-    /**
-     * The access token to authenticate every request against the backend.
-     */
-    refreshToken?: string;
-    /**
-     * The user's role.
-     */
-    role?: JWTReq.RoleEnum;
-    /**
-     * The user's name.
-     */
-    username?: string;
+export interface JWTReq {
+  /**
+   * The access token to authenticate every request against the backend.
+   */
+  accessToken: string;
+  /**
+   * The user's ID.
+   */
+  idUser: number;
+  /**
+   * The access token to authenticate every request against the backend.
+   */
+  refreshToken: string;
+  /**
+   * The user's role.
+   */
+  role: JWTReq.RoleEnum;
+  /**
+   * The user's name.
+   */
+  username: string;
 }
 export namespace JWTReq {
     export type RoleEnum = 'USER';
