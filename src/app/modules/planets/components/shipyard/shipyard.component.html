@@ -1,0 +1,50 @@
+<div>
+    <p>Filter</p>
+    <mat-form-field appearance="outline">
+        <mat-label>Hull types</mat-label>
+        <mat-chip-list #hullTypeChipList aria-label="Hull types"
+                       multiple
+                       [formControl]="eHullTypeFC">
+            <mat-chip
+                    *ngFor="let eHullType of eHullTypes as string"
+                    [value]="eHullType"
+                    (click)="clickAChip(eHullType, hullTypeChipList)">
+                {{eHullType}}
+            </mat-chip>
+        </mat-chip-list>
+    </mat-form-field>
+</div>
+
+<p>Constructions</p>
+
+<button mat-button [disabled]="!shipyardJobPossible" (click)="buildConstruction()">Build</button>
+
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let shipClass of filteredShipClasses"
+                         (opened)="setOpened(shipClass)"
+                         (closed)="setClosed(shipClass)">
+        <mat-expansion-panel-header>
+            <mat-form-field appearance="outline" class="numeric-input">
+                <mat-label>Amount</mat-label>
+                <mat-icon matPrefix (click)="sub(shipClass); $event.stopPropagation();">remove</mat-icon>
+                <div style="text-align:center;">
+                    <input matInput
+                           type="number"
+                           step="1" min="0"
+                           (click)="$event.stopPropagation();"
+                           autocomplete="off"
+                           [value]=getAmount(shipClass)
+                           (change)="getAmount(shipClass)">
+                </div>
+                <mat-icon matSuffix (click)="add(shipClass); $event.stopPropagation();">add</mat-icon>
+            </mat-form-field>
+            <mat-panel-title>
+                <div *ngIf="showHeader(shipClass)">{{shipClass.name}}</div>
+            </mat-panel-title>
+            <mat-panel-description *ngIf="showHeader(shipClass)">
+                {{shipClass.hull.description}} - Class code '{{shipClass.hull.hullType}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-ship-class-build [shipClassInput]="shipClass"></app-ship-class-build>
+    </mat-expansion-panel>
+</mat-accordion>

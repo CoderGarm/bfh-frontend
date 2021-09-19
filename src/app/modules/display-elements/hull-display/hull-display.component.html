@@ -1,0 +1,46 @@
+
+<div class="flex-items-container">
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput disabled value="{{hullInput.name}}">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="short-field">
+        <mat-label>Code</mat-label>
+        <input matInput disabled value="{{hullInput.hullType}}">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="short-field">
+        <mat-label>Level</mat-label>
+        <input matInput disabled value="{{hullInput.level}}">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="description-field">
+        <mat-label>Description</mat-label>
+        <input matInput disabled value="{{hullInput.description}}">
+    </mat-form-field>
+</div>
+
+
+<p>Construction capacities</p>
+<table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="cc">
+        <th mat-header-cell *matHeaderCellDef>Modules</th>
+        <td mat-cell *matCellDef="let hull"> {{hull.constructionCapacity}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ccbow">
+        <th mat-header-cell *matHeaderCellDef>Bow</th>
+        <td mat-cell *matCellDef="let hull"> {{hull.constructionCapacityBow}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ccbraodsides">
+        <th mat-header-cell *matHeaderCellDef>Broadsides</th>
+        <td mat-cell *matCellDef="let hull"> {{hull.constructionCapacityBroadsides}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ccstern">
+        <th mat-header-cell *matHeaderCellDef>Stern</th>
+        <td mat-cell *matCellDef="let hull"> {{hull.constructionCapacityStern}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

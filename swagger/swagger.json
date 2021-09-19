@@ -21,8 +21,28 @@
       "description": "Auth Api"
     },
     {
+      "name": "BuildingApi",
+      "description": "Building Api"
+    },
+    {
       "name": "ChatApi",
       "description": "Chat Api"
+    },
+    {
+      "name": "ConstructionApi",
+      "description": "Construction Api"
+    },
+    {
+      "name": "JobApi",
+      "description": "Job Api"
+    },
+    {
+      "name": "PlanetApi",
+      "description": "Planet Api"
+    },
+    {
+      "name": "ShipyardApi",
+      "description": "Shipyard Api"
     },
     {
       "name": "UserApi",
@@ -39,6 +59,106 @@
     "application/json"
   ],
   "paths": {
+    "/api/private/buildings/EProductionCategory": {
+      "get": {
+        "tags": [
+          "BuildingApi"
+        ],
+        "summary": "Get all EProductionCategories.",
+        "operationId": "getEProductionCategories",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CAPACITY",
+                  "PRODUCE",
+                  "REFINEMENT"
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/buildings/ERefinementSequence": {
+      "get": {
+        "tags": [
+          "BuildingApi"
+        ],
+        "summary": "Get all ERefinementSequences.",
+        "operationId": "getERefinementSequences",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "EDUCATION_CIVIL_I",
+                  "EDUCATION_CIVIL_II",
+                  "EDUCATION_CIVIL_III",
+                  "EDUCATION_MILITARY_I",
+                  "EDUCATION_MILITARY_II"
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/buildings/EResourceType": {
+      "get": {
+        "tags": [
+          "BuildingApi"
+        ],
+        "summary": "Get all EResourceTypes.",
+        "operationId": "getEResourceTypes",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CONSTRUCTION",
+                  "CREDITS",
+                  "HEAVY_METALS",
+                  "METALORE",
+                  "ORBITAL_CONSTRUCTION",
+                  "POPULATION",
+                  "RARE_ELEMENTS",
+                  "RESEARCH"
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
     "/api/private/chat/createMessageThread": {
       "post": {
         "tags": [
@@ -71,12 +191,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/private/chat/sendMessage": {
@@ -111,12 +226,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/private/chat/{idUserOne}/{idUserTwo}": {
@@ -158,12 +268,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/private/chat/{idUser}": {
@@ -200,12 +305,373 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
+        }
+      }
+    },
+    "/api/private/construction/constructable/{idPlanet}": {
+      "get": {
+        "tags": [
+          "ConstructionApi"
+        ],
+        "summary": "Get all constructions for a planets which could be build.",
+        "operationId": "getPossibleConstructionsByPlanet",
+        "parameters": [
           {
-            "JWT": []
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Construction"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/construction/{idPlanet}": {
+      "get": {
+        "tags": [
+          "ConstructionApi"
+        ],
+        "summary": "Get all constructions on a planets.",
+        "operationId": "getConstructionsByPlanet",
+        "parameters": [
+          {
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Construction"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/job/runningAt/{idPlanet}": {
+      "get": {
+        "tags": [
+          "JobApi"
+        ],
+        "summary": "Get all jobs which are running on this planet.",
+        "operationId": "getJobsOnPlanet",
+        "parameters": [
+          {
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Job"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/planet/groundConstructionBuild/{idPlanet}/{idBuilding}": {
+      "get": {
+        "tags": [
+          "PlanetApi"
+        ],
+        "summary": "Starts a construction on this planet.",
+        "operationId": "buildBuilding",
+        "parameters": [
+          {
+            "name": "idBuilding",
+            "in": "path",
+            "description": "idBuilding",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successfully started",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/planet/groundConstructionPossible/{idPlanet}": {
+      "get": {
+        "tags": [
+          "PlanetApi"
+        ],
+        "summary": "Asks if a building could be build on this planet.",
+        "operationId": "isConstructionPossibleOnPlanet",
+        "parameters": [
+          {
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "you can build something or not",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/planet/shipyardConstructionBuild": {
+      "post": {
+        "tags": [
+          "PlanetApi"
+        ],
+        "summary": "Starts a construction on this planet.",
+        "operationId": "buildShip",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "shipyardConstructionOrder",
+            "description": "shipyardConstructionOrder",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShipyardConstructionOrder"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successfully started",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/planet/shipyardConstructionPossible/{idPlanet}": {
+      "get": {
+        "tags": [
+          "PlanetApi"
+        ],
+        "summary": "Asks if a ship could be build on this planet.",
+        "operationId": "isShipyardJobPossibleOnPlanet",
+        "parameters": [
+          {
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "you can build something or not",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/planet/{idUser}": {
+      "get": {
+        "tags": [
+          "PlanetApi"
+        ],
+        "summary": "Get all planets which are colonized by a user.",
+        "operationId": "getPlanetByUsers",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Planet"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/shipyard/forUser/{idUser}": {
+      "get": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Get all active ship classes for the owner .",
+        "operationId": "getShipClassesByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ShipClass"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/shipyard/hullType": {
+      "get": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Get all EHullType.",
+        "operationId": "getEHullTypes",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AE",
+                  "AR",
+                  "BB",
+                  "BC",
+                  "BCP",
+                  "CA",
+                  "CC",
+                  "CL",
+                  "CLAC",
+                  "DD",
+                  "DN",
+                  "FAT",
+                  "FG",
+                  "FR",
+                  "LAC",
+                  "SD",
+                  "SDP"
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
       }
     },
     "/api/private/user/": {
@@ -232,12 +698,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "put": {
         "tags": [
@@ -270,12 +731,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/private/user/byNameLike/{username}": {
@@ -311,12 +767,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/private/user/{idUser}": {
@@ -350,12 +801,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -387,12 +833,7 @@
               "$ref": "#/definitions/FrontendError"
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/public/auth/create": {
@@ -453,7 +894,7 @@
           "200": {
             "description": "successful",
             "schema": {
-              "$ref": "#/definitions/JWTRes"
+              "$ref": "#/definitions/JWT"
             }
           },
           "400": {
@@ -486,7 +927,7 @@
           "200": {
             "description": "successful",
             "schema": {
-              "$ref": "#/definitions/JWTRes"
+              "$ref": "#/definitions/JWT"
             }
           },
           "400": {
@@ -507,6 +948,80 @@
     }
   },
   "definitions": {
+    "AlignedFitting": {
+      "type": "object",
+      "required": [
+        "amount",
+        "weapon",
+        "weaponAlignment"
+      ],
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The amount of mounted weapons."
+        },
+        "weapon": {
+          "description": "The mounted weapon.",
+          "$ref": "#/definitions/Weapon"
+        },
+        "weaponAlignment": {
+          "type": "string",
+          "description": "The used mount point of this fitting.",
+          "enum": [
+            "BOW",
+            "BROADSIDE",
+            "STERN"
+          ]
+        }
+      },
+      "title": "AlignedFitting"
+    },
+    "AmmunitionFitting": {
+      "type": "object",
+      "required": [
+        "ammunitionModule",
+        "amount"
+      ],
+      "properties": {
+        "ammunitionModule": {
+          "description": "The ammunition module.",
+          "$ref": "#/definitions/AmmunitionModule"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The amount of ammunition modules."
+        }
+      },
+      "title": "AmmunitionFitting"
+    },
+    "AmmunitionModule": {
+      "type": "object",
+      "required": [
+        "baseModule"
+      ],
+      "properties": {
+        "baseModule": {
+          "description": "The basic values of this module.",
+          "$ref": "#/definitions/BaseModule"
+        }
+      },
+      "title": "AmmunitionModule"
+    },
+    "Armor": {
+      "type": "object",
+      "required": [
+        "baseModule"
+      ],
+      "properties": {
+        "baseModule": {
+          "description": "The basic values of this module.",
+          "$ref": "#/definitions/BaseModule"
+        }
+      },
+      "title": "Armor"
+    },
     "AuthRequest": {
       "type": "object",
       "required": [
@@ -524,6 +1039,114 @@
         }
       },
       "title": "AuthRequest"
+    },
+    "BaseModule": {
+      "type": "object",
+      "required": [
+        "description",
+        "effectValue",
+        "name",
+        "techLevel",
+        "useCapacity"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "The description of this module."
+        },
+        "effectValue": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The base effect value of this module."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this module."
+        },
+        "techLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The level of this module."
+        },
+        "useCapacity": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The capacity usage of this module."
+        }
+      },
+      "title": "BaseModule"
+    },
+    "Building": {
+      "type": "object",
+      "required": [
+        "baseValue",
+        "description",
+        "idBuilding",
+        "increasingFactorPerLevel",
+        "name",
+        "productionCategory",
+        "productionTarget"
+      ],
+      "properties": {
+        "baseValue": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The production amount at first level."
+        },
+        "description": {
+          "type": "string",
+          "description": "The description."
+        },
+        "idBuilding": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ID."
+        },
+        "increasingFactorPerLevel": {
+          "type": "number",
+          "format": "double",
+          "description": "The modification factor per level."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this building."
+        },
+        "productionCategory": {
+          "type": "string",
+          "description": "The action this building is for.",
+          "enum": [
+            "CAPACITY",
+            "PRODUCE",
+            "REFINEMENT"
+          ]
+        },
+        "productionTarget": {
+          "type": "string",
+          "description": "The subject of this building.",
+          "enum": [
+            "CONSTRUCTION",
+            "CREDITS",
+            "HEAVY_METALS",
+            "METALORE",
+            "ORBITAL_CONSTRUCTION",
+            "POPULATION",
+            "RARE_ELEMENTS",
+            "RESEARCH"
+          ]
+        },
+        "refinementSequence": {
+          "type": "string",
+          "description": "In case of a refinement building - this is the defines sequence.",
+          "enum": [
+            "EDUCATION_CIVIL_I",
+            "EDUCATION_CIVIL_II",
+            "EDUCATION_CIVIL_III",
+            "EDUCATION_MILITARY_I",
+            "EDUCATION_MILITARY_II"
+          ]
+        }
+      },
+      "title": "Building"
     },
     "ChatHistory": {
       "type": "object",
@@ -590,6 +1213,44 @@
       },
       "title": "ChatMessage"
     },
+    "Construction": {
+      "type": "object",
+      "required": [
+        "building",
+        "idConstruction",
+        "level"
+      ],
+      "properties": {
+        "building": {
+          "description": "The building which is the base of this construction.",
+          "$ref": "#/definitions/Building"
+        },
+        "idConstruction": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ID of this construction."
+        },
+        "level": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The level of this construction."
+        }
+      },
+      "title": "Construction"
+    },
+    "ElectronicWarfare": {
+      "type": "object",
+      "required": [
+        "baseModule"
+      ],
+      "properties": {
+        "baseModule": {
+          "description": "The basic values of this module.",
+          "$ref": "#/definitions/BaseModule"
+        }
+      },
+      "title": "ElectronicWarfare"
+    },
     "FrontendError": {
       "type": "object",
       "properties": {
@@ -607,44 +1268,79 @@
       },
       "title": "FrontendError"
     },
-    "JWTReq": {
+    "Hull": {
       "type": "object",
       "required": [
-        "accessToken",
-        "idUser",
-        "refreshToken",
-        "role",
-        "username"
+        "constructionCapacity",
+        "constructionCapacityBow",
+        "constructionCapacityBroadsides",
+        "constructionCapacityStern",
+        "description",
+        "hullType",
+        "level",
+        "name"
       ],
       "properties": {
-        "accessToken": {
-          "type": "string",
-          "description": "The access token to authenticate every request against the backend."
-        },
-        "idUser": {
+        "constructionCapacity": {
           "type": "integer",
           "format": "int32",
-          "description": "The user's ID."
+          "description": "The unaligned construction capacity."
         },
-        "refreshToken": {
-          "type": "string",
-          "description": "The access token to authenticate every request against the backend."
+        "constructionCapacityBow": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The bow-aligned construction capacity."
         },
-        "role": {
+        "constructionCapacityBroadsides": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The broadside-aligned construction capacity."
+        },
+        "constructionCapacityStern": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The stern-aligned construction capacity."
+        },
+        "description": {
           "type": "string",
-          "description": "The user's role.",
+          "description": "The description of the hull."
+        },
+        "hullType": {
+          "type": "string",
+          "description": "The hull type.",
           "enum": [
-            "USER"
+            "AE",
+            "AR",
+            "BB",
+            "BC",
+            "BCP",
+            "CA",
+            "CC",
+            "CL",
+            "CLAC",
+            "DD",
+            "DN",
+            "FAT",
+            "FG",
+            "FR",
+            "LAC",
+            "SD",
+            "SDP"
           ]
         },
-        "username": {
+        "level": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The level represents the size of a ship, bigger levels represents bigger hulls."
+        },
+        "name": {
           "type": "string",
-          "description": "The user's name."
+          "description": "The name of this hull."
         }
       },
-      "title": "JWTReq"
+      "title": "Hull"
     },
-    "JWTRes": {
+    "JWT": {
       "type": "object",
       "required": [
         "accessToken",
@@ -679,12 +1375,464 @@
           "description": "The user's name."
         }
       },
-      "title": "JWTRes"
+      "title": "JWT"
+    },
+    "Job": {
+      "type": "object",
+      "required": [
+        "facility",
+        "isBuildingJob",
+        "isResearchJob",
+        "isShipyardJob",
+        "resourceType",
+        "ticksLeft",
+        "user"
+      ],
+      "properties": {
+        "amountShips": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The targeted amount of ships in case of an shipyard job.."
+        },
+        "buildingTarget": {
+          "description": "If this if a building job.",
+          "$ref": "#/definitions/Building"
+        },
+        "facility": {
+          "description": "The facility.",
+          "$ref": "#/definitions/Construction"
+        },
+        "isBuildingJob": {
+          "type": "boolean",
+          "description": "Is this a building job build."
+        },
+        "isResearchJob": {
+          "type": "boolean",
+          "description": "Is this a research job."
+        },
+        "isShipyardJob": {
+          "type": "boolean",
+          "description": "Is this a shipyard job."
+        },
+        "researchTarget": {
+          "type": "string",
+          "description": "If this if a research job."
+        },
+        "resourceType": {
+          "type": "string",
+          "description": "The type of costs.",
+          "enum": [
+            "CONSTRUCTION",
+            "CREDITS",
+            "HEAVY_METALS",
+            "METALORE",
+            "ORBITAL_CONSTRUCTION",
+            "POPULATION",
+            "RARE_ELEMENTS",
+            "RESEARCH"
+          ]
+        },
+        "shipYardTarget": {
+          "type": "string",
+          "description": "If this if a shipyard job."
+        },
+        "targetLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The targeted level if it is a research or building."
+        },
+        "ticksLeft": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The left duration of this job."
+        },
+        "user": {
+          "description": "The owner.",
+          "$ref": "#/definitions/UserJson"
+        }
+      },
+      "title": "Job"
+    },
+    "Orbit": {
+      "type": "object",
+      "required": [
+        "xCoordinate",
+        "yCoordinate"
+      ],
+      "properties": {
+        "xCoordinate": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The x-coordinate of this orbit."
+        },
+        "yCoordinate": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The y-coordinate of this orbit."
+        }
+      },
+      "title": "Orbit"
+    },
+    "PassiveModule": {
+      "type": "object",
+      "required": [
+        "baseModule",
+        "calculationType",
+        "supportType"
+      ],
+      "properties": {
+        "baseModule": {
+          "description": "The basic values of this module.",
+          "$ref": "#/definitions/BaseModule"
+        },
+        "calculationType": {
+          "type": "string",
+          "description": "If the support is increasing or decreasing.",
+          "enum": [
+            "ADD",
+            "SUBTRACT"
+          ]
+        },
+        "supportType": {
+          "type": "string",
+          "description": "What type of property is supported.",
+          "enum": [
+            "ARMOR",
+            "CREDITS",
+            "ELECTRONIC_WARFARE",
+            "FTLPROPULSION",
+            "HEAVY_METALS",
+            "METALORE",
+            "POPULATION",
+            "PROPULSION",
+            "RARE_ELEMENTS",
+            "SHIELD",
+            "WEAPON"
+          ]
+        }
+      },
+      "title": "PassiveModule"
+    },
+    "Planet": {
+      "type": "object",
+      "required": [
+        "idPlanet",
+        "name",
+        "orbit",
+        "planetType",
+        "system"
+      ],
+      "properties": {
+        "colonizedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when this planet was colonized first."
+        },
+        "idPlanet": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ID of this planet."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this planet."
+        },
+        "orbit": {
+          "description": "The orbit inside of the parent system.",
+          "$ref": "#/definitions/Orbit"
+        },
+        "owner": {
+          "description": "The owner of this planet, if already colonized.",
+          "$ref": "#/definitions/UserJson"
+        },
+        "planetType": {
+          "type": "string",
+          "description": "The planet's class.",
+          "enum": [
+            "PLANET"
+          ]
+        },
+        "system": {
+          "description": "The star system which this planet is part of.",
+          "$ref": "#/definitions/StarSystem"
+        }
+      },
+      "title": "Planet"
+    },
+    "Propulsion": {
+      "type": "object",
+      "required": [
+        "baseModule",
+        "ftlCapable"
+      ],
+      "properties": {
+        "baseModule": {
+          "description": "The basic values of this module.",
+          "$ref": "#/definitions/BaseModule"
+        },
+        "ftlCapable": {
+          "type": "boolean",
+          "description": "If this propulsion module if for faster then light."
+        }
+      },
+      "title": "Propulsion"
+    },
+    "Research": {
+      "type": "object",
+      "required": [
+        "description",
+        "levelCap",
+        "name"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "The description of this research."
+        },
+        "levelCap": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The maximum level of this research."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this research."
+        }
+      },
+      "title": "Research"
+    },
+    "ShipClass": {
+      "type": "object",
+      "required": [
+        "ammunitionFittings",
+        "fittings",
+        "hull",
+        "name",
+        "owner",
+        "supportFittings"
+      ],
+      "properties": {
+        "ammunitionFittings": {
+          "type": "array",
+          "description": "The ammunition load out of this class.",
+          "items": {
+            "$ref": "#/definitions/AmmunitionFitting"
+          }
+        },
+        "armor": {
+          "description": "The armor of this class.",
+          "$ref": "#/definitions/Armor"
+        },
+        "electronicWarfare": {
+          "description": "The electronic warfare module of this class.",
+          "$ref": "#/definitions/ElectronicWarfare"
+        },
+        "fittings": {
+          "type": "array",
+          "description": "The weapon systems of this class.",
+          "items": {
+            "$ref": "#/definitions/AlignedFitting"
+          }
+        },
+        "hull": {
+          "description": "The hull of this class.",
+          "$ref": "#/definitions/Hull"
+        },
+        "idPredecessor": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id of the predecessor of this class."
+        },
+        "idShipClass": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ID."
+        },
+        "idSuccessor": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id of the successor of this class."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this class."
+        },
+        "owner": {
+          "description": "The owner of this class.",
+          "$ref": "#/definitions/UserJson"
+        },
+        "propulsion": {
+          "description": "The propulsion of this class.",
+          "$ref": "#/definitions/Propulsion"
+        },
+        "sidewall": {
+          "description": "The sidewall of this class.",
+          "$ref": "#/definitions/Sidewall"
+        },
+        "supportFittings": {
+          "type": "array",
+          "description": "The support fitting of this class.",
+          "items": {
+            "$ref": "#/definitions/SupportFitting"
+          }
+        }
+      },
+      "title": "ShipClass"
+    },
+    "ShipyardConstructionOrder": {
+      "type": "object",
+      "required": [
+        "idPlanet",
+        "shipJobPayload"
+      ],
+      "properties": {
+        "idPlanet": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The planet which should run the job."
+        },
+        "shipJobPayload": {
+          "type": "array",
+          "description": "The job to run - key must be the idShipClass, value must be the amount.",
+          "items": {
+            "$ref": "#/definitions/ShipyardConstructionSelection"
+          }
+        }
+      },
+      "title": "ShipyardConstructionOrder"
+    },
+    "ShipyardConstructionSelection": {
+      "type": "object",
+      "required": [
+        "amount",
+        "idShipClass"
+      ],
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The amount of the ship class which should be produced."
+        },
+        "idShipClass": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ship class which should be produced."
+        }
+      },
+      "title": "ShipyardConstructionSelection"
+    },
+    "Sidewall": {
+      "type": "object",
+      "required": [
+        "baseModule"
+      ],
+      "properties": {
+        "baseModule": {
+          "description": "The basic values of this module.",
+          "$ref": "#/definitions/BaseModule"
+        }
+      },
+      "title": "Sidewall"
+    },
+    "StarSystem": {
+      "type": "object",
+      "required": [
+        "idStarSystem",
+        "name",
+        "orbit",
+        "starClassType"
+      ],
+      "properties": {
+        "idStarSystem": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ID of this star system."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this star system."
+        },
+        "orbit": {
+          "description": "The orbit of this star system.",
+          "$ref": "#/definitions/Orbit"
+        },
+        "starClassType": {
+          "type": "string",
+          "description": "The stellar class of the star of this system.",
+          "enum": [
+            "CLASS_A",
+            "CLASS_B",
+            "CLASS_F0",
+            "CLASS_F1",
+            "CLASS_F2",
+            "CLASS_F3",
+            "CLASS_F4",
+            "CLASS_F5",
+            "CLASS_F6",
+            "CLASS_F7",
+            "CLASS_F8",
+            "CLASS_F9",
+            "CLASS_G0",
+            "CLASS_G1",
+            "CLASS_G2",
+            "CLASS_G3",
+            "CLASS_G4",
+            "CLASS_G5",
+            "CLASS_G6",
+            "CLASS_G7",
+            "CLASS_G8",
+            "CLASS_G9",
+            "CLASS_K0",
+            "CLASS_K1",
+            "CLASS_K2",
+            "CLASS_K3",
+            "CLASS_K4",
+            "CLASS_K5",
+            "CLASS_K6",
+            "CLASS_K7",
+            "CLASS_K8",
+            "CLASS_K9",
+            "CLASS_M0",
+            "CLASS_M1",
+            "CLASS_M2",
+            "CLASS_M3",
+            "CLASS_M4",
+            "CLASS_M5",
+            "CLASS_M6",
+            "CLASS_M7",
+            "CLASS_M8",
+            "CLASS_M9",
+            "CLASS_O",
+            "CLASS_RG"
+          ]
+        }
+      },
+      "title": "StarSystem"
+    },
+    "SupportFitting": {
+      "type": "object",
+      "required": [
+        "amount",
+        "passiveModule"
+      ],
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The amount of passive modules in this fitting"
+        },
+        "passiveModule": {
+          "description": "The passive module of this fitting",
+          "$ref": "#/definitions/PassiveModule"
+        }
+      },
+      "title": "SupportFitting"
     },
     "UserJson": {
       "type": "object",
       "required": [
         "idUser",
+        "role",
         "username"
       ],
       "properties": {
@@ -697,6 +1845,10 @@
           "type": "integer",
           "format": "int32",
           "description": "The user's database id."
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role."
         },
         "username": {
           "type": "string",
@@ -753,6 +1905,67 @@
         }
       },
       "title": "ValidationResult"
+    },
+    "Weapon": {
+      "type": "object",
+      "required": [
+        "alignmentTypes",
+        "baseModule",
+        "damageType",
+        "effectiveRange",
+        "weaponType"
+      ],
+      "properties": {
+        "alignmentTypes": {
+          "type": "array",
+          "description": "The possible mount points of this weapon.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "BOW",
+              "BROADSIDE",
+              "STERN"
+            ]
+          }
+        },
+        "ammunitionModule": {
+          "description": "In case of an ammunition-based weapon - this is the ammo.",
+          "$ref": "#/definitions/AmmunitionModule"
+        },
+        "baseModule": {
+          "description": "The basic values of this module.",
+          "$ref": "#/definitions/BaseModule"
+        },
+        "damageType": {
+          "type": "string",
+          "description": "The kind of damage which will be projected.",
+          "enum": [
+            "DART",
+            "EXPLOSION"
+          ]
+        },
+        "effectiveRange": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The effective range of this weapon."
+        },
+        "sideWallPenetration": {
+          "type": "number",
+          "format": "double",
+          "description": "The possibility of penetrating the sidewall."
+        },
+        "weaponType": {
+          "type": "string",
+          "description": "The way how the damage will be projected.",
+          "enum": [
+            "BEAM",
+            "COUNTER_MISSILE",
+            "MISSILE",
+            "POINT_DEFENSE"
+          ]
+        }
+      },
+      "title": "Weapon"
     }
   }
 }

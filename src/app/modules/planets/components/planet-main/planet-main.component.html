@@ -1,0 +1,14 @@
+<mat-tab-group>
+    <mat-tab [label]="actionTabTitles[0]">
+        <p> Why I need a dashboard?</p>
+    </mat-tab>
+    <mat-tab [label]="actionTabTitles[1]">
+        <app-ground-construct [selectedPlanetInput]="selectedPlanetInput"></app-ground-construct>
+    </mat-tab>
+    <mat-tab [label]="actionTabTitles[2]">
+        <app-shipyard [selectedPlanetInput]="selectedPlanetInput"></app-shipyard>
+    </mat-tab>
+    <mat-tab [label]="actionTabTitles[3]">
+        <app-jobs-list [selectedPlanetInput]="selectedPlanetInput"></app-jobs-list>
+    </mat-tab>
+</mat-tab-group>

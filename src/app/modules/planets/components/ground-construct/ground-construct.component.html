@@ -1,0 +1,65 @@
+<div>
+    <p>Filter</p>
+    <mat-form-field appearance="outline">
+        <mat-label>Resource types</mat-label>
+        <mat-chip-list #resourceTypeChipList aria-label="Resource types"
+                       multiple
+                       [formControl]="eResourceTypeFC">
+            <mat-chip
+                    *ngFor="let eResourceType of eResourceTypes as string"
+                    [value]="eResourceType"
+                    (click)="clickAChip(eResourceType, resourceTypeChipList)">
+                {{eResourceType}}
+            </mat-chip>
+        </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Resource types</mat-label>
+        <mat-chip-list #productCategoryChipList aria-label="Resource types"
+                       multiple
+                       [formControl]="eProductionCategoryFC">
+            <mat-chip
+                    *ngFor="let category of eProductionCategories as string"
+                    [value]="category"
+                    (click)="clickAChip(category, productCategoryChipList)">
+                {{category}}
+            </mat-chip>
+        </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Resource types</mat-label>
+        <mat-chip-list #refinementSequenceChipList aria-label="Resource types"
+                       multiple
+                       [formControl]="eRefinementSequenceFC">
+            <mat-chip
+                    *ngFor="let sequence of eRefinementSequences as string"
+                    [value]="sequence"
+                    (click)="clickAChip(sequence, refinementSequenceChipList)">
+                {{sequence}}
+            </mat-chip>
+        </mat-chip-list>
+    </mat-form-field>
+</div>
+
+<p>Constructions</p>
+
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let construction of filteredConstructions"
+                         (opened)="setOpened(construction)"
+                         (closed)="setClosed(construction)">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{construction.building.name}}
+            </mat-panel-title>
+            <mat-panel-description *ngIf="showDescription(construction)">
+                {{construction.building.description}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-construction-display
+                [constructionInput]="construction"
+                [constructionPossibleInput]="constructionPossible"
+                (constructionOutput)="startConstruction($event)"></app-construction-display>
+    </mat-expansion-panel>
+</mat-accordion>

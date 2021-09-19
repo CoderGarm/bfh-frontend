@@ -1,0 +1,64 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Hull</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-hull-display [hullInput]="shipClassInput.hull"></app-hull-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Offensive weapon systems</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-aligned-fitting-module-display *ngFor="let fitting of shipClassInput.fittings"
+                                            [fittingInput]="fitting"></app-aligned-fitting-module-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Ammunition loadout</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-ammunition-fitting-module-display *ngFor="let fitting of shipClassInput.ammunitionFittings"
+                                               [fittingInput]="fitting"></app-ammunition-fitting-module-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Armor</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-armor-module-display *ngIf="!!shipClassInput.armor" [moduleInput]="shipClassInput.armor"></app-armor-module-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Sidewall</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <app-sidewall-module-display *ngIf="!!shipClassInput.sidewall"
+                                     [moduleInput]="shipClassInput.sidewall"></app-sidewall-module-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Produlsion</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-propulsion-module-display *ngIf="!!shipClassInput.propulsion"
+                                       [moduleInput]="shipClassInput.propulsion"></app-propulsion-module-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Electronic warfare</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-eloka-module-display *ngIf="!!shipClassInput.electronicWarfare"
+                                  [moduleInput]="shipClassInput.electronicWarfare"></app-eloka-module-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Support loadout</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-support-fitting-module-display *ngFor="let fitting of shipClassInput.supportFittings"
+                                            [fittingInput]="fitting"></app-support-fitting-module-display>
+    </mat-expansion-panel>
+</mat-accordion>

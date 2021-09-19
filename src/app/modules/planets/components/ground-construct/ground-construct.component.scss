@@ -1,0 +1,14 @@
+.mat-chip {
+  font-size: 0.8rem;
+  min-height: 18px;
+}
+
+#chips-holder {
+  display: flex;
+  flex-flow: column;
+  width: 90%;
+}
+
+.mat-expansion-panel {
+  width: 90%;
+}

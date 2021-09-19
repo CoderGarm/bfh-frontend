@@ -4,14 +4,46 @@
 
 html,
 body {
-    height: -webkit-fill-available;
+  height: -webkit-fill-available;
 }
+
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: $background-color;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: $background-color;
 }
 
 .error-snackbar {
-    background-color: $background-color;
+  background-color: $background-color;
+}
+
+.drawer-container {
+  height: -webkit-fill-available;
+}
+
+.drawer-list {
+  padding: 15px;
+  width: 232px; // the mat-form-field from chat-list has this width
+}
+
+.side-nav-open-change-area {
+  position: sticky;
+  top: 0;
+  width: 50px;
+  height: -webkit-fill-available;
+  float: left;
+}
+
+.short-field {
+  width: 80px;
+}
+
+.description-field {
+  width: 300px;
+}
+
+.flex-items-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }

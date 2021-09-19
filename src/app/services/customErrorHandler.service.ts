@@ -5,14 +5,13 @@ import {
   MatSnackBarRef,
   MatSnackBarVerticalPosition
 } from '@angular/material/snack-bar';
-import {FrontendError, JWTRes} from './swagger';
+import {FrontendError} from './swagger';
 
 import {ErrorHandler, Injectable, NgZone} from '@angular/core';
 import {ErrorDialogComponent} from '../components/error-dialog/error-dialog.component';
 import {TokenStorage} from "./authentication/token-storage.service";
 import {Router} from "@angular/router";
 import {ProfileComponent} from "../components/user/profile/profile.component";
-import RoleEnum = JWTRes.RoleEnum;
 
 @Injectable({
   providedIn: 'root'
@@ -62,21 +61,21 @@ export class CustomErrorHandler implements ErrorHandler {
           return;
         }
 
-        let errorData: FrontendError = receivedError.error;
-        snack.data = errorData;
+        snack.data = receivedError.error;
       }
       snack.horizontalPosition = this.horizontalPosition;
       snack.verticalPosition = this.verticalPosition;
       snack.panelClass = "error-snackbar";
       this.zone.run(() => {
         this.errorDialog = this.snackBar.openFromComponent(ErrorDialogComponent, snack);
+        this.errorDialog.afterDismissed().subscribe(dismissed => this.errorDialog = undefined)
       });
     }
   }
 
   navigateToLandingPage(role: string) {
     switch (role) {
-      case RoleEnum.USER:
+      case "ROLE_USER":
         this.router.navigateByUrl(ProfileComponent.path);
         break;
       default:

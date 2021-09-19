@@ -1,5 +1,5 @@
-import {PlanetsComponent} from './../components/planets/planets.component';
-import {ChatComponent} from '../components/user/chat/chat/chat.component';
+import {PlanetsComponent} from '../modules/planets/components/planets/planets.component';
+import {ChatComponent} from '../modules/chat/components/chat/chat.component';
 import {HomeComponent} from './../components/home/home.component';
 import {ProfileComponent} from './../components/user/profile/profile.component';
 import {LoginComponent} from './../components/user/login/login.component';

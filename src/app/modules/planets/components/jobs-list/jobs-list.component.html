@@ -1,0 +1,18 @@
+<p>Active jobs</p>
+
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let job of runningJobs"
+                         (opened)="setOpened(job)"
+                         (closed)="setClosed(job)">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{getTitle(job)}}
+            </mat-panel-title>
+            <mat-panel-description *ngIf="showDescription(job)">
+                {{getDescription(job)}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-job-display
+                [displayJobInput]="job"></app-job-display>
+    </mat-expansion-panel>
+</mat-accordion>

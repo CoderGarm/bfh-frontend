@@ -9,18 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import {ChatMessage} from './chatMessage';
-import {UserJson} from './userJson';
+import { ChatMessage } from './chatMessage';
+import { UserJson } from './userJson';
 
-export interface ChatHistory {
-  /**
-   * The id of this chat history
-   */
-  idChatHistory?: number;
-  /**
-   * The amount of messages.
-   */
-  messages: Array<ChatMessage>;
-  userOne: UserJson;
-  userTwo: UserJson;
+export interface ChatHistory { 
+    /**
+     * The id of this chat history
+     */
+    idChatHistory?: number;
+    /**
+     * The amount of messages.
+     */
+    messages: Array<ChatMessage>;
+    userOne: UserJson;
+    userTwo: UserJson;
 }

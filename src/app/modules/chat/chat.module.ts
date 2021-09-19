@@ -1,9 +1,8 @@
-import { ChatListComponent } from '../../components/user/chat/chat-list/chat-list.component';
-import { ChatComponent } from '../../components/user/chat/chat/chat.component';
-import { NgModule } from '@angular/core';
+import {ChatListComponent} from './components/chat-list/chat-list.component';
+import {ChatComponent} from './components/chat/chat.component';
+import {NgModule} from '@angular/core';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
-import {ChatHistoryComponent} from "../../components/user/chat/chat-history/chat-history.component";
-import {CommonModule} from "@angular/common";
+import {ChatHistoryComponent} from "./components/chat-history/chat-history.component";
 
 @NgModule({
   declarations: [ChatComponent, ChatListComponent, ChatHistoryComponent],
@@ -11,4 +10,5 @@ import {CommonModule} from "@angular/common";
     SharedModuleModule,
   ]
 })
-export class ChatModule { }
+export class ChatModule {
+}

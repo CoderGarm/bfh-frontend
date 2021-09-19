@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {JWTRes} from '../swagger';
 
 @Injectable()
 export class TokenStorage {
@@ -66,7 +65,7 @@ export class TokenStorage {
   }
 
 
-  setRole(role: JWTRes.RoleEnum): TokenStorage {
+  setRole(role: string): TokenStorage {
     localStorage.setItem(this.role, role);
     return this;
   }

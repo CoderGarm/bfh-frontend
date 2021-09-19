@@ -1,7 +1,17 @@
 export * from './authApi.service';
 import { AuthApiService } from './authApi.service';
+export * from './buildingApi.service';
+import { BuildingApiService } from './buildingApi.service';
 export * from './chatApi.service';
 import { ChatApiService } from './chatApi.service';
+export * from './constructionApi.service';
+import { ConstructionApiService } from './constructionApi.service';
+export * from './jobApi.service';
+import { JobApiService } from './jobApi.service';
+export * from './planetApi.service';
+import { PlanetApiService } from './planetApi.service';
+export * from './shipyardApi.service';
+import { ShipyardApiService } from './shipyardApi.service';
 export * from './userApi.service';
 import { UserApiService } from './userApi.service';
-export const APIS = [AuthApiService, ChatApiService, UserApiService];
+export const APIS = [AuthApiService, BuildingApiService, ChatApiService, ConstructionApiService, JobApiService, PlanetApiService, ShipyardApiService, UserApiService];

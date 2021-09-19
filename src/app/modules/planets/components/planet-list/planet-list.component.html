@@ -1,0 +1,5 @@
+<mat-selection-list [multiple]="false">
+  <mat-list-option *ngFor="let planet of planets" (click)="chosePlanet(planet)">
+    {{planet.name}}
+  </mat-list-option>
+</mat-selection-list>

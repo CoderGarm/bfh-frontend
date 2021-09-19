@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {MaterialComponentsModule} from "./material.module";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserModule} from "@angular/platform-browser";
@@ -11,30 +11,31 @@ import {ApiModule} from "../../services/swagger";
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    AuthenticationModule,
-    ApiModule,
-    MaterialComponentsModule
-  ],
-  exports: [
-    CommonModule,
-    HttpClientModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    AuthenticationModule,
-    ApiModule,
-    MaterialComponentsModule
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        AuthenticationModule,
+        ApiModule,
+        MaterialComponentsModule
+    ],
+    exports: [
+        CommonModule,
+        HttpClientModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        AuthenticationModule,
+        ApiModule,
+        MaterialComponentsModule
+    ]
 })
-export class SharedModuleModule { }
+export class SharedModuleModule {
+}

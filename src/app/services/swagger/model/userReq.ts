@@ -10,22 +10,22 @@
  * Do not edit the class manually.
  */
 
-export interface UserReq {
-  /**
-   * The user's e-mail - only shipped in a creation process
-   */
-  email: string;
-  idAlliance?: number;
-  /**
-   * The user's database id.
-   */
-  idUser?: number;
-  /**
-   * The user's password - only shipped in a creation process
-   */
-  password: string;
-  /**
-   * The user's name
-   */
-  username: string;
+export interface UserReq { 
+    /**
+     * The user's e-mail - only shipped in a creation process
+     */
+    email: string;
+    idAlliance?: number;
+    /**
+     * The user's database id.
+     */
+    idUser?: number;
+    /**
+     * The user's password - only shipped in a creation process
+     */
+    password: string;
+    /**
+     * The user's name
+     */
+    username: string;
 }

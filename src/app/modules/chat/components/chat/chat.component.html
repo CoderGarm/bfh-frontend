@@ -1,0 +1,11 @@
+<mat-drawer-container class="drawer-container">
+  <mat-drawer mode="side" opened="true" class="drawer-list">
+    <app-chat-list (selectedUserChatListOutput)="selectedUserChatInput = $event"
+                   [newChatStartedChatListInput]="newChatStartedChatInput"></app-chat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-chat-history [selectedUserChatHistoryInput]="selectedUserChatInput"
+                      (newChatStartedChatHistoryOutput)="newChatStartedChatInput = $event"></app-chat-history>
+  </mat-drawer-content>
+</mat-drawer-container>
+

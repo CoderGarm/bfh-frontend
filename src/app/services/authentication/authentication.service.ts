@@ -1,4 +1,4 @@
-import {AuthApiService, AuthRequest, JWTRes} from '../swagger';
+import {AuthApiService, AuthRequest, JWT} from '../swagger';
 import {HomeComponent} from '../../components/home/home.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -20,9 +20,9 @@ export class AuthenticationService implements AuthService {
               private permissionsService: NgxPermissionsService) {
   }
 
-  private subjectAccessData = new Subject<JWTRes>();
+  private subjectAccessData = new Subject<JWT>();
 
-  setAccessData(access: JWTRes) {
+  setAccessData(access: JWT) {
     this.setPermissionsByRole(access.role);
     this.subjectAccessData.next(access);
   }
@@ -31,7 +31,7 @@ export class AuthenticationService implements AuthService {
     this.subjectAccessData.next();
   }
 
-  getAccessData(): Observable<JWTRes> {
+  getAccessData(): Observable<JWT> {
     return this.subjectAccessData.asObservable();
   }
 
@@ -61,7 +61,7 @@ export class AuthenticationService implements AuthService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  refreshToken(): Observable<JWTRes> {
+  refreshToken(): Observable<JWT> {
     this.subscriptions.push(this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
       this.subscriptions.push(this.authService.refresh(refreshToken).subscribe(resp => {
         this.tokenStorage.setInterruptedURL("true")
@@ -95,14 +95,14 @@ export class AuthenticationService implements AuthService {
   }
 
 
-  private setPermissionsByRole(role: JWTRes.RoleEnum) {
+  private setPermissionsByRole(role: string) {
     let permissions: string[] = [];
     permissions.push(role);
     this.permissionsService.loadPermissions(permissions);
   }
 
 
-  login(login: AuthRequest): Observable<JWTRes> {
+  login(login: AuthRequest): Observable<JWT> {
     this.subscriptions.push(this.authService.login(login).subscribe(resp => {
       this.saveAccessData(resp);
     }));
@@ -120,7 +120,7 @@ export class AuthenticationService implements AuthService {
     this.tokenStorage.clear();
   }
 
-  private saveAccessData(token: JWTRes) {
+  private saveAccessData(token: JWT) {
     this.tokenStorage
       .setAccessToken(token.accessToken)
       .setRefreshToken(token.refreshToken)

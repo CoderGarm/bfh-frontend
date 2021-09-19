@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar class="avatar-image"
+             [ngStyle]="{'background-image': 'url(&quot;http://localhost:8080/vaadin/icons/hulls/png64x/corvette_c.png&quot;)'}"></div>
+        <mat-card-title>{{shipClassInput.name}}</mat-card-title>
+        <mat-card-subtitle>{{shipClassInput.hull.description}} - Class code '{{shipClassInput.hull.hullType}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <app-ship-class-display [shipClassInput]="shipClassInput"></app-ship-class-display>
+    </mat-card-content>
+</mat-card>
