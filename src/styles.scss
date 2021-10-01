@@ -17,6 +17,11 @@ body {
   background-color: $background-color;
 }
 
+.no-scrolling {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+}
+
 .drawer-container {
   height: -webkit-fill-available;
 }

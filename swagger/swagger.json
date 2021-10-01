@@ -33,6 +33,10 @@
       "description": "Construction Api"
     },
     {
+      "name": "FleetApi",
+      "description": "Fleet Api"
+    },
+    {
       "name": "JobApi",
       "description": "Job Api"
     },
@@ -41,8 +45,16 @@
       "description": "Planet Api"
     },
     {
+      "name": "ResearchApi",
+      "description": "Research Api"
+    },
+    {
       "name": "ShipyardApi",
       "description": "Shipyard Api"
+    },
+    {
+      "name": "StarMapApi",
+      "description": "Star Map Api"
     },
     {
       "name": "UserApi",
@@ -380,6 +392,42 @@
         }
       }
     },
+    "/api/private/fleet/inSystem/{idStarSystem}": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all active ship classes for the owner .",
+        "operationId": "getFleetsBySystem",
+        "parameters": [
+          {
+            "name": "idStarSystem",
+            "in": "path",
+            "description": "idStarSystem",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Fleet"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
     "/api/private/job/runningAt/{idPlanet}": {
       "get": {
         "tags": [
@@ -593,6 +641,42 @@
         }
       }
     },
+    "/api/private/research/byUser/{idUser}": {
+      "get": {
+        "tags": [
+          "ResearchApi"
+        ],
+        "summary": "Get all active ship classes for the owner .",
+        "operationId": "getResearchByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ResearchLevel"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
     "/api/private/shipyard/forUser/{idUser}": {
       "get": {
         "tags": [
@@ -662,6 +746,68 @@
                   "SD",
                   "SDP"
                 ]
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/starMap/star-systems": {
+      "get": {
+        "tags": [
+          "StarMapApi"
+        ],
+        "summary": "Get all star systems",
+        "operationId": "getStarSystems",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StarSystem"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/starMap/star-systems/{idStarSystem}": {
+      "get": {
+        "tags": [
+          "StarMapApi"
+        ],
+        "summary": "Get all planets of this system",
+        "operationId": "getStarSystem",
+        "parameters": [
+          {
+            "name": "idStarSystem",
+            "in": "path",
+            "description": "idStarSystem",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Planet"
               }
             }
           },
@@ -1251,6 +1397,64 @@
       },
       "title": "ElectronicWarfare"
     },
+    "Fleet": {
+      "type": "object",
+      "required": [
+        "idFleet",
+        "name",
+        "owner",
+        "ships"
+      ],
+      "properties": {
+        "idFleet": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id."
+        },
+        "move": {
+          "description": "The fleet's current moving.",
+          "$ref": "#/definitions/Move"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the fleet"
+        },
+        "orbit": {
+          "description": "The current location of this fleet.\n     \n     If null, then this is in hyper space.\n     The planet could be null if the fleet is on a local movement.",
+          "$ref": "#/definitions/FleetOrbit"
+        },
+        "owner": {
+          "description": "The owner of the fleet",
+          "$ref": "#/definitions/UserJson"
+        },
+        "ships": {
+          "type": "array",
+          "description": "The fleet's individual war ships.",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/WarShip"
+          }
+        }
+      },
+      "title": "Fleet"
+    },
+    "FleetOrbit": {
+      "type": "object",
+      "required": [
+        "system"
+      ],
+      "properties": {
+        "planet": {
+          "description": "The planet inside the system which defines this orbit.",
+          "$ref": "#/definitions/Planet"
+        },
+        "system": {
+          "description": "The star system which defines this orbit.",
+          "$ref": "#/definitions/StarSystem"
+        }
+      },
+      "title": "FleetOrbit"
+    },
     "FrontendError": {
       "type": "object",
       "properties": {
@@ -1453,6 +1657,30 @@
       },
       "title": "Job"
     },
+    "Move": {
+      "type": "object",
+      "required": [
+        "moveDoneAtZero",
+        "startOrbit",
+        "targetOrbit"
+      ],
+      "properties": {
+        "moveDoneAtZero": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The duration of this movement."
+        },
+        "startOrbit": {
+          "description": "The departure of this movement.",
+          "$ref": "#/definitions/FleetOrbit"
+        },
+        "targetOrbit": {
+          "description": "The destination of this movement.",
+          "$ref": "#/definitions/FleetOrbit"
+        }
+      },
+      "title": "Move"
+    },
     "Orbit": {
       "type": "object",
       "required": [
@@ -1600,6 +1828,25 @@
         }
       },
       "title": "Research"
+    },
+    "ResearchLevel": {
+      "type": "object",
+      "required": [
+        "level",
+        "research"
+      ],
+      "properties": {
+        "level": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The level of this research."
+        },
+        "research": {
+          "description": "The name of this research.",
+          "$ref": "#/definitions/Research"
+        }
+      },
+      "title": "ResearchLevel"
     },
     "ShipClass": {
       "type": "object",
@@ -1905,6 +2152,35 @@
         }
       },
       "title": "ValidationResult"
+    },
+    "WarShip": {
+      "type": "object",
+      "required": [
+        "idFleet",
+        "name",
+        "shipClass",
+        "shipyard"
+      ],
+      "properties": {
+        "idFleet": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The fleet which this ship is part of."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of this individual ship."
+        },
+        "shipClass": {
+          "description": "The ship class which this ship is a type of.",
+          "$ref": "#/definitions/ShipClass"
+        },
+        "shipyard": {
+          "description": "The birthplace of this ship.",
+          "$ref": "#/definitions/Planet"
+        }
+      },
+      "title": "WarShip"
     },
     "Weapon": {
       "type": "object",

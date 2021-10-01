@@ -9,7 +9,7 @@ import {MatTabGroup} from "@angular/material/tabs";
 })
 export class PlanetMainComponent implements OnInit {
 
-    actionTabTitles: string[] = ['Dashboard', 'Constructions', 'Shipyard', 'Jobs']
+    actionTabTitles: string[] = ['Dashboard', 'Constructions', 'Shipyard', 'Jobs'];
 
     @ViewChild((MatTabGroup))
     matTabGroup?: MatTabGroup;

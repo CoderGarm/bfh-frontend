@@ -22,7 +22,7 @@ import {ApiModule} from "../../services/swagger";
         AppRoutingModule,
         AuthenticationModule,
         ApiModule,
-        MaterialComponentsModule
+        MaterialComponentsModule,
     ],
     exports: [
         CommonModule,

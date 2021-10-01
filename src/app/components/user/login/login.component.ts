@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
         this.isAuthenticated = !!resp;
       },
       error => {
-        console.log("auth error");
         this.clear();
       }
     );

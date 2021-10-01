@@ -7,9 +7,12 @@ import { AuthApiService } from './api/authApi.service';
 import { BuildingApiService } from './api/buildingApi.service';
 import { ChatApiService } from './api/chatApi.service';
 import { ConstructionApiService } from './api/constructionApi.service';
+import { FleetApiService } from './api/fleetApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { PlanetApiService } from './api/planetApi.service';
+import { ResearchApiService } from './api/researchApi.service';
 import { ShipyardApiService } from './api/shipyardApi.service';
+import { StarMapApiService } from './api/starMapApi.service';
 import { UserApiService } from './api/userApi.service';
 
 @NgModule({
@@ -21,9 +24,12 @@ import { UserApiService } from './api/userApi.service';
     BuildingApiService,
     ChatApiService,
     ConstructionApiService,
+    FleetApiService,
     JobApiService,
     PlanetApiService,
+    ResearchApiService,
     ShipyardApiService,
+    StarMapApiService,
     UserApiService ]
 })
 export class ApiModule {

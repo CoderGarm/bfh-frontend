@@ -6,6 +6,7 @@ import {LoginComponent} from './../components/user/login/login.component';
 import {RegisterComponent} from '../components/user/register/register.component';
 import {Route, Routes} from '@angular/router';
 import {ProtectedGuard} from 'ngx-auth';
+import {StarMapComponent} from "../modules/star-map/star-map/star-map.component";
 
 
 export class NavigationCreationService {
@@ -22,6 +23,7 @@ export class NavigationCreationService {
       {path: ProfileComponent.path, component: ProfileComponent, canActivate: [ProtectedGuard]},
       {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
       {path: PlanetsComponent.path, component: PlanetsComponent, canActivate: [ProtectedGuard]},
+      {path: StarMapComponent.path, component: StarMapComponent, canActivate: [ProtectedGuard]},
     ];
   }
 
@@ -29,6 +31,7 @@ export class NavigationCreationService {
     return [
       {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
       {path: PlanetsComponent.path, component: PlanetsComponent, canActivate: [ProtectedGuard]},
+      {path: StarMapComponent.path, component: StarMapComponent, canActivate: [ProtectedGuard]},
     ];
   }
 }

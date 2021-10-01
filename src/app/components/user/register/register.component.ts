@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
       username: this.registerForm.controls.login.value
     };
     this.subscription = this.authService.createUser(newUser).subscribe(
-      resp => console.log(resp)
+        resp => console.log(resp) // todo login created user
     );
   }
 

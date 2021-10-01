@@ -13,6 +13,7 @@ import {NgxPermissionsModule} from 'ngx-permissions';
 import {HomeComponent} from './components/home/home.component';
 import {SharedModuleModule} from "./modules/shared-module/shared-module.module";
 import {PlanetsModule} from "./modules/planets/planets.module";
+import {StarMapModule} from "./modules/star-map/star-map.module";
 
 @NgModule({
     declarations: [
@@ -32,7 +33,7 @@ import {PlanetsModule} from "./modules/planets/planets.module";
         SharedModuleModule,
         ChatModule,
         PlanetsModule,
-
+        StarMapModule,
     ],
     providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
     bootstrap: [AppComponent]
