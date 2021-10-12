@@ -14,6 +14,7 @@ import {HomeComponent} from './components/home/home.component';
 import {SharedModuleModule} from "./modules/shared-module/shared-module.module";
 import {PlanetsModule} from "./modules/planets/planets.module";
 import {StarMapModule} from "./modules/star-map/star-map.module";
+import {ResearchModule} from "./modules/research/research.module";
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import {StarMapModule} from "./modules/star-map/star-map.module";
         ChatModule,
         PlanetsModule,
         StarMapModule,
+        ResearchModule
     ],
     providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
     bootstrap: [AppComponent]

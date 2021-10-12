@@ -16,6 +16,10 @@ export interface Research {
      */
     description: string;
     /**
+     * The id of this research.
+     */
+    idResearch: number;
+    /**
      * The maximum level of this research.
      */
     levelCap: number;

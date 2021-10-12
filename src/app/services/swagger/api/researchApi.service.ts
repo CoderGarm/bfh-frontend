@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
+import { Job } from '../model/job';
 import { ResearchLevel } from '../model/researchLevel';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -57,7 +58,49 @@ export class ResearchApiService {
 
 
     /**
-     * Get all active ship classes for the owner .
+     * Get all available researches for the user.
+     * 
+     * @param idUser idUser
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAvailableResearchByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResearchLevel>>;
+    public getAvailableResearchByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResearchLevel>>>;
+    public getAvailableResearchByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResearchLevel>>>;
+    public getAvailableResearchByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getAvailableResearchByUser.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<ResearchLevel>>('get',`${this.basePath}/api/private/research/availableByUser/${encodeURIComponent(String(idUser))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all already researched researches for the user.
      * 
      * @param idUser idUser
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -90,6 +133,98 @@ export class ResearchApiService {
 
         return this.httpClient.request<Array<ResearchLevel>>('get',`${this.basePath}/api/private/research/byUser/${encodeURIComponent(String(idUser))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all already researched researches for the user.
+     * 
+     * @param idUser idUser
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public researchPossibleForUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public researchPossibleForUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public researchPossibleForUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public researchPossibleForUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling researchPossibleForUser.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/research/possibleForUser/${encodeURIComponent(String(idUser))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Starts a research job for the user.
+     * 
+     * @param idUser idUser
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public startResearchByUser(idUser: number, body?: ResearchLevel, observe?: 'body', reportProgress?: boolean): Observable<Job>;
+    public startResearchByUser(idUser: number, body?: ResearchLevel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Job>>;
+    public startResearchByUser(idUser: number, body?: ResearchLevel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Job>>;
+    public startResearchByUser(idUser: number, body?: ResearchLevel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling startResearchByUser.');
+        }
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Job>('post',`${this.basePath}/api/private/research/byUser/${encodeURIComponent(String(idUser))}`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

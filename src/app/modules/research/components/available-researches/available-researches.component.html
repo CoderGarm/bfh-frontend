@@ -1,0 +1,18 @@
+<div class="side-nav-open-change-area-fixed"></div>
+
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let research of availableResearches"
+                         (opened)="setOpened(research)"
+                         (closed)="setClosed(research)">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{research.research.name}}
+            </mat-panel-title>
+            <mat-panel-description *ngIf="showDescription(research)">
+                {{research.research.description}}
+            </mat-panel-description>
+            <button mat-button [disabled]="!isResearchPossible(research)" (click)="runResearch(research)">Start research</button>
+        </mat-expansion-panel-header>
+        <app-research-display [research]="research.research"></app-research-display>
+    </mat-expansion-panel>
+</mat-accordion>

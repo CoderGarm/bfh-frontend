@@ -14,6 +14,7 @@ import {WeaponModuleDisplayComponent} from './weapon-module-display/weapon-modul
 import {AlignedFittingModuleDisplayComponent} from './aligned-fitting-module-display/aligned-fitting-module-display.component';
 import {AmmunitionFittingModuleDisplayComponent} from './ammunition-fitting-module-display/ammunition-fitting-module-display.component';
 import {SupportFittingModuleDisplayComponent} from './support-fitting-module-display/support-fitting-module-display.component';
+import {ResearchDisplayComponent} from './research-display/research-display.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {SupportFittingModuleDisplayComponent} from './support-fitting-module-dis
         WeaponModuleDisplayComponent,
         AlignedFittingModuleDisplayComponent,
         AmmunitionFittingModuleDisplayComponent,
-        SupportFittingModuleDisplayComponent
+        SupportFittingModuleDisplayComponent,
+        ResearchDisplayComponent
     ],
     imports: [
         SharedModuleModule,
@@ -38,7 +40,8 @@ import {SupportFittingModuleDisplayComponent} from './support-fitting-module-dis
         CommonModule
     ],
     exports: [
-        ShipClassDisplayComponent
+        ShipClassDisplayComponent,
+        ResearchDisplayComponent
     ]
 })
 export class DisplayElementsModule {

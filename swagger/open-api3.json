@@ -992,12 +992,64 @@
         }
       }
     },
+    "/api/private/research/availableByUser/{idUser}": {
+      "get": {
+        "tags": [
+          "ResearchApi"
+        ],
+        "summary": "Get all available researches for the user.",
+        "operationId": "getAvailableResearchByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResearchLevel"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/research/byUser/{idUser}": {
       "get": {
         "tags": [
           "ResearchApi"
         ],
-        "summary": "Get all active ship classes for the owner .",
+        "summary": "Get all already researched researches for the user.",
         "operationId": "getResearchByUser",
         "parameters": [
           {
@@ -1022,6 +1074,111 @@
                   "items": {
                     "$ref": "#/components/schemas/ResearchLevel"
                   }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ResearchApi"
+        ],
+        "summary": "Starts a research job for the user.",
+        "operationId": "startResearchByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResearchLevel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/research/possibleForUser/{idUser}": {
+      "get": {
+        "tags": [
+          "ResearchApi"
+        ],
+        "summary": "Get all already researched researches for the user.",
+        "operationId": "researchPossibleForUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               },
               "*/*": {
@@ -2177,6 +2334,7 @@
         "title": "Research",
         "required": [
           "description",
+          "idResearch",
           "levelCap",
           "name"
         ],
@@ -2185,6 +2343,11 @@
           "description": {
             "type": "string",
             "description": "The description of this research."
+          },
+          "idResearch": {
+            "type": "integer",
+            "description": "The id of this research.",
+            "format": "int32"
           },
           "levelCap": {
             "type": "integer",
