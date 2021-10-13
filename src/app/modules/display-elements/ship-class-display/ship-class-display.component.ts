@@ -2,21 +2,21 @@ import {AfterViewInit, Component, Input} from '@angular/core';
 import {ShipClass} from "../../../services/swagger";
 
 @Component({
-  selector: 'app-ship-class-display',
-  templateUrl: './ship-class-display.component.html',
-  styleUrls: ['./ship-class-display.component.scss']
+    selector: 'app-ship-class-display',
+    templateUrl: './ship-class-display.component.html',
+    styleUrls: ['./ship-class-display.component.scss']
 })
 export class ShipClassDisplayComponent implements AfterViewInit {
 
-  /**
-   * the ship class which should be displayed
-   */
-  @Input()
-  shipClassInput!: ShipClass;
+    /**
+     * the ship class which should be displayed
+     */
+    @Input()
+    shipClassInput!: ShipClass;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  ngAfterViewInit(): void {
-  }
+    ngAfterViewInit(): void {
+    }
 }

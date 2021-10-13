@@ -1,0 +1,70 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Hulls</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let hull of hulls">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{hull.name}}</mat-panel-title>
+                    <mat-radio-button name="hullGroup" id="{{hull.idHull}}" [disabled]="!!shipClassInput"
+                                      (click)="chooseHull(hull); $event.stopPropagation();"></mat-radio-button>
+                </mat-expansion-panel-header>
+                <app-hull-display [hullInput]="hull"></app-hull-display>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Offensive weapon systems</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-weapons-counter (weaponSelectionOutput)="chooseWeapon($event)" *ngFor="let weapon of weapons"
+                             [startAt]="getWeaponSelection(weapon)"></app-weapons-counter>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Armor</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-armor-module-selector (selectionOutput)="chooseArmor($event)" *ngFor="let armor of armors"
+                                   [moduleSelectedInput]="armorSelection"
+                                   [moduleInput]="armor"></app-armor-module-selector>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Sidewall</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-sidewall-module-selector (selectionOutput)="chooseSidewall($event)" *ngFor="let sidewall of sidewalls"
+                                      [moduleSelectedInput]="sidewallsSelection"
+                                      [moduleInput]="sidewall"></app-sidewall-module-selector>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Propulsion</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-propulsion-module-selector (selectionOutput)="choosePropulsion($event)" *ngFor="let propulsion of propulsions"
+                                        [moduleSelectedInput]="propulsionSelection"
+                                        [moduleInput]="propulsion"></app-propulsion-module-selector>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Electronic warfare</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-eloka-module-selector (selectionOutput)="chooseEloka($event)" *ngFor="let electronicWarfare of eloka"
+                                   [moduleSelectedInput]="elokaSelection"
+                                   [moduleInput]="electronicWarfare"></app-eloka-module-selector>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Support loadout</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-passive-module-counter (amount)="choosePassiveModule($event, passive)" *ngFor="let passive of passiveModules"
+                                    [startAt]="getPassiveModuleAmount(passive)"
+                                    [moduleInput]="passive"></app-passive-module-counter>
+    </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,6 @@
+<app-base-module-single-selector [moduleInput]="moduleInput.baseModule"
+                                 [moduleSelectedInput]="moduleToCheckOutput"
+                                 [radioGroupName]="radioGroupName"
+                                 (selectionOutput)="emitSelection()">
+    <mat-checkbox disabled class="example-margin" [checked]="moduleInput.ftlCapable">FTL capable</mat-checkbox>
+</app-base-module-single-selector>

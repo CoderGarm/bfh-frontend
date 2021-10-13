@@ -36,6 +36,10 @@ export interface Hull {
      */
     hullType: Hull.HullTypeEnum;
     /**
+     * The id of this hull.
+     */
+    idHull: number;
+    /**
      * The level represents the size of a ship, bigger levels represents bigger hulls.
      */
     level: number;

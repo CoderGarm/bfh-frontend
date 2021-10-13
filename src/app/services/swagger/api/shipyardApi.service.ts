@@ -57,6 +57,100 @@ export class ShipyardApiService {
 
 
     /**
+     * Checks if the name for a ship class is free for new classes only.
+     * 
+     * @param idUser idUser
+     * @param className className
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public checkClassName(idUser: number, className: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public checkClassName(idUser: number, className: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public checkClassName(idUser: number, className: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public checkClassName(idUser: number, className: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling checkClassName.');
+        }
+
+        if (className === null || className === undefined) {
+            throw new Error('Required parameter className was null or undefined when calling checkClassName.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(className))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Marks a ship classes as deleted.
+     * 
+     * @param idUser idUser
+     * @param idShipClass idShipClass
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteShipClass(idUser: number, idShipClass: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteShipClass(idUser: number, idShipClass: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteShipClass(idUser: number, idShipClass: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteShipClass(idUser: number, idShipClass: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling deleteShipClass.');
+        }
+
+        if (idShipClass === null || idShipClass === undefined) {
+            throw new Error('Required parameter idShipClass was null or undefined when calling deleteShipClass.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<any>('delete',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(idShipClass))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all EHullType.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -127,6 +221,56 @@ export class ShipyardApiService {
 
         return this.httpClient.request<Array<ShipClass>>('get',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all active ship classes for the owner .
+     * 
+     * @param idUser idUser
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setShipClass(idUser: number, body?: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ShipClass>;
+    public setShipClass(idUser: number, body?: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShipClass>>;
+    public setShipClass(idUser: number, body?: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShipClass>>;
+    public setShipClass(idUser: number, body?: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling setShipClass.');
+        }
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ShipClass>('post',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

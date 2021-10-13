@@ -195,7 +195,7 @@ export class ViewHelper {
         this.orbits.forEach(orbit => {
             let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
-            let radius: number = ViewHelper.getRadius(orbit.xCoordinate, orbit.yCoordinate);
+            let radius: number = ViewHelper.calculateDistance(orbit.xCoordinate, orbit.yCoordinate);
 
             if (EViewBoxType.STAR_SYSTEM === viewBoxType) {
                 let orbitSvg = this.canvas!
@@ -257,13 +257,13 @@ export class ViewHelper {
     }
 
     /**
-     * calculates the radius
+     * calculates the distance between two points
      *
      * @param firstCoordinate the first coordinate
      * @param secondCoordinate the second coordinate
      * @private
      */
-    private static getRadius(firstCoordinate: number, secondCoordinate: number): number {
+    public static calculateDistance(firstCoordinate: number, secondCoordinate: number): number {
         return Math.sqrt(Math.pow(firstCoordinate, 2) + Math.pow(secondCoordinate, 2));
     }
 
@@ -429,7 +429,7 @@ export class ViewHelper {
         let maxYCoord = this.biggestYOrbit!.yCoordinate;
         let y = Math.abs(minYCoord) < Math.abs(maxYCoord) ? Math.abs(maxYCoord) : Math.abs(minYCoord);
 
-        let radius: number = ViewHelper.getRadius(x, y);
+        let radius: number = ViewHelper.calculateDistance(x, y);
         radius *= 1.1;
 
         this.createCoordinateSystem(0, 0, radius, "main");

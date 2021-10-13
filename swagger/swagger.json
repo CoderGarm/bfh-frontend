@@ -41,6 +41,10 @@
       "description": "Job Api"
     },
     {
+      "name": "ModuleApi",
+      "description": "Module Api"
+    },
+    {
       "name": "PlanetApi",
       "description": "Planet Api"
     },
@@ -464,6 +468,294 @@
         }
       }
     },
+    "/api/private/modules/ammunition/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked ammunition modules for the owner .",
+        "operationId": "getAmmunitionModulesByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AmmunitionModule"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/armor/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked armors for the owner .",
+        "operationId": "getArmorsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Armor"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/eloka/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked electronic warfare for the owner .",
+        "operationId": "getElectronicWarfareByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ElectronicWarfare"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/hull/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked hulls for the owner .",
+        "operationId": "getHullsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Hull"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/passive/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked passive modules for the owner .",
+        "operationId": "getPassiveModulesByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PassiveModule"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/propulsion/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked propulsions for the owner .",
+        "operationId": "getPropulsionsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Propulsion"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/sidewall/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked sidewalls for the owner .",
+        "operationId": "getSidewallsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Sidewall"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/weapon/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked weapons for the owner .",
+        "operationId": "getWeaponsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Weapon"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
     "/api/private/planet/groundConstructionBuild/{idPlanet}/{idBuilding}": {
       "get": {
         "tags": [
@@ -758,7 +1050,7 @@
         "tags": [
           "ResearchApi"
         ],
-        "summary": "Get all already researched researches for the user.",
+        "summary": "Checks if a research job is possible for the user.",
         "operationId": "researchPossibleForUser",
         "parameters": [
           {
@@ -811,6 +1103,127 @@
               "items": {
                 "$ref": "#/definitions/ShipClass"
               }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Get all active ship classes for the owner .",
+        "operationId": "setShipClass",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "shipClass",
+            "description": "shipClass",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShipClass"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "$ref": "#/definitions/ShipClass"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/shipyard/forUser/{idUser}/{className}": {
+      "get": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Checks if the name for a ship class is free for new classes only.",
+        "operationId": "checkClassName",
+        "parameters": [
+          {
+            "name": "className",
+            "in": "path",
+            "description": "className",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/shipyard/forUser/{idUser}/{idShipClass}": {
+      "delete": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Marks a ship classes as deleted.",
+        "operationId": "deleteShipClass",
+        "parameters": [
+          {
+            "name": "idShipClass",
+            "in": "path",
+            "description": "idShipClass",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "object"
             }
           },
           "400": {
@@ -1300,6 +1713,7 @@
       "required": [
         "description",
         "effectValue",
+        "idModule",
         "name",
         "techLevel",
         "useCapacity"
@@ -1313,6 +1727,11 @@
           "type": "integer",
           "format": "int32",
           "description": "The base effect value of this module."
+        },
+        "idModule": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id of this module."
         },
         "name": {
           "type": "string",
@@ -1590,6 +2009,7 @@
         "constructionCapacityStern",
         "description",
         "hullType",
+        "idHull",
         "level",
         "name"
       ],
@@ -1640,6 +2060,11 @@
             "SD",
             "SDP"
           ]
+        },
+        "idHull": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id of this hull."
         },
         "level": {
           "type": "integer",
@@ -1969,6 +2394,7 @@
         "ammunitionFittings",
         "fittings",
         "hull",
+        "mark",
         "name",
         "owner",
         "supportFittings"
@@ -1976,7 +2402,7 @@
       "properties": {
         "ammunitionFittings": {
           "type": "array",
-          "description": "The ammunition load out of this class.",
+          "description": "The ammunition loadout of this class.",
           "items": {
             "$ref": "#/definitions/AmmunitionFitting"
           }
@@ -2015,9 +2441,16 @@
           "format": "int32",
           "description": "The id of the successor of this class."
         },
+        "mark": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The mark of this class."
+        },
         "name": {
           "type": "string",
-          "description": "The name of this class."
+          "description": "The name of this class.",
+          "minLength": 3,
+          "maxLength": 30
         },
         "owner": {
           "description": "The owner of this class.",

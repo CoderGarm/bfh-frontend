@@ -8,6 +8,7 @@ import {Route, Routes} from '@angular/router';
 import {ProtectedGuard} from 'ngx-auth';
 import {StarMapComponent} from "../modules/star-map/star-map/star-map.component";
 import {ResearchViewComponent} from "../modules/research/components/research-view/research-view.component";
+import {ShipClassViewComponent} from "../modules/ship-class-construction/components/ship-class-view/ship-class-view.component";
 
 
 export class NavigationCreationService {
@@ -26,6 +27,7 @@ export class NavigationCreationService {
       {path: PlanetsComponent.path, component: PlanetsComponent, canActivate: [ProtectedGuard]},
       {path: StarMapComponent.path, component: StarMapComponent, canActivate: [ProtectedGuard]},
       {path: ResearchViewComponent.path, component: ResearchViewComponent, canActivate: [ProtectedGuard]},
+      {path: ShipClassViewComponent.path, component: ShipClassViewComponent, canActivate: [ProtectedGuard]},
     ];
   }
 
@@ -35,6 +37,7 @@ export class NavigationCreationService {
       {path: PlanetsComponent.path, component: PlanetsComponent, canActivate: [ProtectedGuard]},
       {path: StarMapComponent.path, component: StarMapComponent, canActivate: [ProtectedGuard]},
       {path: ResearchViewComponent.path, component: ResearchViewComponent, canActivate: [ProtectedGuard]},
+      {path: ShipClassViewComponent.path, component: ShipClassViewComponent, canActivate: [ProtectedGuard]},
     ];
   }
 }

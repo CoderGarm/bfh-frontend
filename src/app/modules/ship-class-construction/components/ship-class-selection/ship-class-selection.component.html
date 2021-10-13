@@ -1,0 +1,6 @@
+<mat-selection-list [multiple]="false">
+    <mat-list-option (click)="selectClass(undefined)">Create new class</mat-list-option>
+    <mat-list-option *ngFor="let shipClass of shipClasses" (click)="selectClass(shipClass)">
+        {{shipClass.name}} Mk. {{shipClass.mark}}
+    </mat-list-option>
+</mat-selection-list>

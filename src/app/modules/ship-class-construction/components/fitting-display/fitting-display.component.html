@@ -1,0 +1,9 @@
+<div class="fitting">
+    <mat-form-field appearance="fill" class="centered">
+        <mat-label>Ship class</mat-label>
+        <input matInput disabled value="{{shipClassName}}" autocomplete="off">
+    </mat-form-field>
+    <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
+                        [selectedShipClassInput]="selectedShipClassInput"></app-ship-class-svg>
+    <app-ship-class-display *ngIf="!!selectedShipClassInput" [shipClassInput]="selectedShipClassInput"></app-ship-class-display>
+</div>

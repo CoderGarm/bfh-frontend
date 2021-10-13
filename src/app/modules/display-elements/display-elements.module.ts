@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {ShipClassDisplayComponent} from './ship-class-display/ship-class-display.component';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {HullDisplayComponent} from './hull-display/hull-display.component';
@@ -15,7 +14,16 @@ import {AlignedFittingModuleDisplayComponent} from './aligned-fitting-module-dis
 import {AmmunitionFittingModuleDisplayComponent} from './ammunition-fitting-module-display/ammunition-fitting-module-display.component';
 import {SupportFittingModuleDisplayComponent} from './support-fitting-module-display/support-fitting-module-display.component';
 import {ResearchDisplayComponent} from './research-display/research-display.component';
-
+import {ShipClassFittingSelectionComponent} from './ship-class-fitting-selection/ship-class-fitting-selection.component';
+import {WeaponsCounterComponent} from './weapons-counter/weapons-counter.component';
+import {BaseModuleCounterComponent} from './base-module-counter/base-module-counter.component';
+import {SidewallModuleSelectorComponent} from './sidewall-module-selector/sidewall-module-selector.component';
+import {PropulsionModuleSelectorComponent} from './propulsion-module-selector/propulsion-module-selector.component';
+import {PassiveModuleCounterComponent} from './passive-module-counter/passive-module-counter.component';
+import {ElokaModuleSelectorComponent} from './eloka-module-selector/eloka-module-selector.component';
+import {ArmorModuleSelectorComponent} from './armor-module-selector/armor-module-selector.component';
+import {AmmunitionModuleCounterComponent} from './ammunition-module-counter/ammunition-module-counter.component';
+import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/base-module-single-selector.component';
 
 @NgModule({
     declarations: [
@@ -32,16 +40,44 @@ import {ResearchDisplayComponent} from './research-display/research-display.comp
         AlignedFittingModuleDisplayComponent,
         AmmunitionFittingModuleDisplayComponent,
         SupportFittingModuleDisplayComponent,
-        ResearchDisplayComponent
+        ResearchDisplayComponent,
+        ShipClassFittingSelectionComponent,
+        BaseModuleCounterComponent,
+        WeaponsCounterComponent,
+        SidewallModuleSelectorComponent,
+        PropulsionModuleSelectorComponent,
+        PassiveModuleCounterComponent,
+        ElokaModuleSelectorComponent,
+        ArmorModuleSelectorComponent,
+        AmmunitionModuleCounterComponent,
+        BaseModuleSingleSelectorComponent,
     ],
     imports: [
         SharedModuleModule,
-        CommonModule,
-        CommonModule
     ],
     exports: [
         ShipClassDisplayComponent,
-        ResearchDisplayComponent
+        HullDisplayComponent,
+        BaseModuleDisplayComponent,
+        AmmunitionModuleDisplayComponent,
+        PassiveModuleDisplayComponent,
+        ElokaModuleDisplayComponent,
+        SidewallModuleDisplayComponent,
+        PropulsionModuleDisplayComponent,
+        ArmorModuleDisplayComponent,
+        WeaponModuleDisplayComponent,
+        AlignedFittingModuleDisplayComponent,
+        AmmunitionFittingModuleDisplayComponent,
+        SupportFittingModuleDisplayComponent,
+        ResearchDisplayComponent,
+        ShipClassFittingSelectionComponent,
+        WeaponsCounterComponent,
+        SidewallModuleSelectorComponent,
+        PropulsionModuleSelectorComponent,
+        PassiveModuleCounterComponent,
+        ElokaModuleSelectorComponent,
+        ArmorModuleSelectorComponent,
+        AmmunitionModuleCounterComponent,
     ]
 })
 export class DisplayElementsModule {

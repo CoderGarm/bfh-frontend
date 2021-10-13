@@ -15,6 +15,7 @@ import {SharedModuleModule} from "./modules/shared-module/shared-module.module";
 import {PlanetsModule} from "./modules/planets/planets.module";
 import {StarMapModule} from "./modules/star-map/star-map.module";
 import {ResearchModule} from "./modules/research/research.module";
+import {ShipClassConstructionModule} from "./modules/ship-class-construction/ship-class-construction.module";
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import {ResearchModule} from "./modules/research/research.module";
         ChatModule,
         PlanetsModule,
         StarMapModule,
-        ResearchModule
+        ResearchModule,
+        ShipClassConstructionModule
     ],
     providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
     bootstrap: [AppComponent]

@@ -17,11 +17,11 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { Fleet } from '../model/fleet';
 import { FrontendError } from '../model/frontendError';
-import { ShipClass } from '../model/shipClass';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration'; import {Fleet} from "..";
+import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
@@ -69,7 +69,7 @@ export class FleetApiService {
     public getFleetsBySystem(idStarSystem: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idStarSystem === null || idStarSystem === undefined) {
-            throw new Error('Required parameter idStarSystem was null or undefined when calling getShipClassesByUser.');
+            throw new Error('Required parameter idStarSystem was null or undefined when calling getFleetsBySystem.');
         }
 
         let headers = this.defaultHeaders;
@@ -88,7 +88,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ShipClass>>('get',`${this.basePath}/api/private/fleet/inSystem/${encodeURIComponent(String(idStarSystem))}`,
+        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/inSystem/${encodeURIComponent(String(idStarSystem))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

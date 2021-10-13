@@ -8,10 +8,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "../../app-routing.module";
 import {AuthenticationModule} from "../../services/authentication";
 import {ApiModule} from "../../services/swagger";
+import {NumericCounterComponent} from './components/numeric-counter/numeric-counter.component';
 
 
 @NgModule({
-    declarations: [],
+    declarations: [
+        NumericCounterComponent
+    ],
     imports: [
         CommonModule,
         HttpClientModule,
@@ -34,7 +37,8 @@ import {ApiModule} from "../../services/swagger";
         AppRoutingModule,
         AuthenticationModule,
         ApiModule,
-        MaterialComponentsModule
+        MaterialComponentsModule,
+        NumericCounterComponent
     ]
 })
 export class SharedModuleModule {

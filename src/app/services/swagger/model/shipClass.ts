@@ -21,7 +21,7 @@ import { UserJson } from './userJson';
 
 export interface ShipClass { 
     /**
-     * The ammunition load out of this class.
+     * The ammunition loadout of this class.
      */
     ammunitionFittings: Array<AmmunitionFitting>;
     armor?: Armor;
@@ -43,6 +43,10 @@ export interface ShipClass {
      * The id of the successor of this class.
      */
     idSuccessor?: number;
+    /**
+     * The mark of this class.
+     */
+    mark: number;
     /**
      * The name of this class.
      */

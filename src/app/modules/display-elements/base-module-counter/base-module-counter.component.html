@@ -1,0 +1,30 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <app-numeric-counter [startAt]="startAt" [min]="min" [max]="max" (amount)="setAmount($event)"></app-numeric-counter>
+            <mat-panel-title>
+                {{createTitle()}}
+            </mat-panel-title>
+            <mat-panel-description>
+                {{moduleInput.description}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="flex-items-container">
+            <mat-form-field appearance="fill" class="short-field">
+                <mat-label>Effect value</mat-label>
+                <input matInput disabled value="{{moduleInput.effectValue}}">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="short-field">
+                <mat-label>Tech Level</mat-label>
+                <input matInput disabled value="{{moduleInput.techLevel}}">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="short-field">
+                <mat-label>Capacity usage</mat-label>
+                <input matInput disabled value="{{moduleInput.useCapacity}}">
+            </mat-form-field>
+        </div>
+        <ng-content></ng-content>
+    </mat-expansion-panel>
+</mat-accordion>

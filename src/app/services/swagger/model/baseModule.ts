@@ -20,6 +20,10 @@ export interface BaseModule {
      */
     effectValue: number;
     /**
+     * The id of this module.
+     */
+    idModule: number;
+    /**
      * The name of this module.
      */
     name: string;

@@ -45,6 +45,10 @@
       "description": "Job Api"
     },
     {
+      "name": "ModuleApi",
+      "description": "Module Api"
+    },
+    {
       "name": "PlanetApi",
       "description": "Planet Api"
     },
@@ -737,6 +741,422 @@
         }
       }
     },
+    "/api/private/modules/ammunition/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked ammunition modules for the owner .",
+        "operationId": "getAmmunitionModulesByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AmmunitionModule"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/armor/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked armors for the owner .",
+        "operationId": "getArmorsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Armor"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/eloka/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked electronic warfare for the owner .",
+        "operationId": "getElectronicWarfareByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ElectronicWarfare"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/hull/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked hulls for the owner .",
+        "operationId": "getHullsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Hull"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/passive/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked passive modules for the owner .",
+        "operationId": "getPassiveModulesByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PassiveModule"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/propulsion/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked propulsions for the owner .",
+        "operationId": "getPropulsionsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Propulsion"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/sidewall/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked sidewalls for the owner .",
+        "operationId": "getSidewallsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sidewall"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/modules/weapon/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked weapons for the owner .",
+        "operationId": "getWeaponsByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Weapon"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/planet/groundConstructionBuild/{idPlanet}/{idBuilding}": {
       "get": {
         "tags": [
@@ -1157,7 +1577,7 @@
         "tags": [
           "ResearchApi"
         ],
-        "summary": "Get all already researched researches for the user.",
+        "summary": "Checks if a research job is possible for the user.",
         "operationId": "researchPossibleForUser",
         "parameters": [
           {
@@ -1233,6 +1653,176 @@
                   }
                 }
               },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Get all active ship classes for the owner .",
+        "operationId": "setShipClass",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipClass"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipClass"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/shipyard/forUser/{idUser}/{className}": {
+      "get": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Checks if the name for a ship class is free for new classes only.",
+        "operationId": "checkClassName",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "className",
+            "in": "path",
+            "description": "className",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/shipyard/forUser/{idUser}/{idShipClass}": {
+      "delete": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Marks a ship classes as deleted.",
+        "operationId": "deleteShipClass",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idShipClass",
+            "in": "path",
+            "description": "idShipClass",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
               "*/*": {
                 "schema": {
                   "type": "object"
@@ -1712,6 +2302,7 @@
         "required": [
           "description",
           "effectValue",
+          "idModule",
           "name",
           "techLevel",
           "useCapacity"
@@ -1725,6 +2316,11 @@
           "effectValue": {
             "type": "integer",
             "description": "The base effect value of this module.",
+            "format": "int32"
+          },
+          "idModule": {
+            "type": "integer",
+            "description": "The id of this module.",
             "format": "int32"
           },
           "name": {
@@ -2002,6 +2598,7 @@
           "constructionCapacityStern",
           "description",
           "hullType",
+          "idHull",
           "level",
           "name"
         ],
@@ -2053,6 +2650,11 @@
               "SD",
               "SDP"
             ]
+          },
+          "idHull": {
+            "type": "integer",
+            "description": "The id of this hull.",
+            "format": "int32"
           },
           "level": {
             "type": "integer",
@@ -2385,6 +2987,7 @@
           "ammunitionFittings",
           "fittings",
           "hull",
+          "mark",
           "name",
           "owner",
           "supportFittings"
@@ -2393,7 +2996,7 @@
         "properties": {
           "ammunitionFittings": {
             "type": "array",
-            "description": "The ammunition load out of this class.",
+            "description": "The ammunition loadout of this class.",
             "items": {
               "$ref": "#/components/schemas/AmmunitionFitting"
             }
@@ -2432,7 +3035,14 @@
             "description": "The id of the successor of this class.",
             "format": "int32"
           },
+          "mark": {
+            "type": "integer",
+            "description": "The mark of this class.",
+            "format": "int32"
+          },
           "name": {
+            "maxLength": 30,
+            "minLength": 3,
             "type": "string",
             "description": "The name of this class."
           },

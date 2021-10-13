@@ -1,0 +1,17 @@
+<mat-form-field appearance="outline" class="numeric-input">
+    <mat-label>Amount</mat-label>
+    <mat-icon *ngIf="disabled" matPrefix (click)="$event.stopPropagation();" class="disabled">remove</mat-icon>
+    <mat-icon *ngIf="!disabled" matPrefix (click)="sub(); $event.stopPropagation();">remove</mat-icon>
+    <div style="text-align:center;">
+        <input matInput
+               [disabled]="disabled"
+               type="number"
+               step="1" min="0"
+               (click)="$event.stopPropagation();"
+               autocomplete="off"
+               [value]=getAmount()
+               (change)="getAmount()">
+    </div>
+    <mat-icon *ngIf="disabled" matSuffix (click)="$event.stopPropagation();" class="disabled">add</mat-icon>
+    <mat-icon *ngIf="!disabled" matSuffix (click)="add(); $event.stopPropagation();">add</mat-icon>
+</mat-form-field>

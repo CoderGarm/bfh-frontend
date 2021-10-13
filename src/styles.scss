@@ -60,3 +60,8 @@ body {
   flex-flow: row wrap;
   justify-content: space-around;
 }
+
+// removes the ripple effect - it's needed in order to keep position in mat-expansion-panel
+.mat-radio-ripple {
+  display: none;
+}

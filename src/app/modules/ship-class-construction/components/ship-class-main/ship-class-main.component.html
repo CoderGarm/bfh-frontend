@@ -1,0 +1,11 @@
+<mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)">
+    <mat-tab [label]="actionTabTitles[0]">
+        <app-fitting-display [selectedIndexInput]="selectionEmitter"
+                             [selectedShipClassInput]="selectedShipClassInput"></app-fitting-display>
+    </mat-tab>
+    <mat-tab [label]="actionTabTitles[1]">
+        <app-fitting-selection [selectedIndexInput]="selectionEmitter"
+                               (modifiedShipClassOutput)="passOutput($event)"
+                               [selectedShipClassInput]="selectedShipClassInput"></app-fitting-selection>
+    </mat-tab>
+</mat-tab-group>
