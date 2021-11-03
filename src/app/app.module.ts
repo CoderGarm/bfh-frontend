@@ -16,6 +16,10 @@ import {PlanetsModule} from "./modules/planets/planets.module";
 import {StarMapModule} from "./modules/star-map/star-map.module";
 import {ResearchModule} from "./modules/research/research.module";
 import {ShipClassConstructionModule} from "./modules/ship-class-construction/ship-class-construction.module";
+import {FleetModule} from "./modules/fleet/fleet.module";
+import {SubscriptionManager} from "./SubscriptionManager";
+import {ConfirmDialogComponent} from "./components/confirmation-dialog/confirm-dialog.component";
+import {DisplayElementsModule} from "./modules/display-elements/display-elements.module";
 
 @NgModule({
     declarations: [
@@ -28,16 +32,20 @@ import {ShipClassConstructionModule} from "./modules/ship-class-construction/shi
         HomeComponent,
         PasswordEqualityValidatorDirective,
         PasswordPatternValidatorDirective,
+        SubscriptionManager,
+        ConfirmDialogComponent
     ],
     imports: [
         NgxPermissionsModule.forRoot(),
         AuthenticationModule,
         SharedModuleModule,
+        DisplayElementsModule,
         ChatModule,
         PlanetsModule,
         StarMapModule,
         ResearchModule,
-        ShipClassConstructionModule
+        ShipClassConstructionModule,
+        FleetModule
     ],
     providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
     bootstrap: [AppComponent]

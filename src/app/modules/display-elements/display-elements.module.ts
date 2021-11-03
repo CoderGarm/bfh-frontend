@@ -24,6 +24,15 @@ import {ElokaModuleSelectorComponent} from './eloka-module-selector/eloka-module
 import {ArmorModuleSelectorComponent} from './armor-module-selector/armor-module-selector.component';
 import {AmmunitionModuleCounterComponent} from './ammunition-module-counter/ammunition-module-counter.component';
 import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/base-module-single-selector.component';
+import {FleetDisplayComponent} from './fleet-display/fleet-display.component';
+import {ConstructionDisplayComponent} from "./construction-display/construction-display.component";
+import {JobDisplayComponent} from "./job-display/job-display.component";
+import {ShipClassBuildComponent} from "./ship-class-build/ship-class-build.component";
+import {FleetFormationDisplay} from './fleet-formation-display/fleet-formation-display.component';
+import {SpacecraftCapabilitiesDisplayComponent} from './spacecraft-capabilities-display/spacecraft-capabilities-display.component';
+import {FleetMergeEditComponent} from './fleet-merge-edit/fleet-merge-edit.component';
+import {FleetMoveEditComponent} from './fleet-move-edit/fleet-move-edit.component';
+import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display.component';
 
 @NgModule({
     declarations: [
@@ -44,6 +53,8 @@ import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/b
         ShipClassFittingSelectionComponent,
         BaseModuleCounterComponent,
         WeaponsCounterComponent,
+        ConstructionDisplayComponent,
+        JobDisplayComponent,
         SidewallModuleSelectorComponent,
         PropulsionModuleSelectorComponent,
         PassiveModuleCounterComponent,
@@ -51,6 +62,13 @@ import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/b
         ArmorModuleSelectorComponent,
         AmmunitionModuleCounterComponent,
         BaseModuleSingleSelectorComponent,
+        FleetDisplayComponent,
+        ShipClassBuildComponent,
+        FleetFormationDisplay,
+        SpacecraftCapabilitiesDisplayComponent,
+        FleetMergeEditComponent,
+        FleetMoveEditComponent,
+        FleetMoveDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -70,7 +88,10 @@ import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/b
         AmmunitionFittingModuleDisplayComponent,
         SupportFittingModuleDisplayComponent,
         ResearchDisplayComponent,
+        ConstructionDisplayComponent,
+        JobDisplayComponent,
         ShipClassFittingSelectionComponent,
+        BaseModuleCounterComponent,
         WeaponsCounterComponent,
         SidewallModuleSelectorComponent,
         PropulsionModuleSelectorComponent,
@@ -78,6 +99,14 @@ import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/b
         ElokaModuleSelectorComponent,
         ArmorModuleSelectorComponent,
         AmmunitionModuleCounterComponent,
+        BaseModuleSingleSelectorComponent,
+        FleetDisplayComponent,
+        ShipClassBuildComponent,
+        FleetFormationDisplay,
+        SpacecraftCapabilitiesDisplayComponent,
+        FleetMergeEditComponent,
+        FleetMoveEditComponent,
+        FleetMoveDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

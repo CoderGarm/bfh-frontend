@@ -1,0 +1,20 @@
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let entry of hullsByType  | keyvalue">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{entry.key}} - {{getAmount(entry.key)}}x
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar class="avatar-image"
+                     [ngStyle]="{'background-image': 'url(&quot;http://localhost:8080/vaadin/icons/hulls/png24x/frigate_c.png&quot;)'}"></div>
+                <mat-card-title>{{entry.key}}</mat-card-title>
+                <mat-card-subtitle>{{getDescription(entry.key)}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content *ngIf="!!hullsByType.get(entry.key)">
+                <p *ngFor="let warShip of getWarShips(entry.key)">WarShip: {{warShip.name}}</p>
+            </mat-card-content>
+        </mat-card>
+    </mat-expansion-panel>
+</mat-accordion>

@@ -18,7 +18,10 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { Fleet } from '../model/fleet';
+import { FleetMerge } from '../model/fleetMerge';
+import { FleetMove } from '../model/fleetMove';
 import { FrontendError } from '../model/frontendError';
+import { Move } from '../model/move';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -57,7 +60,54 @@ export class FleetApiService {
 
 
     /**
-     * Get all active ship classes for the owner .
+     * Cancels a movement of a fleet and creates the way back.
+     * 
+     * @param idUser idUser
+     * @param idFleet idFleet
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public cancelMovement(idUser: number, idFleet: number, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
+    public cancelMovement(idUser: number, idFleet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
+    public cancelMovement(idUser: number, idFleet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
+    public cancelMovement(idUser: number, idFleet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling cancelMovement.');
+        }
+
+        if (idFleet === null || idFleet === undefined) {
+            throw new Error('Required parameter idFleet was null or undefined when calling cancelMovement.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Fleet>('put',`${this.basePath}/api/private/fleet/cancelMove/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(idFleet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all fleets inside of a star system.
      * 
      * @param idStarSystem idStarSystem
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -90,6 +140,198 @@ export class FleetApiService {
 
         return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/inSystem/${encodeURIComponent(String(idStarSystem))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all fleets of an owner.
+     * 
+     * @param idUser idUser
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFleetsForUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
+    public getFleetsForUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
+    public getFleetsForUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public getFleetsForUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getFleetsForUser.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/perUser/${encodeURIComponent(String(idUser))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Merge two fleets of an owner.
+     * 
+     * @param idUser idUser
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public mergeFleets(idUser: number, body?: FleetMerge, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
+    public mergeFleets(idUser: number, body?: FleetMerge, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
+    public mergeFleets(idUser: number, body?: FleetMerge, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
+    public mergeFleets(idUser: number, body?: FleetMerge, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling mergeFleets.');
+        }
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Fleet>('post',`${this.basePath}/api/private/fleet/merge/${encodeURIComponent(String(idUser))}`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Moves a fleet to another celestial.
+     * 
+     * @param idUser idUser
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public moveFleet(idUser: number, body?: FleetMove, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
+    public moveFleet(idUser: number, body?: FleetMove, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
+    public moveFleet(idUser: number, body?: FleetMove, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
+    public moveFleet(idUser: number, body?: FleetMove, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling moveFleet.');
+        }
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Fleet>('post',`${this.basePath}/api/private/fleet/move/${encodeURIComponent(String(idUser))}`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Plan a movement of a fleet to another celestial.
+     * 
+     * @param idUser idUser
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public planMovement(idUser: number, body?: FleetMove, observe?: 'body', reportProgress?: boolean): Observable<Move>;
+    public planMovement(idUser: number, body?: FleetMove, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Move>>;
+    public planMovement(idUser: number, body?: FleetMove, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Move>>;
+    public planMovement(idUser: number, body?: FleetMove, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling planMovement.');
+        }
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Move>('post',`${this.basePath}/api/private/fleet/planMove/${encodeURIComponent(String(idUser))}`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

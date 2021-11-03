@@ -1,0 +1,7 @@
+.header {
+  text-transform: lowercase;
+}
+
+.header::first-letter {
+  text-transform: uppercase;
+}

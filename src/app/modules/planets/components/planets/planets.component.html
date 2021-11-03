@@ -1,9 +1,0 @@
-<mat-sidenav-container class="drawer-container">
-    <mat-sidenav mode="side" class="drawer-list" [opened]="sideNavOpen">
-        <app-planet-list (selectedPlanetOutput)="selectedPlanetInput = $event"></app-planet-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <div class="side-nav-open-change-area" (mouseenter)="onSideNavToggle()" (mouseout)="onSideNavToggle()"></div>
-        <app-planet-main [selectedPlanetInput]="selectedPlanetInput"></app-planet-main>
-    </mat-sidenav-content>
-</mat-sidenav-container>

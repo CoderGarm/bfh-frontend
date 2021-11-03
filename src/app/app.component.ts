@@ -3,7 +3,7 @@ import {Route, Router, Routes} from '@angular/router';
 import {AuthenticationService} from './services/authentication';
 import {NavigationCreationService} from './services/navigation-creation.service';
 import {Subscription} from "rxjs";
-import {StarMapComponent} from "./modules/star-map/star-map/star-map.component";
+import {StarMapTabViewComponent} from "./modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 
 @Component({
   selector: 'app-root',
@@ -37,11 +37,11 @@ export class AppComponent implements OnInit {
     }
     this.activeRoute = route;
     this.router.navigateByUrl("/" + route.path);
-    if (this.activeRoute.path === StarMapComponent.path) {
-      this.isNoScroll = true;
-    } else {
-      this.isNoScroll = false;
-    }
+      if (this.activeRoute.path === StarMapTabViewComponent.path) {
+          this.isNoScroll = true;
+      } else {
+          this.isNoScroll = false;
+      }
   }
 
   ngOnDestroy() {

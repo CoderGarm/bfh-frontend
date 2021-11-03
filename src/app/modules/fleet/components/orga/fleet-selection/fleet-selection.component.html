@@ -1,0 +1,5 @@
+<mat-selection-list [multiple]="false">
+    <mat-list-option *ngFor="let fleet of fleets" (click)="selectFleet(fleet)">
+        {{fleet.name}}
+    </mat-list-option>
+</mat-selection-list>

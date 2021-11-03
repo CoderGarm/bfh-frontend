@@ -1,0 +1,9 @@
+<mat-sidenav-container class="drawer-container">
+    <mat-sidenav mode="side" class="drawer-list" [opened]="sideNavOpen">
+        <app-fleet-selection (selectedFleetOutput)="selectedFleetInput = $event"></app-fleet-selection>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="side-nav-open-change-area" (mouseenter)="onSideNavToggle()" (mouseout)="onSideNavToggle()"></div>
+        <app-fleet-tab-view [selectedFleetInput]="selectedFleetInput"></app-fleet-tab-view>
+    </mat-sidenav-content>
+</mat-sidenav-container>

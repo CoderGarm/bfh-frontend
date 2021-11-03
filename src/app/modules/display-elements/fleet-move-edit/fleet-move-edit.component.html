@@ -1,0 +1,10 @@
+<mat-card *ngIf="!!fleetInput">
+    <mat-card-header>
+        <mat-card-title>Move {{fleetInput!.name}} to {{targetPlanet!.name}}</mat-card-title>
+        <mat-card-subtitle *ngIf="!!plannedMovement"> in {{plannedMovement.moveDoneAtZero}} ticks</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="!!fleetInput.move">{{getTicksLeft()}} of {{fleetInput!.move!.originalDuration}} ticks</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions *ngIf="!!fleetInput.move">
+        <button mat-raised-button color="secondary" (click)="cancelFlight()">Cancel flight</button>
+    </mat-card-actions>
+</mat-card>

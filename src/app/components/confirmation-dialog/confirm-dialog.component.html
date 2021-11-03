@@ -1,0 +1,12 @@
+<div class="header">
+    <h1 mat-dialog-title>{{ data.title }}</h1>
+</div>
+<div mat-dialog-content>
+    <div *ngFor="let dataPerTemplate of data.dataPerTemplate">
+        <ng-container *ngComponentOutlet="dataPerTemplate.template; injector: injectors.get(dataPerTemplate.template)!;"></ng-container>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="secondary" (click)="cancel()">{{ data.cancelText }}</button>
+    <button mat-raised-button color="secondary" (click)="confirm()">{{ data.confirmText }}</button>
+</div>

@@ -13,9 +13,13 @@ import { FleetOrbit } from './fleetOrbit';
 
 export interface Move { 
     /**
-     * The duration of this movement.
+     * The current left over duration of this movement.
      */
     moveDoneAtZero: number;
+    /**
+     * The original duration of this movement.
+     */
+    originalDuration: number;
     startOrbit: FleetOrbit;
     targetOrbit: FleetOrbit;
 }

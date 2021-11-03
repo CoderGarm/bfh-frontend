@@ -1,0 +1,24 @@
+import {AfterViewInit, Component, Inject, Input, Optional} from '@angular/core';
+import {Fleet} from "../../../services/swagger";
+
+@Component({
+    selector: 'app-fleet-display',
+    templateUrl: './fleet-display.component.html',
+    styleUrls: ['./fleet-display.component.scss']
+})
+export class FleetDisplayComponent implements AfterViewInit {
+
+    /**
+     * the fleet to display
+     */
+    @Input()
+    fleetInput?: Fleet;
+
+    constructor(@Optional() @Inject('fleetInput') fleet: Fleet | undefined) {
+        this.fleetInput = fleet;
+    }
+
+    ngAfterViewInit(): void {
+    }
+
+}

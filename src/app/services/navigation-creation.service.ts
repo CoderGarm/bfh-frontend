@@ -1,4 +1,4 @@
-import {PlanetsComponent} from '../modules/planets/components/planets/planets.component';
+import {PlanetsSidenavComponent} from '../modules/planets/components/orga/planets-sidenav/planets-sidenav.component';
 import {ChatComponent} from '../modules/chat/components/chat/chat.component';
 import {HomeComponent} from './../components/home/home.component';
 import {ProfileComponent} from './../components/user/profile/profile.component';
@@ -6,9 +6,10 @@ import {LoginComponent} from './../components/user/login/login.component';
 import {RegisterComponent} from '../components/user/register/register.component';
 import {Route, Routes} from '@angular/router';
 import {ProtectedGuard} from 'ngx-auth';
-import {StarMapComponent} from "../modules/star-map/star-map/star-map.component";
-import {ResearchViewComponent} from "../modules/research/components/research-view/research-view.component";
-import {ShipClassViewComponent} from "../modules/ship-class-construction/components/ship-class-view/ship-class-view.component";
+import {StarMapTabViewComponent} from "../modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
+import {ResearchTabViewComponent} from "../modules/research/components/orga/research-tab-view/research-tab-view.component";
+import {ShipClassSidenavComponent} from "../modules/ship-class-construction/components/orga/ship-class-sidenav/ship-class-sidenav.component";
+import {FleetSidenavComponent} from "../modules/fleet/components/orga/fleet-sidenav/fleet-sidenav.component";
 
 
 export class NavigationCreationService {
@@ -24,20 +25,22 @@ export class NavigationCreationService {
       {path: LoginComponent.path, component: LoginComponent},
       {path: ProfileComponent.path, component: ProfileComponent, canActivate: [ProtectedGuard]},
       {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
-      {path: PlanetsComponent.path, component: PlanetsComponent, canActivate: [ProtectedGuard]},
-      {path: StarMapComponent.path, component: StarMapComponent, canActivate: [ProtectedGuard]},
-      {path: ResearchViewComponent.path, component: ResearchViewComponent, canActivate: [ProtectedGuard]},
-      {path: ShipClassViewComponent.path, component: ShipClassViewComponent, canActivate: [ProtectedGuard]},
+      {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
+      {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
+      {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
+      {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
+      {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
     ];
   }
 
   static createNavDrawerRoutes(): Routes {
     return [
       {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
-      {path: PlanetsComponent.path, component: PlanetsComponent, canActivate: [ProtectedGuard]},
-      {path: StarMapComponent.path, component: StarMapComponent, canActivate: [ProtectedGuard]},
-      {path: ResearchViewComponent.path, component: ResearchViewComponent, canActivate: [ProtectedGuard]},
-      {path: ShipClassViewComponent.path, component: ShipClassViewComponent, canActivate: [ProtectedGuard]},
+      {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
+      {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
+      {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
+      {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
+      {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
     ];
   }
 }

@@ -637,12 +637,72 @@
         }
       }
     },
+    "/api/private/fleet/cancelMove/{idUser}/{idFleet}": {
+      "put": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Cancels a movement of a fleet and creates the way back.",
+        "operationId": "cancelMovement",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idFleet",
+            "in": "path",
+            "description": "idFleet",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fleet"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/fleet/inSystem/{idStarSystem}": {
       "get": {
         "tags": [
           "FleetApi"
         ],
-        "summary": "Get all active ship classes for the owner .",
+        "summary": "Get all fleets inside of a star system.",
         "operationId": "getFleetsBySystem",
         "parameters": [
           {
@@ -667,6 +727,232 @@
                   "items": {
                     "$ref": "#/components/schemas/Fleet"
                   }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/merge/{idUser}": {
+      "post": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Merge two fleets of an owner.",
+        "operationId": "mergeFleets",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetMerge"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fleet"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/move/{idUser}": {
+      "post": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Moves a fleet to another celestial.",
+        "operationId": "moveFleet",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetMove"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fleet"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/perUser/{idUser}": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all fleets of an owner.",
+        "operationId": "getFleetsForUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fleet"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/planMove/{idUser}": {
+      "post": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Plan a movement of a fleet to another celestial.",
+        "operationId": "planMovement",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetMove"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Move"
                 }
               },
               "*/*": {
@@ -1882,6 +2168,45 @@
         }
       }
     },
+    "/api/private/shipyard/moduleType": {
+      "get": {
+        "tags": [
+          "ShipyardApi"
+        ],
+        "summary": "Get all EModuleType.",
+        "operationId": "getEModuleTypes",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EModuleTypeToIcon"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/starMap/star-systems": {
       "get": {
         "tags": [
@@ -2411,6 +2736,33 @@
           }
         }
       },
+      "CapabilityValue": {
+        "title": "CapabilityValue",
+        "required": [
+          "moduleType",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "moduleType": {
+            "type": "string",
+            "description": "The value's type.",
+            "enum": [
+              "ARMOR",
+              "ELECTRONIC_WARFARE",
+              "FTLPROPULSION",
+              "PROPULSION",
+              "SHIELD",
+              "WEAPON"
+            ]
+          },
+          "value": {
+            "type": "number",
+            "description": "The value.",
+            "format": "bigdecimal"
+          }
+        }
+      },
       "ChatHistory": {
         "title": "ChatHistory",
         "required": [
@@ -2501,6 +2853,32 @@
           }
         }
       },
+      "EModuleTypeToIcon": {
+        "title": "EModuleTypeToIcon",
+        "required": [
+          "iconName",
+          "moduleType"
+        ],
+        "type": "object",
+        "properties": {
+          "iconName": {
+            "type": "string",
+            "description": "The icon name."
+          },
+          "moduleType": {
+            "type": "string",
+            "description": "The module type.",
+            "enum": [
+              "ARMOR",
+              "ELECTRONIC_WARFARE",
+              "FTLPROPULSION",
+              "PROPULSION",
+              "SHIELD",
+              "WEAPON"
+            ]
+          }
+        }
+      },
       "ElectronicWarfare": {
         "title": "ElectronicWarfare",
         "required": [
@@ -2517,6 +2895,7 @@
       "Fleet": {
         "title": "Fleet",
         "required": [
+          "fleetCapabilities",
           "idFleet",
           "name",
           "owner",
@@ -2524,6 +2903,10 @@
         ],
         "type": "object",
         "properties": {
+          "fleetCapabilities": {
+            "description": "The effect value per module type.",
+            "$ref": "#/components/schemas/FleetCapabilities"
+          },
           "idFleet": {
             "type": "integer",
             "description": "The id.",
@@ -2552,6 +2935,62 @@
             "items": {
               "$ref": "#/components/schemas/WarShip"
             }
+          }
+        }
+      },
+      "FleetCapabilities": {
+        "title": "FleetCapabilities",
+        "required": [
+          "capabilities"
+        ],
+        "type": "object",
+        "properties": {
+          "capabilities": {
+            "type": "array",
+            "description": "The effect value per module type.",
+            "items": {
+              "$ref": "#/components/schemas/CapabilityValue"
+            }
+          }
+        }
+      },
+      "FleetMerge": {
+        "title": "FleetMerge",
+        "required": [
+          "idFleetMergeTarget",
+          "idFleetToMerge"
+        ],
+        "type": "object",
+        "properties": {
+          "idFleetMergeTarget": {
+            "type": "integer",
+            "description": "The fleet which is the target of the merge.",
+            "format": "int32"
+          },
+          "idFleetToMerge": {
+            "type": "integer",
+            "description": "The fleet which must be merged.",
+            "format": "int32"
+          }
+        }
+      },
+      "FleetMove": {
+        "title": "FleetMove",
+        "required": [
+          "idFleetToMove",
+          "idTargetPlanet"
+        ],
+        "type": "object",
+        "properties": {
+          "idFleetToMove": {
+            "type": "integer",
+            "description": "The fleet which must be merged.",
+            "format": "int32"
+          },
+          "idTargetPlanet": {
+            "type": "integer",
+            "description": "The fleet which is the target of the merge.",
+            "format": "int32"
           }
         }
       },
@@ -2787,6 +3226,7 @@
         "title": "Move",
         "required": [
           "moveDoneAtZero",
+          "originalDuration",
           "startOrbit",
           "targetOrbit"
         ],
@@ -2794,7 +3234,12 @@
         "properties": {
           "moveDoneAtZero": {
             "type": "integer",
-            "description": "The duration of this movement.",
+            "description": "The current left over duration of this movement.",
+            "format": "int32"
+          },
+          "originalDuration": {
+            "type": "integer",
+            "description": "The original duration of this movement.",
             "format": "int32"
           },
           "startOrbit": {
