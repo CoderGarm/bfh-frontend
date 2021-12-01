@@ -1,0 +1,105 @@
+<div class="holder">
+    <mat-checkbox #onlyKnownSystems (change)="applyOnlyKnownFilter($event.checked)">Show only known systems</mat-checkbox>
+    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="max-width">
+        <ng-container matColumnDef="Star system">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Star system</th>
+            <td mat-cell *matCellDef="let colo"> {{colo.starSystem.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Orbit">
+            <th mat-header-cell *matHeaderCellDef>Orbit</th>
+            <td mat-cell *matCellDef="let colo"> {{getOrbitString(colo.starSystem.orbit)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Distance">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Distance</th>
+            <td mat-cell *matCellDef="let colo"> {{getDistance(colo)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="star-system-filter">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-form-field appearance="standard">
+                    <mat-label>Filter</mat-label>
+                    <input matInput [(ngModel)]="filterString" (keyup)="applyFilter()" placeholder="Star system" autocomplete="off">
+                </mat-form-field>
+            </th>
+        </ng-container>
+
+        <ng-container matColumnDef="orbit-filter">
+            <th mat-header-cell *matHeaderCellDef>
+                <div>
+                    <p>
+                        <mat-checkbox class="with-margin-right" id="q4" [checked]="q4" (change)="changeAndFilter($event)">Quadrant 4</mat-checkbox>
+                        <mat-checkbox id="q1" [checked]="q1" (change)="changeAndFilter($event)">Quadrant 1</mat-checkbox>
+                    </p>
+                    <p>
+                        <mat-checkbox class="with-margin-right" id="q3" [checked]="q3" (change)="changeAndFilter($event)">Quadrant 3</mat-checkbox>
+                        <mat-checkbox id="q2" [checked]="q2" (change)="changeAndFilter($event)">Quadrant 2</mat-checkbox>
+                    </p>
+                </div>
+            </th>
+        </ng-container>
+
+        <ng-container matColumnDef="noop">
+            <th mat-header-cell *matHeaderCellDef>
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Select a star system</mat-label>
+                        <mat-select [(value)]="reference">
+                            <mat-option *ngFor="let sys of knownSystems" [value]="sys">{{sys.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </th>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let colo" [attr.colspan]="displayedColumns.length">
+                <div class="expandable-element-detail" [@detailExpand]="colo == expandedElement ? 'expanded' : 'collapsed'">
+                    <div *ngIf="!checkIfKnown(colo.starSystem)">
+                        <!-- buy colo info when not known -->
+                        Costs to buy systems information: {{colo.costsToBuyColonizationInformation}}
+                        <button mat-raised-button color="secondary" (click)="buySystemsInformation(colo)">Buy</button>
+                    </div>
+                    <mat-list *ngIf="checkIfKnown(colo.starSystem)" class="lister">
+                        <mat-list-item *ngFor="let planet of colo.starSystem.planets">
+                            <mat-card class="planet-card">
+                                <mat-card-header>
+                                    <div [hidden]="!checkIfPlanetIsAlreadyColonized(planet)">
+                                        {{planet.name}} is already colonized
+                                    </div>
+                                    <div [hidden]="!!checkIfPlanetIsAlreadyColonized(planet) || checkIfColonizationIsInProgress(colo, planet)" class="bordered">
+                                        Costs to colonize the planet:
+                                        {{planet.name}}: {{getCostsToColonize(colo, planet)}}
+                                        <button mat-raised-button color="secondary" (click)="colonizePlanet(planet)">Colonize</button>
+                                    </div>
+                                    <div [hidden]="!checkIfColonizationIsInProgress(colo, planet)" class="bordered">
+                                        {{planet.name}} has a colonization in progress - Ticks left: {{getTicksLeft(colo, planet)}}
+                                    </div>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <app-mining-factors-display [miningFactors]="getMiningFactors(colo, planet)"></app-mining-factors-display>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="first-header-row"></tr>
+        <tr mat-header-row *matHeaderRowDef="['star-system-filter', 'orbit-filter', 'noop']"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"
+            class="expandable-element-row"
+            [class.example-expanded-row]="expandedElement === row"
+            (click)="expandedElement = expandedElement === row ? null : row"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="expandable-detail-row"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="3">No data matching</td>
+        </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" aria-label="Select page of systems"></mat-paginator>
+</div>

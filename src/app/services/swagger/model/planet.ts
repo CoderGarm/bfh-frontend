@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { Orbit } from './orbit';
-import { StarSystem } from './starSystem';
 import { UserJson } from './userJson';
 
 export interface Planet { 
@@ -23,6 +22,10 @@ export interface Planet {
      */
     idPlanet: number;
     /**
+     * The star system ID which this planet is part of.
+     */
+    idStarSystem: number;
+    /**
      * The name of this planet.
      */
     name: string;
@@ -32,7 +35,6 @@ export interface Planet {
      * The planet's class.
      */
     planetType: Planet.PlanetTypeEnum;
-    system: StarSystem;
 }
 export namespace Planet {
     export type PlanetTypeEnum = 'PLANET';

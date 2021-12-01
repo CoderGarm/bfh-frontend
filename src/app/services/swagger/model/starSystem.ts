@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Orbit } from './orbit';
+import { Planet } from './planet';
 
 export interface StarSystem { 
     /**
@@ -21,6 +22,10 @@ export interface StarSystem {
      */
     name: string;
     orbit: Orbit;
+    /**
+     * The bunch of planets as part of the system.
+     */
+    planets: Array<Planet>;
     /**
      * The stellar class of the star of this system.
      */

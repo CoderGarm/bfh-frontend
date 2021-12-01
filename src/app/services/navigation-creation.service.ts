@@ -10,37 +10,40 @@ import {StarMapTabViewComponent} from "../modules/star-map/orga/star-map-tab-vie
 import {ResearchTabViewComponent} from "../modules/research/components/orga/research-tab-view/research-tab-view.component";
 import {ShipClassSidenavComponent} from "../modules/ship-class-construction/components/orga/ship-class-sidenav/ship-class-sidenav.component";
 import {FleetSidenavComponent} from "../modules/fleet/components/orga/fleet-sidenav/fleet-sidenav.component";
+import {ExpansionTabViewComponent} from "../modules/expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
 
 
 export class NavigationCreationService {
 
-  static getLoginRoute(): Route {
-    return {path: LoginComponent.path, component: LoginComponent};
-  }
+    static getLoginRoute(): Route {
+        return {path: LoginComponent.path, component: LoginComponent};
+    }
 
-  static createRoutes(): Routes {
-    return [
-      {path: HomeComponent.path, component: HomeComponent},
-      {path: RegisterComponent.path, component: RegisterComponent},
-      {path: LoginComponent.path, component: LoginComponent},
-      {path: ProfileComponent.path, component: ProfileComponent, canActivate: [ProtectedGuard]},
-      {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
-      {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
-      {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
-      {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
-      {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
-      {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
-    ];
-  }
+    static createRoutes(): Routes {
+        return [
+            {path: HomeComponent.path, component: HomeComponent},
+            {path: RegisterComponent.path, component: RegisterComponent},
+            {path: LoginComponent.path, component: LoginComponent},
+            {path: ProfileComponent.path, component: ProfileComponent, canActivate: [ProtectedGuard]},
+            {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
+            {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
+            {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
+            {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
+            {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
+        ];
+    }
 
-  static createNavDrawerRoutes(): Routes {
-    return [
-      {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
-      {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
-      {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
-      {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
-      {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
-      {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
-    ];
-  }
+    static createNavDrawerRoutes(): Routes {
+        return [
+            {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
+            {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
+            {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
+            {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
+            {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
+        ];
+    }
 }

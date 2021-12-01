@@ -57,7 +57,6 @@ import {MatRadioModule} from "@angular/material/radio";
         MatSidenavModule,
         MatGridListModule,
         MatMenuModule,
-        MatSortModule,
         MatExpansionModule,
         MatSnackBarModule,
         MatRadioModule
@@ -88,7 +87,6 @@ import {MatRadioModule} from "@angular/material/radio";
         MatSortModule,
         MatListModule,
         MatMenuModule,
-        MatSortModule,
         MatExpansionModule,
         MatSnackBarModule,
         MatRadioModule

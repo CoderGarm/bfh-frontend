@@ -33,6 +33,10 @@
       "description": "Chat Api"
     },
     {
+      "name": "ColonizationApi",
+      "description": "Colonization Api"
+    },
+    {
       "name": "ConstructionApi",
       "description": "Construction Api"
     },
@@ -55,6 +59,10 @@
     {
       "name": "ResearchApi",
       "description": "Research Api"
+    },
+    {
+      "name": "ResourcesApi",
+      "description": "Resources Api"
     },
     {
       "name": "ShipyardApi",
@@ -288,45 +296,6 @@
         }
       }
     },
-    "/api/private/buildings/EResourceType": {
-      "get": {
-        "tags": [
-          "BuildingApi"
-        ],
-        "summary": "Get all EResourceTypes.",
-        "operationId": "getEResourceTypes",
-        "responses": {
-          "200": {
-            "description": "successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "an error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FrontendError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/private/chat/createMessageThread": {
       "post": {
         "tags": [
@@ -511,6 +480,379 @@
                   "items": {
                     "$ref": "#/components/schemas/ChatHistory"
                   }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/colonization/all/{idUser}": {
+      "get": {
+        "tags": [
+          "ColonizationApi"
+        ],
+        "summary": "Get all colonizable systems for a user with their distances to all known systems.",
+        "operationId": "getColonizationStarSystemsForUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StarSystemColonization"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/colonization/buy/{idUser}": {
+      "post": {
+        "tags": [
+          "ColonizationApi"
+        ],
+        "summary": "Get all not colonized but known systems for a user.",
+        "operationId": "buyInformationForSystem",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StarSystem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/colonization/freeSystems/{idUser}": {
+      "get": {
+        "tags": [
+          "ColonizationApi"
+        ],
+        "summary": "Get all not colonized but known systems for a user.",
+        "operationId": "getUnknownStarSystemsForUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StarSystem"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/colonization/home/{idUser}": {
+      "get": {
+        "tags": [
+          "ColonizationApi"
+        ],
+        "summary": "Get all not colonized but known systems for a user.",
+        "operationId": "getHomeSystem",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StarSystem"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/colonization/knownSystems/{idUser}": {
+      "get": {
+        "tags": [
+          "ColonizationApi"
+        ],
+        "summary": "Get all not known systems for a user.",
+        "operationId": "getKnownStarSystemsForUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StarSystem"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/colonization/pendingColonizations/{idUser}": {
+      "get": {
+        "tags": [
+          "ColonizationApi"
+        ],
+        "summary": "Get all pending colonizations for the user with their distances to all known systems.",
+        "operationId": "getPendingColonizationsForUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StarSystemColonization"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/colonization/{idUser}": {
+      "put": {
+        "tags": [
+          "ColonizationApi"
+        ],
+        "summary": "Starts the colonization of a planet for a user.",
+        "operationId": "startColonizingPlanet",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Planet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Colonization"
                 }
               },
               "*/*": {
@@ -1907,6 +2249,94 @@
         }
       }
     },
+    "/api/private/resources/types": {
+      "get": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get all EResourceTypes.",
+        "operationId": "getEResourceTypes",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/resources/types/{idPlanet}": {
+      "get": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get all EResourceTypes.",
+        "operationId": "getMiningFactors",
+        "parameters": [
+          {
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiningFactors"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/shipyard/forUser/{idUser}": {
       "get": {
         "tags": [
@@ -2828,6 +3258,36 @@
           }
         }
       },
+      "Colonization": {
+        "title": "Colonization",
+        "required": [
+          "doneAtZero",
+          "idColonization",
+          "target",
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "doneAtZero": {
+            "type": "integer",
+            "description": "The amount of ticks to complete colonization.",
+            "format": "int32"
+          },
+          "idColonization": {
+            "type": "integer",
+            "description": "The id of the colonization.",
+            "format": "int32"
+          },
+          "target": {
+            "description": "The planet which is the target of the colonization.",
+            "$ref": "#/components/schemas/Planet"
+          },
+          "user": {
+            "description": "The user who runs the colonization.",
+            "$ref": "#/components/schemas/UserJson"
+          }
+        }
+      },
       "Construction": {
         "title": "Construction",
         "required": [
@@ -3222,6 +3682,22 @@
           }
         }
       },
+      "MiningFactors": {
+        "title": "MiningFactors",
+        "required": [
+          "resources"
+        ],
+        "type": "object",
+        "properties": {
+          "resources": {
+            "type": "array",
+            "description": "The factor by resource type.",
+            "items": {
+              "$ref": "#/components/schemas/ResourceAmount"
+            }
+          }
+        }
+      },
       "Move": {
         "title": "Move",
         "required": [
@@ -3316,10 +3792,10 @@
         "title": "Planet",
         "required": [
           "idPlanet",
+          "idStarSystem",
           "name",
           "orbit",
-          "planetType",
-          "system"
+          "planetType"
         ],
         "type": "object",
         "properties": {
@@ -3331,6 +3807,11 @@
           "idPlanet": {
             "type": "integer",
             "description": "The ID of this planet.",
+            "format": "int32"
+          },
+          "idStarSystem": {
+            "type": "integer",
+            "description": "The star system ID which this planet is part of.",
             "format": "int32"
           },
           "name": {
@@ -3351,10 +3832,6 @@
             "enum": [
               "PLANET"
             ]
-          },
-          "system": {
-            "description": "The star system which this planet is part of.",
-            "$ref": "#/components/schemas/StarSystem"
           }
         }
       },
@@ -3423,6 +3900,78 @@
           "research": {
             "description": "The name of this research.",
             "$ref": "#/components/schemas/Research"
+          }
+        }
+      },
+      "ResourceAmount": {
+        "title": "ResourceAmount",
+        "required": [
+          "amount",
+          "path",
+          "resourceType",
+          "titleText"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The amount for the resource.",
+            "format": "int64"
+          },
+          "path": {
+            "type": "string",
+            "description": "The path to the icon."
+          },
+          "resourceType": {
+            "type": "string",
+            "description": "The resource type.",
+            "enum": [
+              "CONSTRUCTION",
+              "CREDITS",
+              "HEAVY_METALS",
+              "METALORE",
+              "ORBITAL_CONSTRUCTION",
+              "POPULATION",
+              "RARE_ELEMENTS",
+              "RESEARCH"
+            ]
+          },
+          "titleText": {
+            "type": "string",
+            "description": "The resource' name."
+          }
+        }
+      },
+      "ResourceDetail": {
+        "title": "ResourceDetail",
+        "required": [
+          "path",
+          "resourceType",
+          "titleText"
+        ],
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The path to the icon."
+          },
+          "resourceType": {
+            "type": "string",
+            "description": "The resource type.",
+            "enum": [
+              "CONSTRUCTION",
+              "CREDITS",
+              "HEAVY_METALS",
+              "METALORE",
+              "ORBITAL_CONSTRUCTION",
+              "POPULATION",
+              "RARE_ELEMENTS",
+              "RESEARCH"
+            ]
+          },
+          "titleText": {
+            "type": "string",
+            "description": "The resource' name."
           }
         }
       },
@@ -3573,6 +4122,7 @@
           "idStarSystem",
           "name",
           "orbit",
+          "planets",
           "starClassType"
         ],
         "type": "object",
@@ -3589,6 +4139,13 @@
           "orbit": {
             "description": "The orbit of this star system.",
             "$ref": "#/components/schemas/Orbit"
+          },
+          "planets": {
+            "type": "array",
+            "description": "The bunch of planets as part of the system.",
+            "items": {
+              "$ref": "#/components/schemas/Planet"
+            }
           },
           "starClassType": {
             "type": "string",
@@ -3639,6 +4196,48 @@
               "CLASS_O",
               "CLASS_RG"
             ]
+          }
+        }
+      },
+      "StarSystemColonization": {
+        "title": "StarSystemColonization",
+        "required": [
+          "colonizationsByPlanet",
+          "costsToBuyColonizationInformation",
+          "costsToColonization",
+          "distanceMap",
+          "starSystem"
+        ],
+        "type": "object",
+        "properties": {
+          "colonizationsByPlanet": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Colonization"
+            },
+            "description": "The costs to colonize the planet by idPlanet."
+          },
+          "costsToBuyColonizationInformation": {
+            "type": "string",
+            "description": "The costs to buy the colonization information about the system."
+          },
+          "costsToColonization": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "The costs to colonize the planet by idPlanet."
+          },
+          "distanceMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            },
+            "description": "The star system with its distance to all known systems by id."
+          },
+          "starSystem": {
+            "description": "The star system to select for colonization.",
+            "$ref": "#/components/schemas/StarSystem"
           }
         }
       },

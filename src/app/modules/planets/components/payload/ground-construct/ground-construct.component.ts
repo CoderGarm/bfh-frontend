@@ -3,6 +3,7 @@ import {BuildingApiService, Construction, ConstructionApiService, Planet, Planet
 import {Subscription} from "rxjs";
 import {MatChip, MatChipList} from "@angular/material/chips";
 import {FormControl} from "@angular/forms";
+import {ResourcesApiService} from "../../../../../services/swagger/api/resourcesApi.service";
 
 @Component({
     selector: 'app-ground-construct',
@@ -87,7 +88,8 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
 
     constructor(private constructionApi: ConstructionApiService,
                 private buildingApi: BuildingApiService,
-                private planetApi: PlanetApiService) {
+                private planetApi: PlanetApiService,
+                private resourceApi: ResourcesApiService) {
     }
 
     ngAfterViewInit(): void {
@@ -101,7 +103,7 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
             });
         this.subscriptions.push(subscription);
 
-        subscription = this.buildingApi
+        subscription = this.resourceApi
             .getEResourceTypes()
             .subscribe((resp: string[]) => {
                 this.eResourceTypes = resp;

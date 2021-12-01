@@ -6,12 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { AuthApiService } from './api/authApi.service';
 import { BuildingApiService } from './api/buildingApi.service';
 import { ChatApiService } from './api/chatApi.service';
+import { ColonizationApiService } from './api/colonizationApi.service';
 import { ConstructionApiService } from './api/constructionApi.service';
 import { FleetApiService } from './api/fleetApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
 import { ResearchApiService } from './api/researchApi.service';
+import { ResourcesApiService } from './api/resourcesApi.service';
 import { ShipyardApiService } from './api/shipyardApi.service';
 import { StarMapApiService } from './api/starMapApi.service';
 import { UserApiService } from './api/userApi.service';
@@ -24,12 +26,14 @@ import { UserApiService } from './api/userApi.service';
     AuthApiService,
     BuildingApiService,
     ChatApiService,
+    ColonizationApiService,
     ConstructionApiService,
     FleetApiService,
     JobApiService,
     ModuleApiService,
     PlanetApiService,
     ResearchApiService,
+    ResourcesApiService,
     ShipyardApiService,
     StarMapApiService,
     UserApiService ]

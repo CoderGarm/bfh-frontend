@@ -22,6 +22,7 @@ export class StarMapTabViewComponent implements OnInit, OnChanges {
 
     index?: number;
 
+    // todo flip y axis from computer display to human readable direction
     constructor() {
     }
 

@@ -18,13 +18,14 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
+import { MiningFactors } from '../model/miningFactors';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class BuildingApiService {
+export class ResourcesApiService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -56,15 +57,15 @@ export class BuildingApiService {
 
 
     /**
-     * Get all EProductionCategories.
+     * Get all EResourceTypes.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEProductionCategories(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
-    public getEProductionCategories(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
-    public getEProductionCategories(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
-    public getEProductionCategories(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getEResourceTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public getEResourceTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public getEResourceTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getEResourceTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -82,7 +83,7 @@ export class BuildingApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/private/buildings/EProductionCategory`,
+        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/private/resources/types`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -93,15 +94,20 @@ export class BuildingApiService {
     }
 
     /**
-     * Get all ERefinementSequences.
+     * Get all EResourceTypes.
      * 
+     * @param idPlanet idPlanet
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getERefinementSequences(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
-    public getERefinementSequences(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
-    public getERefinementSequences(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
-    public getERefinementSequences(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getMiningFactors(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<MiningFactors>;
+    public getMiningFactors(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MiningFactors>>;
+    public getMiningFactors(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MiningFactors>>;
+    public getMiningFactors(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getMiningFactors.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -119,7 +125,7 @@ export class BuildingApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/private/buildings/ERefinementSequence`,
+        return this.httpClient.request<MiningFactors>('get',`${this.basePath}/api/private/resources/types/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

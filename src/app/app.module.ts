@@ -20,6 +20,7 @@ import {FleetModule} from "./modules/fleet/fleet.module";
 import {SubscriptionManager} from "./SubscriptionManager";
 import {ConfirmDialogComponent} from "./components/confirmation-dialog/confirm-dialog.component";
 import {DisplayElementsModule} from "./modules/display-elements/display-elements.module";
+import {ExpansionModule} from "./modules/expansion/expansion.module";
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import {DisplayElementsModule} from "./modules/display-elements/display-elements
         StarMapModule,
         ResearchModule,
         ShipClassConstructionModule,
-        FleetModule
+        FleetModule,
+        ExpansionModule,
     ],
     providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
     bootstrap: [AppComponent]

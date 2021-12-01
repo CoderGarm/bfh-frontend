@@ -33,6 +33,7 @@ import {SpacecraftCapabilitiesDisplayComponent} from './spacecraft-capabilities-
 import {FleetMergeEditComponent} from './fleet-merge-edit/fleet-merge-edit.component';
 import {FleetMoveEditComponent} from './fleet-move-edit/fleet-move-edit.component';
 import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display.component';
+import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-factors-display.component';
 
 @NgModule({
     declarations: [
@@ -69,6 +70,7 @@ import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display
         FleetMergeEditComponent,
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,
+        MiningFactorsDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -107,6 +109,7 @@ import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display
         FleetMergeEditComponent,
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,
+        MiningFactorsDisplayComponent
     ]
 })
 export class DisplayElementsModule {

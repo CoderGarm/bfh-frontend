@@ -1,0 +1,48 @@
+@import "src/styles/variables";
+
+.holder {
+  margin-top: 25px;
+  margin-left: 25px;
+  width: 90%;
+}
+
+.max-width {
+  width: 100%;
+}
+
+.with-margin-right {
+  margin-right: 10px;
+}
+
+.first-header-row th {
+  border-bottom: none;
+}
+
+tr.expandable-detail-row {
+  height: 0;
+}
+
+.expandable-element-row td {
+  border-bottom-width: 0;
+}
+
+.expandable-element-detail {
+  overflow: hidden;
+  display: flex;
+  overflow-y: scroll;
+}
+
+mat-list {
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.mat-list-item-content, .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  height: 78px;
+}
+
+.planet-card {
+  width: 90%;
+}
+
