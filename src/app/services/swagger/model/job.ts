@@ -11,6 +11,7 @@
  */
 import { Building } from './building';
 import { Construction } from './construction';
+import { EResourceType } from './eResourceType';
 import { UserJson } from './userJson';
 
 export interface Job { 
@@ -36,10 +37,7 @@ export interface Job {
      * If this if a research job.
      */
     researchTarget?: string;
-    /**
-     * The type of costs.
-     */
-    resourceType: Job.ResourceTypeEnum;
+    resourceType: EResourceType;
     /**
      * If this if a shipyard job.
      */
@@ -53,17 +51,4 @@ export interface Job {
      */
     ticksLeft: number;
     user: UserJson;
-}
-export namespace Job {
-    export type ResourceTypeEnum = 'CONSTRUCTION' | 'CREDITS' | 'HEAVY_METALS' | 'METALORE' | 'ORBITAL_CONSTRUCTION' | 'POPULATION' | 'RARE_ELEMENTS' | 'RESEARCH';
-    export const ResourceTypeEnum = {
-        CONSTRUCTION: 'CONSTRUCTION' as ResourceTypeEnum,
-        CREDITS: 'CREDITS' as ResourceTypeEnum,
-        HEAVYMETALS: 'HEAVY_METALS' as ResourceTypeEnum,
-        METALORE: 'METALORE' as ResourceTypeEnum,
-        ORBITALCONSTRUCTION: 'ORBITAL_CONSTRUCTION' as ResourceTypeEnum,
-        POPULATION: 'POPULATION' as ResourceTypeEnum,
-        RAREELEMENTS: 'RARE_ELEMENTS' as ResourceTypeEnum,
-        RESEARCH: 'RESEARCH' as ResourceTypeEnum
-    };
 }

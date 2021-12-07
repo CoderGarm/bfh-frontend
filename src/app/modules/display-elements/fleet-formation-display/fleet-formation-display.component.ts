@@ -1,6 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, Hull, WarShip} from "../../../services/swagger";
-import HullTypeEnum = Hull.HullTypeEnum;
+import {EHullType, Fleet, Hull, WarShip} from "../../../services/swagger";
 
 @Component({
     selector: 'app-fleet-formation-display',
@@ -16,11 +15,11 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
     selectedFleetInput?: Fleet;
     selectedFleetInputDefinition: string = "selectedFleetInput";
 
-    hullAmountByType: Map<Hull.HullTypeEnum, number> = new Map<Hull.HullTypeEnum, number>();
+    hullAmountByType: Map<EHullType, number> = new Map<EHullType, number>();
 
-    hullsByType: Map<Hull.HullTypeEnum, Hull> = new Map<Hull.HullTypeEnum, Hull>();
+    hullsByType: Map<EHullType, Hull> = new Map<EHullType, Hull>();
 
-    warShipsByType: Map<Hull.HullTypeEnum, WarShip[]> = new Map<Hull.HullTypeEnum, WarShip[]>();
+    warShipsByType: Map<EHullType, WarShip[]> = new Map<EHullType, WarShip[]>();
 
     constructor() {
     }
@@ -54,7 +53,7 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
         }
     }
 
-    getWarShips(key: HullTypeEnum): WarShip[] {
+    getWarShips(key: EHullType): WarShip[] {
         let warShips = this.warShipsByType.get(key);
         if (!warShips) {
             return [];
@@ -62,7 +61,7 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
         return warShips;
     }
 
-    getDescription(key: HullTypeEnum) {
+    getDescription(key: EHullType) {
         let hull = this.hullsByType.get(key);
         if (!!hull) {
             return hull.description;
@@ -70,7 +69,17 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
         return "";
     }
 
-    getAmount(key: HullTypeEnum) {
+    getAmount(key: EHullType) {
         return this.hullAmountByType.get(key) || 0;
+    }
+
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(hullType: EHullType): string {
+        let folder = hullType.folder;
+        let iconName = hullType.iconName;
+        //todo check
+        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
     }
 }

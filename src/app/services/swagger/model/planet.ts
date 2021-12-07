@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { EPlanetClassType } from './ePlanetClassType';
 import { Orbit } from './orbit';
 import { UserJson } from './userJson';
 
@@ -31,14 +32,5 @@ export interface Planet {
     name: string;
     orbit: Orbit;
     owner?: UserJson;
-    /**
-     * The planet's class.
-     */
-    planetType: Planet.PlanetTypeEnum;
-}
-export namespace Planet {
-    export type PlanetTypeEnum = 'PLANET';
-    export const PlanetTypeEnum = {
-        PLANET: 'PLANET' as PlanetTypeEnum
-    };
+    planetType: EPlanetClassType;
 }

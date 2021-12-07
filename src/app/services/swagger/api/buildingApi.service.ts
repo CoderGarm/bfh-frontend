@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { ERefinementSequence } from '../model/eRefinementSequence';
 import { FrontendError } from '../model/frontendError';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -98,9 +99,9 @@ export class BuildingApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getERefinementSequences(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
-    public getERefinementSequences(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
-    public getERefinementSequences(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getERefinementSequences(observe?: 'body', reportProgress?: boolean): Observable<Array<ERefinementSequence>>;
+    public getERefinementSequences(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ERefinementSequence>>>;
+    public getERefinementSequences(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ERefinementSequence>>>;
     public getERefinementSequences(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -119,7 +120,7 @@ export class BuildingApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/private/buildings/ERefinementSequence`,
+        return this.httpClient.request<Array<ERefinementSequence>>('get',`${this.basePath}/api/private/buildings/ERefinementSequence`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

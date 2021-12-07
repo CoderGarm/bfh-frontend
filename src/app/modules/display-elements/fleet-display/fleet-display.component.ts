@@ -21,4 +21,11 @@ export class FleetDisplayComponent implements AfterViewInit {
     ngAfterViewInit(): void {
     }
 
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(): string {
+        //todo check
+        return "assets/icons/fleets/png64x/small_fleet_c.png";
+    }
 }

@@ -127,14 +127,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "EDUCATION_CIVIL_I",
-                  "EDUCATION_CIVIL_II",
-                  "EDUCATION_CIVIL_III",
-                  "EDUCATION_MILITARY_I",
-                  "EDUCATION_MILITARY_II"
-                ]
+                "$ref": "#/definitions/ERefinementSequence"
               }
             }
           },
@@ -1527,17 +1520,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "CONSTRUCTION",
-                  "CREDITS",
-                  "HEAVY_METALS",
-                  "METALORE",
-                  "ORBITAL_CONSTRUCTION",
-                  "POPULATION",
-                  "RARE_ELEMENTS",
-                  "RESEARCH"
-                ]
+                "$ref": "#/definitions/EResourceType"
               }
             }
           },
@@ -1753,26 +1736,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "AE",
-                  "AR",
-                  "BB",
-                  "BC",
-                  "BCP",
-                  "CA",
-                  "CC",
-                  "CL",
-                  "CLAC",
-                  "DD",
-                  "DN",
-                  "FAT",
-                  "FG",
-                  "FR",
-                  "LAC",
-                  "SD",
-                  "SDP"
-                ]
+                "$ref": "#/definitions/EHullType"
               }
             }
           },
@@ -1798,7 +1762,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/EModuleTypeToIcon"
+                "$ref": "#/definitions/EModuleType"
               }
             }
           },
@@ -2326,29 +2290,12 @@
           ]
         },
         "productionTarget": {
-          "type": "string",
           "description": "The subject of this building.",
-          "enum": [
-            "CONSTRUCTION",
-            "CREDITS",
-            "HEAVY_METALS",
-            "METALORE",
-            "ORBITAL_CONSTRUCTION",
-            "POPULATION",
-            "RARE_ELEMENTS",
-            "RESEARCH"
-          ]
+          "$ref": "#/definitions/EResourceType"
         },
         "refinementSequence": {
-          "type": "string",
           "description": "In case of a refinement building - this is the defines sequence.",
-          "enum": [
-            "EDUCATION_CIVIL_I",
-            "EDUCATION_CIVIL_II",
-            "EDUCATION_CIVIL_III",
-            "EDUCATION_MILITARY_I",
-            "EDUCATION_MILITARY_II"
-          ]
+          "$ref": "#/definitions/ERefinementSequence"
         }
       },
       "title": "Building"
@@ -2361,16 +2308,8 @@
       ],
       "properties": {
         "moduleType": {
-          "type": "string",
           "description": "The value's type.",
-          "enum": [
-            "ARMOR",
-            "ELECTRONIC_WARFARE",
-            "FTLPROPULSION",
-            "PROPULSION",
-            "SHIELD",
-            "WEAPON"
-          ]
+          "$ref": "#/definitions/EModuleType"
         },
         "value": {
           "type": "number",
@@ -2499,31 +2438,245 @@
       },
       "title": "Construction"
     },
-    "EModuleTypeToIcon": {
+    "EEducationType": {
       "type": "object",
       "required": [
+        "folder",
         "iconName",
-        "moduleType"
+        "typeName"
       ],
       "properties": {
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
         "iconName": {
           "type": "string",
-          "description": "The icon name."
+          "description": "The icon name for this resource."
         },
-        "moduleType": {
+        "isWorkforce": {
+          "type": "boolean"
+        },
+        "requirement": {
+          "$ref": "#/definitions/EEducationType"
+        },
+        "typeName": {
           "type": "string",
-          "description": "The module type.",
-          "enum": [
-            "ARMOR",
-            "ELECTRONIC_WARFARE",
-            "FTLPROPULSION",
-            "PROPULSION",
-            "SHIELD",
-            "WEAPON"
-          ]
+          "description": "The refinement sequence type name."
         }
       },
-      "title": "EModuleTypeToIcon"
+      "title": "EEducationType"
+    },
+    "EFleetSizeType": {
+      "type": "object",
+      "required": [
+        "folder",
+        "iconName"
+      ],
+      "properties": {
+        "fleetSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The icon name for this resource."
+        }
+      },
+      "title": "EFleetSizeType"
+    },
+    "EHullType": {
+      "type": "object",
+      "required": [
+        "auxiliaryShip",
+        "description",
+        "folder",
+        "iconName",
+        "podLayer",
+        "type",
+        "typeName"
+      ],
+      "properties": {
+        "auxiliaryShip": {
+          "type": "boolean",
+          "description": "If the hull is an auxiliary ship."
+        },
+        "description": {
+          "type": "string",
+          "description": "The hulls description."
+        },
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The icon name for this resource."
+        },
+        "podLayer": {
+          "type": "boolean",
+          "description": "If the hull is a pod layer."
+        },
+        "type": {
+          "type": "string",
+          "description": "The hulls type."
+        },
+        "typeName": {
+          "type": "string",
+          "description": "The hull types type name."
+        }
+      },
+      "title": "EHullType"
+    },
+    "EModuleType": {
+      "type": "object",
+      "required": [
+        "folder",
+        "iconName"
+      ],
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The icon name for this resource."
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "EModuleType"
+    },
+    "EPlanetClassType": {
+      "type": "object",
+      "required": [
+        "folder",
+        "iconName",
+        "typeName"
+      ],
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The icon name for this resource."
+        },
+        "name": {
+          "type": "string"
+        },
+        "planetClass": {
+          "type": "string"
+        },
+        "typeName": {
+          "type": "string",
+          "description": "The hull types type name."
+        }
+      },
+      "title": "EPlanetClassType"
+    },
+    "ERefinementSequence": {
+      "type": "object",
+      "required": [
+        "educt",
+        "product",
+        "typeName"
+      ],
+      "properties": {
+        "educt": {
+          "description": "The educt or start of the sequence.",
+          "$ref": "#/definitions/EEducationType"
+        },
+        "product": {
+          "description": "The product or result of the sequence.",
+          "$ref": "#/definitions/EEducationType"
+        },
+        "typeName": {
+          "type": "string",
+          "description": "The refinement sequence type name."
+        }
+      },
+      "title": "ERefinementSequence"
+    },
+    "EResourceType": {
+      "type": "object",
+      "required": [
+        "collectableType",
+        "folder",
+        "iconName",
+        "pluralName",
+        "singularName",
+        "typeName"
+      ],
+      "properties": {
+        "collectableType": {
+          "type": "string",
+          "description": "The collectable type of this resource.",
+          "enum": [
+            "COLLECTABLE",
+            "FORFEITABLE",
+            "VIABLE"
+          ]
+        },
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The icon name for this resource."
+        },
+        "pluralName": {
+          "type": "string",
+          "description": "The plural name of this resource."
+        },
+        "singularName": {
+          "type": "string",
+          "description": "The singular name of this resource."
+        },
+        "typeName": {
+          "type": "string",
+          "description": "The resource type name."
+        }
+      },
+      "title": "EResourceType"
+    },
+    "EStarClassType": {
+      "type": "object",
+      "required": [
+        "folder",
+        "iconName",
+        "typeName"
+      ],
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The icon name for this resource."
+        },
+        "lightMinutesToHyperLimit": {
+          "type": "number",
+          "format": "double"
+        },
+        "spectralClass": {
+          "type": "string"
+        },
+        "typeName": {
+          "type": "string",
+          "description": "The stars type type name."
+        }
+      },
+      "title": "EStarClassType"
     },
     "ElectronicWarfare": {
       "type": "object",
@@ -2713,27 +2866,8 @@
           "description": "The description of the hull."
         },
         "hullType": {
-          "type": "string",
           "description": "The hull type.",
-          "enum": [
-            "AE",
-            "AR",
-            "BB",
-            "BC",
-            "BCP",
-            "CA",
-            "CC",
-            "CL",
-            "CLAC",
-            "DD",
-            "DN",
-            "FAT",
-            "FG",
-            "FR",
-            "LAC",
-            "SD",
-            "SDP"
-          ]
+          "$ref": "#/definitions/EHullType"
         },
         "idHull": {
           "type": "integer",
@@ -2751,6 +2885,24 @@
         }
       },
       "title": "Hull"
+    },
+    "IsIcon": {
+      "type": "object",
+      "required": [
+        "folder",
+        "iconName"
+      ],
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "The folder name for resources."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The icon name for this resource."
+        }
+      },
+      "title": "IsIcon"
     },
     "JWT": {
       "type": "object",
@@ -2831,18 +2983,8 @@
           "description": "If this if a research job."
         },
         "resourceType": {
-          "type": "string",
           "description": "The type of costs.",
-          "enum": [
-            "CONSTRUCTION",
-            "CREDITS",
-            "HEAVY_METALS",
-            "METALORE",
-            "ORBITAL_CONSTRUCTION",
-            "POPULATION",
-            "RARE_ELEMENTS",
-            "RESEARCH"
-          ]
+          "$ref": "#/definitions/EResourceType"
         },
         "shipYardTarget": {
           "type": "string",
@@ -3009,11 +3151,8 @@
           "$ref": "#/definitions/UserJson"
         },
         "planetType": {
-          "type": "string",
           "description": "The planet's class.",
-          "enum": [
-            "PLANET"
-          ]
+          "$ref": "#/definitions/EPlanetClassType"
         }
       },
       "title": "Planet"
@@ -3089,9 +3228,7 @@
       "type": "object",
       "required": [
         "amount",
-        "path",
-        "resourceType",
-        "titleText"
+        "resourceType"
       ],
       "properties": {
         "amount": {
@@ -3099,63 +3236,12 @@
           "format": "int64",
           "description": "The amount for the resource."
         },
-        "path": {
-          "type": "string",
-          "description": "The path to the icon."
-        },
         "resourceType": {
-          "type": "string",
           "description": "The resource type.",
-          "enum": [
-            "CONSTRUCTION",
-            "CREDITS",
-            "HEAVY_METALS",
-            "METALORE",
-            "ORBITAL_CONSTRUCTION",
-            "POPULATION",
-            "RARE_ELEMENTS",
-            "RESEARCH"
-          ]
-        },
-        "titleText": {
-          "type": "string",
-          "description": "The resource' name."
+          "$ref": "#/definitions/EResourceType"
         }
       },
       "title": "ResourceAmount"
-    },
-    "ResourceDetail": {
-      "type": "object",
-      "required": [
-        "path",
-        "resourceType",
-        "titleText"
-      ],
-      "properties": {
-        "path": {
-          "type": "string",
-          "description": "The path to the icon."
-        },
-        "resourceType": {
-          "type": "string",
-          "description": "The resource type.",
-          "enum": [
-            "CONSTRUCTION",
-            "CREDITS",
-            "HEAVY_METALS",
-            "METALORE",
-            "ORBITAL_CONSTRUCTION",
-            "POPULATION",
-            "RARE_ELEMENTS",
-            "RESEARCH"
-          ]
-        },
-        "titleText": {
-          "type": "string",
-          "description": "The resource' name."
-        }
-      },
-      "title": "ResourceDetail"
     },
     "ShipClass": {
       "type": "object",
@@ -3329,54 +3415,8 @@
           }
         },
         "starClassType": {
-          "type": "string",
           "description": "The stellar class of the star of this system.",
-          "enum": [
-            "CLASS_A",
-            "CLASS_B",
-            "CLASS_F0",
-            "CLASS_F1",
-            "CLASS_F2",
-            "CLASS_F3",
-            "CLASS_F4",
-            "CLASS_F5",
-            "CLASS_F6",
-            "CLASS_F7",
-            "CLASS_F8",
-            "CLASS_F9",
-            "CLASS_G0",
-            "CLASS_G1",
-            "CLASS_G2",
-            "CLASS_G3",
-            "CLASS_G4",
-            "CLASS_G5",
-            "CLASS_G6",
-            "CLASS_G7",
-            "CLASS_G8",
-            "CLASS_G9",
-            "CLASS_K0",
-            "CLASS_K1",
-            "CLASS_K2",
-            "CLASS_K3",
-            "CLASS_K4",
-            "CLASS_K5",
-            "CLASS_K6",
-            "CLASS_K7",
-            "CLASS_K8",
-            "CLASS_K9",
-            "CLASS_M0",
-            "CLASS_M1",
-            "CLASS_M2",
-            "CLASS_M3",
-            "CLASS_M4",
-            "CLASS_M5",
-            "CLASS_M6",
-            "CLASS_M7",
-            "CLASS_M8",
-            "CLASS_M9",
-            "CLASS_O",
-            "CLASS_RG"
-          ]
+          "$ref": "#/definitions/EStarClassType"
         }
       },
       "title": "StarSystem"

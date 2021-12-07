@@ -9,25 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { EModuleType } from './eModuleType';
 
 export interface CapabilityValue { 
-    /**
-     * The value's type.
-     */
-    moduleType: CapabilityValue.ModuleTypeEnum;
+    moduleType: EModuleType;
     /**
      * The value.
      */
     value: number;
-}
-export namespace CapabilityValue {
-    export type ModuleTypeEnum = 'ARMOR' | 'ELECTRONIC_WARFARE' | 'FTLPROPULSION' | 'PROPULSION' | 'SHIELD' | 'WEAPON';
-    export const ModuleTypeEnum = {
-        ARMOR: 'ARMOR' as ModuleTypeEnum,
-        ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as ModuleTypeEnum,
-        FTLPROPULSION: 'FTLPROPULSION' as ModuleTypeEnum,
-        PROPULSION: 'PROPULSION' as ModuleTypeEnum,
-        SHIELD: 'SHIELD' as ModuleTypeEnum,
-        WEAPON: 'WEAPON' as ModuleTypeEnum
-    };
 }

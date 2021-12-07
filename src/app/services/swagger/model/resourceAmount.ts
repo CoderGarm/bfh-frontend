@@ -9,35 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { EResourceType } from './eResourceType';
 
 export interface ResourceAmount { 
     /**
      * The amount for the resource.
      */
     amount: number;
-    /**
-     * The path to the icon.
-     */
-    path: string;
-    /**
-     * The resource type.
-     */
-    resourceType: ResourceAmount.ResourceTypeEnum;
-    /**
-     * The resource' name.
-     */
-    titleText: string;
-}
-export namespace ResourceAmount {
-    export type ResourceTypeEnum = 'CONSTRUCTION' | 'CREDITS' | 'HEAVY_METALS' | 'METALORE' | 'ORBITAL_CONSTRUCTION' | 'POPULATION' | 'RARE_ELEMENTS' | 'RESEARCH';
-    export const ResourceTypeEnum = {
-        CONSTRUCTION: 'CONSTRUCTION' as ResourceTypeEnum,
-        CREDITS: 'CREDITS' as ResourceTypeEnum,
-        HEAVYMETALS: 'HEAVY_METALS' as ResourceTypeEnum,
-        METALORE: 'METALORE' as ResourceTypeEnum,
-        ORBITALCONSTRUCTION: 'ORBITAL_CONSTRUCTION' as ResourceTypeEnum,
-        POPULATION: 'POPULATION' as ResourceTypeEnum,
-        RAREELEMENTS: 'RARE_ELEMENTS' as ResourceTypeEnum,
-        RESEARCH: 'RESEARCH' as ResourceTypeEnum
-    };
+    resourceType: EResourceType;
 }

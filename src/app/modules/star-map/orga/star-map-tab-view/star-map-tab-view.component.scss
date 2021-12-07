@@ -19,7 +19,8 @@
 }
 
 .orbit {
-
+  stroke: darkgray;
+  stroke-width: 1;
 }
 
 svg {
@@ -28,8 +29,8 @@ svg {
 }
 
 .coordCross {
-  fill: white;
-  stroke: white;
+  fill: darkgoldenrod;
+  stroke: darkgoldenrod;
   stroke-width: 1;
 }
 

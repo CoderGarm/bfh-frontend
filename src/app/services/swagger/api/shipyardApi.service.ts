@@ -17,7 +17,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { EModuleTypeToIcon } from '../model/eModuleTypeToIcon';
+import { EHullType } from '../model/eHullType';
+import { EModuleType } from '../model/eModuleType';
 import { FrontendError } from '../model/frontendError';
 import { ShipClass } from '../model/shipClass';
 
@@ -157,9 +158,9 @@ export class ShipyardApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEHullTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
-    public getEHullTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
-    public getEHullTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getEHullTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EHullType>>;
+    public getEHullTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EHullType>>>;
+    public getEHullTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EHullType>>>;
     public getEHullTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -178,7 +179,7 @@ export class ShipyardApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/private/shipyard/hullType`,
+        return this.httpClient.request<Array<EHullType>>('get',`${this.basePath}/api/private/shipyard/hullType`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -194,9 +195,9 @@ export class ShipyardApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEModuleTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EModuleTypeToIcon>>;
-    public getEModuleTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EModuleTypeToIcon>>>;
-    public getEModuleTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EModuleTypeToIcon>>>;
+    public getEModuleTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EModuleType>>;
+    public getEModuleTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EModuleType>>>;
+    public getEModuleTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EModuleType>>>;
     public getEModuleTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -215,7 +216,7 @@ export class ShipyardApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<EModuleTypeToIcon>>('get',`${this.basePath}/api/private/shipyard/moduleType`,
+        return this.httpClient.request<Array<EModuleType>>('get',`${this.basePath}/api/private/shipyard/moduleType`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

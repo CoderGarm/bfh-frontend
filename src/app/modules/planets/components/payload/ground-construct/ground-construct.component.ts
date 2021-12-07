@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {BuildingApiService, Construction, ConstructionApiService, Planet, PlanetApiService} from "../../../../../services/swagger";
+import {BuildingApiService, Construction, ConstructionApiService, ERefinementSequence, EResourceType, Planet, PlanetApiService} from "../../../../../services/swagger";
 import {Subscription} from "rxjs";
 import {MatChip, MatChipList} from "@angular/material/chips";
 import {FormControl} from "@angular/forms";
@@ -36,7 +36,7 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
     /**
      * all EResourceType enum elements
      */
-    eResourceTypes: string[] = [];
+    eResourceTypes: EResourceType[] = [];
 
     /**
      * all EProductionCategory enum elements
@@ -46,7 +46,7 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
     /**
      * all ERefinementSequence enum elements
      */
-    eRefinementSequences: string[] = [];
+    eRefinementSequences: ERefinementSequence[] = [];
 
     /**
      * the current selected planet
@@ -105,7 +105,7 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
 
         subscription = this.resourceApi
             .getEResourceTypes()
-            .subscribe((resp: string[]) => {
+            .subscribe(resp => {
                 this.eResourceTypes = resp;
                 this.eResourceTypeFC.setValue(resp);
             });
@@ -113,7 +113,7 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
 
         subscription = this.buildingApi
             .getERefinementSequences()
-            .subscribe((resp: string[]) => {
+            .subscribe(resp => {
                 this.eRefinementSequences = resp;
                 this.eRefinementSequenceFC.setValue(resp);
             });
@@ -191,11 +191,11 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
 
         this.filteredConstructions = this.possibleConstructions.filter(construction => {
             const building = construction.building;
-            const includesResourceType = selectedResourceTypes.includes(building.productionTarget);
+            const includesResourceType = selectedResourceTypes.includes(building.productionTarget.typeName);
             const includesCategory = selectedProductCategories.includes(building.productionCategory);
             let includesSequence = true;
             if (!!building.refinementSequence) {
-                includesSequence = selectedRefinementSequence.includes(building.refinementSequence);
+                includesSequence = selectedRefinementSequence.includes(building.refinementSequence.typeName);
             }
             return includesResourceType && includesCategory && includesSequence;
         });

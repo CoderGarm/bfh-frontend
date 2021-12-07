@@ -25,6 +25,9 @@ export class MiningFactorsDisplayComponent extends SubscriptionManager implement
      * @param cap
      */
     getLink(cap: ResourceAmount): string {
-        return "http://localhost:8080/vaadin/" + cap.path;
+        let folder = cap.resourceType.folder;
+        let iconName = cap.resourceType.iconName;
+        //todo check
+        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
     }
 }

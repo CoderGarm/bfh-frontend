@@ -33,4 +33,18 @@ export class ConstructionDisplayComponent implements AfterViewInit {
     buildConstruction() {
         this.constructionOutput.emit(this.constructionInput);
     }
+
+    /**
+     * constructs and returns the url to the icon
+     * @param cap
+     */
+    getLink(): string {
+        if (!!this.constructionInput) {
+            let folder = this.constructionInput.building.productionTarget.folder;
+            let iconName = this.constructionInput.building.productionTarget.iconName;
+            //todo check
+            return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+        }
+        return "";
+    }
 }

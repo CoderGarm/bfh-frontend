@@ -9,6 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ERefinementSequence } from './eRefinementSequence';
+import { EResourceType } from './eResourceType';
 
 export interface Building { 
     /**
@@ -35,14 +37,8 @@ export interface Building {
      * The action this building is for.
      */
     productionCategory: Building.ProductionCategoryEnum;
-    /**
-     * The subject of this building.
-     */
-    productionTarget: Building.ProductionTargetEnum;
-    /**
-     * In case of a refinement building - this is the defines sequence.
-     */
-    refinementSequence?: Building.RefinementSequenceEnum;
+    productionTarget: EResourceType;
+    refinementSequence?: ERefinementSequence;
 }
 export namespace Building {
     export type ProductionCategoryEnum = 'CAPACITY' | 'PRODUCE' | 'REFINEMENT';
@@ -50,24 +46,5 @@ export namespace Building {
         CAPACITY: 'CAPACITY' as ProductionCategoryEnum,
         PRODUCE: 'PRODUCE' as ProductionCategoryEnum,
         REFINEMENT: 'REFINEMENT' as ProductionCategoryEnum
-    };
-    export type ProductionTargetEnum = 'CONSTRUCTION' | 'CREDITS' | 'HEAVY_METALS' | 'METALORE' | 'ORBITAL_CONSTRUCTION' | 'POPULATION' | 'RARE_ELEMENTS' | 'RESEARCH';
-    export const ProductionTargetEnum = {
-        CONSTRUCTION: 'CONSTRUCTION' as ProductionTargetEnum,
-        CREDITS: 'CREDITS' as ProductionTargetEnum,
-        HEAVYMETALS: 'HEAVY_METALS' as ProductionTargetEnum,
-        METALORE: 'METALORE' as ProductionTargetEnum,
-        ORBITALCONSTRUCTION: 'ORBITAL_CONSTRUCTION' as ProductionTargetEnum,
-        POPULATION: 'POPULATION' as ProductionTargetEnum,
-        RAREELEMENTS: 'RARE_ELEMENTS' as ProductionTargetEnum,
-        RESEARCH: 'RESEARCH' as ProductionTargetEnum
-    };
-    export type RefinementSequenceEnum = 'EDUCATION_CIVIL_I' | 'EDUCATION_CIVIL_II' | 'EDUCATION_CIVIL_III' | 'EDUCATION_MILITARY_I' | 'EDUCATION_MILITARY_II';
-    export const RefinementSequenceEnum = {
-        CIVILI: 'EDUCATION_CIVIL_I' as RefinementSequenceEnum,
-        CIVILII: 'EDUCATION_CIVIL_II' as RefinementSequenceEnum,
-        CIVILIII: 'EDUCATION_CIVIL_III' as RefinementSequenceEnum,
-        MILITARYI: 'EDUCATION_MILITARY_I' as RefinementSequenceEnum,
-        MILITARYII: 'EDUCATION_MILITARY_II' as RefinementSequenceEnum
     };
 }

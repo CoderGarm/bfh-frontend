@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { EStarClassType } from './eStarClassType';
 import { Orbit } from './orbit';
 import { Planet } from './planet';
 
@@ -26,57 +27,5 @@ export interface StarSystem {
      * The bunch of planets as part of the system.
      */
     planets: Array<Planet>;
-    /**
-     * The stellar class of the star of this system.
-     */
-    starClassType: StarSystem.StarClassTypeEnum;
-}
-export namespace StarSystem {
-    export type StarClassTypeEnum = 'CLASS_A' | 'CLASS_B' | 'CLASS_F0' | 'CLASS_F1' | 'CLASS_F2' | 'CLASS_F3' | 'CLASS_F4' | 'CLASS_F5' | 'CLASS_F6' | 'CLASS_F7' | 'CLASS_F8' | 'CLASS_F9' | 'CLASS_G0' | 'CLASS_G1' | 'CLASS_G2' | 'CLASS_G3' | 'CLASS_G4' | 'CLASS_G5' | 'CLASS_G6' | 'CLASS_G7' | 'CLASS_G8' | 'CLASS_G9' | 'CLASS_K0' | 'CLASS_K1' | 'CLASS_K2' | 'CLASS_K3' | 'CLASS_K4' | 'CLASS_K5' | 'CLASS_K6' | 'CLASS_K7' | 'CLASS_K8' | 'CLASS_K9' | 'CLASS_M0' | 'CLASS_M1' | 'CLASS_M2' | 'CLASS_M3' | 'CLASS_M4' | 'CLASS_M5' | 'CLASS_M6' | 'CLASS_M7' | 'CLASS_M8' | 'CLASS_M9' | 'CLASS_O' | 'CLASS_RG';
-    export const StarClassTypeEnum = {
-        A: 'CLASS_A' as StarClassTypeEnum,
-        B: 'CLASS_B' as StarClassTypeEnum,
-        F0: 'CLASS_F0' as StarClassTypeEnum,
-        F1: 'CLASS_F1' as StarClassTypeEnum,
-        F2: 'CLASS_F2' as StarClassTypeEnum,
-        F3: 'CLASS_F3' as StarClassTypeEnum,
-        F4: 'CLASS_F4' as StarClassTypeEnum,
-        F5: 'CLASS_F5' as StarClassTypeEnum,
-        F6: 'CLASS_F6' as StarClassTypeEnum,
-        F7: 'CLASS_F7' as StarClassTypeEnum,
-        F8: 'CLASS_F8' as StarClassTypeEnum,
-        F9: 'CLASS_F9' as StarClassTypeEnum,
-        G0: 'CLASS_G0' as StarClassTypeEnum,
-        G1: 'CLASS_G1' as StarClassTypeEnum,
-        G2: 'CLASS_G2' as StarClassTypeEnum,
-        G3: 'CLASS_G3' as StarClassTypeEnum,
-        G4: 'CLASS_G4' as StarClassTypeEnum,
-        G5: 'CLASS_G5' as StarClassTypeEnum,
-        G6: 'CLASS_G6' as StarClassTypeEnum,
-        G7: 'CLASS_G7' as StarClassTypeEnum,
-        G8: 'CLASS_G8' as StarClassTypeEnum,
-        G9: 'CLASS_G9' as StarClassTypeEnum,
-        K0: 'CLASS_K0' as StarClassTypeEnum,
-        K1: 'CLASS_K1' as StarClassTypeEnum,
-        K2: 'CLASS_K2' as StarClassTypeEnum,
-        K3: 'CLASS_K3' as StarClassTypeEnum,
-        K4: 'CLASS_K4' as StarClassTypeEnum,
-        K5: 'CLASS_K5' as StarClassTypeEnum,
-        K6: 'CLASS_K6' as StarClassTypeEnum,
-        K7: 'CLASS_K7' as StarClassTypeEnum,
-        K8: 'CLASS_K8' as StarClassTypeEnum,
-        K9: 'CLASS_K9' as StarClassTypeEnum,
-        M0: 'CLASS_M0' as StarClassTypeEnum,
-        M1: 'CLASS_M1' as StarClassTypeEnum,
-        M2: 'CLASS_M2' as StarClassTypeEnum,
-        M3: 'CLASS_M3' as StarClassTypeEnum,
-        M4: 'CLASS_M4' as StarClassTypeEnum,
-        M5: 'CLASS_M5' as StarClassTypeEnum,
-        M6: 'CLASS_M6' as StarClassTypeEnum,
-        M7: 'CLASS_M7' as StarClassTypeEnum,
-        M8: 'CLASS_M8' as StarClassTypeEnum,
-        M9: 'CLASS_M9' as StarClassTypeEnum,
-        O: 'CLASS_O' as StarClassTypeEnum,
-        RG: 'CLASS_RG' as StarClassTypeEnum
-    };
+    starClassType: EStarClassType;
 }

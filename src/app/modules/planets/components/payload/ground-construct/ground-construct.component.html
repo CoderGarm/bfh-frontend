@@ -6,9 +6,9 @@
                        multiple
                        [formControl]="eResourceTypeFC">
             <mat-chip
-                    *ngFor="let eResourceType of eResourceTypes as string"
+                    *ngFor="let eResourceType of eResourceTypes"
                     [value]="eResourceType"
-                    (click)="clickAChip(eResourceType, resourceTypeChipList)">
+                    (click)="clickAChip(eResourceType.typeName, resourceTypeChipList)">
                 {{eResourceType}}
             </mat-chip>
         </mat-chip-list>
@@ -34,9 +34,9 @@
                        multiple
                        [formControl]="eRefinementSequenceFC">
             <mat-chip
-                    *ngFor="let sequence of eRefinementSequences as string"
+                    *ngFor="let sequence of eRefinementSequences"
                     [value]="sequence"
-                    (click)="clickAChip(sequence, refinementSequenceChipList)">
+                    (click)="clickAChip(sequence.typeName, refinementSequenceChipList)">
                 {{sequence}}
             </mat-chip>
         </mat-chip-list>

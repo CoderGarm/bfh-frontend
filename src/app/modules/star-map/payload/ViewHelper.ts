@@ -360,11 +360,6 @@ export class ViewHelper {
         this.sortByOrbit();
         this.setViewBox();
 
-        let sd: StrokeData = {
-            color: "white",
-            width: 2
-        }
-
         this.createCoordinateCross();
 
         this.orbits.forEach(orbit => {
@@ -379,7 +374,6 @@ export class ViewHelper {
                     .y(0)
                     .id(orbitID)
                     .fill("none")
-                    .stroke(sd)
                     .addClass("orbit")
                     .radius(radius)
                     .on('mouseover', evt => this.mouseOverEventCallback(<MouseEvent>evt));

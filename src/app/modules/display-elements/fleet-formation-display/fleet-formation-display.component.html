@@ -7,8 +7,9 @@
         </mat-expansion-panel-header>
         <mat-card>
             <mat-card-header>
-                <div mat-card-avatar class="avatar-image"
-                     [ngStyle]="{'background-image': 'url(&quot;http://localhost:8080/vaadin/icons/hulls/png24x/frigate_c.png&quot;)'}"></div>
+                <!--<div mat-card-avatar class="avatar-image"
+                     [ngStyle]="{'background-image': 'url(&quot;http://localhost:8080/vaadin/icons/hulls/png24x/frigate_c.png&quot;)'}"></div>-->
+                <img mat-card-avatar class="avatar-image icon" src="{{getLink(entry.key)}}" alt="construction">
                 <mat-card-title>{{entry.key}}</mat-card-title>
                 <mat-card-subtitle>{{getDescription(entry.key)}}</mat-card-subtitle>
             </mat-card-header>

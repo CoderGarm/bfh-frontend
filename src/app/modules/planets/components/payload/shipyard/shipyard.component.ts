@@ -1,13 +1,6 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {
-    Planet,
-    PlanetApiService,
-    ShipClass,
-    ShipyardApiService,
-    ShipyardConstructionOrder,
-    ShipyardConstructionSelection
-} from "../../../../../services/swagger";
+import {EHullType, Planet, PlanetApiService, ShipClass, ShipyardApiService, ShipyardConstructionOrder, ShipyardConstructionSelection} from "../../../../../services/swagger";
 import {Subscription} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {MatChip, MatChipList} from "@angular/material/chips";
@@ -51,7 +44,7 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
     /**
      * all EResourceType enum elements
      */
-    eHullTypes: string[] = [];
+    eHullTypes: EHullType[] = [];
 
     /**
      * some needed form controls to use the mat chip list
@@ -91,7 +84,7 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
     ngAfterViewInit(): void {
         let subscription = this.shipyardApi
             .getEHullTypes()
-            .subscribe((resp: string[]) => {
+            .subscribe(resp => {
                 this.eHullTypes = resp;
                 this.eHullTypeFC.setValue(resp);
                 this.filterDisplayedShipClasses();
@@ -185,7 +178,7 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
         const selectedResourceTypes: string[] = this.getStringArrayFromMatChips(this.hullTypeChipList!.selected);
 
         this.filteredShipClasses = this.possibleShipClasses.filter(shipClass => {
-            return selectedResourceTypes.includes(shipClass.hull.hullType);
+            return selectedResourceTypes.includes(shipClass.hull.hullType.typeName);
         });
     }
 

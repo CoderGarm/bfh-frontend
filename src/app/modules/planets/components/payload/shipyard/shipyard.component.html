@@ -6,9 +6,9 @@
                        multiple
                        [formControl]="eHullTypeFC">
             <mat-chip
-                    *ngFor="let eHullType of eHullTypes as string"
+                    *ngFor="let eHullType of eHullTypes"
                     [value]="eHullType"
-                    (click)="clickAChip(eHullType, hullTypeChipList)">
+                    (click)="clickAChip(eHullType.typeName, hullTypeChipList)">
                 {{eHullType}}
             </mat-chip>
         </mat-chip-list>

@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { EHullType } from './eHullType';
 
 export interface Hull { 
     /**
@@ -31,10 +32,7 @@ export interface Hull {
      * The description of the hull.
      */
     description: string;
-    /**
-     * The hull type.
-     */
-    hullType: Hull.HullTypeEnum;
+    hullType: EHullType;
     /**
      * The id of this hull.
      */
@@ -47,26 +45,4 @@ export interface Hull {
      * The name of this hull.
      */
     name: string;
-}
-export namespace Hull {
-    export type HullTypeEnum = 'AE' | 'AR' | 'BB' | 'BC' | 'BCP' | 'CA' | 'CC' | 'CL' | 'CLAC' | 'DD' | 'DN' | 'FAT' | 'FG' | 'FR' | 'LAC' | 'SD' | 'SDP';
-    export const HullTypeEnum = {
-        AE: 'AE' as HullTypeEnum,
-        AR: 'AR' as HullTypeEnum,
-        BB: 'BB' as HullTypeEnum,
-        BC: 'BC' as HullTypeEnum,
-        BCP: 'BCP' as HullTypeEnum,
-        CA: 'CA' as HullTypeEnum,
-        CC: 'CC' as HullTypeEnum,
-        CL: 'CL' as HullTypeEnum,
-        CLAC: 'CLAC' as HullTypeEnum,
-        DD: 'DD' as HullTypeEnum,
-        DN: 'DN' as HullTypeEnum,
-        FAT: 'FAT' as HullTypeEnum,
-        FG: 'FG' as HullTypeEnum,
-        FR: 'FR' as HullTypeEnum,
-        LAC: 'LAC' as HullTypeEnum,
-        SD: 'SD' as HullTypeEnum,
-        SDP: 'SDP' as HullTypeEnum
-    };
 }
