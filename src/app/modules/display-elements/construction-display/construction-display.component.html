@@ -1,7 +1,5 @@
 <mat-card>
     <mat-card-header>
-        <!--<div mat-card-avatar class="avatar-image"
-             [ngStyle]="{'background-image': 'url(&quot;http://localhost:8080/vaadin/icons/buildings/png64x/building_c.png&quot;)'}"></div>-->
         <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="construction">
         <mat-card-title>{{constructionInput.building.name}}</mat-card-title>
         <mat-card-subtitle>{{constructionInput.building.description}}</mat-card-subtitle>
@@ -15,7 +13,7 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Production Target</mat-label>
-            <input matInput disabled value="{{constructionInput.building.productionTarget}}">
+            <input matInput disabled value="{{constructionInput.building.productionTarget.typeName}}">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -25,7 +23,7 @@
 
         <mat-form-field *ngIf="!!constructionInput.building.refinementSequence" appearance="fill">
             <mat-label>Refinement Sequence</mat-label>
-            <input matInput disabled value="{{constructionInput.building.refinementSequence}}">
+            <input matInput disabled value="{{getRefinementDescription(constructionInput.building.refinementSequence)}}">
         </mat-form-field>
     </mat-card-content>
     <mat-card-actions>

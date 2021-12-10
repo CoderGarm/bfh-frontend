@@ -22,7 +22,7 @@ export interface EPlanetClassType {
     name?: string;
     planetClass?: string;
     /**
-     * The hull types type name.
+     * The type name of this  transformed enum.
      */
     typeName: string;
 }

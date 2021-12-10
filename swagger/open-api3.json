@@ -2249,23 +2249,29 @@
         }
       }
     },
-    "/api/private/resources/types": {
-      "get": {
+    "/api/private/resources/costs": {
+      "post": {
         "tags": [
           "ResourcesApi"
         ],
-        "summary": "Get all EResourceTypes.",
-        "operationId": "getEResourceTypes",
+        "summary": "Get the costs of the given construction.",
+        "operationId": "getBuildingCosts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlannedConstruction"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/EResourceType"
-                  }
+                  "$ref": "#/components/schemas/ResourceDeposit"
                 }
               },
               "*/*": {
@@ -2288,12 +2294,118 @@
         }
       }
     },
-    "/api/private/resources/types/{idPlanet}": {
+    "/api/private/resources/costsShipClass/{idUser}": {
+      "post": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get the costs of the given shipyard order.",
+        "operationId": "getShipClassCosts",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipClass"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceDeposit"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/resources/costsShipyard": {
+      "post": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get the costs of the given shipyard order.",
+        "operationId": "getShipyardOrderCosts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ShipyardConstructionSelection"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceDeposit"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/resources/miningFactors/{idPlanet}": {
       "get": {
         "tags": [
           "ResourcesApi"
         ],
-        "summary": "Get all EResourceTypes.",
+        "summary": "Get the mining factors of the planet.",
         "operationId": "getMiningFactors",
         "parameters": [
           {
@@ -2315,6 +2427,94 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MiningFactors"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/resources/resourceDeposit/{idPlanet}": {
+      "get": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get all EResourceTypes.",
+        "operationId": "getResourceDeposit",
+        "parameters": [
+          {
+            "name": "idPlanet",
+            "in": "path",
+            "description": "idPlanet",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceDeposit"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/resources/types": {
+      "get": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get all EResourceTypes.",
+        "operationId": "getEResourceTypes",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EResourceType"
+                  }
                 }
               },
               "*/*": {
@@ -3288,6 +3488,43 @@
           }
         }
       },
+      "ECalculationType": {
+        "title": "ECalculationType",
+        "required": [
+          "multiplier",
+          "typeName"
+        ],
+        "type": "object",
+        "properties": {
+          "multiplier": {
+            "type": "integer",
+            "description": "The calculation type multiplier - to add or subtract with 1 or -1.",
+            "format": "int32"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this  transformed enum."
+          }
+        }
+      },
+      "EDepositType": {
+        "title": "EDepositType",
+        "required": [
+          "calculationType",
+          "typeName"
+        ],
+        "type": "object",
+        "properties": {
+          "calculationType": {
+            "description": "The calculation type.",
+            "$ref": "#/components/schemas/ECalculationType"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this  transformed enum."
+          }
+        }
+      },
       "EEducationType": {
         "title": "EEducationType",
         "required": [
@@ -3313,20 +3550,23 @@
           },
           "typeName": {
             "type": "string",
-            "description": "The refinement sequence type name."
+            "description": "The type name of this  transformed enum."
           }
         }
       },
       "EFleetSizeType": {
         "title": "EFleetSizeType",
         "required": [
+          "fleetSize",
           "folder",
-          "iconName"
+          "iconName",
+          "typeName"
         ],
         "type": "object",
         "properties": {
           "fleetSize": {
             "type": "integer",
+            "description": "The maximum fleet size which is defined by this entry.",
             "format": "int32"
           },
           "folder": {
@@ -3336,6 +3576,10 @@
           "iconName": {
             "type": "string",
             "description": "The icon name for this resource."
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this  transformed enum."
           }
         }
       },
@@ -3380,7 +3624,7 @@
           },
           "typeName": {
             "type": "string",
-            "description": "The hull types type name."
+            "description": "The type name of this  transformed enum."
           }
         }
       },
@@ -3388,7 +3632,8 @@
         "title": "EModuleType",
         "required": [
           "folder",
-          "iconName"
+          "iconName",
+          "typeName"
         ],
         "type": "object",
         "properties": {
@@ -3400,8 +3645,12 @@
             "type": "string",
             "description": "The icon name for this resource."
           },
-          "name": {
+          "moduleName": {
             "type": "string"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this  transformed enum."
           }
         }
       },
@@ -3430,7 +3679,7 @@
           },
           "typeName": {
             "type": "string",
-            "description": "The hull types type name."
+            "description": "The type name of this  transformed enum."
           }
         }
       },
@@ -3496,7 +3745,7 @@
           },
           "typeName": {
             "type": "string",
-            "description": "The resource type name."
+            "description": "The type name of this  transformed enum."
           }
         }
       },
@@ -3505,6 +3754,8 @@
         "required": [
           "folder",
           "iconName",
+          "lightMinutesToHyperLimit",
+          "spectralClass",
           "typeName"
         ],
         "type": "object",
@@ -3519,14 +3770,16 @@
           },
           "lightMinutesToHyperLimit": {
             "type": "number",
+            "description": "The hyper limit in light minutes..",
             "format": "double"
           },
           "spectralClass": {
-            "type": "string"
+            "type": "string",
+            "description": "The spectral class."
           },
           "typeName": {
             "type": "string",
-            "description": "The stars type type name."
+            "description": "The type name of this  transformed enum."
           }
         }
       },
@@ -3679,6 +3932,42 @@
           }
         }
       },
+      "HasIcon": {
+        "title": "HasIcon",
+        "required": [
+          "folder",
+          "iconName",
+          "typeName"
+        ],
+        "type": "object",
+        "properties": {
+          "folder": {
+            "type": "string",
+            "description": "The folder name for resources."
+          },
+          "iconName": {
+            "type": "string",
+            "description": "The icon name for this resource."
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this  transformed enum."
+          }
+        }
+      },
+      "HasTypeName": {
+        "title": "HasTypeName",
+        "required": [
+          "typeName"
+        ],
+        "type": "object",
+        "properties": {
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this  transformed enum."
+          }
+        }
+      },
       "Hull": {
         "title": "Hull",
         "required": [
@@ -3738,21 +4027,22 @@
           }
         }
       },
-      "IsIcon": {
-        "title": "IsIcon",
+      "HumanResourceAmount": {
+        "title": "HumanResourceAmount",
         "required": [
-          "folder",
-          "iconName"
+          "amount",
+          "resourceType"
         ],
         "type": "object",
         "properties": {
-          "folder": {
-            "type": "string",
-            "description": "The folder name for resources."
+          "amount": {
+            "type": "integer",
+            "description": "The amount for the resource.",
+            "format": "int64"
           },
-          "iconName": {
-            "type": "string",
-            "description": "The icon name for this resource."
+          "resourceType": {
+            "description": "The resource type.",
+            "$ref": "#/components/schemas/EEducationType"
           }
         }
       },
@@ -4012,6 +4302,26 @@
           }
         }
       },
+      "PlannedConstruction": {
+        "title": "PlannedConstruction",
+        "required": [
+          "idBuilding",
+          "targetLevel"
+        ],
+        "type": "object",
+        "properties": {
+          "idBuilding": {
+            "type": "integer",
+            "description": "The building which should be build.",
+            "format": "int32"
+          },
+          "targetLevel": {
+            "type": "integer",
+            "description": "The target level.",
+            "format": "int32"
+          }
+        }
+      },
       "Propulsion": {
         "title": "Propulsion",
         "required": [
@@ -4096,6 +4406,35 @@
           "resourceType": {
             "description": "The resource type.",
             "$ref": "#/components/schemas/EResourceType"
+          }
+        }
+      },
+      "ResourceDeposit": {
+        "title": "ResourceDeposit",
+        "required": [
+          "humanResources",
+          "resources",
+          "subType"
+        ],
+        "type": "object",
+        "properties": {
+          "humanResources": {
+            "type": "array",
+            "description": "The amount of human resources by their type.",
+            "items": {
+              "$ref": "#/components/schemas/HumanResourceAmount"
+            }
+          },
+          "resources": {
+            "type": "array",
+            "description": "The amount of resources by their type.",
+            "items": {
+              "$ref": "#/components/schemas/ResourceAmount"
+            }
+          },
+          "subType": {
+            "description": "The type of the deposit - costs or a real deposit.",
+            "$ref": "#/components/schemas/EDepositType"
           }
         }
       },

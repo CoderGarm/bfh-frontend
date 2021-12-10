@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Construction} from "../../../services/swagger";
+import {Construction, ERefinementSequence} from "../../../services/swagger";
 
 @Component({
     selector: 'app-construction-display',
@@ -42,9 +42,12 @@ export class ConstructionDisplayComponent implements AfterViewInit {
         if (!!this.constructionInput) {
             let folder = this.constructionInput.building.productionTarget.folder;
             let iconName = this.constructionInput.building.productionTarget.iconName;
-            //todo check
             return "assets/" + folder + "/png24x/" + iconName + "_c.png";
         }
         return "";
+    }
+
+    getRefinementDescription(refSeq: ERefinementSequence) {
+        return refSeq.educt.typeName + " to " + refSeq.product.typeName
     }
 }

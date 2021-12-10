@@ -19,5 +19,9 @@ export interface EModuleType {
      * The icon name for this resource.
      */
     iconName: string;
-    name?: string;
+    moduleName?: string;
+    /**
+     * The type name of this  transformed enum.
+     */
+    typeName: string;
 }

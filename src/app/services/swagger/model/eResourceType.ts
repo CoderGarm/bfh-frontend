@@ -32,7 +32,7 @@ export interface EResourceType {
      */
     singularName: string;
     /**
-     * The resource type name.
+     * The type name of this  transformed enum.
      */
     typeName: string;
 }

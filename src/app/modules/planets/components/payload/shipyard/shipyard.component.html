@@ -1,15 +1,15 @@
+<app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit"
+                                      [costs]="costsToDisplay"></app-resource-deposit-overlay-display>
 <div>
     <p>Filter</p>
     <mat-form-field appearance="outline">
         <mat-label>Hull types</mat-label>
-        <mat-chip-list #hullTypeChipList aria-label="Hull types"
-                       multiple
-                       [formControl]="eHullTypeFC">
+        <mat-chip-list #hullTypeChipList multiple [formControl]="eHullTypeFC">
             <mat-chip
                     *ngFor="let eHullType of eHullTypes"
-                    [value]="eHullType"
+                    [value]="eHullType.typeName"
                     (click)="clickAChip(eHullType.typeName, hullTypeChipList)">
-                {{eHullType}}
+                {{eHullType.typeName}}
             </mat-chip>
         </mat-chip-list>
     </mat-form-field>
@@ -42,7 +42,7 @@
                 <div *ngIf="showHeader(shipClass)">{{shipClass.name}}</div>
             </mat-panel-title>
             <mat-panel-description *ngIf="showHeader(shipClass)">
-                {{shipClass.hull.description}} - Class code '{{shipClass.hull.hullType}}
+                {{shipClass.hull.description}} - Class code '{{shipClass.hull.hullType.typeName}}
             </mat-panel-description>
         </mat-expansion-panel-header>
         <app-ship-class-build [shipClassInput]="shipClass"></app-ship-class-build>

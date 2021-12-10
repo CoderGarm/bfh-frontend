@@ -9,18 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ECalculationType } from './eCalculationType';
 
-export interface EEducationType { 
-    /**
-     * The folder name for resources.
-     */
-    folder: string;
-    /**
-     * The icon name for this resource.
-     */
-    iconName: string;
-    isWorkforce?: boolean;
-    requirement?: EEducationType;
+export interface EDepositType { 
+    calculationType: ECalculationType;
     /**
      * The type name of this  transformed enum.
      */

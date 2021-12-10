@@ -1,18 +1,17 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {Subscription} from "rxjs";
-import {AlignedFitting, ShipClass, ShipyardApiService} from "../../../../../services/swagger";
+import {AlignedFitting, ResourceDeposit, ResourcesApiService, ShipClass, ShipyardApiService} from "../../../../../services/swagger";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {ShipClassComparator} from "../ShipClassComparator";
 
 @Component({
     selector: 'app-fitting-selection',
     templateUrl: './fitting-selection.component.html',
     styleUrls: ['./fitting-selection.component.scss']
 })
-export class FittingSelectionComponent implements AfterViewInit, OnChanges {
-
-    private subscriptions: Subscription[] = [];
+export class FittingSelectionComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * The user selected ShipClass.
@@ -54,6 +53,9 @@ export class FittingSelectionComponent implements AfterViewInit, OnChanges {
     /**
      * if the ship class which was created by the user is valid, it will appear here
      */
+    @Output()
+    designedShipClassOutputEmitter: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
+
     designedShipClassInput?: ShipClass;
 
     /**
@@ -79,7 +81,14 @@ export class FittingSelectionComponent implements AfterViewInit, OnChanges {
         scName: new FormControl({value: '', disabled: !!this.selectedShipClassInput})
     });
 
-    constructor(private shipYardApi: ShipyardApiService, private tokenStorage: TokenStorage) {
+    resourceDeposit?: ResourceDeposit;
+
+    compareClass?: ShipClass;
+
+    constructor(private shipYardApi: ShipyardApiService,
+                private tokenStorage: TokenStorage,
+                private resourceApi: ResourcesApiService) {
+        super();
     }
 
     ngAfterViewInit(): void {
@@ -90,6 +99,12 @@ export class FittingSelectionComponent implements AfterViewInit, OnChanges {
             }
         });
         this.subscriptions.push(sub);
+
+        sub = this.designedShipClassOutputEmitter.subscribe(event => {
+            this.designedShipClassInput = event;
+            this.setShipClass(this.designedShipClassInput)
+        });
+        this.subscriptions.push(sub!);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -118,11 +133,8 @@ export class FittingSelectionComponent implements AfterViewInit, OnChanges {
             } else {
                 this.form.controls.scName.enable();
             }
+            this.setShipClass(this.selectedShipClassInput)
         }
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     /**
@@ -139,26 +151,22 @@ export class FittingSelectionComponent implements AfterViewInit, OnChanges {
     storeClass() {
         let userID = this.tokenStorage.getUserID();
         if (!!userID && !!this.designedShipClassInput) {
-            let sub = this.shipYardApi.setShipClass(userID, this.designedShipClassInput).subscribe(resp => {
-                this.modifiedShipClassOutput.emit(resp);
-            });
+            let sub = this.shipYardApi.setShipClass(userID, this.designedShipClassInput)
+                .subscribe(resp => this.modifiedShipClassOutput.emit(resp));
             this.subscriptions.push(sub);
         }
     }
 
     /**
-     * sets the ship class and detects the state of the store-button
+     * sets the ship class and defines the state of the store-button
      * @param shipClass
      */
     setShipClass(shipClass?: ShipClass) {
         this.designedShipClassInput = shipClass;
         if (this.disabled != !this.designedShipClassInput) {
-            // to this only if changed not the https://angular.io/errors/NG0100 error
-            // and the svg which will not be rendered if this timeout is present at the initial rendering
-            setTimeout(() => {
-                this.disabled = !this.designedShipClassInput;
-            }, 200);
+            this.disabled = !this.designedShipClassInput;
         }
+        this.getCosts();
     }
 
     /**
@@ -176,5 +184,36 @@ export class FittingSelectionComponent implements AfterViewInit, OnChanges {
             });
             this.subscriptions.push(sub);
         }
+    }
+
+    /**
+     * fetches the costs for the current ship class selection
+     * @private
+     */
+    private getCosts() {
+        let userID = this.tokenStorage.getUserID();
+        if (!!this.designedShipClassInput && !!userID && this.idChangePending()) {
+            let sub = this.resourceApi.getShipClassCosts(userID, this.designedShipClassInput)
+                .subscribe(resp => this.resourceDeposit = resp);
+            this.subscriptions.push(sub);
+        } else if (!this.designedShipClassInput) {
+            this.resourceDeposit = undefined;
+            this.compareClass = undefined;
+        }
+    }
+
+    /**
+     * detects if there is a change from the last to the current version
+     * @private
+     */
+    private idChangePending() {
+        let result: boolean = false;
+        if (!!this.compareClass && !!this.designedShipClassInput) {
+            result = !ShipClassComparator.equals(this.compareClass, this.designedShipClassInput);
+        } else if (!this.compareClass && !!this.designedShipClassInput) {
+            result = true;
+        }
+        this.compareClass = this.designedShipClassInput;
+        return result;
     }
 }

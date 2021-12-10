@@ -1,20 +1,14 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {JobApiService, Planet} from "../../../../../services/swagger";
-import {Subscription} from "rxjs";
+import {JobApiService, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {Job} from "../../../../../services/swagger/model/job";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-jobs-list',
     templateUrl: './jobs-list.component.html',
     styleUrls: ['./jobs-list.component.scss']
 })
-export class JobsListComponent implements AfterViewInit, OnChanges {
-
-    /**
-     * every sub which should be cancelled on destroy
-     * @private
-     */
-    private subscriptions: Subscription[] = [];
+export class JobsListComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * the displayed construction
@@ -29,13 +23,17 @@ export class JobsListComponent implements AfterViewInit, OnChanges {
     selectedPlanetInput?: Planet;
     private selectedPlanetDefinition = "selectedPlanetInput";
 
+    resourceDeposit?: ResourceDeposit;
+
     /**
      * all active jobs on the planet
      * @private
      */
     runningJobs?: Job[];
 
-    constructor(private jobApi: JobApiService) {
+    constructor(private jobApi: JobApiService,
+                private resourceApi: ResourcesApiService) {
+        super();
     }
 
     ngAfterViewInit(): void {
@@ -44,17 +42,19 @@ export class JobsListComponent implements AfterViewInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedPlanetDefinition]) {
             if (this.selectedPlanetInput) {
-                const sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)
+                let sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)
                     .subscribe(resp => this.runningJobs = resp);
+                this.subscriptions.push(sub);
+
+
+                sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
+                    .subscribe(resp => {
+                        this.resourceDeposit = resp;
+                    });
                 this.subscriptions.push(sub);
             }
         }
     }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    }
-
 
     /**
      * sets the {@link currentlyOpenedItemIndex} for the opened item

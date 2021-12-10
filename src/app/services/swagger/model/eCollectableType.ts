@@ -10,13 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface IsIcon { 
+export interface ECollectableType { 
     /**
-     * The folder name for resources.
+     * The type name of this  transformed enum.
      */
-    folder: string;
-    /**
-     * The icon name for this resource.
-     */
-    iconName: string;
+    typeName: string;
 }

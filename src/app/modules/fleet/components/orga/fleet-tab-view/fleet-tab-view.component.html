@@ -1,9 +1,10 @@
 <mat-tab-group>
     <mat-tab [label]="actionTabTitles[0]">
         <div class="holder">
-            <app-fleet-display [fleetInput]="selectedFleetInput"></app-fleet-display>
-            <app-spacecraft-capabilities-display [fleetInput]="selectedFleetInput"></app-spacecraft-capabilities-display>
-            <app-fleet-move-display [fleetInput]="selectedFleetInput"></app-fleet-move-display>
+            <app-fleet-display [fleetInput]="selectedFleetInput">
+                <app-spacecraft-capabilities-display [fleetInput]="selectedFleetInput"></app-spacecraft-capabilities-display>
+                <app-fleet-move-display [fleetInput]="selectedFleetInput"></app-fleet-move-display>
+            </app-fleet-display>
         </div>
     </mat-tab>
     <mat-tab [label]="actionTabTitles[1]">

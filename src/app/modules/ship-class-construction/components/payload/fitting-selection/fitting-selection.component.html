@@ -1,3 +1,4 @@
+<app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit"></app-resource-deposit-overlay-display>
 <div class="fitting">
     <div class="flex-items-container">
         <button mat-button [disabled]="disabled" (click)="deleteClass()" class="ship-action-button">Delete ship class</button>
@@ -17,6 +18,7 @@
                         [selectedShipClassInput]="selectedShipClassInput"></app-ship-class-svg>
     <app-ship-class-fitting-selection [shipClassInput]="selectedShipClassInput"
                                       [shipClassNameInput]="shipClassNameOutput"
-                                      (designedShipClassOutput)="setShipClass($event)"
+                                      [designedShipClassInputEmitter]="designedShipClassOutputEmitter"
                                       (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-selection>
+    <!--(designedShipClassOutput)="setShipClass($event)"-->
 </div>

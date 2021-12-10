@@ -1,0 +1,27 @@
+@import "src/styles/variables";
+
+.box {
+  margin: 5px 5px 5px 5px;
+}
+
+.sticky {
+  position: relative;
+  top: 0;
+  width: 100%;
+}
+
+.modal {
+  z-index: 1000;
+  right: 25px;
+  position: fixed;
+  margin: 0 auto;
+  width: 120px;
+  background: $secondary-background-color;
+  opacity: 0.5;
+}
+
+.diffAmount {
+  font-size: 12px;
+  line-height: 18px;
+}
+

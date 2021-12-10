@@ -10,17 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface EEducationType { 
-    /**
-     * The folder name for resources.
-     */
-    folder: string;
-    /**
-     * The icon name for this resource.
-     */
-    iconName: string;
-    isWorkforce?: boolean;
-    requirement?: EEducationType;
+export interface HasTypeName { 
     /**
      * The type name of this  transformed enum.
      */

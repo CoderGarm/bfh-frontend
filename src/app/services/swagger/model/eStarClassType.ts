@@ -19,10 +19,16 @@ export interface EStarClassType {
      * The icon name for this resource.
      */
     iconName: string;
-    lightMinutesToHyperLimit?: number;
-    spectralClass?: string;
     /**
-     * The stars type type name.
+     * The hyper limit in light minutes..
+     */
+    lightMinutesToHyperLimit: number;
+    /**
+     * The spectral class.
+     */
+    spectralClass: string;
+    /**
+     * The type name of this  transformed enum.
      */
     typeName: string;
 }

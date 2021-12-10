@@ -11,7 +11,10 @@
  */
 
 export interface EFleetSizeType { 
-    fleetSize?: number;
+    /**
+     * The maximum fleet size which is defined by this entry.
+     */
+    fleetSize: number;
     /**
      * The folder name for resources.
      */
@@ -20,4 +23,8 @@ export interface EFleetSizeType {
      * The icon name for this resource.
      */
     iconName: string;
+    /**
+     * The type name of this  transformed enum.
+     */
+    typeName: string;
 }

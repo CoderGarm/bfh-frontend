@@ -1,27 +1,31 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {BuildingApiService, Construction, ConstructionApiService, ERefinementSequence, EResourceType, Planet, PlanetApiService} from "../../../../../services/swagger";
-import {Subscription} from "rxjs";
+import {
+    BuildingApiService,
+    Construction,
+    ConstructionApiService,
+    ERefinementSequence,
+    EResourceType,
+    Planet,
+    PlanetApiService,
+    PlannedConstruction,
+    ResourceDeposit,
+    ResourcesApiService
+} from "../../../../../services/swagger";
 import {MatChip, MatChipList} from "@angular/material/chips";
 import {FormControl} from "@angular/forms";
-import {ResourcesApiService} from "../../../../../services/swagger/api/resourcesApi.service";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-ground-construct',
     templateUrl: './ground-construct.component.html',
     styleUrls: ['./ground-construct.component.scss']
 })
-export class GroundConstructComponent implements OnChanges, AfterViewInit {
+export class GroundConstructComponent extends SubscriptionManager implements OnChanges, AfterViewInit {
 
     /**
      * the displayed construction
      */
     currentlyOpenedItemIndex?: Construction;
-
-    /**
-     * every sub which should be cancelled on destroy
-     * @private
-     */
-    private subscriptions: Subscription[] = [];
 
     /**
      * all possible construction which could be build
@@ -56,6 +60,8 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
     selectedPlanetInput?: Planet;
     private selectedPlanetDefinition = "selectedPlanetInput";
 
+    resourceDeposit?: ResourceDeposit;
+
     /**
      * the EResourceType mat chip list
      */
@@ -86,10 +92,14 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
      */
     constructionPossible: boolean = false;
 
+    private knownCosts: Map<String, ResourceDeposit> = new Map<String, ResourceDeposit>();
+    costsToDisplay?: ResourceDeposit;
+
     constructor(private constructionApi: ConstructionApiService,
                 private buildingApi: BuildingApiService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService) {
+        super();
     }
 
     ngAfterViewInit(): void {
@@ -107,7 +117,7 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
             .getEResourceTypes()
             .subscribe(resp => {
                 this.eResourceTypes = resp;
-                this.eResourceTypeFC.setValue(resp);
+                this.setResourceTypeFormControlData()
             });
         this.subscriptions.push(subscription);
 
@@ -115,7 +125,7 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
             .getERefinementSequences()
             .subscribe(resp => {
                 this.eRefinementSequences = resp;
-                this.eRefinementSequenceFC.setValue(resp);
+                this.setRefinementSequenceFormControlData()
             });
         this.subscriptions.push(subscription);
 
@@ -128,24 +138,48 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
         }
     }
 
+    /**
+     * sets the data as string to the fc
+     * @private
+     */
+    private setRefinementSequenceFormControlData() {
+        let typeNames = this.eRefinementSequences.map(r => r.typeName);
+        this.eRefinementSequenceFC.setValue(typeNames);
+    }
+
+    /**
+     * sets the data as string to the fc
+     * @private
+     */
+    private setResourceTypeFormControlData() {
+        let typeNames = this.eResourceTypes.map(r => r.typeName);
+        this.eResourceTypeFC.setValue(typeNames);
+    }
+
+    /**
+     * fetches the necessary information for the planet
+     * @private
+     */
     private fetchPlanet() {
         if (!!this.selectedPlanetInput && !!this.selectedPlanetInput.idPlanet) {
-            let subscription = this.constructionApi
+            let sub = this.constructionApi
                 .getPossibleConstructionsByPlanet(this.selectedPlanetInput.idPlanet)
                 .subscribe(resp => {
                     this.possibleConstructions = resp;
                     this.filterDisplayedConstructions();
                 });
-            this.subscriptions.push(subscription);
+            this.subscriptions.push(sub);
 
-            let sub = this.planetApi.isConstructionPossibleOnPlanet(this.selectedPlanetInput!.idPlanet)
+            sub = this.planetApi.isConstructionPossibleOnPlanet(this.selectedPlanetInput!.idPlanet)
                 .subscribe(resp => this.constructionPossible = resp);
             this.subscriptions.push(sub);
-        }
-    }
 
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+            sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
+                .subscribe(resp => {
+                    this.resourceDeposit = resp;
+                });
+            this.subscriptions.push(sub);
+        }
     }
 
     /**
@@ -253,5 +287,27 @@ export class GroundConstructComponent implements OnChanges, AfterViewInit {
                 }
             });
         this.subscriptions.push(sub);
+    }
+
+    showCosts(construction: Construction | null) {
+        if (!construction) {
+            this.costsToDisplay = undefined;
+            return;
+        }
+        let c: PlannedConstruction = {
+            idBuilding: construction.building.idBuilding,
+            targetLevel: construction.level + 1
+        }
+        let key: string = c.idBuilding + "-" + c.targetLevel;
+        let costs: ResourceDeposit | undefined = this.knownCosts.get(key)
+        if (!costs) {
+            let sub = this.resourceApi.getBuildingCosts(c)
+                .subscribe(resp => {
+                    costs = resp;
+                    this.knownCosts.set(key, resp);
+                });
+            this.subscriptions.push(sub);
+        }
+        this.costsToDisplay = costs;
     }
 }

@@ -10,17 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface EEducationType { 
+export interface ECalculationType { 
     /**
-     * The folder name for resources.
+     * The calculation type multiplier - to add or subtract with 1 or -1.
      */
-    folder: string;
-    /**
-     * The icon name for this resource.
-     */
-    iconName: string;
-    isWorkforce?: boolean;
-    requirement?: EEducationType;
+    multiplier: number;
     /**
      * The type name of this  transformed enum.
      */

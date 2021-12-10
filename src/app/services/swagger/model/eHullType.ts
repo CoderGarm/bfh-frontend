@@ -36,7 +36,7 @@ export interface EHullType {
      */
     type: string;
     /**
-     * The hull types type name.
+     * The type name of this  transformed enum.
      */
     typeName: string;
 }

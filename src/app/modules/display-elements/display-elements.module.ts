@@ -34,6 +34,7 @@ import {FleetMergeEditComponent} from './fleet-merge-edit/fleet-merge-edit.compo
 import {FleetMoveEditComponent} from './fleet-move-edit/fleet-move-edit.component';
 import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display.component';
 import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-factors-display.component';
+import {ResourceDepositOverlayDisplayComponent} from './resource-deposit-display/resource-deposit-overlay-display.component';
 
 @NgModule({
     declarations: [
@@ -71,6 +72,7 @@ import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-fac
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,
         MiningFactorsDisplayComponent,
+        ResourceDepositOverlayDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -109,7 +111,8 @@ import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-fac
         FleetMergeEditComponent,
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,
-        MiningFactorsDisplayComponent
+        MiningFactorsDisplayComponent,
+        ResourceDepositOverlayDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

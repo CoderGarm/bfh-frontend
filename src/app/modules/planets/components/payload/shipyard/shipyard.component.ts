@@ -1,27 +1,31 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {EHullType, Planet, PlanetApiService, ShipClass, ShipyardApiService, ShipyardConstructionOrder, ShipyardConstructionSelection} from "../../../../../services/swagger";
-import {Subscription} from "rxjs";
+import {
+    EHullType,
+    Planet,
+    PlanetApiService,
+    ResourceDeposit,
+    ResourcesApiService,
+    ShipClass,
+    ShipyardApiService,
+    ShipyardConstructionOrder,
+    ShipyardConstructionSelection
+} from "../../../../../services/swagger";
 import {FormControl} from "@angular/forms";
 import {MatChip, MatChipList} from "@angular/material/chips";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-shipyard',
     templateUrl: './shipyard.component.html',
     styleUrls: ['./shipyard.component.scss']
 })
-export class ShipyardComponent implements AfterViewInit, OnChanges {
+export class ShipyardComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * the displayed ship class
      */
     currentlyOpenedItemIndex?: ShipClass;
-
-    /**
-     * every sub which should be cancelled on destroy
-     * @private
-     */
-    private subscriptions: Subscription[] = [];
 
     /**
      * the productable ship classes
@@ -40,6 +44,8 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
     @Input()
     selectedPlanetInput?: Planet;
     private selectedPlanetDefinition = "selectedPlanetInput";
+
+    resourceDeposit?: ResourceDeposit;
 
     /**
      * all EResourceType enum elements
@@ -76,9 +82,13 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
      */
     selection: ShipyardConstructionSelection[] = [];
 
+    costsToDisplay?: ResourceDeposit;
+
     constructor(private tokenStorage: TokenStorage,
                 private shipyardApi: ShipyardApiService,
-                private planetApi: PlanetApiService) {
+                private planetApi: PlanetApiService,
+                private resourceApi: ResourcesApiService) {
+        super();
     }
 
     ngAfterViewInit(): void {
@@ -86,10 +96,19 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
             .getEHullTypes()
             .subscribe(resp => {
                 this.eHullTypes = resp;
-                this.eHullTypeFC.setValue(resp);
+                this.setHullTypeFormControlData();
                 this.filterDisplayedShipClasses();
             });
         this.subscriptions.push(subscription);
+    }
+
+    /**
+     * sets the data as string to the fc
+     * @private
+     */
+    private setHullTypeFormControlData() {
+        let typeNames = this.eHullTypes.map(r => r.typeName);
+        this.eHullTypeFC.setValue(typeNames);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -112,6 +131,12 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
                     idPlanet: this.selectedPlanetInput!.idPlanet,
                     shipJobPayload: []
                 }
+
+                let sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
+                    .subscribe(resp => {
+                        this.resourceDeposit = resp;
+                    });
+                this.subscriptions.push(sub);
             }
         }
 
@@ -132,10 +157,6 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
             let subscription = this.planetApi.buildShip(this.order).subscribe(resp => this.shipyardJobPossible = !resp);
             this.subscriptions.push(subscription);
         }
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     /**
@@ -232,6 +253,24 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
         return !!singleSelection.amount ? singleSelection.amount : 0;
     }
 
+    /**
+     * fetches the costs for the current selection
+     * @private
+     */
+    private getCosts() {
+        if (!!this.order && this.selection.length != 0) {
+            let sub = this.resourceApi.getShipyardOrderCosts(this.selection)
+                .subscribe(resp => this.costsToDisplay = resp);
+            this.subscriptions.push(sub);
+        } else {
+            this.costsToDisplay = undefined;
+        }
+    }
+
+    /**
+     * subtracts one of the type for the selection
+     * @param shipClass
+     */
     sub(shipClass: ShipClass) {
         const selection: ShipyardConstructionSelection[] = this.selection.filter(s => s.idShipClass === shipClass.idShipClass);
         if (!selection) {
@@ -244,8 +283,13 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
         } else {
             singleSelection.amount--;
         }
+        this.getCosts();
     }
 
+    /**
+     * adds one of the type for the selection
+     * @param shipClass
+     */
     add(shipClass: ShipClass) {
         const selection: ShipyardConstructionSelection[] = this.selection.filter(s => s.idShipClass === shipClass.idShipClass);
         if (!selection || selection.length < 1) {
@@ -265,5 +309,6 @@ export class ShipyardComponent implements AfterViewInit, OnChanges {
         if (indexOf == -1) {
             this.selection.push(singleSelection);
         }
+        this.getCosts();
     }
 }

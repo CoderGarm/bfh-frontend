@@ -1,15 +1,15 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {Subscription} from "rxjs";
-import {ShipClass} from "../../../../../services/swagger";
+import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
+import {ShipClassComparator} from "../ShipClassComparator";
 
 @Component({
     selector: 'app-fitting-display',
     templateUrl: './fitting-display.component.html',
     styleUrls: ['./fitting-display.component.scss']
 })
-export class FittingDisplayComponent implements AfterViewInit, OnChanges {
-
-    private subscriptions: Subscription[] = [];
+export class FittingDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * The user selected ShipClass.
@@ -41,7 +41,13 @@ export class FittingDisplayComponent implements AfterViewInit, OnChanges {
      */
     shipClassName: string = "";
 
-    constructor() {
+    resourceDeposit?: ResourceDeposit;
+
+    compareClass?: ShipClass;
+
+    constructor(private resourceApi: ResourcesApiService,
+                private tokenStorage: TokenStorage) {
+        super();
     }
 
     ngAfterViewInit(): void {
@@ -65,9 +71,37 @@ export class FittingDisplayComponent implements AfterViewInit, OnChanges {
                 this.shipClassName = "";
             }
         }
+        this.getCosts();
     }
 
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    /**
+     * fetches the costs for the current selected ship class
+     * @private
+     */
+    private getCosts() {
+        let userID = this.tokenStorage.getUserID();
+        if (!!this.selectedShipClassInput && !!userID && this.idChangePending()) {
+            let sub = this.resourceApi.getShipClassCosts(userID, this.selectedShipClassInput)
+                .subscribe(resp => this.resourceDeposit = resp);
+            this.subscriptions.push(sub);
+        } else if (!this.selectedShipClassInput) {
+            this.resourceDeposit = undefined;
+            this.compareClass = undefined;
+        }
+    }
+
+    /**
+     * detects if there is a change from the last to the current version
+     * @private
+     */
+    private idChangePending() {
+        let result: boolean = false;
+        if (!!this.compareClass && !!this.selectedShipClassInput) {
+            result = !ShipClassComparator.equals(this.compareClass, this.selectedShipClassInput);
+        } else if (!this.compareClass && !!this.selectedShipClassInput) {
+            result = true;
+        }
+        this.compareClass = this.selectedShipClassInput;
+        return result;
     }
 }

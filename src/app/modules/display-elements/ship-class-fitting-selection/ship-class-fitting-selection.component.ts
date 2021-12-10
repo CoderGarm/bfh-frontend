@@ -38,8 +38,8 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
     /**
      * emits the least changes in the given ship class
      */
-    @Output()
-    designedShipClassOutput: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
+    @Input()
+    designedShipClassInputEmitter?: EventEmitter<ShipClass>;
 
     /**
      * emits the least changes in the given ship class
@@ -449,7 +449,9 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
     private createAndEmitDesignedShipClass() {
 
         if (!this.hullSelection || !this.shipClassNameInput) {
-            this.designedShipClassOutput.emit(undefined);
+            if (!!this.designedShipClassInputEmitter) {
+                this.designedShipClassInputEmitter.emit(undefined);
+            }
             return;
         }
 
@@ -522,7 +524,9 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
             },
 
         };
-        this.designedShipClassOutput.emit(output);
+        if (!!this.designedShipClassInputEmitter) {
+            this.designedShipClassInputEmitter.emit(output);
+        }
     }
 
     /**

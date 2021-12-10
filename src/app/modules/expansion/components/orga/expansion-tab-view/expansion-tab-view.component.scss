@@ -27,7 +27,6 @@ tr.expandable-detail-row {
 }
 
 .expandable-element-detail {
-  overflow: hidden;
   display: flex;
   overflow-y: scroll;
 }
@@ -39,7 +38,7 @@ mat-list {
 }
 
 .mat-list-item-content, .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
-  height: 78px;
+  height: 85px;
 }
 
 .planet-card {

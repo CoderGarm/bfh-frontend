@@ -20,6 +20,10 @@ import { Observable }                                        from 'rxjs';
 import { EResourceType } from '../model/eResourceType';
 import { FrontendError } from '../model/frontendError';
 import { MiningFactors } from '../model/miningFactors';
+import { PlannedConstruction } from '../model/plannedConstruction';
+import { ResourceDeposit } from '../model/resourceDeposit';
+import { ShipClass } from '../model/shipClass';
+import { ShipyardConstructionSelection } from '../model/shipyardConstructionSelection';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -56,6 +60,51 @@ export class ResourcesApiService {
         return false;
     }
 
+
+    /**
+     * Get the costs of the given construction.
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getBuildingCosts(body?: PlannedConstruction, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getBuildingCosts(body?: PlannedConstruction, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getBuildingCosts(body?: PlannedConstruction, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getBuildingCosts(body?: PlannedConstruction, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costs`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * Get all EResourceTypes.
@@ -95,7 +144,7 @@ export class ResourcesApiService {
     }
 
     /**
-     * Get all EResourceTypes.
+     * Get the mining factors of the planet.
      * 
      * @param idPlanet idPlanet
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -126,8 +175,145 @@ export class ResourcesApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<MiningFactors>('get',`${this.basePath}/api/private/resources/types/${encodeURIComponent(String(idPlanet))}`,
+        return this.httpClient.request<MiningFactors>('get',`${this.basePath}/api/private/resources/miningFactors/${encodeURIComponent(String(idPlanet))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EResourceTypes.
+     * 
+     * @param idPlanet idPlanet
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getResourceDeposit(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getResourceDeposit(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getResourceDeposit(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getResourceDeposit(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getResourceDeposit.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/resourceDeposit/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param idUser idUser
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getShipClassCosts(idUser: number, body?: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipClassCosts(idUser: number, body?: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipClassCosts(idUser: number, body?: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipClassCosts(idUser: number, body?: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getShipClassCosts.');
+        }
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipClass/${encodeURIComponent(String(idUser))}`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipyard`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

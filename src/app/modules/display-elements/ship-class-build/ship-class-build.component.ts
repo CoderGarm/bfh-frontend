@@ -23,7 +23,7 @@ export class ShipClassBuildComponent implements AfterViewInit {
     /**
      * constructs and returns the url to the icon
      */
-    getLink(): string { // todo check all of these string to enum changes
+    getLink(): string {
         let folder = this.shipClassInput.hull.hullType.folder;
         let iconName = this.shipClassInput.hull.hullType.iconName;
         //todo check

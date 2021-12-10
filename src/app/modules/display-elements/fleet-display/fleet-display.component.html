@@ -1,7 +1,5 @@
 <mat-card *ngIf="!!fleetInput">
     <mat-card-header>
-        <!--<div mat-card-avatar class="avatar-image"
-             [ngStyle]="{'background-image': 'url(&quot;http://localhost:8080/vaadin/icons/fleets/png64x/small_fleet_c.png&quot;)'}"></div>-->
         <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="construction">
         <mat-card-title>
             {{fleetInput.name}}
@@ -12,5 +10,6 @@
     </mat-card-header>
     <mat-card-content class="flex-items-container">
         <app-fleet-formation-display [selectedFleetInput]="fleetInput"></app-fleet-formation-display>
+        <ng-content></ng-content>
     </mat-card-content>
 </mat-card>

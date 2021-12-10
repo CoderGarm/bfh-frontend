@@ -25,7 +25,7 @@ export class FleetDisplayComponent implements AfterViewInit {
      * constructs and returns the url to the icon
      */
     getLink(): string {
-        //todo check
+        //todo amend fleet size icon
         return "assets/icons/fleets/png64x/small_fleet_c.png";
     }
 }

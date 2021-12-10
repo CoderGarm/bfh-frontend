@@ -9,16 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Building } from './building';
 
-export interface Construction { 
-    building: Building;
+export interface PlannedConstruction { 
     /**
-     * The ID of this construction.
+     * The building which should be build.
      */
-    idConstruction: number;
+    idBuilding: number;
     /**
-     * The level of this construction.
+     * The target level.
      */
-    level: number;
+    targetLevel: number;
 }

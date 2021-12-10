@@ -9,16 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Building } from './building';
+import { EEducationType } from './eEducationType';
 
-export interface Construction { 
-    building: Building;
+export interface HumanResourceAmount { 
     /**
-     * The ID of this construction.
+     * The amount for the resource.
      */
-    idConstruction: number;
-    /**
-     * The level of this construction.
-     */
-    level: number;
+    amount: number;
+    resourceType: EEducationType;
 }

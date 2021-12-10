@@ -1,24 +1,22 @@
+<app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit"
+                                      [costs]="costsToDisplay"></app-resource-deposit-overlay-display>
 <div>
     <p>Filter</p>
     <mat-form-field appearance="outline">
         <mat-label>Resource types</mat-label>
-        <mat-chip-list #resourceTypeChipList aria-label="Resource types"
-                       multiple
-                       [formControl]="eResourceTypeFC">
+        <mat-chip-list #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
             <mat-chip
                     *ngFor="let eResourceType of eResourceTypes"
-                    [value]="eResourceType"
+                    [value]="eResourceType.typeName"
                     (click)="clickAChip(eResourceType.typeName, resourceTypeChipList)">
-                {{eResourceType}}
+                {{eResourceType.typeName}}
             </mat-chip>
         </mat-chip-list>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <mat-label>Resource types</mat-label>
-        <mat-chip-list #productCategoryChipList aria-label="Resource types"
-                       multiple
-                       [formControl]="eProductionCategoryFC">
+        <mat-label>Product category</mat-label>
+        <mat-chip-list #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
             <mat-chip
                     *ngFor="let category of eProductionCategories as string"
                     [value]="category"
@@ -29,15 +27,13 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <mat-label>Resource types</mat-label>
-        <mat-chip-list #refinementSequenceChipList aria-label="Resource types"
-                       multiple
-                       [formControl]="eRefinementSequenceFC">
+        <mat-label>Refinement sequence</mat-label>
+        <mat-chip-list #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
             <mat-chip
                     *ngFor="let sequence of eRefinementSequences"
-                    [value]="sequence"
+                    [value]="sequence.typeName"
                     (click)="clickAChip(sequence.typeName, refinementSequenceChipList)">
-                {{sequence}}
+                {{sequence.typeName}}
             </mat-chip>
         </mat-chip-list>
     </mat-form-field>
@@ -48,10 +44,10 @@
 <mat-accordion>
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"
                          (opened)="setOpened(construction)"
-                         (closed)="setClosed(construction)">
+                         (closed)="setClosed(construction)" (mouseover)="showCosts(construction)" (mouseout)="showCosts(null)">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                {{construction.building.name}}
+                {{construction.building.name}}, Level {{construction.level}}
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(construction)">
                 {{construction.building.description}}

@@ -1,0 +1,16 @@
+<div class="sticky">
+    <div class="modal" *ngIf="!!resourceDeposit">
+        <p>Materials</p>
+        <div *ngFor="let resource of resourceDeposit.resources" class="box">
+            <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.singularName}}"
+                 matTooltip="{{resource.resourceType.typeName}}"> x {{resource.amount}}
+            <div *ngIf="!!costs" class="diffAmount">{{getReducerStringForResources(resource.resourceType)}}</div>
+        </div>
+        <p>Manpower</p>
+        <div *ngFor="let resource of resourceDeposit.humanResources" class="box">
+            <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}"
+                 matTooltip="{{resource.resourceType.typeName}}"> x {{resource.amount}}
+            <div *ngIf="!!costs" class="diffAmount">{{getReducerStringForHumans(resource.resourceType)}}</div>
+        </div>
+    </div>
+</div>

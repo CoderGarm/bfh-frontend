@@ -79,7 +79,6 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
     getLink(hullType: EHullType): string {
         let folder = hullType.folder;
         let iconName = hullType.iconName;
-        //todo check
         return "assets/" + folder + "/png24x/" + iconName + "_c.png";
     }
 }
