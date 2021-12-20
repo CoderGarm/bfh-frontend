@@ -9,10 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Planet } from './planet';
+import { Orbit } from './orbit';
 import { StarSystem } from './starSystem';
 
 export interface FleetOrbit { 
-    planet?: Planet;
-    system: StarSystem;
+    orbit?: Orbit;
+    system?: StarSystem;
 }

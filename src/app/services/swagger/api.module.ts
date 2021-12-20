@@ -3,6 +3,7 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
+import { AdminApiService } from './api/adminApi.service';
 import { AuthApiService } from './api/authApi.service';
 import { BuildingApiService } from './api/buildingApi.service';
 import { ChatApiService } from './api/chatApi.service';
@@ -12,10 +13,12 @@ import { FleetApiService } from './api/fleetApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
+import { ReportApiService } from './api/reportApi.service';
 import { ResearchApiService } from './api/researchApi.service';
 import { ResourcesApiService } from './api/resourcesApi.service';
 import { ShipyardApiService } from './api/shipyardApi.service';
 import { StarMapApiService } from './api/starMapApi.service';
+import { TickApiService } from './api/tickApi.service';
 import { UserApiService } from './api/userApi.service';
 
 @NgModule({
@@ -23,6 +26,7 @@ import { UserApiService } from './api/userApi.service';
   declarations: [],
   exports:      [],
   providers: [
+    AdminApiService,
     AuthApiService,
     BuildingApiService,
     ChatApiService,
@@ -32,10 +36,12 @@ import { UserApiService } from './api/userApi.service';
     JobApiService,
     ModuleApiService,
     PlanetApiService,
+    ReportApiService,
     ResearchApiService,
     ResourcesApiService,
     ShipyardApiService,
     StarMapApiService,
+    TickApiService,
     UserApiService ]
 })
 export class ApiModule {

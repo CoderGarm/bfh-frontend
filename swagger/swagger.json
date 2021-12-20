@@ -663,6 +663,32 @@
         }
       }
     },
+    "/api/private/fleet/fleetDistribution": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all the star systems which are holding fleets with the fleet's owner.",
+        "operationId": "getFleetDistribution",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FleetDistributionPerUser"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
     "/api/private/fleet/inSystem/{idStarSystem}": {
       "get": {
         "tags": [
@@ -680,6 +706,76 @@
             "format": "int32"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Fleet"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/inSystem/{idStarSystem}/perUser/{idOwner}": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all fleets inside of a star system for a specific user.",
+        "operationId": "getFleetsBySystemAndOwner",
+        "parameters": [
+          {
+            "name": "idOwner",
+            "in": "path",
+            "description": "idOwner",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "idStarSystem",
+            "in": "path",
+            "description": "idStarSystem",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Fleet"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/interstellarMovement": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all fleets inside of a star system.",
+        "operationId": "getInterstellarMovingFleets",
         "responses": {
           "200": {
             "description": "successful",
@@ -783,6 +879,54 @@
         }
       }
     },
+    "/api/private/fleet/moveFleets/{idUser}": {
+      "post": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Moves a fleet to another celestial.",
+        "operationId": "moveFleets",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "moves",
+            "description": "moves",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FleetMove"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Fleet"
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
     "/api/private/fleet/perUser/{idUser}": {
       "get": {
         "tags": [
@@ -850,6 +994,54 @@
             "description": "successful",
             "schema": {
               "$ref": "#/definitions/Move"
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "schema": {
+              "$ref": "#/definitions/FrontendError"
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/planMoves/{idUser}": {
+      "post": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Plan a movement of a fleet to another celestial.",
+        "operationId": "planMovements",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "moves",
+            "description": "moves",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FleetMove"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Move"
+              }
             }
           },
           "400": {
@@ -2952,6 +3144,27 @@
       },
       "title": "FleetCapabilities"
     },
+    "FleetDistributionPerUser": {
+      "type": "object",
+      "required": [
+        "starSystem",
+        "users"
+      ],
+      "properties": {
+        "starSystem": {
+          "description": "The system which includes the fleets.",
+          "$ref": "#/definitions/StarSystem"
+        },
+        "users": {
+          "type": "array",
+          "description": "The owner of the fleets in the system.",
+          "items": {
+            "$ref": "#/definitions/UserJson"
+          }
+        }
+      },
+      "title": "FleetDistributionPerUser"
+    },
     "FleetMerge": {
       "type": "object",
       "required": [
@@ -2975,19 +3188,23 @@
     "FleetMove": {
       "type": "object",
       "required": [
-        "idFleetToMove",
-        "idTargetPlanet"
+        "idFleetToMove"
       ],
       "properties": {
         "idFleetToMove": {
           "type": "integer",
           "format": "int32",
-          "description": "The fleet which must be merged."
+          "description": "The fleet which must be moved."
         },
         "idTargetPlanet": {
           "type": "integer",
           "format": "int32",
-          "description": "The fleet which is the target of the merge."
+          "description": "The planet which is the target of the movement."
+        },
+        "idTargetSystem": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The system which is the target of the movement."
         }
       },
       "title": "FleetMove"
@@ -3268,6 +3485,11 @@
         "targetOrbit"
       ],
       "properties": {
+        "idFleetInMotion": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The fleet which is in motion."
+        },
         "moveDoneAtZero": {
           "type": "integer",
           "format": "int32",

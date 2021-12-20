@@ -1,0 +1,11 @@
+<h2 *ngIf="!!destination">Select the fleet which should move to {{destination!.name}}</h2>
+<mat-card *ngFor="let fleet of fleets">
+    <mat-card-header>
+        <mat-card-subtitle *ngIf="!!plannedMovements"> in {{getTicksLeftForFleet(fleet)}} ticks</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-checkbox (change)="selectForFlight($event.checked, fleet)">Select for flight</mat-checkbox>
+        <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
+        <app-spacecraft-capabilities-display [fleetInput]="fleet"></app-spacecraft-capabilities-display>
+    </mat-card-content>
+</mat-card>

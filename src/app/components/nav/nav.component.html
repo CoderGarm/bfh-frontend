@@ -1,14 +1,19 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <button mat-icon-button aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>
     </button>
     <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">Battle for Honor</button>
+    <span class="spacer"></span>
+    <div *ngIf="!!currentTick">Current tick {{currentTick.tickNo}}</div>
     <span class="spacer"></span>
     <button mat-flat-button color="primary" routerLink='/register' *ngIf='!isLoggedIn'>
         Register
     </button>
     <button mat-flat-button color="primary" routerLink='/login' *ngIf='!isLoggedIn'>
         Login
+    </button>
+    <button mat-flat-button color="primary" (click)='doTick()' *ngIf='isLoggedIn'>
+        Do tick
     </button>
     <button mat-flat-button color="primary" routerLink='/profile' *ngIf='isLoggedIn'>
         Profile

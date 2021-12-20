@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Construction, Planet} from "../../../../../services/swagger";
+import {Planet} from "../../../../../services/swagger";
 import {MatTabGroup} from "@angular/material/tabs";
 
 @Component({
@@ -13,8 +13,6 @@ export class PlanetTabViewComponent implements OnInit {
 
     @ViewChild((MatTabGroup))
     matTabGroup?: MatTabGroup;
-
-    constructions: Construction[] = [];
 
     /**
      * The user selected planet.

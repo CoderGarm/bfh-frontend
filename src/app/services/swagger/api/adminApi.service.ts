@@ -18,14 +18,14 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
-import { StarSystem } from '../model/starSystem';
+import { Tick } from '../model/tick';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class StarMapApiService {
+export class AdminApiService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -57,20 +57,15 @@ export class StarMapApiService {
 
 
     /**
-     * Get all planets of this system
+     * Get the current tick.
      * 
-     * @param idStarSystem idStarSystem
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getStarSystem(idStarSystem: number, observe?: 'body', reportProgress?: boolean): Observable<StarSystem>;
-    public getStarSystem(idStarSystem: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystem>>;
-    public getStarSystem(idStarSystem: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystem>>;
-    public getStarSystem(idStarSystem: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idStarSystem === null || idStarSystem === undefined) {
-            throw new Error('Required parameter idStarSystem was null or undefined when calling getStarSystem.');
-        }
+    public doTick(observe?: 'body', reportProgress?: boolean): Observable<Tick>;
+    public doTick(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Tick>>;
+    public doTick(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Tick>>;
+    public doTick(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -88,44 +83,7 @@ export class StarMapApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<StarSystem>('get',`${this.basePath}/api/private/starMap/star-systems/${encodeURIComponent(String(idStarSystem))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all star systems
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getStarSystems(observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystem>>;
-    public getStarSystems(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystem>>>;
-    public getStarSystems(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystem>>>;
-    public getStarSystems(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<StarSystem>>('get',`${this.basePath}/api/private/starMap/star-systems`,
+        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/admin/doTick`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

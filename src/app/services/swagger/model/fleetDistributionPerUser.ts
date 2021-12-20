@@ -9,10 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { StarSystem } from './starSystem';
+import { UserJson } from './userJson';
 
-export interface ECollectableType { 
+export interface FleetDistributionPerUser { 
+    starSystem: StarSystem;
     /**
-     * The type name of this  transformed enum.
+     * The owner of the fleets in the system.
      */
-    typeName: string;
+    users: Array<UserJson>;
 }

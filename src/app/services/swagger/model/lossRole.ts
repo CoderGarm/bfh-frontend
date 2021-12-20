@@ -9,16 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Orbit } from './orbit';
+import { ShipClass } from './shipClass';
+import { UserJson } from './userJson';
 
-export interface FleetMove { 
-    destinationOrbit?: Orbit;
+export interface LossRole { 
+    owner: UserJson;
+    shipClass: ShipClass;
     /**
-     * The system which is the target of the movement.
+     * The name of the war ship which was destroyed.
      */
-    idDestinationSystem?: number;
-    /**
-     * The fleet which must be moved.
-     */
-    idFleetToMove: number;
+    warShipName: string;
 }

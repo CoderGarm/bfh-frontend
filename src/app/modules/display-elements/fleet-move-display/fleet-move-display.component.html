@@ -1,6 +1,6 @@
 <mat-card *ngIf="!!fleetInput && !!fleetInput.move">
     <mat-card-header>
-        <mat-card-title>Move {{fleetInput!.name}} to {{fleetInput!.move!.targetOrbit!.planet!.name!}}</mat-card-title>
+        <mat-card-title>Move {{fleetInput!.name}} to {{destinationRepresentation}}</mat-card-title>
         <mat-card-subtitle>{{getTicksLeft()}} of {{fleetInput!.move!.originalDuration}} ticks</mat-card-subtitle>
     </mat-card-header>
 </mat-card>

@@ -21,6 +21,10 @@ export interface Fleet {
      * The id.
      */
     idFleet: number;
+    /**
+     * If the fleet can run interstellar movements.
+     */
+    isFTLCapable: boolean;
     move?: Move;
     /**
      * The name of the fleet

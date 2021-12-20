@@ -1,21 +1,25 @@
-import {ArrayXY, Circle, CurveCommand, G, LineCommand, PathArrayAlias, Polygon, Shape, StrokeData, Svg, Text} from "@svgdotjs/svg.js";
-import {Fleet, FleetOrbit, Move, Orbit} from "../../../services/swagger";
+import {ArrayXY, CurveCommand, G, LineCommand, PathArrayAlias, Shape, StrokeData, Svg, Text} from "@svgdotjs/svg.js";
+import {Fleet, FleetOrbit, Move, Orbit, Planet, StarSystem} from "../../../services/swagger";
 import {timer} from "rxjs";
 import {RestrictedFleetArea} from "./restricted-fleet-area";
 import {AreaDefinition} from "./area-definition";
 import {CelestialAreaDefinition} from "./celestial-area-definition";
 import {OrbitDefinition} from "./OrbitDefinition";
+import {TokenStorage} from "../../../services/authentication/token-storage.service";
+import {SubscriptionManager} from "../../../SubscriptionManager";
 
-export type EViewBoxType = 'UNIVERSE' | 'STAR_SYSTEM';
-export const EViewBoxType = {
-    UNIVERSE: 'UNIVERSE' as EViewBoxType,
-    STAR_SYSTEM: 'STAR_SYSTEM' as EViewBoxType
-};
+export class SystemViewHelper extends SubscriptionManager {
 
-export class ViewHelper {
+    private readonly FLEET_SHARK_COLOR_HOSTILE = "red";
+    private readonly FLEET_SHARK_COLOR_OWN = "green";
 
     private readonly COURSE_PLOT_COLOR_OUTBOUND: string = "green";
     private readonly COURSE_PLOT_COLOR_INBOUND: string = "red";
+
+    private readonly NOT_COLONIZED_COLOR = "darkgoldenrod";
+    private readonly IS_COLONIZED_BY_USER_COLOR = "darkolivegreen";
+    private readonly COLONIZED_BY_OTHERS_COLOR = "#6f1585";
+    private readonly COLONIZABLE_SYSTEM_MARKER_COLOR = "#306f91";
 
     private orbits?: Orbit[];
 
@@ -30,27 +34,27 @@ export class ViewHelper {
     private ORBIT_SELECTOR_ID_PREFIX: string = Math.random() + "-orbit";
     private FLEET_SHARK__SELECTOR_ID_PREFIX: string = Math.random() + "-fleet-shark";
 
-    private celestialBodySvgMap: Map<String, Circle> = new Map<String, Circle>();
     private celestialBodyMap: Map<String, Orbit> = new Map<String, Orbit>();
 
-    private orbitSvgMap: Map<String, Circle> = new Map<String, Circle>();
     private orbitsMap: Map<String, Orbit> = new Map<String, Orbit>();
 
-    private fleetOrbits: FleetOrbit[] = [];
-    private fleetsInOrbits: Map<FleetOrbit, Fleet> = new Map<FleetOrbit, Fleet>();
     private fleetsInOrbitsMap: Map<String, Fleet> = new Map<String, Fleet>();
-    private fleetsInOrbitSVGMap: Map<String, Polygon> = new Map<String, Polygon>();
-    private fleetOrbitsInOrbitsMap: Map<String, FleetOrbit> = new Map<String, FleetOrbit>();
-    private fleetsInOrbitTextSVGMap: Map<String, Text> = new Map<String, Text>();
-    private fleetsByTextSVGMap: Map<Text, Fleet> = new Map<Text, Fleet>();
+    private fleetTextsByIdSVGMap: Map<String, Text> = new Map<String, Text>();
+    private fleetsInOrbitByTextSVGMap: Map<Text, Fleet> = new Map<Text, Fleet>();
 
     private restrictedAreasByOrbit: Map<String, RestrictedFleetArea[]> = new Map<String, RestrictedFleetArea[]>();
 
     private areaDefinitions: AreaDefinition[] = [];
     private groupsByID: Map<String, G> = new Map<String, G>();
     private celestialAreas: CelestialAreaDefinition[] = [];
+    /**
+     * the radius of the hyper limit
+     * @private
+     */
+    private hyperLimit?: number;
 
-    constructor() {
+    constructor(protected tokenStorage: TokenStorage) {
+        super();
     }
 
     /**
@@ -60,17 +64,11 @@ export class ViewHelper {
         if (!!this.canvas) {
             // remove all elements from canvas a little bit more performant
             this.canvas.node.innerHTML = '';
-            this.celestialBodySvgMap.clear();
             this.celestialBodyMap.clear();
-            this.orbitSvgMap.clear();
             this.orbitsMap.clear();
-            this.fleetOrbits = [];
-            this.fleetsInOrbits.clear();
             this.fleetsInOrbitsMap.clear();
-            this.fleetsInOrbitSVGMap.clear();
-            this.fleetOrbitsInOrbitsMap.clear();
-            this.fleetsInOrbitTextSVGMap.clear();
-            this.fleetsByTextSVGMap.clear();
+            this.fleetTextsByIdSVGMap.clear();
+            this.fleetsInOrbitByTextSVGMap.clear();
             this.restrictedAreasByOrbit.clear();
             this.areaDefinitions = [];
             this.celestialAreas = [];
@@ -91,15 +89,20 @@ export class ViewHelper {
                       dragEndForFleet: (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => void) {
 
         fleetsInMotion.forEach((fleets, move) => {
-
+            if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
+                return;
+            }
             let {color, arr} = this.createCoursePlot(move);
 
             let path = this.canvas!.path(arr).fill("none").stroke({color: color, width: 1});
             fleets.forEach(fleet => {
+                if (!fleet.move || !fleet.move.startOrbit.orbit || !fleet.move.targetOrbit.orbit) {
+                    return;
+                }
 
-                let startOrbit = fleet.move!.startOrbit.planet!.orbit;
-                let targetOrbit = fleet.move!.targetOrbit.planet!.orbit;
-                let distance = ViewHelper.calculateDistanceOfPoints([startOrbit.xCoordinate, startOrbit.yCoordinate], [targetOrbit.xCoordinate, targetOrbit.yCoordinate]);
+                let startOrbit = fleet.move.startOrbit.orbit;
+                let targetOrbit = fleet.move.targetOrbit.orbit;
+                let distance = SystemViewHelper.calculateDistanceOfPoints([startOrbit.xCoordinate, startOrbit.yCoordinate], [targetOrbit.xCoordinate, targetOrbit.yCoordinate]);
 
                 let part = (fleet.move!.originalDuration - fleet.move!.moveDoneAtZero) / fleet.move!.originalDuration;
                 if (part < 0.1) {
@@ -111,7 +114,7 @@ export class ViewHelper {
 
                 let pointAt = path.pointAt(coveredTrackLength);
 
-                let fleetSharkPoints: ArrayXY[] = ViewHelper.defineFleetSharkPoints(pointAt.x, pointAt.y);
+                let fleetSharkPoints: ArrayXY[] = SystemViewHelper.defineFleetSharkPoints(pointAt.x, pointAt.y);
                 let fleetSharkID = this.getFleetSharkID(fleet);
 
                 this.createFleetSharkAndPrint(fleetSharkID, dragEndForFleet, fleetSharkPoints, dblClickForFleet, fleet);
@@ -126,12 +129,14 @@ export class ViewHelper {
      * @private
      */
     private createCoursePlot(move: Move) {
-        // todo check start planet's orbit
-        let startX: number = move.startOrbit.planet!.orbit.xCoordinate;
-        let startY: number = move.startOrbit.planet!.orbit.yCoordinate;
+        if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
+            throw new Error("The move should have a origin and a destination.");
+        }
+        let startX: number = move.startOrbit.orbit.xCoordinate;
+        let startY: number = move.startOrbit.orbit.yCoordinate;
 
-        let endX: number = move.targetOrbit.planet!.orbit.xCoordinate;
-        let endY: number = move.targetOrbit.planet!.orbit.yCoordinate;
+        let endX: number = move.targetOrbit.orbit.xCoordinate;
+        let endY: number = move.targetOrbit.orbit.yCoordinate;
 
         let relativeTargetX: number = endX - startX;
         let relativeTargetY: number = endY - startY;
@@ -147,7 +152,7 @@ export class ViewHelper {
         }
 
         let color: string;
-        if (ViewHelper.calculateDistance(startX, startY) <= ViewHelper.calculateDistance(endX, endY)) {
+        if (SystemViewHelper.calculateDistance(startX, startY) <= SystemViewHelper.calculateDistance(endX, endY)) {
             color = this.COURSE_PLOT_COLOR_OUTBOUND;
             // outbound cX is negative
             qXMultiplier = -1;
@@ -179,16 +184,13 @@ export class ViewHelper {
                       dragEndForFleet: (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => void) {
         this.setCanvas(canvas);
 
-        this.fleetsInOrbits = fleetOrbits;
-        this.fleetOrbits = Array.from(fleetOrbits.keys());
-        this.fleetsInOrbits.forEach((fleet, fleetOrbit) => {
+        fleetOrbits.forEach((fleet, fleetOrbit) => {
 
             let fleetSharkID = this.getFleetSharkID(fleet);
             this.fleetsInOrbitsMap.set(fleetSharkID, fleet);
-            this.fleetOrbitsInOrbitsMap.set(fleetSharkID, fleetOrbit);
 
-            let orbit = fleetOrbit.planet!.orbit;
-            let x: number = orbit.xCoordinate + 25 + (this.fleetOrbits.indexOf(fleetOrbit) % 2 == 0 ? 15 : 0);
+            let orbit: Orbit = fleetOrbit.orbit!;
+            let x: number = orbit.xCoordinate + 25 + (Array.from(fleetOrbits.keys()).indexOf(fleetOrbit) % 2 == 0 ? 15 : 0);
             let y: number = orbit.yCoordinate + 25;
             let fleetSharkPoints: ArrayXY[] = this.createFleetSharkPoints(x, y, orbit);
 
@@ -226,12 +228,12 @@ export class ViewHelper {
         this.groupsByID.set(fleetSharkID + "-group", group!);
         this.areaDefinitions.push(new AreaDefinition(group!));
 
-        let fleetShark: Polygon = group!
-            .polygon(fleetSharkPoints)
-            .fill("green")
-            .stroke(sd)
-            .id(fleetSharkID)
-            .dblclick(dblClickForFleet);
+        let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
+        let userID = this.tokenStorage.getUserID();
+        if (fleet.owner.idUser == userID) {
+            fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
+        }
+        group!.polygon(fleetSharkPoints).fill(fleetSharkColor).stroke(sd).id(fleetSharkID).dblclick(dblClickForFleet);
 
         let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
@@ -247,9 +249,8 @@ export class ViewHelper {
             .dblclick(dblClickForFleet);
 
         this.canvas?.add(group!);
-        this.fleetsInOrbitTextSVGMap.set(fleetSharkID + "-txt", text);
-        this.fleetsByTextSVGMap.set(text, fleet);
-        this.fleetsInOrbitSVGMap.set(fleetSharkID, fleetShark);
+        this.fleetTextsByIdSVGMap.set(fleetSharkID + "-txt", text);
+        this.fleetsInOrbitByTextSVGMap.set(text, fleet);
     }
 
     /**
@@ -269,13 +270,14 @@ export class ViewHelper {
             if (!draggedFleet) {
                 return;
             }
+            let userID = this.tokenStorage.getUserID();
             // detect if dragged fleet is another fleet
             let areaDefinitions = this.areaDefinitions.filter(a => a.isInside(group!));
             if (!!areaDefinitions && areaDefinitions.length > 0) {
                 let detectedMergeTarget = areaDefinitions[0];
                 let targetFleet = this.getFleetByGroupID(detectedMergeTarget.referenceGroup.id());
-                if (!!targetFleet) {
-                    // call callback function
+                if (!!targetFleet && draggedFleet.owner.idUser == userID && targetFleet.owner.idUser == userID) {
+                    // only if the logged in user is the owner of both fleets
                     dragEndForFleet(draggedFleet, targetFleet, undefined);
                     return;
                 }
@@ -302,7 +304,7 @@ export class ViewHelper {
      * @private
      */
     private createFleetSharkPoints(x: number, y: number, orbit: Orbit): ArrayXY[] {
-        let points = ViewHelper.defineFleetSharkPoints(x, y);
+        let points = SystemViewHelper.defineFleetSharkPoints(x, y);
 
         let restrictedFleetArea = new RestrictedFleetArea(points);
 
@@ -347,52 +349,56 @@ export class ViewHelper {
         return points;
     }
 
-    NOT_COLONIZED_COLOR = "darkgoldenrod";
-    IS_COLONIZED_BY_USER_COLOR = "darkolivegreen";
-    COLONIZED_BY_OTHERS_COLOR = "#6f1585";
-    COLONIZABLE_SYSTEM_MARKER_COLOR = "#306f91";
-
     /**
      * starts the complete process of building the canvas and it's attachments
      *
      * @param canvas the canvas to draw at
-     * @param viewBoxType the view box type
-     * @param orbits all orbits to display
+     * @param system the system to display
      * @param callbackFunctionForClick the callback function to every orbit
      */
-    setOrbits(canvas: Svg, viewBoxType: EViewBoxType, orbits: OrbitDefinition[], callbackFunctionForClick: Function | null) {
+    setOrbits(canvas: Svg, system: StarSystem, callbackFunctionForClick: Function | null) {
         this.setCanvas(canvas);
-        this.orbits = orbits.map(od => od.orbit);
+
+        let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
+        system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
+        let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), system.planets);
+
+        this.orbits = orbitDefinitions.map(od => od.orbit);
         this.sortByOrbit();
         this.setViewBox();
 
         this.createCoordinateCross();
 
-        orbits.forEach(orbitDefinition => {
+        this.hyperLimit = this.calculateHyperLimit(system, orbitDefinitions);
+        this.canvas!
+            .circle()
+            .x(0)
+            .y(0)
+            .id("hyper-limit-of-" + system.idStarSystem)
+            .fill("none")
+            .addClass("hyper-limit")
+            .radius(this.hyperLimit);
+
+        orbitDefinitions.forEach(orbitDefinition => {
             const orbit = orbitDefinition.orbit;
             let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
-            let radius: number = ViewHelper.calculateDistance(orbit.xCoordinate, orbit.yCoordinate);
+            let radius: number = SystemViewHelper.calculateDistance(orbit.xCoordinate, orbit.yCoordinate);
 
-            if (EViewBoxType.STAR_SYSTEM === viewBoxType) {
-                let orbitSvg = this.canvas!
-                    .circle()
-                    .x(0)
-                    .y(0)
-                    .id(orbitID)
-                    .fill("none")
-                    .addClass("orbit")
-                    .radius(radius)
-                    .on('mouseover', evt => this.mouseOverEventCallback(<MouseEvent>evt));
+            this.canvas!
+                .circle()
+                .x(0)
+                .y(0)
+                .id(orbitID)
+                .fill("none")
+                .addClass("orbit")
+                .radius(radius)
+                .on('mouseover', evt => this.mouseOverEventCallback(<MouseEvent>evt));
 
-                this.orbitsMap.set(orbitID, orbit);
-                this.orbitSvgMap.set(orbitID, orbitSvg)
-            }
+            this.createCoordinateSystem(orbit.xCoordinate, orbit.yCoordinate, 50, orbitID);
 
-            if (EViewBoxType.STAR_SYSTEM === viewBoxType) {
-                this.celestialAreas.push(new CelestialAreaDefinition(orbit, orbitID, 50));
-                this.createCoordinateSystem(orbit.xCoordinate, orbit.yCoordinate, 50, orbitID);
-            }
+            this.orbitsMap.set(orbitID, orbit);
+            this.celestialAreas.push(new CelestialAreaDefinition(orbit, orbitID, 50));
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
@@ -419,7 +425,7 @@ export class ViewHelper {
                 color = this.COLONIZED_BY_OTHERS_COLOR;
             }
 
-            let circle = this.canvas!
+            this.canvas!
                 .circle()
                 .x(orbit.xCoordinate)
                 .y(orbit.yCoordinate)
@@ -429,8 +435,28 @@ export class ViewHelper {
                 .click(callbackFunctionForClick);
 
             this.celestialBodyMap.set(celestialBodyID, orbit);
-            this.celestialBodySvgMap.set(celestialBodyID, circle);
         });
+    }
+
+    /**
+     * calculates the hyper limit
+     * @param system
+     * @param orbitDefinitions
+     * @private
+     */
+    private calculateHyperLimit(system: StarSystem, orbitDefinitions: OrbitDefinition[]) {
+        // todo convert light minutes to distance units
+        const lightMinutesToHyperLimit = system.starClassType.lightMinutesToHyperLimit;
+        let sortedRaises = orbitDefinitions
+            .sort((o1, o2) => {
+                let o1Radius = SystemViewHelper.calculateDistance(o1.orbit.xCoordinate, o1.orbit.yCoordinate);
+                let o2Radius = SystemViewHelper.calculateDistance(o2.orbit.xCoordinate, o2.orbit.yCoordinate);
+                return o1Radius > o2Radius ? 1 : -1;
+            });
+
+        const biggestRadiusOrbit = sortedRaises[sortedRaises.length - 1];
+        const biggestRadius = SystemViewHelper.calculateDistance(biggestRadiusOrbit.orbit.xCoordinate, biggestRadiusOrbit.orbit.yCoordinate);
+        return biggestRadius + lightMinutesToHyperLimit;
     }
 
     /**
@@ -506,10 +532,12 @@ export class ViewHelper {
     private getFleetSharkID(fleet: Fleet): string {
         let id: string = this.FLEET_SHARK__SELECTOR_ID_PREFIX;
         if (!!fleet.orbit) {
-            if (!!fleet.orbit.planet) {
-                id += fleet.orbit!.planet?.idPlanet + "-";
+            if (!!fleet.orbit.orbit) {
+                id += fleet.orbit.orbit.xCoordinate + "." + fleet.orbit.orbit.yCoordinate + "-";
             }
-            id += fleet.orbit!.system.idStarSystem + "-";
+            if (!!fleet.orbit.system) {
+                id += fleet.orbit.system.idStarSystem + "-";
+            }
         }
         return id + "-" + fleet.idFleet;
     }
@@ -545,23 +573,13 @@ export class ViewHelper {
     }
 
     /**
-     * returns the fleet shark to the given id
-     *
-     * @param id the id
-     * @private
-     */
-    private getFleetSharkByID(id: string): Polygon | undefined {
-        return this.fleetsInOrbitSVGMap.get(id);
-    }
-
-    /**
-     * returns the fleet shark to the given id
+     * returns the text to the given id
      *
      * @param id the id
      * @private
      */
     private getFleetTextByID(id: string): Text | undefined {
-        return this.fleetsInOrbitTextSVGMap.get(id);
+        return this.fleetTextsByIdSVGMap.get(id);
     }
 
     /**
@@ -627,16 +645,6 @@ export class ViewHelper {
      * returns the fleet shark if known by this id
      * @param event
      */
-    getFleetSharkByEvent(event: PointerEvent | MouseEvent): Polygon | undefined {
-        let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
-        return this.getFleetSharkByID(id);
-    }
-
-    /**
-     * returns the fleet shark if known by this id
-     * @param event
-     */
     getFleetTextByEvent(event: PointerEvent | MouseEvent): Text | undefined {
         let p = event.composedPath()[1];
         let x = <HTMLElement>p;
@@ -658,7 +666,7 @@ export class ViewHelper {
      * @param text
      */
     getFleetByText(text: Text): Fleet | undefined {
-        return this.fleetsByTextSVGMap.get(text);
+        return this.fleetsInOrbitByTextSVGMap.get(text);
     }
 
     /**
@@ -672,9 +680,9 @@ export class ViewHelper {
                 + " "
                 + this.smallestYOrbit!.yCoordinate
                 + " "
-                + ViewHelper.getDifference(this.smallestYOrbit!.yCoordinate, this.biggestYOrbit!.yCoordinate)
+                + SystemViewHelper.getDifference(this.smallestYOrbit!.yCoordinate, this.biggestYOrbit!.yCoordinate)
                 + " "
-                + ViewHelper.getDifference(this.smallestXOrbit!.xCoordinate, this.biggestXOrbit!.xCoordinate);
+                + SystemViewHelper.getDifference(this.smallestXOrbit!.xCoordinate, this.biggestXOrbit!.xCoordinate);
         }
         this.canvas!.viewbox(viewBoxDef);
     }
@@ -706,7 +714,7 @@ export class ViewHelper {
         let maxYCoord = this.biggestYOrbit!.yCoordinate;
         let y = Math.abs(minYCoord) < Math.abs(maxYCoord) ? Math.abs(maxYCoord) : Math.abs(minYCoord);
 
-        let radius: number = ViewHelper.calculateDistance(x, y);
+        let radius: number = SystemViewHelper.calculateDistance(x, y);
         radius *= 1.1;
 
         this.createCoordinateSystem(0, 0, radius, "main");

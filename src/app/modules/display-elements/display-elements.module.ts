@@ -35,6 +35,8 @@ import {FleetMoveEditComponent} from './fleet-move-edit/fleet-move-edit.componen
 import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display.component';
 import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-factors-display.component';
 import {ResourceDepositOverlayDisplayComponent} from './resource-deposit-display/resource-deposit-overlay-display.component';
+import {InterstellarFleetDisplayComponent} from './interstellar-fleet-display/interstellar-fleet-display.component';
+import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component';
 
 @NgModule({
     declarations: [
@@ -73,6 +75,8 @@ import {ResourceDepositOverlayDisplayComponent} from './resource-deposit-display
         FleetMoveDisplayComponent,
         MiningFactorsDisplayComponent,
         ResourceDepositOverlayDisplayComponent,
+        InterstellarFleetDisplayComponent,
+        InterstellarFleetMovementEditComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -113,6 +117,8 @@ import {ResourceDepositOverlayDisplayComponent} from './resource-deposit-display
         FleetMoveDisplayComponent,
         MiningFactorsDisplayComponent,
         ResourceDepositOverlayDisplayComponent,
+        InterstellarFleetDisplayComponent,
+        InterstellarFleetMovementEditComponent,
     ]
 })
 export class DisplayElementsModule {

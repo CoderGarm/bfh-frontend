@@ -9,7 +9,14 @@
         </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="flex-items-container">
-        <app-fleet-formation-display [selectedFleetInput]="fleetInput"></app-fleet-formation-display>
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Fleet composition</mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-fleet-formation-display [selectedFleetInput]="fleetInput"></app-fleet-formation-display>
+            </mat-expansion-panel>
+        </mat-accordion>
         <ng-content></ng-content>
     </mat-card-content>
 </mat-card>

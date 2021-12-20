@@ -9,16 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Orbit } from './orbit';
 
-export interface FleetMove { 
-    destinationOrbit?: Orbit;
+export interface Tick { 
     /**
-     * The system which is the target of the movement.
+     * The end timestamp of this tick.
      */
-    idDestinationSystem?: number;
+    tickEnds?: Date;
     /**
-     * The fleet which must be moved.
+     * The number of this tick.
      */
-    idFleetToMove: number;
+    tickNo: number;
+    /**
+     * The start timestamp of this tick.
+     */
+    tickStarts: Date;
 }

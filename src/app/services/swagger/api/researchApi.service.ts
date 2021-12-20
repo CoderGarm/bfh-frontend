@@ -142,7 +142,7 @@ export class ResearchApiService {
     }
 
     /**
-     * Get all already researched researches for the user.
+     * Checks if a research job is possible for the user.
      * 
      * @param idUser idUser
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

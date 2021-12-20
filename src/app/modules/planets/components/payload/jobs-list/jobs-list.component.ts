@@ -40,6 +40,7 @@ export class JobsListComponent extends SubscriptionManager implements AfterViewI
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        // todo reload at new job
         if (changes[this.selectedPlanetDefinition]) {
             if (this.selectedPlanetInput) {
                 let sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)

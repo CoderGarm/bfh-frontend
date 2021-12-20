@@ -21,6 +21,7 @@ import {SubscriptionManager} from "./SubscriptionManager";
 import {ConfirmDialogComponent} from "./components/confirmation-dialog/confirm-dialog.component";
 import {DisplayElementsModule} from "./modules/display-elements/display-elements.module";
 import {ExpansionModule} from "./modules/expansion/expansion.module";
+import {JournalModule} from "./modules/journal/journal.module";
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import {ExpansionModule} from "./modules/expansion/expansion.module";
         ShipClassConstructionModule,
         FleetModule,
         ExpansionModule,
+        JournalModule
     ],
     providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
     bootstrap: [AppComponent]

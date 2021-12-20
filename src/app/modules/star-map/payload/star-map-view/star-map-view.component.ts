@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {EViewBoxType, ViewHelper} from "../ViewHelper";
+import {SystemViewHelper} from "../SystemViewHelper";
 import {SVG} from "@svgdotjs/svg.js";
 import {Fleet, FleetApiService, FleetMerge, FleetMove, FleetOrbit, Move, Orbit, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
-import {Subscription} from "rxjs";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
 import {FleetMergeEditComponent} from "../../../display-elements/fleet-merge-edit/fleet-merge-edit.component";
@@ -11,30 +10,29 @@ import {FleetMoveEditComponent} from "../../../display-elements/fleet-move-edit/
 import {FleetDisplayComponent} from "../../../display-elements/fleet-display/fleet-display.component";
 import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {SpacecraftCapabilitiesDisplayComponent} from "../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
-import {OrbitDefinition} from "../OrbitDefinition";
+import {FleetMoveDisplayComponent} from "../../../display-elements/fleet-move-display/fleet-move-display.component";
 
 @Component({
     selector: 'app-star-map-view',
     templateUrl: './star-map-view.component.html',
     styleUrls: ['./star-map-view.component.scss']
 })
-export class StarMapViewComponent extends ViewHelper implements AfterViewInit, OnChanges {
-
-    private subscriptions: Subscription[] = [];
+export class StarMapViewComponent extends SystemViewHelper implements AfterViewInit, OnChanges {
 
     @Input()
     starSystemSelectionInput?: StarSystem;
     private starSystemSelectionInputDefinition: string = "starSystemSelectionInput";
 
     planets: Planet[] = [];
+    private system?: StarSystem;
 
     private fleetInfoDialog?: MatDialogRef<any>;
 
     constructor(private starMapApi: StarMapApiService,
                 private fleetApi: FleetApiService,
-                private tokenStorage: TokenStorage,
+                tokenStorage: TokenStorage,
                 private dialog: MatDialog) {
-        super();
+        super(tokenStorage);
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -51,16 +49,13 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
         if (!!this.starSystemSelectionInput) {
             this.clearCanvas();
             let sub = this.starMapApi.getStarSystem(this.starSystemSelectionInput.idStarSystem)
-                .subscribe(planets => {
-                    this.planets = planets;
+                .subscribe(system => {
+                    this.system = system;
+                    this.planets = system.planets;
                     if (!this.canvas) {
                         this.createCanvas()
                     }
-
-                    let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
-                    planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
-                    let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), this.planets);
-                    this.setOrbits(this.canvas!, EViewBoxType.STAR_SYSTEM, orbitDefinitions, this.clickEventForPlanet);
+                    this.setOrbits(this.canvas!, system, this.clickEventForPlanet);
                 });
             this.subscriptions.push(sub);
 
@@ -73,10 +68,10 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
                     }
 
                     let fleetsInOrbit: Map<FleetOrbit, Fleet> = new Map<FleetOrbit, Fleet>();
-                    fleets.filter(fleet => !!fleet.orbit && !!fleet.orbit.planet).map((fleet) => fleetsInOrbit.set(fleet.orbit!, fleet));
+                    fleets.filter(fleet => !!fleet.orbit && !!fleet.orbit.orbit).map((fleet) => fleetsInOrbit.set(fleet.orbit!, fleet));
                     this.setFleetsInOrbits(this.canvas!,
                         fleetsInOrbit,
-                        this.cblClickForFleet,
+                        this.dblClickForFleet,
                         this.dragEndForFleet);
 
                     let fleetsInMotion: Map<Move, Fleet[]> = new Map<Move, Fleet[]>();
@@ -85,6 +80,7 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
                             throw new Error("This fleet is in motion and should know this.");
                         }
                         let move: Move = {
+                            idFleetInMotion: -1, // this is to ignore the id but it must be present
                             startOrbit: fleet.move.startOrbit,
                             targetOrbit: fleet.move.targetOrbit,
                             originalDuration: fleet.move.originalDuration,
@@ -102,7 +98,7 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
                     });
                     this.setFleetsInMotion(this.canvas!,
                         fleetsInMotion,
-                        this.cblClickForFleet,
+                        this.dblClickForFleet,
                         this.dragEndForFleet)
                 });
             this.subscriptions.push(sub);
@@ -144,8 +140,11 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
             return;
         }
 
-        if (!!draggedFleet && !!orbit && !inMotion && !!draggedFleet.orbit && !!draggedFleet.orbit.planet) {
-            let sameOrbit = ViewHelper.isSameOrbit(draggedFleet.orbit.planet.orbit, orbit);
+        if (!!draggedFleet && !!orbit && !inMotion && !!draggedFleet.orbit) {
+            let sameOrbit: boolean = false;
+            if (!!draggedFleet.orbit.orbit) {
+                sameOrbit = SystemViewHelper.isSameOrbit(draggedFleet.orbit.orbit, orbit);
+            }
             if (!sameOrbit) {
                 this.createAndOpenFleetMoveDialog(dialogConfig, draggedFleet, orbit);
                 return;
@@ -168,9 +167,13 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
         }
 
         let dialogData = new DialogData("move fleets");
+        let fo: FleetOrbit = {
+            orbit: planets[0].orbit,
+            system: this.system
+        }
         dialogData.addDialogDataPerTemplate(FleetMoveEditComponent,
-            ['fleetInput', 'targetPlanet'],
-            [draggedFleet, planets[0]]);
+            ['fleetInput', 'targetOrbit'],
+            [draggedFleet, fo]);
         dialogConfig.data = dialogData;
 
         const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
@@ -183,7 +186,8 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
                 }
                 let move: FleetMove = {
                     idFleetToMove: draggedFleet.idFleet,
-                    idTargetPlanet: planets[0].idPlanet
+                    destinationOrbit: planets[0].orbit,
+                    idDestinationSystem: planets[0].idStarSystem
                 }
                 let sub = this.fleetApi.moveFleet(userID, move).subscribe(resp => {
                     if (resp) {
@@ -239,7 +243,7 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
      *
      * @param event
      */
-    private cblClickForFleet = (event: PointerEvent) => {
+    private dblClickForFleet = (event: PointerEvent) => {
         let fleet = this.getFleetByEvent(event);
         if (!fleet) {
             let text = this.getFleetTextByEvent(event);
@@ -247,7 +251,7 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
                 fleet = this.getFleetByText(text);
             }
         }
-        this.openFleetInfoDialog(fleet)
+        this.openFleetInfoDialog(fleet);
     }
 
     /**
@@ -270,9 +274,16 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
                 ['fleetInput'],
                 [fleet]);
             if (!!fleet.move) {
-                dialogData.addDialogDataPerTemplate(FleetMoveEditComponent,
-                    ['fleetInput', 'targetPlanet', 'callback'],
-                    [fleet, fleet.move.targetOrbit.planet, this.callbackFleetMove]);
+                let userID = this.tokenStorage.getUserID();
+                if (fleet.owner.idUser == userID) {
+                    dialogData.addDialogDataPerTemplate(FleetMoveEditComponent,
+                        ['fleetInput', 'targetOrbit', 'callback'],
+                        [fleet, fleet.move.targetOrbit, this.callbackFleetMove]);
+                } else {
+                    dialogData.addDialogDataPerTemplate(FleetMoveDisplayComponent,
+                        ['fleetInput'],
+                        [fleet]);
+                }
             }
             dialogConfig.data = dialogData;
             const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
@@ -307,9 +318,5 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
     }
 
     ngAfterViewInit(): void {
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 }

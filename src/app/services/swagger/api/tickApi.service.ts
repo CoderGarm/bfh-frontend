@@ -18,14 +18,14 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
-import { StarSystem } from '../model/starSystem';
+import { Tick } from '../model/tick';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class StarMapApiService {
+export class TickApiService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -57,20 +57,15 @@ export class StarMapApiService {
 
 
     /**
-     * Get all planets of this system
+     * Get all ticks.
      * 
-     * @param idStarSystem idStarSystem
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getStarSystem(idStarSystem: number, observe?: 'body', reportProgress?: boolean): Observable<StarSystem>;
-    public getStarSystem(idStarSystem: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystem>>;
-    public getStarSystem(idStarSystem: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystem>>;
-    public getStarSystem(idStarSystem: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idStarSystem === null || idStarSystem === undefined) {
-            throw new Error('Required parameter idStarSystem was null or undefined when calling getStarSystem.');
-        }
+    public getAllTicks(observe?: 'body', reportProgress?: boolean): Observable<Array<Tick>>;
+    public getAllTicks(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Tick>>>;
+    public getAllTicks(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Tick>>>;
+    public getAllTicks(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -88,7 +83,7 @@ export class StarMapApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<StarSystem>('get',`${this.basePath}/api/private/starMap/star-systems/${encodeURIComponent(String(idStarSystem))}`,
+        return this.httpClient.request<Array<Tick>>('get',`${this.basePath}/api/private/admin/all`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -99,15 +94,15 @@ export class StarMapApiService {
     }
 
     /**
-     * Get all star systems
+     * Get the current tick.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getStarSystems(observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystem>>;
-    public getStarSystems(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystem>>>;
-    public getStarSystems(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystem>>>;
-    public getStarSystems(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCurrentTick(observe?: 'body', reportProgress?: boolean): Observable<Tick>;
+    public getCurrentTick(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Tick>>;
+    public getCurrentTick(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Tick>>;
+    public getCurrentTick(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -125,7 +120,49 @@ export class StarMapApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<StarSystem>>('get',`${this.basePath}/api/private/starMap/star-systems`,
+        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/admin/current`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the current tick.
+     * 
+     * @param idTick idTick
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTick(idTick: number, observe?: 'body', reportProgress?: boolean): Observable<Tick>;
+    public getTick(idTick: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Tick>>;
+    public getTick(idTick: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Tick>>;
+    public getTick(idTick: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idTick === null || idTick === undefined) {
+            throw new Error('Required parameter idTick was null or undefined when calling getTick.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/admin/${encodeURIComponent(String(idTick))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMove, Move, Planet} from "../../../services/swagger";
+import {Fleet, FleetApiService, FleetMove, FleetOrbit, Move, Planet, PlanetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 
@@ -21,11 +21,15 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
      * the fleet which will take all the other war ships
      */
     @Input()
-    targetPlanet?: Planet;
-    targetPlanetDefinition: string = "targetPlanet";
+    targetOrbit?: FleetOrbit;
+    targetOrbitDefinition: string = "targetOrbit";
 
     @Input()
     private readonly callback: Function | null;
+
+    destination?: Planet;
+
+    destinationRepresentation: string = "";
 
     /**
      * the planned and possible movement
@@ -33,18 +37,36 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     plannedMovement?: Move;
 
     constructor(@Optional() @Inject('fleetInput') fleetSubject: Fleet | undefined,
-                @Optional() @Inject('targetPlanet') targetPlanet: Planet | undefined,
+                @Optional() @Inject('targetOrbit') targetOrbit: FleetOrbit | undefined,
                 @Optional() @Inject('callback') cb: Function | null,
                 private tokenStorage: TokenStorage,
-                private fleetApi: FleetApiService) {
+                private fleetApi: FleetApiService,
+                private planetApi: PlanetApiService) {
         super();
         this.callback = cb;
         this.fleetInput = fleetSubject;
-        this.targetPlanet = targetPlanet;
+        this.targetOrbit = targetOrbit;
+        this.fetchDestination();
     }
 
     ngAfterViewInit(): void {
         this.fetchPossibleMovement();
+    }
+
+    private fetchDestination() {
+        if (!!this.targetOrbit && !!this.targetOrbit.system && !!this.targetOrbit.orbit) {
+            let idStarSystem = this.targetOrbit.system.idStarSystem;
+            let orbit = this.targetOrbit.orbit;
+            let sub = this.planetApi.getPlanetByCoordinates(idStarSystem, orbit)
+                .subscribe(resp => {
+                    this.destination = resp;
+                    this.createDestinationRepresentation();
+                });
+            this.subscriptions.push(sub);
+        }
+        if (this.destinationRepresentation.length == 0) {
+            this.createDestinationRepresentation();
+        }
     }
 
     /**
@@ -53,10 +75,10 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
      */
     private fetchPossibleMovement() {
         let userID = this.tokenStorage.getUserID();
-        if (!!userID && !!this.fleetInput && !this.fleetInput.move && !!this.targetPlanet) {
+        if (!!userID && !!this.fleetInput && !this.fleetInput.move && !!this.targetOrbit) {
             const fm: FleetMove = {
                 idFleetToMove: this.fleetInput.idFleet,
-                idTargetPlanet: this.targetPlanet.idPlanet
+                destinationOrbit: this.targetOrbit.orbit
             }
             let sub = this.fleetApi.planMovement(userID, fm).subscribe(resp => {
                 this.plannedMovement = resp;
@@ -66,12 +88,8 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.fleetInputDefinition]) {
-            this.fetchPossibleMovement();
-        }
-        if (changes[this.targetPlanetDefinition]) {
-            this.fetchPossibleMovement();
-        }
+        this.fetchPossibleMovement();
+        this.fetchDestination();
     }
 
 
@@ -83,5 +101,21 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         if (!!this.callback && !!this.fleetInput) {
             this.callback(this.fleetInput)
         }
+    }
+
+    private createDestinationRepresentation() {
+        let destination = "";
+        if (!!this.fleetInput) {
+            if (!!this.destination) {
+                destination += this.destination.name;
+            } else if (!!this.targetOrbit && !!this.targetOrbit.orbit) {
+                let orbit = this.targetOrbit.orbit;
+                destination += orbit.xCoordinate + ", " + orbit.yCoordinate;
+            }
+            if (!!this.targetOrbit && !!this.targetOrbit.system) {
+                destination += " in " + this.targetOrbit.system.name;
+            }
+        }
+        this.destinationRepresentation = destination;
     }
 }

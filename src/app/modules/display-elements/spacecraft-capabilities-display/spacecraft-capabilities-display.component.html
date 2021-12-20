@@ -1,6 +1,6 @@
 <div class="flex-items-container container">
     <mat-list-item *ngFor="let cap of caps">
-        <img class="icon" src="{{getLink(cap)}}" alt="{{cap.moduleType}}">
+        <img class="icon" src="{{getLink(cap)}}" alt="{{cap.moduleType}}" matTooltip="{{cap.moduleType.typeName}}">
         {{cap.value}}
     </mat-list-item>
 </div>

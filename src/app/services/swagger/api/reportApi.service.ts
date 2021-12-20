@@ -17,15 +17,15 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { BattleReport } from '../model/battleReport';
 import { FrontendError } from '../model/frontendError';
-import { StarSystem } from '../model/starSystem';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class StarMapApiService {
+export class ReportApiService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -57,19 +57,19 @@ export class StarMapApiService {
 
 
     /**
-     * Get all planets of this system
+     * Get all fighting reports for the user.
      * 
-     * @param idStarSystem idStarSystem
+     * @param idUser idUser
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getStarSystem(idStarSystem: number, observe?: 'body', reportProgress?: boolean): Observable<StarSystem>;
-    public getStarSystem(idStarSystem: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystem>>;
-    public getStarSystem(idStarSystem: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystem>>;
-    public getStarSystem(idStarSystem: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllReportsWithUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<BattleReport>>;
+    public getAllReportsWithUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<BattleReport>>>;
+    public getAllReportsWithUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<BattleReport>>>;
+    public getAllReportsWithUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idStarSystem === null || idStarSystem === undefined) {
-            throw new Error('Required parameter idStarSystem was null or undefined when calling getStarSystem.');
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getAllReportsWithUser.');
         }
 
         let headers = this.defaultHeaders;
@@ -88,7 +88,7 @@ export class StarMapApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<StarSystem>('get',`${this.basePath}/api/private/starMap/star-systems/${encodeURIComponent(String(idStarSystem))}`,
+        return this.httpClient.request<Array<BattleReport>>('get',`${this.basePath}/api/private/report/battle/${encodeURIComponent(String(idUser))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -99,15 +99,20 @@ export class StarMapApiService {
     }
 
     /**
-     * Get all star systems
+     * Get all fighting reports for the user.
      * 
+     * @param idUser idUser
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getStarSystems(observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystem>>;
-    public getStarSystems(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystem>>>;
-    public getStarSystems(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystem>>>;
-    public getStarSystems(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getLatestReportsWithUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<BattleReport>;
+    public getLatestReportsWithUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<BattleReport>>;
+    public getLatestReportsWithUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<BattleReport>>;
+    public getLatestReportsWithUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getLatestReportsWithUser.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -125,7 +130,7 @@ export class StarMapApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<StarSystem>>('get',`${this.basePath}/api/private/starMap/star-systems`,
+        return this.httpClient.request<BattleReport>('get',`${this.basePath}/api/private/report/battle/latest/${encodeURIComponent(String(idUser))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

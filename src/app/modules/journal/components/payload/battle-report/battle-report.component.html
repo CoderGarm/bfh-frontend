@@ -1,0 +1,17 @@
+<div class="holder">
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let report of battleReports">
+            <mat-expansion-panel-header>
+                <mat-panel-title>Tick # {{report.tick.tickNo}} from {{report.tick.tickStarts | date}}</mat-panel-title>
+                <mat-panel-description>{{getOrbitRepresentation(report.orbit)}}</mat-panel-description>
+            </mat-expansion-panel-header>
+            Participating users:<br>
+            <div *ngFor="let user of report.participatingUsers">{{user.username}}</div>
+            <br>
+            Lost war ships:<br>
+            <div *ngFor="let loss of report.lossRole">
+                {{loss.warShipName}} from {{loss.owner.username}} of type {{loss.shipClass.name}}
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

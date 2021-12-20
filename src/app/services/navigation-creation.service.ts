@@ -11,6 +11,7 @@ import {ResearchTabViewComponent} from "../modules/research/components/orga/rese
 import {ShipClassSidenavComponent} from "../modules/ship-class-construction/components/orga/ship-class-sidenav/ship-class-sidenav.component";
 import {FleetSidenavComponent} from "../modules/fleet/components/orga/fleet-sidenav/fleet-sidenav.component";
 import {ExpansionTabViewComponent} from "../modules/expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
+import {JournalTabViewComponent} from "../modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 
 
 export class NavigationCreationService {
@@ -32,12 +33,14 @@ export class NavigationCreationService {
             {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
             {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
         ];
     }
 
     static createNavDrawerRoutes(): Routes {
         return [
             {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
+            {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
             {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
             {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
             {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},

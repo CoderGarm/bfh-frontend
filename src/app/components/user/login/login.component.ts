@@ -7,62 +7,63 @@ import {NgxPermissionsService} from 'ngx-permissions';
 import {Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
-  static path: string = 'login';
+    static path: string = 'login';
 
-  private subscription?: Subscription;
+    private subscription?: Subscription;
 
-  loginForm: FormGroup;
-  isAuthenticated: boolean = false;
+    loginForm: FormGroup;
+    isAuthenticated: boolean = false;
 
-  constructor(protected authService: AuthenticationService, private permissionsService: NgxPermissionsService) {
-    this.loginForm = new FormGroup({
-      login: new FormControl('flashkid'),
-      pass: new FormControl('12457aA!')
-    });
-  }
-
-  ngOnInit(): void {
-  }
-
-  submitLogin() {
-
-    const login: AuthRequest = {
-      username: this.loginForm.controls.login.value,
-      password: this.loginForm.controls.pass.value,
+    constructor(protected authService: AuthenticationService,
+                private permissionsService: NgxPermissionsService) {
+        this.loginForm = new FormGroup({
+            login: new FormControl('flashkid'),
+            pass: new FormControl('12457aA!')
+        });
     }
 
-    this.subscription = this.authService.login(login).subscribe(
-      resp => {
-        this.isAuthenticated = !!resp;
-      },
-      error => {
-        this.clear();
-      }
-    );
-
-  }
-
-
-  clear() {
-
-    this.authService.clear();
-    this.permissionsService.flushPermissions();
-
-    this.loginForm = new FormGroup({
-      login: new FormControl(''),
-      pass: new FormControl('')
-    });
-  }
-
-  ngOnDestroy() {
-    if (!!this.subscription) {
-      this.subscription.unsubscribe()
+    ngOnInit(): void {
     }
-  }
+
+    submitLogin() {
+
+        const login: AuthRequest = {
+            username: this.loginForm.controls.login.value,
+            password: this.loginForm.controls.pass.value,
+        }
+
+        this.subscription = this.authService.login(login).subscribe(
+            resp => {
+                this.isAuthenticated = !!resp;
+            },
+            error => {
+                this.clear();
+            }
+        );
+
+    }
+
+
+    clear() {
+
+        this.authService.clear();
+        this.permissionsService.flushPermissions();
+
+        this.loginForm = new FormGroup({
+            login: new FormControl(''),
+            pass: new FormControl('')
+        });
+    }
+
+    ngOnDestroy() {
+        if (!!this.subscription) {
+            this.subscription.unsubscribe()
+        }
+    }
 }

@@ -1,23 +1,27 @@
 import {AuthApiService, AuthRequest, JWT} from '../swagger';
 import {HomeComponent} from '../../components/home/home.component';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {AuthService} from 'ngx-auth';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TokenStorage} from './token-storage.service';
 import {Router} from '@angular/router';
 import {NgxPermissionsService} from 'ngx-permissions';
+import {SubscriptionManager} from "../../SubscriptionManager";
 
 @Injectable()
-export class AuthenticationService implements AuthService {
+export class AuthenticationService extends SubscriptionManager implements AuthService {
 
-  private subscriptions: Subscription[] = [];
+  loginInEvent: EventEmitter<JWT> = new EventEmitter<JWT>();
+
+  loginOutEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private router: Router,
               private tokenStorage: TokenStorage,
               private authService: AuthApiService,
               private permissionsService: NgxPermissionsService) {
+    super();
   }
 
   private subjectAccessData = new Subject<JWT>();
@@ -113,6 +117,7 @@ export class AuthenticationService implements AuthService {
     this.tokenStorage.clear();
     this.permissionsService.flushPermissions();
     this.clearAccessData();
+    this.loginOutEvent.next(true);
     this.router.navigateByUrl(HomeComponent.path);
   }
 
@@ -129,9 +134,7 @@ export class AuthenticationService implements AuthService {
       .setUserID(token.idUser);
 
     this.setAccessData(token);
-  }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.loginInEvent.next(token);
   }
 }

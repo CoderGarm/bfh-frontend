@@ -346,11 +346,11 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             }
             let width = step;
             if (i % 10 == 0) {
-                width = step;
-            } else if (i % 5 == 0) {
                 width = step / 2;
-            } else {
+            } else if (i % 5 == 0) {
                 width = step / 4;
+            } else {
+                width = step / 6;
             }
             p = [];
             p.push(width, yRunnerUpper);

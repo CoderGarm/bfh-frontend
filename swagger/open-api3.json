@@ -21,6 +21,10 @@
   ],
   "tags": [
     {
+      "name": "AdminApi",
+      "description": "Admin Api"
+    },
+    {
       "name": "AuthApi",
       "description": "Auth Api"
     },
@@ -57,6 +61,10 @@
       "description": "Planet Api"
     },
     {
+      "name": "ReportApi",
+      "description": "Report Api"
+    },
+    {
       "name": "ResearchApi",
       "description": "Research Api"
     },
@@ -73,11 +81,51 @@
       "description": "Star Map Api"
     },
     {
+      "name": "TickApi",
+      "description": "Tick Api"
+    },
+    {
       "name": "UserApi",
       "description": "User Api"
     }
   ],
   "paths": {
+    "/api/private/admin/doTick": {
+      "get": {
+        "tags": [
+          "AdminApi"
+        ],
+        "summary": "Get the current tick.",
+        "operationId": "doTick",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tick"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/public/auth/create": {
       "post": {
         "tags": [
@@ -1039,6 +1087,45 @@
         }
       }
     },
+    "/api/private/fleet/fleetDistribution": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all the star systems which are holding fleets with the fleet's owner.",
+        "operationId": "getFleetDistribution",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FleetDistributionPerUser"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/fleet/inSystem/{idStarSystem}": {
       "get": {
         "tags": [
@@ -1059,6 +1146,108 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fleet"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/inSystem/{idStarSystem}/perUser/{idOwner}": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all fleets inside of a star system for a specific user.",
+        "operationId": "getFleetsBySystemAndOwner",
+        "parameters": [
+          {
+            "name": "idStarSystem",
+            "in": "path",
+            "description": "idStarSystem",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idOwner",
+            "in": "path",
+            "description": "idOwner",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fleet"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/interstellarMovement": {
+      "get": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Get all fleets inside of a star system.",
+        "operationId": "getInterstellarMovingFleets",
         "responses": {
           "200": {
             "description": "successful",
@@ -1207,6 +1396,70 @@
         }
       }
     },
+    "/api/private/fleet/moveFleets/{idUser}": {
+      "post": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Moves a fleet to another celestial.",
+        "operationId": "moveFleets",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FleetMove"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fleet"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/fleet/perUser/{idUser}": {
       "get": {
         "tags": [
@@ -1295,6 +1548,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Move"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/fleet/planMoves/{idUser}": {
+      "post": {
+        "tags": [
+          "FleetApi"
+        ],
+        "summary": "Plan a movement of a fleet to another celestial.",
+        "operationId": "planMovements",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FleetMove"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Move"
+                  }
                 }
               },
               "*/*": {
@@ -1785,6 +2102,64 @@
         }
       }
     },
+    "/api/private/planet/byCoord/{idStarSystem}": {
+      "post": {
+        "tags": [
+          "PlanetApi"
+        ],
+        "summary": "Gets a planet which is matching to the given coordinates.",
+        "operationId": "getPlanetByCoordinates",
+        "parameters": [
+          {
+            "name": "idStarSystem",
+            "in": "path",
+            "description": "idStarSystem",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Orbit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfully started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Planet"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/planet/groundConstructionBuild/{idPlanet}/{idBuilding}": {
       "get": {
         "tags": [
@@ -2017,6 +2392,107 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Planet"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/report/battle/latest/{idUser}": {
+      "get": {
+        "tags": [
+          "ReportApi"
+        ],
+        "summary": "Get all fighting reports for the user.",
+        "operationId": "getLatestReportsWithUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BattleReport"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/report/battle/{idUser}": {
+      "get": {
+        "tags": [
+          "ReportApi"
+        ],
+        "summary": "Get all fighting reports for the user.",
+        "operationId": "getAllReportsWithUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BattleReport"
                   }
                 }
               },
@@ -2902,10 +3378,131 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/StarSystem"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/admin/all": {
+      "get": {
+        "tags": [
+          "TickApi"
+        ],
+        "summary": "Get all ticks.",
+        "operationId": "getAllTicks",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Planet"
+                    "$ref": "#/components/schemas/Tick"
                   }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/admin/current": {
+      "get": {
+        "tags": [
+          "TickApi"
+        ],
+        "summary": "Get the current tick.",
+        "operationId": "getCurrentTick",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tick"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/admin/{idTick}": {
+      "get": {
+        "tags": [
+          "TickApi"
+        ],
+        "summary": "Get the current tick.",
+        "operationId": "getTick",
+        "parameters": [
+          {
+            "name": "idTick",
+            "in": "path",
+            "description": "idTick",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tick"
                 }
               },
               "*/*": {
@@ -3291,6 +3888,45 @@
             "type": "integer",
             "description": "The capacity usage of this module.",
             "format": "int32"
+          }
+        }
+      },
+      "BattleReport": {
+        "title": "BattleReport",
+        "required": [
+          "idBattleReport",
+          "orbit",
+          "participatingUsers",
+          "tick"
+        ],
+        "type": "object",
+        "properties": {
+          "idBattleReport": {
+            "type": "integer",
+            "description": "The database id of the report.",
+            "format": "int32"
+          },
+          "lossRole": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LossRole"
+            }
+          },
+          "orbit": {
+            "description": "The place where the action happened.",
+            "$ref": "#/components/schemas/FleetOrbit"
+          },
+          "participatingUsers": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The participating users.",
+            "items": {
+              "$ref": "#/components/schemas/UserJson"
+            }
+          },
+          "tick": {
+            "description": "The tick where the action happened.",
+            "$ref": "#/components/schemas/Tick"
           }
         }
       },
@@ -3801,6 +4437,7 @@
         "required": [
           "fleetCapabilities",
           "idFleet",
+          "isFTLCapable",
           "name",
           "owner",
           "ships"
@@ -3815,6 +4452,11 @@
             "type": "integer",
             "description": "The id.",
             "format": "int32"
+          },
+          "isFTLCapable": {
+            "type": "boolean",
+            "description": "If the fleet can run interstellar movements.",
+            "example": false
           },
           "move": {
             "description": "The fleet's current moving.",
@@ -3858,6 +4500,27 @@
           }
         }
       },
+      "FleetDistributionPerUser": {
+        "title": "FleetDistributionPerUser",
+        "required": [
+          "starSystem",
+          "users"
+        ],
+        "type": "object",
+        "properties": {
+          "starSystem": {
+            "description": "The system which includes the fleets.",
+            "$ref": "#/components/schemas/StarSystem"
+          },
+          "users": {
+            "type": "array",
+            "description": "The owner of the fleets in the system.",
+            "items": {
+              "$ref": "#/components/schemas/UserJson"
+            }
+          }
+        }
+      },
       "FleetMerge": {
         "title": "FleetMerge",
         "required": [
@@ -3881,36 +4544,36 @@
       "FleetMove": {
         "title": "FleetMove",
         "required": [
-          "idFleetToMove",
-          "idTargetPlanet"
+          "idFleetToMove"
         ],
         "type": "object",
         "properties": {
-          "idFleetToMove": {
+          "destinationOrbit": {
+            "description": "The orbit which is the target of the movement.",
+            "$ref": "#/components/schemas/Orbit"
+          },
+          "idDestinationSystem": {
             "type": "integer",
-            "description": "The fleet which must be merged.",
+            "description": "The system which is the target of the movement.",
             "format": "int32"
           },
-          "idTargetPlanet": {
+          "idFleetToMove": {
             "type": "integer",
-            "description": "The fleet which is the target of the merge.",
+            "description": "The fleet which must be moved.",
             "format": "int32"
           }
         }
       },
       "FleetOrbit": {
         "title": "FleetOrbit",
-        "required": [
-          "system"
-        ],
         "type": "object",
         "properties": {
-          "planet": {
-            "description": "The planet inside the system which defines this orbit.",
-            "$ref": "#/components/schemas/Planet"
+          "orbit": {
+            "description": "The orbit inside the inertial system defined by the star system.",
+            "$ref": "#/components/schemas/Orbit"
           },
           "system": {
-            "description": "The star system which defines this orbit.",
+            "description": "The star system which defines the inertial system of the orbit. If undefined the orbit lives in the universe.",
             "$ref": "#/components/schemas/StarSystem"
           }
         }
@@ -4152,6 +4815,29 @@
           }
         }
       },
+      "LossRole": {
+        "title": "LossRole",
+        "required": [
+          "owner",
+          "shipClass",
+          "warShipName"
+        ],
+        "type": "object",
+        "properties": {
+          "owner": {
+            "description": "The user which is affected by the loss.",
+            "$ref": "#/components/schemas/UserJson"
+          },
+          "shipClass": {
+            "description": "The class of the war ship which was destroyed.",
+            "$ref": "#/components/schemas/ShipClass"
+          },
+          "warShipName": {
+            "type": "string",
+            "description": "The name of the war ship which was destroyed."
+          }
+        }
+      },
       "MiningFactors": {
         "title": "MiningFactors",
         "required": [
@@ -4171,6 +4857,7 @@
       "Move": {
         "title": "Move",
         "required": [
+          "idFleetInMotion",
           "moveDoneAtZero",
           "originalDuration",
           "startOrbit",
@@ -4178,6 +4865,11 @@
         ],
         "type": "object",
         "properties": {
+          "idFleetInMotion": {
+            "type": "integer",
+            "description": "The fleet which is in motion.",
+            "format": "int32"
+          },
           "moveDoneAtZero": {
             "type": "integer",
             "description": "The current left over duration of this movement.",
@@ -4674,6 +5366,31 @@
           "passiveModule": {
             "description": "The passive module of this fitting",
             "$ref": "#/components/schemas/PassiveModule"
+          }
+        }
+      },
+      "Tick": {
+        "title": "Tick",
+        "required": [
+          "tickNo",
+          "tickStarts"
+        ],
+        "type": "object",
+        "properties": {
+          "tickEnds": {
+            "type": "string",
+            "description": "The end timestamp of this tick.",
+            "format": "date-time"
+          },
+          "tickNo": {
+            "type": "integer",
+            "description": "The number of this tick.",
+            "format": "int32"
+          },
+          "tickStarts": {
+            "type": "string",
+            "description": "The start timestamp of this tick.",
+            "format": "date-time"
           }
         }
       },
