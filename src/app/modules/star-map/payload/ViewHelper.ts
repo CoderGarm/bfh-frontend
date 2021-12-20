@@ -4,6 +4,7 @@ import {timer} from "rxjs";
 import {RestrictedFleetArea} from "./restricted-fleet-area";
 import {AreaDefinition} from "./area-definition";
 import {CelestialAreaDefinition} from "./celestial-area-definition";
+import {OrbitDefinition} from "./OrbitDefinition";
 
 export type EViewBoxType = 'UNIVERSE' | 'STAR_SYSTEM';
 export const EViewBoxType = {
@@ -346,6 +347,11 @@ export class ViewHelper {
         return points;
     }
 
+    NOT_COLONIZED_COLOR = "darkgoldenrod";
+    IS_COLONIZED_BY_USER_COLOR = "darkolivegreen";
+    COLONIZED_BY_OTHERS_COLOR = "#6f1585";
+    COLONIZABLE_SYSTEM_MARKER_COLOR = "#306f91";
+
     /**
      * starts the complete process of building the canvas and it's attachments
      *
@@ -354,15 +360,16 @@ export class ViewHelper {
      * @param orbits all orbits to display
      * @param callbackFunctionForClick the callback function to every orbit
      */
-    setOrbits(canvas: Svg, viewBoxType: EViewBoxType, orbits: IterableIterator<Orbit>, callbackFunctionForClick: Function | null) {
+    setOrbits(canvas: Svg, viewBoxType: EViewBoxType, orbits: OrbitDefinition[], callbackFunctionForClick: Function | null) {
         this.setCanvas(canvas);
-        this.orbits = Array.from(orbits);
+        this.orbits = orbits.map(od => od.orbit);
         this.sortByOrbit();
         this.setViewBox();
 
         this.createCoordinateCross();
 
-        this.orbits.forEach(orbit => {
+        orbits.forEach(orbitDefinition => {
+            const orbit = orbitDefinition.orbit;
             let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
             let radius: number = ViewHelper.calculateDistance(orbit.xCoordinate, orbit.yCoordinate);
@@ -387,12 +394,38 @@ export class ViewHelper {
                 this.createCoordinateSystem(orbit.xCoordinate, orbit.yCoordinate, 50, orbitID);
             }
 
+            if (orbitDefinition.isColonizable) {
+                // to rotate around the center just flip the + and -
+                let x1 = orbit.xCoordinate - 9;
+                let y1 = orbit.yCoordinate - 8;
+                let x2 = orbit.xCoordinate + 9;
+                let y2 = orbit.yCoordinate + 8;
+
+                let p1: LineCommand = ["M", x1, y1];
+                let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
+
+                let arr: PathArrayAlias = [p1, p2];
+                // todo remember the path?
+                this.canvas!.path(arr)
+                    .fill("none")
+                    .stroke({color: this.COLONIZABLE_SYSTEM_MARKER_COLOR, width: 1})
+                    .addClass("roundCap");
+            }
+
+            let color = this.NOT_COLONIZED_COLOR;
+            if (orbitDefinition.isColonizedByLoggedInUser) {
+                color = this.IS_COLONIZED_BY_USER_COLOR;
+            } else if (orbitDefinition.isColonizedByOtherUser) {
+                color = this.COLONIZED_BY_OTHERS_COLOR;
+            }
+
             let circle = this.canvas!
                 .circle()
                 .x(orbit.xCoordinate)
                 .y(orbit.yCoordinate)
+                .radius(5)
                 .id(celestialBodyID)
-                .addClass("object")
+                .fill(color)
                 .click(callbackFunctionForClick);
 
             this.celestialBodyMap.set(celestialBodyID, orbit);
@@ -724,11 +757,11 @@ export class ViewHelper {
             }
             let width = step;
             if (i % 10 == 0) {
-                width = step;
+                width = step * 2;
             } else if (i % 5 == 0) {
-                width = step / 2;
+                width = step;
             } else {
-                width = step / 5;
+                width = step / 2;
             }
             p = [];
             p.push(xBase + width, yRunnerUpper);

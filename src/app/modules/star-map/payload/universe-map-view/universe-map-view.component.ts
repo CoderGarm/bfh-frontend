@@ -5,6 +5,8 @@ import {SVG} from "@svgdotjs/svg.js";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {EViewBoxType, ViewHelper} from "../ViewHelper";
+import {OrbitDefinition} from "../OrbitDefinition";
+import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -26,7 +28,8 @@ export class UniverseMapViewComponent extends ViewHelper implements AfterViewIni
     @Output()
     starSystemSelectionOutput: EventEmitter<StarSystem> = new EventEmitter<StarSystem>();
 
-    constructor(private starMapApi: StarMapApiService) {
+    constructor(private starMapApi: StarMapApiService,
+                private tokenStorage: TokenStorage) {
         super();
     }
 
@@ -36,8 +39,9 @@ export class UniverseMapViewComponent extends ViewHelper implements AfterViewIni
             this.knownStarSystems = resp;
 
             this.clearCanvas();
-            this.knownStarSystems.map((system) => this.knownStarSystemsByOrbit.set(system.orbit, system));
-            this.setOrbits(this.canvas!, EViewBoxType.UNIVERSE, this.knownStarSystemsByOrbit.keys(), this.clickEventForStarSystem);
+            this.knownStarSystems.forEach((system) => this.knownStarSystemsByOrbit.set(system.orbit, system));
+            let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForUniverse(this.tokenStorage.getUserID(), this.knownStarSystems);
+            this.setOrbits(this.canvas!, EViewBoxType.UNIVERSE, orbitDefinitions, this.clickEventForStarSystem);
         });
         this.subscriptions.push(subscription);
     }

@@ -312,8 +312,80 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             lines.push([500, 65]);
             this.lowerBow = this.canvas!.polygon(lines).fill("none").stroke({color: "red", width: 1});
             this.lowerBowPoints = lines;
+
+            // y-axis
+            // x-axis
+            this.drawAxis(700, 150);
+            // y-axis tick marks
+            // x-axis tick marks
+            this.drawTickMarks(700, 150);
+
         });
         this.subscriptions.push(sub);
+    }
+
+
+    /**
+     * draws the tick marks for the axis
+     *
+     * @param xEnd the base x coord
+     * @param yEnd the base y coord
+     * @private
+     */
+    private drawTickMarks(xEnd: number, yEnd: number) {
+        let p: number[] = [];
+        let diff: number = xEnd > yEnd ? xEnd / 2 : yEnd / 2;
+        let step: number = diff / 10;
+        let xRunnerUpper: number = 0;
+        let yRunnerUpper: number = 0;
+        for (let i = 0; i <= 20; i++) {
+            if (i == 0) {
+                xRunnerUpper += step;
+                yRunnerUpper += step;
+                continue;
+            }
+            let width = step;
+            if (i % 10 == 0) {
+                width = step;
+            } else if (i % 5 == 0) {
+                width = step / 2;
+            } else {
+                width = step / 4;
+            }
+            p = [];
+            p.push(width, yRunnerUpper);
+            p.push(-1 * width, yRunnerUpper);
+            if (yRunnerUpper <= yEnd) {
+                this.canvas!.line(p).addClass("coordCross");
+            }
+            p = [];
+            p.push(xRunnerUpper, width);
+            p.push(xRunnerUpper, -1 * width);
+            if (xRunnerUpper <= xEnd) {
+                this.canvas!.line(p).addClass("coordCross");
+            }
+            xRunnerUpper += step;
+            yRunnerUpper += step;
+        }
+    }
+
+    /**
+     * draws the axis
+     *
+     * @param xEnd the base x coord
+     * @param yEnd the base y coord
+     * @private
+     */
+    private drawAxis(xEnd: number, yEnd: number) {
+        let p: number[] = [];
+        p = [];
+        p.push(0, yEnd);
+        p.push(0, 0);
+        this.canvas!.line(p).addClass("coordCross");
+        p = []
+        p.push(xEnd, 0);
+        p.push(0, 0);
+        this.canvas!.line(p).addClass("coordCross");
     }
 
     /**

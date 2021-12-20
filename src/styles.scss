@@ -7,6 +7,13 @@ body {
   height: -webkit-fill-available;
 }
 
+// placed here because class def not loaded in more precised css files
+.coordCross {
+  stroke: dimgray;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;

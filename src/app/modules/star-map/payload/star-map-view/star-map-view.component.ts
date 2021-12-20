@@ -1,18 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {EViewBoxType, ViewHelper} from "../ViewHelper";
 import {SVG} from "@svgdotjs/svg.js";
-import {
-    Fleet,
-    FleetApiService,
-    FleetMerge,
-    FleetMove,
-    FleetOrbit,
-    Move,
-    Orbit,
-    Planet,
-    StarMapApiService,
-    StarSystem
-} from "../../../../services/swagger";
+import {Fleet, FleetApiService, FleetMerge, FleetMove, FleetOrbit, Move, Orbit, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import {Subscription} from "rxjs";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
@@ -22,6 +11,7 @@ import {FleetMoveEditComponent} from "../../../display-elements/fleet-move-edit/
 import {FleetDisplayComponent} from "../../../display-elements/fleet-display/fleet-display.component";
 import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {SpacecraftCapabilitiesDisplayComponent} from "../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
+import {OrbitDefinition} from "../OrbitDefinition";
 
 @Component({
     selector: 'app-star-map-view',
@@ -68,8 +58,9 @@ export class StarMapViewComponent extends ViewHelper implements AfterViewInit, O
                     }
 
                     let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
-                    planets.map((system) => planetsByOrbit.set(system.orbit, system));
-                    this.setOrbits(this.canvas!, EViewBoxType.STAR_SYSTEM, planetsByOrbit.keys(), this.clickEventForPlanet);
+                    planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
+                    let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), this.planets);
+                    this.setOrbits(this.canvas!, EViewBoxType.STAR_SYSTEM, orbitDefinitions, this.clickEventForPlanet);
                 });
             this.subscriptions.push(sub);
 

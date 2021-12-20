@@ -11,13 +11,6 @@
   width: 58em;
 }
 
-.object {
-  r: 5px;
-  fill: red;
-  stroke: red;
-  stroke-width: 1;
-}
-
 .orbit {
   stroke: darkgray;
   stroke-width: 1;
@@ -28,10 +21,8 @@ svg {
   width: 100%;
 }
 
-.coordCross {
-  fill: darkgoldenrod;
-  stroke: darkgoldenrod;
-  stroke-width: 1;
+.roundCap {
+  stroke-linecap: round;
 }
 
 .pulse {
