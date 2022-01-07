@@ -10,7 +10,7 @@ import {Observable, ReplaySubject} from "rxjs";
 })
 export class HullDisplayComponent implements OnInit, OnChanges {
 
-    displayedColumns: string[] = ['cc', 'ccbow', 'ccbraodsides', 'ccstern'];
+    displayedColumns: string[] = ['occ', 'cc', 'ccbow', 'ccbraodsides', 'ccstern'];
 
     dataSource = new HullDataSource([]);
 

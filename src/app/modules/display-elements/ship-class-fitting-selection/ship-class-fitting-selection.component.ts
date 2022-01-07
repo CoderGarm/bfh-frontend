@@ -6,6 +6,7 @@ import {
     Armor,
     ElectronicWarfare,
     Hull,
+    Launcher,
     ModuleApiService,
     PassiveModule,
     Propulsion,
@@ -18,6 +19,7 @@ import {Subscription} from "rxjs";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
 import {MatRadioButton} from "@angular/material/radio";
+import {WeaponHelper} from "../../../WeaponHelper";
 
 @Component({
     selector: 'app-ship-class-fitting-selection',
@@ -57,6 +59,7 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      * the modules to select from
      */
     weapons: Weapon[] = [];
+    launchers: Launcher[] = [];
     munitions: AmmunitionModule[] = [];
     armors: Armor[] = [];
     sidewalls: Sidewall[] = [];
@@ -100,8 +103,7 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
         if (!!userID) {
             let sub = this.moduleApi.getWeaponsByUser(userID).subscribe(resp => this.weapons = resp);
             this.subscriptions.push(sub);
-
-            sub = this.moduleApi.getWeaponsByUser(userID).subscribe(resp => this.weapons = resp);
+            sub = this.moduleApi.getLaunchersByUser(userID).subscribe(resp => this.launchers = resp);
             this.subscriptions.push(sub);
             sub = this.moduleApi.getArmorsByUser(userID).subscribe(resp => this.armors = resp);
             this.subscriptions.push(sub);
@@ -152,7 +154,11 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
                 let weaponsSelection: Map<String, Map<AlignedFitting.WeaponAlignmentEnum, number>> = new Map<String, Map<AlignedFitting.WeaponAlignmentEnum, number>>();
                 fittings.forEach(fitting => {
                     let alignment = fitting.weaponAlignment as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-                    let key = fitting.weapon.baseModule.idModule + "";
+                    let weapon: Weapon | Launcher | undefined = fitting.weapon || fitting.launcher;
+                    if (!weapon) {
+                        return;
+                    }
+                    let key = ShipClassFittingSelectionComponent.getWeaponSystemMapKey(weapon, alignment);
                     let map = weaponsSelection.get(key);
                     if (!map) {
                         map = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
@@ -166,19 +172,23 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
                     map.set(alignment, amountPerAlignment);
                 });
                 fittings.forEach(fitting => {
-                    let weapon = fitting.weapon;
-                    let key = weapon.baseModule.idModule + "";
+                    let alignment = fitting.weaponAlignment as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+                    let weapon: Weapon | Launcher | undefined = fitting.weapon || fitting.launcher;
+                    if (!weapon) {
+                        return;
+                    }
+                    let key = ShipClassFittingSelectionComponent.getWeaponSystemMapKey(weapon, alignment);
                     let map = weaponsSelection.get(key);
                     let w: WeaponsSelection = {
                         weapon: weapon,
                         weaponAmountPerAlignment: map!
                     }
-                    if (!!ammunitionFittings) {
+                    if (!!ammunitionFittings && WeaponHelper.isLauncher(weapon)) {
                         // match ammunition with weapons
                         let ammoFittingForWeapon = ammunitionFittings
                             .filter(ammo => {
-                                if (!!weapon.ammunitionModule) {
-                                    return ammo.ammunitionModule.baseModule.idModule === weapon.ammunitionModule.baseModule.idModule
+                                if (!!(<Launcher>weapon).ammunitionModule) {
+                                    return ammo.ammunitionModule.baseModule.idModule === (<Launcher>weapon).ammunitionModule.baseModule.idModule
                                 }
                                 return false;
                             });
@@ -314,7 +324,7 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      * returns the weapon selection for the given weapon
      * @param weapon
      */
-    getWeaponSelection(weapon: Weapon): WeaponsSelection | undefined {
+    getWeaponSelection(weapon: Weapon | Launcher): WeaponsSelection | undefined {
         let ammoAmount: number = 0;
         let w: WeaponsSelection | undefined;
         if (!!weapon) {
@@ -322,14 +332,17 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
                 weapon: weapon,
                 weaponAmountPerAlignment: this.getWeaponModuleAmount(weapon),
             }
-            let ammoModule = weapon.ammunitionModule;
-            if (!!ammoModule) {
-                let inBetweenAmmoAmount = this.getAmmunitionModuleAmount(ammoModule);
-                if (!!inBetweenAmmoAmount) {
-                    ammoAmount = inBetweenAmmoAmount;
+            let isLauncher = WeaponHelper.isLauncher(weapon);
+            if (isLauncher) {
+                let ammoModule = (<Launcher>weapon).ammunitionModule;
+                if (!!ammoModule) {
+                    let inBetweenAmmoAmount = this.getAmmunitionModuleAmount(ammoModule);
+                    if (!!inBetweenAmmoAmount) {
+                        ammoAmount = inBetweenAmmoAmount;
+                    }
+                    w.ammo = ammoModule;
+                    w.ammoAmount = ammoAmount;
                 }
-                w.ammo = ammoModule;
-                w.ammoAmount = ammoAmount;
             }
             return w;
         }
@@ -341,11 +354,11 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      * @param weapon
      * @private
      */
-    private getWeaponModuleAmount(weapon: Weapon): Map<AlignedFitting.WeaponAlignmentEnum, number> {
+    private getWeaponModuleAmount(weapon: Weapon | Launcher): Map<AlignedFitting.WeaponAlignmentEnum, number> {
         let map = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
         weapon.alignmentTypes.forEach(key => {
             let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-            let id: string = ShipClassFittingSelectionComponent.getWeaponMapKey(weapon, alignment);
+            let id = ShipClassFittingSelectionComponent.getWeaponSystemMapKey(weapon, alignment);
             let amount = this.weaponsSelection.get(id);
             if (!amount) {
                 amount = 0;
@@ -353,6 +366,18 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
             map.set(alignment, amount);
         });
         return map;
+    }
+
+    private static getWeaponSystemMapKey(weapon: Weapon | Launcher, key: AlignedFitting.WeaponAlignmentEnum) {
+        let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+        let id: string = "";
+        if (WeaponHelper.isWeapon(weapon)) {
+            id = ShipClassFittingSelectionComponent.getWeaponMapKey(<Weapon>weapon, alignment);
+        }
+        if (WeaponHelper.isLauncher(weapon)) {
+            id = ShipClassFittingSelectionComponent.getLauncherMapKey(<Launcher>weapon, alignment);
+        }
+        return id;
     }
 
     /**
@@ -363,6 +388,16 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      */
     private static getWeaponMapKey(weapon: Weapon, key: AlignedFitting.WeaponAlignmentEnum): string {
         return weapon.baseModule.idModule + "-weapon-" + key;
+    }
+
+    /**
+     * return a unique key for the map
+     * @param weapon
+     * @param key
+     * @private
+     */
+    private static getLauncherMapKey(weapon: Launcher, key: AlignedFitting.WeaponAlignmentEnum): string {
+        return weapon.baseModule.idModule + "-launcher-" + key;
     }
 
     /**
@@ -406,7 +441,7 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
             if (!amount) {
                 amount = 0;
             }
-            let id: string = ShipClassFittingSelectionComponent.getWeaponMapKey(weapon.weapon, alignment);
+            let id: string = ShipClassFittingSelectionComponent.getWeaponSystemMapKey(weapon.weapon, alignment);
             this.weaponsSelection.set(id, amount);
         });
         let bow = 0;
@@ -468,6 +503,21 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
                 let s: AlignedFitting = {
                     amount: amount,
                     weapon: module,
+                    weaponAlignment: alignment
+
+                }
+                if (amount > 0) {
+                    weapons.push(s);
+                }
+            });
+        });
+        this.launchers.forEach(module => {
+            let amountByAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number> = this.getWeaponModuleAmount(module);
+            amountByAlignment.forEach((amount, key) => {
+                let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+                let s: AlignedFitting = {
+                    amount: amount,
+                    launcher: module,
                     weaponAlignment: alignment
 
                 }

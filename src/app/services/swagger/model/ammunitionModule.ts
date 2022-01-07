@@ -10,7 +10,9 @@
  * Do not edit the class manually.
  */
 import { BaseModule } from './baseModule';
+import { Missile } from './missile';
 
 export interface AmmunitionModule { 
     baseModule: BaseModule;
+    missile: Missile;
 }

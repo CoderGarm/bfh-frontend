@@ -7,10 +7,6 @@
         <mat-label>Code</mat-label>
         <input matInput disabled value="{{hullInput.hullType}}">
     </mat-form-field>
-    <mat-form-field appearance="fill" class="short-field">
-        <mat-label>Level</mat-label>
-        <input matInput disabled value="{{hullInput.level}}">
-    </mat-form-field>
     <mat-form-field appearance="fill" class="description-field">
         <mat-label>Description</mat-label>
         <input matInput disabled value="{{hullInput.description}}">
@@ -20,6 +16,11 @@
 
 <p>Construction capacities</p>
 <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="occ">
+        <th mat-header-cell *matHeaderCellDef>Overall</th>
+        <td mat-cell *matCellDef="let hull"> {{hull.overallConstructionCapacity}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="cc">
         <th mat-header-cell *matHeaderCellDef>Modules</th>
         <td mat-cell *matCellDef="let hull"> {{hull.constructionCapacity}} </td>

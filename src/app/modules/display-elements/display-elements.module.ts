@@ -37,6 +37,8 @@ import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-fac
 import {ResourceDepositOverlayDisplayComponent} from './resource-deposit-display/resource-deposit-overlay-display.component';
 import {InterstellarFleetDisplayComponent} from './interstellar-fleet-display/interstellar-fleet-display.component';
 import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component';
+import {LauncherModuleDisplayComponent} from './launcher-module-display/launcher-module-display.component';
+import {LauncherCounterComponent} from './launcher-counter/launcher-counter.component';
 
 @NgModule({
     declarations: [
@@ -77,6 +79,8 @@ import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movem
         ResourceDepositOverlayDisplayComponent,
         InterstellarFleetDisplayComponent,
         InterstellarFleetMovementEditComponent,
+        LauncherModuleDisplayComponent,
+        LauncherCounterComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -119,6 +123,8 @@ import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movem
         ResourceDepositOverlayDisplayComponent,
         InterstellarFleetDisplayComponent,
         InterstellarFleetMovementEditComponent,
+        LauncherModuleDisplayComponent,
+        LauncherCounterComponent
     ]
 })
 export class DisplayElementsModule {

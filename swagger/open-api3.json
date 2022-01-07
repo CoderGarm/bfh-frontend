@@ -1894,6 +1894,58 @@
         }
       }
     },
+    "/api/private/modules/launcher/{idUser}": {
+      "get": {
+        "tags": [
+          "ModuleApi"
+        ],
+        "summary": "Get all unlocked weapons for the owner .",
+        "operationId": "getLaunchersByUser",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Launcher"
+                  }
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/private/modules/passive/{idUser}": {
       "get": {
         "tags": [
@@ -3761,7 +3813,6 @@
         "title": "AlignedFitting",
         "required": [
           "amount",
-          "weapon",
           "weaponAlignment"
         ],
         "type": "object",
@@ -3771,8 +3822,12 @@
             "description": "The amount of mounted weapons.",
             "format": "int32"
           },
+          "launcher": {
+            "description": "The mounted launcher.",
+            "$ref": "#/components/schemas/Launcher"
+          },
           "weapon": {
-            "description": "The mounted weapon.",
+            "description": "The mounted direct weapon.",
             "$ref": "#/components/schemas/Weapon"
           },
           "weaponAlignment": {
@@ -3808,13 +3863,18 @@
       "AmmunitionModule": {
         "title": "AmmunitionModule",
         "required": [
-          "baseModule"
+          "baseModule",
+          "missile"
         ],
         "type": "object",
         "properties": {
           "baseModule": {
             "description": "The basic values of this module.",
             "$ref": "#/components/schemas/BaseModule"
+          },
+          "missile": {
+            "description": "The basic values of this module.",
+            "$ref": "#/components/schemas/Missile"
           }
         }
       },
@@ -3853,7 +3913,6 @@
         "title": "BaseModule",
         "required": [
           "description",
-          "effectValue",
           "idModule",
           "name",
           "techLevel",
@@ -4641,8 +4700,8 @@
           "description",
           "hullType",
           "idHull",
-          "level",
-          "name"
+          "name",
+          "overallConstructionCapacity"
         ],
         "type": "object",
         "properties": {
@@ -4679,14 +4738,14 @@
             "description": "The id of this hull.",
             "format": "int32"
           },
-          "level": {
-            "type": "integer",
-            "description": "The level represents the size of a ship, bigger levels represents bigger hulls.",
-            "format": "int32"
-          },
           "name": {
             "type": "string",
             "description": "The name of this hull."
+          },
+          "overallConstructionCapacity": {
+            "type": "integer",
+            "description": "The overall construction capacity as displacement like in the wet navies.",
+            "format": "int32"
           }
         }
       },
@@ -4815,6 +4874,56 @@
           }
         }
       },
+      "Launcher": {
+        "title": "Launcher",
+        "required": [
+          "alignmentTypes",
+          "allowedMissiles",
+          "ammunitionModule",
+          "baseModule",
+          "weaponType"
+        ],
+        "type": "object",
+        "properties": {
+          "alignmentTypes": {
+            "type": "array",
+            "description": "The possible mount points of this weapon.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BOW",
+                "BROADSIDE",
+                "STERN"
+              ]
+            }
+          },
+          "allowedMissiles": {
+            "type": "array",
+            "description": "The bunch of allowed missiles for this launcher.",
+            "items": {
+              "$ref": "#/components/schemas/Missile"
+            }
+          },
+          "ammunitionModule": {
+            "description": "The ammunition for this launcher.",
+            "$ref": "#/components/schemas/AmmunitionModule"
+          },
+          "baseModule": {
+            "description": "The basic values of this module.",
+            "$ref": "#/components/schemas/BaseModule"
+          },
+          "weaponType": {
+            "type": "string",
+            "description": "The way how the damage will be projected.",
+            "enum": [
+              "BEAM",
+              "COUNTER_MISSILE",
+              "MISSILE",
+              "POINT_DEFENSE"
+            ]
+          }
+        }
+      },
       "LossRole": {
         "title": "LossRole",
         "required": [
@@ -4851,6 +4960,93 @@
             "items": {
               "$ref": "#/components/schemas/ResourceAmount"
             }
+          }
+        }
+      },
+      "Missile": {
+        "title": "Missile",
+        "required": [
+          "idMissile",
+          "missileMotors",
+          "motorCapacity",
+          "typeName",
+          "warhead",
+          "warheadCapacity"
+        ],
+        "type": "object",
+        "properties": {
+          "idMissile": {
+            "type": "integer",
+            "description": "The id of this Missile.",
+            "format": "int32"
+          },
+          "missileMotors": {
+            "type": "array",
+            "description": "The implemented engine of this missile.",
+            "items": {
+              "$ref": "#/components/schemas/MissileMotor"
+            }
+          },
+          "motorCapacity": {
+            "type": "integer",
+            "description": "The engine capacity of this missile.",
+            "format": "int32"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this missile."
+          },
+          "warhead": {
+            "description": "The warhead of this missile.",
+            "$ref": "#/components/schemas/Warhead"
+          },
+          "warheadCapacity": {
+            "type": "integer",
+            "description": "The warhead capacity of this missile.",
+            "format": "int32"
+          }
+        }
+      },
+      "MissileMotor": {
+        "title": "MissileMotor",
+        "required": [
+          "acceleration",
+          "endurance",
+          "idMissileMotor",
+          "maneuverability",
+          "typeName",
+          "useCapacity"
+        ],
+        "type": "object",
+        "properties": {
+          "acceleration": {
+            "type": "integer",
+            "description": "The acceleration of this engine in msÂ².",
+            "format": "int32"
+          },
+          "endurance": {
+            "type": "integer",
+            "description": "The endurance of this engine.",
+            "format": "int32"
+          },
+          "idMissileMotor": {
+            "type": "integer",
+            "description": "The id of this MissileMotor.",
+            "format": "int32"
+          },
+          "maneuverability": {
+            "type": "number",
+            "description": "Defines the capability of this weapon to penetrate the shield.\n The means the maneuver capability to find a gap in the tank to fire into it, for instance.",
+            "format": "double"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this engine."
+          },
+          "useCapacity": {
+            "type": "integer",
+            "description": "The capacity usage of this module.",
+            "format": "int32"
           }
         }
       },
@@ -5501,12 +5697,59 @@
           }
         }
       },
+      "Warhead": {
+        "title": "Warhead",
+        "required": [
+          "damageProjectionRange",
+          "damageValue",
+          "idWarhead",
+          "typeName",
+          "useCapacity",
+          "warheadType"
+        ],
+        "type": "object",
+        "properties": {
+          "damageProjectionRange": {
+            "type": "integer",
+            "description": "The effective range of this warhead.",
+            "format": "int32"
+          },
+          "damageValue": {
+            "type": "integer",
+            "description": "The projected damage of this warhead.",
+            "format": "int32"
+          },
+          "idWarhead": {
+            "type": "integer",
+            "description": "The id of this warhead.",
+            "format": "int32"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this warhead."
+          },
+          "useCapacity": {
+            "type": "integer",
+            "description": "The used capacity of this warhead.",
+            "format": "int32"
+          },
+          "warheadType": {
+            "type": "string",
+            "description": "The warhead type.",
+            "enum": [
+              "COUNTER_MISSILE",
+              "EXPLOSION",
+              "KINETIC",
+              "LASER"
+            ]
+          }
+        }
+      },
       "Weapon": {
         "title": "Weapon",
         "required": [
           "alignmentTypes",
           "baseModule",
-          "damageType",
           "effectiveRange",
           "weaponType"
         ],
@@ -5524,31 +5767,14 @@
               ]
             }
           },
-          "ammunitionModule": {
-            "description": "In case of an ammunition-based weapon - this is the ammo.",
-            "$ref": "#/components/schemas/AmmunitionModule"
-          },
           "baseModule": {
             "description": "The basic values of this module.",
             "$ref": "#/components/schemas/BaseModule"
-          },
-          "damageType": {
-            "type": "string",
-            "description": "The kind of damage which will be projected.",
-            "enum": [
-              "DART",
-              "EXPLOSION"
-            ]
           },
           "effectiveRange": {
             "type": "integer",
             "description": "The effective range of this weapon.",
             "format": "int32"
-          },
-          "sideWallPenetration": {
-            "type": "number",
-            "description": "The possibility of penetrating the sidewall.",
-            "format": "double"
           },
           "weaponType": {
             "type": "string",

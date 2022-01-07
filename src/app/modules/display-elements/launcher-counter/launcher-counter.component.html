@@ -37,7 +37,7 @@
 
             <mat-form-field appearance="fill" class="short-field">
                 <mat-label>Effective range</mat-label>
-                <input matInput disabled value="{{weapon.effectiveRange}}">
+                <input matInput disabled value="{{getRange(weapon.ammunitionModule.missile)}}">
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="short-field">
@@ -55,5 +55,9 @@
                 <input matInput disabled value="{{weapon.alignmentTypes}}">
             </mat-form-field>
         </div>
+        <app-ammunition-module-counter *ngIf="!!ammunitionModule"
+                                       [moduleInput]="ammunitionModule"
+                                       [startAt]="getAmmoAmount()"
+                                       (amount)="setAmmoAmount($event)"></app-ammunition-module-counter>
     </mat-expansion-panel>
 </mat-accordion>

@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Launcher } from './launcher';
 import { Weapon } from './weapon';
 
 export interface AlignedFitting { 
@@ -16,7 +17,8 @@ export interface AlignedFitting {
      * The amount of mounted weapons.
      */
     amount: number;
-    weapon: Weapon;
+    launcher?: Launcher;
+    weapon?: Weapon;
     /**
      * The used mount point of this fitting.
      */

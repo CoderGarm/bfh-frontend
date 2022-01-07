@@ -7,6 +7,11 @@ body {
   height: -webkit-fill-available;
 }
 
+// margin at the bottom of every tab body wrapper
+.mat-tab-body-wrapper {
+  margin-bottom: 60px;
+}
+
 // placed here because class def not loaded in more precised css files
 .coordCross {
   stroke: dimgray;

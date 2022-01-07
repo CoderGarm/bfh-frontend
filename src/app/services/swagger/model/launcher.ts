@@ -9,24 +9,27 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AmmunitionModule } from './ammunitionModule';
 import { BaseModule } from './baseModule';
+import { Missile } from './missile';
 
-export interface Weapon { 
+export interface Launcher { 
     /**
      * The possible mount points of this weapon.
      */
-    alignmentTypes: Array<Weapon.AlignmentTypesEnum>;
-    baseModule: BaseModule;
+    alignmentTypes: Array<Launcher.AlignmentTypesEnum>;
     /**
-     * The effective range of this weapon.
+     * The bunch of allowed missiles for this launcher.
      */
-    effectiveRange: number;
+    allowedMissiles: Array<Missile>;
+    ammunitionModule: AmmunitionModule;
+    baseModule: BaseModule;
     /**
      * The way how the damage will be projected.
      */
-    weaponType: Weapon.WeaponTypeEnum;
+    weaponType: Launcher.WeaponTypeEnum;
 }
-export namespace Weapon {
+export namespace Launcher {
     export type AlignmentTypesEnum = 'BOW' | 'BROADSIDE' | 'STERN';
     export const AlignmentTypesEnum = {
         BOW: 'BOW' as AlignmentTypesEnum,

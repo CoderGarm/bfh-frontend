@@ -21,6 +21,8 @@
         </mat-expansion-panel-header>
         <app-weapons-counter (weaponSelectionOutput)="chooseWeapon($event)" *ngFor="let weapon of weapons"
                              [startAt]="getWeaponSelection(weapon)"></app-weapons-counter>
+        <app-launcher-counter (weaponSelectionOutput)="chooseWeapon($event)" *ngFor="let launcher of launchers"
+                              [startAt]="getWeaponSelection(launcher)"></app-launcher-counter>
     </mat-expansion-panel>
 
     <mat-expansion-panel>

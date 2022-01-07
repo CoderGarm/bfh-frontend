@@ -1,20 +1,14 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {AlignedFitting, AmmunitionModule, Launcher, Weapon} from "../../../services/swagger";
+import {AlignedFitting, AmmunitionModule, Launcher, Missile} from "../../../services/swagger";
+import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
 import {WeaponHelper} from "../../../WeaponHelper";
 
-export interface WeaponsSelection {
-    weapon: Weapon | Launcher,
-    weaponAmountPerAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number>,
-    ammo?: AmmunitionModule,
-    ammoAmount?: number
-}
-
 @Component({
-    selector: 'app-weapons-counter',
-    templateUrl: './weapons-counter.component.html',
-    styleUrls: ['./weapons-counter.component.scss']
+    selector: 'app-launcher-counter',
+    templateUrl: './launcher-counter.component.html',
+    styleUrls: ['./launcher-counter.component.scss']
 })
-export class WeaponsCounterComponent implements OnInit, OnChanges {
+export class LauncherCounterComponent implements OnInit, OnChanges {
 
     /**
      * the base start amount if not changes
@@ -42,9 +36,14 @@ export class WeaponsCounterComponent implements OnInit, OnChanges {
     max: number = Number.MAX_VALUE;
 
     /**
+     * the ammunition module to display
+     */
+    ammunitionModule?: AmmunitionModule;
+
+    /**
      * the weapon to display
      */
-    weapon?: Weapon;
+    weapon?: Launcher;
 
     constructor() {
     }
@@ -52,10 +51,11 @@ export class WeaponsCounterComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.startAtDefinition]) {
             if (!!this.startAt) {
-                if (WeaponHelper.isLauncher(this.startAt.weapon)) {
+                if (WeaponHelper.isWeapon(this.startAt.weapon)) {
                     return;
                 }
-                this.weapon = <Weapon>this.startAt.weapon;
+                this.ammunitionModule = this.startAt.ammo;
+                this.weapon = <Launcher>this.startAt.weapon;
                 this.startAt.weapon.alignmentTypes.forEach(key => {
                     let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
                     let amount = this.startAt!.weaponAmountPerAlignment.get(alignment);
@@ -64,10 +64,16 @@ export class WeaponsCounterComponent implements OnInit, OnChanges {
                     }
                     this.setAmount(key, amount);
                 });
+                if (!!this.startAt.ammoAmount) {
+                    this.setAmmoAmount(this.startAt.ammoAmount);
+                } else {
+                    this.setAmmoAmount(0);
+                }
             } else {
                 this.setAmount('STERN', 0);
                 this.setAmount('BROADSIDE', 0);
                 this.setAmount('BOW', 0);
+                this.setAmmoAmount(0);
             }
         }
     }
@@ -89,6 +95,17 @@ export class WeaponsCounterComponent implements OnInit, OnChanges {
     }
 
     /**
+     * sets the amount of ammunition modules
+     * @param event
+     */
+    setAmmoAmount(event: number) {
+        if (!!this.startAt) {
+            this.startAt.ammoAmount = event;
+            this.weaponSelectionOutput.emit(this.startAt);
+        }
+    }
+
+    /**
      * returns the amount of weapons per alignment
      * @param alignmentString
      */
@@ -105,6 +122,19 @@ export class WeaponsCounterComponent implements OnInit, OnChanges {
     }
 
     /**
+     * returns the amount of ammo modules
+     */
+    getAmmoAmount() {
+        let amount = 0;
+        if (!!this.startAt) {
+            if (!!this.startAt.ammoAmount) {
+                amount = this.startAt.ammoAmount;
+            }
+        }
+        return amount;
+    }
+
+    /**
      * returns if the given weapon supports the given alignment
      * @param alignmentString
      */
@@ -114,5 +144,9 @@ export class WeaponsCounterComponent implements OnInit, OnChanges {
             return !this.startAt.weapon.alignmentTypes.includes(alignment);
         }
         return false;
+    }
+
+    getRange(missile: Missile): number {
+        return WeaponHelper.getMissileRange(missile);
     }
 }

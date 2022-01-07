@@ -18,7 +18,7 @@ export interface BaseModule {
     /**
      * The base effect value of this module.
      */
-    effectValue: number;
+    effectValue?: number;
     /**
      * The id of this module.
      */

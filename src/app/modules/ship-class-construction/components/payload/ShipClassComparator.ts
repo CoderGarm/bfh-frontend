@@ -1,4 +1,4 @@
-import {ShipClass} from "../../../../services/swagger";
+import {Launcher, ShipClass, Weapon} from "../../../../services/swagger";
 
 export class ShipClassComparator {
 
@@ -152,7 +152,11 @@ export class ShipClassComparator {
     private static getFittings(shipClass: ShipClass): Map<number, number> {
         const fittings: Map<number, number> = new Map<number, number>();
         shipClass.fittings.map(af => {
-            let idModule = af.weapon.baseModule.idModule;
+            let weapon: Weapon | Launcher | undefined = af.weapon || af.launcher;
+            if (!weapon) {
+                return;
+            }
+            let idModule = weapon.baseModule.idModule;
             let amount = af.amount;
             let o1Am = fittings.get(idModule);
             if (!o1Am) {

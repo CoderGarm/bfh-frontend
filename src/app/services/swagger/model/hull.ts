@@ -38,11 +38,11 @@ export interface Hull {
      */
     idHull: number;
     /**
-     * The level represents the size of a ship, bigger levels represents bigger hulls.
-     */
-    level: number;
-    /**
      * The name of this hull.
      */
     name: string;
+    /**
+     * The overall construction capacity as displacement like in the wet navies.
+     */
+    overallConstructionCapacity: number;
 }
