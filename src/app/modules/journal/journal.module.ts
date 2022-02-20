@@ -3,16 +3,18 @@ import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {BattleReportComponent} from './components/payload/battle-report/battle-report.component';
 import {JournalTabViewComponent} from './components/orga/journal-tab-view/journal-tab-view.component';
+import {LostWarshipOverlayComponent} from './components/payload/lost-warship-overlay/lost-warship-overlay.component';
 
 
 @NgModule({
     declarations: [
         BattleReportComponent,
-        JournalTabViewComponent
+        JournalTabViewComponent,
+        LostWarshipOverlayComponent
     ],
     imports: [
         SharedModuleModule,
-        DisplayElementsModule
+        DisplayElementsModule,
     ]
 })
 export class JournalModule {

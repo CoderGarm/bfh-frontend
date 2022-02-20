@@ -1,1 +1,37 @@
 @import "src/app/modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
+
+
+.info-block {
+  overflow: hidden;
+}
+
+.left-block {
+  float: left;
+}
+
+.bottom {
+  bottom: 15px;
+  position: absolute;
+}
+
+.right-block {
+  float: right;
+}
+
+.table-block {
+  width: 65%;
+}
+
+table.mat-table {
+  width: 100%;
+}
+
+.data-block {
+  clear: both;
+  margin-top: 25px;
+}
+
+.lost-warship-block {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

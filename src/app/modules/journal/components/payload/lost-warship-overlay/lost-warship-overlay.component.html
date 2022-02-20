@@ -1,0 +1,21 @@
+<ng-template *ngIf="!!report"
+             cdkConnectedOverlay
+             [cdkConnectedOverlayOrigin]="origin"
+             [cdkConnectedOverlayOpen]="openOverlay"
+             [cdkConnectedOverlayPositions]="getPosition()">
+    <div class="mat-dialog-container">
+        <div class="content">
+
+            <div class="header">
+                <h1 mat-dialog-title>{{ report.lossRole.warShipName }}</h1>
+            </div>
+            <div mat-dialog-content>
+                The lady takes {{report.beamHits}} hits from the ship artillery and {{report.missileHits}} hit from ship killer missiles.<br>
+                She was finished off by {{report.finalHitBy}}.
+            </div>
+            <div *ngIf="!!report.destroyedBy">
+                And killed by {{report.destroyedBy}}.
+            </div>
+        </div>
+    </div>
+</ng-template>

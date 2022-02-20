@@ -9,10 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Fleet } from './fleet';
 import { ShipClass } from './shipClass';
 import { UserJson } from './userJson';
 
 export interface LossRole { 
+    fleet: Fleet;
     owner: UserJson;
     shipClass: ShipClass;
     /**

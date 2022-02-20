@@ -1,17 +1,80 @@
 <div class="holder">
     <mat-accordion>
-        <mat-expansion-panel *ngFor="let report of battleReports">
+        <mat-expansion-panel *ngFor="let report of battleReports"
+                             (opened)="setOpened(report)"
+                             (closed)="setClosed(report)">
             <mat-expansion-panel-header>
                 <mat-panel-title>Tick # {{report.tick.tickNo}} from {{report.tick.tickStarts | date}}</mat-panel-title>
                 <mat-panel-description>{{getOrbitRepresentation(report.orbit)}}</mat-panel-description>
             </mat-expansion-panel-header>
-            Participating users:<br>
-            <div *ngFor="let user of report.participatingUsers">{{user.username}}</div>
-            <br>
-            Lost war ships:<br>
-            <div *ngFor="let loss of report.lossRole">
-                {{loss.warShipName}} from {{loss.owner.username}} of type {{loss.shipClass.name}}
+            <div class="info-block">
+                <div class="left-block">
+                    Participating fleets:<br>
+                    <div *ngFor="let fleet of report.participatingFleets">{{fleet.name}} of {{fleet.owner.username}}</div>
+                </div>
+                <div class="right-block">
+                    last round was # {{report.lastRound.no}}
+                </div>
+            </div>
+            <div class="data-block">
+                <div class="left-block bottom">
+                    Lost war ships:<br>
+                    <div *ngFor="let loss of report.lossRole"
+                         (mouseover)="showOverlay(report, loss)"
+                         (mouseleave)="lossReport = undefined"
+                         cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+                         class="lost-warship-block">
+                        {{loss.warShipName}} ({{loss.shipClass.name}}) from {{loss.owner.username}}
+                        <app-lost-warship-overlay
+                                *ngIf="currentlyOpenedItemIndex == battleReports.indexOf(report) && !!lossReport && loss.warShipName === lossReport.lossRole.warShipName"
+                                [openOverlay]="!!lossReport"
+                                [origin]="trigger"
+                                [report]="lossReport"
+                        ></app-lost-warship-overlay>
+                    </div>
+                </div>
+                <div class="right-block table-block">
+                    <table mat-table matSort [dataSource]="dataSourceCombatStatistics">
+                        <ng-container matColumnDef="Fleet">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fleet</th>
+                            <td mat-cell *matCellDef="let r"> {{r.fleetName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Kills">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Kills</th>
+                            <td mat-cell *matCellDef="let r"> {{r.kills}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Losses">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Losses</th>
+                            <td mat-cell *matCellDef="let r"> {{r.losses}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Released missiles">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Released missiles</th>
+                            <td mat-cell *matCellDef="let r"> {{r.releasedMissiles}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Released beams">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Released beams</th>
+                            <td mat-cell *matCellDef="let r"> {{r.releasedBeams}} </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsCombatStatistics"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsCombatStatistics;"></tr>
+                    </table>
+                </div>
+                <div class="data-block">
+
+                </div>
             </div>
         </mat-expansion-panel>
     </mat-accordion>
+    <mat-paginator [length]="length"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   (page)="fetchByPagination($event)">
+    </mat-paginator>
 </div>

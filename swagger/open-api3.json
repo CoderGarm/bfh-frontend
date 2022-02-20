@@ -2516,18 +2516,40 @@
         }
       }
     },
-    "/api/private/report/battle/{idUser}": {
+    "/api/private/report/battle/{idUser}/{page}/{size}": {
       "get": {
         "tags": [
           "ReportApi"
         ],
         "summary": "Get all fighting reports for the user.",
-        "operationId": "getAllReportsWithUser",
+        "operationId": "getReportsWithUserWithPaging",
         "parameters": [
           {
             "name": "idUser",
             "in": "path",
             "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "description": "page",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "path",
+            "description": "size",
             "required": true,
             "style": "simple",
             "schema": {
@@ -3953,27 +3975,72 @@
       "BattleReport": {
         "title": "BattleReport",
         "required": [
+          "counterMissileHits",
           "idBattleReport",
+          "lastRound",
+          "lossRole",
+          "missileMovements",
+          "movementActions",
           "orbit",
+          "participatingFleets",
           "participatingUsers",
+          "releasedVolleys",
+          "shipKillerHits",
           "tick"
         ],
         "type": "object",
         "properties": {
+          "counterMissileHits": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The hits against missile salvos.",
+            "items": {
+              "$ref": "#/components/schemas/CounterMissileHit"
+            }
+          },
           "idBattleReport": {
             "type": "integer",
             "description": "The database id of the report.",
             "format": "int32"
           },
+          "lastRound": {
+            "description": "The last round in this battle.",
+            "$ref": "#/components/schemas/CombatRound"
+          },
           "lossRole": {
             "type": "array",
+            "description": "The losses of this battle.",
             "items": {
               "$ref": "#/components/schemas/LossRole"
+            }
+          },
+          "missileMovements": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The missile movements during this combat.",
+            "items": {
+              "$ref": "#/components/schemas/MissileMovement"
+            }
+          },
+          "movementActions": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The movements which were done in this clash.",
+            "items": {
+              "$ref": "#/components/schemas/MovementAction"
             }
           },
           "orbit": {
             "description": "The place where the action happened.",
             "$ref": "#/components/schemas/FleetOrbit"
+          },
+          "participatingFleets": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The protagonists - and the antagonists.",
+            "items": {
+              "$ref": "#/components/schemas/Fleet"
+            }
           },
           "participatingUsers": {
             "uniqueItems": true,
@@ -3981,6 +4048,22 @@
             "description": "The participating users.",
             "items": {
               "$ref": "#/components/schemas/UserJson"
+            }
+          },
+          "releasedVolleys": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "All loose off weapon action.",
+            "items": {
+              "$ref": "#/components/schemas/ReleasedVolley"
+            }
+          },
+          "shipKillerHits": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "All hits of ship killer weapons during this combat.",
+            "items": {
+              "$ref": "#/components/schemas/ShipKillerHit"
             }
           },
           "tick": {
@@ -4158,6 +4241,54 @@
           }
         }
       },
+      "CombatRound": {
+        "title": "CombatRound",
+        "required": [
+          "no"
+        ],
+        "type": "object",
+        "properties": {
+          "no": {
+            "type": "integer",
+            "description": "The combat round number.",
+            "format": "int32"
+          }
+        }
+      },
+      "CombatRoundKey": {
+        "title": "CombatRoundKey",
+        "required": [
+          "combatPhase",
+          "combatRound",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "combatPhase": {
+            "type": "string",
+            "description": "The combat phase in which this action happens.",
+            "enum": [
+              "BEAM_FIRE_INCOMING_PHASE",
+              "BEAM_FIRE_PHASE",
+              "COUNTER_MISSILE_PHASE",
+              "ELOKA_PHASE",
+              "MISSILE_FIRE_INCOMING_PHASE",
+              "MISSILE_FIRE_PHASE",
+              "MISSILE_MOVEMENT_PHASE",
+              "MOVEMENT_PHASE"
+            ]
+          },
+          "combatRound": {
+            "description": "The combat round in which this action happens.",
+            "$ref": "#/components/schemas/CombatRound"
+          },
+          "id": {
+            "type": "integer",
+            "description": "The id of the parent.",
+            "format": "int32"
+          }
+        }
+      },
       "Construction": {
         "title": "Construction",
         "required": [
@@ -4180,6 +4311,52 @@
             "type": "integer",
             "description": "The level of this construction.",
             "format": "int32"
+          }
+        }
+      },
+      "CounterMissileHit": {
+        "title": "CounterMissileHit",
+        "required": [
+          "actor",
+          "attackedMissileSalvo",
+          "combatRoundKey",
+          "destroyedMissiles",
+          "missile",
+          "remainingMissiles",
+          "target"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/Fleet"
+          },
+          "attackedMissileSalvo": {
+            "type": "string",
+            "description": "The UUID of the attacked missile salvo.",
+            "format": "uuid"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "destroyedMissiles": {
+            "type": "integer",
+            "description": "The amount of destroyed missiles.",
+            "format": "int32"
+          },
+          "missile": {
+            "description": "The attacked missile type as part of the salvo.",
+            "$ref": "#/components/schemas/Missile"
+          },
+          "remainingMissiles": {
+            "type": "integer",
+            "description": "The leftover amount of missiles of the given type in the salvo.",
+            "format": "int32"
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/Fleet"
           }
         }
       },
@@ -4690,6 +4867,65 @@
           }
         }
       },
+      "HitLog": {
+        "title": "HitLog",
+        "required": [
+          "attackedPart",
+          "combatRoundKey",
+          "damageDealer",
+          "damageValue",
+          "state",
+          "warShip",
+          "warshipHealthState"
+        ],
+        "type": "object",
+        "properties": {
+          "alive": {
+            "type": "boolean"
+          },
+          "attackedPart": {
+            "type": "string",
+            "description": "The attacked part of the ship.",
+            "enum": [
+              "ARMOR",
+              "ELOKA",
+              "FITTING_AND_HULL",
+              "PROPULSION",
+              "SIDEWALL"
+            ]
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "damageDealer": {
+            "type": "string",
+            "description": "The UUID of the damage dealer.",
+            "format": "uuid"
+          },
+          "damageValue": {
+            "type": "integer",
+            "description": "The applied damage.",
+            "format": "int64"
+          },
+          "fightingCapable": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "integer",
+            "description": "The remaining hit points of the attacked part of the ship.",
+            "format": "int32"
+          },
+          "warShip": {
+            "description": "The attacked warship.",
+            "$ref": "#/components/schemas/WarShip"
+          },
+          "warshipHealthState": {
+            "type": "string",
+            "description": "The string representation of the target's health state."
+          }
+        }
+      },
       "Hull": {
         "title": "Hull",
         "required": [
@@ -4927,12 +5163,17 @@
       "LossRole": {
         "title": "LossRole",
         "required": [
+          "fleet",
           "owner",
           "shipClass",
           "warShipName"
         ],
         "type": "object",
         "properties": {
+          "fleet": {
+            "description": "The fleet which was the war ships home.",
+            "$ref": "#/components/schemas/Fleet"
+          },
           "owner": {
             "description": "The user which is affected by the loss.",
             "$ref": "#/components/schemas/UserJson"
@@ -4966,6 +5207,7 @@
       "Missile": {
         "title": "Missile",
         "required": [
+          "elokaResistance",
           "idMissile",
           "missileMotors",
           "motorCapacity",
@@ -4975,6 +5217,11 @@
         ],
         "type": "object",
         "properties": {
+          "elokaResistance": {
+            "type": "integer",
+            "description": "The engine capacity of this missile.",
+            "format": "int32"
+          },
           "idMissile": {
             "type": "integer",
             "description": "The id of this Missile.",
@@ -5050,6 +5297,62 @@
           }
         }
       },
+      "MissileMovement": {
+        "title": "MissileMovement",
+        "required": [
+          "actor",
+          "combatRoundKey",
+          "lastPosition",
+          "missileAmount",
+          "movingMissileSalvo",
+          "position",
+          "roundsToTravel",
+          "target",
+          "targetPosition"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/Fleet"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "lastPosition": {
+            "description": "The position of the salvo in the last round.",
+            "$ref": "#/components/schemas/Orbit"
+          },
+          "missileAmount": {
+            "type": "integer",
+            "description": "The amount of missiles in this salvo.",
+            "format": "int32"
+          },
+          "movingMissileSalvo": {
+            "type": "string",
+            "description": "The UUID of the moving missile salvo.",
+            "format": "uuid"
+          },
+          "position": {
+            "description": "The current position of the salvo.",
+            "$ref": "#/components/schemas/Orbit"
+          },
+          "roundsToTravel": {
+            "type": "integer",
+            "description": "The amount of rounds which have to be passed before in range for a hit.",
+            "format": "int32"
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/Fleet"
+          },
+          "targetPosition": {
+            "description": "The current position of the target.",
+            "$ref": "#/components/schemas/Orbit"
+          }
+        }
+      },
       "Move": {
         "title": "Move",
         "required": [
@@ -5086,6 +5389,52 @@
           }
         }
       },
+      "MovementAction": {
+        "title": "MovementAction",
+        "required": [
+          "actor",
+          "combatRoundKey",
+          "destination",
+          "interimDestination",
+          "movementType",
+          "origin"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/Fleet"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "destination": {
+            "description": "The point of the targeted position.",
+            "$ref": "#/components/schemas/Orbit"
+          },
+          "interimDestination": {
+            "description": "The next step to the targeted position.",
+            "$ref": "#/components/schemas/Orbit"
+          },
+          "movementType": {
+            "type": "string",
+            "description": "The selected movement option for this action.",
+            "enum": [
+              "EVASION_MOVEMENT",
+              "HOLD_DISTANCE",
+              "IMPELLER_WEDGE_PROTECTION",
+              "INCREASE_DISTANCE",
+              "OFFENSIVE_ROLL",
+              "REDUCE_DISTANCE"
+            ]
+          },
+          "origin": {
+            "description": "The starting position for this movement.",
+            "$ref": "#/components/schemas/Orbit"
+          }
+        }
+      },
       "Orbit": {
         "title": "Orbit",
         "required": [
@@ -5095,14 +5444,14 @@
         "type": "object",
         "properties": {
           "xCoordinate": {
-            "type": "integer",
+            "type": "number",
             "description": "The x-coordinate of this orbit.",
-            "format": "int32"
+            "format": "biginteger"
           },
           "yCoordinate": {
-            "type": "integer",
+            "type": "number",
             "description": "The y-coordinate of this orbit.",
-            "format": "int32"
+            "format": "biginteger"
           }
         }
       },
@@ -5226,6 +5575,58 @@
             "type": "boolean",
             "description": "If this propulsion module if for faster then light.",
             "example": false
+          }
+        }
+      },
+      "ReleasedVolley": {
+        "title": "ReleasedVolley",
+        "required": [
+          "actor",
+          "amountOfShots",
+          "combatRoundKey",
+          "damageDealer",
+          "initialDistance",
+          "target",
+          "weaponType"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/Fleet"
+          },
+          "amountOfShots": {
+            "type": "integer",
+            "description": "The amount of missiles in this salvo.",
+            "format": "int32"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "damageDealer": {
+            "type": "string",
+            "description": "The UUID of the damage dealer.",
+            "format": "uuid"
+          },
+          "initialDistance": {
+            "type": "number",
+            "description": "The distance of this shot.",
+            "format": "bigdecimal"
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/Fleet"
+          },
+          "weaponType": {
+            "type": "string",
+            "description": "The type of the damage dealer.",
+            "enum": [
+              "BEAM",
+              "COUNTER_MISSILE",
+              "MISSILE",
+              "POINT_DEFENSE"
+            ]
           }
         }
       },
@@ -5412,6 +5813,66 @@
           }
         }
       },
+      "ShipKillerHit": {
+        "title": "ShipKillerHit",
+        "required": [
+          "actor",
+          "combatRoundKey",
+          "damageDealer",
+          "distance",
+          "hitLogs",
+          "lossesByHit",
+          "result",
+          "target"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/Fleet"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "damageDealer": {
+            "type": "string",
+            "description": "The UUID of the damage dealer.",
+            "format": "uuid"
+          },
+          "distance": {
+            "type": "number",
+            "description": "The distance of this shot.",
+            "format": "bigdecimal"
+          },
+          "hitLogs": {
+            "type": "array",
+            "description": "A hit log list.",
+            "items": {
+              "$ref": "#/components/schemas/HitLog"
+            }
+          },
+          "lossesByHit": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LossRole"
+            },
+            "description": "If the hit results in a destroyed ship, this will be logged here. By the id of the hit log."
+          },
+          "result": {
+            "type": "string",
+            "description": "The result of this salvo.",
+            "enum": [
+              "BURST_ON_IMPELLER_WEDGE",
+              "DAMAGE_APPLIED"
+            ]
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/Fleet"
+          }
+        }
+      },
       "ShipyardConstructionOrder": {
         "title": "ShipyardConstructionOrder",
         "required": [
@@ -5536,7 +5997,8 @@
           "distanceMap": {
             "type": "object",
             "additionalProperties": {
-              "type": "number"
+              "type": "integer",
+              "format": "int64"
             },
             "description": "The star system with its distance to all known systems by id."
           },
@@ -5710,14 +6172,14 @@
         "type": "object",
         "properties": {
           "damageProjectionRange": {
-            "type": "integer",
+            "type": "number",
             "description": "The effective range of this warhead.",
-            "format": "int32"
+            "format": "bigdecimal"
           },
           "damageValue": {
             "type": "integer",
             "description": "The projected damage of this warhead.",
-            "format": "int32"
+            "format": "int64"
           },
           "idWarhead": {
             "type": "integer",
@@ -5772,9 +6234,9 @@
             "$ref": "#/components/schemas/BaseModule"
           },
           "effectiveRange": {
-            "type": "integer",
+            "type": "number",
             "description": "The effective range of this weapon.",
-            "format": "int32"
+            "format": "bigdecimal"
           },
           "weaponType": {
             "type": "string",

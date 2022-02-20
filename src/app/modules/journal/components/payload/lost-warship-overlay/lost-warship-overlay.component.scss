@@ -1,0 +1,13 @@
+@import "src/styles/purple-green";
+
+.mat-dialog-container {
+  // inherit dialog theme
+  min-width: 200px;
+  width: auto;
+  min-height: 150px;
+  height: auto;
+}
+
+.content {
+  margin: 15px 15px 15px 15px;
+}

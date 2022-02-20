@@ -9,6 +9,7 @@ import {AppRoutingModule} from "../../app-routing.module";
 import {AuthenticationModule} from "../../services/authentication";
 import {ApiModule} from "../../services/swagger";
 import {NumericCounterComponent} from './components/numeric-counter/numeric-counter.component';
+import {OverlayModule} from "@angular/cdk/overlay";
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {NumericCounterComponent} from './components/numeric-counter/numeric-coun
         AuthenticationModule,
         ApiModule,
         MaterialComponentsModule,
+        OverlayModule
     ],
     exports: [
         CommonModule,
@@ -38,7 +40,8 @@ import {NumericCounterComponent} from './components/numeric-counter/numeric-coun
         AuthenticationModule,
         ApiModule,
         MaterialComponentsModule,
-        NumericCounterComponent
+        NumericCounterComponent,
+        OverlayModule
     ]
 })
 export class SharedModuleModule {
