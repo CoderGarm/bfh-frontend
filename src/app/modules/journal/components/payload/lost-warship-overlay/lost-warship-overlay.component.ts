@@ -1,6 +1,6 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {CdkOverlayOrigin, ConnectionPositionPair} from "@angular/cdk/overlay";
-import {CombatReport} from "../battle-report/battle-report.component";
+import {CombatReport} from "../../../combat-report";
 
 @Component({
     selector: 'app-lost-warship-overlay',

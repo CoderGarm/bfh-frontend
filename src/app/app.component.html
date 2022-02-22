@@ -1,13 +1,18 @@
 <app-nav></app-nav>
 <mat-drawer-container id="main-drawer">
-    <mat-drawer mode="side" [opened]="isLoggedIn" id="nav-drawer">
-          <mat-selection-list [multiple]="false">
+    <mat-drawer mode="side" #drawer [opened]="isLoggedIn" id="nav-drawer">
+        <mat-selection-list [multiple]="false">
             <mat-list-option *ngFor="let route of routes" (click)="navigate(route)">
-              {{route.path}}
+                {{route.path}}
             </mat-list-option>
-          </mat-selection-list>
+        </mat-selection-list>
     </mat-drawer>
     <mat-drawer-content [ngClass]="{'no-scrolling' : !!isNoScroll}">
+
         <router-outlet></router-outlet>
     </mat-drawer-content>
-  </mat-drawer-container>
+</mat-drawer-container>
+<button id="toggle-nav" type="button" mat-button (click)="drawer.toggle()" *ngIf="isLoggedIn">
+    <mat-icon *ngIf="drawer.opened">switch_right</mat-icon>
+    <mat-icon *ngIf="!drawer.opened">switch_left</mat-icon>
+</button>

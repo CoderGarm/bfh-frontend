@@ -1,6 +1,23 @@
 @import "src/app/modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 
 
+.info-div {
+  position: fixed;
+  left: 25%;
+  right: 12%;
+}
+
+.player-control {
+  position: fixed;
+  left: 50%;
+  right: 25%;
+  bottom: 25px;
+}
+
+.transparent-backdrop {
+  opacity: 0.7;
+}
+
 .info-block {
   overflow: hidden;
 }

@@ -26,6 +26,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatRadioModule} from "@angular/material/radio";
+import {MatStepperModule} from "@angular/material/stepper";
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import {MatRadioModule} from "@angular/material/radio";
         MatMenuModule,
         MatExpansionModule,
         MatSnackBarModule,
-        MatRadioModule
+        MatRadioModule,
+        MatStepperModule,
     ],
     exports: [
         MatButtonModule,
@@ -89,7 +91,8 @@ import {MatRadioModule} from "@angular/material/radio";
         MatMenuModule,
         MatExpansionModule,
         MatSnackBarModule,
-        MatRadioModule
+        MatRadioModule,
+        MatStepperModule,
     ],
     providers: []
 })

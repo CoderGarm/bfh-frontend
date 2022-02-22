@@ -1,10 +1,12 @@
 import {AfterViewInit, Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {BattleReport, Fleet, FleetOrbit, LossRole, PlanetApiService, ReleasedVolley, ReportApiService} from "../../../../../services/swagger";
+import {BattleReport, Fleet, FleetOrbit, LossRole, MovementAction, PlanetApiService, ReleasedVolley, ReportApiService, StarSystem} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {MatSort} from "@angular/material/sort";
 import {MatTable, MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {CombatReport} from "../../../combat-report";
+import {CombatStatistics} from "../../../combat.statistics";
 
 @Component({
     selector: 'app-battle-report',
@@ -39,13 +41,19 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     //** accordion paginator block **\\
     @ViewChild(MatPaginator, {static: true})
     paginator?: MatPaginator;
-
     length: number = 0;
     pageIndex: number = 0;
     pageSize: number = 5;
 
+    isExpanded: boolean = false;
+
     //** accordion paginator block **\\
 
+    starSystem?: StarSystem;
+
+    combatRounds: number[] = [];
+    movementsByRound: Map<number, Map<Fleet, MovementAction>> = new Map<number, Map<Fleet, MovementAction>>();
+    volleysByRound: Map<number, Map<Fleet, ReleasedVolley>> = new Map<number, Map<Fleet, ReleasedVolley>>();
 
     constructor(private tokenStorage: TokenStorage,
                 private reportApi: ReportApiService,
@@ -113,8 +121,86 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
      */
     setOpened(report: BattleReport) {
         this.currentlyOpenedItem = report;
+        this.starSystem = report.orbit.system;
         this.currentlyOpenedItemIndex = this.battleReports.indexOf(report);
 
+        this.setCombatStatisticsDataSource(report);
+        report.movementActions.forEach(ma => this.setMovementMapValue(ma));
+        report.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));
+        this.mergeCombatRounds();
+    }
+
+    private setReleasedVolleyMapValue(movementAction: ReleasedVolley) {
+        const combatRound = movementAction.combatRoundKey.combatRound;
+        let valueMap = this.volleysByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = new Map<Fleet, ReleasedVolley>();
+            this.volleysByRound.set(combatRound.no, valueMap);
+        }
+        valueMap.set(movementAction.actor, movementAction);
+    }
+
+    private setMovementMapValue(movementAction: MovementAction) {
+        const combatRound = movementAction.combatRoundKey.combatRound;
+        let valueMap = this.movementsByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = new Map<Fleet, MovementAction>();
+            this.movementsByRound.set(combatRound.no, valueMap);
+        }
+        valueMap.set(movementAction.actor, movementAction);
+    }
+
+    private mergeCombatRounds() {
+        const combatRounds: Set<number> = new Set<number>();
+        Array.from(this.movementsByRound.keys()).forEach(cr => combatRounds.add(cr));
+        Array.from(this.volleysByRound.keys()).forEach(cr => combatRounds.add(cr));
+        this.combatRounds = Array.from(combatRounds).sort();
+    }
+
+    /**
+     * sets the {@link currentlyOpenedItem} for the closed item
+     * @param report
+     */
+    setClosed(report: BattleReport) {
+        if (this.currentlyOpenedItem === report) {
+            this.currentlyOpenedItem = undefined;
+            this.currentlyOpenedItemIndex = undefined;
+            this.dataSourceCombatStatistics.data = [];
+            this.starSystem = undefined;
+            this.combatRounds = [];
+            this.movementsByRound.clear();
+        }
+    }
+
+    showOverlay(report: BattleReport, loss: LossRole) {
+        this.lossReport = new CombatReport(report, loss);
+    }
+
+    /**
+     * loads the
+     */
+    fetchByPagination(pageEvent: PageEvent | any) {
+        let pageNumber = pageEvent.pageIndex;
+        let pageSize = pageEvent.pageSize;
+        let userID = this.tokenStorage.getUserID();
+        let sub = this.reportApi.getReportsWithUserWithPaging(userID, pageNumber, pageSize)
+            .subscribe(resp => {
+                this.battleReports = resp;
+                this.length = this.battleReports.length;
+                this.battleReports.forEach(report => {
+                    this.fetchOrbitRepresentation(report.orbit);
+                });
+            });
+        this.subscriptions.push(sub);
+    }
+
+    checkDisplayOverlay(report: BattleReport, loss: LossRole) {
+        const reportIsForSelectedLoss = !!this.lossReport && loss.warShipName === this.lossReport.lossRole.warShipName;
+        const openedAccordionMatchesReport = this.currentlyOpenedItemIndex == this.battleReports.indexOf(report);
+        return this.isExpanded && openedAccordionMatchesReport && reportIsForSelectedLoss;
+    }
+
+    private setCombatStatisticsDataSource(report: BattleReport) {
         let userID = this.tokenStorage.getUserID();
         const dataByFleet: Map<number, CombatStatistics> = new Map<number, CombatStatistics>();
         report.participatingFleets.forEach(fleet =>
@@ -146,92 +232,28 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         }
     }
 
-    /**
-     * sets the {@link currentlyOpenedItem} for the closed item
-     * @param itemIndex
-     */
-    setClosed(itemIndex: BattleReport) {
-        if (this.currentlyOpenedItem === itemIndex) {
-            this.currentlyOpenedItem = undefined;
-            this.currentlyOpenedItemIndex = undefined;
-            this.dataSourceCombatStatistics.data = [];
-        }
+    setExpanded(mustExpand: boolean) {
+        this.isExpanded = mustExpand;
     }
 
-    showOverlay(report: BattleReport, loss: LossRole) {
-        this.lossReport = new CombatReport(report, loss);
+    play() {
+        console.log("play")
     }
 
-    /**
-     * loads the
-     */
-    fetchByPagination(pageEvent: PageEvent | any) {
-        let pageNumber = pageEvent.pageIndex;
-        let pageSize = pageEvent.pageSize;
-        let userID = this.tokenStorage.getUserID();
-        let sub = this.reportApi.getReportsWithUserWithPaging(userID, pageNumber, pageSize)
-            .subscribe(resp => {
-                this.battleReports = resp;
-                this.length = this.battleReports.length;
-                this.battleReports.forEach(report => {
-                    this.fetchOrbitRepresentation(report.orbit);
-                });
-            });
-        this.subscriptions.push(sub);
+    fastRewind() {
+        console.log("fastRewind")
+    }
+
+    stop() {
+        console.log("stop")
+    }
+
+    pause() {
+        console.log("pause")
+    }
+
+    fastForward() {
+        console.log("fastForward")
     }
 }
 
-export class CombatReport {
-
-
-    constructor(report: BattleReport, lossRole: LossRole) {
-        this.lossRole = lossRole;
-
-        const releasedVolleysByDamageDealerId: Map<string, ReleasedVolley> = new Map<string, ReleasedVolley>();
-        report.releasedVolleys.map(volley => {
-            releasedVolleysByDamageDealerId.set(volley.damageDealer, volley);
-        })
-        report.shipKillerHits.forEach(hit => {
-            hit.hitLogs.forEach(hitLog => {
-                if (hitLog.warShip.name === lossRole.warShipName) {
-                    let releasedVolley = releasedVolleysByDamageDealerId.get(hit.damageDealer);
-                    if (!releasedVolley) {
-                        throw new Error("It seems that you was hit by a ghost missile. Please call the administrator.")
-                    }
-                    if (releasedVolley!.weaponType === ReleasedVolley.WeaponTypeEnum.BEAM) {
-                        this.beamHits++;
-                    }
-                    if (releasedVolley!.weaponType === ReleasedVolley.WeaponTypeEnum.MISSILE) {
-                        this.missileHits++;
-                    }
-                    if (!hitLog.alive) {
-                        this.destroyedBy = releasedVolley.actor.name;
-                    }
-                    if (!hitLog.fightingCapable) {
-                        this.finalHitBy = releasedVolley.actor.name;
-                    }
-                }
-            });
-        });
-    }
-
-    destroyedBy: string = "";
-    finalHitBy: string = "";
-    beamHits = 0;
-    missileHits = 0;
-    lossRole: LossRole;
-}
-
-class CombatStatistics {
-    constructor(fleet: Fleet, isLoggedInUser: boolean) {
-        this.isLoggedInUser = isLoggedInUser;
-        this.fleetName = fleet.name;
-    }
-
-    isLoggedInUser: boolean;
-    fleetName: string;
-    losses: number = 0;
-    kills: number = 0;
-    releasedMissiles: number = 0;
-    releasedBeams: number = 0;
-}
