@@ -48,3 +48,4 @@ swagger/typescript-angular-client-generated/.swagger-codegen/VERSION
 src/app/services/swagger/git_push.sh
 swagger/swaggerGenerated
 swagger/.swagger-codegen/VERSION
+.angular/

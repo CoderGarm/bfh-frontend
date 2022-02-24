@@ -124,6 +124,8 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.starSystem = report.orbit.system;
         this.currentlyOpenedItemIndex = this.battleReports.indexOf(report);
 
+        this.movementsByRound = new Map<number, Map<Fleet, MovementAction>>();
+        this.volleysByRound = new Map<number, Map<Fleet, ReleasedVolley>>();
         this.setCombatStatisticsDataSource(report);
         report.movementActions.forEach(ma => this.setMovementMapValue(ma));
         report.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));

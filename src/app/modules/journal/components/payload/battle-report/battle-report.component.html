@@ -89,26 +89,29 @@
 </div>
 <div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && combatRounds.length > 0">
 
-    <mat-stepper #stepper [contentEditable]="false">
-        <mat-step *ngFor="let round of combatRounds" [label]="round+''">
-
+    <mat-stepper #stepper id="battle-round-stepper" [disableRipple]="true">
+        <mat-step *ngFor="let round of combatRounds" [completed]="false">
+            <ng-template matStepperIcon="number" let-index="index" class="mat-step-icon-oval">
+                {{combatRounds[index]}}
+            </ng-template>
         </mat-step>
     </mat-stepper>
 
-
-    <button type="button" mat-button (click)="fastRewind()">
-        <mat-icon>fast_rewind</mat-icon>
-    </button>
-    <button type="button" mat-button (click)="stop(); stepper.reset()">
-        <mat-icon>stop</mat-icon>
-    </button>
-    <button type="button" mat-button (click)="pause()">
-        <mat-icon>pause</mat-icon>
-    </button>
-    <button type="button" mat-button (click)="play()">
-        <mat-icon>play_arrow</mat-icon>
-    </button>
-    <button type="button" mat-button (click)="fastForward()">
-        <mat-icon>fast_forward</mat-icon>
-    </button>
+    <div class="center">
+        <button type="button" class="no-hover" mat-raised-button (click)="fastRewind()">
+            <mat-icon>fast_rewind</mat-icon>
+        </button>
+        <button type="button" class="no-hover" mat-raised-button (click)="stop(); stepper.reset()">
+            <mat-icon>stop</mat-icon>
+        </button>
+        <button type="button" class="no-hover" mat-raised-button (click)="pause()">
+            <mat-icon>pause</mat-icon>
+        </button>
+        <button type="button" class="no-hover" mat-raised-button (click)="play()">
+            <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button type="button" class="no-hover" mat-raised-button (click)="fastForward()">
+            <mat-icon>fast_forward</mat-icon>
+        </button>
+    </div>
 </div>

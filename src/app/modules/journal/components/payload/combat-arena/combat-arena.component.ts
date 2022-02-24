@@ -79,7 +79,6 @@ export class CombatArenaComponent extends SystemViewHelper implements AfterViewI
         const green: Fleet[] = [];
         const blue: Fleet[] = [];
         if (!!this.battleReport) {
-            console.log(this.battleReport)
             const userID = this.tokenStorage.getUserID();
             this.battleReport.participatingFleets.forEach(fleet => {
                 const idUser = fleet.owner.idUser;
