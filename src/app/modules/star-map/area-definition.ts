@@ -12,7 +12,7 @@ export class AreaDefinition {
     }
 
     /**
-     * checks if the given group is inside of the reference group but is not the same as the given group
+     * checks if the given group is inside the reference group but is not the same as the given group
      */
     isInside(group: G): boolean {
         if (group.id() === this.referenceId) {

@@ -93,19 +93,24 @@
 </div>
 <div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && combatRounds.length > 0">
 
-    <mat-stepper #stepper id="battle-round-stepper" [disableRipple]="true">
-        <mat-step *ngFor="let round of combatRounds" [completed]="false">
-            <ng-template matStepperIcon="number" let-index="index" class="mat-step-icon-oval">
-                {{combatRounds[index]}}
-            </ng-template>
-        </mat-step>
-    </mat-stepper>
+    <mat-slider id="battle-round-stepper"
+                #slider
+                thumbLabel
+                [displayWith]="formatLabel"
+                tickInterval="1"
+                step="1"
+                min="1"
+                [value]="activeRound"
+                [max]="getLastRound()"
+                (valueChange)="slide($event)"
+                (input)="slideSlides($event)"
+                aria-label="units"></mat-slider>
 
     <div class="center">
         <button type="button" mat-raised-button (click)="fastRewind()">
             <mat-icon>fast_rewind</mat-icon>
         </button>
-        <button type="button" mat-raised-button (click)="stop(); stepper.reset()">
+        <button type="button" mat-raised-button (click)="stop()">
             <mat-icon>stop</mat-icon>
         </button>
         <button type="button" mat-raised-button (click)="pause()">

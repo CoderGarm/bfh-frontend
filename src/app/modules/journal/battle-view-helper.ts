@@ -1,91 +1,56 @@
-import {ArrayXY, CurveCommand, G, LineCommand, PathArrayAlias, Shape, StrokeData, Svg, Text} from "@svgdotjs/svg.js";
-import {Distance, Fleet, Move, Orbit, Planet, StarSystem} from "../../services/swagger";
-import {timer} from "rxjs";
+import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Svg} from "@svgdotjs/svg.js";
+import {
+    BattleReport,
+    CounterMissileHit,
+    Distance,
+    Fleet,
+    FleetOrbit,
+    Launcher,
+    MissileMovement,
+    Move,
+    MovementAction,
+    Orbit,
+    Planet,
+    ReleasedVolley,
+    ShipKillerHit,
+    StarSystem,
+    WarShip
+} from "../../services/swagger";
 import {TokenStorage} from "../../services/authentication/token-storage.service";
-import {SubscriptionManager} from "../../SubscriptionManager";
-import {RestrictedFleetArea} from "../star-map/payload/restricted-fleet-area";
-import {AreaDefinition} from "../star-map/payload/area-definition";
 import {CelestialAreaDefinition} from "../star-map/payload/celestial-area-definition";
 import {OrbitDefinition} from "../star-map/payload/orbit-definition";
-import {InterstellarViewHelper} from "../star-map/payload/interstellar-view-helper";
-import {NavigationCalculator} from "../../NavigationCalculator";
+import {BasicViewHelper} from "../../basic-view-helper";
+import {CombatArenaData} from "./components/payload/combat-arena/combat-arena.component";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
+import MovementTypeEnum = MovementAction.MovementTypeEnum;
+import WeaponTypeEnum = Launcher.WeaponTypeEnum;
+import ResultEnum = ShipKillerHit.ResultEnum;
 
-export class BattleViewHelper extends SubscriptionManager {
+export class BattleViewHelper extends BasicViewHelper {
 
-    public static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
-    private readonly FLEET_SHARK_COLOR_HOSTILE = "red";
-    private readonly FLEET_SHARK_COLOR_OWN = "green";
-
-    private readonly COURSE_PLOT_COLOR_OUTBOUND: string = "green";
-    private readonly COURSE_PLOT_COLOR_INBOUND: string = "red";
-
-    private readonly NOT_COLONIZED_COLOR = "darkgoldenrod";
-    private readonly IS_COLONIZED_BY_USER_COLOR = "darkolivegreen";
-    private readonly COLONIZED_BY_OTHERS_COLOR = "#6f1585";
-    private readonly COLONIZABLE_SYSTEM_MARKER_COLOR = "#306f91";
-
-    private orbits?: Orbit[];
-
-    smallestXOrbit?: Orbit;
-    biggestXOrbit?: Orbit;
-    smallestYOrbit?: Orbit;
-    biggestYOrbit?: Orbit;
-
-    canvas?: Svg;
-
-    private CELESTIAL_BODY_SELECTOR_ID_PREFIX: string = Math.random() + "-orbit";
-    private ORBIT_SELECTOR_ID_PREFIX: string = Math.random() + "-orbit";
-    private FLEET_SHARK__SELECTOR_ID_PREFIX: string = Math.random() + "-fleet-shark";
-
-    private celestialBodyMap: Map<String, Orbit> = new Map<String, Orbit>();
-
-    private orbitsMap: Map<String, Orbit> = new Map<String, Orbit>();
-
-    private fleetsInOrbitsMap: Map<String, Fleet> = new Map<String, Fleet>();
-    private fleetTextsByIdSVGMap: Map<String, Text> = new Map<String, Text>();
-    private fleetsInOrbitByTextSVGMap: Map<Text, Fleet> = new Map<Text, Fleet>();
-
-    private restrictedAreasByOrbit: Map<String, RestrictedFleetArea[]> = new Map<String, RestrictedFleetArea[]>();
-
-    private areaDefinitions: AreaDefinition[] = [];
-    private groupsByID: Map<String, G> = new Map<String, G>();
-    private celestialAreas: CelestialAreaDefinition[] = [];
+    private static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
     /**
-     * the radius of the hyper limit
-     * @private
+     * The multiplier is just to make all relevant distances and positions more visible.
      */
-    private hyperLimit?: number;
+    private readonly POSITION_MULTIPLIER = 20;
+
+    battleReport?: BattleReport;
+    combatArenaData?: CombatArenaData;
+
+    private orbitForViewBox: Orbit | undefined;
+    private viewBoxForOrbit: string = "0 0 0 0";
 
     constructor(protected tokenStorage: TokenStorage) {
-        super();
+        super(BattleViewHelper.STANDARD_METRIC);
     }
 
-    /**
-     * clears the canvas to set new elements on a fresh screen
-     */
-    clearCanvas() {
-        if (!!this.canvas) {
-            // remove all elements from canvas a little bit more performant
-            this.canvas.node.innerHTML = '';
-            this.celestialBodyMap.clear();
-            this.orbitsMap.clear();
-            this.fleetsInOrbitsMap.clear();
-            this.fleetTextsByIdSVGMap.clear();
-            this.fleetsInOrbitByTextSVGMap.clear();
-            this.restrictedAreasByOrbit.clear();
-            this.areaDefinitions = [];
-            this.celestialAreas = [];
-        }
+    protected setCombatData(combatArenaData: CombatArenaData) {
+        this.combatArenaData = combatArenaData;
     }
 
-    movements: Map<number, Map<Move, Fleet[]>> = new Map<number, Map<Move, Fleet[]>>();
-
-    addMovementPerRound(round: number, moveMap: Map<Move, Fleet[]>) {
-        const moves = this.movements.get(round) || new Map<Move, Fleet[]>();
-        moveMap.forEach((fleets, move) => moves.set(move, fleets));
-        this.movements.set(round, moveMap);
+    protected setBattleReport(report: BattleReport | undefined) {
+        this.battleReport = report;
     }
 
     setActiveRound(activeRound: number | undefined,
@@ -93,57 +58,376 @@ export class BattleViewHelper extends SubscriptionManager {
                    canvas: Svg,
                    dblClickForFleet: (event: PointerEvent) => void) {
         this.clearCanvas();
-        this.setOrbits(canvas, starSystem)
-        if (!activeRound) {
+        this.setOrbits(canvas, starSystem);
+        if (!activeRound || !this.combatArenaData || !this.canvas) {
             console.log("no active round selected: ", activeRound);
             return;
         }
-        const map = this.movements.get(activeRound);
-        if (!map) {
-            console.log("No change - no gain");
-            return;
+
+        const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound);
+        if (!!movementByFleet) {
+            this.setFleetsInBattle(this.canvas, movementByFleet, dblClickForFleet);
         }
-        this.setFleetsInBattle(this.canvas!, map, dblClickForFleet);
+        let missileMovements = this.combatArenaData.missileMovementsByRound.get(activeRound);
+        if (!!missileMovements) {
+            this.setMissileMovements(this.canvas, missileMovements);
+        }
+        let volleys = this.combatArenaData.volleysByRound.get(activeRound);
+        if (!!volleys) {
+            this.setReleasedVolleys(this.canvas, volleys);
+        }
+        let shipKillerHits = this.combatArenaData.shipKillerHitsByRound.get(activeRound);
+        if (!!shipKillerHits) {
+            this.setShipKillerHits(this.canvas, shipKillerHits);
+        }
+        let counterMissileHits = this.combatArenaData.counterMissileHitsByRound.get(activeRound);
+        if (!!counterMissileHits) {
+            this.setCounterMissileHits(this.canvas, counterMissileHits);
+        }
     }
 
     /**
-     * prints a fleet in battle to the canvas and also the course plot
+     * prints all running ship killer hits in the current combat round to the canvas
+     *
+     * @param canvas
+     * @param shipKillerHits
+     */
+    private setCounterMissileHits(canvas: Svg, shipKillerHits: CounterMissileHit[]) {
+        this.setCanvas(canvas);
+
+        shipKillerHits.forEach((hit) => {
+            let attackedMissileSalvo = this.getMissileSalvoIDByHit(hit);
+            let destroyedMissiles = hit.destroyedMissiles;
+            let color = "orange";
+
+            let polygons = this.missileSalvoPolygonsById.get(attackedMissileSalvo);
+            if (!polygons) {
+                return;
+            }
+            for (let i = 0; i < destroyedMissiles; i++) {
+                // if this is an index out of bound, the backend had failed
+                let icon = polygons[i];
+                if (!icon) {
+                    continue;
+                }
+                const x = icon.x();
+                const y = icon.y();
+                let explosionOutlines = this.createExplosionOutlines(x, y, 20);
+                this.canvas!.polygon(explosionOutlines).addClass("explosion").fill(color);
+            }
+        });
+    }
+
+    /**
+     * prints all running ship killer hits in the current combat round to the canvas
+     *
+     * @param canvas
+     * @param shipKillerHits
+     */
+    private setShipKillerHits(canvas: Svg, shipKillerHits: ShipKillerHit[]) {
+        this.setCanvas(canvas);
+
+        shipKillerHits.forEach((hit) => {
+
+            let result = hit.result;
+            let color = "yellow";
+            if (result === ResultEnum.DAMAGEAPPLIED) {
+                color = "orange";
+            }
+
+            hit.hitLogs.forEach(hitLog => {
+                let warship = hitLog.warShip;
+                let warshipID = this.getWarshipID(warship);
+                let icon = this.warshipPolygonsById.get(warshipID);
+                if (!icon) {
+                    return;
+                }
+                const x = icon.x();
+                const y = icon.y();
+                let explosionOutlines = this.createExplosionOutlines(x, y, 10);
+                this.canvas!.polygon(explosionOutlines).addClass("explosion").fill(color);
+            });
+        });
+    }
+
+    /**
+     * Returns an array to represent an explosion icon.
+     *
+     * @private
+     * @param x
+     * @param y
+     * @param scale
+     */
+    private createExplosionOutlines(x: number, y: number, scale: number): ArrayXY[] {
+        // 500 pixel radius from the orbits coordinate cross
+        let points: ArrayXY[] = [];
+        points.push([-5, 30]);
+        points.push([12, 70]);
+        points.push([16, 20]);
+        points.push([25, 20]);
+        points.push([10, 10]);
+        points.push([50, 0]);
+        points.push([20, -14]);
+        points.push([40, -35]);
+        points.push([14, -25]);
+        points.push([11, -50]);
+        points.push([0, -35]);
+        points.push([-19, -60]);
+        points.push([-15, -30]);
+        points.push([-30, -38]);
+        points.push([-20, -10]);
+        points.push([-35, -5]);
+        points.push([-30, 7]);
+        points.push([-50, 30]);
+        points.push([-10, 20]);
+        points.push([-7, 38]);
+        points.push([-5, 30]);
+        let result: ArrayXY[] = [];
+        points.forEach(p => {
+            result.push([
+                this.addAndScale(x, p[0], scale),
+                this.addAndScale(y, p[1], scale)
+            ])
+        })
+        return result;
+    }
+
+    /**
+     * prints all running volleys in the current combat round to the canvas
+     *
+     * @param canvas
+     * @param volleys
+     */
+    private setMissileMovements(canvas: Svg, volleys: MissileMovement[]) {
+        this.setCanvas(canvas);
+        const baseOrbit = this.createBaseOrbit();
+
+        volleys.forEach((volley) => {
+            let shooter = volley.actor;
+            let missileOutlines: Array<ArrayXY[]> = this.defineMissileHullPoints(volley, shooter, baseOrbit);
+            let missileSalvoID = this.getMissileSalvoID(volley);
+            this.createMissileHullOutlinesAndPrint(missileSalvoID, missileOutlines, shooter);
+        });
+    }
+
+    /**
+     * creates a fleet shark, a text and groups them in the svg
+     *
+     * @param missileSalvoId the id
+     * @param missileHullPoints the polygon points itself
+     * @param fleet the fleet to print the fleet shark for
+     * @private
+     */
+    private createMissileHullOutlinesAndPrint(missileSalvoId: string,
+                                              missileHullPoints: Array<ArrayXY[]>,
+                                              fleet: Fleet) {
+        let group = this.canvas?.group()
+            .id(missileSalvoId + "-group");
+
+        this.groupsByID.set(missileSalvoId + "-group", group!);
+
+        let userID = this.tokenStorage.getUserID();
+        let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
+        if (fleet.owner.idUser == userID) {
+            fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
+        }
+        const stroke = {color: fleetSharkColor, width: 1};
+        for (let i = 0; i < missileHullPoints.length; i++) {
+            let missileHullPoint = missileHullPoints[i];
+            let icon = group!.polygon(missileHullPoint).id(missileSalvoId).fill("none").stroke(stroke);
+            let polygons = this.missileSalvoPolygonsById.get(missileSalvoId);
+            if (!polygons) {
+                polygons = [];
+            }
+            polygons.push(icon);
+            this.missileSalvoPolygonsById.set(missileSalvoId, polygons);
+        }
+        this.canvas?.add(group!);
+    }
+
+    /**
+     * Returns an array per ship with an array of point groups inside.<br>
+     * The outer array is a missile - the inner array are for the outline coordinates of the missile itself.
+     *
+     * @param missileMovement
+     * @param orbit
+     * @param centerOrbit the center of the local coordinate system
+     * @private
+     */
+    private defineMissileHullPoints(missileMovement: MissileMovement, orbit: Fleet, centerOrbit: Orbit): Array<ArrayXY[]> {
+        // 500 pixel radius from the orbits coordinate cross
+
+        let lastPosition = missileMovement.lastPosition;
+        let position = missileMovement.position;
+
+        // determine direction of missile icons
+        let flip: boolean = lastPosition.xCoordinate.coordinate < position.xCoordinate.coordinate;
+
+        position = this.modifyOrbit(position, centerOrbit, this.POSITION_MULTIPLIER);
+        const yShift = 1.5;
+        const xShift = 7.5;
+
+
+        const result: Array<ArrayXY[]> = [];
+        let horizontalLift = 0;
+        let verticalLift = 0;
+
+        let x = this.convertToStandardMetric(position.xCoordinate);
+        let y = this.convertToStandardMetric(position.yCoordinate);
+        let modifiedX = (missileMovement.missileAmount / 2 * xShift);
+        let modifiedY = (missileMovement.missileAmount / 2 * yShift) + yShift;
+        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate) ? -1 : 0;
+        let baseX = x - modifiedX;
+        let baseY = y + (modifiedY * upDownY);
+        for (let i = 1; i <= missileMovement.missileAmount; i++) {
+            let x: number = baseX + verticalLift;
+            let y: number = baseY + horizontalLift;
+            let hullOutlines = this.createMissileOutlines(x, y, flip);
+            result.push(hullOutlines);
+            horizontalLift += yShift;
+            verticalLift += xShift;
+        }
+        return result;
+    }
+
+    private createMissileOutlines(x: number, y: number, flip: boolean): ArrayXY[] {
+        const direction = flip ? -1 : 1;
+        let points: ArrayXY[] = [];
+        points.push([x, y]);
+        points.push([x + 2 * direction, y - .75]);
+        points.push([x + 1.5 * direction, y]);
+        points.push([x + 2 * direction, y + .5]);
+        points.push([x, y]);
+        return points;
+    }
+
+
+    /**
+     * prints all running volleys in the current combat round to the canvas
+     *
+     * @param canvas
+     * @param volleys
+     */
+    private setReleasedVolleys(canvas: Svg, volleys: ReleasedVolley[]) {
+        this.setCanvas(canvas);
+        const baseOrbit = this.createBaseOrbit();
+
+        volleys.forEach((volley) => {
+            let damageDealerId = volley.damageDealer;
+            let shooter = volley.actor;
+            let shooterID = this.getFleetSharkID(shooter) + "-group";
+            let shooterG = this.groupsByID.get(shooterID);
+
+            let target = volley.target;
+            let targetID = this.getFleetSharkID(target) + "-group";
+            let targetG = this.groupsByID.get(targetID);
+            if (!shooterG || !targetG) {
+                return;
+            }
+
+            let amountOfShots = volley.amountOfShots;
+            let weaponType = volley.weaponType;
+            if (weaponType === WeaponTypeEnum.MISSILE) {
+
+            }
+            if (weaponType === WeaponTypeEnum.COUNTERMISSILE) {
+
+            }
+            if (weaponType === WeaponTypeEnum.BEAM || weaponType === WeaponTypeEnum.MISSILE) {
+                this.canvas!
+                    .line([[shooterG.cx(), shooterG.cy()], [targetG.cx(), targetG.cy()]])
+                    .addClass("beamVolley")
+                    .id(damageDealerId);
+            }
+            if (weaponType === WeaponTypeEnum.POINTDEFENSE) {
+
+            }
+        });
+    }
+
+    /**
+     * prints a fleet in the current combat round to the canvas and also the course plot
      *
      * @param canvas the canvas
      * @param fleetsInMotion the fleets to print by movement
      * @param dblClickForFleet the double click callback
      */
     private setFleetsInBattle(canvas: Svg,
-                              fleetsInMotion: Map<Move, Fleet[]>,
+                              fleetsInMotion: MovementAction[],
                               dblClickForFleet: (event: PointerEvent) => void) {
         this.setCanvas(canvas);
-        fleetsInMotion.forEach((fleets, move) => {
-            if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
+        const baseOrbit = this.createBaseOrbit();
+
+        fleetsInMotion.forEach((move) => {
+            let fleet = move.actor;
+            let startOrbit = move.origin;
+            let targetOrbit = move.destination;
+            if (!startOrbit || !targetOrbit) {
                 return;
             }
-            let {color, arr} = this.createCoursePlot(move);
+            // expanding the coordinates by the multiplier but center it at the combat orbit
+            startOrbit = this.modifyOrbit(startOrbit, baseOrbit, this.POSITION_MULTIPLIER);
+            targetOrbit = this.modifyOrbit(targetOrbit, baseOrbit, this.POSITION_MULTIPLIER);
 
-            let path = this.canvas!.path(arr).fill("none").stroke({color: color, width: 1});
-            fleets.forEach(fleet => {
-                if (!fleet.move || !fleet.move.startOrbit.orbit || !fleet.move.targetOrbit.orbit) {
-                    return;
-                }
+            if (false && move.movementType !== MovementTypeEnum.HOLDDISTANCE) {
+                // todo course plot needed for what?
+                const m = this.createMove(fleet, startOrbit, targetOrbit);
+                let {color, arr} = this.createCoursePlot(m);
+                this.canvas!.path(arr).fill(color).opacity(0.2);
+            }
 
-                let startOrbit = fleet.move.startOrbit.orbit;
-                let targetOrbit = fleet.move.targetOrbit.orbit;
-                let distance = InterstellarViewHelper.calculateDistanceOfOrbits(startOrbit, targetOrbit, BattleViewHelper.STANDARD_METRIC);
-
-                let part = (fleet.move!.originalDuration - fleet.move!.moveDoneAtZero) / fleet.move!.originalDuration;
-                let coveredTrackLength = distance * part;
-
-                let pointAt = path.pointAt(coveredTrackLength);
-
-                let fleetSharkPoints: ArrayXY[] = BattleViewHelper.defineFleetSharkPoints(pointAt.x, pointAt.y);
-                let fleetSharkID = this.getFleetSharkID(fleet);
-
-                this.createFleetSharkAndPrint(fleetSharkID, fleetSharkPoints, dblClickForFleet, fleet);
-            });
+            let warShips = fleet.ships;
+            let fleetSharkID = this.getFleetSharkID(fleet);
+            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(warShips, startOrbit, baseOrbit);
+            this.createHullOutlinesAndPrint(fleetSharkID, warShips, warshipHullPoints, dblClickForFleet, fleet);
         });
+    }
+
+
+    private createMove(fleet: Fleet, startOrbit: Orbit, targetOrbit: Orbit) {
+        const m: Move = {
+            idFleetInMotion: fleet.idFleet,
+            moveDoneAtZero: 1,
+            originalDuration: 1,
+            startOrbit: {
+                orbit: startOrbit
+            },
+            targetOrbit: {
+                orbit: targetOrbit
+            }
+        }
+        return m;
+    }
+
+    /**
+     * Centers the given orbit to the base orbit - it's a simple galileo transformation.
+     * @param orbit
+     * @param baseOrbit
+     * @param multiplier
+     * @private
+     */
+    private modifyOrbit(orbit: Orbit, baseOrbit: Orbit, multiplier: number): Orbit {
+        let orbX = this.convertToStandardMetric(orbit.xCoordinate);
+        let baseX = this.convertToStandardMetric(baseOrbit.xCoordinate);
+        let orbY = this.convertToStandardMetric(orbit.yCoordinate);
+        let baseY = this.convertToStandardMetric(baseOrbit.yCoordinate);
+        return {
+            xCoordinate: {
+                coordinate: (baseX - orbX) + orbX * multiplier,
+                distanceMetric: this.STANDARD_METRIC
+            },
+            yCoordinate: {
+                coordinate: (baseY - orbY) + orbY * multiplier,
+                distanceMetric: this.STANDARD_METRIC
+            }
+        };
+    }
+
+    private createBaseOrbit() {
+        return !!this.battleReport ? this.battleReport.orbit!.orbit! : {
+            xCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS},
+            yCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS}
+        };
     }
 
     /**
@@ -152,7 +436,7 @@ export class BattleViewHelper extends SubscriptionManager {
      * @param move the movement
      * @private
      */
-    private createCoursePlot(move: Move) {
+    protected createCoursePlot(move: Move) {
         if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
             throw new Error("The move should have a origin and a destination.");
         }
@@ -165,8 +449,8 @@ export class BattleViewHelper extends SubscriptionManager {
         let relativeTargetX: number = endX - startX;
         let relativeTargetY: number = endY - startY;
 
-        let baseQx: number = 30;
-        let baseQy: number = 50;
+        let baseQx: number = 1;
+        let baseQy: number = 1;
 
         let qXMultiplier: number = 1;
         let qYMultiplier: number = 1;
@@ -176,12 +460,18 @@ export class BattleViewHelper extends SubscriptionManager {
         }
 
         let color: string;
-        if (BattleViewHelper.calculateDistance(startX, startY) <= BattleViewHelper.calculateDistance(endX, endY)) {
+        let userID = this.tokenStorage.getUserID();
+        if (move.idFleetInMotion == userID) {
+            // friendly color
             color = this.COURSE_PLOT_COLOR_OUTBOUND;
+        } else {
+            // opponents color
+            color = this.COURSE_PLOT_COLOR_INBOUND;
+        }
+
+        if (BasicViewHelper.calculateDistance(startX, startY) <= BasicViewHelper.calculateDistance(endX, endY)) {
             // outbound cX is negative
             qXMultiplier = -1;
-        } else {
-            color = this.COURSE_PLOT_COLOR_INBOUND;
         }
 
         let cX: number = qXMultiplier * baseQx;
@@ -198,102 +488,183 @@ export class BattleViewHelper extends SubscriptionManager {
      * creates a fleet shark, a text and groups them in the svg
      *
      * @param fleetSharkID the id
-     * @param fleetSharkPoints the polygon points itself
+     * @param warships
+     * @param warshipHullPoints the polygon points itself
      * @param dblClickForFleet the double click callback
      * @param fleet the fleet to print the fleet shark for
      * @private
      */
-    private createFleetSharkAndPrint(fleetSharkID: string,
-                                     fleetSharkPoints: ArrayXY[],
-                                     dblClickForFleet: (event: PointerEvent) => void, fleet: Fleet) {
-        let sd: StrokeData = {
-            color: "black",
-            width: 1
-        }
-
+    private createHullOutlinesAndPrint(fleetSharkID: string,
+                                       warships: Array<WarShip>,
+                                       warshipHullPoints: Array<Array<ArrayXY[]>>,
+                                       dblClickForFleet: (event: PointerEvent) => void, fleet: Fleet) {
         let group = this.canvas?.group()
             .id(fleetSharkID + "-group");
 
         this.groupsByID.set(fleetSharkID + "-group", group!);
-        this.areaDefinitions.push(new AreaDefinition(group!));
 
-        let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
         let userID = this.tokenStorage.getUserID();
+        let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
         if (fleet.owner.idUser == userID) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
-        group!.polygon(fleetSharkPoints).fill(fleetSharkColor).stroke(sd).id(fleetSharkID).dblclick(dblClickForFleet);
-
-        let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
-        let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
-        let xText = sortedPointsX[sortedPointsX.length - 1];
-        let yText = sortedPointsY[0];
-
-        let text: Text = group!.text(fleet.name)
-            .x(xText[0])
-            .y(yText[1])
-            .addClass("text")
-            .stroke("white")
-            .id(fleetSharkID + "-txt")
-            .dblclick(dblClickForFleet);
-
-        this.canvas?.add(group!);
-        this.fleetTextsByIdSVGMap.set(fleetSharkID + "-txt", text);
-        this.fleetsInOrbitByTextSVGMap.set(text, fleet);
-    }
-
-    /**
-     * creates the points setup for the fleet sharks
-     *
-     * @param x the base x coord
-     * @param y the base y coord
-     * @param orbit the orbit where the fleet is located
-     * @private
-     */
-    private createFleetSharkPoints(x: number, y: number, orbit: Orbit): ArrayXY[] {
-        let points = BattleViewHelper.defineFleetSharkPoints(x, y);
-
-        let restrictedFleetArea = new RestrictedFleetArea(points);
-
-        let orbitID = this.getOrbitID(orbit);
-        if (!this.restrictedAreasByOrbit.has(orbitID)) {
-            let areas = [];
-            areas.push(restrictedFleetArea);
-            this.restrictedAreasByOrbit.set(orbitID, areas);
-        } else {
-            let areas = this.restrictedAreasByOrbit.get(orbitID);
-            let restrictedFleetAreas: RestrictedFleetArea[] = areas!.filter(area => area.collides(points));
-            if (restrictedFleetAreas.length != 0) {
-                points = this.createFleetSharkPoints(x, y + (35 * restrictedFleetAreas.length), orbit);
-            }
-            areas!.push(restrictedFleetArea);
+        for (let i = 0; i < warshipHullPoints.length; i++) {
+            let warshipHullPoint = warshipHullPoints[i];
+            let warship = warships[i];
+            let warshipID = this.getWarshipID(warship);
+            warshipHullPoint.forEach(hullElements => {
+                let polygon = group!.polygon(hullElements).id(warshipID).fill(fleetSharkColor);
+                this.warshipPolygonsById.set(warshipID, polygon);
+            });
         }
-        return points;
+        this.canvas?.add(group!);
     }
 
     /**
-     * set points for fleet shark
+     * Returns an array per ship with an array of point groups inside.<br>
+     * The outer array is a ship - the next inner array are for the different hull elements,<br>
+     * the array of points is the outline coordinates itself.
      *
-     * @param x the base x coord
-     * @param y the base y coord
+     * @param warShips
+     * @param orbit
+     * @param centerOrbit the center of the local coordinate system
      * @private
      */
-    private static defineFleetSharkPoints(x: number, y: number) {
-        let points: ArrayXY[] = [];
-        let item: ArrayXY = [x, y];
-        points.push(item);
-        item = [x + 40, y - 15];
-        points.push(item);
+    private defineWarshipHullPoints(warShips: WarShip[], orbit: Orbit, centerOrbit: Orbit): Array<Array<ArrayXY[]>> {
+        // 500 pixel radius from the orbits coordinate cross
 
-        item = [x + 30, y];
-        points.push(item);
+        const yShift = 15 / 2;
+        const xShift = 75 / 2;
 
-        item = [x + 40, y + 10];
-        points.push(item);
+        const result: Array<Array<ArrayXY[]>> = [];
+        let horizontalLift = 0;
+        let verticalLift = 0;
 
-        item = [x, y];
-        points.push(item);
-        return points;
+        let x = this.convertToStandardMetric(orbit.xCoordinate);
+        let y = this.convertToStandardMetric(orbit.yCoordinate);
+        let modifiedX = (warShips.length / 2 * xShift);
+        let modifiedY = (warShips.length / 2 * yShift) + yShift;
+        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate) ? -1 : 0;
+        let baseX = x - modifiedX;
+        let baseY = y + (modifiedY * upDownY);
+        for (let i = 0; i < warShips.length; i++) {
+            let warship = warShips[i];
+            let x: number = baseX + verticalLift;
+            let y: number = baseY + horizontalLift;
+            let hullOutlines = this.createHullOutlines(x, y);
+            result.push(hullOutlines);
+            horizontalLift += yShift;
+            verticalLift += xShift;
+        }
+        return result;
+    }
+
+    private addAndScale(coord: number, additional: number, scale: number) {
+        return coord + (additional / scale);
+    }
+
+    private createHullOutlines(x: number, y: number): Array<ArrayXY[]> {
+        const result: Array<ArrayXY[]> = [];
+        let lines: ArrayXY[];
+        lines = []; // upper bow
+        let scale = 2;
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 2, scale)]);
+        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 3, scale)]);
+        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 1.5, scale)]);
+        lines.push([this.addAndScale(x, 59, scale), this.addAndScale(y, 1.5, scale)]);
+        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 3.5, scale)]);
+        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 5.5, scale)]);
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 5.5, scale)]);
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 2, scale)]);
+        let upperBowPoints = lines;
+        result.push(upperBowPoints);
+
+        lines = [];
+        lines.push([this.addAndScale(x, 35, scale), this.addAndScale(y, 2, scale)]);  // upper broadside
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 2, scale)]);
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 5.5, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 5.5, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 2, scale)]);
+        lines.push([this.addAndScale(x, 35, scale), this.addAndScale(y, 2, scale)]);
+        let upperBroadsidePoints = lines;
+        result.push(upperBroadsidePoints);
+
+        lines = []; // upper stern
+        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 5.5, scale)]);
+        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 3.5, scale)]);
+        lines.push([this.addAndScale(x, 11, scale), this.addAndScale(y, 1.5, scale)]);
+        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 1.5, scale)]);
+        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 3, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 2, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 5.5, scale)]);
+        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 5.5, scale)]);
+        let upperSternPoints = lines;
+        result.push(upperSternPoints);
+
+        // todo outline by class?
+        lines = []; // lower stern
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 6.5, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 10, scale)]);
+        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 9, scale)]);
+        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 10.5, scale)]);
+        lines.push([this.addAndScale(x, 11, scale), this.addAndScale(y, 10.5, scale)]);
+        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 8.5, scale)]);
+        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 6.5, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 6.5, scale)]);
+        let lowerSternPoints = lines;
+        result.push(lowerSternPoints);
+
+        lines = [];
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 10, scale)]); // lower broadside
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 6.5, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 6.5, scale)]);
+        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 10, scale)]);
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 10, scale)]);
+        let lowerBroadsidePoints = lines;
+        result.push(lowerBroadsidePoints);
+
+        lines = [];
+        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 6.5, scale)]); // lower bow
+        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 8.5, scale)]);
+        lines.push([this.addAndScale(x, 59, scale), this.addAndScale(y, 10.5, scale)]);
+        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 10.5, scale)]);
+        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 9, scale)]);
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 10, scale)]);
+        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 6.5, scale)]);
+        let lowerBowPoints = lines;
+        result.push(lowerBowPoints);
+        return result;
+    }
+
+    /**
+     * returns the view box string for the svg
+     */
+    public setViewBoxByFleetOrbit(orbit: FleetOrbit) {
+        if (!!this.radiusOfCoordinateCross) {
+            let viewBoxDef: string = "0 0 0 0";
+            // translate the center coords basically to the planetary center*
+            let c = orbit.orbit;
+            if (!c) {
+                this.setViewBox();
+                return;
+            }
+            if (!!this.orbitForViewBox && this.isSameOrbit(this.orbitForViewBox, c)) {
+                // no change needed
+                return;
+            }
+
+            let x = this.convertToStandardMetric(c.xCoordinate);
+            let y = this.convertToStandardMetric(c.yCoordinate);
+
+            let width = this.radiusOfCoordinateCross! * 0.9;
+            let height = this.radiusOfCoordinateCross! * 0.9;
+            let startX = -width + x;
+            let startY = (-height / this.aspectRatio) + y;
+            viewBoxDef = startX + " " + startY + " " + width * 2 + " " + height * 2;
+            this.orbitForViewBox = c;
+            this.viewBoxForOrbit = viewBoxDef;
+            this.canvas!.viewbox(viewBoxDef);
+        }
     }
 
     /**
@@ -311,8 +682,6 @@ export class BattleViewHelper extends SubscriptionManager {
 
         this.orbits = orbitDefinitions.map(od => od.orbit);
         this.sortByOrbit();
-        this.setViewBox();
-
         this.createCoordinateCross();
 
         this.hyperLimit = this.calculateHyperLimit(system, orbitDefinitions);
@@ -329,7 +698,7 @@ export class BattleViewHelper extends SubscriptionManager {
             const orbit = orbitDefinition.orbit;
             let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
-            let radius: number = BattleViewHelper.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
+            let radius: number = BasicViewHelper.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
 
             this.canvas!
                 .circle()
@@ -338,20 +707,21 @@ export class BattleViewHelper extends SubscriptionManager {
                 .id(orbitID)
                 .fill("none")
                 .addClass("orbit")
-                .radius(radius)
-                .on('mouseover', evt => this.mouseOverEventCallback(<MouseEvent>evt));
+                .radius(radius);
 
-            this.createCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50, orbitID);
+            let multiplier = this.getScalingMultiplierForOrbit(orbit);
 
-            this.orbitsMap.set(orbitID, orbit);
+            this.createCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50 * multiplier, orbitID);
+
+            this.orbitsById.set(orbitID, orbit);
             this.celestialAreas.push(new CelestialAreaDefinition(orbit, orbitID, 50));
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
-                let x1 = this.convertToStandardMetric(orbit.xCoordinate) - 9;
-                let y1 = this.convertToStandardMetric(orbit.yCoordinate) - 8;
-                let x2 = this.convertToStandardMetric(orbit.xCoordinate) + 9;
-                let y2 = this.convertToStandardMetric(orbit.yCoordinate) + 8;
+                let x1 = (this.convertToStandardMetric(orbit.xCoordinate) - 9) * multiplier;
+                let y1 = (this.convertToStandardMetric(orbit.yCoordinate) - 8) * multiplier;
+                let x2 = (this.convertToStandardMetric(orbit.xCoordinate) + 9) * multiplier;
+                let y2 = (this.convertToStandardMetric(orbit.yCoordinate) + 8) * multiplier;
 
                 let p1: LineCommand = ["M", x1, y1];
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
@@ -379,397 +749,20 @@ export class BattleViewHelper extends SubscriptionManager {
                 .id(celestialBodyID)
                 .fill(color);
 
-            this.celestialBodyMap.set(celestialBodyID, orbit);
+            this.celestialBodyById.set(celestialBodyID, orbit);
         });
     }
 
-    /**
-     * calculates the hyper limit
-     * @param system
-     * @param orbitDefinitions
-     * @private
-     */
-    private calculateHyperLimit(system: StarSystem, orbitDefinitions: OrbitDefinition[]) {
-        // todo convert light minutes to distance units
-        const lightMinutesToHyperLimit = system.starClassType.lightMinutesToHyperLimit;
-        let sortedRaises = orbitDefinitions
-            .sort((o1, o2) => {
-                let o1Radius = BattleViewHelper.calculateDistance(this.convertToStandardMetric(o1.orbit.xCoordinate), this.convertToStandardMetric(o1.orbit.yCoordinate));
-                let o2Radius = BattleViewHelper.calculateDistance(this.convertToStandardMetric(o2.orbit.xCoordinate), this.convertToStandardMetric(o2.orbit.yCoordinate));
-                return o1Radius > o2Radius ? 1 : -1;
-            });
-
-        const biggestRadiusOrbit = sortedRaises[sortedRaises.length - 1];
-        const biggestRadius = BattleViewHelper.calculateDistance(this.convertToStandardMetric(biggestRadiusOrbit.orbit.xCoordinate), this.convertToStandardMetric(biggestRadiusOrbit.orbit.yCoordinate));
-        return biggestRadius + lightMinutesToHyperLimit;
-    }
-
-    /**
-     * creates an pulsing event if crossing the orbit's line
-     *
-     * @param event the mouse event
-     */
-    private mouseOverEventCallback = (event: MouseEvent) => {
-        let orbit: Orbit | undefined = this.getOrbitOfOrbitByEvent(event);
-        if (!!orbit) {
-            let orbitID: string = this.getCelestialBodyID(orbit);
-            let celestial: Orbit | undefined = this.celestialBodyMap.get(orbitID);
-            if (!!celestial) {
-                let celestialBodyID: string | undefined = this.getCelestialBodyID(celestial);
-                if (!!celestialBodyID) {
-                    let circlePulser = this.canvas!
-                        .circle()
-                        .x(this.convertToStandardMetric(orbit.xCoordinate))
-                        .y(this.convertToStandardMetric(orbit.yCoordinate))
-                        .id(celestialBodyID + "-pulser")
-                        .addClass("pulse");
-
-                    timer(8000).subscribe(() => {
-                        let byId = this.canvas?.node.getElementById(celestialBodyID + "-pulser");
-                        if (!!byId) {
-                            // remove its still present
-                            this.canvas!.removeElement(circlePulser)
-                        }
-                    })
-                }
-            }
+    private getScalingMultiplierForOrbit(orbit: Orbit) {
+        if (this.isBattleOrbit(orbit)) {
+            // if the orbit is for the one which is part of the battle, increase all relevant geometric points
+            return this.POSITION_MULTIPLIER;
         }
+        return 1;
     }
 
-    /**
-     * calculates the distance between two points
-     *
-     * @param firstCoordinate the first coordinate
-     * @param secondCoordinate the second coordinate
-     * @private
-     */
-    public static calculateDistance(firstCoordinate: number, secondCoordinate: number): number {
-        return Math.sqrt(Math.pow(firstCoordinate, 2) + Math.pow(secondCoordinate, 2));
-    }
+    private isBattleOrbit(orbit: Orbit) {
+        return !!this.battleReport && this.isSameOrbit(this.battleReport.orbit!.orbit!, orbit);
 
-    /**
-     * creates an unique orbit identifier
-     *
-     * @param orbit the orbit to identify
-     * @private
-     */
-    private getCelestialBodyID(orbit: Orbit): string {
-        return this.CELESTIAL_BODY_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate.coordinate + "-" + orbit.yCoordinate.coordinate;
-    }
-
-    /**
-     * creates the id of the fleet shark
-     *
-     * @param fleet the fleet to build the id for
-     * @private
-     */
-    private getFleetSharkID(fleet: Fleet): string {
-        let id: string = this.FLEET_SHARK__SELECTOR_ID_PREFIX;
-        if (!!fleet.orbit) {
-            if (!!fleet.orbit.orbit) {
-                id += fleet.orbit.orbit.xCoordinate.coordinate + "." + fleet.orbit.orbit.yCoordinate.coordinate + "-";
-            }
-            if (!!fleet.orbit.system) {
-                id += fleet.orbit.system.idStarSystem + "-";
-            }
-        }
-        return id + "-" + fleet.idFleet;
-    }
-
-    /**
-     * creates an unique orbit identifier
-     *
-     * @param orbit the orbit to identify
-     * @private
-     */
-    private getOrbitID(orbit: Orbit): string {
-        return this.ORBIT_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate.coordinate + "-" + orbit.yCoordinate.coordinate;
-    }
-
-    /**
-     * returns the orbit to the given id
-     *
-     * @param id the id
-     * @private
-     */
-    private getOrbitOfCelestialByID(id: string): Orbit | undefined {
-        return this.celestialBodyMap.get(id);
-    }
-
-    /**
-     * returns the orbit to the given id
-     *
-     * @param id the id
-     * @private
-     */
-    private getOrbitOfOrbitByID(id: string): Orbit | undefined {
-        return this.orbitsMap.get(id);
-    }
-
-    /**
-     * returns the text to the given id
-     *
-     * @param id the id
-     * @private
-     */
-    private getFleetTextByID(id: string): Text | undefined {
-        return this.fleetTextsByIdSVGMap.get(id);
-    }
-
-    /**
-     * returns the fleet shark to the given id
-     *
-     * @param id the id
-     * @private
-     */
-    private getFleetByID(id: string): Fleet | undefined {
-        return this.fleetsInOrbitsMap.get(id);
-    }
-
-    /**
-     * returns the fleet identified by the group id
-     * @param id
-     * @private
-     */
-    private getFleetByGroupID(id: string): Fleet | undefined {
-        let reducedId = id.replace("-group", "");
-        return this.getFleetByID(reducedId);
-    }
-
-    /**
-     * sorts the systems by their orbit's radius
-     * @private
-     */
-    private sortByOrbit() {
-        if (!this.orbits) {
-            throw new Error("The orbits must be present to calculate the battle view.");
-        }
-        let sortedByX: Orbit[] = this.orbits.sort((a, b) => {
-            return a.xCoordinate.coordinate < b.xCoordinate.coordinate ? -1 : 1;
-        });
-        this.smallestXOrbit = sortedByX[0];
-        this.biggestXOrbit = sortedByX[sortedByX.length - 1];
-        let sortedByY: Orbit[] = this.orbits.sort((a, b) => {
-            return a.yCoordinate.coordinate < b.yCoordinate.coordinate ? -1 : 1;
-        });
-        this.smallestYOrbit = sortedByY[0];
-        this.biggestYOrbit = sortedByY[sortedByY.length - 1];
-    }
-
-    /**
-     * returns the orbit if known by this id
-     *
-     * @param event the event
-     */
-    getOrbitOfCelestialByEvent(event: PointerEvent | MouseEvent): Orbit | undefined {
-        let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
-        return this.getOrbitOfCelestialByID(id);
-    }
-
-    /**
-     * returns the orbit if known by this id
-     *
-     * @param event
-     */
-    getOrbitOfOrbitByEvent(event: PointerEvent | MouseEvent): Orbit | undefined {
-        let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
-        return this.getOrbitOfOrbitByID(id);
-    }
-
-    /**
-     * returns the fleet shark if known by this id
-     * @param event
-     */
-    getFleetTextByEvent(event: PointerEvent | MouseEvent): Text | undefined {
-        let p = event.composedPath()[1];
-        let x = <HTMLElement>p;
-        return this.getFleetTextByID(x.id);
-    }
-
-    /**
-     * returns the fleet shark if known by this id
-     * @param event
-     */
-    getFleetByEvent(event: PointerEvent | MouseEvent): Fleet | undefined {
-        let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
-        return this.getFleetByID(id);
-    }
-
-    /**
-     * returns the fleet shark if known by this id
-     * @param text
-     */
-    getFleetByText(text: Text): Fleet | undefined {
-        return this.fleetsInOrbitByTextSVGMap.get(text);
-    }
-
-    /**
-     * returns the view box string for the svg
-     */
-    private setViewBox() {
-        let viewBoxDef: string = "0 0 0 0";
-        let isPresent = !!this.smallestXOrbit && !!this.biggestXOrbit && !!this.smallestYOrbit && !!this.biggestYOrbit;
-        if (isPresent) {
-            viewBoxDef = this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate)
-                + " "
-                + this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate)
-                + " "
-                + InterstellarViewHelper.getSum(this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate), this.convertToStandardMetric(this.biggestYOrbit!.yCoordinate))
-                + " "
-                + InterstellarViewHelper.getSum(this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate), this.convertToStandardMetric(this.biggestXOrbit!.xCoordinate));
-        }
-        this.canvas!.viewbox(viewBoxDef);
-    }
-
-
-    private convertToStandardMetric(distance: Distance) {
-        return NavigationCalculator.convertDistanceToMetric(distance, BattleViewHelper.STANDARD_METRIC);
-    }
-
-    /**
-     * creates the coordinate axis cross
-     *
-     * @private
-     */
-    private createCoordinateCross() {
-        let minXCoord = this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate);
-        let maxXCoord = this.convertToStandardMetric(this.biggestXOrbit!.xCoordinate);
-        let x = Math.abs(minXCoord) < Math.abs(maxXCoord) ? Math.abs(maxXCoord) : Math.abs(minXCoord);
-        let minYCoord = this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate);
-        let maxYCoord = this.convertToStandardMetric(this.biggestYOrbit!.yCoordinate);
-        let y = Math.abs(minYCoord) < Math.abs(maxYCoord) ? Math.abs(maxYCoord) : Math.abs(minYCoord);
-
-        let radius: number = BattleViewHelper.calculateDistance(x, y);
-        radius *= 1.1;
-
-        this.createCoordinateSystem(0, 0, radius, "main");
-    }
-
-    /**
-     * creates a coordinate cross for the given base
-     *
-     * @param xBase the x coord
-     * @param yBase the y coord
-     * @param radius the radius for the axis
-     * @param idPrefix the css id selector prefix
-     * @private
-     */
-    private createCoordinateSystem(xBase: number, yBase: number, radius: number, idPrefix: string) {
-        // y-axis
-        // x-axis
-        this.drawAxis(xBase, yBase, radius, idPrefix);
-        // y-axis tick marks
-        // x-axis tick marks
-        this.drawTickMarks(xBase, yBase, radius, idPrefix);
-    }
-
-    /**
-     * draws the tick marks for the axis
-     *
-     * @param xBase the base x coord
-     * @param yBase the base y coord
-     * @param radius the maximum radius
-     * @param idPrefix the css selector prefix
-     * @private
-     */
-    private drawTickMarks(xBase: number, yBase: number, radius: number, idPrefix: string) {
-        let p: number[] = [];
-        let diff: number = radius / 2;
-        let step: number = diff / 10;
-        let xRunnerUpper: number = xBase;
-        let xRunnerLower: number = xBase;
-        let yRunnerUpper: number = yBase;
-        let yRunnerLower: number = yBase;
-        for (let i = 0; i <= 20; i++) {
-            if (i == 0) {
-                xRunnerUpper += step;
-                xRunnerLower -= step;
-                yRunnerUpper += step;
-                yRunnerLower -= step;
-                continue;
-            }
-            let width = step;
-            if (i % 10 == 0) {
-                width = step * 2;
-            } else if (i % 5 == 0) {
-                width = step;
-            } else {
-                width = step / 2;
-            }
-            p = [];
-            p.push(xBase + width, yRunnerUpper);
-            p.push(xBase - width, yRunnerUpper);
-            this.canvas!.line(p).addClass("coordCross").id(idPrefix + "y-" + i);
-            p = [];
-            p.push(xBase + width, yRunnerLower);
-            p.push(xBase - width, yRunnerLower);
-            this.canvas!.line(p).addClass("coordCross").id(idPrefix + "y-" + i);
-            p = [];
-            p.push(xRunnerUpper, yBase + width);
-            p.push(xRunnerUpper, yBase - width);
-            this.canvas!.line(p).addClass("coordCross").id(idPrefix + "x-" + i);
-            p = [];
-            p.push(xRunnerLower, yBase + width);
-            p.push(xRunnerLower, yBase - width);
-            this.canvas!.line(p).addClass("coordCross").id(idPrefix + "x-" + i);
-            xRunnerUpper += step;
-            xRunnerLower -= step;
-            yRunnerUpper += step;
-            yRunnerLower -= step;
-        }
-    }
-
-    /**
-     * draws the axis
-     *
-     * @param xBase the base x coord
-     * @param yBase the base y coord
-     * @param radius the maximum radius
-     * @param idPrefix the css selector prefix
-     * @private
-     */
-    private drawAxis(xBase: number, yBase: number, radius: number, idPrefix: string) {
-        let p: number[] = [];
-        p.push(xBase, yBase + radius);
-        p.push(xBase, yBase + radius * -1);
-        this.canvas!.line(p).addClass("coordCross").id(idPrefix + "-x");
-        p = []
-        p.push(xBase + radius, yBase);
-        p.push(xBase + radius * -1, yBase);
-        this.canvas!.line(p).addClass("coordCross").id(idPrefix + "-y");
-    }
-
-    /**
-     * checks if the canvas exists and tries to set them
-     *
-     * @param canvas the canvas to set
-     * @private
-     */
-    private setCanvas(canvas: Svg) {
-        if (!canvas) {
-            throw new Error("The canvas isn't initialized.");
-        } else {
-            this.canvas = canvas;
-        }
-    }
-
-    /**
-     * states that two orbits have the same coordinates
-     *
-     * @param first
-     * @param second
-     */
-    static isSameOrbit(first: Orbit, second: Orbit): boolean {
-        let isEqual = true;
-        if (first.xCoordinate.coordinate != second.xCoordinate.coordinate) {
-            isEqual = false;
-        }
-        if (first.yCoordinate.coordinate != second.yCoordinate.coordinate) {
-            isEqual = false;
-        }
-        return isEqual;
     }
 }

@@ -2,9 +2,9 @@ import {AfterViewInit, Component, Inject, Input, Optional, SimpleChanges} from '
 import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
-import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
 import {InterstellarViewHelper} from "../../star-map/payload/interstellar-view-helper";
 import {NavigationCalculator} from "../../../NavigationCalculator";
+import {BasicViewHelper} from "../../../basic-view-helper";
 
 @Component({
     selector: 'app-interstellar-fleet-movement-edit',
@@ -70,13 +70,13 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         const lightMinutesToHyperLimit = this.destination.starClassType.lightMinutesToHyperLimit;
         let sortedRaises = this.destination.planets
             .sort((o1, o2) => {
-                let o1Radius = SystemViewHelper.calculateDistance(this.convertToStandardMetric(o1.orbit.xCoordinate), this.convertToStandardMetric(o1.orbit.yCoordinate));
-                let o2Radius = SystemViewHelper.calculateDistance(this.convertToStandardMetric(o2.orbit.xCoordinate), this.convertToStandardMetric(o2.orbit.yCoordinate));
+                let o1Radius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(o1.orbit.xCoordinate), this.convertToStandardMetric(o1.orbit.yCoordinate));
+                let o2Radius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(o2.orbit.xCoordinate), this.convertToStandardMetric(o2.orbit.yCoordinate));
                 return o1Radius > o2Radius ? 1 : -1;
             });
 
         const biggestRadiusOrbit = sortedRaises[sortedRaises.length - 1];
-        const biggestRadius = SystemViewHelper.calculateDistance(this.convertToStandardMetric(biggestRadiusOrbit.orbit.xCoordinate), this.convertToStandardMetric(biggestRadiusOrbit.orbit.yCoordinate));
+        const biggestRadius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(biggestRadiusOrbit.orbit.xCoordinate), this.convertToStandardMetric(biggestRadiusOrbit.orbit.yCoordinate));
         return biggestRadius + lightMinutesToHyperLimit;
     }
 

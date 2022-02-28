@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {BattleReport, Distance, Fleet, Move, MovementAction, Orbit, Planet, ReleasedVolley, StarSystem} from "../../../../../services/swagger";
+import {BattleReport, CounterMissileHit, Fleet, MissileMovement, MovementAction, Planet, ReleasedVolley, ShipKillerHit, StarSystem} from "../../../../../services/swagger";
 import {SVG} from "@svgdotjs/svg.js";
 import {BattleViewHelper} from "../../../battle-view-helper";
-import {NavigationCalculator} from "../../../../../NavigationCalculator";
+import {BasicViewHelper} from "../../../../../basic-view-helper";
 
 @Component({
     selector: 'app-combat-arena',
@@ -22,13 +22,16 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
 
     planets: Planet[] = [];
 
-    blue: Fleet[] = [];
+    red: Fleet[] = [];
     green: Fleet[] = [];
 
     @Input()
     combatArenaData?: CombatArenaData;
     private combatArenaDataInputDefinition: string = "combatArenaData";
 
+    /**
+     * The active round will be defined at least - if this is changed, every needed information is present.
+     */
     @Input()
     activeRound?: number;
     private activeRoundInputDefinition: string = "activeRound";
@@ -46,83 +49,27 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         if (changes[this.battleReportInputDefinition]) {
             this.setUpCombat();
+            this.setBattleReport(this.battleReport);
         }
         if (changes[this.activeRoundInputDefinition]) {
             if (!!this.starSystem) {
                 this.createCanvas();
                 this.setActiveRound(this.activeRound, this.starSystem, this.canvas!, this.dblClickForFleet);
+                let orbit = this.battleReport!.orbit;
+                this.setViewBoxByFleetOrbit(orbit);
             }
         }
         if (changes[this.combatArenaDataInputDefinition]) {
             if (!!this.combatArenaData && !!this.starSystem) {
-                const combatRounds = this.combatArenaData.combatRounds.sort();
-                const movementsByRound = this.combatArenaData.movementsByRound;
-                const volleysByRound = this.combatArenaData.volleysByRound;
-                const lastRound = combatRounds[combatRounds.length - 1];
-                combatRounds.forEach(round => {
-                    const moveMap: Map<Move, Fleet[]> = new Map<Move, Fleet[]>();
-                    const movements: Map<Fleet, MovementAction> | undefined = movementsByRound.get(round);
-                    if (!movements) {
-                        return;
-                    }
-                    movements?.forEach((movement, fleet) => {
-                        Array.from(moveMap.values())
-                            .forEach(knownFleets => knownFleets
-                                .forEach(knownFleet => {
-                                    if (knownFleet.idFleet === fleet.idFleet) {
-                                        return;
-                                    }
-                                }));
-                        const move = this.createMove(fleet, lastRound, movement);
-                        fleet.move = move;
-                        moveMap.set(move, [fleet]);
-                    });
-                    this.addMovementPerRound(round, moveMap);
-                }); // todo put moves for every round in the map
+                this.setCombatData(this.combatArenaData);
                 this.createCanvas();
                 this.setActiveRound(1, this.starSystem, this.canvas!, this.dblClickForFleet);
+                let orbit = this.battleReport!.orbit;
+                this.setViewBoxByFleetOrbit(orbit);
             } else {
                 this.clearCanvas();
             }
         }
-    }
-
-    private createMove(fleet: Fleet, lastRound: number, movement: MovementAction) {
-        const venue = this.battleReport?.orbit;
-        const xCoordinate = venue!.orbit!.xCoordinate;
-        const yCoordinate = venue!.orbit!.yCoordinate;
-        const move: Move = {
-            idFleetInMotion: fleet.idFleet,
-            moveDoneAtZero: lastRound,
-            originalDuration: lastRound,
-            targetOrbit: {
-                system: this.starSystem,
-                orbit: {
-                    xCoordinate: {
-                        coordinate: xCoordinate.coordinate + NavigationCalculator.convertDistanceToMetric(movement.destination.xCoordinate, xCoordinate.distanceMetric),
-                        distanceMetric: xCoordinate.distanceMetric
-                    },
-                    yCoordinate: {
-                        coordinate: yCoordinate.coordinate + NavigationCalculator.convertDistanceToMetric(movement.destination.yCoordinate, yCoordinate.distanceMetric),
-                        distanceMetric: yCoordinate.distanceMetric
-                    }
-                }
-            },
-            startOrbit: {
-                system: this.starSystem,
-                orbit: {
-                    xCoordinate: {
-                        coordinate: xCoordinate.coordinate + NavigationCalculator.convertDistanceToMetric(movement.origin.xCoordinate, xCoordinate.distanceMetric),
-                        distanceMetric: xCoordinate.distanceMetric
-                    },
-                    yCoordinate: {
-                        coordinate: yCoordinate.coordinate + NavigationCalculator.convertDistanceToMetric(movement.origin.yCoordinate, yCoordinate.distanceMetric),
-                        distanceMetric: yCoordinate.distanceMetric
-                    }
-                }
-            }
-        }
-        return move;
     }
 
     /**
@@ -139,17 +86,6 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
             }
         }
         console.log(fleet)
-    }
-
-    /**
-     * drag end callback for a dragged fleet to another fleet or an orbit
-     *
-     * @param draggedFleet the moved fleet
-     * @param targetFleet the destination if it is another fleet
-     * @param orbit the destination if it is an orbit
-     */
-    private dragEndForFleet = (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => {
-        // noop
     }
 
     /**
@@ -175,7 +111,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
      */
     private createCanvas() {
         if (!this.canvas) {
-            this.canvas = SVG().id("combat-arena").addTo('#arena').panZoom();
+            this.canvas = SVG().id("combat-arena").addTo('#arena').panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
         }
     }
 
@@ -197,24 +133,35 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
             });
         }
         this.green = green;
-        this.blue = blue;
+        this.red = blue;
     }
 }
 
 export class CombatArenaData {
 
-    combatRounds: number[] = [];
+    combatRounds: Int8Array;
 
-    movementsByRound: Map<number, Map<Fleet, MovementAction>> = new Map<number, Map<Fleet, MovementAction>>();
+    movementsByRound: Map<number, MovementAction[]>;
 
-    volleysByRound: Map<number, Map<Fleet, ReleasedVolley>> = new Map<number, Map<Fleet, ReleasedVolley>>();
+    missileMovementsByRound: Map<number, MissileMovement[]>;
 
+    volleysByRound: Map<number, ReleasedVolley[]>;
 
-    constructor(combatRounds: number[],
-                movementsByRound: Map<number, Map<Fleet, MovementAction>>,
-                volleysByRound: Map<number, Map<Fleet, ReleasedVolley>>) {
+    shipKillerHitsByRound: Map<number, ShipKillerHit[]>;
+
+    counterMissileHitsByRound: Map<number, CounterMissileHit[]>;
+
+    constructor(combatRounds: Int8Array,
+                movementsByRound: Map<number, MovementAction[]>,
+                volleysByRound: Map<number, ReleasedVolley[]>,
+                missileMovementsByRound: Map<number, MissileMovement[]>,
+                shipKillerHitsByRound: Map<number, ShipKillerHit[]>,
+                counterMissileHitsByRound: Map<number, CounterMissileHit[]>) {
         this.combatRounds = combatRounds;
         this.movementsByRound = movementsByRound;
         this.volleysByRound = volleysByRound;
+        this.missileMovementsByRound = missileMovementsByRound;
+        this.shipKillerHitsByRound = shipKillerHitsByRound;
+        this.counterMissileHitsByRound = counterMissileHitsByRound;
     }
 }

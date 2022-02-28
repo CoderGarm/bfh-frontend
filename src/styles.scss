@@ -12,13 +12,6 @@ body {
   margin-bottom: 60px;
 }
 
-// placed here because class def not loaded in more precised css files
-.coordCross {
-  stroke: dimgray;
-  stroke-width: 1;
-  stroke-linecap: round;
-}
-
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -111,24 +104,51 @@ body {
   text-align: center;
 }
 
-#battle-round-stepper .mat-step-header {
-  width: 40px;
+#battle-round-stepper .mat-slider-thumb-label {
+  transform: rotate(45deg) !important;
+  border-radius: 50% 50% 0 !important;
 }
 
-#battle-round-stepper .mat-step-header .mat-step-icon-state-number {
-  width: 40px;
+#battle-round-stepper .mat-slider-thumb {
+  transform: scale(0) !important;
 }
 
-#battle-round-stepper .mat-horizontal-stepper-header {
-  height: 36px;
-  padding: 0 12px 0 12px;
+#battle-round-stepper .mat-slider-thumb-label-text {
+  opacity: 1 !important;
 }
 
-#battle-round-stepper .mat-horizontal-content-container {
-  padding: 5px 0 0 0;
+// placed here because class def not loaded in more precised css files
+.coordCross {
+  stroke: dimgray;
+  stroke-width: 1;
+  stroke-linecap: round;
 }
 
-#battle-round-stepper .mat-horizontal-stepper-header-container {
-  padding: 5px 0 0 0;
+.roundCap {
+  stroke-linecap: round;
 }
 
+.orbit {
+  stroke: darkgray;
+  stroke-width: 1;
+}
+
+.hyper-limit {
+  stroke: darkblue;
+  stroke-width: 1;
+}
+
+.beamVolley {
+  stroke: yellow;
+  stroke-width: 1;
+  stroke-dasharray: 6;
+  stroke-dashoffset: 50;
+  animation: move 1s linear 1;
+}
+
+@keyframes move {
+  // the animation in journal for beam volleys
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

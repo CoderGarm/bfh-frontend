@@ -3,7 +3,6 @@ import {Fleet, FleetApiService, FleetDistributionPerUser, FleetMove, Move, Orbit
 import {SVG} from "@svgdotjs/svg.js";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
-import {SystemViewHelper} from "../system-view-helper";
 import {OrbitDefinition} from "../orbit-definition";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
@@ -12,6 +11,7 @@ import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog
 import {InterstellarFleetDisplayComponent} from "../../../display-elements/interstellar-fleet-display/interstellar-fleet-display.component";
 import {InterstellarFleetMovementEditComponent} from "../../../display-elements/interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component";
 import {InterstellarViewHelper} from "../interstellar-view-helper";
+import {BasicViewHelper} from "../../../../basic-view-helper";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -48,7 +48,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     }
 
     ngAfterViewInit(): void {
-        this.canvas = SVG().id("universe-canvas").addTo('#universe').panZoom();
+        this.canvas = SVG().id("universe-canvas").addTo('#universe').panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
         this.createUniverseMap();
     }
 
@@ -197,7 +197,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
 
-        let sameOrbit = SystemViewHelper.isSameOrbit(fromSystem.orbit, targetOrbit);
+        let sameOrbit = this.isSameOrbit(fromSystem.orbit, targetOrbit);
         if (!sameOrbit) {
             this.createAndOpenFleetMoveDialog(dialogConfig, draggedFleetSharkForUser, fromSystem, targetOrbit);
             return;

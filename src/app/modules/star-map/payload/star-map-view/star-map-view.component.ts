@@ -12,6 +12,7 @@ import {DialogData} from "../../../../components/confirmation-dialog/DialogData"
 import {SpacecraftCapabilitiesDisplayComponent} from "../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
 import {FleetMoveDisplayComponent} from "../../../display-elements/fleet-move-display/fleet-move-display.component";
 import {SystemViewHelper} from "../system-view-helper";
+import {BasicViewHelper} from "../../../../basic-view-helper";
 
 @Component({
     selector: 'app-star-map-view',
@@ -144,7 +145,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
         if (!!draggedFleet && !!orbit && !inMotion && !!draggedFleet.orbit) {
             let sameOrbit: boolean = false;
             if (!!draggedFleet.orbit.orbit) {
-                sameOrbit = SystemViewHelper.isSameOrbit(draggedFleet.orbit.orbit, orbit);
+                sameOrbit = this.isSameOrbit(draggedFleet.orbit.orbit, orbit);
             }
             if (!sameOrbit) {
                 this.createAndOpenFleetMoveDialog(dialogConfig, draggedFleet, orbit);
@@ -315,7 +316,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
      * @private
      */
     private createCanvas() {
-        this.canvas = SVG().id("star-system-canvas").addTo('#starsystem').panZoom();
+        this.canvas = SVG().id("star-system-canvas").addTo('#starsystem').panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
     }
 
     ngAfterViewInit(): void {

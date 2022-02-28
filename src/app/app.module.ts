@@ -22,10 +22,13 @@ import {ConfirmDialogComponent} from "./components/confirmation-dialog/confirm-d
 import {DisplayElementsModule} from "./modules/display-elements/display-elements.module";
 import {ExpansionModule} from "./modules/expansion/expansion.module";
 import {JournalModule} from "./modules/journal/journal.module";
+import {BasicViewHelper} from "./basic-view-helper";
 
 @NgModule({
     declarations: [
         AppComponent,
+        SubscriptionManager,
+        BasicViewHelper,
         ErrorDialogComponent,
         NavComponent,
         LoginComponent,
@@ -34,7 +37,6 @@ import {JournalModule} from "./modules/journal/journal.module";
         HomeComponent,
         PasswordEqualityValidatorDirective,
         PasswordPatternValidatorDirective,
-        SubscriptionManager,
         ConfirmDialogComponent
     ],
     imports: [
@@ -49,7 +51,7 @@ import {JournalModule} from "./modules/journal/journal.module";
         ShipClassConstructionModule,
         FleetModule,
         ExpansionModule,
-        JournalModule
+        JournalModule,
     ],
     providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
     bootstrap: [AppComponent]

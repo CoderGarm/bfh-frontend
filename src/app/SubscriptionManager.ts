@@ -8,10 +8,6 @@ export class SubscriptionManager {
 
     subscriptions: Subscription[] = [];
 
-
-    constructor() {
-    }
-
     ngOnDestroy() {
         this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }

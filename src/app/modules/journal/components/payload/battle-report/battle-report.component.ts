@@ -1,6 +1,19 @@
 import {AfterViewInit, Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {BattleReport, Fleet, FleetOrbit, LossRole, MovementAction, PlanetApiService, ReleasedVolley, ReportApiService, StarSystem} from "../../../../../services/swagger";
+import {
+    BattleReport,
+    BattleReportApiService,
+    CounterMissileHit,
+    Fleet,
+    FleetOrbit,
+    LossRole,
+    MissileMovement,
+    MovementAction,
+    PlanetApiService,
+    ReleasedVolley,
+    ShipKillerHit,
+    StarSystem
+} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {MatSort} from "@angular/material/sort";
 import {MatTable, MatTableDataSource} from "@angular/material/table";
@@ -8,7 +21,8 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CombatReport} from "../../../combat-report";
 import {CombatStatistics} from "../../../combat.statistics";
 import {CombatArenaData} from "../combat-arena/combat-arena.component";
-import {MatStepper} from "@angular/material/stepper";
+import {MatSlider, MatSliderChange} from "@angular/material/slider";
+import {Subscription, timer} from "rxjs";
 
 @Component({
     selector: 'app-battle-report',
@@ -53,16 +67,19 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
 
     starSystem?: StarSystem;
 
-    combatRounds: number[] = [];
-    movementsByRound: Map<number, Map<Fleet, MovementAction>> = new Map<number, Map<Fleet, MovementAction>>();
-    volleysByRound: Map<number, Map<Fleet, ReleasedVolley>> = new Map<number, Map<Fleet, ReleasedVolley>>();
+    combatRounds: Int8Array = new Int8Array();
+    movementsByRound: Map<number, MovementAction[]> = new Map<number, MovementAction[]>();
+    missileMovementsByRound: Map<number, MissileMovement[]> = new Map<number, MissileMovement[]>();
+    volleysByRound: Map<number, ReleasedVolley[]> = new Map<number, ReleasedVolley[]>();
+    shipKillerHitsByRound: Map<number, ShipKillerHit[]> = new Map<number, ShipKillerHit[]>();
+    counterMissileHitsByRound: Map<number, CounterMissileHit[]> = new Map<number, CounterMissileHit[]>();
 
     combatArenaData?: CombatArenaData;
     private activeRoundIndex: number = 0;
     activeRound?: number;
 
-    @ViewChild(MatStepper)
-    matStepper?: MatStepper;
+    @ViewChild(MatSlider)
+    matSlider?: MatSlider;
 
     private setActiveRound() {
         if (this.activeRoundIndex < 0) {
@@ -72,7 +89,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     }
 
     constructor(private tokenStorage: TokenStorage,
-                private reportApi: ReportApiService,
+                private reportApi: BattleReportApiService,
                 private planetApi: PlanetApiService) {
         super();
     }
@@ -140,40 +157,17 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.starSystem = report.orbit.system;
         this.currentlyOpenedItemIndex = this.battleReports.indexOf(report);
 
-        this.movementsByRound = new Map<number, Map<Fleet, MovementAction>>();
-        this.volleysByRound = new Map<number, Map<Fleet, ReleasedVolley>>();
+        this.clear();
         this.setCombatStatisticsDataSource(report);
         report.movementActions.forEach(ma => this.setMovementMapValue(ma));
+        report.missileMovements.forEach(rv => this.setMissileMovementMapValue(rv));
         report.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));
+        report.shipKillerHits.forEach(rv => this.setShipKillerHitsMapValue(rv));
+        report.counterMissileHits.forEach(rv => this.setCounterMissileHitsMapValue(rv));
         this.mergeCombatRounds();
-        this.combatArenaData = new CombatArenaData(this.combatRounds, this.movementsByRound, this.volleysByRound);
-    }
-
-    private setReleasedVolleyMapValue(movementAction: ReleasedVolley) {
-        const combatRound = movementAction.combatRoundKey.combatRound;
-        let valueMap = this.volleysByRound.get(combatRound.no);
-        if (!valueMap) {
-            valueMap = new Map<Fleet, ReleasedVolley>();
-            this.volleysByRound.set(combatRound.no, valueMap);
-        }
-        valueMap.set(movementAction.actor, movementAction);
-    }
-
-    private setMovementMapValue(movementAction: MovementAction) {
-        const combatRound = movementAction.combatRoundKey.combatRound;
-        let valueMap = this.movementsByRound.get(combatRound.no);
-        if (!valueMap) {
-            valueMap = new Map<Fleet, MovementAction>();
-            this.movementsByRound.set(combatRound.no, valueMap);
-        }
-        valueMap.set(movementAction.actor, movementAction);
-    }
-
-    private mergeCombatRounds() {
-        const combatRounds: Set<number> = new Set<number>();
-        Array.from(this.movementsByRound.keys()).forEach(cr => combatRounds.add(cr));
-        Array.from(this.volleysByRound.keys()).forEach(cr => combatRounds.add(cr));
-        this.combatRounds = Array.from(combatRounds).sort();
+        this.combatArenaData = new CombatArenaData(this.combatRounds, this.movementsByRound, this.volleysByRound, this.missileMovementsByRound, this.shipKillerHitsByRound, this.counterMissileHitsByRound);
+        this.activeRoundIndex = 0;
+        this.setActiveRound();
     }
 
     /**
@@ -186,11 +180,77 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
             this.currentlyOpenedItemIndex = undefined;
             this.dataSourceCombatStatistics.data = [];
             this.starSystem = undefined;
-            this.combatRounds = [];
-            this.movementsByRound.clear();
-            this.volleysByRound.clear();
+            this.combatRounds = new Int8Array();
+            this.clear();
             this.combatArenaData = undefined;
         }
+    }
+
+    private clear() {
+        this.combatRounds = new Int8Array();
+        this.movementsByRound = new Map<number, MovementAction[]>();
+        this.missileMovementsByRound = new Map<number, MissileMovement[]>();
+        this.volleysByRound = new Map<number, ReleasedVolley[]>();
+        this.shipKillerHitsByRound = new Map<number, ShipKillerHit[]>();
+        this.counterMissileHitsByRound = new Map<number, CounterMissileHit[]>();
+    }
+
+    private setCounterMissileHitsMapValue(volley: CounterMissileHit) {
+        const combatRound = volley.combatRoundKey.combatRound;
+        let valueMap = this.counterMissileHitsByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = [];
+            this.counterMissileHitsByRound.set(combatRound.no, valueMap);
+        }
+        valueMap.push(volley);
+    }
+
+    private setShipKillerHitsMapValue(volley: ShipKillerHit) {
+        const combatRound = volley.combatRoundKey.combatRound;
+        let valueMap = this.shipKillerHitsByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = [];
+            this.shipKillerHitsByRound.set(combatRound.no, valueMap);
+        }
+        valueMap.push(volley);
+    }
+
+    private setMissileMovementMapValue(volley: MissileMovement) {
+        const combatRound = volley.combatRoundKey.combatRound;
+        let valueMap = this.missileMovementsByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = [];
+            this.missileMovementsByRound.set(combatRound.no, valueMap);
+        }
+        valueMap.push(volley);
+    }
+
+    private setReleasedVolleyMapValue(volley: ReleasedVolley) {
+        const combatRound = volley.combatRoundKey.combatRound;
+        let valueMap = this.volleysByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = [];
+            this.volleysByRound.set(combatRound.no, valueMap);
+        }
+        valueMap.push(volley);
+    }
+
+    private setMovementMapValue(movementAction: MovementAction) {
+        const combatRound = movementAction.combatRoundKey.combatRound;
+        let valueMap = this.movementsByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = [];
+            this.movementsByRound.set(combatRound.no, valueMap);
+        }
+        valueMap.push(movementAction);
+    }
+
+    private mergeCombatRounds() {
+        const combatRounds: Set<number> = new Set<number>();
+        Array.from(this.movementsByRound.keys()).forEach(cr => combatRounds.add(cr));
+        Array.from(this.volleysByRound.keys()).forEach(cr => combatRounds.add(cr));
+        let sorted = Array.from(combatRounds).sort((a, b) => a - b);
+        this.combatRounds = new Int8Array(sorted);
     }
 
     showOverlay(report: BattleReport, loss: LossRole) {
@@ -257,38 +317,94 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.isExpanded = mustExpand;
     }
 
-    play() {
-        console.log("play")
-    }
+    private combatRunSubscription?: Subscription;
 
-    fastRewind() {
-        console.log("fastRewind")
+    play() {
+        this.pause();
+        if (this.activeRoundIndex == this.combatRounds.length - 1) {
+            this.fastRewind();
+        }
+        let numberObservable = timer(0, 100);
+        this.combatRunSubscription = numberObservable.subscribe(() => this.innerNext(false));
+        this.subscriptions.push(this.combatRunSubscription);
     }
 
     stop() {
-        console.log("stop")
+        this.pause();
+        this.fastRewind();
     }
 
     pause() {
-        console.log("pause")
+        if (!!this.combatRunSubscription) {
+            this.combatRunSubscription.unsubscribe();
+            this.combatRunSubscription = undefined;
+        }
+    }
+
+    fastRewind() {
+        this.pause();
+        if (this.activeRoundIndex == 0) {
+            return;
+        }
+        this.activeRoundIndex = 0;
+        this.setActiveRound();
     }
 
     fastForward() {
-        console.log("fastForward")
+        this.pause();
+        if (this.activeRoundIndex == this.combatRounds.length - 1) {
+            return;
+        }
+        this.activeRoundIndex = this.combatRounds.length - 1;
+        this.setActiveRound();
     }
 
     next() {
-        console.log("next");
+        this.pause();
+        this.innerNext(true);
+    }
+
+    private innerNext(fastRewind: boolean) {
+        let i: number = this.activeRoundIndex;
+        if (++i >= this.combatRounds.length) {
+            if (fastRewind) {
+                this.fastRewind();
+            }
+            return;
+        }
         this.activeRoundIndex++;
         this.setActiveRound();
-        this.matStepper?.next();
     }
 
     previous() {
-        console.log("previous");
+        this.pause();
+        let i: number = this.activeRoundIndex;
+        if (--i < 0) {
+            this.fastForward();
+            return;
+        }
         this.activeRoundIndex--;
         this.setActiveRound();
-        this.matStepper?.previous();
+    }
+
+    getLastRound() {
+        if (this.combatRounds.length != 0) {
+            return this.combatRounds[this.combatRounds.length - 1];
+        }
+        return 0;
+    }
+
+    formatLabel(value: number) {
+        return "# " + value;
+    }
+
+    slide(val: number | null) {
+        this.activeRoundIndex = !!val ? val : 0;
+        this.setActiveRound();
+    }
+
+    slideSlides($event: MatSliderChange) {
+        this.slide($event.value);
     }
 }
 

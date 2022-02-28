@@ -25,7 +25,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable()
-export class ReportApiService {
+export class BattleReportApiService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -53,49 +53,6 @@ export class ReportApiService {
             }
         }
         return false;
-    }
-
-
-    /**
-     * Get all fighting reports for the user.
-     * 
-     * @param idUser idUser
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getLatestReportsWithUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<BattleReport>;
-    public getLatestReportsWithUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<BattleReport>>;
-    public getLatestReportsWithUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<BattleReport>>;
-    public getLatestReportsWithUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getLatestReportsWithUser.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<BattleReport>('get',`${this.basePath}/api/private/report/battle/latest/${encodeURIComponent(String(idUser))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
     }
 
     /**

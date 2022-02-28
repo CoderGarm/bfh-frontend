@@ -13,7 +13,7 @@ import { FleetApiService } from './api/fleetApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
-import { ReportApiService } from './api/reportApi.service';
+import { BattleReportApiService } from './api/battle-report-api.service';
 import { ResearchApiService } from './api/researchApi.service';
 import { ResourcesApiService } from './api/resourcesApi.service';
 import { ShipyardApiService } from './api/shipyardApi.service';
@@ -36,7 +36,7 @@ import { UserApiService } from './api/userApi.service';
     JobApiService,
     ModuleApiService,
     PlanetApiService,
-    ReportApiService,
+    BattleReportApiService,
     ResearchApiService,
     ResourcesApiService,
     ShipyardApiService,

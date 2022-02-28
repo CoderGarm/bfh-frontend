@@ -29,6 +29,10 @@
       "description": "Auth Api"
     },
     {
+      "name": "BattleReportApi",
+      "description": "Battle Report Api"
+    },
+    {
       "name": "BuildingApi",
       "description": "Building Api"
     },
@@ -59,10 +63,6 @@
     {
       "name": "PlanetApi",
       "description": "Planet Api"
-    },
-    {
-      "name": "ReportApi",
-      "description": "Report Api"
     },
     {
       "name": "ResearchApi",
@@ -244,6 +244,80 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JWT"
+                }
+              },
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "an error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/report/battle/{idUser}/{page}/{size}": {
+      "get": {
+        "tags": [
+          "BattleReportApi"
+        ],
+        "summary": "Get all fighting reports for the user.",
+        "operationId": "getReportsWithUserWithPaging",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "description": "idUser",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "description": "page",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "path",
+            "description": "size",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BattleReportRes"
+                  }
                 }
               },
               "*/*": {
@@ -578,7 +652,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StarSystemColonization"
+                    "$ref": "#/components/schemas/StarSystemColonizationRes"
                   }
                 }
               },
@@ -626,7 +700,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StarSystem"
+                "$ref": "#/components/schemas/StarSystemReq"
               }
             }
           }
@@ -688,7 +762,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StarSystem"
+                    "$ref": "#/components/schemas/StarSystemRes"
                   }
                 }
               },
@@ -738,7 +812,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StarSystem"
+                  "$ref": "#/components/schemas/StarSystemRes"
                 }
               },
               "*/*": {
@@ -789,7 +863,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StarSystem"
+                    "$ref": "#/components/schemas/StarSystemRes"
                   }
                 }
               },
@@ -841,7 +915,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StarSystemColonization"
+                    "$ref": "#/components/schemas/StarSystemColonizationRes"
                   }
                 }
               },
@@ -889,7 +963,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Planet"
+                "$ref": "#/components/schemas/PlanetReq"
               }
             }
           }
@@ -900,7 +974,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Colonization"
+                  "$ref": "#/components/schemas/ColonizationRes"
                 }
               },
               "*/*": {
@@ -1064,7 +1138,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Fleet"
+                  "$ref": "#/components/schemas/FleetRes"
                 }
               },
               "*/*": {
@@ -1102,7 +1176,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/FleetDistributionPerUser"
+                    "$ref": "#/components/schemas/FleetDistributionPerUserRes"
                   }
                 }
               },
@@ -1154,7 +1228,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Fleet"
+                    "$ref": "#/components/schemas/FleetRes"
                   }
                 }
               },
@@ -1217,7 +1291,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Fleet"
+                    "$ref": "#/components/schemas/FleetRes"
                   }
                 }
               },
@@ -1256,7 +1330,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Fleet"
+                    "$ref": "#/components/schemas/FleetRes"
                   }
                 }
               },
@@ -1315,7 +1389,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Fleet"
+                  "$ref": "#/components/schemas/FleetRes"
                 }
               },
               "*/*": {
@@ -1362,7 +1436,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/FleetMove"
+                "$ref": "#/components/schemas/FleetMoveReq"
               }
             }
           }
@@ -1373,7 +1447,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Fleet"
+                  "$ref": "#/components/schemas/FleetRes"
                 }
               },
               "*/*": {
@@ -1422,7 +1496,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/FleetMove"
+                  "$ref": "#/components/schemas/FleetMoveReq"
                 }
               }
             }
@@ -1436,7 +1510,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Fleet"
+                    "$ref": "#/components/schemas/FleetRes"
                   }
                 }
               },
@@ -1488,7 +1562,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Fleet"
+                    "$ref": "#/components/schemas/FleetRes"
                   }
                 }
               },
@@ -1536,7 +1610,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/FleetMove"
+                "$ref": "#/components/schemas/FleetMoveReq"
               }
             }
           }
@@ -1547,7 +1621,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Move"
+                  "$ref": "#/components/schemas/MoveRes"
                 }
               },
               "*/*": {
@@ -1596,7 +1670,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/FleetMove"
+                  "$ref": "#/components/schemas/FleetMoveReq"
                 }
               }
             }
@@ -1610,7 +1684,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Move"
+                    "$ref": "#/components/schemas/MoveRes"
                   }
                 }
               },
@@ -1714,7 +1788,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AmmunitionModule"
+                    "$ref": "#/components/schemas/AmmunitionModuleRes"
                   }
                 }
               },
@@ -1922,7 +1996,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Launcher"
+                    "$ref": "#/components/schemas/LauncherRes"
                   }
                 }
               },
@@ -2130,7 +2204,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Weapon"
+                    "$ref": "#/components/schemas/WeaponRes"
                   }
                 }
               },
@@ -2178,7 +2252,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Orbit"
+                "$ref": "#/components/schemas/OrbitReq"
               }
             }
           }
@@ -2189,7 +2263,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Planet"
+                  "$ref": "#/components/schemas/PlanetRes"
                 }
               },
               "*/*": {
@@ -2443,130 +2517,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Planet"
-                  }
-                }
-              },
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "an error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FrontendError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/private/report/battle/latest/{idUser}": {
-      "get": {
-        "tags": [
-          "ReportApi"
-        ],
-        "summary": "Get all fighting reports for the user.",
-        "operationId": "getLatestReportsWithUser",
-        "parameters": [
-          {
-            "name": "idUser",
-            "in": "path",
-            "description": "idUser",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BattleReport"
-                }
-              },
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "an error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FrontendError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/private/report/battle/{idUser}/{page}/{size}": {
-      "get": {
-        "tags": [
-          "ReportApi"
-        ],
-        "summary": "Get all fighting reports for the user.",
-        "operationId": "getReportsWithUserWithPaging",
-        "parameters": [
-          {
-            "name": "idUser",
-            "in": "path",
-            "description": "idUser",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "page",
-            "in": "path",
-            "description": "page",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "size",
-            "in": "path",
-            "description": "size",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BattleReport"
+                    "$ref": "#/components/schemas/PlanetRes"
                   }
                 }
               },
@@ -2868,7 +2819,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ShipClass"
+                "$ref": "#/components/schemas/ShipClassReq"
               }
             }
           }
@@ -3115,7 +3066,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ShipClass"
+                    "$ref": "#/components/schemas/ShipClassRes"
                   }
                 }
               },
@@ -3161,7 +3112,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ShipClass"
+                "$ref": "#/components/schemas/ShipClassReq"
               }
             }
           }
@@ -3172,7 +3123,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipClass"
+                  "$ref": "#/components/schemas/ShipClassRes"
                 }
               },
               "*/*": {
@@ -3402,7 +3353,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StarSystem"
+                    "$ref": "#/components/schemas/StarSystemRes"
                   }
                 }
               },
@@ -3452,7 +3403,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StarSystem"
+                  "$ref": "#/components/schemas/StarSystemRes"
                 }
               },
               "*/*": {
@@ -3854,8 +3805,8 @@
           }
         }
       },
-      "AlignedFitting": {
-        "title": "AlignedFitting",
+      "AlignedFittingReq": {
+        "title": "AlignedFittingReq",
         "required": [
           "amount",
           "weaponAlignment"
@@ -3869,11 +3820,11 @@
           },
           "launcher": {
             "description": "The mounted launcher.",
-            "$ref": "#/components/schemas/Launcher"
+            "$ref": "#/components/schemas/LauncherReq"
           },
           "weapon": {
             "description": "The mounted direct weapon.",
-            "$ref": "#/components/schemas/Weapon"
+            "$ref": "#/components/schemas/WeaponReq"
           },
           "weaponAlignment": {
             "type": "string",
@@ -3886,8 +3837,40 @@
           }
         }
       },
-      "AmmunitionFitting": {
-        "title": "AmmunitionFitting",
+      "AlignedFittingRes": {
+        "title": "AlignedFittingRes",
+        "required": [
+          "amount",
+          "weaponAlignment"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The amount of mounted weapons.",
+            "format": "int32"
+          },
+          "launcher": {
+            "description": "The mounted launcher.",
+            "$ref": "#/components/schemas/LauncherRes"
+          },
+          "weapon": {
+            "description": "The mounted direct weapon.",
+            "$ref": "#/components/schemas/WeaponRes"
+          },
+          "weaponAlignment": {
+            "type": "string",
+            "description": "The used mount point of this fitting.",
+            "enum": [
+              "BOW",
+              "BROADSIDE",
+              "STERN"
+            ]
+          }
+        }
+      },
+      "AmmunitionFittingReq": {
+        "title": "AmmunitionFittingReq",
         "required": [
           "ammunitionModule",
           "amount"
@@ -3896,7 +3879,7 @@
         "properties": {
           "ammunitionModule": {
             "description": "The ammunition module.",
-            "$ref": "#/components/schemas/AmmunitionModule"
+            "$ref": "#/components/schemas/AmmunitionModuleReq"
           },
           "amount": {
             "type": "integer",
@@ -3905,8 +3888,27 @@
           }
         }
       },
-      "AmmunitionModule": {
-        "title": "AmmunitionModule",
+      "AmmunitionFittingRes": {
+        "title": "AmmunitionFittingRes",
+        "required": [
+          "ammunitionModule",
+          "amount"
+        ],
+        "type": "object",
+        "properties": {
+          "ammunitionModule": {
+            "description": "The ammunition module.",
+            "$ref": "#/components/schemas/AmmunitionModuleRes"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount of ammunition modules.",
+            "format": "int32"
+          }
+        }
+      },
+      "AmmunitionModuleReq": {
+        "title": "AmmunitionModuleReq",
         "required": [
           "baseModule",
           "missile"
@@ -3919,7 +3921,25 @@
           },
           "missile": {
             "description": "The basic values of this module.",
-            "$ref": "#/components/schemas/Missile"
+            "$ref": "#/components/schemas/MissileReq"
+          }
+        }
+      },
+      "AmmunitionModuleRes": {
+        "title": "AmmunitionModuleRes",
+        "required": [
+          "baseModule",
+          "missile"
+        ],
+        "type": "object",
+        "properties": {
+          "baseModule": {
+            "description": "The basic values of this module.",
+            "$ref": "#/components/schemas/BaseModule"
+          },
+          "missile": {
+            "description": "The basic values of this module.",
+            "$ref": "#/components/schemas/MissileRes"
           }
         }
       },
@@ -3995,8 +4015,8 @@
           }
         }
       },
-      "BattleReport": {
-        "title": "BattleReport",
+      "BattleReportReq": {
+        "title": "BattleReportReq",
         "required": [
           "counterMissileHits",
           "idBattleReport",
@@ -4018,7 +4038,7 @@
             "type": "array",
             "description": "The hits against missile salvos.",
             "items": {
-              "$ref": "#/components/schemas/CounterMissileHit"
+              "$ref": "#/components/schemas/CounterMissileHitReq"
             }
           },
           "idBattleReport": {
@@ -4034,7 +4054,7 @@
             "type": "array",
             "description": "The losses of this battle.",
             "items": {
-              "$ref": "#/components/schemas/LossRole"
+              "$ref": "#/components/schemas/LossRoleReq"
             }
           },
           "missileMovements": {
@@ -4042,7 +4062,7 @@
             "type": "array",
             "description": "The missile movements during this combat.",
             "items": {
-              "$ref": "#/components/schemas/MissileMovement"
+              "$ref": "#/components/schemas/MissileMovementReq"
             }
           },
           "movementActions": {
@@ -4050,19 +4070,19 @@
             "type": "array",
             "description": "The movements which were done in this clash.",
             "items": {
-              "$ref": "#/components/schemas/MovementAction"
+              "$ref": "#/components/schemas/MovementActionReq"
             }
           },
           "orbit": {
             "description": "The place where the action happened.",
-            "$ref": "#/components/schemas/FleetOrbit"
+            "$ref": "#/components/schemas/FleetOrbitReq"
           },
           "participatingFleets": {
             "uniqueItems": true,
             "type": "array",
             "description": "The protagonists - and the antagonists.",
             "items": {
-              "$ref": "#/components/schemas/Fleet"
+              "$ref": "#/components/schemas/FleetReq"
             }
           },
           "participatingUsers": {
@@ -4078,7 +4098,7 @@
             "type": "array",
             "description": "All loose off weapon action.",
             "items": {
-              "$ref": "#/components/schemas/ReleasedVolley"
+              "$ref": "#/components/schemas/ReleasedVolleyReq"
             }
           },
           "shipKillerHits": {
@@ -4086,7 +4106,107 @@
             "type": "array",
             "description": "All hits of ship killer weapons during this combat.",
             "items": {
-              "$ref": "#/components/schemas/ShipKillerHit"
+              "$ref": "#/components/schemas/ShipKillerHitReq"
+            }
+          },
+          "tick": {
+            "description": "The tick where the action happened.",
+            "$ref": "#/components/schemas/Tick"
+          }
+        }
+      },
+      "BattleReportRes": {
+        "title": "BattleReportRes",
+        "required": [
+          "counterMissileHits",
+          "idBattleReport",
+          "lastRound",
+          "lossRole",
+          "missileMovements",
+          "movementActions",
+          "orbit",
+          "participatingFleets",
+          "participatingUsers",
+          "releasedVolleys",
+          "shipKillerHits",
+          "tick"
+        ],
+        "type": "object",
+        "properties": {
+          "counterMissileHits": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The hits against missile salvos.",
+            "items": {
+              "$ref": "#/components/schemas/CounterMissileHitRes"
+            }
+          },
+          "idBattleReport": {
+            "type": "integer",
+            "description": "The database id of the report.",
+            "format": "int32"
+          },
+          "lastRound": {
+            "description": "The last round in this battle.",
+            "$ref": "#/components/schemas/CombatRound"
+          },
+          "lossRole": {
+            "type": "array",
+            "description": "The losses of this battle.",
+            "items": {
+              "$ref": "#/components/schemas/LossRoleRes"
+            }
+          },
+          "missileMovements": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The missile movements during this combat.",
+            "items": {
+              "$ref": "#/components/schemas/MissileMovementRes"
+            }
+          },
+          "movementActions": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The movements which were done in this clash.",
+            "items": {
+              "$ref": "#/components/schemas/MovementActionRes"
+            }
+          },
+          "orbit": {
+            "description": "The place where the action happened.",
+            "$ref": "#/components/schemas/FleetOrbitRes"
+          },
+          "participatingFleets": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The protagonists - and the antagonists.",
+            "items": {
+              "$ref": "#/components/schemas/FleetRes"
+            }
+          },
+          "participatingUsers": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The participating users.",
+            "items": {
+              "$ref": "#/components/schemas/UserJson"
+            }
+          },
+          "releasedVolleys": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "All loose off weapon action.",
+            "items": {
+              "$ref": "#/components/schemas/ReleasedVolleyRes"
+            }
+          },
+          "shipKillerHits": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "All hits of ship killer weapons during this combat.",
+            "items": {
+              "$ref": "#/components/schemas/ShipKillerHitRes"
             }
           },
           "tick": {
@@ -4234,8 +4354,8 @@
           }
         }
       },
-      "Colonization": {
-        "title": "Colonization",
+      "ColonizationReq": {
+        "title": "ColonizationReq",
         "required": [
           "doneAtZero",
           "idColonization",
@@ -4256,7 +4376,37 @@
           },
           "target": {
             "description": "The planet which is the target of the colonization.",
-            "$ref": "#/components/schemas/Planet"
+            "$ref": "#/components/schemas/PlanetReq"
+          },
+          "user": {
+            "description": "The user who runs the colonization.",
+            "$ref": "#/components/schemas/UserJson"
+          }
+        }
+      },
+      "ColonizationRes": {
+        "title": "ColonizationRes",
+        "required": [
+          "doneAtZero",
+          "idColonization",
+          "target",
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "doneAtZero": {
+            "type": "integer",
+            "description": "The amount of ticks to complete colonization.",
+            "format": "int32"
+          },
+          "idColonization": {
+            "type": "integer",
+            "description": "The id of the colonization.",
+            "format": "int32"
+          },
+          "target": {
+            "description": "The planet which is the target of the colonization.",
+            "$ref": "#/components/schemas/PlanetRes"
           },
           "user": {
             "description": "The user who runs the colonization.",
@@ -4337,8 +4487,8 @@
           }
         }
       },
-      "CounterMissileHit": {
-        "title": "CounterMissileHit",
+      "CounterMissileHitReq": {
+        "title": "CounterMissileHitReq",
         "required": [
           "actor",
           "attackedMissileSalvo",
@@ -4352,7 +4502,7 @@
         "properties": {
           "actor": {
             "description": "The fleet which acts.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           },
           "attackedMissileSalvo": {
             "type": "string",
@@ -4370,7 +4520,7 @@
           },
           "missile": {
             "description": "The attacked missile type as part of the salvo.",
-            "$ref": "#/components/schemas/Missile"
+            "$ref": "#/components/schemas/MissileReq"
           },
           "remainingMissiles": {
             "type": "integer",
@@ -4379,26 +4529,90 @@
           },
           "target": {
             "description": "The fleet which is targeted.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           }
         }
       },
-      "Distance": {
-        "title": "Distance",
+      "CounterMissileHitRes": {
+        "title": "CounterMissileHitRes",
         "required": [
-          "coordinate",
-          "distanceMetric"
+          "actor",
+          "attackedMissileSalvo",
+          "combatRoundKey",
+          "destroyedMissiles",
+          "missile",
+          "remainingMissiles",
+          "target"
         ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/FleetRes"
+          },
+          "attackedMissileSalvo": {
+            "type": "string",
+            "description": "The UUID of the attacked missile salvo.",
+            "format": "uuid"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "destroyedMissiles": {
+            "type": "integer",
+            "description": "The amount of destroyed missiles.",
+            "format": "int32"
+          },
+          "missile": {
+            "description": "The attacked missile type as part of the salvo.",
+            "$ref": "#/components/schemas/MissileRes"
+          },
+          "remainingMissiles": {
+            "type": "integer",
+            "description": "The leftover amount of missiles of the given type in the salvo.",
+            "format": "int32"
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/FleetRes"
+          }
+        }
+      },
+      "DistanceReq": {
+        "title": "DistanceReq",
         "type": "object",
         "properties": {
           "coordinate": {
             "type": "number",
-            "description": "The value of this distance.",
             "format": "bigdecimal"
           },
           "distanceMetric": {
             "type": "string",
-            "description": "The metric of this distance.",
+            "enum": [
+              "AU",
+              "KM",
+              "LD",
+              "LH",
+              "LM",
+              "LS",
+              "LY",
+              "M",
+              "PC"
+            ]
+          }
+        }
+      },
+      "DistanceRes": {
+        "title": "DistanceRes",
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "number",
+            "format": "bigdecimal"
+          },
+          "distanceMetric": {
+            "type": "string",
             "enum": [
               "AU",
               "KM",
@@ -4721,58 +4935,6 @@
           }
         }
       },
-      "Fleet": {
-        "title": "Fleet",
-        "required": [
-          "fleetCapabilities",
-          "idFleet",
-          "isFTLCapable",
-          "name",
-          "owner",
-          "ships"
-        ],
-        "type": "object",
-        "properties": {
-          "fleetCapabilities": {
-            "description": "The effect value per module type.",
-            "$ref": "#/components/schemas/FleetCapabilities"
-          },
-          "idFleet": {
-            "type": "integer",
-            "description": "The id.",
-            "format": "int32"
-          },
-          "isFTLCapable": {
-            "type": "boolean",
-            "description": "If the fleet can run interstellar movements.",
-            "example": false
-          },
-          "move": {
-            "description": "The fleet's current moving.",
-            "$ref": "#/components/schemas/Move"
-          },
-          "name": {
-            "type": "string",
-            "description": "The name of the fleet"
-          },
-          "orbit": {
-            "description": "The current location of this fleet.\n     \n     If null, then this is in hyper space.\n     The planet could be null if the fleet is on a local movement.",
-            "$ref": "#/components/schemas/FleetOrbit"
-          },
-          "owner": {
-            "description": "The owner of the fleet",
-            "$ref": "#/components/schemas/UserJson"
-          },
-          "ships": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "The fleet's individual war ships.",
-            "items": {
-              "$ref": "#/components/schemas/WarShip"
-            }
-          }
-        }
-      },
       "FleetCapabilities": {
         "title": "FleetCapabilities",
         "required": [
@@ -4789,8 +4951,8 @@
           }
         }
       },
-      "FleetDistributionPerUser": {
-        "title": "FleetDistributionPerUser",
+      "FleetDistributionPerUserReq": {
+        "title": "FleetDistributionPerUserReq",
         "required": [
           "starSystem",
           "users"
@@ -4799,7 +4961,28 @@
         "properties": {
           "starSystem": {
             "description": "The system which includes the fleets.",
-            "$ref": "#/components/schemas/StarSystem"
+            "$ref": "#/components/schemas/StarSystemReq"
+          },
+          "users": {
+            "type": "array",
+            "description": "The owner of the fleets in the system.",
+            "items": {
+              "$ref": "#/components/schemas/UserJson"
+            }
+          }
+        }
+      },
+      "FleetDistributionPerUserRes": {
+        "title": "FleetDistributionPerUserRes",
+        "required": [
+          "starSystem",
+          "users"
+        ],
+        "type": "object",
+        "properties": {
+          "starSystem": {
+            "description": "The system which includes the fleets.",
+            "$ref": "#/components/schemas/StarSystemRes"
           },
           "users": {
             "type": "array",
@@ -4830,8 +5013,8 @@
           }
         }
       },
-      "FleetMove": {
-        "title": "FleetMove",
+      "FleetMoveReq": {
+        "title": "FleetMoveReq",
         "required": [
           "idFleetToMove"
         ],
@@ -4839,7 +5022,7 @@
         "properties": {
           "destinationOrbit": {
             "description": "The orbit which is the target of the movement.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           },
           "idDestinationSystem": {
             "type": "integer",
@@ -4853,17 +5036,158 @@
           }
         }
       },
-      "FleetOrbit": {
-        "title": "FleetOrbit",
+      "FleetMoveRes": {
+        "title": "FleetMoveRes",
+        "required": [
+          "idFleetToMove"
+        ],
+        "type": "object",
+        "properties": {
+          "destinationOrbit": {
+            "description": "The orbit which is the target of the movement.",
+            "$ref": "#/components/schemas/OrbitRes"
+          },
+          "idDestinationSystem": {
+            "type": "integer",
+            "description": "The system which is the target of the movement.",
+            "format": "int32"
+          },
+          "idFleetToMove": {
+            "type": "integer",
+            "description": "The fleet which must be moved.",
+            "format": "int32"
+          }
+        }
+      },
+      "FleetOrbitReq": {
+        "title": "FleetOrbitReq",
         "type": "object",
         "properties": {
           "orbit": {
             "description": "The orbit inside the inertial system defined by the star system.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           },
           "system": {
             "description": "The star system which defines the inertial system of the orbit. If undefined the orbit lives in the universe.",
-            "$ref": "#/components/schemas/StarSystem"
+            "$ref": "#/components/schemas/StarSystemReq"
+          }
+        }
+      },
+      "FleetOrbitRes": {
+        "title": "FleetOrbitRes",
+        "type": "object",
+        "properties": {
+          "orbit": {
+            "description": "The orbit inside the inertial system defined by the star system.",
+            "$ref": "#/components/schemas/OrbitRes"
+          },
+          "system": {
+            "description": "The star system which defines the inertial system of the orbit. If undefined the orbit lives in the universe.",
+            "$ref": "#/components/schemas/StarSystemRes"
+          }
+        }
+      },
+      "FleetReq": {
+        "title": "FleetReq",
+        "required": [
+          "fleetCapabilities",
+          "idFleet",
+          "isFTLCapable",
+          "name",
+          "owner",
+          "ships"
+        ],
+        "type": "object",
+        "properties": {
+          "fleetCapabilities": {
+            "description": "The effect value per module type.",
+            "$ref": "#/components/schemas/FleetCapabilities"
+          },
+          "idFleet": {
+            "type": "integer",
+            "description": "The id.",
+            "format": "int32"
+          },
+          "isFTLCapable": {
+            "type": "boolean",
+            "description": "If the fleet can run interstellar movements.",
+            "example": false
+          },
+          "move": {
+            "description": "The fleet's current moving.",
+            "$ref": "#/components/schemas/MoveReq"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the fleet"
+          },
+          "orbit": {
+            "description": "The current location of this fleet.\n     \n     If null, then this is in hyper space.\n     The planet could be null if the fleet is on a local movement.",
+            "$ref": "#/components/schemas/FleetOrbitReq"
+          },
+          "owner": {
+            "description": "The owner of the fleet",
+            "$ref": "#/components/schemas/UserJson"
+          },
+          "ships": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The fleet's individual war ships.",
+            "items": {
+              "$ref": "#/components/schemas/WarShipReq"
+            }
+          }
+        }
+      },
+      "FleetRes": {
+        "title": "FleetRes",
+        "required": [
+          "fleetCapabilities",
+          "idFleet",
+          "isFTLCapable",
+          "name",
+          "owner",
+          "ships"
+        ],
+        "type": "object",
+        "properties": {
+          "fleetCapabilities": {
+            "description": "The effect value per module type.",
+            "$ref": "#/components/schemas/FleetCapabilities"
+          },
+          "idFleet": {
+            "type": "integer",
+            "description": "The id.",
+            "format": "int32"
+          },
+          "isFTLCapable": {
+            "type": "boolean",
+            "description": "If the fleet can run interstellar movements.",
+            "example": false
+          },
+          "move": {
+            "description": "The fleet's current moving.",
+            "$ref": "#/components/schemas/MoveRes"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the fleet"
+          },
+          "orbit": {
+            "description": "The current location of this fleet.\n     \n     If null, then this is in hyper space.\n     The planet could be null if the fleet is on a local movement.",
+            "$ref": "#/components/schemas/FleetOrbitRes"
+          },
+          "owner": {
+            "description": "The owner of the fleet",
+            "$ref": "#/components/schemas/UserJson"
+          },
+          "ships": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The fleet's individual war ships.",
+            "items": {
+              "$ref": "#/components/schemas/WarShipRes"
+            }
           }
         }
       },
@@ -4920,8 +5244,8 @@
           }
         }
       },
-      "HitLog": {
-        "title": "HitLog",
+      "HitLogReq": {
+        "title": "HitLogReq",
         "required": [
           "attackedPart",
           "combatRoundKey",
@@ -4971,7 +5295,66 @@
           },
           "warShip": {
             "description": "The attacked warship.",
-            "$ref": "#/components/schemas/WarShip"
+            "$ref": "#/components/schemas/WarShipReq"
+          },
+          "warshipHealthState": {
+            "type": "string",
+            "description": "The string representation of the target's health state."
+          }
+        }
+      },
+      "HitLogRes": {
+        "title": "HitLogRes",
+        "required": [
+          "attackedPart",
+          "combatRoundKey",
+          "damageDealer",
+          "damageValue",
+          "state",
+          "warShip",
+          "warshipHealthState"
+        ],
+        "type": "object",
+        "properties": {
+          "alive": {
+            "type": "boolean"
+          },
+          "attackedPart": {
+            "type": "string",
+            "description": "The attacked part of the ship.",
+            "enum": [
+              "ARMOR",
+              "ELOKA",
+              "FITTING_AND_HULL",
+              "PROPULSION",
+              "SIDEWALL"
+            ]
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "damageDealer": {
+            "type": "string",
+            "description": "The UUID of the damage dealer.",
+            "format": "uuid"
+          },
+          "damageValue": {
+            "type": "integer",
+            "description": "The applied damage.",
+            "format": "int64"
+          },
+          "fightingCapable": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "integer",
+            "description": "The remaining hit points of the attacked part of the ship.",
+            "format": "int32"
+          },
+          "warShip": {
+            "description": "The attacked warship.",
+            "$ref": "#/components/schemas/WarShipRes"
           },
           "warshipHealthState": {
             "type": "string",
@@ -5163,8 +5546,8 @@
           }
         }
       },
-      "Launcher": {
-        "title": "Launcher",
+      "LauncherReq": {
+        "title": "LauncherReq",
         "required": [
           "alignmentTypes",
           "allowedMissiles",
@@ -5190,12 +5573,12 @@
             "type": "array",
             "description": "The bunch of allowed missiles for this launcher.",
             "items": {
-              "$ref": "#/components/schemas/Missile"
+              "$ref": "#/components/schemas/MissileReq"
             }
           },
           "ammunitionModule": {
             "description": "The ammunition for this launcher.",
-            "$ref": "#/components/schemas/AmmunitionModule"
+            "$ref": "#/components/schemas/AmmunitionModuleReq"
           },
           "baseModule": {
             "description": "The basic values of this module.",
@@ -5213,8 +5596,58 @@
           }
         }
       },
-      "LossRole": {
-        "title": "LossRole",
+      "LauncherRes": {
+        "title": "LauncherRes",
+        "required": [
+          "alignmentTypes",
+          "allowedMissiles",
+          "ammunitionModule",
+          "baseModule",
+          "weaponType"
+        ],
+        "type": "object",
+        "properties": {
+          "alignmentTypes": {
+            "type": "array",
+            "description": "The possible mount points of this weapon.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BOW",
+                "BROADSIDE",
+                "STERN"
+              ]
+            }
+          },
+          "allowedMissiles": {
+            "type": "array",
+            "description": "The bunch of allowed missiles for this launcher.",
+            "items": {
+              "$ref": "#/components/schemas/MissileRes"
+            }
+          },
+          "ammunitionModule": {
+            "description": "The ammunition for this launcher.",
+            "$ref": "#/components/schemas/AmmunitionModuleRes"
+          },
+          "baseModule": {
+            "description": "The basic values of this module.",
+            "$ref": "#/components/schemas/BaseModule"
+          },
+          "weaponType": {
+            "type": "string",
+            "description": "The way how the damage will be projected.",
+            "enum": [
+              "BEAM",
+              "COUNTER_MISSILE",
+              "MISSILE",
+              "POINT_DEFENSE"
+            ]
+          }
+        }
+      },
+      "LossRoleReq": {
+        "title": "LossRoleReq",
         "required": [
           "fleet",
           "owner",
@@ -5225,7 +5658,7 @@
         "properties": {
           "fleet": {
             "description": "The fleet which was the war ships home.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           },
           "owner": {
             "description": "The user which is affected by the loss.",
@@ -5233,7 +5666,35 @@
           },
           "shipClass": {
             "description": "The class of the war ship which was destroyed.",
-            "$ref": "#/components/schemas/ShipClass"
+            "$ref": "#/components/schemas/ShipClassReq"
+          },
+          "warShipName": {
+            "type": "string",
+            "description": "The name of the war ship which was destroyed."
+          }
+        }
+      },
+      "LossRoleRes": {
+        "title": "LossRoleRes",
+        "required": [
+          "fleet",
+          "owner",
+          "shipClass",
+          "warShipName"
+        ],
+        "type": "object",
+        "properties": {
+          "fleet": {
+            "description": "The fleet which was the war ships home.",
+            "$ref": "#/components/schemas/FleetRes"
+          },
+          "owner": {
+            "description": "The user which is affected by the loss.",
+            "$ref": "#/components/schemas/UserJson"
+          },
+          "shipClass": {
+            "description": "The class of the war ship which was destroyed.",
+            "$ref": "#/components/schemas/ShipClassRes"
           },
           "warShipName": {
             "type": "string",
@@ -5254,56 +5715,6 @@
             "items": {
               "$ref": "#/components/schemas/ResourceAmount"
             }
-          }
-        }
-      },
-      "Missile": {
-        "title": "Missile",
-        "required": [
-          "elokaResistance",
-          "idMissile",
-          "missileMotors",
-          "motorCapacity",
-          "typeName",
-          "warhead",
-          "warheadCapacity"
-        ],
-        "type": "object",
-        "properties": {
-          "elokaResistance": {
-            "type": "integer",
-            "description": "The engine capacity of this missile.",
-            "format": "int32"
-          },
-          "idMissile": {
-            "type": "integer",
-            "description": "The id of this Missile.",
-            "format": "int32"
-          },
-          "missileMotors": {
-            "type": "array",
-            "description": "The implemented engine of this missile.",
-            "items": {
-              "$ref": "#/components/schemas/MissileMotor"
-            }
-          },
-          "motorCapacity": {
-            "type": "integer",
-            "description": "The engine capacity of this missile.",
-            "format": "int32"
-          },
-          "typeName": {
-            "type": "string",
-            "description": "The type name of this missile."
-          },
-          "warhead": {
-            "description": "The warhead of this missile.",
-            "$ref": "#/components/schemas/Warhead"
-          },
-          "warheadCapacity": {
-            "type": "integer",
-            "description": "The warhead capacity of this missile.",
-            "format": "int32"
           }
         }
       },
@@ -5349,8 +5760,8 @@
           }
         }
       },
-      "MissileMovement": {
-        "title": "MissileMovement",
+      "MissileMovementReq": {
+        "title": "MissileMovementReq",
         "required": [
           "actor",
           "combatRoundKey",
@@ -5366,7 +5777,7 @@
         "properties": {
           "actor": {
             "description": "The fleet which acts.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           },
           "combatRoundKey": {
             "description": "The round and phase information.",
@@ -5374,7 +5785,7 @@
           },
           "lastPosition": {
             "description": "The position of the salvo in the last round.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           },
           "missileAmount": {
             "type": "integer",
@@ -5388,7 +5799,7 @@
           },
           "position": {
             "description": "The current position of the salvo.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           },
           "roundsToTravel": {
             "type": "integer",
@@ -5397,16 +5808,172 @@
           },
           "target": {
             "description": "The fleet which is targeted.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           },
           "targetPosition": {
             "description": "The current position of the target.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           }
         }
       },
-      "Move": {
-        "title": "Move",
+      "MissileMovementRes": {
+        "title": "MissileMovementRes",
+        "required": [
+          "actor",
+          "combatRoundKey",
+          "lastPosition",
+          "missileAmount",
+          "movingMissileSalvo",
+          "position",
+          "roundsToTravel",
+          "target",
+          "targetPosition"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/FleetRes"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "lastPosition": {
+            "description": "The position of the salvo in the last round.",
+            "$ref": "#/components/schemas/OrbitRes"
+          },
+          "missileAmount": {
+            "type": "integer",
+            "description": "The amount of missiles in this salvo.",
+            "format": "int32"
+          },
+          "movingMissileSalvo": {
+            "type": "string",
+            "description": "The UUID of the moving missile salvo.",
+            "format": "uuid"
+          },
+          "position": {
+            "description": "The current position of the salvo.",
+            "$ref": "#/components/schemas/OrbitRes"
+          },
+          "roundsToTravel": {
+            "type": "integer",
+            "description": "The amount of rounds which have to be passed before in range for a hit.",
+            "format": "int32"
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/FleetRes"
+          },
+          "targetPosition": {
+            "description": "The current position of the target.",
+            "$ref": "#/components/schemas/OrbitRes"
+          }
+        }
+      },
+      "MissileReq": {
+        "title": "MissileReq",
+        "required": [
+          "elokaResistance",
+          "idMissile",
+          "missileMotors",
+          "motorCapacity",
+          "typeName",
+          "warhead",
+          "warheadCapacity"
+        ],
+        "type": "object",
+        "properties": {
+          "elokaResistance": {
+            "type": "integer",
+            "description": "The engine capacity of this missile.",
+            "format": "int32"
+          },
+          "idMissile": {
+            "type": "integer",
+            "description": "The id of this Missile.",
+            "format": "int32"
+          },
+          "missileMotors": {
+            "type": "array",
+            "description": "The implemented engine of this missile.",
+            "items": {
+              "$ref": "#/components/schemas/MissileMotor"
+            }
+          },
+          "motorCapacity": {
+            "type": "integer",
+            "description": "The engine capacity of this missile.",
+            "format": "int32"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this missile."
+          },
+          "warhead": {
+            "description": "The warhead of this missile.",
+            "$ref": "#/components/schemas/WarheadReq"
+          },
+          "warheadCapacity": {
+            "type": "integer",
+            "description": "The warhead capacity of this missile.",
+            "format": "int32"
+          }
+        }
+      },
+      "MissileRes": {
+        "title": "MissileRes",
+        "required": [
+          "elokaResistance",
+          "idMissile",
+          "missileMotors",
+          "motorCapacity",
+          "typeName",
+          "warhead",
+          "warheadCapacity"
+        ],
+        "type": "object",
+        "properties": {
+          "elokaResistance": {
+            "type": "integer",
+            "description": "The engine capacity of this missile.",
+            "format": "int32"
+          },
+          "idMissile": {
+            "type": "integer",
+            "description": "The id of this Missile.",
+            "format": "int32"
+          },
+          "missileMotors": {
+            "type": "array",
+            "description": "The implemented engine of this missile.",
+            "items": {
+              "$ref": "#/components/schemas/MissileMotor"
+            }
+          },
+          "motorCapacity": {
+            "type": "integer",
+            "description": "The engine capacity of this missile.",
+            "format": "int32"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this missile."
+          },
+          "warhead": {
+            "description": "The warhead of this missile.",
+            "$ref": "#/components/schemas/WarheadRes"
+          },
+          "warheadCapacity": {
+            "type": "integer",
+            "description": "The warhead capacity of this missile.",
+            "format": "int32"
+          }
+        }
+      },
+      "MoveReq": {
+        "title": "MoveReq",
         "required": [
           "idFleetInMotion",
           "moveDoneAtZero",
@@ -5433,16 +6000,52 @@
           },
           "startOrbit": {
             "description": "The departure of this movement.",
-            "$ref": "#/components/schemas/FleetOrbit"
+            "$ref": "#/components/schemas/FleetOrbitReq"
           },
           "targetOrbit": {
             "description": "The destination of this movement.",
-            "$ref": "#/components/schemas/FleetOrbit"
+            "$ref": "#/components/schemas/FleetOrbitReq"
           }
         }
       },
-      "MovementAction": {
-        "title": "MovementAction",
+      "MoveRes": {
+        "title": "MoveRes",
+        "required": [
+          "idFleetInMotion",
+          "moveDoneAtZero",
+          "originalDuration",
+          "startOrbit",
+          "targetOrbit"
+        ],
+        "type": "object",
+        "properties": {
+          "idFleetInMotion": {
+            "type": "integer",
+            "description": "The fleet which is in motion.",
+            "format": "int32"
+          },
+          "moveDoneAtZero": {
+            "type": "integer",
+            "description": "The current left over duration of this movement.",
+            "format": "int32"
+          },
+          "originalDuration": {
+            "type": "integer",
+            "description": "The original duration of this movement.",
+            "format": "int32"
+          },
+          "startOrbit": {
+            "description": "The departure of this movement.",
+            "$ref": "#/components/schemas/FleetOrbitRes"
+          },
+          "targetOrbit": {
+            "description": "The destination of this movement.",
+            "$ref": "#/components/schemas/FleetOrbitRes"
+          }
+        }
+      },
+      "MovementActionReq": {
+        "title": "MovementActionReq",
         "required": [
           "actor",
           "combatRoundKey",
@@ -5455,7 +6058,7 @@
         "properties": {
           "actor": {
             "description": "The fleet which acts.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           },
           "combatRoundKey": {
             "description": "The round and phase information.",
@@ -5463,11 +6066,11 @@
           },
           "destination": {
             "description": "The point of the targeted position.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           },
           "interimDestination": {
             "description": "The next step to the targeted position.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           },
           "movementType": {
             "type": "string",
@@ -5483,12 +6086,58 @@
           },
           "origin": {
             "description": "The starting position for this movement.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           }
         }
       },
-      "Orbit": {
-        "title": "Orbit",
+      "MovementActionRes": {
+        "title": "MovementActionRes",
+        "required": [
+          "actor",
+          "combatRoundKey",
+          "destination",
+          "interimDestination",
+          "movementType",
+          "origin"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/FleetRes"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "destination": {
+            "description": "The point of the targeted position.",
+            "$ref": "#/components/schemas/OrbitRes"
+          },
+          "interimDestination": {
+            "description": "The next step to the targeted position.",
+            "$ref": "#/components/schemas/OrbitRes"
+          },
+          "movementType": {
+            "type": "string",
+            "description": "The selected movement option for this action.",
+            "enum": [
+              "EVASION_MOVEMENT",
+              "HOLD_DISTANCE",
+              "IMPELLER_WEDGE_PROTECTION",
+              "INCREASE_DISTANCE",
+              "OFFENSIVE_ROLL",
+              "REDUCE_DISTANCE"
+            ]
+          },
+          "origin": {
+            "description": "The starting position for this movement.",
+            "$ref": "#/components/schemas/OrbitRes"
+          }
+        }
+      },
+      "OrbitReq": {
+        "title": "OrbitReq",
         "required": [
           "xCoordinate",
           "yCoordinate"
@@ -5497,11 +6146,29 @@
         "properties": {
           "xCoordinate": {
             "description": "The x-coordinate of this orbit.",
-            "$ref": "#/components/schemas/Distance"
+            "$ref": "#/components/schemas/DistanceReq"
           },
           "yCoordinate": {
             "description": "The y-coordinate of this orbit.",
-            "$ref": "#/components/schemas/Distance"
+            "$ref": "#/components/schemas/DistanceReq"
+          }
+        }
+      },
+      "OrbitRes": {
+        "title": "OrbitRes",
+        "required": [
+          "xCoordinate",
+          "yCoordinate"
+        ],
+        "type": "object",
+        "properties": {
+          "xCoordinate": {
+            "description": "The x-coordinate of this orbit.",
+            "$ref": "#/components/schemas/DistanceRes"
+          },
+          "yCoordinate": {
+            "description": "The y-coordinate of this orbit.",
+            "$ref": "#/components/schemas/DistanceRes"
           }
         }
       },
@@ -5545,8 +6212,8 @@
           }
         }
       },
-      "Planet": {
-        "title": "Planet",
+      "PlanetReq": {
+        "title": "PlanetReq",
         "required": [
           "idPlanet",
           "idStarSystem",
@@ -5577,7 +6244,51 @@
           },
           "orbit": {
             "description": "The orbit inside of the parent system.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
+          },
+          "owner": {
+            "description": "The owner of this planet, if already colonized.",
+            "$ref": "#/components/schemas/UserJson"
+          },
+          "planetType": {
+            "description": "The planet's class.",
+            "$ref": "#/components/schemas/EPlanetClassType"
+          }
+        }
+      },
+      "PlanetRes": {
+        "title": "PlanetRes",
+        "required": [
+          "idPlanet",
+          "idStarSystem",
+          "name",
+          "orbit",
+          "planetType"
+        ],
+        "type": "object",
+        "properties": {
+          "colonizedAt": {
+            "type": "string",
+            "description": "The timestamp when this planet was colonized first.",
+            "format": "date-time"
+          },
+          "idPlanet": {
+            "type": "integer",
+            "description": "The ID of this planet.",
+            "format": "int32"
+          },
+          "idStarSystem": {
+            "type": "integer",
+            "description": "The star system ID which this planet is part of.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of this planet."
+          },
+          "orbit": {
+            "description": "The orbit inside of the parent system.",
+            "$ref": "#/components/schemas/OrbitRes"
           },
           "owner": {
             "description": "The owner of this planet, if already colonized.",
@@ -5628,8 +6339,8 @@
           }
         }
       },
-      "ReleasedVolley": {
-        "title": "ReleasedVolley",
+      "ReleasedVolleyReq": {
+        "title": "ReleasedVolleyReq",
         "required": [
           "actor",
           "amountOfShots",
@@ -5643,7 +6354,7 @@
         "properties": {
           "actor": {
             "description": "The fleet which acts.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           },
           "amountOfShots": {
             "type": "integer",
@@ -5661,11 +6372,62 @@
           },
           "initialDistance": {
             "description": "The distance of this shot.",
-            "$ref": "#/components/schemas/Distance"
+            "$ref": "#/components/schemas/DistanceReq"
           },
           "target": {
             "description": "The fleet which is targeted.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
+          },
+          "weaponType": {
+            "type": "string",
+            "description": "The type of the damage dealer.",
+            "enum": [
+              "BEAM",
+              "COUNTER_MISSILE",
+              "MISSILE",
+              "POINT_DEFENSE"
+            ]
+          }
+        }
+      },
+      "ReleasedVolleyRes": {
+        "title": "ReleasedVolleyRes",
+        "required": [
+          "actor",
+          "amountOfShots",
+          "combatRoundKey",
+          "damageDealer",
+          "initialDistance",
+          "target",
+          "weaponType"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/FleetRes"
+          },
+          "amountOfShots": {
+            "type": "integer",
+            "description": "The amount of missiles in this salvo.",
+            "format": "int32"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "damageDealer": {
+            "type": "string",
+            "description": "The UUID of the damage dealer.",
+            "format": "uuid"
+          },
+          "initialDistance": {
+            "description": "The distance of this shot.",
+            "$ref": "#/components/schemas/DistanceRes"
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/FleetRes"
           },
           "weaponType": {
             "type": "string",
@@ -5776,8 +6538,8 @@
           }
         }
       },
-      "ShipClass": {
-        "title": "ShipClass",
+      "ShipClassReq": {
+        "title": "ShipClassReq",
         "required": [
           "ammunitionFittings",
           "fittings",
@@ -5793,7 +6555,7 @@
             "type": "array",
             "description": "The ammunition loadout of this class.",
             "items": {
-              "$ref": "#/components/schemas/AmmunitionFitting"
+              "$ref": "#/components/schemas/AmmunitionFittingReq"
             }
           },
           "armor": {
@@ -5808,7 +6570,7 @@
             "type": "array",
             "description": "The weapon systems of this class.",
             "items": {
-              "$ref": "#/components/schemas/AlignedFitting"
+              "$ref": "#/components/schemas/AlignedFittingReq"
             }
           },
           "hull": {
@@ -5862,8 +6624,94 @@
           }
         }
       },
-      "ShipKillerHit": {
-        "title": "ShipKillerHit",
+      "ShipClassRes": {
+        "title": "ShipClassRes",
+        "required": [
+          "ammunitionFittings",
+          "fittings",
+          "hull",
+          "mark",
+          "name",
+          "owner",
+          "supportFittings"
+        ],
+        "type": "object",
+        "properties": {
+          "ammunitionFittings": {
+            "type": "array",
+            "description": "The ammunition loadout of this class.",
+            "items": {
+              "$ref": "#/components/schemas/AmmunitionFittingRes"
+            }
+          },
+          "armor": {
+            "description": "The armor of this class.",
+            "$ref": "#/components/schemas/Armor"
+          },
+          "electronicWarfare": {
+            "description": "The electronic warfare module of this class.",
+            "$ref": "#/components/schemas/ElectronicWarfare"
+          },
+          "fittings": {
+            "type": "array",
+            "description": "The weapon systems of this class.",
+            "items": {
+              "$ref": "#/components/schemas/AlignedFittingRes"
+            }
+          },
+          "hull": {
+            "description": "The hull of this class.",
+            "$ref": "#/components/schemas/Hull"
+          },
+          "idPredecessor": {
+            "type": "integer",
+            "description": "The id of the predecessor of this class.",
+            "format": "int32"
+          },
+          "idShipClass": {
+            "type": "integer",
+            "description": "The ID.",
+            "format": "int32"
+          },
+          "idSuccessor": {
+            "type": "integer",
+            "description": "The id of the successor of this class.",
+            "format": "int32"
+          },
+          "mark": {
+            "type": "integer",
+            "description": "The mark of this class.",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 30,
+            "minLength": 3,
+            "type": "string",
+            "description": "The name of this class."
+          },
+          "owner": {
+            "description": "The owner of this class.",
+            "$ref": "#/components/schemas/UserJson"
+          },
+          "propulsion": {
+            "description": "The propulsion of this class.",
+            "$ref": "#/components/schemas/Propulsion"
+          },
+          "sidewall": {
+            "description": "The sidewall of this class.",
+            "$ref": "#/components/schemas/Sidewall"
+          },
+          "supportFittings": {
+            "type": "array",
+            "description": "The support fitting of this class.",
+            "items": {
+              "$ref": "#/components/schemas/SupportFitting"
+            }
+          }
+        }
+      },
+      "ShipKillerHitReq": {
+        "title": "ShipKillerHitReq",
         "required": [
           "actor",
           "combatRoundKey",
@@ -5878,7 +6726,7 @@
         "properties": {
           "actor": {
             "description": "The fleet which acts.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
           },
           "combatRoundKey": {
             "description": "The round and phase information.",
@@ -5891,19 +6739,19 @@
           },
           "distance": {
             "description": "The distance of this shot.",
-            "$ref": "#/components/schemas/Distance"
+            "$ref": "#/components/schemas/DistanceReq"
           },
           "hitLogs": {
             "type": "array",
             "description": "A hit log list.",
             "items": {
-              "$ref": "#/components/schemas/HitLog"
+              "$ref": "#/components/schemas/HitLogReq"
             }
           },
           "lossesByHit": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/LossRole"
+              "$ref": "#/components/schemas/LossRoleReq"
             },
             "description": "If the hit results in a destroyed ship, this will be logged here. By the id of the hit log."
           },
@@ -5917,7 +6765,66 @@
           },
           "target": {
             "description": "The fleet which is targeted.",
-            "$ref": "#/components/schemas/Fleet"
+            "$ref": "#/components/schemas/FleetReq"
+          }
+        }
+      },
+      "ShipKillerHitRes": {
+        "title": "ShipKillerHitRes",
+        "required": [
+          "actor",
+          "combatRoundKey",
+          "damageDealer",
+          "distance",
+          "hitLogs",
+          "lossesByHit",
+          "result",
+          "target"
+        ],
+        "type": "object",
+        "properties": {
+          "actor": {
+            "description": "The fleet which acts.",
+            "$ref": "#/components/schemas/FleetRes"
+          },
+          "combatRoundKey": {
+            "description": "The round and phase information.",
+            "$ref": "#/components/schemas/CombatRoundKey"
+          },
+          "damageDealer": {
+            "type": "string",
+            "description": "The UUID of the damage dealer.",
+            "format": "uuid"
+          },
+          "distance": {
+            "description": "The distance of this shot.",
+            "$ref": "#/components/schemas/DistanceRes"
+          },
+          "hitLogs": {
+            "type": "array",
+            "description": "A hit log list.",
+            "items": {
+              "$ref": "#/components/schemas/HitLogRes"
+            }
+          },
+          "lossesByHit": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LossRoleRes"
+            },
+            "description": "If the hit results in a destroyed ship, this will be logged here. By the id of the hit log."
+          },
+          "result": {
+            "type": "string",
+            "description": "The result of this salvo.",
+            "enum": [
+              "BURST_ON_IMPELLER_WEDGE",
+              "DAMAGE_APPLIED"
+            ]
+          },
+          "target": {
+            "description": "The fleet which is targeted.",
+            "$ref": "#/components/schemas/FleetRes"
           }
         }
       },
@@ -5976,8 +6883,92 @@
           }
         }
       },
-      "StarSystem": {
-        "title": "StarSystem",
+      "StarSystemColonizationReq": {
+        "title": "StarSystemColonizationReq",
+        "required": [
+          "colonizationsByPlanet",
+          "costsToBuyColonizationInformation",
+          "costsToColonization",
+          "distanceMap",
+          "starSystem"
+        ],
+        "type": "object",
+        "properties": {
+          "colonizationsByPlanet": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ColonizationReq"
+            },
+            "description": "The costs to colonize the planet by idPlanet."
+          },
+          "costsToBuyColonizationInformation": {
+            "type": "string",
+            "description": "The costs to buy the colonization information about the system."
+          },
+          "costsToColonization": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "The costs to colonize the planet by idPlanet."
+          },
+          "distanceMap": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DistanceReq"
+            },
+            "description": "The star system with its distance to all known systems by id."
+          },
+          "starSystem": {
+            "description": "The star system to select for colonization.",
+            "$ref": "#/components/schemas/StarSystemReq"
+          }
+        }
+      },
+      "StarSystemColonizationRes": {
+        "title": "StarSystemColonizationRes",
+        "required": [
+          "colonizationsByPlanet",
+          "costsToBuyColonizationInformation",
+          "costsToColonization",
+          "distanceMap",
+          "starSystem"
+        ],
+        "type": "object",
+        "properties": {
+          "colonizationsByPlanet": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ColonizationRes"
+            },
+            "description": "The costs to colonize the planet by idPlanet."
+          },
+          "costsToBuyColonizationInformation": {
+            "type": "string",
+            "description": "The costs to buy the colonization information about the system."
+          },
+          "costsToColonization": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "The costs to colonize the planet by idPlanet."
+          },
+          "distanceMap": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DistanceRes"
+            },
+            "description": "The star system with its distance to all known systems by id."
+          },
+          "starSystem": {
+            "description": "The star system to select for colonization.",
+            "$ref": "#/components/schemas/StarSystemRes"
+          }
+        }
+      },
+      "StarSystemReq": {
+        "title": "StarSystemReq",
         "required": [
           "idStarSystem",
           "name",
@@ -5998,13 +6989,13 @@
           },
           "orbit": {
             "description": "The orbit of this star system.",
-            "$ref": "#/components/schemas/Orbit"
+            "$ref": "#/components/schemas/OrbitReq"
           },
           "planets": {
             "type": "array",
             "description": "The bunch of planets as part of the system.",
             "items": {
-              "$ref": "#/components/schemas/Planet"
+              "$ref": "#/components/schemas/PlanetReq"
             }
           },
           "starClassType": {
@@ -6013,45 +7004,40 @@
           }
         }
       },
-      "StarSystemColonization": {
-        "title": "StarSystemColonization",
+      "StarSystemRes": {
+        "title": "StarSystemRes",
         "required": [
-          "colonizationsByPlanet",
-          "costsToBuyColonizationInformation",
-          "costsToColonization",
-          "distanceMap",
-          "starSystem"
+          "idStarSystem",
+          "name",
+          "orbit",
+          "planets",
+          "starClassType"
         ],
         "type": "object",
         "properties": {
-          "colonizationsByPlanet": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/Colonization"
-            },
-            "description": "The costs to colonize the planet by idPlanet."
+          "idStarSystem": {
+            "type": "integer",
+            "description": "The ID of this star system.",
+            "format": "int32"
           },
-          "costsToBuyColonizationInformation": {
+          "name": {
             "type": "string",
-            "description": "The costs to buy the colonization information about the system."
+            "description": "The name of this star system."
           },
-          "costsToColonization": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "The costs to colonize the planet by idPlanet."
+          "orbit": {
+            "description": "The orbit of this star system.",
+            "$ref": "#/components/schemas/OrbitRes"
           },
-          "distanceMap": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/Distance"
-            },
-            "description": "The star system with its distance to all known systems by id."
+          "planets": {
+            "type": "array",
+            "description": "The bunch of planets as part of the system.",
+            "items": {
+              "$ref": "#/components/schemas/PlanetRes"
+            }
           },
-          "starSystem": {
-            "description": "The star system to select for colonization.",
-            "$ref": "#/components/schemas/StarSystem"
+          "starClassType": {
+            "description": "The stellar class of the star of this system.",
+            "$ref": "#/components/schemas/EStarClassType"
           }
         }
       },
@@ -6177,8 +7163,8 @@
           }
         }
       },
-      "WarShip": {
-        "title": "WarShip",
+      "WarShipReq": {
+        "title": "WarShipReq",
         "required": [
           "idFleet",
           "name",
@@ -6198,16 +7184,45 @@
           },
           "shipClass": {
             "description": "The ship class which this ship is a type of.",
-            "$ref": "#/components/schemas/ShipClass"
+            "$ref": "#/components/schemas/ShipClassReq"
           },
           "shipyard": {
             "description": "The birthplace of this ship.",
-            "$ref": "#/components/schemas/Planet"
+            "$ref": "#/components/schemas/PlanetReq"
           }
         }
       },
-      "Warhead": {
-        "title": "Warhead",
+      "WarShipRes": {
+        "title": "WarShipRes",
+        "required": [
+          "idFleet",
+          "name",
+          "shipClass",
+          "shipyard"
+        ],
+        "type": "object",
+        "properties": {
+          "idFleet": {
+            "type": "integer",
+            "description": "The fleet which this ship is part of.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of this individual ship."
+          },
+          "shipClass": {
+            "description": "The ship class which this ship is a type of.",
+            "$ref": "#/components/schemas/ShipClassRes"
+          },
+          "shipyard": {
+            "description": "The birthplace of this ship.",
+            "$ref": "#/components/schemas/PlanetRes"
+          }
+        }
+      },
+      "WarheadReq": {
+        "title": "WarheadReq",
         "required": [
           "damageProjectionRange",
           "damageValue",
@@ -6220,7 +7235,7 @@
         "properties": {
           "damageProjectionRange": {
             "description": "The effective range of this warhead.",
-            "$ref": "#/components/schemas/Distance"
+            "$ref": "#/components/schemas/DistanceReq"
           },
           "damageValue": {
             "type": "integer",
@@ -6253,8 +7268,55 @@
           }
         }
       },
-      "Weapon": {
-        "title": "Weapon",
+      "WarheadRes": {
+        "title": "WarheadRes",
+        "required": [
+          "damageProjectionRange",
+          "damageValue",
+          "idWarhead",
+          "typeName",
+          "useCapacity",
+          "warheadType"
+        ],
+        "type": "object",
+        "properties": {
+          "damageProjectionRange": {
+            "description": "The effective range of this warhead.",
+            "$ref": "#/components/schemas/DistanceRes"
+          },
+          "damageValue": {
+            "type": "integer",
+            "description": "The projected damage of this warhead.",
+            "format": "int64"
+          },
+          "idWarhead": {
+            "type": "integer",
+            "description": "The id of this warhead.",
+            "format": "int32"
+          },
+          "typeName": {
+            "type": "string",
+            "description": "The type name of this warhead."
+          },
+          "useCapacity": {
+            "type": "integer",
+            "description": "The used capacity of this warhead.",
+            "format": "int32"
+          },
+          "warheadType": {
+            "type": "string",
+            "description": "The warhead type.",
+            "enum": [
+              "COUNTER_MISSILE",
+              "EXPLOSION",
+              "KINETIC",
+              "LASER"
+            ]
+          }
+        }
+      },
+      "WeaponReq": {
+        "title": "WeaponReq",
         "required": [
           "alignmentTypes",
           "baseModule",
@@ -6281,7 +7343,49 @@
           },
           "effectiveRange": {
             "description": "The effective range of this weapon.",
-            "$ref": "#/components/schemas/Distance"
+            "$ref": "#/components/schemas/DistanceReq"
+          },
+          "weaponType": {
+            "type": "string",
+            "description": "The way how the damage will be projected.",
+            "enum": [
+              "BEAM",
+              "COUNTER_MISSILE",
+              "MISSILE",
+              "POINT_DEFENSE"
+            ]
+          }
+        }
+      },
+      "WeaponRes": {
+        "title": "WeaponRes",
+        "required": [
+          "alignmentTypes",
+          "baseModule",
+          "effectiveRange",
+          "weaponType"
+        ],
+        "type": "object",
+        "properties": {
+          "alignmentTypes": {
+            "type": "array",
+            "description": "The possible mount points of this weapon.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BOW",
+                "BROADSIDE",
+                "STERN"
+              ]
+            }
+          },
+          "baseModule": {
+            "description": "The basic values of this module.",
+            "$ref": "#/components/schemas/BaseModule"
+          },
+          "effectiveRange": {
+            "description": "The effective range of this weapon.",
+            "$ref": "#/components/schemas/DistanceRes"
           },
           "weaponType": {
             "type": "string",

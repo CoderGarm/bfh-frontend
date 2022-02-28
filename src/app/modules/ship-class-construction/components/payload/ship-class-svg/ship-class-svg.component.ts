@@ -1,16 +1,15 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {AlignedFitting, ShipClass} from "../../../../../services/swagger";
 import {ArrayXY, G, Polygon, Svg, SVG} from "@svgdotjs/svg.js";
-import {Subscription} from "rxjs";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {BasicViewHelper} from "../../../../../basic-view-helper";
 
 @Component({
     selector: 'app-ship-class-svg',
     templateUrl: './ship-class-svg.component.html',
     styleUrls: ['./ship-class-svg.component.scss']
 })
-export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
-
-    private subscriptions: Subscription[] = [];
+export class ShipClassSvgComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * The user selected ShipClass.
@@ -61,6 +60,7 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
     isTemplateRenderedInputDefinition: string = "isTemplateRenderedInput";
 
     constructor() {
+        super();
     }
 
     ngAfterViewInit(): void {
@@ -112,7 +112,7 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
     private createCanvas() {
         if (!this.canvas) {
             if (this.checkIfSvgDivExists()) {
-                this.canvas = SVG().addTo('#' + this.svgSelector).panZoom();
+                this.canvas = SVG().addTo('#' + this.svgSelector).panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
                 this.canvas!.viewbox({
                     x: 0,
                     y: 0,
@@ -248,7 +248,8 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             lines.push([650, 55]);
             lines.push([500, 55]);
             lines.push([500, 20]);
-            this.upperBow = this.canvas!.polygon(lines).fill("none").stroke({color: "red", width: 1});
+            let stroke = {color: "red", width: 1};
+            this.upperBow = this.canvas!.polygon(lines).fill("none").stroke(stroke);
             this.upperBowPoints = lines;
 
             lines = [];
@@ -259,10 +260,7 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             lines.push([200, 20]);
             lines.push([350, 20]);
             this.upperBroadsideGroup = this.canvas?.group().id("upperBroadsideGroup").addClass("flex-broadside");
-            this.upperBroadside = this.upperBroadsideGroup!.polygon(lines).fill("none").stroke({
-                color: "red",
-                width: 1
-            });
+            this.upperBroadside = this.upperBroadsideGroup!.polygon(lines).fill("none").stroke(stroke);
             this.upperBroadsidePoints = lines;
 
             lines = []; // upper stern
@@ -274,7 +272,7 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             lines.push([200, 20]);
             lines.push([200, 55]);
             lines.push([50, 55]);
-            this.upperStern = this.canvas!.polygon(lines).fill("none").stroke({color: "red", width: 1});
+            this.upperStern = this.canvas!.polygon(lines).fill("none").stroke(stroke);
             this.upperSternPoints = lines;
 
             lines = []; // lower stern
@@ -286,7 +284,7 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             lines.push([50, 85]);
             lines.push([50, 65]);
             lines.push([200, 65]);
-            this.lowerStern = this.canvas!.polygon(lines).fill("none").stroke({color: "red", width: 1});
+            this.lowerStern = this.canvas!.polygon(lines).fill("none").stroke(stroke);
             this.lowerSternPoints = lines;
 
             lines = [];
@@ -296,10 +294,7 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             lines.push([200, 100]);
             lines.push([500, 100]);
             this.lowerBroadsideGroup = this.canvas?.group().id("lowerBroadsideGroup").addClass("flex-broadside");
-            this.lowerBroadside = this.lowerBroadsideGroup!.polygon(lines).fill("none").stroke({
-                color: "red",
-                width: 1
-            });
+            this.lowerBroadside = this.lowerBroadsideGroup!.polygon(lines).fill("none").stroke(stroke);
             this.lowerBroadsidePoints = lines;
 
             lines = [];
@@ -310,7 +305,7 @@ export class ShipClassSvgComponent implements AfterViewInit, OnChanges {
             lines.push([550, 90]);
             lines.push([500, 100]);
             lines.push([500, 65]);
-            this.lowerBow = this.canvas!.polygon(lines).fill("none").stroke({color: "red", width: 1});
+            this.lowerBow = this.canvas!.polygon(lines).fill("none").stroke(stroke);
             this.lowerBowPoints = lines;
 
             // y-axis

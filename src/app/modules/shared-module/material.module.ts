@@ -27,6 +27,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatRadioModule} from "@angular/material/radio";
 import {MatStepperModule} from "@angular/material/stepper";
+import {MatSliderModule} from "@angular/material/slider";
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import {MatStepperModule} from "@angular/material/stepper";
         MatSnackBarModule,
         MatRadioModule,
         MatStepperModule,
+        MatSliderModule,
     ],
     exports: [
         MatButtonModule,
@@ -93,6 +95,7 @@ import {MatStepperModule} from "@angular/material/stepper";
         MatSnackBarModule,
         MatRadioModule,
         MatStepperModule,
+        MatSliderModule,
     ],
     providers: []
 })
