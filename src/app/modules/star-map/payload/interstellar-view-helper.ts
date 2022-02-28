@@ -1,13 +1,16 @@
 import {ArrayXY, CurveCommand, G, LineCommand, PathArrayAlias, Shape, StrokeData, Svg, Text} from "@svgdotjs/svg.js";
-import {Fleet, FleetDistributionPerUser, Move, Orbit, StarSystem, UserJson} from "../../../services/swagger";
+import {Distance, Fleet, FleetDistributionPerUser, Move, Orbit, StarSystem, UserJson} from "../../../services/swagger";
 import {RestrictedFleetArea} from "./restricted-fleet-area";
 import {CelestialAreaDefinition} from "./celestial-area-definition";
-import {OrbitDefinition} from "./OrbitDefinition";
+import {OrbitDefinition} from "./orbit-definition";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {SubscriptionManager} from "../../../SubscriptionManager";
+import {NavigationCalculator} from "../../../NavigationCalculator";
+import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export class InterstellarViewHelper extends SubscriptionManager {
 
+    public static readonly STANDARD_METRIC = DistanceMetricEnum.LY;
     private readonly FLEET_SHARK_COLOR_HOSTILE = "red";
     private readonly FLEET_SHARK_COLOR_OWN = "green";
 
@@ -80,7 +83,7 @@ export class InterstellarViewHelper extends SubscriptionManager {
 
                 let startOrbit = fleet.move!.startOrbit.system!.orbit;
                 let targetOrbit = fleet.move!.targetOrbit.system!.orbit;
-                let distance = InterstellarViewHelper.calculateDistanceOfPoints([startOrbit.xCoordinate, startOrbit.yCoordinate], [targetOrbit.xCoordinate, targetOrbit.yCoordinate]);
+                let distance = InterstellarViewHelper.calculateDistanceOfOrbits(startOrbit, targetOrbit, DistanceMetricEnum.LS);
 
                 let part = (fleet.move!.originalDuration - fleet.move!.moveDoneAtZero) / fleet.move!.originalDuration;
                 if (part < 0.1) {
@@ -102,11 +105,11 @@ export class InterstellarViewHelper extends SubscriptionManager {
 
     private createCoursePlotForInterstellarMotion(move: Move) {
         // todo check start planet's orbit
-        let startX: number = move.startOrbit.system!.orbit.xCoordinate;
-        let startY: number = move.startOrbit.system!.orbit.yCoordinate;
+        let startX: number = this.convertToStandardMetric(move.startOrbit.system!.orbit.xCoordinate);
+        let startY: number = this.convertToStandardMetric(move.startOrbit.system!.orbit.yCoordinate);
 
-        let endX: number = move.targetOrbit.system!.orbit.xCoordinate;
-        let endY: number = move.targetOrbit.system!.orbit.yCoordinate;
+        let endX: number = this.convertToStandardMetric(move.targetOrbit.system!.orbit.xCoordinate);
+        let endY: number = this.convertToStandardMetric(move.targetOrbit.system!.orbit.yCoordinate);
 
         let relativeTargetX: number = endX - startX;
         let relativeTargetY: number = endY - startY;
@@ -193,8 +196,8 @@ export class InterstellarViewHelper extends SubscriptionManager {
                 let fleetSharkIdForOwner = this.getFleetSharkIdForOwner(owner);
                 this.fleetOwnersInSystemMap.set(fleetSharkIdForOwner, owner);
 
-                let x: number = orbit.xCoordinate + 25 + (users.indexOf(owner) % 2 == 0 ? 15 : 0);
-                let y: number = orbit.yCoordinate + 25;
+                let x: number = this.convertToStandardMetric(orbit.xCoordinate) + 25 + (users.indexOf(owner) % 2 == 0 ? 15 : 0);
+                let y: number = this.convertToStandardMetric(orbit.yCoordinate) + 25;
                 let fleetSharkPoints: ArrayXY[] = this.createFleetSharkPoints(x, y, orbit);
                 this.createFleetSharkAndPrintAtSystem(fleetSharkIdForOwner, dragEndForFleet, fleetSharkPoints, dblClickForFleet, system, owner);
             });
@@ -367,10 +370,10 @@ export class InterstellarViewHelper extends SubscriptionManager {
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
-                let x1 = orbit.xCoordinate - 9;
-                let y1 = orbit.yCoordinate - 8;
-                let x2 = orbit.xCoordinate + 9;
-                let y2 = orbit.yCoordinate + 8;
+                let x1 = this.convertToStandardMetric(orbit.xCoordinate) - 9;
+                let y1 = this.convertToStandardMetric(orbit.yCoordinate) - 8;
+                let x2 = this.convertToStandardMetric(orbit.xCoordinate) + 9;
+                let y2 = this.convertToStandardMetric(orbit.yCoordinate) + 8;
 
                 let p1: LineCommand = ["M", x1, y1];
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
@@ -391,8 +394,8 @@ export class InterstellarViewHelper extends SubscriptionManager {
 
             this.canvas!
                 .circle()
-                .x(orbit.xCoordinate)
-                .y(orbit.yCoordinate)
+                .x(this.convertToStandardMetric(orbit.xCoordinate))
+                .y(this.convertToStandardMetric(orbit.yCoordinate))
                 .radius(5)
                 .id(celestialBodyID)
                 .fill(color)
@@ -420,8 +423,25 @@ export class InterstellarViewHelper extends SubscriptionManager {
      * @param secondCoordinate the second coordinate
      * @private
      */
-    private static calculateDistanceOfPoints(firstCoordinate: ArrayXY, secondCoordinate: ArrayXY): number {
+    public static calculateDistanceOfPoints(firstCoordinate: ArrayXY, secondCoordinate: ArrayXY): number {
         return Math.sqrt(Math.pow(firstCoordinate[0] - secondCoordinate[0], 2) + Math.pow(firstCoordinate[1] - secondCoordinate[1], 2));
+    }
+
+    /**
+     * calculates the distance between two points
+     *
+     * @param firstOrbit the first coordinate
+     * @param secondOrbit the second coordinate
+     * @param distanceMetric the target metric
+     * @private
+     */
+    public static calculateDistanceOfOrbits(firstOrbit: Orbit, secondOrbit: Orbit, distanceMetric: DistanceMetricEnum): number {
+        const originX = NavigationCalculator.convertDistanceToMetric(firstOrbit.xCoordinate, distanceMetric);
+        const originY = NavigationCalculator.convertDistanceToMetric(firstOrbit.yCoordinate, distanceMetric);
+        const destinationX = NavigationCalculator.convertDistanceToMetric(secondOrbit.xCoordinate, distanceMetric);
+        const destinationY = NavigationCalculator.convertDistanceToMetric(secondOrbit.yCoordinate, distanceMetric);
+
+        return InterstellarViewHelper.calculateDistanceOfPoints([originX, originY], [destinationX, destinationY]);
     }
 
     /**
@@ -431,7 +451,7 @@ export class InterstellarViewHelper extends SubscriptionManager {
      * @private
      */
     private getCelestialBodyID(orbit: Orbit): string {
-        return this.CELESTIAL_BODY_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate + "-" + orbit.yCoordinate;
+        return this.CELESTIAL_BODY_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate.coordinate + "-" + orbit.yCoordinate.coordinate;
     }
 
     /**
@@ -444,7 +464,7 @@ export class InterstellarViewHelper extends SubscriptionManager {
         let id: string = this.FLEET_SHARK__SELECTOR_ID_PREFIX;
         if (!!fleet.orbit) {
             if (!!fleet.orbit.orbit) {
-                id += fleet.orbit.orbit.xCoordinate + "." + fleet.orbit.orbit.yCoordinate + "-";
+                id += fleet.orbit.orbit.xCoordinate.coordinate + "." + fleet.orbit.orbit.yCoordinate.coordinate + "-";
             }
             if (!!fleet.orbit.system) {
                 id += fleet.orbit.system.idStarSystem + "-";
@@ -460,7 +480,7 @@ export class InterstellarViewHelper extends SubscriptionManager {
      * @private
      */
     private getOrbitID(orbit: Orbit): string {
-        return this.ORBIT_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate + "-" + orbit.yCoordinate;
+        return this.ORBIT_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate.coordinate + "-" + orbit.yCoordinate.coordinate;
     }
 
     /**
@@ -570,13 +590,16 @@ export class InterstellarViewHelper extends SubscriptionManager {
      * @private
      */
     private sortByOrbit() {
-        let sortedByX: Orbit[] = this.orbits!.sort((a, b) => {
-            return a.xCoordinate < b.xCoordinate ? -1 : 1;
+        if (!this.orbits) {
+            throw new Error("The orbits must be present to calculate the universe view.");
+        }
+        let sortedByX: Orbit[] = this.orbits.sort((a, b) => {
+            return a.xCoordinate.coordinate < b.xCoordinate.coordinate ? -1 : 1;
         });
         this.smallestXOrbit = sortedByX[0];
         this.biggestXOrbit = sortedByX[sortedByX.length - 1];
-        let sortedByY: Orbit[] = this.orbits!.sort((a, b) => {
-            return a.yCoordinate < b.yCoordinate ? -1 : 1;
+        let sortedByY: Orbit[] = this.orbits.sort((a, b) => {
+            return a.yCoordinate.coordinate < b.yCoordinate.coordinate ? -1 : 1;
         });
         this.smallestYOrbit = sortedByY[0];
         this.biggestYOrbit = sortedByY[sortedByY.length - 1];
@@ -594,32 +617,27 @@ export class InterstellarViewHelper extends SubscriptionManager {
     }
 
     /**
-     * returns the orbit if known by this id
-     *
-     * @param event
-     */
-    getOrbitOfOrbitByEvent(event: PointerEvent | MouseEvent): Orbit | undefined {
-        let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
-        return this.getOrbitOfOrbitByID(id);
-    }
-
-    /**
      * returns the view box string for the svg
      */
     private setViewBox() {
         let viewBoxDef: string = "0 0 0 0";
         let isPresent = !!this.smallestXOrbit && !!this.biggestXOrbit && !!this.smallestYOrbit && !!this.biggestYOrbit;
         if (isPresent) {
-            viewBoxDef = this.smallestXOrbit!.xCoordinate
+            viewBoxDef = this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate)
                 + " "
-                + this.smallestYOrbit!.yCoordinate
+                + this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate)
                 + " "
-                + InterstellarViewHelper.getDifference(this.smallestYOrbit!.yCoordinate, this.biggestYOrbit!.yCoordinate)
+                + InterstellarViewHelper.getSum(this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate),
+                    this.convertToStandardMetric(this.biggestYOrbit!.yCoordinate))
                 + " "
-                + InterstellarViewHelper.getDifference(this.smallestXOrbit!.xCoordinate, this.biggestXOrbit!.xCoordinate);
+                + InterstellarViewHelper.getSum(this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate),
+                    this.convertToStandardMetric(this.biggestXOrbit!.xCoordinate));
         }
         this.canvas!.viewbox(viewBoxDef);
+    }
+
+    private convertToStandardMetric(distance: Distance) {
+        return NavigationCalculator.convertDistanceToMetric(distance, InterstellarViewHelper.STANDARD_METRIC);
     }
 
     /**
@@ -629,10 +647,7 @@ export class InterstellarViewHelper extends SubscriptionManager {
      * @param b second value
      * @private
      */
-    private static getDifference(a: number, b: number): number {
-        if (a > b) {
-            return Math.abs(a) + Math.abs(b);
-        }
+    public static getSum(a: number, b: number): number {
         return Math.abs(b) + Math.abs(a);
     }
 
@@ -642,11 +657,11 @@ export class InterstellarViewHelper extends SubscriptionManager {
      * @private
      */
     private createCoordinateCross() {
-        let minXCoord = this.smallestXOrbit!.xCoordinate;
-        let maxXCoord = this.biggestXOrbit!.xCoordinate;
+        let minXCoord = this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate);
+        let maxXCoord = this.convertToStandardMetric(this.biggestXOrbit!.xCoordinate);
         let x = Math.abs(minXCoord) < Math.abs(maxXCoord) ? Math.abs(maxXCoord) : Math.abs(minXCoord);
-        let minYCoord = this.smallestYOrbit!.yCoordinate;
-        let maxYCoord = this.biggestYOrbit!.yCoordinate;
+        let minYCoord = this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate);
+        let maxYCoord = this.convertToStandardMetric(this.biggestYOrbit!.yCoordinate);
         let y = Math.abs(minYCoord) < Math.abs(maxYCoord) ? Math.abs(maxYCoord) : Math.abs(minYCoord);
 
         let radius: number = InterstellarViewHelper.calculateDistance(x, y);

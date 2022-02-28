@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {SystemViewHelper} from "../SystemViewHelper";
+
 import {SVG} from "@svgdotjs/svg.js";
 import {Fleet, FleetApiService, FleetMerge, FleetMove, FleetOrbit, Move, Orbit, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
@@ -11,6 +11,7 @@ import {FleetDisplayComponent} from "../../../display-elements/fleet-display/fle
 import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {SpacecraftCapabilitiesDisplayComponent} from "../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
 import {FleetMoveDisplayComponent} from "../../../display-elements/fleet-move-display/fleet-move-display.component";
+import {SystemViewHelper} from "../system-view-helper";
 
 @Component({
     selector: 'app-star-map-view',

@@ -64,7 +64,7 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
                 destination += this.destination.name;
             } else if (!!this.fleetInput.move.targetOrbit.orbit) {
                 let orbit = this.fleetInput.move.targetOrbit.orbit;
-                destination += orbit.xCoordinate + ", " + orbit.yCoordinate;
+                destination += orbit.xCoordinate.coordinate + ", " + orbit.yCoordinate.coordinate;
             }
             if (!!this.fleetInput.move.targetOrbit.system) {
                 destination += " in " + this.fleetInput.move.targetOrbit.system.name;

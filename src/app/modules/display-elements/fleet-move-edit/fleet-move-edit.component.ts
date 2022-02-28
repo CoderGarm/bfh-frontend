@@ -110,7 +110,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
                 destination += this.destination.name;
             } else if (!!this.targetOrbit && !!this.targetOrbit.orbit) {
                 let orbit = this.targetOrbit.orbit;
-                destination += orbit.xCoordinate + ", " + orbit.yCoordinate;
+                destination += orbit.xCoordinate.coordinate + ", " + orbit.yCoordinate.coordinate;
             }
             if (!!this.targetOrbit && !!this.targetOrbit.system) {
                 destination += " in " + this.targetOrbit.system.name;

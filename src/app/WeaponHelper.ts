@@ -1,5 +1,6 @@
-import {Launcher, Missile, Weapon} from "./services/swagger";
+import {Acceleration, Launcher, Missile, Weapon} from "./services/swagger";
 import {NavigationCalculator} from "./NavigationCalculator";
+import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
 
 export class WeaponHelper {
 
@@ -39,7 +40,7 @@ export class WeaponHelper {
         missile.missileMotors.forEach(missileMotor => {
             let endurance = missileMotor.endurance;
             let acceleration = missileMotor.acceleration;
-            range += NavigationCalculator.getRangeByTimeAndAcceleration(endurance, acceleration);
+            range += NavigationCalculator.getRangeByTimeAndAcceleration(endurance, acceleration, AccelerationMetricEnum.MS2);
         });
         return range;
     }

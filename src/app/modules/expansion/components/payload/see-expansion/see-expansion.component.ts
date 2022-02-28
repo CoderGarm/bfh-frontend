@@ -139,8 +139,8 @@ export class SeeExpansionComponent extends SubscriptionManager implements AfterV
     private checkIfInsideQuadrantSelection(orbit: Orbit): boolean {
         let result = false;
 
-        let x = orbit.xCoordinate;
-        let y = orbit.yCoordinate;
+        let x = orbit.xCoordinate.coordinate;
+        let y = orbit.yCoordinate.coordinate;
         const signX = x >= 0 ? 1 : -1;
         const signY = y >= 0 ? 1 : -1;
         if (this.q1 && (signX > 0 && signY > 0)) {
@@ -181,7 +181,7 @@ export class SeeExpansionComponent extends SubscriptionManager implements AfterV
      * @param orbit
      */
     getOrbitString(orbit: Orbit): string {
-        return "X-Coordinate: " + orbit.xCoordinate + " Y-Coordinate: " + orbit.yCoordinate;
+        return "X-Coordinate: " + orbit.xCoordinate.coordinate + " Y-Coordinate: " + orbit.yCoordinate.coordinate;
     }
 
     /**
@@ -193,7 +193,7 @@ export class SeeExpansionComponent extends SubscriptionManager implements AfterV
             return NaN;
         }
         let distanceMapElement = colonization.distanceMap[this.reference.idStarSystem];
-        return Math.round(distanceMapElement);
+        return Math.round(distanceMapElement.coordinate);
     }
 
     /**

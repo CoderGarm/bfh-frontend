@@ -1,3 +1,4 @@
+export * from './acceleration';
 export * from './alignedFitting';
 export * from './ammunitionFitting';
 export * from './ammunitionModule';
@@ -14,6 +15,7 @@ export * from './combatRound';
 export * from './combatRoundKey';
 export * from './construction';
 export * from './counterMissileHit';
+export * from './distance';
 export * from './eCalculationType';
 export * from './eDepositType';
 export * from './eEducationType';

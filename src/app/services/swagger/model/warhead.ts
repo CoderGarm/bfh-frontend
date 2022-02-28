@@ -9,12 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Distance } from './distance';
 
 export interface Warhead { 
-    /**
-     * The effective range of this warhead.
-     */
-    damageProjectionRange: number;
+    damageProjectionRange: Distance;
     /**
      * The projected damage of this warhead.
      */

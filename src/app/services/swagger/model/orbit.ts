@@ -9,14 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Distance } from './distance';
 
 export interface Orbit { 
-    /**
-     * The x-coordinate of this orbit.
-     */
-    xCoordinate: number;
-    /**
-     * The y-coordinate of this orbit.
-     */
-    yCoordinate: number;
+    xCoordinate: Distance;
+    yCoordinate: Distance;
 }

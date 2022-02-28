@@ -3831,6 +3831,29 @@
   },
   "components": {
     "schemas": {
+      "Acceleration": {
+        "title": "Acceleration",
+        "required": [
+          "accelerationMetric",
+          "accelerationValue"
+        ],
+        "type": "object",
+        "properties": {
+          "accelerationMetric": {
+            "type": "string",
+            "description": "The metric of this acceleration.",
+            "enum": [
+              "G",
+              "MS2"
+            ]
+          },
+          "accelerationValue": {
+            "type": "number",
+            "description": "The value of this acceleration.",
+            "format": "bigdecimal"
+          }
+        }
+      },
       "AlignedFitting": {
         "title": "AlignedFitting",
         "required": [
@@ -4357,6 +4380,36 @@
           "target": {
             "description": "The fleet which is targeted.",
             "$ref": "#/components/schemas/Fleet"
+          }
+        }
+      },
+      "Distance": {
+        "title": "Distance",
+        "required": [
+          "coordinate",
+          "distanceMetric"
+        ],
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "number",
+            "description": "The value of this distance.",
+            "format": "bigdecimal"
+          },
+          "distanceMetric": {
+            "type": "string",
+            "description": "The metric of this distance.",
+            "enum": [
+              "AU",
+              "KM",
+              "LD",
+              "LH",
+              "LM",
+              "LS",
+              "LY",
+              "M",
+              "PC"
+            ]
           }
         }
       },
@@ -5267,9 +5320,8 @@
         "type": "object",
         "properties": {
           "acceleration": {
-            "type": "integer",
             "description": "The acceleration of this engine in msÂ².",
-            "format": "int32"
+            "$ref": "#/components/schemas/Acceleration"
           },
           "endurance": {
             "type": "integer",
@@ -5444,14 +5496,12 @@
         "type": "object",
         "properties": {
           "xCoordinate": {
-            "type": "number",
             "description": "The x-coordinate of this orbit.",
-            "format": "biginteger"
+            "$ref": "#/components/schemas/Distance"
           },
           "yCoordinate": {
-            "type": "number",
             "description": "The y-coordinate of this orbit.",
-            "format": "biginteger"
+            "$ref": "#/components/schemas/Distance"
           }
         }
       },
@@ -5610,9 +5660,8 @@
             "format": "uuid"
           },
           "initialDistance": {
-            "type": "number",
             "description": "The distance of this shot.",
-            "format": "bigdecimal"
+            "$ref": "#/components/schemas/Distance"
           },
           "target": {
             "description": "The fleet which is targeted.",
@@ -5841,9 +5890,8 @@
             "format": "uuid"
           },
           "distance": {
-            "type": "number",
             "description": "The distance of this shot.",
-            "format": "bigdecimal"
+            "$ref": "#/components/schemas/Distance"
           },
           "hitLogs": {
             "type": "array",
@@ -5997,8 +6045,7 @@
           "distanceMap": {
             "type": "object",
             "additionalProperties": {
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/Distance"
             },
             "description": "The star system with its distance to all known systems by id."
           },
@@ -6172,9 +6219,8 @@
         "type": "object",
         "properties": {
           "damageProjectionRange": {
-            "type": "number",
             "description": "The effective range of this warhead.",
-            "format": "bigdecimal"
+            "$ref": "#/components/schemas/Distance"
           },
           "damageValue": {
             "type": "integer",
@@ -6234,9 +6280,8 @@
             "$ref": "#/components/schemas/BaseModule"
           },
           "effectiveRange": {
-            "type": "number",
             "description": "The effective range of this weapon.",
-            "format": "bigdecimal"
+            "$ref": "#/components/schemas/Distance"
           },
           "weaponType": {
             "type": "string",

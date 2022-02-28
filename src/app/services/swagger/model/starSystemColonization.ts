@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Colonization } from './colonization';
+import { Distance } from './distance';
 import { StarSystem } from './starSystem';
 
 export interface StarSystemColonization { 
@@ -28,6 +29,6 @@ export interface StarSystemColonization {
     /**
      * The star system with its distance to all known systems by id.
      */
-    distanceMap: { [key: string]: number; };
+    distanceMap: { [key: string]: Distance; };
     starSystem: StarSystem;
 }

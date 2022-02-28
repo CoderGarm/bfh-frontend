@@ -1,8 +1,10 @@
 import {AfterViewInit, Component, Inject, Input, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
+import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
-import {SystemViewHelper} from "../../star-map/payload/SystemViewHelper";
+import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
+import {InterstellarViewHelper} from "../../star-map/payload/interstellar-view-helper";
+import {NavigationCalculator} from "../../../NavigationCalculator";
 
 @Component({
     selector: 'app-interstellar-fleet-movement-edit',
@@ -68,14 +70,18 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         const lightMinutesToHyperLimit = this.destination.starClassType.lightMinutesToHyperLimit;
         let sortedRaises = this.destination.planets
             .sort((o1, o2) => {
-                let o1Radius = SystemViewHelper.calculateDistance(o1.orbit.xCoordinate, o1.orbit.yCoordinate);
-                let o2Radius = SystemViewHelper.calculateDistance(o2.orbit.xCoordinate, o2.orbit.yCoordinate);
+                let o1Radius = SystemViewHelper.calculateDistance(this.convertToStandardMetric(o1.orbit.xCoordinate), this.convertToStandardMetric(o1.orbit.yCoordinate));
+                let o2Radius = SystemViewHelper.calculateDistance(this.convertToStandardMetric(o2.orbit.xCoordinate), this.convertToStandardMetric(o2.orbit.yCoordinate));
                 return o1Radius > o2Radius ? 1 : -1;
             });
 
         const biggestRadiusOrbit = sortedRaises[sortedRaises.length - 1];
-        const biggestRadius = SystemViewHelper.calculateDistance(biggestRadiusOrbit.orbit.xCoordinate, biggestRadiusOrbit.orbit.yCoordinate);
+        const biggestRadius = SystemViewHelper.calculateDistance(this.convertToStandardMetric(biggestRadiusOrbit.orbit.xCoordinate), this.convertToStandardMetric(biggestRadiusOrbit.orbit.yCoordinate));
         return biggestRadius + lightMinutesToHyperLimit;
+    }
+
+    private convertToStandardMetric(distance: Distance) {
+        return NavigationCalculator.convertDistanceToMetric(distance, InterstellarViewHelper.STANDARD_METRIC);
     }
 
     /**
@@ -89,7 +95,16 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         let pointAngleInRadians = 360 * random;
         let x = Math.cos(pointAngleInRadians) * hyperLimit;
         let y = Math.sin(pointAngleInRadians) * hyperLimit;
-        return {xCoordinate: x, yCoordinate: y};
+        return {
+            xCoordinate: {
+                coordinate: x,
+                distanceMetric: InterstellarViewHelper.STANDARD_METRIC
+            },
+            yCoordinate: {
+                coordinate: y,
+                distanceMetric: InterstellarViewHelper.STANDARD_METRIC
+            }
+        };
     }
 
     /**

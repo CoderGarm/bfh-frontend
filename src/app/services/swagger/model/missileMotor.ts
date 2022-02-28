@@ -9,12 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Acceleration } from './acceleration';
 
 export interface MissileMotor { 
-    /**
-     * The acceleration of this engine in msÂ².
-     */
-    acceleration: number;
+    acceleration: Acceleration;
     /**
      * The endurance of this engine.
      */

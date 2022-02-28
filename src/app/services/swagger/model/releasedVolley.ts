@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CombatRoundKey } from './combatRoundKey';
+import { Distance } from './distance';
 import { Fleet } from './fleet';
 
 export interface ReleasedVolley { 
@@ -23,10 +24,7 @@ export interface ReleasedVolley {
      * The UUID of the damage dealer.
      */
     damageDealer: string;
-    /**
-     * The distance of this shot.
-     */
-    initialDistance: number;
+    initialDistance: Distance;
     target: Fleet;
     /**
      * The type of the damage dealer.

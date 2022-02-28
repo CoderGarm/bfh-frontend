@@ -85,7 +85,11 @@
     </mat-accordion>
 </div>
 <div>
-    <app-combat-arena [starSystemSelection]="starSystem" [battleReport]="currentlyOpenedItem"></app-combat-arena>
+    <app-combat-arena
+            [starSystem]="starSystem"
+            [battleReport]="currentlyOpenedItem"
+            [combatArenaData]="combatArenaData"
+            [activeRound]="activeRound"></app-combat-arena>
 </div>
 <div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && combatRounds.length > 0">
 
@@ -98,19 +102,25 @@
     </mat-stepper>
 
     <div class="center">
-        <button type="button" class="no-hover" mat-raised-button (click)="fastRewind()">
+        <button type="button" mat-raised-button (click)="fastRewind()">
             <mat-icon>fast_rewind</mat-icon>
         </button>
-        <button type="button" class="no-hover" mat-raised-button (click)="stop(); stepper.reset()">
+        <button type="button" mat-raised-button (click)="stop(); stepper.reset()">
             <mat-icon>stop</mat-icon>
         </button>
-        <button type="button" class="no-hover" mat-raised-button (click)="pause()">
+        <button type="button" mat-raised-button (click)="pause()">
             <mat-icon>pause</mat-icon>
         </button>
-        <button type="button" class="no-hover" mat-raised-button (click)="play()">
+        <button type="button" mat-raised-button (click)="previous()">
+            <mat-icon>skip_previous</mat-icon>
+        </button>
+        <button type="button" mat-raised-button (click)="play()">
             <mat-icon>play_arrow</mat-icon>
         </button>
-        <button type="button" class="no-hover" mat-raised-button (click)="fastForward()">
+        <button type="button" mat-raised-button (click)="next()">
+            <mat-icon>skip_next</mat-icon>
+        </button>
+        <button type="button" mat-raised-button (click)="fastForward()">
             <mat-icon>fast_forward</mat-icon>
         </button>
     </div>

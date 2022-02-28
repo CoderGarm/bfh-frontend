@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CombatRoundKey } from './combatRoundKey';
+import { Distance } from './distance';
 import { Fleet } from './fleet';
 import { HitLog } from './hitLog';
 import { LossRole } from './lossRole';
@@ -21,10 +22,7 @@ export interface ShipKillerHit {
      * The UUID of the damage dealer.
      */
     damageDealer: string;
-    /**
-     * The distance of this shot.
-     */
-    distance: number;
+    distance: Distance;
     /**
      * A hit log list.
      */

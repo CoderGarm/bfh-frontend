@@ -7,6 +7,8 @@ import {MatTable, MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CombatReport} from "../../../combat-report";
 import {CombatStatistics} from "../../../combat.statistics";
+import {CombatArenaData} from "../combat-arena/combat-arena.component";
+import {MatStepper} from "@angular/material/stepper";
 
 @Component({
     selector: 'app-battle-report',
@@ -55,6 +57,20 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     movementsByRound: Map<number, Map<Fleet, MovementAction>> = new Map<number, Map<Fleet, MovementAction>>();
     volleysByRound: Map<number, Map<Fleet, ReleasedVolley>> = new Map<number, Map<Fleet, ReleasedVolley>>();
 
+    combatArenaData?: CombatArenaData;
+    private activeRoundIndex: number = 0;
+    activeRound?: number;
+
+    @ViewChild(MatStepper)
+    matStepper?: MatStepper;
+
+    private setActiveRound() {
+        if (this.activeRoundIndex < 0) {
+            this.activeRoundIndex = 0;
+        }
+        this.activeRound = this.combatRounds[this.activeRoundIndex];
+    }
+
     constructor(private tokenStorage: TokenStorage,
                 private reportApi: ReportApiService,
                 private planetApi: PlanetApiService) {
@@ -89,7 +105,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         if (!!destString) {
             return destString;
         } else {
-            destination += orbit!.xCoordinate + ", " + orbit!.yCoordinate;
+            destination += orbit!.xCoordinate.coordinate + ", " + orbit!.yCoordinate.coordinate;
         }
         destination += " in " + system!.name;
         return destination;
@@ -106,7 +122,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
                     if (!!resp) {
                         destination += resp.name;
                     } else {
-                        destination += orbit!.xCoordinate + ", " + orbit!.yCoordinate;
+                        destination += orbit!.xCoordinate.coordinate + ", " + orbit!.yCoordinate.coordinate;
                     }
                     destination += " in " + system!.name;
                     this.orbitNames.set(fleetOrbit, destination);
@@ -130,6 +146,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         report.movementActions.forEach(ma => this.setMovementMapValue(ma));
         report.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));
         this.mergeCombatRounds();
+        this.combatArenaData = new CombatArenaData(this.combatRounds, this.movementsByRound, this.volleysByRound);
     }
 
     private setReleasedVolleyMapValue(movementAction: ReleasedVolley) {
@@ -171,6 +188,8 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
             this.starSystem = undefined;
             this.combatRounds = [];
             this.movementsByRound.clear();
+            this.volleysByRound.clear();
+            this.combatArenaData = undefined;
         }
     }
 
@@ -256,6 +275,20 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
 
     fastForward() {
         console.log("fastForward")
+    }
+
+    next() {
+        console.log("next");
+        this.activeRoundIndex++;
+        this.setActiveRound();
+        this.matStepper?.next();
+    }
+
+    previous() {
+        console.log("previous");
+        this.activeRoundIndex--;
+        this.setActiveRound();
+        this.matStepper?.previous();
     }
 }
 

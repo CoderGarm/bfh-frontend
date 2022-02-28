@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { BaseModule } from './baseModule';
+import { Distance } from './distance';
 
 export interface Weapon { 
     /**
@@ -17,10 +18,7 @@ export interface Weapon {
      */
     alignmentTypes: Array<Weapon.AlignmentTypesEnum>;
     baseModule: BaseModule;
-    /**
-     * The effective range of this weapon.
-     */
-    effectiveRange: number;
+    effectiveRange: Distance;
     /**
      * The way how the damage will be projected.
      */

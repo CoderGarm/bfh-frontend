@@ -3,15 +3,15 @@ import {Fleet, FleetApiService, FleetDistributionPerUser, FleetMove, Move, Orbit
 import {SVG} from "@svgdotjs/svg.js";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
-import {SystemViewHelper} from "../SystemViewHelper";
-import {OrbitDefinition} from "../OrbitDefinition";
+import {SystemViewHelper} from "../system-view-helper";
+import {OrbitDefinition} from "../orbit-definition";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
 import {InterstellarFleetDisplayComponent} from "../../../display-elements/interstellar-fleet-display/interstellar-fleet-display.component";
 import {InterstellarFleetMovementEditComponent} from "../../../display-elements/interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component";
-import {InterstellarViewHelper} from "../InterstellarViewHelper";
+import {InterstellarViewHelper} from "../interstellar-view-helper";
 
 @Component({
     selector: 'app-universe-map-view',

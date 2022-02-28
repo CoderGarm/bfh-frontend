@@ -23,11 +23,11 @@ export class CelestialAreaDefinition {
         let x = box.x;
         let y = box.y;
 
-        let leftBound = this.referenceOrbit.xCoordinate - this.radius;
-        let rightBound = this.referenceOrbit.xCoordinate + this.radius;
+        let leftBound = this.referenceOrbit.xCoordinate.coordinate - this.radius;
+        let rightBound = this.referenceOrbit.xCoordinate.coordinate + this.radius;
 
-        let lowerBound = this.referenceOrbit.yCoordinate - this.radius;
-        let upperBound = this.referenceOrbit.yCoordinate + this.radius;
+        let lowerBound = this.referenceOrbit.yCoordinate.coordinate - this.radius;
+        let upperBound = this.referenceOrbit.yCoordinate.coordinate + this.radius;
 
         let xFit: boolean = false;
         let yFit: boolean = false;
