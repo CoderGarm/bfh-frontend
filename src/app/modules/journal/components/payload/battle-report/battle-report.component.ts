@@ -153,6 +153,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
      * @param report
      */
     setOpened(report: BattleReport) {
+        this.combatRunSubscription?.unsubscribe();
         this.currentlyOpenedItem = report;
         this.starSystem = report.orbit.system;
         this.currentlyOpenedItemIndex = this.battleReports.indexOf(report);

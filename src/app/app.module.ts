@@ -23,6 +23,7 @@ import {DisplayElementsModule} from "./modules/display-elements/display-elements
 import {ExpansionModule} from "./modules/expansion/expansion.module";
 import {JournalModule} from "./modules/journal/journal.module";
 import {BasicViewHelper} from "./basic-view-helper";
+import {SnackbarNotificationService} from "./services/snackbar-notification.service";
 
 @NgModule({
     declarations: [
@@ -37,7 +38,7 @@ import {BasicViewHelper} from "./basic-view-helper";
         HomeComponent,
         PasswordEqualityValidatorDirective,
         PasswordPatternValidatorDirective,
-        ConfirmDialogComponent
+        ConfirmDialogComponent,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),
@@ -53,7 +54,9 @@ import {BasicViewHelper} from "./basic-view-helper";
         ExpansionModule,
         JournalModule,
     ],
-    providers: [NgxPermissionsModule, {provide: ErrorHandler, useClass: CustomErrorHandler}],
+    providers: [NgxPermissionsModule,
+        {provide: ErrorHandler, useClass: CustomErrorHandler},
+        SnackbarNotificationService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

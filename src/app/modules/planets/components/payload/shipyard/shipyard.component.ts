@@ -14,6 +14,8 @@ import {
 import {FormControl} from "@angular/forms";
 import {MatChip, MatChipList} from "@angular/material/chips";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {PlanetsNotificationService} from "../../../planets-notification.service";
 
 @Component({
     selector: 'app-shipyard',
@@ -87,7 +89,9 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     constructor(private tokenStorage: TokenStorage,
                 private shipyardApi: ShipyardApiService,
                 private planetApi: PlanetApiService,
-                private resourceApi: ResourcesApiService) {
+                private resourceApi: ResourcesApiService,
+                private notificationService: SnackbarNotificationService,
+                private planetsNotificationService: PlanetsNotificationService) {
         super();
     }
 
@@ -154,7 +158,15 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     buildConstruction() {
         if (!!this.order) {
             this.order.shipJobPayload = this.selection;
-            let subscription = this.planetApi.buildShip(this.order).subscribe(resp => this.shipyardJobPossible = !resp);
+            let subscription = this.planetApi.buildShip(this.order).subscribe(resp => {
+                if (resp) {
+                    this.notificationService.open("Construction started.")
+                    this.shipyardJobPossible = !resp
+
+                } else {
+                    this.notificationService.open("This was not possible.")
+                }
+            });
             this.subscriptions.push(subscription);
         }
     }

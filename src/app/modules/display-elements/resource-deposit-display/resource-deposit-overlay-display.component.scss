@@ -1,7 +1,7 @@
 @import "src/styles/variables";
 
 .box {
-  margin: 5px 5px 5px 5px;
+  margin: 5px 5px 10px 5px;
 }
 
 .sticky {
@@ -20,8 +20,21 @@
   opacity: 0.5;
 }
 
+.img-container {
+  float: left;
+  margin: 9px 10px 5px 5px;
+}
+
+.res-wrapper {
+  height: 38px;
+}
+
+.amount-present {
+  font-size: 14px;
+  line-height: 18px;
+}
+
 .diffAmount {
   font-size: 12px;
   line-height: 18px;
 }
-

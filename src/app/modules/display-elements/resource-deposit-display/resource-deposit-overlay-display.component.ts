@@ -32,7 +32,6 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
     getLink(cap: ResourceAmount | HumanResourceAmount): string {
         let folder = cap.resourceType.folder;
         let iconName = cap.resourceType.iconName;
-        //todo check
         return "assets/" + folder + "/png24x/" + iconName + "_c.png";
     }
 

@@ -7,6 +7,7 @@ import {GroundConstructComponent} from './components/payload/ground-construct/gr
 import {JobsListComponent} from './components/payload/jobs-list/jobs-list.component';
 import {ShipyardComponent} from './components/payload/shipyard/shipyard.component';
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
+import {PlanetsNotificationService} from "./planets-notification.service";
 
 @NgModule({
     declarations: [
@@ -20,7 +21,7 @@ import {DisplayElementsModule} from "../display-elements/display-elements.module
     imports: [
         SharedModuleModule,
         DisplayElementsModule
-    ]
+    ], providers: [PlanetsNotificationService]
 })
 export class PlanetsModule {
 }

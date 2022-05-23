@@ -14,6 +14,8 @@ import {
 import {MatChip, MatChipList} from "@angular/material/chips";
 import {FormControl} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {PlanetsNotificationService} from "../../../planets-notification.service";
 
 @Component({
     selector: 'app-ground-construct',
@@ -98,8 +100,12 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     constructor(private constructionApi: ConstructionApiService,
                 private buildingApi: BuildingApiService,
                 private planetApi: PlanetApiService,
-                private resourceApi: ResourcesApiService) {
+                private resourceApi: ResourcesApiService,
+                private notificationService: SnackbarNotificationService,
+                private planetsNotificationService: PlanetsNotificationService) {
         super();
+        let subscription = planetsNotificationService.ask().subscribe(() => this.fetchPlanet());
+        this.subscriptions.push(subscription);
     }
 
     ngAfterViewInit(): void {
@@ -279,11 +285,16 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     /**
      * starts the construction of the building at the planet
      */
-    startConstruction(selectedConstructionInput: Construction) {
-        let sub = this.planetApi.buildBuilding(this.selectedPlanetInput!.idPlanet, selectedConstructionInput!.building.idBuilding)
+    startConstruction(construction: Construction) {
+        let sub = this.planetApi.buildBuilding(this.selectedPlanetInput!.idPlanet, construction!.building.idBuilding)
             .subscribe(resp => {
                 if (resp) {
+                    this.notificationService.open("Construction of " + construction.building.name + " started.");
                     this.constructionPossible = false;
+                    this.fetchPlanet();
+                    this.planetsNotificationService.push();
+                } else {
+                    this.notificationService.open("This was not possible.");
                 }
             });
         this.subscriptions.push(sub);

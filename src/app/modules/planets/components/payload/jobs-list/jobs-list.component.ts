@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {JobApiService, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
-import {Job} from "../../../../../services/swagger/model/job";
+import {Job, JobApiService, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {PlanetsNotificationService} from "../../../planets-notification.service";
 
 @Component({
     selector: 'app-jobs-list',
@@ -32,8 +32,11 @@ export class JobsListComponent extends SubscriptionManager implements AfterViewI
     runningJobs?: Job[];
 
     constructor(private jobApi: JobApiService,
-                private resourceApi: ResourcesApiService) {
+                private resourceApi: ResourcesApiService,
+                private notificationService: PlanetsNotificationService) {
         super();
+        let subscription = notificationService.ask().subscribe(() => this.loadData());
+        this.subscriptions.push(subscription);
     }
 
     ngAfterViewInit(): void {
@@ -42,18 +45,22 @@ export class JobsListComponent extends SubscriptionManager implements AfterViewI
     ngOnChanges(changes: SimpleChanges): void {
         // todo reload at new job
         if (changes[this.selectedPlanetDefinition]) {
-            if (this.selectedPlanetInput) {
-                let sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)
-                    .subscribe(resp => this.runningJobs = resp);
-                this.subscriptions.push(sub);
+            this.loadData();
+        }
+    }
+
+    private loadData() {
+        if (this.selectedPlanetInput) {
+            let sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)
+                .subscribe(resp => this.runningJobs = resp);
+            this.subscriptions.push(sub);
 
 
-                sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
-                    .subscribe(resp => {
-                        this.resourceDeposit = resp;
-                    });
-                this.subscriptions.push(sub);
-            }
+            sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
+                .subscribe(resp => {
+                    this.resourceDeposit = resp;
+                });
+            this.subscriptions.push(sub);
         }
     }
 
