@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -67,7 +67,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked ammunition modules for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -109,7 +109,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked armors for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -151,7 +151,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked electronic warfare for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -193,7 +193,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked hulls for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -235,7 +235,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked weapons for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -277,7 +277,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked passive modules for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -319,7 +319,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked propulsions for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -361,7 +361,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked sidewalls for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -403,7 +403,7 @@ export class ModuleApiService {
     /**
      * Get all unlocked weapons for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

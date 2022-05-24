@@ -191,7 +191,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                     destinationOrbit: planets[0].orbit,
                     idDestinationSystem: planets[0].idStarSystem
                 }
-                let sub = this.fleetApi.moveFleet(userID, move).subscribe(resp => {
+                let sub = this.fleetApi.moveFleet(move, userID).subscribe(resp => {
                     if (resp) {
                         this.createStarMap();
                     }
@@ -230,7 +230,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                     idFleetToMerge: targetFleet.idFleet,
                     idFleetMergeTarget: draggedFleet.idFleet
                 }
-                let sub = this.fleetApi.mergeFleets(userID, merge).subscribe(resp => {
+                let sub = this.fleetApi.mergeFleets(merge, userID).subscribe(resp => {
                     if (resp) {
                         this.createStarMap();
                     }

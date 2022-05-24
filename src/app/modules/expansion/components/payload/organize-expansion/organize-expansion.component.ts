@@ -268,7 +268,7 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
     buySystemsInformation(colo: StarSystemColonization) {
         let userID = this.tokenStorage.getUserID();
         if (!!userID) {
-            let sub = this.colonizationApi.buyInformationForSystem(userID).subscribe(() => {
+            let sub = this.colonizationApi.buyInformationForSystem(colo.starSystem, userID).subscribe(() => {
                 // noop todo check validation mechanism for paying
             });
             this.subscriptions.push(sub);
@@ -291,7 +291,7 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
     colonizePlanet(planet: Planet) {
         let userID = this.tokenStorage.getUserID();
         if (!!userID) {
-            let sub = this.colonizationApi.startColonizingPlanet(userID, planet).subscribe(resp => {
+            let sub = this.colonizationApi.startColonizingPlanet(planet, userID).subscribe(resp => {
                 this.fetchData();
             });
             this.subscriptions.push(sub);

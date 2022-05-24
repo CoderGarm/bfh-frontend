@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { AdminApiService } from './api/adminApi.service';
 import { AuthApiService } from './api/authApi.service';
+import { BattleReportApiService } from './api/battleReportApi.service';
 import { BuildingApiService } from './api/buildingApi.service';
 import { ChatApiService } from './api/chatApi.service';
 import { ColonizationApiService } from './api/colonizationApi.service';
@@ -13,7 +14,6 @@ import { FleetApiService } from './api/fleetApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
-import { BattleReportApiService } from './api/battle-report-api.service';
 import { ResearchApiService } from './api/researchApi.service';
 import { ResourcesApiService } from './api/resourcesApi.service';
 import { ShipyardApiService } from './api/shipyardApi.service';
@@ -28,6 +28,7 @@ import { UserApiService } from './api/userApi.service';
   providers: [
     AdminApiService,
     AuthApiService,
+    BattleReportApiService,
     BuildingApiService,
     ChatApiService,
     ColonizationApiService,
@@ -36,7 +37,6 @@ import { UserApiService } from './api/userApi.service';
     JobApiService,
     ModuleApiService,
     PlanetApiService,
-    BattleReportApiService,
     ResearchApiService,
     ResourcesApiService,
     ShipyardApiService,

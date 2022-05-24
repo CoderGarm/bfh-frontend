@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -64,15 +64,18 @@ export class ResourcesApiService {
     /**
      * Get the costs of the given construction.
      * 
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBuildingCosts(body?: PlannedConstruction, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
-    public getBuildingCosts(body?: PlannedConstruction, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
-    public getBuildingCosts(body?: PlannedConstruction, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
-    public getBuildingCosts(body?: PlannedConstruction, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getBuildingCosts(body: PlannedConstruction, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getBuildingCosts(body: PlannedConstruction, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getBuildingCosts(body: PlannedConstruction, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getBuildingCosts(body: PlannedConstruction, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getBuildingCosts.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -146,7 +149,7 @@ export class ResourcesApiService {
     /**
      * Get the mining factors of the planet.
      * 
-     * @param idPlanet idPlanet
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -188,7 +191,7 @@ export class ResourcesApiService {
     /**
      * Get all EResourceTypes.
      * 
-     * @param idPlanet idPlanet
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -230,20 +233,23 @@ export class ResourcesApiService {
     /**
      * Get the costs of the given shipyard order.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipClassCosts(idUser: number, body?: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
-    public getShipClassCosts(idUser: number, body?: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
-    public getShipClassCosts(idUser: number, body?: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
-    public getShipClassCosts(idUser: number, body?: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShipClassCosts(body: ShipClass, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipClassCosts(body: ShipClass, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipClassCosts(body: ShipClass, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipClassCosts(body: ShipClass, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getShipClassCosts.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling getShipClassCosts.');
         }
-
 
         let headers = this.defaultHeaders;
 
@@ -280,15 +286,18 @@ export class ResourcesApiService {
     /**
      * Get the costs of the given shipyard order.
      * 
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
-    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
-    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
-    public getShipyardOrderCosts(body?: Array<ShipyardConstructionSelection>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShipyardOrderCosts(body: Array<ShipyardConstructionSelection>, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipyardOrderCosts(body: Array<ShipyardConstructionSelection>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipyardOrderCosts(body: Array<ShipyardConstructionSelection>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipyardOrderCosts(body: Array<ShipyardConstructionSelection>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getShipyardOrderCosts.');
+        }
 
         let headers = this.defaultHeaders;
 

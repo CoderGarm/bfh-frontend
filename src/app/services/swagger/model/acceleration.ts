@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,20 +10,40 @@
  * Do not edit the class manually.
  */
 
+/**
+ * The acceleration of this engine in msÂ².
+ */
 export interface Acceleration { 
+    /**
+     * The value of this acceleration.
+     */
+    accelerationValue: number;
     /**
      * The metric of this acceleration.
      */
     accelerationMetric: Acceleration.AccelerationMetricEnum;
     /**
-     * The value of this acceleration.
+     * The hyper band which can be reached.
      */
-    accelerationValue: number;
+    hyperBand: Acceleration.HyperBandEnum;
 }
 export namespace Acceleration {
-    export type AccelerationMetricEnum = 'G' | 'MS2';
+    export type AccelerationMetricEnum = 'MS2' | 'G' | 'C';
     export const AccelerationMetricEnum = {
+        MS2: 'MS2' as AccelerationMetricEnum,
         G: 'G' as AccelerationMetricEnum,
-        MS2: 'MS2' as AccelerationMetricEnum
+        C: 'C' as AccelerationMetricEnum
+    };
+    export type HyperBandEnum = 'NONE' | 'ALPHA' | 'BETA' | 'GAMMA' | 'DELTA' | 'EPSILON' | 'ZETA' | 'ETA' | 'THETA';
+    export const HyperBandEnum = {
+        NONE: 'NONE' as HyperBandEnum,
+        ALPHA: 'ALPHA' as HyperBandEnum,
+        BETA: 'BETA' as HyperBandEnum,
+        GAMMA: 'GAMMA' as HyperBandEnum,
+        DELTA: 'DELTA' as HyperBandEnum,
+        EPSILON: 'EPSILON' as HyperBandEnum,
+        ZETA: 'ZETA' as HyperBandEnum,
+        ETA: 'ETA' as HyperBandEnum,
+        THETA: 'THETA' as HyperBandEnum
     };
 }

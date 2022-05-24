@@ -1,10 +1,4 @@
-import {
-  MatSnackBar,
-  MatSnackBarConfig,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarRef,
-  MatSnackBarVerticalPosition
-} from '@angular/material/snack-bar';
+import {MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 import {FrontendError} from './swagger';
 
 import {ErrorHandler, Injectable, NgZone} from '@angular/core';
@@ -12,6 +6,7 @@ import {ErrorDialogComponent} from '../components/error-dialog/error-dialog.comp
 import {TokenStorage} from "./authentication/token-storage.service";
 import {Router} from "@angular/router";
 import {ProfileComponent} from "../components/user/profile/profile.component";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +33,7 @@ export class CustomErrorHandler implements ErrorHandler {
     if (!!receivedError && !this.errorDialog) {
       let snack = new MatSnackBarConfig();
 
-      if (receivedError instanceof Error) {
+      if (receivedError instanceof HttpErrorResponse) {
         let error: Error = receivedError;
         const feError: FrontendError = {
           message: error.message,

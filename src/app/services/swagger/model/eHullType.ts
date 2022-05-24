@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,7 +10,30 @@
  * Do not edit the class manually.
  */
 
+/**
+ * The hull type.
+ */
 export interface EHullType { 
+    /**
+     * The type name of this  transformed enum.
+     */
+    typeName: string;
+    /**
+     * The icon name for this resource.
+     */
+    iconName: string;
+    /**
+     * The folder name for resources.
+     */
+    folder: string;
+    /**
+     * The hulls type.
+     */
+    type: string;
+    /**
+     * If the hull is a pod layer.
+     */
+    podLayer: boolean;
     /**
      * If the hull is an auxiliary ship.
      */
@@ -19,24 +42,4 @@ export interface EHullType {
      * The hulls description.
      */
     description: string;
-    /**
-     * The folder name for resources.
-     */
-    folder: string;
-    /**
-     * The icon name for this resource.
-     */
-    iconName: string;
-    /**
-     * If the hull is a pod layer.
-     */
-    podLayer: boolean;
-    /**
-     * The hulls type.
-     */
-    type: string;
-    /**
-     * The type name of this  transformed enum.
-     */
-    typeName: string;
 }

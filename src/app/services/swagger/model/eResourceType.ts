@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,31 +10,34 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface EResourceType { 
     /**
-     * The collectable type of this resource.
+     * The type name of this  transformed enum.
      */
-    collectableType: EResourceType.CollectableTypeEnum;
-    /**
-     * The folder name for resources.
-     */
-    folder: string;
+    typeName: string;
     /**
      * The icon name for this resource.
      */
     iconName: string;
     /**
-     * The plural name of this resource.
+     * The folder name for resources.
      */
-    pluralName: string;
+    folder: string;
     /**
      * The singular name of this resource.
      */
     singularName: string;
     /**
-     * The type name of this  transformed enum.
+     * The plural name of this resource.
      */
-    typeName: string;
+    pluralName: string;
+    /**
+     * The collectable type of this resource.
+     */
+    collectableType: EResourceType.CollectableTypeEnum;
 }
 export namespace EResourceType {
     export type CollectableTypeEnum = 'COLLECTABLE' | 'FORFEITABLE' | 'VIABLE';

@@ -225,7 +225,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                     dialogRef.afterClosed().subscribe(result => {
                         if (result && this.plannedMoves.length > 0) {
                             let userID = this.tokenStorage.getUserID();
-                            let sub = this.fleetApi.moveFleets(userID, this.plannedMoves).subscribe(resp => {
+                            let sub = this.fleetApi.moveFleets(this.plannedMoves, userID).subscribe(resp => {
                                 if (resp) {
                                     this.createUniverseMap();
                                 }

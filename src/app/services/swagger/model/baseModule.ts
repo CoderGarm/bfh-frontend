@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,15 +10,10 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface BaseModule { 
-    /**
-     * The description of this module.
-     */
-    description: string;
-    /**
-     * The base effect value of this module.
-     */
-    effectValue?: number;
     /**
      * The id of this module.
      */
@@ -28,11 +23,19 @@ export interface BaseModule {
      */
     name: string;
     /**
-     * The level of this module.
+     * The description of this module.
      */
-    techLevel: number;
+    description: string;
     /**
      * The capacity usage of this module.
      */
     useCapacity: number;
+    /**
+     * The base effect value of this module.
+     */
+    effectValue?: number;
+    /**
+     * The level of this module.
+     */
+    techLevel: number;
 }

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,14 +11,17 @@
  */
 import { Orbit } from './orbit';
 
+/**
+ * .
+ */
 export interface FleetMove { 
+    /**
+     * The fleet which must be moved.
+     */
+    idFleetToMove: number;
     destinationOrbit?: Orbit;
     /**
      * The system which is the target of the movement.
      */
     idDestinationSystem?: number;
-    /**
-     * The fleet which must be moved.
-     */
-    idFleetToMove: number;
 }

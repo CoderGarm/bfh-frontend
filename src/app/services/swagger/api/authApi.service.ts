@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -62,15 +62,18 @@ export class AuthApiService {
     /**
      * Creates a single user
      * Creates and returns a user which is now registered in the system
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUser(body?: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
-    public createUser(body?: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
-    public createUser(body?: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
-    public createUser(body?: UserReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createUser(body: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
+    public createUser(body: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
+    public createUser(body: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
+    public createUser(body: UserReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling createUser.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -107,15 +110,18 @@ export class AuthApiService {
     /**
      * Does a login
      * Takes parameters and tries to create a valid login from it.
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public login(body?: AuthRequest, observe?: 'body', reportProgress?: boolean): Observable<JWT>;
-    public login(body?: AuthRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<JWT>>;
-    public login(body?: AuthRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<JWT>>;
-    public login(body?: AuthRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public login(body: AuthRequest, observe?: 'body', reportProgress?: boolean): Observable<JWT>;
+    public login(body: AuthRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<JWT>>;
+    public login(body: AuthRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<JWT>>;
+    public login(body: AuthRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling login.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -152,7 +158,7 @@ export class AuthApiService {
     /**
      * Does a refresh of the access token
      * Takes the refresh token and tries to create a valid login from it.
-     * @param refreshToken refresh-token
+     * @param refreshToken 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

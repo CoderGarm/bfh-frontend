@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,15 +12,18 @@
 import { ChatMessage } from './chatMessage';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface ChatHistory { 
     /**
      * The id of this chat history
      */
     idChatHistory?: number;
+    userOne: UserJson;
+    userTwo: UserJson;
     /**
      * The amount of messages.
      */
     messages: Array<ChatMessage>;
-    userOne: UserJson;
-    userTwo: UserJson;
 }

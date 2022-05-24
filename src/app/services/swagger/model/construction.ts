@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,12 +11,15 @@
  */
 import { Building } from './building';
 
+/**
+ * .
+ */
 export interface Construction { 
-    building: Building;
     /**
      * The ID of this construction.
      */
     idConstruction: number;
+    building: Building;
     /**
      * The level of this construction.
      */

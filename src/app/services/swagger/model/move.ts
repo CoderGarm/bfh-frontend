@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,11 +11,16 @@
  */
 import { FleetOrbit } from './fleetOrbit';
 
+/**
+ * .
+ */
 export interface Move { 
     /**
      * The fleet which is in motion.
      */
     idFleetInMotion: number;
+    startOrbit: FleetOrbit;
+    targetOrbit: FleetOrbit;
     /**
      * The current left over duration of this movement.
      */
@@ -24,6 +29,4 @@ export interface Move {
      * The original duration of this movement.
      */
     originalDuration: number;
-    startOrbit: FleetOrbit;
-    targetOrbit: FleetOrbit;
 }

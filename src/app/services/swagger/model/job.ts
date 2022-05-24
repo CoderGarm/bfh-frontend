@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -14,41 +14,44 @@ import { Construction } from './construction';
 import { EResourceType } from './eResourceType';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface Job { 
-    /**
-     * The targeted amount of ships in case of an shipyard job..
-     */
-    amountShips?: number;
-    buildingTarget?: Building;
+    user: UserJson;
     facility: Construction;
+    /**
+     * The left duration of this job.
+     */
+    ticksLeft: number;
+    resourceType: EResourceType;
     /**
      * Is this a building job build.
      */
     isBuildingJob: boolean;
     /**
-     * Is this a research job.
-     */
-    isResearchJob: boolean;
-    /**
      * Is this a shipyard job.
      */
     isShipyardJob: boolean;
     /**
+     * Is this a research job.
+     */
+    isResearchJob: boolean;
+    /**
      * If this if a research job.
      */
     researchTarget?: string;
-    resourceType: EResourceType;
-    /**
-     * If this if a shipyard job.
-     */
-    shipYardTarget?: string;
+    buildingTarget?: Building;
     /**
      * The targeted level if it is a research or building.
      */
     targetLevel?: number;
     /**
-     * The left duration of this job.
+     * If this if a shipyard job.
      */
-    ticksLeft: number;
-    user: UserJson;
+    shipYardTarget?: string;
+    /**
+     * The targeted amount of ships in case of an shipyard job..
+     */
+    amountShips?: number;
 }

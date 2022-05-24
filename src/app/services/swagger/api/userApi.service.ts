@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -60,7 +60,7 @@ export class UserApiService {
     /**
      * Deletes a single user
      * Deletes a user which is not any longer registered in the system
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -77,8 +77,7 @@ export class UserApiService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            '*/*',
-            'application/json'
+            '*/*'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -139,7 +138,7 @@ export class UserApiService {
     /**
      * Get a single user by it&#x27;s idUser
      * Returns a user which is  registered in the system
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -181,7 +180,7 @@ export class UserApiService {
     /**
      * Get a single user by it&#x27;s idUser
      * Returns a list of users which usernames matches the search string
-     * @param username username
+     * @param username 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -223,15 +222,18 @@ export class UserApiService {
     /**
      * Updates a single user
      * Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUser(body?: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
-    public updateUser(body?: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
-    public updateUser(body?: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
-    public updateUser(body?: UserReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUser(body: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
+    public updateUser(body: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
+    public updateUser(body: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
+    public updateUser(body: UserReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling updateUser.');
+        }
 
         let headers = this.defaultHeaders;
 

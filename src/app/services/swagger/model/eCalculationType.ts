@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,13 +10,16 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface ECalculationType { 
-    /**
-     * The calculation type multiplier - to add or subtract with 1 or -1.
-     */
-    multiplier: number;
     /**
      * The type name of this  transformed enum.
      */
     typeName: string;
+    /**
+     * The calculation type multiplier - to add or subtract with 1 or -1.
+     */
+    multiplier: number;
 }

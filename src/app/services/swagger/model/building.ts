@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,39 +12,42 @@
 import { ERefinementSequence } from './eRefinementSequence';
 import { EResourceType } from './eResourceType';
 
+/**
+ * .
+ */
 export interface Building { 
-    /**
-     * The production amount at first level.
-     */
-    baseValue: number;
-    /**
-     * The description.
-     */
-    description: string;
     /**
      * The ID.
      */
     idBuilding: number;
     /**
-     * The modification factor per level.
-     */
-    increasingFactorPerLevel: number;
-    /**
      * The name of this building.
      */
     name: string;
     /**
+     * The description.
+     */
+    description: string;
+    /**
+     * The production amount at first level.
+     */
+    baseValue: number;
+    /**
+     * The modification factor per level.
+     */
+    increasingFactorPerLevel: number;
+    productionTarget: EResourceType;
+    /**
      * The action this building is for.
      */
     productionCategory: Building.ProductionCategoryEnum;
-    productionTarget: EResourceType;
     refinementSequence?: ERefinementSequence;
 }
 export namespace Building {
-    export type ProductionCategoryEnum = 'CAPACITY' | 'PRODUCE' | 'REFINEMENT';
+    export type ProductionCategoryEnum = 'PRODUCE' | 'CAPACITY' | 'REFINEMENT';
     export const ProductionCategoryEnum = {
-        CAPACITY: 'CAPACITY' as ProductionCategoryEnum,
         PRODUCE: 'PRODUCE' as ProductionCategoryEnum,
+        CAPACITY: 'CAPACITY' as ProductionCategoryEnum,
         REFINEMENT: 'REFINEMENT' as ProductionCategoryEnum
     };
 }

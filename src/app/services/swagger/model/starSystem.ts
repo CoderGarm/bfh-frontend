@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,6 +13,9 @@ import { EStarClassType } from './eStarClassType';
 import { Orbit } from './orbit';
 import { Planet } from './planet';
 
+/**
+ * .
+ */
 export interface StarSystem { 
     /**
      * The ID of this star system.
@@ -23,9 +26,9 @@ export interface StarSystem {
      */
     name: string;
     orbit: Orbit;
+    starClassType: EStarClassType;
     /**
      * The bunch of planets as part of the system.
      */
     planets: Array<Planet>;
-    starClassType: EStarClassType;
 }

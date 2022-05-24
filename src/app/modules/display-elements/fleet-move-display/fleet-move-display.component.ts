@@ -40,7 +40,7 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
         if (!!this.fleetInput && !!this.fleetInput.move && !!this.fleetInput.move.targetOrbit.system) {
             let idStarSystem = this.fleetInput.move.targetOrbit.system.idStarSystem;
             let orbit = this.fleetInput.move.targetOrbit.orbit;
-            let sub = this.planetApi.getPlanetByCoordinates(idStarSystem, orbit)
+            let sub = this.planetApi.getPlanetByCoordinates(orbit!, idStarSystem)
                 .subscribe(resp => {
                     this.destination = resp;
                     this.createDestinationRepresentation();

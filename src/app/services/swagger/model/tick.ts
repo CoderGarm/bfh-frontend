@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,11 +10,10 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface Tick { 
-    /**
-     * The end timestamp of this tick.
-     */
-    tickEnds?: Date;
     /**
      * The number of this tick.
      */
@@ -23,4 +22,8 @@ export interface Tick {
      * The start timestamp of this tick.
      */
     tickStarts: Date;
+    /**
+     * The end timestamp of this tick.
+     */
+    tickEnds?: Date;
 }

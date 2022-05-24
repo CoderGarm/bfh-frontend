@@ -134,7 +134,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         let system = fleetOrbit.system;
 
         if (!!orbit && !!system) {
-            let sub = this.planetApi.getPlanetByCoordinates(system.idStarSystem, orbit)
+            let sub = this.planetApi.getPlanetByCoordinates(orbit, system.idStarSystem)
                 .subscribe(resp => {
                     if (!!resp) {
                         destination += resp.name;

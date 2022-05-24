@@ -54,7 +54,7 @@ export class AvailableResearchesComponent implements AfterViewInit {
      */
     runResearch(research: ResearchLevel) {
         if (!!research) {
-            let sub = this.researchApi.startResearchByUser(this.tokenStorage.getUserID(), research)
+            let sub = this.researchApi.startResearchByUser(research, this.tokenStorage.getUserID())
                 .subscribe(resp => {
                     this.researchPossible = false;
                 });

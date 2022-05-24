@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,30 +12,33 @@
 import { MissileMotor } from './missileMotor';
 import { Warhead } from './warhead';
 
+/**
+ * .
+ */
 export interface Missile { 
-    /**
-     * The engine capacity of this missile.
-     */
-    elokaResistance: number;
     /**
      * The id of this Missile.
      */
     idMissile: number;
     /**
-     * The implemented engine of this missile.
+     * The type name of this missile.
      */
-    missileMotors: Array<MissileMotor>;
+    typeName: string;
+    /**
+     * The warhead capacity of this missile.
+     */
+    warheadCapacity: number;
     /**
      * The engine capacity of this missile.
      */
     motorCapacity: number;
     /**
-     * The type name of this missile.
+     * The engine capacity of this missile.
      */
-    typeName: string;
+    elokaResistance: number;
     warhead: Warhead;
     /**
-     * The warhead capacity of this missile.
+     * The implemented engine of this missile.
      */
-    warheadCapacity: number;
+    missileMotors: Array<MissileMotor>;
 }

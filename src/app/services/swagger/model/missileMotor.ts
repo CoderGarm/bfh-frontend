@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,24 +11,27 @@
  */
 import { Acceleration } from './acceleration';
 
+/**
+ * .
+ */
 export interface MissileMotor { 
-    acceleration: Acceleration;
-    /**
-     * The endurance of this engine.
-     */
-    endurance: number;
     /**
      * The id of this MissileMotor.
      */
     idMissileMotor: number;
     /**
-     * Defines the capability of this weapon to penetrate the shield.  The means the maneuver capability to find a gap in the tank to fire into it, for instance.
-     */
-    maneuverability: number;
-    /**
      * The type name of this engine.
      */
     typeName: string;
+    /**
+     * The endurance of this engine.
+     */
+    endurance: number;
+    acceleration: Acceleration;
+    /**
+     * Defines the capability of this weapon to penetrate the shield.  The means the maneuver capability to find a gap in the tank to fire into it, for instance.
+     */
+    maneuverability: number;
     /**
      * The capacity usage of this module.
      */

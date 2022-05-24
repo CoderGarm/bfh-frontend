@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,23 +12,26 @@
 import { Launcher } from './launcher';
 import { Weapon } from './weapon';
 
+/**
+ * .
+ */
 export interface AlignedFitting { 
-    /**
-     * The amount of mounted weapons.
-     */
-    amount: number;
-    launcher?: Launcher;
-    weapon?: Weapon;
     /**
      * The used mount point of this fitting.
      */
     weaponAlignment: AlignedFitting.WeaponAlignmentEnum;
+    weapon?: Weapon;
+    launcher?: Launcher;
+    /**
+     * The amount of mounted weapons.
+     */
+    amount: number;
 }
 export namespace AlignedFitting {
-    export type WeaponAlignmentEnum = 'BOW' | 'BROADSIDE' | 'STERN';
+    export type WeaponAlignmentEnum = 'BOW' | 'STERN' | 'BROADSIDE';
     export const WeaponAlignmentEnum = {
         BOW: 'BOW' as WeaponAlignmentEnum,
-        BROADSIDE: 'BROADSIDE' as WeaponAlignmentEnum,
-        STERN: 'STERN' as WeaponAlignmentEnum
+        STERN: 'STERN' as WeaponAlignmentEnum,
+        BROADSIDE: 'BROADSIDE' as WeaponAlignmentEnum
     };
 }

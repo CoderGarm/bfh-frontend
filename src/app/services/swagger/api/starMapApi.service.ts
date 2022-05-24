@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -59,7 +59,7 @@ export class StarMapApiService {
     /**
      * Get all planets of this system
      * 
-     * @param idStarSystem idStarSystem
+     * @param idStarSystem 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

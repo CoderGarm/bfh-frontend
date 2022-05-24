@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,14 +13,17 @@ import { EDepositType } from './eDepositType';
 import { HumanResourceAmount } from './humanResourceAmount';
 import { ResourceAmount } from './resourceAmount';
 
+/**
+ * .
+ */
 export interface ResourceDeposit { 
-    /**
-     * The amount of human resources by their type.
-     */
-    humanResources: Array<HumanResourceAmount>;
     /**
      * The amount of resources by their type.
      */
     resources: Array<ResourceAmount>;
+    /**
+     * The amount of human resources by their type.
+     */
+    humanResources: Array<HumanResourceAmount>;
     subType: EDepositType;
 }

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -15,25 +15,28 @@ import { Move } from './move';
 import { UserJson } from './userJson';
 import { WarShip } from './warShip';
 
+/**
+ * .
+ */
 export interface Fleet { 
-    fleetCapabilities: FleetCapabilities;
     /**
      * The id.
      */
     idFleet: number;
     /**
-     * If the fleet can run interstellar movements.
-     */
-    isFTLCapable: boolean;
-    move?: Move;
-    /**
      * The name of the fleet
      */
     name: string;
-    orbit?: FleetOrbit;
     owner: UserJson;
     /**
      * The fleet's individual war ships.
      */
     ships: Array<WarShip>;
+    orbit?: FleetOrbit;
+    move?: Move;
+    fleetCapabilities: FleetCapabilities;
+    /**
+     * If the fleet can run interstellar movements.
+     */
+    isFTLCapable: boolean;
 }

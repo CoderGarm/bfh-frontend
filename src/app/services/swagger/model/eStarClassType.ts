@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,25 +10,28 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface EStarClassType { 
     /**
-     * The folder name for resources.
+     * The type name of this  transformed enum.
      */
-    folder: string;
+    typeName: string;
     /**
      * The icon name for this resource.
      */
     iconName: string;
     /**
-     * The hyper limit in light minutes..
+     * The folder name for resources.
      */
-    lightMinutesToHyperLimit: number;
+    folder: string;
     /**
      * The spectral class.
      */
     spectralClass: string;
     /**
-     * The type name of this  transformed enum.
+     * The hyper limit in light minutes..
      */
-    typeName: string;
+    lightMinutesToHyperLimit: number;
 }

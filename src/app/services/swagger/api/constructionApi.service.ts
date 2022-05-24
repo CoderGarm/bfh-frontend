@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -59,7 +59,7 @@ export class ConstructionApiService {
     /**
      * Get all constructions on a planets.
      * 
-     * @param idPlanet idPlanet
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -101,7 +101,7 @@ export class ConstructionApiService {
     /**
      * Get all constructions for a planets which could be build.
      * 
-     * @param idPlanet idPlanet
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

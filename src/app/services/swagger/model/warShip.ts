@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,15 +12,18 @@
 import { Planet } from './planet';
 import { ShipClass } from './shipClass';
 
+/**
+ * .
+ */
 export interface WarShip { 
-    /**
-     * The fleet which this ship is part of.
-     */
-    idFleet: number;
     /**
      * The name of this individual ship.
      */
     name: string;
-    shipClass: ShipClass;
     shipyard: Planet;
+    /**
+     * The fleet which this ship is part of.
+     */
+    idFleet: number;
+    shipClass: ShipClass;
 }

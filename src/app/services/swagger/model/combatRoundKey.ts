@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,27 +11,30 @@
  */
 import { CombatRound } from './combatRound';
 
+/**
+ * .
+ */
 export interface CombatRoundKey { 
-    /**
-     * The combat phase in which this action happens.
-     */
-    combatPhase: CombatRoundKey.CombatPhaseEnum;
-    combatRound: CombatRound;
     /**
      * The id of the parent.
      */
     id: number;
+    combatRound: CombatRound;
+    /**
+     * The combat phase in which this action happens.
+     */
+    combatPhase: CombatRoundKey.CombatPhaseEnum;
 }
 export namespace CombatRoundKey {
-    export type CombatPhaseEnum = 'BEAM_FIRE_INCOMING_PHASE' | 'BEAM_FIRE_PHASE' | 'COUNTER_MISSILE_PHASE' | 'ELOKA_PHASE' | 'MISSILE_FIRE_INCOMING_PHASE' | 'MISSILE_FIRE_PHASE' | 'MISSILE_MOVEMENT_PHASE' | 'MOVEMENT_PHASE';
+    export type CombatPhaseEnum = 'MOVEMENT_PHASE' | 'ELOKA_PHASE' | 'COUNTER_MISSILE_PHASE' | 'MISSILE_MOVEMENT_PHASE' | 'BEAM_FIRE_INCOMING_PHASE' | 'MISSILE_FIRE_INCOMING_PHASE' | 'BEAM_FIRE_PHASE' | 'MISSILE_FIRE_PHASE';
     export const CombatPhaseEnum = {
-        BEAMFIREINCOMINGPHASE: 'BEAM_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
-        BEAMFIREPHASE: 'BEAM_FIRE_PHASE' as CombatPhaseEnum,
-        COUNTERMISSILEPHASE: 'COUNTER_MISSILE_PHASE' as CombatPhaseEnum,
+        MOVEMENTPHASE: 'MOVEMENT_PHASE' as CombatPhaseEnum,
         ELOKAPHASE: 'ELOKA_PHASE' as CombatPhaseEnum,
-        MISSILEFIREINCOMINGPHASE: 'MISSILE_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
-        MISSILEFIREPHASE: 'MISSILE_FIRE_PHASE' as CombatPhaseEnum,
+        COUNTERMISSILEPHASE: 'COUNTER_MISSILE_PHASE' as CombatPhaseEnum,
         MISSILEMOVEMENTPHASE: 'MISSILE_MOVEMENT_PHASE' as CombatPhaseEnum,
-        MOVEMENTPHASE: 'MOVEMENT_PHASE' as CombatPhaseEnum
+        BEAMFIREINCOMINGPHASE: 'BEAM_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
+        MISSILEFIREINCOMINGPHASE: 'MISSILE_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
+        BEAMFIREPHASE: 'BEAM_FIRE_PHASE' as CombatPhaseEnum,
+        MISSILEFIREPHASE: 'MISSILE_FIRE_PHASE' as CombatPhaseEnum
     };
 }

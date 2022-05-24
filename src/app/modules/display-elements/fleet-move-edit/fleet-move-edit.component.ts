@@ -57,7 +57,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         if (!!this.targetOrbit && !!this.targetOrbit.system && !!this.targetOrbit.orbit) {
             let idStarSystem = this.targetOrbit.system.idStarSystem;
             let orbit = this.targetOrbit.orbit;
-            let sub = this.planetApi.getPlanetByCoordinates(idStarSystem, orbit)
+            let sub = this.planetApi.getPlanetByCoordinates(orbit, idStarSystem)
                 .subscribe(resp => {
                     this.destination = resp;
                     this.createDestinationRepresentation();
@@ -80,7 +80,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
                 idFleetToMove: this.fleetInput.idFleet,
                 destinationOrbit: this.targetOrbit.orbit
             }
-            let sub = this.fleetApi.planMovement(userID, fm).subscribe(resp => {
+            let sub = this.fleetApi.planMovement(fm, userID).subscribe(resp => {
                 this.plannedMovement = resp;
             });
             this.subscriptions.push(sub);

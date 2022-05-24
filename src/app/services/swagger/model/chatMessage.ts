@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,22 +11,25 @@
  */
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface ChatMessage { 
     /**
      * The id of this message.
      */
     idUserMessage?: number;
+    sender: UserJson;
     /**
      * The message itself
      */
     message: string;
     /**
-     * The timestamp on which the message was read.
-     */
-    receivedAt?: Date;
-    sender: UserJson;
-    /**
      * The timestamp on which the message was sent.
      */
     sentAt: Date;
+    /**
+     * The timestamp on which the message was read.
+     */
+    receivedAt?: Date;
 }

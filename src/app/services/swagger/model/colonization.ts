@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,15 +12,18 @@
 import { Planet } from './planet';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface Colonization { 
-    /**
-     * The amount of ticks to complete colonization.
-     */
-    doneAtZero: number;
     /**
      * The id of the colonization.
      */
     idColonization: number;
-    target: Planet;
     user: UserJson;
+    target: Planet;
+    /**
+     * The amount of ticks to complete colonization.
+     */
+    doneAtZero: number;
 }

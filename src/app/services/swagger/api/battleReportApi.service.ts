@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -55,12 +55,13 @@ export class BattleReportApiService {
         return false;
     }
 
+
     /**
      * Get all fighting reports for the user.
      * 
-     * @param idUser idUser
-     * @param page page
-     * @param size size
+     * @param idUser 
+     * @param page 
+     * @param size 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

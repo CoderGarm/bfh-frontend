@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,6 +12,9 @@
 import { StarSystem } from './starSystem';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface FleetDistributionPerUser { 
     starSystem: StarSystem;
     /**

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -61,8 +61,8 @@ export class PlanetApiService {
     /**
      * Starts a construction on this planet.
      * 
-     * @param idPlanet idPlanet
-     * @param idBuilding idBuilding
+     * @param idPlanet 
+     * @param idBuilding 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -108,15 +108,18 @@ export class PlanetApiService {
     /**
      * Starts a construction on this planet.
      * 
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buildShip(body?: ShipyardConstructionOrder, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public buildShip(body?: ShipyardConstructionOrder, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public buildShip(body?: ShipyardConstructionOrder, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public buildShip(body?: ShipyardConstructionOrder, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public buildShip(body: ShipyardConstructionOrder, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public buildShip(body: ShipyardConstructionOrder, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public buildShip(body: ShipyardConstructionOrder, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buildShip(body: ShipyardConstructionOrder, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling buildShip.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -153,20 +156,23 @@ export class PlanetApiService {
     /**
      * Gets a planet which is matching to the given coordinates.
      * 
-     * @param idStarSystem idStarSystem
-     * @param body 
+     * @param body default response
+     * @param idStarSystem 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPlanetByCoordinates(idStarSystem: number, body?: Orbit, observe?: 'body', reportProgress?: boolean): Observable<Planet>;
-    public getPlanetByCoordinates(idStarSystem: number, body?: Orbit, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Planet>>;
-    public getPlanetByCoordinates(idStarSystem: number, body?: Orbit, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Planet>>;
-    public getPlanetByCoordinates(idStarSystem: number, body?: Orbit, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPlanetByCoordinates(body: Orbit, idStarSystem: number, observe?: 'body', reportProgress?: boolean): Observable<Planet>;
+    public getPlanetByCoordinates(body: Orbit, idStarSystem: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Planet>>;
+    public getPlanetByCoordinates(body: Orbit, idStarSystem: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Planet>>;
+    public getPlanetByCoordinates(body: Orbit, idStarSystem: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getPlanetByCoordinates.');
+        }
 
         if (idStarSystem === null || idStarSystem === undefined) {
             throw new Error('Required parameter idStarSystem was null or undefined when calling getPlanetByCoordinates.');
         }
-
 
         let headers = this.defaultHeaders;
 
@@ -203,7 +209,7 @@ export class PlanetApiService {
     /**
      * Get all planets which are colonized by a user.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -245,7 +251,7 @@ export class PlanetApiService {
     /**
      * Asks if a building could be build on this planet.
      * 
-     * @param idPlanet idPlanet
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -287,7 +293,7 @@ export class PlanetApiService {
     /**
      * Asks if a ship could be build on this planet.
      * 
-     * @param idPlanet idPlanet
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

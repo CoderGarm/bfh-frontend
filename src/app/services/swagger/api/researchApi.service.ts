@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -60,7 +60,7 @@ export class ResearchApiService {
     /**
      * Get all available researches for the user.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -102,7 +102,7 @@ export class ResearchApiService {
     /**
      * Get all already researched researches for the user.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -144,7 +144,7 @@ export class ResearchApiService {
     /**
      * Checks if a research job is possible for the user.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -186,20 +186,23 @@ export class ResearchApiService {
     /**
      * Starts a research job for the user.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public startResearchByUser(idUser: number, body?: ResearchLevel, observe?: 'body', reportProgress?: boolean): Observable<Job>;
-    public startResearchByUser(idUser: number, body?: ResearchLevel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Job>>;
-    public startResearchByUser(idUser: number, body?: ResearchLevel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Job>>;
-    public startResearchByUser(idUser: number, body?: ResearchLevel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public startResearchByUser(body: ResearchLevel, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Job>;
+    public startResearchByUser(body: ResearchLevel, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Job>>;
+    public startResearchByUser(body: ResearchLevel, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Job>>;
+    public startResearchByUser(body: ResearchLevel, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling startResearchByUser.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling startResearchByUser.');
         }
-
 
         let headers = this.defaultHeaders;
 

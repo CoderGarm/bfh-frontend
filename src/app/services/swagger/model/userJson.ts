@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,21 +10,24 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface UserJson { 
-    /**
-     * The user's alliance.
-     */
-    idAlliance?: number;
     /**
      * The user's database id.
      */
     idUser: number;
     /**
-     * The user's role.
-     */
-    role: string;
-    /**
      * The user's name
      */
     username: string;
+    /**
+     * The user's alliance.
+     */
+    idAlliance?: number;
+    /**
+     * The user's role.
+     */
+    role: string;
 }

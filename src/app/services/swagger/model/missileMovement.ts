@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,23 +13,26 @@ import { CombatRoundKey } from './combatRoundKey';
 import { Fleet } from './fleet';
 import { Orbit } from './orbit';
 
+/**
+ * .
+ */
 export interface MissileMovement { 
-    actor: Fleet;
     combatRoundKey: CombatRoundKey;
-    lastPosition: Orbit;
+    actor: Fleet;
+    target: Fleet;
+    /**
+     * The UUID of the moving missile salvo.
+     */
+    movingMissileSalvo: string;
     /**
      * The amount of missiles in this salvo.
      */
     missileAmount: number;
     /**
-     * The UUID of the moving missile salvo.
-     */
-    movingMissileSalvo: string;
-    position: Orbit;
-    /**
      * The amount of rounds which have to be passed before in range for a hit.
      */
     roundsToTravel: number;
-    target: Fleet;
+    position: Orbit;
+    lastPosition: Orbit;
     targetPosition: Orbit;
 }

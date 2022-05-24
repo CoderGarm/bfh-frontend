@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,35 +11,38 @@
  */
 import { BaseModule } from './baseModule';
 
+/**
+ * .
+ */
 export interface PassiveModule { 
     baseModule: BaseModule;
-    /**
-     * If the support is increasing or decreasing.
-     */
-    calculationType: PassiveModule.CalculationTypeEnum;
     /**
      * What type of property is supported.
      */
     supportType: PassiveModule.SupportTypeEnum;
+    /**
+     * If the support is increasing or decreasing.
+     */
+    calculationType: PassiveModule.CalculationTypeEnum;
 }
 export namespace PassiveModule {
+    export type SupportTypeEnum = 'WEAPON' | 'ARMOR' | 'SHIELD' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION';
+    export const SupportTypeEnum = {
+        WEAPON: 'WEAPON' as SupportTypeEnum,
+        ARMOR: 'ARMOR' as SupportTypeEnum,
+        SHIELD: 'SHIELD' as SupportTypeEnum,
+        PROPULSION: 'PROPULSION' as SupportTypeEnum,
+        FTLPROPULSION: 'FTLPROPULSION' as SupportTypeEnum,
+        ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as SupportTypeEnum,
+        CREDITS: 'CREDITS' as SupportTypeEnum,
+        METALORE: 'METALORE' as SupportTypeEnum,
+        RAREELEMENTS: 'RARE_ELEMENTS' as SupportTypeEnum,
+        HEAVYMETALS: 'HEAVY_METALS' as SupportTypeEnum,
+        POPULATION: 'POPULATION' as SupportTypeEnum
+    };
     export type CalculationTypeEnum = 'ADD' | 'SUBTRACT';
     export const CalculationTypeEnum = {
         ADD: 'ADD' as CalculationTypeEnum,
         SUBTRACT: 'SUBTRACT' as CalculationTypeEnum
-    };
-    export type SupportTypeEnum = 'ARMOR' | 'CREDITS' | 'ELECTRONIC_WARFARE' | 'FTLPROPULSION' | 'HEAVY_METALS' | 'METALORE' | 'POPULATION' | 'PROPULSION' | 'RARE_ELEMENTS' | 'SHIELD' | 'WEAPON';
-    export const SupportTypeEnum = {
-        ARMOR: 'ARMOR' as SupportTypeEnum,
-        CREDITS: 'CREDITS' as SupportTypeEnum,
-        ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as SupportTypeEnum,
-        FTLPROPULSION: 'FTLPROPULSION' as SupportTypeEnum,
-        HEAVYMETALS: 'HEAVY_METALS' as SupportTypeEnum,
-        METALORE: 'METALORE' as SupportTypeEnum,
-        POPULATION: 'POPULATION' as SupportTypeEnum,
-        PROPULSION: 'PROPULSION' as SupportTypeEnum,
-        RAREELEMENTS: 'RARE_ELEMENTS' as SupportTypeEnum,
-        SHIELD: 'SHIELD' as SupportTypeEnum,
-        WEAPON: 'WEAPON' as SupportTypeEnum
     };
 }

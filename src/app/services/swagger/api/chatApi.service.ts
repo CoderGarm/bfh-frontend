@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -60,15 +60,18 @@ export class ChatApiService {
     /**
      * Creates a chat message thread
      * Creates a chat message thread
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createChatMessageThread(body?: ChatHistory, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
-    public createChatMessageThread(body?: ChatHistory, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
-    public createChatMessageThread(body?: ChatHistory, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
-    public createChatMessageThread(body?: ChatHistory, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createChatMessageThread(body: ChatHistory, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
+    public createChatMessageThread(body: ChatHistory, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
+    public createChatMessageThread(body: ChatHistory, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
+    public createChatMessageThread(body: ChatHistory, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling createChatMessageThread.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -105,7 +108,7 @@ export class ChatApiService {
     /**
      * Get all active chats of the user without the messages
      * Get all active chats of the user without the messages
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -147,8 +150,8 @@ export class ChatApiService {
     /**
      * Get the chat history of the users and marks them as read
      * Get the chat between the users and marks them as read
-     * @param idUserOne idUserOne
-     * @param idUserTwo idUserTwo
+     * @param idUserOne 
+     * @param idUserTwo 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -194,15 +197,18 @@ export class ChatApiService {
     /**
      * Creates a chat message
      * Creates a chat message
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendChatMessage(body?: ChatMessage, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
-    public sendChatMessage(body?: ChatMessage, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
-    public sendChatMessage(body?: ChatMessage, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
-    public sendChatMessage(body?: ChatMessage, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public sendChatMessage(body: ChatMessage, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
+    public sendChatMessage(body: ChatMessage, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
+    public sendChatMessage(body: ChatMessage, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
+    public sendChatMessage(body: ChatMessage, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling sendChatMessage.');
+        }
 
         let headers = this.defaultHeaders;
 

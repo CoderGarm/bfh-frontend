@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,10 +11,13 @@
  */
 import { EResourceType } from './eResourceType';
 
+/**
+ * .
+ */
 export interface ResourceAmount { 
+    resourceType: EResourceType;
     /**
      * The amount for the resource.
      */
     amount: number;
-    resourceType: EResourceType;
 }

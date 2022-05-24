@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,21 +13,24 @@ import { CombatRoundKey } from './combatRoundKey';
 import { Fleet } from './fleet';
 import { Missile } from './missile';
 
+/**
+ * .
+ */
 export interface CounterMissileHit { 
+    combatRoundKey: CombatRoundKey;
     actor: Fleet;
+    target: Fleet;
+    /**
+     * The leftover amount of missiles of the given type in the salvo.
+     */
+    remainingMissiles: number;
     /**
      * The UUID of the attacked missile salvo.
      */
     attackedMissileSalvo: string;
-    combatRoundKey: CombatRoundKey;
     /**
      * The amount of destroyed missiles.
      */
     destroyedMissiles: number;
     missile: Missile;
-    /**
-     * The leftover amount of missiles of the given type in the salvo.
-     */
-    remainingMissiles: number;
-    target: Fleet;
 }

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,28 +11,10 @@
  */
 import { EHullType } from './eHullType';
 
+/**
+ * .
+ */
 export interface Hull { 
-    /**
-     * The unaligned construction capacity.
-     */
-    constructionCapacity: number;
-    /**
-     * The bow-aligned construction capacity.
-     */
-    constructionCapacityBow: number;
-    /**
-     * The broadside-aligned construction capacity.
-     */
-    constructionCapacityBroadsides: number;
-    /**
-     * The stern-aligned construction capacity.
-     */
-    constructionCapacityStern: number;
-    /**
-     * The description of the hull.
-     */
-    description: string;
-    hullType: EHullType;
     /**
      * The id of this hull.
      */
@@ -42,7 +24,28 @@ export interface Hull {
      */
     name: string;
     /**
+     * The description of the hull.
+     */
+    description: string;
+    hullType: EHullType;
+    /**
      * The overall construction capacity as displacement like in the wet navies.
      */
     overallConstructionCapacity: number;
+    /**
+     * The unaligned construction capacity.
+     */
+    constructionCapacity: number;
+    /**
+     * The bow-aligned construction capacity.
+     */
+    constructionCapacityBow: number;
+    /**
+     * The stern-aligned construction capacity.
+     */
+    constructionCapacityStern: number;
+    /**
+     * The broadside-aligned construction capacity.
+     */
+    constructionCapacityBroadsides: number;
 }

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,12 +13,15 @@ import { Fleet } from './fleet';
 import { ShipClass } from './shipClass';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface LossRole { 
-    fleet: Fleet;
     owner: UserJson;
-    shipClass: ShipClass;
+    fleet: Fleet;
     /**
      * The name of the war ship which was destroyed.
      */
     warShipName: string;
+    shipClass: ShipClass;
 }

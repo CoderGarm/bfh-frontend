@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,25 +13,28 @@ import { CombatRoundKey } from './combatRoundKey';
 import { Fleet } from './fleet';
 import { Orbit } from './orbit';
 
+/**
+ * .
+ */
 export interface MovementAction { 
-    actor: Fleet;
     combatRoundKey: CombatRoundKey;
-    destination: Orbit;
-    interimDestination: Orbit;
+    actor: Fleet;
     /**
      * The selected movement option for this action.
      */
     movementType: MovementAction.MovementTypeEnum;
     origin: Orbit;
+    interimDestination: Orbit;
+    destination: Orbit;
 }
 export namespace MovementAction {
-    export type MovementTypeEnum = 'EVASION_MOVEMENT' | 'HOLD_DISTANCE' | 'IMPELLER_WEDGE_PROTECTION' | 'INCREASE_DISTANCE' | 'OFFENSIVE_ROLL' | 'REDUCE_DISTANCE';
+    export type MovementTypeEnum = 'REDUCE_DISTANCE' | 'INCREASE_DISTANCE' | 'HOLD_DISTANCE' | 'IMPELLER_WEDGE_PROTECTION' | 'OFFENSIVE_ROLL' | 'EVASION_MOVEMENT';
     export const MovementTypeEnum = {
-        EVASIONMOVEMENT: 'EVASION_MOVEMENT' as MovementTypeEnum,
+        REDUCEDISTANCE: 'REDUCE_DISTANCE' as MovementTypeEnum,
+        INCREASEDISTANCE: 'INCREASE_DISTANCE' as MovementTypeEnum,
         HOLDDISTANCE: 'HOLD_DISTANCE' as MovementTypeEnum,
         IMPELLERWEDGEPROTECTION: 'IMPELLER_WEDGE_PROTECTION' as MovementTypeEnum,
-        INCREASEDISTANCE: 'INCREASE_DISTANCE' as MovementTypeEnum,
         OFFENSIVEROLL: 'OFFENSIVE_ROLL' as MovementTypeEnum,
-        REDUCEDISTANCE: 'REDUCE_DISTANCE' as MovementTypeEnum
+        EVASIONMOVEMENT: 'EVASION_MOVEMENT' as MovementTypeEnum
     };
 }

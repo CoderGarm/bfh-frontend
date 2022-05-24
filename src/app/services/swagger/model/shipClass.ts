@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -19,26 +19,40 @@ import { Sidewall } from './sidewall';
 import { SupportFitting } from './supportFitting';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface ShipClass { 
     /**
-     * The ammunition loadout of this class.
+     * The ID.
      */
-    ammunitionFittings: Array<AmmunitionFitting>;
+    idShipClass?: number;
+    owner: UserJson;
+    /**
+     * The name of this class.
+     */
+    name: string;
+    hull: Hull;
+    propulsion?: Propulsion;
     armor?: Armor;
+    sidewall?: Sidewall;
     electronicWarfare?: ElectronicWarfare;
     /**
      * The weapon systems of this class.
      */
     fittings: Array<AlignedFitting>;
-    hull: Hull;
+    /**
+     * The ammunition loadout of this class.
+     */
+    ammunitionFittings: Array<AmmunitionFitting>;
+    /**
+     * The support fitting of this class.
+     */
+    supportFittings: Array<SupportFitting>;
     /**
      * The id of the predecessor of this class.
      */
     idPredecessor?: number;
-    /**
-     * The ID.
-     */
-    idShipClass?: number;
     /**
      * The id of the successor of this class.
      */
@@ -47,15 +61,4 @@ export interface ShipClass {
      * The mark of this class.
      */
     mark: number;
-    /**
-     * The name of this class.
-     */
-    name: string;
-    owner: UserJson;
-    propulsion?: Propulsion;
-    sidewall?: Sidewall;
-    /**
-     * The support fitting of this class.
-     */
-    supportFittings: Array<SupportFitting>;
 }

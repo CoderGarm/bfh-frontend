@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,30 +13,33 @@ import { CombatRoundKey } from './combatRoundKey';
 import { Distance } from './distance';
 import { Fleet } from './fleet';
 
+/**
+ * .
+ */
 export interface ReleasedVolley { 
-    actor: Fleet;
-    /**
-     * The amount of missiles in this salvo.
-     */
-    amountOfShots: number;
     combatRoundKey: CombatRoundKey;
+    actor: Fleet;
+    target: Fleet;
     /**
      * The UUID of the damage dealer.
      */
     damageDealer: string;
-    initialDistance: Distance;
-    target: Fleet;
     /**
      * The type of the damage dealer.
      */
     weaponType: ReleasedVolley.WeaponTypeEnum;
+    /**
+     * The amount of missiles in this salvo.
+     */
+    amountOfShots: number;
+    initialDistance: Distance;
 }
 export namespace ReleasedVolley {
-    export type WeaponTypeEnum = 'BEAM' | 'COUNTER_MISSILE' | 'MISSILE' | 'POINT_DEFENSE';
+    export type WeaponTypeEnum = 'MISSILE' | 'BEAM' | 'COUNTER_MISSILE' | 'POINT_DEFENSE';
     export const WeaponTypeEnum = {
+        MISSILE: 'MISSILE' as WeaponTypeEnum,
         BEAM: 'BEAM' as WeaponTypeEnum,
         COUNTERMISSILE: 'COUNTER_MISSILE' as WeaponTypeEnum,
-        MISSILE: 'MISSILE' as WeaponTypeEnum,
         POINTDEFENSE: 'POINT_DEFENSE' as WeaponTypeEnum
     };
 }

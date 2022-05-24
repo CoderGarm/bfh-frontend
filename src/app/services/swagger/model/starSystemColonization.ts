@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,11 +13,15 @@ import { Colonization } from './colonization';
 import { Distance } from './distance';
 import { StarSystem } from './starSystem';
 
+/**
+ * .
+ */
 export interface StarSystemColonization { 
+    starSystem: StarSystem;
     /**
-     * The costs to colonize the planet by idPlanet.
+     * The star system with its distance to all known systems by id.
      */
-    colonizationsByPlanet: { [key: string]: Colonization; };
+    distanceMap: { [key: string]: Distance; };
     /**
      * The costs to buy the colonization information about the system.
      */
@@ -27,8 +31,7 @@ export interface StarSystemColonization {
      */
     costsToColonization: { [key: string]: string; };
     /**
-     * The star system with its distance to all known systems by id.
+     * The costs to colonize the planet by idPlanet.
      */
-    distanceMap: { [key: string]: Distance; };
-    starSystem: StarSystem;
+    colonizationsByPlanet: { [key: string]: Colonization; };
 }

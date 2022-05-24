@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -62,20 +62,23 @@ export class ColonizationApiService {
     /**
      * Get all not colonized but known systems for a user.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buyInformationForSystem(idUser: number, body?: StarSystem, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public buyInformationForSystem(idUser: number, body?: StarSystem, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public buyInformationForSystem(idUser: number, body?: StarSystem, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public buyInformationForSystem(idUser: number, body?: StarSystem, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buyInformationForSystem(body: StarSystem, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling buyInformationForSystem.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling buyInformationForSystem.');
         }
-
 
         let headers = this.defaultHeaders;
 
@@ -112,7 +115,7 @@ export class ColonizationApiService {
     /**
      * Get all colonizable systems for a user with their distances to all known systems.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -154,7 +157,7 @@ export class ColonizationApiService {
     /**
      * Get all not colonized but known systems for a user.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -196,7 +199,7 @@ export class ColonizationApiService {
     /**
      * Get all not known systems for a user.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -238,7 +241,7 @@ export class ColonizationApiService {
     /**
      * Get all pending colonizations for the user with their distances to all known systems.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -280,7 +283,7 @@ export class ColonizationApiService {
     /**
      * Get all not colonized but known systems for a user.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -322,20 +325,23 @@ export class ColonizationApiService {
     /**
      * Starts the colonization of a planet for a user.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public startColonizingPlanet(idUser: number, body?: Planet, observe?: 'body', reportProgress?: boolean): Observable<Colonization>;
-    public startColonizingPlanet(idUser: number, body?: Planet, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Colonization>>;
-    public startColonizingPlanet(idUser: number, body?: Planet, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Colonization>>;
-    public startColonizingPlanet(idUser: number, body?: Planet, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public startColonizingPlanet(body: Planet, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Colonization>;
+    public startColonizingPlanet(body: Planet, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Colonization>>;
+    public startColonizingPlanet(body: Planet, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Colonization>>;
+    public startColonizingPlanet(body: Planet, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling startColonizingPlanet.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling startColonizingPlanet.');
         }
-
 
         let headers = this.defaultHeaders;
 

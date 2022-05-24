@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,6 +10,9 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface Distance { 
     /**
      * The value of this distance.
@@ -21,16 +24,16 @@ export interface Distance {
     distanceMetric: Distance.DistanceMetricEnum;
 }
 export namespace Distance {
-    export type DistanceMetricEnum = 'AU' | 'KM' | 'LD' | 'LH' | 'LM' | 'LS' | 'LY' | 'M' | 'PC';
+    export type DistanceMetricEnum = 'M' | 'KM' | 'LS' | 'LM' | 'AU' | 'LH' | 'LD' | 'LY' | 'PC';
     export const DistanceMetricEnum = {
-        AU: 'AU' as DistanceMetricEnum,
-        KM: 'KM' as DistanceMetricEnum,
-        LD: 'LD' as DistanceMetricEnum,
-        LH: 'LH' as DistanceMetricEnum,
-        LM: 'LM' as DistanceMetricEnum,
-        LS: 'LS' as DistanceMetricEnum,
-        LY: 'LY' as DistanceMetricEnum,
         M: 'M' as DistanceMetricEnum,
+        KM: 'KM' as DistanceMetricEnum,
+        LS: 'LS' as DistanceMetricEnum,
+        LM: 'LM' as DistanceMetricEnum,
+        AU: 'AU' as DistanceMetricEnum,
+        LH: 'LH' as DistanceMetricEnum,
+        LD: 'LD' as DistanceMetricEnum,
+        LY: 'LY' as DistanceMetricEnum,
         PC: 'PC' as DistanceMetricEnum
     };
 }

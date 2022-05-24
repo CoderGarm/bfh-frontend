@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -15,14 +15,22 @@ import { Fleet } from './fleet';
 import { HitLog } from './hitLog';
 import { LossRole } from './lossRole';
 
+/**
+ * .
+ */
 export interface ShipKillerHit { 
-    actor: Fleet;
     combatRoundKey: CombatRoundKey;
+    actor: Fleet;
+    target: Fleet;
     /**
      * The UUID of the damage dealer.
      */
     damageDealer: string;
     distance: Distance;
+    /**
+     * The result of this salvo.
+     */
+    result: ShipKillerHit.ResultEnum;
     /**
      * A hit log list.
      */
@@ -31,16 +39,11 @@ export interface ShipKillerHit {
      * If the hit results in a destroyed ship, this will be logged here. By the id of the hit log.
      */
     lossesByHit: { [key: string]: LossRole; };
-    /**
-     * The result of this salvo.
-     */
-    result: ShipKillerHit.ResultEnum;
-    target: Fleet;
 }
 export namespace ShipKillerHit {
-    export type ResultEnum = 'BURST_ON_IMPELLER_WEDGE' | 'DAMAGE_APPLIED';
+    export type ResultEnum = 'DAMAGE_APPLIED' | 'BURST_ON_IMPELLER_WEDGE';
     export const ResultEnum = {
-        BURSTONIMPELLERWEDGE: 'BURST_ON_IMPELLER_WEDGE' as ResultEnum,
-        DAMAGEAPPLIED: 'DAMAGE_APPLIED' as ResultEnum
+        DAMAGEAPPLIED: 'DAMAGE_APPLIED' as ResultEnum,
+        BURSTONIMPELLERWEDGE: 'BURST_ON_IMPELLER_WEDGE' as ResultEnum
     };
 }

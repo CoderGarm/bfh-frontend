@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,11 +11,14 @@
  */
 import { EEducationType } from './eEducationType';
 
+/**
+ * .
+ */
 export interface ERefinementSequence { 
-    educt: EEducationType;
-    product: EEducationType;
     /**
      * The refinement sequence type name.
      */
     typeName: string;
+    educt: EEducationType;
+    product: EEducationType;
 }

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -12,39 +12,42 @@
 import { CombatRoundKey } from './combatRoundKey';
 import { WarShip } from './warShip';
 
+/**
+ * .
+ */
 export interface HitLog { 
-    alive?: boolean;
-    /**
-     * The attacked part of the ship.
-     */
-    attackedPart: HitLog.AttackedPartEnum;
     combatRoundKey: CombatRoundKey;
     /**
      * The UUID of the damage dealer.
      */
     damageDealer: string;
-    /**
-     * The applied damage.
-     */
-    damageValue: number;
-    fightingCapable?: boolean;
-    /**
-     * The remaining hit points of the attacked part of the ship.
-     */
-    state: number;
     warShip: WarShip;
     /**
      * The string representation of the target's health state.
      */
     warshipHealthState: string;
+    /**
+     * The applied damage.
+     */
+    damageValue: number;
+    /**
+     * The remaining hit points of the attacked part of the ship.
+     */
+    state: number;
+    /**
+     * The attacked part of the ship.
+     */
+    attackedPart: HitLog.AttackedPartEnum;
+    alive?: boolean;
+    fightingCapable?: boolean;
 }
 export namespace HitLog {
-    export type AttackedPartEnum = 'ARMOR' | 'ELOKA' | 'FITTING_AND_HULL' | 'PROPULSION' | 'SIDEWALL';
+    export type AttackedPartEnum = 'FITTING_AND_HULL' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'ELOKA';
     export const AttackedPartEnum = {
-        ARMOR: 'ARMOR' as AttackedPartEnum,
-        ELOKA: 'ELOKA' as AttackedPartEnum,
         FITTINGANDHULL: 'FITTING_AND_HULL' as AttackedPartEnum,
+        ARMOR: 'ARMOR' as AttackedPartEnum,
+        SIDEWALL: 'SIDEWALL' as AttackedPartEnum,
         PROPULSION: 'PROPULSION' as AttackedPartEnum,
-        SIDEWALL: 'SIDEWALL' as AttackedPartEnum
+        ELOKA: 'ELOKA' as AttackedPartEnum
     };
 }

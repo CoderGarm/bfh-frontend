@@ -193,7 +193,7 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
     private getCosts() {
         let userID = this.tokenStorage.getUserID();
         if (!!this.designedShipClassInput && !!userID && this.idChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(userID, this.designedShipClassInput)
+            let sub = this.resourceApi.getShipClassCosts(this.designedShipClassInput, userID)
                 .subscribe(resp => this.resourceDeposit = resp);
             this.subscriptions.push(sub);
         } else if (!this.designedShipClassInput) {

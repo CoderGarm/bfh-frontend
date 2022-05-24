@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,7 +13,15 @@ import { AmmunitionModule } from './ammunitionModule';
 import { BaseModule } from './baseModule';
 import { Missile } from './missile';
 
+/**
+ * .
+ */
 export interface Launcher { 
+    baseModule: BaseModule;
+    /**
+     * The way how the damage will be projected.
+     */
+    weaponType: Launcher.WeaponTypeEnum;
     /**
      * The possible mount points of this weapon.
      */
@@ -23,24 +31,19 @@ export interface Launcher {
      */
     allowedMissiles: Array<Missile>;
     ammunitionModule: AmmunitionModule;
-    baseModule: BaseModule;
-    /**
-     * The way how the damage will be projected.
-     */
-    weaponType: Launcher.WeaponTypeEnum;
 }
 export namespace Launcher {
-    export type AlignmentTypesEnum = 'BOW' | 'BROADSIDE' | 'STERN';
-    export const AlignmentTypesEnum = {
-        BOW: 'BOW' as AlignmentTypesEnum,
-        BROADSIDE: 'BROADSIDE' as AlignmentTypesEnum,
-        STERN: 'STERN' as AlignmentTypesEnum
-    };
-    export type WeaponTypeEnum = 'BEAM' | 'COUNTER_MISSILE' | 'MISSILE' | 'POINT_DEFENSE';
+    export type WeaponTypeEnum = 'MISSILE' | 'BEAM' | 'COUNTER_MISSILE' | 'POINT_DEFENSE';
     export const WeaponTypeEnum = {
+        MISSILE: 'MISSILE' as WeaponTypeEnum,
         BEAM: 'BEAM' as WeaponTypeEnum,
         COUNTERMISSILE: 'COUNTER_MISSILE' as WeaponTypeEnum,
-        MISSILE: 'MISSILE' as WeaponTypeEnum,
         POINTDEFENSE: 'POINT_DEFENSE' as WeaponTypeEnum
+    };
+    export type AlignmentTypesEnum = 'BOW' | 'STERN' | 'BROADSIDE';
+    export const AlignmentTypesEnum = {
+        BOW: 'BOW' as AlignmentTypesEnum,
+        STERN: 'STERN' as AlignmentTypesEnum,
+        BROADSIDE: 'BROADSIDE' as AlignmentTypesEnum
     };
 }

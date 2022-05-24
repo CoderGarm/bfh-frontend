@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -13,24 +13,27 @@ import { EPlanetClassType } from './ePlanetClassType';
 import { Orbit } from './orbit';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface Planet { 
-    /**
-     * The timestamp when this planet was colonized first.
-     */
-    colonizedAt?: Date;
     /**
      * The ID of this planet.
      */
     idPlanet: number;
-    /**
-     * The star system ID which this planet is part of.
-     */
-    idStarSystem: number;
+    owner?: UserJson;
     /**
      * The name of this planet.
      */
     name: string;
+    /**
+     * The star system ID which this planet is part of.
+     */
+    idStarSystem: number;
     orbit: Orbit;
-    owner?: UserJson;
+    /**
+     * The timestamp when this planet was colonized first.
+     */
+    colonizedAt?: Date;
     planetType: EPlanetClassType;
 }

@@ -2,5 +2,5 @@
                                  [moduleSelectedInput]="moduleToCheckOutput"
                                  [radioGroupName]="radioGroupName"
                                  (selectionOutput)="emitSelection()">
-    <mat-checkbox disabled class="example-margin" [checked]="moduleInput.ftlCapable">FTL capable</mat-checkbox>
+    <mat-checkbox disabled class="example-margin" [checked]="!!moduleInput && !!moduleInput.ftlCapable">FTL capable</mat-checkbox>
 </app-base-module-single-selector>

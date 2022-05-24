@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,13 +10,16 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface ShipyardConstructionSelection { 
-    /**
-     * The amount of the ship class which should be produced.
-     */
-    amount: number;
     /**
      * The ship class which should be produced.
      */
     idShipClass: number;
+    /**
+     * The amount of the ship class which should be produced.
+     */
+    amount: number;
 }

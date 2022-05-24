@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -21,44 +21,47 @@ import { ShipKillerHit } from './shipKillerHit';
 import { Tick } from './tick';
 import { UserJson } from './userJson';
 
+/**
+ * .
+ */
 export interface BattleReport { 
-    /**
-     * The hits against missile salvos.
-     */
-    counterMissileHits: Array<CounterMissileHit>;
     /**
      * The database id of the report.
      */
     idBattleReport: number;
+    tick: Tick;
     lastRound: CombatRound;
-    /**
-     * The losses of this battle.
-     */
-    lossRole: Array<LossRole>;
-    /**
-     * The missile movements during this combat.
-     */
-    missileMovements: Array<MissileMovement>;
-    /**
-     * The movements which were done in this clash.
-     */
-    movementActions: Array<MovementAction>;
     orbit: FleetOrbit;
-    /**
-     * The protagonists - and the antagonists.
-     */
-    participatingFleets: Array<Fleet>;
     /**
      * The participating users.
      */
     participatingUsers: Array<UserJson>;
     /**
+     * The losses of this battle.
+     */
+    lossRole: Array<LossRole>;
+    /**
+     * The protagonists - and the antagonists.
+     */
+    participatingFleets: Array<Fleet>;
+    /**
+     * The movements which were done in this clash.
+     */
+    movementActions: Array<MovementAction>;
+    /**
+     * The hits against missile salvos.
+     */
+    counterMissileHits: Array<CounterMissileHit>;
+    /**
      * All loose off weapon action.
      */
     releasedVolleys: Array<ReleasedVolley>;
     /**
+     * The missile movements during this combat.
+     */
+    missileMovements: Array<MissileMovement>;
+    /**
      * All hits of ship killer weapons during this combat.
      */
     shipKillerHits: Array<ShipKillerHit>;
-    tick: Tick;
 }

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -63,8 +63,8 @@ export class FleetApiService {
     /**
      * Cancels a movement of a fleet and creates the way back.
      * 
-     * @param idUser idUser
-     * @param idFleet idFleet
+     * @param idUser 
+     * @param idFleet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -95,6 +95,7 @@ export class FleetApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json'
         ];
 
         return this.httpClient.request<Fleet>('put',`${this.basePath}/api/private/fleet/cancelMove/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(idFleet))}`,
@@ -147,7 +148,7 @@ export class FleetApiService {
     /**
      * Get all fleets inside of a star system.
      * 
-     * @param idStarSystem idStarSystem
+     * @param idStarSystem 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -189,8 +190,8 @@ export class FleetApiService {
     /**
      * Get all fleets inside of a star system for a specific user.
      * 
-     * @param idStarSystem idStarSystem
-     * @param idOwner idOwner
+     * @param idStarSystem 
+     * @param idOwner 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -236,7 +237,7 @@ export class FleetApiService {
     /**
      * Get all fleets of an owner.
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -315,20 +316,23 @@ export class FleetApiService {
     /**
      * Merge two fleets of an owner.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public mergeFleets(idUser: number, body?: FleetMerge, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
-    public mergeFleets(idUser: number, body?: FleetMerge, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
-    public mergeFleets(idUser: number, body?: FleetMerge, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
-    public mergeFleets(idUser: number, body?: FleetMerge, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public mergeFleets(body: FleetMerge, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
+    public mergeFleets(body: FleetMerge, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
+    public mergeFleets(body: FleetMerge, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
+    public mergeFleets(body: FleetMerge, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling mergeFleets.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling mergeFleets.');
         }
-
 
         let headers = this.defaultHeaders;
 
@@ -365,20 +369,23 @@ export class FleetApiService {
     /**
      * Moves a fleet to another celestial.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public moveFleet(idUser: number, body?: FleetMove, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
-    public moveFleet(idUser: number, body?: FleetMove, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
-    public moveFleet(idUser: number, body?: FleetMove, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
-    public moveFleet(idUser: number, body?: FleetMove, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public moveFleet(body: FleetMove, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
+    public moveFleet(body: FleetMove, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
+    public moveFleet(body: FleetMove, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
+    public moveFleet(body: FleetMove, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling moveFleet.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling moveFleet.');
         }
-
 
         let headers = this.defaultHeaders;
 
@@ -415,20 +422,23 @@ export class FleetApiService {
     /**
      * Moves a fleet to another celestial.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public moveFleets(idUser: number, body?: Array<FleetMove>, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
-    public moveFleets(idUser: number, body?: Array<FleetMove>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
-    public moveFleets(idUser: number, body?: Array<FleetMove>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
-    public moveFleets(idUser: number, body?: Array<FleetMove>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public moveFleets(body: Array<FleetMove>, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
+    public moveFleets(body: Array<FleetMove>, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
+    public moveFleets(body: Array<FleetMove>, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public moveFleets(body: Array<FleetMove>, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling moveFleets.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling moveFleets.');
         }
-
 
         let headers = this.defaultHeaders;
 
@@ -465,20 +475,23 @@ export class FleetApiService {
     /**
      * Plan a movement of a fleet to another celestial.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public planMovement(idUser: number, body?: FleetMove, observe?: 'body', reportProgress?: boolean): Observable<Move>;
-    public planMovement(idUser: number, body?: FleetMove, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Move>>;
-    public planMovement(idUser: number, body?: FleetMove, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Move>>;
-    public planMovement(idUser: number, body?: FleetMove, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public planMovement(body: FleetMove, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Move>;
+    public planMovement(body: FleetMove, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Move>>;
+    public planMovement(body: FleetMove, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Move>>;
+    public planMovement(body: FleetMove, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling planMovement.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling planMovement.');
         }
-
 
         let headers = this.defaultHeaders;
 
@@ -515,20 +528,23 @@ export class FleetApiService {
     /**
      * Plan a movement of a fleet to another celestial.
      * 
-     * @param idUser idUser
-     * @param body 
+     * @param body default response
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public planMovements(idUser: number, body?: Array<FleetMove>, observe?: 'body', reportProgress?: boolean): Observable<Array<Move>>;
-    public planMovements(idUser: number, body?: Array<FleetMove>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Move>>>;
-    public planMovements(idUser: number, body?: Array<FleetMove>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Move>>>;
-    public planMovements(idUser: number, body?: Array<FleetMove>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public planMovements(body: Array<FleetMove>, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Move>>;
+    public planMovements(body: Array<FleetMove>, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Move>>>;
+    public planMovements(body: Array<FleetMove>, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Move>>>;
+    public planMovements(body: Array<FleetMove>, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling planMovements.');
+        }
 
         if (idUser === null || idUser === undefined) {
             throw new Error('Required parameter idUser was null or undefined when calling planMovements.');
         }
-
 
         let headers = this.defaultHeaders;
 

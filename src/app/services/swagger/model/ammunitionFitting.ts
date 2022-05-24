@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,6 +11,9 @@
  */
 import { AmmunitionModule } from './ammunitionModule';
 
+/**
+ * .
+ */
 export interface AmmunitionFitting { 
     ammunitionModule: AmmunitionModule;
     /**

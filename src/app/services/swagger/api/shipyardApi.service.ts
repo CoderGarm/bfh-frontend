@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -61,8 +61,8 @@ export class ShipyardApiService {
     /**
      * Checks if the name for a ship class is free for new classes only.
      * 
-     * @param idUser idUser
-     * @param className className
+     * @param idUser 
+     * @param className 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -108,8 +108,8 @@ export class ShipyardApiService {
     /**
      * Marks a ship classes as deleted.
      * 
-     * @param idUser idUser
-     * @param idShipClass idShipClass
+     * @param idUser 
+     * @param idShipClass 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -130,8 +130,7 @@ export class ShipyardApiService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            '*/*',
-            'application/json'
+            '*/*'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -229,7 +228,7 @@ export class ShipyardApiService {
     /**
      * Get all active ship classes for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -271,7 +270,7 @@ export class ShipyardApiService {
     /**
      * Get all active ship classes for the owner .
      * 
-     * @param idUser idUser
+     * @param idUser 
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -300,7 +299,7 @@ export class ShipyardApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            '*/*'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected != undefined) {

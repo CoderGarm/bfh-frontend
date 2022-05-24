@@ -81,7 +81,7 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
     private getCosts() {
         let userID = this.tokenStorage.getUserID();
         if (!!this.selectedShipClassInput && !!userID && this.idChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(userID, this.selectedShipClassInput)
+            let sub = this.resourceApi.getShipClassCosts(this.selectedShipClassInput, userID)
                 .subscribe(resp => this.resourceDeposit = resp);
             this.subscriptions.push(sub);
         } else if (!this.selectedShipClassInput) {

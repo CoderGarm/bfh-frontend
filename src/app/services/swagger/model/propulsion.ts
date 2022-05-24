@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,10 +11,27 @@
  */
 import { BaseModule } from './baseModule';
 
+/**
+ * .
+ */
 export interface Propulsion { 
     baseModule: BaseModule;
     /**
      * If this propulsion module if for faster then light.
      */
-    ftlCapable: boolean;
+    ftlCapable: Propulsion.FtlCapableEnum;
+}
+export namespace Propulsion {
+    export type FtlCapableEnum = 'NONE' | 'ALPHA' | 'BETA' | 'GAMMA' | 'DELTA' | 'EPSILON' | 'ZETA' | 'ETA' | 'THETA';
+    export const FtlCapableEnum = {
+        NONE: 'NONE' as FtlCapableEnum,
+        ALPHA: 'ALPHA' as FtlCapableEnum,
+        BETA: 'BETA' as FtlCapableEnum,
+        GAMMA: 'GAMMA' as FtlCapableEnum,
+        DELTA: 'DELTA' as FtlCapableEnum,
+        EPSILON: 'EPSILON' as FtlCapableEnum,
+        ZETA: 'ZETA' as FtlCapableEnum,
+        ETA: 'ETA' as FtlCapableEnum,
+        THETA: 'THETA' as FtlCapableEnum
+    };
 }

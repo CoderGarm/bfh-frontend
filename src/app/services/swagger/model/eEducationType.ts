@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -10,19 +10,22 @@
  * Do not edit the class manually.
  */
 
+/**
+ * .
+ */
 export interface EEducationType { 
-    /**
-     * The folder name for resources.
-     */
-    folder: string;
-    /**
-     * The icon name for this resource.
-     */
-    iconName: string;
-    isWorkforce?: boolean;
-    requirement?: EEducationType;
     /**
      * The type name of this  transformed enum.
      */
     typeName: string;
+    /**
+     * The icon name for this resource.
+     */
+    iconName: string;
+    /**
+     * The folder name for resources.
+     */
+    folder: string;
+    isWorkforce?: boolean;
+    requirement?: EEducationType;
 }

@@ -1,6 +1,6 @@
 /**
  * BoF REST API
- * description
+ * Battle for honor interface
  *
  * OpenAPI spec version: 0.0.1
  * Contact: bla@bla.com
@@ -11,12 +11,10 @@
  */
 import { Distance } from './distance';
 
+/**
+ * .
+ */
 export interface Warhead { 
-    damageProjectionRange: Distance;
-    /**
-     * The projected damage of this warhead.
-     */
-    damageValue: number;
     /**
      * The id of this warhead.
      */
@@ -26,20 +24,25 @@ export interface Warhead {
      */
     typeName: string;
     /**
-     * The used capacity of this warhead.
+     * The projected damage of this warhead.
      */
-    useCapacity: number;
+    damageValue: number;
+    damageProjectionRange: Distance;
     /**
      * The warhead type.
      */
     warheadType: Warhead.WarheadTypeEnum;
+    /**
+     * The used capacity of this warhead.
+     */
+    useCapacity: number;
 }
 export namespace Warhead {
-    export type WarheadTypeEnum = 'COUNTER_MISSILE' | 'EXPLOSION' | 'KINETIC' | 'LASER';
+    export type WarheadTypeEnum = 'LASER' | 'EXPLOSION' | 'KINETIC' | 'COUNTER_MISSILE';
     export const WarheadTypeEnum = {
-        COUNTERMISSILE: 'COUNTER_MISSILE' as WarheadTypeEnum,
+        LASER: 'LASER' as WarheadTypeEnum,
         EXPLOSION: 'EXPLOSION' as WarheadTypeEnum,
         KINETIC: 'KINETIC' as WarheadTypeEnum,
-        LASER: 'LASER' as WarheadTypeEnum
+        COUNTERMISSILE: 'COUNTER_MISSILE' as WarheadTypeEnum
     };
 }
