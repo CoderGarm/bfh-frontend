@@ -1,5 +1,6 @@
 <app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit"
-                                      [costs]="costsToDisplay"></app-resource-deposit-overlay-display>
+                                      [costs]="costsToDisplay"
+                                      [income]="income"></app-resource-deposit-overlay-display>
 <div>
     <p>Filter</p>
     <mat-form-field appearance="outline">
@@ -33,7 +34,7 @@
                            step="1" min="0"
                            (click)="$event.stopPropagation();"
                            autocomplete="off"
-                           [value]=getAmount(shipClass)
+                           [value]=getAmountString(shipClass)
                            (change)="getAmount(shipClass)">
                 </div>
                 <mat-icon matSuffix (click)="add(shipClass); $event.stopPropagation();">add</mat-icon>

@@ -1,22 +1,28 @@
-<mat-form-field appearance="fill" id="mainMessage">
-  <mat-label>Message</mat-label>
-  <input matInput disabled [value]="errorData.message">
-</mat-form-field>
-<br>
 <div *ngIf="!!errorData.validationResults && errorData.validationResults.length > 0">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 error-table">
-    <ng-container matColumnDef="property">
-      <th mat-header-cell *matHeaderCellDef>Property</th>
-      <td mat-cell *matCellDef="let validationResult"> {{validationResult.property}} </td>
-    </ng-container>
+    <mat-form-field appearance="fill" id="mainMessage">
+        <mat-label>Message</mat-label>
+        <input matInput disabled [value]="errorData.message">
+    </mat-form-field>
+    <br>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 error-table">
+        <ng-container matColumnDef="property">
+            <th mat-header-cell *matHeaderCellDef>Property</th>
+            <td mat-cell *matCellDef="let validationResult"> {{validationResult.property}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="message">
-      <th mat-header-cell *matHeaderCellDef>Message</th>
-      <td mat-cell *matCellDef="let validationResult"> {{validationResult.message}} </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>Message</th>
+            <td mat-cell *matCellDef="let validationResult"> {{validationResult.message}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 </div>
 <br>
+<div *ngIf="!errorData.validationResults || errorData.validationResults.length == 0">
+    <mat-form-field appearance="fill" id="mainMessageTextArea">
+        <mat-label>Message</mat-label>
+        <textarea matInput disabled [value]="errorData.message"></textarea>
+    </mat-form-field>
+</div>
 <button mat-raised-button color="secondary" (click)="close()">Close</button>

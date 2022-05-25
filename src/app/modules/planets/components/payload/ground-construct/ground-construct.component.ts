@@ -28,6 +28,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
      * the displayed construction
      */
     currentlyOpenedItemIndex?: Construction;
+    activeConstructionKey?: string;
 
     /**
      * all possible construction which could be build
@@ -63,6 +64,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     private selectedPlanetDefinition = "selectedPlanetInput";
 
     resourceDeposit?: ResourceDeposit;
+    income?: ResourceDeposit;
+
 
     /**
      * the EResourceType mat chip list
@@ -90,7 +93,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     eRefinementSequenceFC: FormControl = new FormControl({});
 
     /**
-     * if this planets support a new construction
+     * if these planets support a new construction
      */
     constructionPossible: boolean = false;
 
@@ -182,7 +185,23 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
             sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
                 .subscribe(resp => {
-                    this.resourceDeposit = resp;
+                    const c: ResourceDeposit = {
+                        subType: resp.subType,
+                        resources: [],
+                        humanResources: resp.humanResources
+                    };
+                    resp.resources.forEach(r => {
+                        if (r.resourceType.collectableType != EResourceType.CollectableTypeEnum.FORFEITABLE) {
+                            c.resources.push(r);
+                        }
+                    });
+                    this.resourceDeposit = c;
+                });
+            this.subscriptions.push(sub);
+
+            sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanetInput.idPlanet)
+                .subscribe(resp => {
+                    this.income = resp;
                 });
             this.subscriptions.push(sub);
         }
@@ -286,7 +305,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
      * starts the construction of the building at the planet
      */
     startConstruction(construction: Construction) {
-        let sub = this.planetApi.buildBuilding(this.selectedPlanetInput!.idPlanet, construction!.building.idBuilding)
+        let sub = this.planetApi.buildConstruction(this.selectedPlanetInput!.idPlanet, construction!.building.idBuilding)
             .subscribe(resp => {
                 if (resp) {
                     this.notificationService.open("Construction of " + construction.building.name + " started.");
@@ -303,13 +322,15 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     showCosts(construction: Construction | null) {
         if (!construction) {
             this.costsToDisplay = undefined;
+            this.activeConstructionKey = undefined;
             return;
         }
         let c: PlannedConstruction = {
             idBuilding: construction.building.idBuilding,
             targetLevel: construction.level + 1
         }
-        let key: string = c.idBuilding + "-" + c.targetLevel;
+        let key = this.getConstructionKey(construction);
+        this.activeConstructionKey = key;
         let costs: ResourceDeposit | undefined = this.knownCosts.get(key)
         if (!costs) {
             let sub = this.resourceApi.getBuildingCosts(c)
@@ -320,5 +341,10 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.subscriptions.push(sub);
         }
         this.costsToDisplay = costs;
+    }
+
+    private getConstructionKey(construction: Construction) {
+        let s1 = construction.level + 1;
+        return construction.building.idBuilding + "-" + s1;
     }
 }

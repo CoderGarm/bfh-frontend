@@ -1,11 +1,11 @@
-<mat-tab-group>
+<mat-tab-group animationDuration="0ms">
     <mat-tab [label]="actionTabTitles[0]">
         <p> Why I need a dashboard?</p>
     </mat-tab>
     <mat-tab [label]="actionTabTitles[1]">
         <app-ground-construct [selectedPlanetInput]="selectedPlanetInput"></app-ground-construct>
     </mat-tab>
-    <mat-tab [label]="actionTabTitles[2]">
+    <mat-tab [label]="actionTabTitles[2]" [disabled]="!shipyardJobPossible">
         <app-shipyard [selectedPlanetInput]="selectedPlanetInput"></app-shipyard>
     </mat-tab>
     <mat-tab [label]="actionTabTitles[3]">

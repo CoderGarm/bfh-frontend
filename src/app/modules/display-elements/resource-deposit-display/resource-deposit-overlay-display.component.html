@@ -1,5 +1,11 @@
 <div class="sticky">
     <div class="modal" *ngIf="!!resourceDeposit">
+        <div class="tick-box">
+            <p>Ticks needed</p>
+            <p class="tick-amount">
+                {{getTicksNeeded()}}
+            </p>
+        </div>
         <p>Materials</p>
         <div *ngFor="let resource of resourceDeposit.resources" class="box">
             <div class="res-wrapper">
@@ -10,7 +16,10 @@
                     <label class="amount-present">
                         {{resource.amount}}
                     </label>
-                    <div *ngIf="!!costs" class="diffAmount">{{getReducerStringForResources(resource.resourceType)}}</div>
+                    <div class="amount-holder">
+                        <div *ngIf="!!income" class="diffAmount">{{getResourceAsString(resource.resourceType, income)}}</div>
+                        <div *ngIf="!!costs" class="diffAmount">{{getResourceAsString(resource.resourceType, costs)}}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,8 +30,13 @@
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
                 </div>
                 <div>
-                    {{resource.amount}}
-                    <div *ngIf="!!costs" class="diffAmount">{{getReducerStringForHumans(resource.resourceType)}}</div>
+                    <label class="amount-present">
+                        {{resource.amount}}
+                    </label>
+                    <div class="amount-holder">
+                        <div *ngIf="!!income" class="diffAmount">{{getHRCostsAsString(resource.resourceType, income)}}</div>
+                        <div *ngIf="!!costs" class="diffAmount">{{getHRCostsAsString(resource.resourceType, costs)}}</div>
+                    </div>
                 </div>
             </div>
         </div>

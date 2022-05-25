@@ -2,6 +2,7 @@ import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} fr
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {
     EHullType,
+    EResourceType,
     Planet,
     PlanetApiService,
     ResourceDeposit,
@@ -30,7 +31,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     currentlyOpenedItemIndex?: ShipClass;
 
     /**
-     * the productable ship classes
+     * the producable ship classes
      */
     possibleShipClasses: ShipClass[] = [];
 
@@ -48,6 +49,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     private selectedPlanetDefinition = "selectedPlanetInput";
 
     resourceDeposit?: ResourceDeposit;
+    income?: ResourceDeposit;
 
     /**
      * all EResourceType enum elements
@@ -96,13 +98,13 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     }
 
     ngAfterViewInit(): void {
-        let subscription = this.shipyardApi
-            .getEHullTypes()
-            .subscribe(resp => {
-                this.eHullTypes = resp;
-                this.setHullTypeFormControlData();
-                this.filterDisplayedShipClasses();
-            });
+        let subscription = this.shipyardApi.getEHullTypes().subscribe(resp => {
+            this.eHullTypes = resp;
+            this.setHullTypeFormControlData();
+            this.filterDisplayedShipClasses();
+        });
+        this.subscriptions.push(subscription);
+        subscription = this.planetsNotificationService.ask().subscribe(() => this.updateDepositsAndIncome());
         this.subscriptions.push(subscription);
     }
 
@@ -135,12 +137,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
                     idPlanet: this.selectedPlanetInput!.idPlanet,
                     shipJobPayload: []
                 }
-
-                let sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
-                    .subscribe(resp => {
-                        this.resourceDeposit = resp;
-                    });
-                this.subscriptions.push(sub);
+                this.updateDepositsAndIncome();
             }
         }
 
@@ -155,6 +152,22 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
         }
     }
 
+    private updateDepositsAndIncome() {
+        if (!this.selectedPlanetInput) {
+            return;
+        }
+        let sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
+            .subscribe(resp => {
+                this.resourceDeposit = resp;
+            });
+        this.subscriptions.push(sub);
+        sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanetInput.idPlanet)
+            .subscribe(resp => {
+                this.income = resp;
+            });
+        this.subscriptions.push(sub);
+    }
+
     buildConstruction() {
         if (!!this.order) {
             this.order.shipJobPayload = this.selection;
@@ -162,7 +175,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
                 if (resp) {
                     this.notificationService.open("Construction started.")
                     this.shipyardJobPossible = !resp
-
+                    this.planetsNotificationService.push();
                 } else {
                     this.notificationService.open("This was not possible.")
                 }
@@ -256,6 +269,10 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
         return this.currentlyOpenedItemIndex != itemIndex;
     }
 
+    getAmountString(shipClass: ShipClass): string {
+        return "" + this.getAmount(shipClass);
+    }
+
     getAmount(shipClass: ShipClass): number {
         const selection: ShipyardConstructionSelection[] = this.selection.filter(s => s.idShipClass === shipClass.idShipClass);
         if (!selection || selection.length < 1) {
@@ -272,7 +289,9 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     private getCosts() {
         if (!!this.order && this.selection.length != 0) {
             let sub = this.resourceApi.getShipyardOrderCosts(this.selection)
-                .subscribe(resp => this.costsToDisplay = resp);
+                .subscribe(resp => {
+                    this.costsToDisplay = resp;
+                });
             this.subscriptions.push(sub);
         } else {
             this.costsToDisplay = undefined;

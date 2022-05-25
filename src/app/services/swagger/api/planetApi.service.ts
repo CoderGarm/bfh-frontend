@@ -66,10 +66,10 @@ export class PlanetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buildBuilding(idPlanet: number, idBuilding: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public buildBuilding(idPlanet: number, idBuilding: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public buildBuilding(idPlanet: number, idBuilding: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public buildBuilding(idPlanet: number, idBuilding: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buildConstruction(idPlanet: number, idBuilding: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idPlanet === null || idPlanet === undefined) {
             throw new Error('Required parameter idPlanet was null or undefined when calling buildBuilding.');
