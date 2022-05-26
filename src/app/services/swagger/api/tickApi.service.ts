@@ -83,7 +83,7 @@ export class TickApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Tick>>('get',`${this.basePath}/api/private/admin/all`,
+        return this.httpClient.request<Array<Tick>>('get',`${this.basePath}/api/private/tick/all`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -120,7 +120,7 @@ export class TickApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/admin/current`,
+        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/tick/current`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -162,7 +162,7 @@ export class TickApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/admin/${encodeURIComponent(String(idTick))}`,
+        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/tick/${encodeURIComponent(String(idTick))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

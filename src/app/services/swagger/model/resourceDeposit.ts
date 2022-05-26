@@ -18,7 +18,7 @@ import { ResourceAmount } from './resourceAmount';
  */
 export interface ResourceDeposit { 
     /**
-     * The amount of resources by their type.
+     * The amount of stored resources by their type.
      */
     resources: Array<ResourceAmount>;
     /**

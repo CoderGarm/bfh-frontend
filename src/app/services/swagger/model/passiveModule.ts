@@ -40,8 +40,9 @@ export namespace PassiveModule {
         HEAVYMETALS: 'HEAVY_METALS' as SupportTypeEnum,
         POPULATION: 'POPULATION' as SupportTypeEnum
     };
-    export type CalculationTypeEnum = 'ADD' | 'SUBTRACT';
+    export type CalculationTypeEnum = 'NONE' | 'ADD' | 'SUBTRACT';
     export const CalculationTypeEnum = {
+        NONE: 'NONE' as CalculationTypeEnum,
         ADD: 'ADD' as CalculationTypeEnum,
         SUBTRACT: 'SUBTRACT' as CalculationTypeEnum
     };

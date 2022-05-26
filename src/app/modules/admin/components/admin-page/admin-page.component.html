@@ -1,0 +1,10 @@
+<mat-toolbar color="secondary">
+    <mat-toolbar-row>
+        <span>Game Admin Area - don't fuck around!</span>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+        <button mat-flat-button color="primary" (click)='doTick()' *ngIf='isLoggedIn && isAdmin'>
+            Do tick
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>

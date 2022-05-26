@@ -12,6 +12,7 @@ import {ShipClassSidenavComponent} from "../modules/ship-class-construction/comp
 import {FleetSidenavComponent} from "../modules/fleet/components/orga/fleet-sidenav/fleet-sidenav.component";
 import {ExpansionTabViewComponent} from "../modules/expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
 import {JournalTabViewComponent} from "../modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
+import {AdminPageComponent} from "../modules/admin/components/admin-page/admin-page.component";
 
 
 export class NavigationCreationService {
@@ -34,6 +35,7 @@ export class NavigationCreationService {
             {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
             {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: AdminPageComponent.path, component: AdminPageComponent, canActivate: [ProtectedGuard]}, // todo role based access
         ];
     }
 

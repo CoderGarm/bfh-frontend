@@ -13,128 +13,128 @@ import {SubscriptionManager} from "../../SubscriptionManager";
 @Injectable()
 export class AuthenticationService extends SubscriptionManager implements AuthService {
 
-  loginInEvent: EventEmitter<JWT> = new EventEmitter<JWT>();
+    loginInEvent: EventEmitter<JWT> = new EventEmitter<JWT>();
 
-  loginOutEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+    loginOutEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private router: Router,
-              private tokenStorage: TokenStorage,
-              private authService: AuthApiService,
-              private permissionsService: NgxPermissionsService) {
-    super();
-  }
+    constructor(private router: Router,
+                private tokenStorage: TokenStorage,
+                private authService: AuthApiService,
+                private permissionsService: NgxPermissionsService) {
+        super();
+    }
 
-  private subjectAccessData = new Subject<JWT>();
+    private subjectAccessData = new Subject<JWT>();
 
-  setAccessData(access: JWT) {
-    this.setPermissionsByRole(access.role);
-    this.subjectAccessData.next(access);
-  }
+    setAccessData(access: JWT) {
+        this.setPermissionsByRole(access.role);
+        this.subjectAccessData.next(access);
+    }
 
-  clearAccessData() {
-    this.subjectAccessData.next();
-  }
+    clearAccessData() {
+        this.subjectAccessData.next();
+    }
 
-  getAccessData(): Observable<JWT> {
-    return this.subjectAccessData.asObservable();
-  }
+    getAccessData(): Observable<JWT> {
+        return this.subjectAccessData.asObservable();
+    }
 
-  /**
-   * Check, if user already authorized.
-   * @description Should return Observable with true or false values
-   * @returns {Observable<boolean>}
-   * @memberOf AuthService
-   */
-  isAuthorized(): Observable<boolean> {
-    return this.tokenStorage.getAccessToken().pipe(map(token => !!token));
-  }
+    /**
+     * Check, if user already authorized.
+     * @description Should return Observable with true or false values
+     * @returns {Observable<boolean>}
+     * @memberOf AuthService
+     */
+    isAuthorized(): Observable<boolean> {
+        return this.tokenStorage.getAccessToken().pipe(map(token => !!token));
+    }
 
-  /**
-   * Get access token
-   * @description Should return access token in Observable from e.g.
-   * localStorage
-   * @returns {Observable<string>}
-   */
-  getAccessToken(): Observable<string> {
-    return this.tokenStorage.getAccessToken();
-  }
+    /**
+     * Get access token
+     * @description Should return access token in Observable from e.g.
+     * localStorage
+     * @returns {Observable<string>}
+     */
+    getAccessToken(): Observable<string> {
+        return this.tokenStorage.getAccessToken();
+    }
 
-  /**
-   * Function, that should perform refresh token verifyTokenRequest
-   * @description Should be successfully completed so interceptor
-   * can execute pending requests or retry original one
-   * @returns {Observable<any>}
-   */
-  refreshToken(): Observable<JWT> {
-    this.subscriptions.push(this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
-      this.subscriptions.push(this.authService.refresh(refreshToken).subscribe(resp => {
-        this.tokenStorage.setInterruptedURL("true")
-        this.saveAccessData(resp)
-      }));
-    }));
-
-
-    return this.getAccessData().pipe(map(tokens => tokens));
-  }
-
-  /**
-   * Function, checks response of failed request to determine,
-   * whether token be refreshed or not.
-   * @description Essentialy checks status
-   * @param {Response} response
-   * @returns {boolean}
-   */
-  refreshShouldHappen(response: HttpErrorResponse): boolean {
-    return response.status === 401 || response.status === 403;
-  }
-
-  /**
-   * Verify that outgoing request is refresh-token,
-   * so interceptor won't intercept this request
-   * @param {string} url
-   * @returns {boolean}
-   */
-  verifyTokenRequest(url: string): boolean {
-    return url.endsWith('/refresh');
-  }
+    /**
+     * Function, that should perform refresh token verifyTokenRequest
+     * @description Should be successfully completed so interceptor
+     * can execute pending requests or retry original one
+     * @returns {Observable<any>}
+     */
+    refreshToken(): Observable<JWT> {
+        this.subscriptions.push(this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
+            this.subscriptions.push(this.authService.refresh(refreshToken).subscribe(resp => {
+                this.tokenStorage.setInterruptedURL("true")
+                this.saveAccessData(resp)
+            }));
+        }));
 
 
-  private setPermissionsByRole(role: string) {
-    let permissions: string[] = [];
-    permissions.push(role);
-    this.permissionsService.loadPermissions(permissions);
-  }
+        return this.getAccessData().pipe(map(tokens => tokens));
+    }
+
+    /**
+     * Function, checks response of failed request to determine,
+     * whether token be refreshed or not.
+     * @description Essentialy checks status
+     * @param {Response} response
+     * @returns {boolean}
+     */
+    refreshShouldHappen(response: HttpErrorResponse): boolean {
+        return response.status === 401 || response.status === 403;
+    }
+
+    /**
+     * Verify that outgoing request is refresh-token,
+     * so interceptor won't intercept this request
+     * @param {string} url
+     * @returns {boolean}
+     */
+    verifyTokenRequest(url: string): boolean {
+        return url.endsWith('/refresh');
+    }
 
 
-  login(login: AuthRequest): Observable<JWT> {
-    this.subscriptions.push(this.authService.login(login).subscribe(resp => {
-      this.saveAccessData(resp);
-    }));
-    return this.getAccessData();
-  }
+    private setPermissionsByRole(role: string) {
+        let permissions: string[] = [];
+        permissions.push(role);
+        this.permissionsService.loadPermissions(permissions);
+    }
 
-  logout(): void {
-    this.tokenStorage.clear();
-    this.permissionsService.flushPermissions();
-    this.clearAccessData();
-    this.loginOutEvent.next(true);
-    this.router.navigateByUrl(HomeComponent.path);
-  }
 
-  clear(): void {
-    this.tokenStorage.clear();
-  }
+    login(login: AuthRequest): Observable<JWT> {
+        this.subscriptions.push(this.authService.login(login).subscribe(resp => {
+            this.saveAccessData(resp);
+        }));
+        return this.getAccessData();
+    }
 
-  private saveAccessData(token: JWT) {
-    this.tokenStorage
-      .setAccessToken(token.accessToken)
-      .setRefreshToken(token.refreshToken)
-      .setLogin(token.username)
-      .setRole(token.role)
-      .setUserID(token.idUser);
+    logout(): void {
+        this.tokenStorage.clear();
+        this.permissionsService.flushPermissions();
+        this.clearAccessData();
+        this.loginOutEvent.next(true);
+        this.router.navigateByUrl(HomeComponent.path);
+    }
 
-    this.setAccessData(token);
+    clear(): void {
+        this.tokenStorage.clear();
+    }
 
-    this.loginInEvent.next(token);
-  }
+    private saveAccessData(token: JWT) {
+        this.tokenStorage
+            .setAccessToken(token.accessToken)
+            .setRefreshToken(token.refreshToken)
+            .setLogin(token.username)
+            .setRole(token.role)
+            .setUserID(token.idUser);
+
+        this.setAccessData(token);
+
+        this.loginInEvent.next(token);
+    }
 }

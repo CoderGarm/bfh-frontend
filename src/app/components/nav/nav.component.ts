@@ -3,8 +3,9 @@ import {AuthenticationService} from './../../services/authentication/authenticat
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {TokenStorage} from "../../services/authentication/token-storage.service";
-import {AdminApiService, Tick, TickApiService} from "../../services/swagger";
+import {JWT, Tick, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../SubscriptionManager";
+import RoleEnum = JWT.RoleEnum;
 
 
 @Component({
@@ -15,13 +16,13 @@ import {SubscriptionManager} from "../../SubscriptionManager";
 export class NavComponent extends SubscriptionManager implements OnInit {
 
     isLoggedIn: boolean = false;
+    isAdmin: boolean = false;
 
     currentTick?: Tick;
 
     constructor(private router: Router,
                 private authenticationService: AuthenticationService,
                 private tokenStorage: TokenStorage,
-                private adminApi: AdminApiService,
                 private tickApi: TickApiService) {
         super();
     }
@@ -30,6 +31,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
         let sub = this.authenticationService.getAccessData().subscribe(loggedIn => {
             this.isLoggedIn = !!loggedIn;
             if (this.isLoggedIn && !this.tokenStorage.getInterruptedURL()) {
+                this.isAdmin = loggedIn.role === RoleEnum.ADMIN;
                 this.router.navigateByUrl(ProfileComponent.path);
             }
         });
@@ -51,19 +53,12 @@ export class NavComponent extends SubscriptionManager implements OnInit {
 
     logout() {
         this.isLoggedIn = false;
+        this.isAdmin = false;
         this.authenticationService.logout();
     }
 
     @HostListener('window:beforeunload', ['$event'])
     beforeunloadHandler(event: any) {
         this.logout();
-    }
-
-    doTick() {
-        let outerSub = this.adminApi.doTick().subscribe(() => {
-            let sub = this.tickApi.getCurrentTick().subscribe(resp => this.currentTick = resp);
-            this.subscriptions.push(sub);
-        });
-        this.subscriptions.push(outerSub);
     }
 }

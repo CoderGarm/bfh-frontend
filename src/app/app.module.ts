@@ -24,6 +24,7 @@ import {ExpansionModule} from "./modules/expansion/expansion.module";
 import {JournalModule} from "./modules/journal/journal.module";
 import {BasicViewHelper} from "./basic-view-helper";
 import {SnackbarNotificationService} from "./services/snackbar-notification.service";
+import {AdminModule} from "./modules/admin/admin.module";
 
 @NgModule({
     declarations: [
@@ -53,6 +54,7 @@ import {SnackbarNotificationService} from "./services/snackbar-notification.serv
         FleetModule,
         ExpansionModule,
         JournalModule,
+        AdminModule,
     ],
     providers: [NgxPermissionsModule,
         {provide: ErrorHandler, useClass: CustomErrorHandler},

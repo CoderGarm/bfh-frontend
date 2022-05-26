@@ -72,11 +72,11 @@ export class PlanetApiService {
     public buildConstruction(idPlanet: number, idBuilding: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idPlanet === null || idPlanet === undefined) {
-            throw new Error('Required parameter idPlanet was null or undefined when calling buildBuilding.');
+            throw new Error('Required parameter idPlanet was null or undefined when calling buildConstruction.');
         }
 
         if (idBuilding === null || idBuilding === undefined) {
-            throw new Error('Required parameter idBuilding was null or undefined when calling buildBuilding.');
+            throw new Error('Required parameter idBuilding was null or undefined when calling buildConstruction.');
         }
 
         let headers = this.defaultHeaders;

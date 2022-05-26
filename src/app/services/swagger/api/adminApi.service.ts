@@ -83,7 +83,7 @@ export class AdminApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Tick>('get',`${this.basePath}/api/private/admin/doTick`,
+        return this.httpClient.request<Tick>('get',`${this.basePath}/api/admin/admin/doTick`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

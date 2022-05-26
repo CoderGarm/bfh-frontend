@@ -1,17 +1,24 @@
 import {Component, OnInit} from '@angular/core';
+import {TokenStorage} from "../../../services/authentication/token-storage.service";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
 
-  static path: string = 'profile';
+    static path: string = 'profile';
 
-  constructor() { }
+    role?: string;
 
-  ngOnInit(): void {
-  }
+    constructor(private tokenStorage: TokenStorage) {
+    }
+
+    ngOnInit(): void {
+
+        this.role = this.tokenStorage.getRole();
+
+    }
 
 }
