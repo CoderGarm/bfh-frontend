@@ -4,13 +4,15 @@ import {AvailableResearchesComponent} from "./components/payload/available-resea
 import {CompletedResearchesComponent} from "./components/payload/completed-researches/completed-researches.component";
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
+import {TechTreeComponent} from './payload/tech-tree/tech-tree.component';
 
 
 @NgModule({
     declarations: [
         ResearchTabViewComponent,
         AvailableResearchesComponent,
-        CompletedResearchesComponent
+        CompletedResearchesComponent,
+        TechTreeComponent
     ],
     imports: [
         SharedModuleModule,

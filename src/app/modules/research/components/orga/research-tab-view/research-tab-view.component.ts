@@ -9,7 +9,7 @@ export class ResearchTabViewComponent implements OnInit {
 
     static path: string = 'researches';
 
-    actionTabTitles: string[] = [`Available researches`, 'Completed researches'];
+    actionTabTitles: string[] = [`Available researches`, 'Completed researches', 'Tech tree'];
 
     constructor() {
     }

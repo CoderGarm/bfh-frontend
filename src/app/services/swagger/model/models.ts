@@ -54,6 +54,8 @@ export * from './propulsion';
 export * from './releasedVolley';
 export * from './research';
 export * from './researchLevel';
+export * from './researchTree';
+export * from './researchTreeElement';
 export * from './resourceAmount';
 export * from './resourceDeposit';
 export * from './shipClass';

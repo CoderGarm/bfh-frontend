@@ -39,6 +39,7 @@ import {InterstellarFleetDisplayComponent} from './interstellar-fleet-display/in
 import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component';
 import {LauncherModuleDisplayComponent} from './launcher-module-display/launcher-module-display.component';
 import {LauncherCounterComponent} from './launcher-counter/launcher-counter.component';
+import {TechTreeDisplayComponent} from './tech-tree-display/tech-tree-display.component';
 
 @NgModule({
     declarations: [
@@ -81,6 +82,7 @@ import {LauncherCounterComponent} from './launcher-counter/launcher-counter.comp
         InterstellarFleetMovementEditComponent,
         LauncherModuleDisplayComponent,
         LauncherCounterComponent,
+        TechTreeDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -124,7 +126,8 @@ import {LauncherCounterComponent} from './launcher-counter/launcher-counter.comp
         InterstellarFleetDisplayComponent,
         InterstellarFleetMovementEditComponent,
         LauncherModuleDisplayComponent,
-        LauncherCounterComponent
+        LauncherCounterComponent,
+        TechTreeDisplayComponent
     ]
 })
 export class DisplayElementsModule {

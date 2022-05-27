@@ -1,8 +1,11 @@
-<mat-tab-group animationDuration="0ms">
+<mat-tab-group animationDuration="0ms" dynamicHeight>
     <mat-tab [label]="actionTabTitles[0]">
         <app-available-researches></app-available-researches>
     </mat-tab>
     <mat-tab [label]="actionTabTitles[1]">
         <app-completed-researches></app-completed-researches>
+    </mat-tab>
+    <mat-tab [label]="actionTabTitles[2]">
+        <app-tech-tree></app-tech-tree>
     </mat-tab>
 </mat-tab-group>

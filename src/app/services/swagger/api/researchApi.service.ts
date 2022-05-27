@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { FrontendError } from '../model/frontendError';
 import { Job } from '../model/job';
 import { ResearchLevel } from '../model/researchLevel';
+import { ResearchTree } from '../model/researchTree';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -132,6 +133,43 @@ export class ResearchApiService {
         ];
 
         return this.httpClient.request<Array<ResearchLevel>>('get',`${this.basePath}/api/private/research/byUser/${encodeURIComponent(String(idUser))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all researches with their unlocking research.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTree(observe?: 'body', reportProgress?: boolean): Observable<ResearchTree>;
+    public getTree(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResearchTree>>;
+    public getTree(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResearchTree>>;
+    public getTree(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResearchTree>('get',`${this.basePath}/api/private/research/tree`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

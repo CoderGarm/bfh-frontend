@@ -36,9 +36,9 @@ export interface JWT {
     role: JWT.RoleEnum;
 }
 export namespace JWT {
-    export type RoleEnum = 'ADMIN' | 'USER';
+    export type RoleEnum = 'USER' | 'ADMIN';
     export const RoleEnum = {
-        ADMIN: 'ADMIN' as RoleEnum,
-        USER: 'USER' as RoleEnum
+        USER: 'USER' as RoleEnum,
+        ADMIN: 'ADMIN' as RoleEnum
     };
 }
