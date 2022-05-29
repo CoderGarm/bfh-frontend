@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {BattleReport, CounterMissileHit, Fleet, MissileMovement, MovementAction, Planet, ReleasedVolley, ShipKillerHit, StarSystem} from "../../../../../services/swagger";
+import {BattleReport, CounterMissileHit, Fleet, HitLog, MissileMovement, MovementAction, Planet, ReleasedVolley, ShipKillerHit, StarSystem} from "../../../../../services/swagger";
 import {SVG} from "@svgdotjs/svg.js";
 import {BattleViewHelper} from "../../../battle-view-helper";
 import {BasicViewHelper} from "../../../../../basic-view-helper";
@@ -151,17 +151,21 @@ export class CombatArenaData {
 
     counterMissileHitsByRound: Map<number, CounterMissileHit[]>;
 
+    hitLogsByRound: Map<number, HitLog[]>;
+
     constructor(combatRounds: Int8Array,
                 movementsByRound: Map<number, MovementAction[]>,
                 volleysByRound: Map<number, ReleasedVolley[]>,
                 missileMovementsByRound: Map<number, MissileMovement[]>,
                 shipKillerHitsByRound: Map<number, ShipKillerHit[]>,
-                counterMissileHitsByRound: Map<number, CounterMissileHit[]>) {
+                counterMissileHitsByRound: Map<number, CounterMissileHit[]>,
+                hitLogsByRound: Map<number, HitLog[]>) {
         this.combatRounds = combatRounds;
         this.movementsByRound = movementsByRound;
         this.volleysByRound = volleysByRound;
         this.missileMovementsByRound = missileMovementsByRound;
         this.shipKillerHitsByRound = shipKillerHitsByRound;
         this.counterMissileHitsByRound = counterMissileHitsByRound;
+        this.hitLogsByRound = hitLogsByRound;
     }
 }

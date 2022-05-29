@@ -13,6 +13,7 @@ import {FleetSidenavComponent} from "../modules/fleet/components/orga/fleet-side
 import {ExpansionTabViewComponent} from "../modules/expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
 import {JournalTabViewComponent} from "../modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 import {AdminPageComponent} from "../modules/admin/components/admin-page/admin-page.component";
+import {ForumsListComponent} from "../modules/forum/components/forums-list/forums-list.component";
 
 
 export class NavigationCreationService {
@@ -35,6 +36,7 @@ export class NavigationCreationService {
             {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
             {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
             {path: AdminPageComponent.path, component: AdminPageComponent, canActivate: [ProtectedGuard]}, // todo role based access
         ];
     }
@@ -42,6 +44,7 @@ export class NavigationCreationService {
     static createNavDrawerRoutes(): Routes {
         return [
             {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
+            {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
             {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
             {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
             {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},

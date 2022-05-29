@@ -3,9 +3,11 @@ import {TokenStorage} from "../../../../../services/authentication/token-storage
 import {
     BattleReport,
     BattleReportApiService,
+    CombatRound,
     CounterMissileHit,
     Fleet,
     FleetOrbit,
+    HitLog,
     LossRole,
     MissileMovement,
     MovementAction,
@@ -73,6 +75,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     volleysByRound: Map<number, ReleasedVolley[]> = new Map<number, ReleasedVolley[]>();
     shipKillerHitsByRound: Map<number, ShipKillerHit[]> = new Map<number, ShipKillerHit[]>();
     counterMissileHitsByRound: Map<number, CounterMissileHit[]> = new Map<number, CounterMissileHit[]>();
+    hitLogsByRound: Map<number, HitLog[]> = new Map<number, HitLog[]>();
 
     combatArenaData?: CombatArenaData;
     private activeRoundIndex: number = 0;
@@ -166,7 +169,12 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         report.shipKillerHits.forEach(rv => this.setShipKillerHitsMapValue(rv));
         report.counterMissileHits.forEach(rv => this.setCounterMissileHitsMapValue(rv));
         this.mergeCombatRounds();
-        this.combatArenaData = new CombatArenaData(this.combatRounds, this.movementsByRound, this.volleysByRound, this.missileMovementsByRound, this.shipKillerHitsByRound, this.counterMissileHitsByRound);
+        this.combatArenaData = new CombatArenaData(this.combatRounds,
+            this.movementsByRound, this.volleysByRound,
+            this.missileMovementsByRound,
+            this.shipKillerHitsByRound,
+            this.counterMissileHitsByRound,
+            this.hitLogsByRound);
         this.activeRoundIndex = 0;
         this.setActiveRound();
     }
@@ -194,6 +202,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.volleysByRound = new Map<number, ReleasedVolley[]>();
         this.shipKillerHitsByRound = new Map<number, ShipKillerHit[]>();
         this.counterMissileHitsByRound = new Map<number, CounterMissileHit[]>();
+        this.hitLogsByRound = new Map<number, HitLog[]>();
     }
 
     private setCounterMissileHitsMapValue(volley: CounterMissileHit) {
@@ -214,6 +223,17 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
             this.shipKillerHitsByRound.set(combatRound.no, valueMap);
         }
         valueMap.push(volley);
+        this.setHitLogMapValue(combatRound, volley.hitLogs);
+    }
+
+    private setHitLogMapValue(combatRound: CombatRound, volley: HitLog[]) {
+
+        let valueMap = this.hitLogsByRound.get(combatRound.no);
+        if (!valueMap) {
+            valueMap = [];
+            this.hitLogsByRound.set(combatRound.no, valueMap);
+        }
+        volley.forEach(hitLog => valueMap!.push(hitLog));
     }
 
     private setMissileMovementMapValue(volley: MissileMovement) {

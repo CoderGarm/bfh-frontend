@@ -11,7 +11,6 @@ import {ApiModule} from "../../services/swagger";
 import {NumericCounterComponent} from './components/numeric-counter/numeric-counter.component';
 import {OverlayModule} from "@angular/cdk/overlay";
 
-
 @NgModule({
     declarations: [
         NumericCounterComponent,
@@ -27,7 +26,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
         AuthenticationModule,
         ApiModule,
         MaterialComponentsModule,
-        OverlayModule
+        OverlayModule,
     ],
     exports: [
         CommonModule,
@@ -41,7 +40,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
         ApiModule,
         MaterialComponentsModule,
         NumericCounterComponent,
-        OverlayModule
+        OverlayModule,
     ]
 })
 export class SharedModuleModule {

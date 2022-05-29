@@ -11,6 +11,7 @@ import { ChatApiService } from './api/chatApi.service';
 import { ColonizationApiService } from './api/colonizationApi.service';
 import { ConstructionApiService } from './api/constructionApi.service';
 import { FleetApiService } from './api/fleetApi.service';
+import { ForumApiService } from './api/forumApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
@@ -34,6 +35,7 @@ import { UserApiService } from './api/userApi.service';
     ColonizationApiService,
     ConstructionApiService,
     FleetApiService,
+    ForumApiService,
     JobApiService,
     ModuleApiService,
     PlanetApiService,

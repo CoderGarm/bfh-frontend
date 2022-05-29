@@ -5,6 +5,7 @@ import {
     Distance,
     Fleet,
     FleetOrbit,
+    HitLog,
     Launcher,
     MissileMovement,
     Move,
@@ -66,7 +67,8 @@ export class BattleViewHelper extends BasicViewHelper {
 
         const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound);
         if (!!movementByFleet) {
-            this.setFleetsInBattle(this.canvas, movementByFleet, dblClickForFleet);
+            let hitLogs = this.combatArenaData.hitLogsByRound.get(activeRound);
+            this.setFleetsInBattle(this.canvas, movementByFleet, !!hitLogs ? hitLogs : [], dblClickForFleet);
         }
         let missileMovements = this.combatArenaData.missileMovementsByRound.get(activeRound);
         if (!!missileMovements) {
@@ -351,9 +353,11 @@ export class BattleViewHelper extends BasicViewHelper {
      * @param canvas the canvas
      * @param fleetsInMotion the fleets to print by movement
      * @param dblClickForFleet the double click callback
+     * @param hitLogs the hit logs
      */
     private setFleetsInBattle(canvas: Svg,
                               fleetsInMotion: MovementAction[],
+                              hitLogs: HitLog[],
                               dblClickForFleet: (event: PointerEvent) => void) {
         this.setCanvas(canvas);
         const baseOrbit = this.createBaseOrbit();
@@ -376,13 +380,28 @@ export class BattleViewHelper extends BasicViewHelper {
                 this.canvas!.path(arr).fill(color).opacity(0.2);
             }
 
-            let warShips = fleet.ships;
+            const warshipsToDisplay = this.removeNonFightingWarships(fleet, hitLogs);
             let fleetSharkID = this.getFleetSharkID(fleet);
-            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(warShips, startOrbit, baseOrbit);
-            this.createHullOutlinesAndPrint(fleetSharkID, warShips, warshipHullPoints, dblClickForFleet, fleet);
+            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(warshipsToDisplay, startOrbit, baseOrbit);
+            this.createHullOutlinesAndPrint(fleetSharkID, warshipsToDisplay, warshipHullPoints, dblClickForFleet, fleet);
         });
     }
 
+    private removeNonFightingWarships(fleet: Fleet, hitLogs: HitLog[]) {
+        let warShips = fleet.ships;
+        let destroyedWarships = warShips.filter(warShip => !!hitLogs.find(value => {
+            let isSameShip = warShip.idWarship == value.warShip.idWarship;
+            let canFight = value.fightingCapable;
+            return !canFight && isSameShip;
+        }));
+        const warshipsToDisplay: WarShip[] = [];
+        warShips.forEach(warShip => {
+            if (destroyedWarships.indexOf(warShip) == -1) {
+                warshipsToDisplay.push(warShip);
+            }
+        });
+        return warshipsToDisplay;
+    }
 
     private createMove(fleet: Fleet, startOrbit: Orbit, targetOrbit: Orbit) {
         const m: Move = {

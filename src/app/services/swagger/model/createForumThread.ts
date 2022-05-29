@@ -9,25 +9,25 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Planet } from './planet';
-import { ShipClass } from './shipClass';
 
 /**
- * .
+ * A forum thread on creation.
  */
-export interface WarShip { 
+export interface CreateForumThread { 
     /**
-     * The id of the ship.
+     * The id of the parent's forum.
      */
-    idWarship: number;
+    idForum: number;
     /**
-     * The name of this individual ship.
+     * The title of the thread.
      */
-    name: string;
-    shipyard: Planet;
+    title: string;
     /**
-     * The fleet which this ship is part of.
+     * The description of the thread.
      */
-    idFleet: number;
-    shipClass: ShipClass;
+    description: string;
+    /**
+     * The id of the thread.
+     */
+    firstMessage?: string;
 }
