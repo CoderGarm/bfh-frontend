@@ -3,6 +3,7 @@ import {TokenStorage} from "../../../../../services/authentication/token-storage
 import {
     BattleReport,
     BattleReportApiService,
+    BattleReportStatistics,
     CombatRound,
     CounterMissileHit,
     Fleet,
@@ -48,18 +49,18 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
      */
     lossReport?: CombatReport;
 
-    battleReports: BattleReport[] = [];
-    private orbitNames: Map<FleetOrbit, string> = new Map<FleetOrbit, string>();
+    battleReports: BattleReportStatistics[] = [];
+    private battleReportsById: Map<number, BattleReport> = new Map<number, BattleReport>();
+    private orbitNames: Map<string, string> = new Map<string, string>();
 
     @ViewChildren(MatSort)
     sort = new QueryList<MatSort>();
     @ViewChildren(MatTable)
     tables = new QueryList<MatTable<CombatStatistics>>();
 
-    //** accordion paginator block **\\
     @ViewChild(MatPaginator, {static: true})
     paginator?: MatPaginator;
-    length: number = 0;
+    battleReportAmount: number = 0;
     pageIndex: number = 0;
     pageSize: number = 5;
 
@@ -84,6 +85,8 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     @ViewChild(MatSlider)
     matSlider?: MatSlider;
 
+    private combatRunSubscription?: Subscription;
+
     private setActiveRound() {
         if (this.activeRoundIndex < 0) {
             this.activeRoundIndex = 0;
@@ -98,7 +101,9 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     }
 
     ngAfterViewInit(): void {
-        this.fetchByPagination({pageIndex: 0, pageSize: 5});
+        let sub = this.reportApi.getReportsAmountWithUser().subscribe(resp => this.battleReportAmount = resp);
+        this.subscriptions.push(sub);
+        this.fetchByPagination({pageIndex: 0, pageSize: this.pageSize});
         this.dataSourceCombatStatistics.sortingDataAccessor = (item, property) => {
             switch (property) {
                 case this.displayedColumnsCombatStatistics[0]:
@@ -118,7 +123,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     }
 
     getOrbitRepresentation(fleetOrbit: FleetOrbit) {
-        let destString = this.orbitNames.get(fleetOrbit);
+        let destString = this.orbitNames.get(this.getFleetOrbitKey(fleetOrbit));
         let orbit = fleetOrbit.orbit;
         let system = fleetOrbit.system;
         let destination = "";
@@ -137,6 +142,10 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         let system = fleetOrbit.system;
 
         if (!!orbit && !!system) {
+            let name = this.orbitNames.get(this.getFleetOrbitKey(fleetOrbit));
+            if (!!name) {
+                return;
+            }
             let sub = this.planetApi.getPlanetByCoordinates(orbit, system.idStarSystem)
                 .subscribe(resp => {
                     if (!!resp) {
@@ -145,29 +154,59 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
                         destination += orbit!.xCoordinate.coordinate + ", " + orbit!.yCoordinate.coordinate;
                     }
                     destination += " in " + system!.name;
-                    this.orbitNames.set(fleetOrbit, destination);
+                    this.orbitNames.set(this.getFleetOrbitKey(fleetOrbit), destination);
                 });
             this.subscriptions.push(sub);
         }
     }
 
+    private getFleetOrbitKey(fleetOrbit: FleetOrbit): string {
+        let orbit = fleetOrbit.orbit;
+        let system = fleetOrbit.system;
+        let s = undefined;
+        if (!!orbit) {
+            let x = orbit.xCoordinate;
+            let y = orbit.yCoordinate;
+            s = x.coordinate + "." + x.distanceMetric + "-" + y.coordinate + "." + y.distanceMetric;
+        }
+        if (system) {
+            if (!!s) {
+                s += system.idStarSystem + "";
+            } else {
+                s = system.idStarSystem + "";
+            }
+        }
+        // one of both is set
+        return s!;
+    }
+
     /**
      * sets the {@link currentlyOpenedItem} for the opened item
-     * @param report
+     * @param reportStat
      */
-    setOpened(report: BattleReport) {
+    setOpened(reportStat: BattleReportStatistics) {
         this.combatRunSubscription?.unsubscribe();
-        this.currentlyOpenedItem = report;
-        this.starSystem = report.orbit.system;
-        this.currentlyOpenedItemIndex = this.battleReports.indexOf(report);
-
         this.clear();
-        this.setCombatStatisticsDataSource(report);
-        report.movementActions.forEach(ma => this.setMovementMapValue(ma));
-        report.missileMovements.forEach(rv => this.setMissileMovementMapValue(rv));
-        report.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));
-        report.shipKillerHits.forEach(rv => this.setShipKillerHitsMapValue(rv));
-        report.counterMissileHits.forEach(rv => this.setCounterMissileHitsMapValue(rv));
+
+        let battleReport = this.battleReportsById.get(reportStat.idBattleReport);
+        if (!!battleReport) {
+            this.setActiveReport(battleReport);
+        } else {
+            let sub = this.reportApi.getReportsById(reportStat.idBattleReport).subscribe(resp => this.setActiveReport(resp));
+            this.subscriptions.push(sub);
+        }
+        this.starSystem = reportStat.orbit.system;
+        this.currentlyOpenedItemIndex = this.battleReports.indexOf(reportStat);
+    }
+
+    private setActiveReport(report: BattleReport) {
+        this.currentlyOpenedItem = report;
+        this.setCombatStatisticsDataSource();
+        this.currentlyOpenedItem.movementActions.forEach(ma => this.setMovementMapValue(ma));
+        this.currentlyOpenedItem.missileMovements.forEach(rv => this.setMissileMovementMapValue(rv));
+        this.currentlyOpenedItem.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));
+        this.currentlyOpenedItem.shipKillerHits.forEach(rv => this.setShipKillerHitsMapValue(rv));
+        this.currentlyOpenedItem.counterMissileHits.forEach(rv => this.setCounterMissileHitsMapValue(rv));
         this.mergeCombatRounds();
         this.combatArenaData = new CombatArenaData(this.combatRounds,
             this.movementsByRound, this.volleysByRound,
@@ -177,14 +216,15 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
             this.hitLogsByRound);
         this.activeRoundIndex = 0;
         this.setActiveRound();
+        this.battleReportsById.set(report.battleReportStatistics.idBattleReport, report);
     }
 
     /**
      * sets the {@link currentlyOpenedItem} for the closed item
      * @param report
      */
-    setClosed(report: BattleReport) {
-        if (this.currentlyOpenedItem === report) {
+    setClosed(report: BattleReportStatistics) {
+        if (!!this.currentlyOpenedItem && this.currentlyOpenedItem.battleReportStatistics.idBattleReport === report.idBattleReport) {
             this.currentlyOpenedItem = undefined;
             this.currentlyOpenedItemIndex = undefined;
             this.dataSourceCombatStatistics.data = [];
@@ -274,8 +314,10 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.combatRounds = new Int8Array(sorted);
     }
 
-    showOverlay(report: BattleReport, loss: LossRole) {
-        this.lossReport = new CombatReport(report, loss);
+    showOverlay(report: BattleReportStatistics, loss: LossRole) {
+        if (!!this.currentlyOpenedItem && this.currentlyOpenedItem.battleReportStatistics.idBattleReport == report.idBattleReport) {
+            this.lossReport = new CombatReport(this.currentlyOpenedItem, loss);
+        }
     }
 
     /**
@@ -284,11 +326,9 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     fetchByPagination(pageEvent: PageEvent | any) {
         let pageNumber = pageEvent.pageIndex;
         let pageSize = pageEvent.pageSize;
-        let userID = this.tokenStorage.getUserID();
-        let sub = this.reportApi.getReportsWithUserWithPaging(userID, pageNumber, pageSize)
+        let sub = this.reportApi.getReportsWithUserWithPaging(pageNumber, pageSize)
             .subscribe(resp => {
                 this.battleReports = resp;
-                this.length = this.battleReports.length;
                 this.battleReports.forEach(report => {
                     this.fetchOrbitRepresentation(report.orbit);
                 });
@@ -296,13 +336,14 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.subscriptions.push(sub);
     }
 
-    checkDisplayOverlay(report: BattleReport, loss: LossRole) {
+    checkDisplayOverlay(report: BattleReportStatistics, loss: LossRole) {
         const reportIsForSelectedLoss = !!this.lossReport && loss.warShipName === this.lossReport.lossRole.warShipName;
         const openedAccordionMatchesReport = this.currentlyOpenedItemIndex == this.battleReports.indexOf(report);
         return this.isExpanded && openedAccordionMatchesReport && reportIsForSelectedLoss;
     }
 
-    private setCombatStatisticsDataSource(report: BattleReport) {
+    private setCombatStatisticsDataSource() {
+        const report = this.currentlyOpenedItem!;
         let userID = this.tokenStorage.getUserID();
         const dataByFleet: Map<number, CombatStatistics> = new Map<number, CombatStatistics>();
         report.participatingFleets.forEach(fleet =>
@@ -337,8 +378,6 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     setExpanded(mustExpand: boolean) {
         this.isExpanded = mustExpand;
     }
-
-    private combatRunSubscription?: Subscription;
 
     play() {
         this.pause();
@@ -426,6 +465,20 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
 
     slideSlides($event: MatSliderChange) {
         this.slide($event.value);
+    }
+
+    getLosses(reportStat: BattleReportStatistics) {
+        if (!!this.currentlyOpenedItem && this.currentlyOpenedItem.battleReportStatistics.idBattleReport == reportStat.idBattleReport) {
+            return this.currentlyOpenedItem.lossRole;
+        }
+        return [];
+    }
+
+    getFleets(reportStat: BattleReportStatistics) {
+        if (!!this.currentlyOpenedItem && this.currentlyOpenedItem.battleReportStatistics.idBattleReport == reportStat.idBattleReport) {
+            return this.currentlyOpenedItem.participatingFleets;
+        }
+        return [];
     }
 }
 

@@ -26,6 +26,7 @@ import {BasicViewHelper} from "./basic-view-helper";
 import {SnackbarNotificationService} from "./services/snackbar-notification.service";
 import {AdminModule} from "./modules/admin/admin.module";
 import {ForumModule} from "./modules/forum/forum.module";
+import {EMailValidatorDirective, UserNameValidatorDirective} from "./validators/userNameValidator";
 
 @NgModule({
     declarations: [
@@ -40,6 +41,8 @@ import {ForumModule} from "./modules/forum/forum.module";
         HomeComponent,
         PasswordEqualityValidatorDirective,
         PasswordPatternValidatorDirective,
+        UserNameValidatorDirective,
+        EMailValidatorDirective,
         ConfirmDialogComponent,
     ],
     imports: [

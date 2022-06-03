@@ -6,6 +6,7 @@ export * from './armor';
 export * from './authRequest';
 export * from './baseModule';
 export * from './battleReport';
+export * from './battleReportStatistics';
 export * from './building';
 export * from './capabilityValue';
 export * from './chatHistory';

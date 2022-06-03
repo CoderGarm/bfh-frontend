@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { BattleReport } from '../model/battleReport';
+import { BattleReportStatistics } from '../model/battleReportStatistics';
 import { FrontendError } from '../model/frontendError';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -59,20 +60,94 @@ export class BattleReportApiService {
     /**
      * Get all fighting reports for the user.
      * 
-     * @param idUser 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getReportsAmountWithUser(observe?: 'body', reportProgress?: boolean): Observable<number>;
+    public getReportsAmountWithUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
+    public getReportsAmountWithUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
+    public getReportsAmountWithUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<number>('get',`${this.basePath}/api/private/report/battle/amount`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all fighting reports for the user.
+     * 
+     * @param idBattleReport 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getReportsById(idBattleReport: number, observe?: 'body', reportProgress?: boolean): Observable<BattleReport>;
+    public getReportsById(idBattleReport: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<BattleReport>>;
+    public getReportsById(idBattleReport: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<BattleReport>>;
+    public getReportsById(idBattleReport: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idBattleReport === null || idBattleReport === undefined) {
+            throw new Error('Required parameter idBattleReport was null or undefined when calling getReportsById.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<BattleReport>('get',`${this.basePath}/api/private/report/battle/byId/${encodeURIComponent(String(idBattleReport))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all fighting reports for the user.
+     * 
      * @param page 
      * @param size 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getReportsWithUserWithPaging(idUser: number, page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<Array<BattleReport>>;
-    public getReportsWithUserWithPaging(idUser: number, page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<BattleReport>>>;
-    public getReportsWithUserWithPaging(idUser: number, page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<BattleReport>>>;
-    public getReportsWithUserWithPaging(idUser: number, page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getReportsWithUserWithPaging.');
-        }
+    public getReportsWithUserWithPaging(page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<Array<BattleReportStatistics>>;
+    public getReportsWithUserWithPaging(page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<BattleReportStatistics>>>;
+    public getReportsWithUserWithPaging(page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<BattleReportStatistics>>>;
+    public getReportsWithUserWithPaging(page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (page === null || page === undefined) {
             throw new Error('Required parameter page was null or undefined when calling getReportsWithUserWithPaging.');
@@ -98,7 +173,7 @@ export class BattleReportApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<BattleReport>>('get',`${this.basePath}/api/private/report/battle/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(page))}/${encodeURIComponent(String(size))}`,
+        return this.httpClient.request<Array<BattleReportStatistics>>('get',`${this.basePath}/api/private/report/battle/${encodeURIComponent(String(page))}/${encodeURIComponent(String(size))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

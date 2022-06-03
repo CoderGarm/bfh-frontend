@@ -443,7 +443,7 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     private createBaseOrbit() {
-        return !!this.battleReport ? this.battleReport.orbit!.orbit! : {
+        return !!this.battleReport ? this.battleReport.battleReportStatistics.orbit!.orbit! : {
             xCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS},
             yCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS}
         };
@@ -781,7 +781,7 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     private isBattleOrbit(orbit: Orbit) {
-        return !!this.battleReport && this.isSameOrbit(this.battleReport.orbit!.orbit!, orbit);
+        return !!this.battleReport && this.isSameOrbit(this.battleReport.battleReportStatistics.orbit!.orbit!, orbit);
 
     }
 }

@@ -3,6 +3,7 @@ import {PasswordErrorMessages} from '../../../validators/passwordValidator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
+import {UserErrorMessages} from "../../../validators/userNameValidator";
 
 @Component({
   selector: 'app-register',
@@ -15,12 +16,13 @@ export class RegisterComponent implements OnInit {
 
   private subscription?: Subscription;
 
-  errors = PasswordErrorMessages;
+  passErrors = PasswordErrorMessages;
+  userErrors = UserErrorMessages;
   registerForm: FormGroup;
 
-  constructor(private userApiService : UserApiService, private authService: AuthApiService) {
+  constructor(private userApiService: UserApiService, private authService: AuthApiService) {
     this.registerForm = new FormGroup({
-      login: new FormControl('fds', Validators.required), // todo validate username - good for error component check
+      login: new FormControl('fds', Validators.required),
       pass: new FormControl('12457aA!', [Validators.required]),
       passRepeat: new FormControl('12457aA!', Validators.required),
       email: new FormControl('k@k', Validators.email)

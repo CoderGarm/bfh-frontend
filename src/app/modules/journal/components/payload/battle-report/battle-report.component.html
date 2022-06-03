@@ -3,35 +3,35 @@
         <mat-expansion-panel class="transparent-backdrop">
             <mat-expansion-panel-header>Battle register</mat-expansion-panel-header>
             <mat-accordion>
-                <mat-expansion-panel *ngFor="let report of battleReports"
-                                     (opened)="setOpened(report)"
-                                     (closed)="setClosed(report)"
+                <mat-expansion-panel *ngFor="let reportStat of battleReports"
+                                     (opened)="setOpened(reportStat)"
+                                     (closed)="setClosed(reportStat)"
                                      (afterExpand)="setExpanded(true)"
                                      (afterCollapse)="setExpanded(false)">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Tick # {{report.tick.tickNo}} from {{report.tick.tickStarts | date}}</mat-panel-title>
-                        <mat-panel-description>{{getOrbitRepresentation(report.orbit)}}</mat-panel-description>
+                        <mat-panel-title>Tick # {{reportStat.tick.tickNo}} from {{reportStat.tick.tickStarts | date}}</mat-panel-title>
+                        <mat-panel-description>{{getOrbitRepresentation(reportStat.orbit)}}</mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="info-block">
                         <div class="left-block">
                             Participating fleets:<br>
-                            <div *ngFor="let fleet of report.participatingFleets">{{fleet.name}} of {{fleet.owner.username}}</div>
+                            <div *ngFor="let fleet of getFleets(reportStat)">{{fleet.name}} of {{fleet.owner.username}}</div>
                         </div>
                         <div class="right-block">
-                            last round was # {{report.lastRound.no}}
+                            last round was # {{reportStat.lastRound.no}}
                         </div>
                     </div>
                     <div class="data-block">
                         <div class="left-block bottom">
                             Lost war ships:<br>
-                            <div *ngFor="let loss of report.lossRole"
-                                 (mouseover)="showOverlay(report, loss)"
+                            <div *ngFor="let loss of getLosses(reportStat)"
+                                 (mouseover)="showOverlay(reportStat, loss)"
                                  (mouseleave)="lossReport = undefined"
                                  cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                                  class="lost-warship-block">
                                 {{loss.warShipName}} ({{loss.shipClass.hull.hullType.type}}) from {{loss.owner.username}}
                                 <app-lost-warship-overlay
-                                        *ngIf="checkDisplayOverlay(report, loss)"
+                                        *ngIf="checkDisplayOverlay(reportStat, loss)"
                                         [openOverlay]="!!lossReport"
                                         [origin]="trigger"
                                         [report]="lossReport"
@@ -74,10 +74,10 @@
                         </div>
                     </div>
                 </mat-expansion-panel>
-                <mat-paginator [length]="length"
+                <mat-paginator [length]="battleReportAmount"
                                [pageIndex]="pageIndex"
                                [pageSize]="pageSize"
-                               [pageSizeOptions]="[5, 10, 25, 100]"
+                               [pageSizeOptions]="[pageSize, pageSize*2, pageSize*3]"
                                (page)="fetchByPagination($event)">
                 </mat-paginator>
             </mat-accordion>

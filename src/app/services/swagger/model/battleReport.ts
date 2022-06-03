@@ -9,41 +9,33 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CombatRound } from './combatRound';
+import { BattleReportStatistics } from './battleReportStatistics';
 import { CounterMissileHit } from './counterMissileHit';
 import { Fleet } from './fleet';
-import { FleetOrbit } from './fleetOrbit';
 import { LossRole } from './lossRole';
 import { MissileMovement } from './missileMovement';
 import { MovementAction } from './movementAction';
 import { ReleasedVolley } from './releasedVolley';
 import { ShipKillerHit } from './shipKillerHit';
-import { Tick } from './tick';
 import { UserJson } from './userJson';
 
 /**
  * .
  */
 export interface BattleReport { 
-    /**
-     * The database id of the report.
-     */
-    idBattleReport: number;
-    tick: Tick;
-    lastRound: CombatRound;
-    orbit: FleetOrbit;
+    battleReportStatistics: BattleReportStatistics;
     /**
      * The participating users.
      */
     participatingUsers: Array<UserJson>;
     /**
-     * The losses of this battle.
-     */
-    lossRole: Array<LossRole>;
-    /**
      * The protagonists - and the antagonists.
      */
     participatingFleets: Array<Fleet>;
+    /**
+     * The losses of this battle.
+     */
+    lossRole: Array<LossRole>;
     /**
      * The movements which were done in this clash.
      */

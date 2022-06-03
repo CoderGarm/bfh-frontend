@@ -1,4 +1,4 @@
-<form [formGroup]="registerForm" passwordPatternValidator passwordEqualityValidator>
+<form [formGroup]="registerForm" passwordPatternValidator passwordEqualityValidator userNameValidator eMailValidator>
     <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
             <h2>Register</h2>
@@ -7,6 +7,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Login</mat-label>
                 <input matInput type='text' formControlName='login' required autocomplete="off">
+                <mat-error *ngIf="registerForm.get('login')?.hasError('userNameInvalid')">{{userErrors.userNameInvalid}} </mat-error>
             </mat-form-field>
         </mat-grid-tile>
 
@@ -14,8 +15,8 @@
             <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="pass" min="0" required autocomplete="off"
-                    matTooltip="The password should contain of between 8 and 30 characters, numerals and if you want special characters.">
-                    <mat-error *ngIf="registerForm.get('pass')?.hasError('passPattern')">{{errors.passPattern}} </mat-error>
+                       matTooltip="The password should contain of between 8 and 30 characters, numerals and if you want special characters.">
+                <mat-error *ngIf="registerForm.get('pass')?.hasError('passPattern')">{{passErrors.passPattern}} </mat-error>
             </mat-form-field>
         </mat-grid-tile>
 
@@ -23,7 +24,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Repeat passwort</mat-label>
                 <input matInput type="password" formControlName="passRepeat" min="0" required autocomplete="off">
-                <mat-error *ngIf="registerForm.get('passRepeat')?.hasError('passwordNotEqual')">{{errors.passwordNotEqual}} </mat-error>
+                <mat-error *ngIf="registerForm.get('passRepeat')?.hasError('passwordNotEqual')">{{passErrors.passwordNotEqual}} </mat-error>
             </mat-form-field>
         </mat-grid-tile>
 
@@ -31,6 +32,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>eMail</mat-label>
                 <input matInput type='email' formControlName='email' required autocomplete="off">
+                <mat-error *ngIf="registerForm.get('email')?.hasError('eMailInvalid')">{{userErrors.eMailInvalid}} </mat-error>
             </mat-form-field>
         </mat-grid-tile>
 

@@ -55,7 +55,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
             if (!!this.starSystem) {
                 this.createCanvas();
                 this.setActiveRound(this.activeRound, this.starSystem, this.canvas!, this.dblClickForFleet);
-                let orbit = this.battleReport!.orbit;
+                let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
             }
         }
@@ -64,7 +64,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
                 this.setCombatData(this.combatArenaData);
                 this.createCanvas();
                 this.setActiveRound(1, this.starSystem, this.canvas!, this.dblClickForFleet);
-                let orbit = this.battleReport!.orbit;
+                let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
             } else {
                 this.clearCanvas();

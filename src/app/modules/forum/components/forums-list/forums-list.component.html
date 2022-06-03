@@ -80,6 +80,12 @@
                 <button mat-button>SHARE</button>
             </mat-card-actions>
         </mat-card>
+        <mat-paginator [length]="messageAmountInThread"
+                       [pageIndex]="pageIndex"
+                       [pageSize]="pageSize"
+                       [pageSizeOptions]="[pageSize, pageSize*2, pageSize*3]"
+                       (page)="fetchByPagination($event)">
+        </mat-paginator>
 
         <mat-card [className]="chooseStyleByChat()">
             <mat-card-content>

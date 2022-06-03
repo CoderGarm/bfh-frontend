@@ -60,6 +60,90 @@ export class AuthApiService {
 
 
     /**
+     * Checks if a eMail already exists.
+     * 
+     * @param eMail 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public checkEmail(eMail: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public checkEmail(eMail: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public checkEmail(eMail: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public checkEmail(eMail: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (eMail === null || eMail === undefined) {
+            throw new Error('Required parameter eMail was null or undefined when calling checkEmail.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/public/auth/checkEmail/${encodeURIComponent(String(eMail))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Checks if a username already exists.
+     * 
+     * @param userName 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public checkUsername(userName: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public checkUsername(userName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public checkUsername(userName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public checkUsername(userName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (userName === null || userName === undefined) {
+            throw new Error('Required parameter userName was null or undefined when calling checkUsername.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/public/auth/checkUsername/${encodeURIComponent(String(userName))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Creates a single user
      * Creates and returns a user which is now registered in the system
      * @param body default response
