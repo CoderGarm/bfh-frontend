@@ -37,5 +37,13 @@ export interface BaseModule {
     /**
      * The level of this module.
      */
-    techLevel: number;
+    techLevel: BaseModule.TechLevelEnum;
+}
+export namespace BaseModule {
+    export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';
+    export const TechLevelEnum = {
+        I: 'TECH_I' as TechLevelEnum,
+        II: 'TECH_II' as TechLevelEnum,
+        III: 'TECH_III' as TechLevelEnum
+    };
 }
