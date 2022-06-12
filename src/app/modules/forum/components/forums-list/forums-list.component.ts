@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {CreateForumThread, CreateForumThreadMessage, Forum, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -16,7 +16,9 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit {
 
     forums: Forum[] = [];
 
+    @Input() // todo rework forum structure to display elements - use if in alliance
     selectedForum?: Forum;
+
     selectedForumThread?: ForumThread;
     threads?: ForumThread[];
     messagesInThread?: ForumMessage[];

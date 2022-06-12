@@ -1,21 +1,15 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {ResearchApiService} from "../../../../../services/swagger/api/researchApi.service";
-import {Subscription} from "rxjs";
 import {ResearchLevel} from "../../../../../services/swagger";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-completed-researches',
     templateUrl: './completed-researches.component.html',
     styleUrls: ['./completed-researches.component.scss']
 })
-export class CompletedResearchesComponent implements AfterViewInit {
-
-    /**
-     * every sub which should be cancelled on destroy
-     * @private
-     */
-    private subscriptions: Subscription[] = [];
+export class CompletedResearchesComponent extends SubscriptionManager implements AfterViewInit {
 
     completedResearches: ResearchLevel[] = [];
 
@@ -25,6 +19,7 @@ export class CompletedResearchesComponent implements AfterViewInit {
     currentlyOpenedItemIndex?: ResearchLevel;
 
     constructor(private tokenStorage: TokenStorage, private researchApi: ResearchApiService) {
+        super();
     }
 
     ngAfterViewInit() {

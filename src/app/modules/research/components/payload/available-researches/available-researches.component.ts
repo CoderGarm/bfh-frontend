@@ -1,21 +1,15 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {ResearchApiService} from "../../../../../services/swagger/api/researchApi.service";
-import {Subscription} from "rxjs";
 import {JobApiService, ResearchLevel} from "../../../../../services/swagger";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-available-researches',
     templateUrl: './available-researches.component.html',
     styleUrls: ['./available-researches.component.scss']
 })
-export class AvailableResearchesComponent implements AfterViewInit {
-
-    /**
-     * every sub which should be cancelled on destroy
-     * @private
-     */
-    private subscriptions: Subscription[] = [];
+export class AvailableResearchesComponent extends SubscriptionManager implements AfterViewInit {
 
     availableResearches: ResearchLevel[] = [];
 
@@ -32,10 +26,10 @@ export class AvailableResearchesComponent implements AfterViewInit {
     constructor(private tokenStorage: TokenStorage,
                 private researchApi: ResearchApiService,
                 private jobApi: JobApiService) {
+        super();
     }
 
     ngAfterViewInit() {
-        // todo check is a research is payable
         if (!!this.tokenStorage.getUserID()) {
             let sub = this.researchApi.getResearchByUser(this.tokenStorage.getUserID())
                 .subscribe(resp => this.availableResearches = resp);

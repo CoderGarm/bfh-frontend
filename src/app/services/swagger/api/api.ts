@@ -1,5 +1,7 @@
 export * from './adminApi.service';
 import { AdminApiService } from './adminApi.service';
+export * from './allianceApi.service';
+import { AllianceApiService } from './allianceApi.service';
 export * from './authApi.service';
 import { AuthApiService } from './authApi.service';
 export * from './battleReportApi.service';
@@ -34,4 +36,4 @@ export * from './tickApi.service';
 import { TickApiService } from './tickApi.service';
 export * from './userApi.service';
 import { UserApiService } from './userApi.service';
-export const APIS = [AdminApiService, AuthApiService, BattleReportApiService, BuildingApiService, ChatApiService, ColonizationApiService, ConstructionApiService, FleetApiService, ForumApiService, JobApiService, ModuleApiService, PlanetApiService, ResearchApiService, ResourcesApiService, ShipyardApiService, StarMapApiService, TickApiService, UserApiService];
+export const APIS = [AdminApiService, AllianceApiService, AuthApiService, BattleReportApiService, BuildingApiService, ChatApiService, ColonizationApiService, ConstructionApiService, FleetApiService, ForumApiService, JobApiService, ModuleApiService, PlanetApiService, ResearchApiService, ResourcesApiService, ShipyardApiService, StarMapApiService, TickApiService, UserApiService];

@@ -1,0 +1,10 @@
+<mat-card *ngFor="let alliance of alliances">
+    <mat-card-header>
+        <div mat-card-avatar class="avatar-image"></div>
+        <mat-card-title>{{alliance.name}}</mat-card-title>
+        <mat-card-subtitle>{{alliance.code}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p>{{alliance.membersAmount}}</p>
+    </mat-card-content>
+</mat-card>

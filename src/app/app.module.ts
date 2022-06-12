@@ -27,6 +27,7 @@ import {SnackbarNotificationService} from "./services/snackbar-notification.serv
 import {AdminModule} from "./modules/admin/admin.module";
 import {ForumModule} from "./modules/forum/forum.module";
 import {EMailValidatorDirective, UserNameValidatorDirective} from "./validators/userNameValidator";
+import {AllianceModule} from "./modules/alliance/alliance.module";
 
 @NgModule({
     declarations: [
@@ -60,6 +61,7 @@ import {EMailValidatorDirective, UserNameValidatorDirective} from "./validators/
         JournalModule,
         AdminModule,
         ForumModule,
+        AllianceModule,
     ],
     providers: [NgxPermissionsModule,
         {provide: ErrorHandler, useClass: CustomErrorHandler},

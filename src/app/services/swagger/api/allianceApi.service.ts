@@ -17,11 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { CreateForumThread } from '../model/createForumThread';
-import { CreateForumThreadMessage } from '../model/createForumThreadMessage';
-import { Forum } from '../model/forum';
-import { ForumMessage } from '../model/forumMessage';
-import { ForumThread } from '../model/forumThread';
+import { Alliance } from '../model/alliance';
 import { FrontendError } from '../model/frontendError';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -29,7 +25,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable()
-export class ForumApiService {
+export class AllianceApiService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -61,19 +57,24 @@ export class ForumApiService {
 
 
     /**
-     * Get a list of forums which the given user is allowed to access.
+     * Adds a user to an alliances.
      * 
-     * @param idForumThread 
+     * @param idAlliance 
+     * @param idUserToAdd 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public countMessagesInThread(idForumThread: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
-    public countMessagesInThread(idForumThread: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
-    public countMessagesInThread(idForumThread: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
-    public countMessagesInThread(idForumThread: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public addUser(idAlliance: number, idUserToAdd: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public addUser(idAlliance: number, idUserToAdd: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public addUser(idAlliance: number, idUserToAdd: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public addUser(idAlliance: number, idUserToAdd: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idForumThread === null || idForumThread === undefined) {
-            throw new Error('Required parameter idForumThread was null or undefined when calling countMessagesInThread.');
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling addUser.');
+        }
+
+        if (idUserToAdd === null || idUserToAdd === undefined) {
+            throw new Error('Required parameter idUserToAdd was null or undefined when calling addUser.');
         }
 
         let headers = this.defaultHeaders;
@@ -92,7 +93,7 @@ export class ForumApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<number>('get',`${this.basePath}/api/private/forum/threadById/count/${encodeURIComponent(String(idForumThread))}`,
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/alliances/${encodeURIComponent(String(idAlliance))}/${encodeURIComponent(String(idUserToAdd))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -103,105 +104,20 @@ export class ForumApiService {
     }
 
     /**
-     * Get a list of forums which the given user is allowed to access.
+     * Checks if a username already exists.
      * 
-     * @param body 
+     * @param name 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createForumThread(body?: CreateForumThread, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public createForumThread(body?: CreateForumThread, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public createForumThread(body?: CreateForumThread, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public createForumThread(body?: CreateForumThread, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public checkAllianceName(name: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public checkAllianceName(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public checkAllianceName(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public checkAllianceName(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling checkAllianceName.');
         }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/createThread`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get a list of forums which the given user is allowed to access.
-     * 
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public createThreadMessage(body?: CreateForumThreadMessage, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/createThreadMessage`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get a list of forums which the given user is allowed to access.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAllianceForumForUser(observe?: 'body', reportProgress?: boolean): Observable<Forum>;
-    public getAllianceForumForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Forum>>;
-    public getAllianceForumForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Forum>>;
-    public getAllianceForumForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -219,7 +135,7 @@ export class ForumApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Forum>('get',`${this.basePath}/api/private/forum/allianceForumsForUser`,
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/alliances/checkAllianceName/${encodeURIComponent(String(name))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -230,19 +146,19 @@ export class ForumApiService {
     }
 
     /**
-     * Get a list of forums which the given user is allowed to access.
+     * Checks if a eMail already exists.
      * 
-     * @param idForumThread 
+     * @param eMail 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getForumThreadById(idForumThread: number, observe?: 'body', reportProgress?: boolean): Observable<ForumThread>;
-    public getForumThreadById(idForumThread: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ForumThread>>;
-    public getForumThreadById(idForumThread: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ForumThread>>;
-    public getForumThreadById(idForumThread: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public checkCode(eMail: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public checkCode(eMail: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public checkCode(eMail: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public checkCode(eMail: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idForumThread === null || idForumThread === undefined) {
-            throw new Error('Required parameter idForumThread was null or undefined when calling getForumThreadById.');
+        if (eMail === null || eMail === undefined) {
+            throw new Error('Required parameter eMail was null or undefined when calling checkCode.');
         }
 
         let headers = this.defaultHeaders;
@@ -261,7 +177,7 @@ export class ForumApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ForumThread>('get',`${this.basePath}/api/private/forum/threadById/${encodeURIComponent(String(idForumThread))}`,
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/alliances/checkEmail/${encodeURIComponent(String(eMail))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -272,19 +188,24 @@ export class ForumApiService {
     }
 
     /**
-     * Get a list of threads in a forum which the given user is allowed to access.
+     * Create an alliances.
      * 
-     * @param idForum 
+     * @param name 
+     * @param code 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getForumThreadsByForumId(idForum: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ForumThread>>;
-    public getForumThreadsByForumId(idForum: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ForumThread>>>;
-    public getForumThreadsByForumId(idForum: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ForumThread>>>;
-    public getForumThreadsByForumId(idForum: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createAlliance(name: string, code: string, observe?: 'body', reportProgress?: boolean): Observable<Alliance>;
+    public createAlliance(name: string, code: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Alliance>>;
+    public createAlliance(name: string, code: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Alliance>>;
+    public createAlliance(name: string, code: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idForum === null || idForum === undefined) {
-            throw new Error('Required parameter idForum was null or undefined when calling getForumThreadsByForumId.');
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling createAlliance.');
+        }
+
+        if (code === null || code === undefined) {
+            throw new Error('Required parameter code was null or undefined when calling createAlliance.');
         }
 
         let headers = this.defaultHeaders;
@@ -303,7 +224,7 @@ export class ForumApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ForumThread>>('get',`${this.basePath}/api/private/forum/threadById/byForum/${encodeURIComponent(String(idForum))}`,
+        return this.httpClient.request<Alliance>('post',`${this.basePath}/api/private/alliances/${encodeURIComponent(String(name))}/${encodeURIComponent(String(code))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -314,15 +235,20 @@ export class ForumApiService {
     }
 
     /**
-     * Get a list of forums which the given user is allowed to access.
+     * Adds a user to an alliances.
      * 
+     * @param idAlliance 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getForumsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Forum>>;
-    public getForumsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Forum>>>;
-    public getForumsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Forum>>>;
-    public getForumsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteAlliance(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public deleteAlliance(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public deleteAlliance(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public deleteAlliance(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling deleteAlliance.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -340,7 +266,7 @@ export class ForumApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Forum>>('get',`${this.basePath}/api/private/forum/forumsForUser`,
+        return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/alliances/${encodeURIComponent(String(idAlliance))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -351,29 +277,19 @@ export class ForumApiService {
     }
 
     /**
-     * Get a list of forums which the given user is allowed to access.
+     * Gets an alliances.
      * 
-     * @param idForumThread 
-     * @param page 
-     * @param size 
+     * @param idAlliance 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ForumMessage>>;
-    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ForumMessage>>>;
-    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ForumMessage>>>;
-    public getMessagesInThread(idForumThread: number, page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAlliance(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<Alliance>;
+    public getAlliance(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Alliance>>;
+    public getAlliance(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Alliance>>;
+    public getAlliance(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idForumThread === null || idForumThread === undefined) {
-            throw new Error('Required parameter idForumThread was null or undefined when calling getMessagesInThread.');
-        }
-
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling getMessagesInThread.');
-        }
-
-        if (size === null || size === undefined) {
-            throw new Error('Required parameter size was null or undefined when calling getMessagesInThread.');
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling getAlliance.');
         }
 
         let headers = this.defaultHeaders;
@@ -392,7 +308,81 @@ export class ForumApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ForumMessage>>('get',`${this.basePath}/api/private/forum/threadById/${encodeURIComponent(String(idForumThread))}/${encodeURIComponent(String(page))}/${encodeURIComponent(String(size))}`,
+        return this.httpClient.request<Alliance>('get',`${this.basePath}/api/private/alliances/${encodeURIComponent(String(idAlliance))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Gets an alliances.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllianceForUser(observe?: 'body', reportProgress?: boolean): Observable<Alliance>;
+    public getAllianceForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Alliance>>;
+    public getAllianceForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Alliance>>;
+    public getAllianceForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Alliance>('get',`${this.basePath}/api/private/alliances/forUser`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all alliances.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAlliances(observe?: 'body', reportProgress?: boolean): Observable<Array<Alliance>>;
+    public getAlliances(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Alliance>>>;
+    public getAlliances(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Alliance>>>;
+    public getAlliances(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Alliance>>('get',`${this.basePath}/api/private/alliances/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

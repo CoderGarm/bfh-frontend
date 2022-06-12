@@ -16,5 +16,4 @@ export class ResearchTabViewComponent implements OnInit {
 
     ngOnInit(): void {
     }
-
 }

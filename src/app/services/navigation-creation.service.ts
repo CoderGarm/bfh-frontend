@@ -14,6 +14,7 @@ import {ExpansionTabViewComponent} from "../modules/expansion/components/orga/ex
 import {JournalTabViewComponent} from "../modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 import {AdminPageComponent} from "../modules/admin/components/admin-page/admin-page.component";
 import {ForumsListComponent} from "../modules/forum/components/forums-list/forums-list.component";
+import {AllianceTabViewComponent} from "../modules/alliance/components/orga/alliance-tab-view/alliance-tab-view.component";
 
 
 export class NavigationCreationService {
@@ -37,12 +38,14 @@ export class NavigationCreationService {
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
             {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
+            {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
             {path: AdminPageComponent.path, component: AdminPageComponent, canActivate: [ProtectedGuard]}, // todo role based access
         ];
     }
 
     static createNavDrawerRoutes(): Routes {
         return [
+            {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
             {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
             {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},

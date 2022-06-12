@@ -4,12 +4,15 @@ import {ForumsListComponent} from './components/forums-list/forums-list.componen
 
 
 @NgModule({
-  declarations: [
-    ForumsListComponent,
-  ],
-  imports: [
-    SharedModuleModule,
-  ]
+    declarations: [
+        ForumsListComponent,
+    ],
+    imports: [
+        SharedModuleModule,
+    ],
+    exports: [
+        ForumsListComponent
+    ]
 })
 export class ForumModule {
 }

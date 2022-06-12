@@ -1,5 +1,6 @@
 export * from './acceleration';
 export * from './alignedFitting';
+export * from './alliance';
 export * from './ammunitionFitting';
 export * from './ammunitionModule';
 export * from './armor';

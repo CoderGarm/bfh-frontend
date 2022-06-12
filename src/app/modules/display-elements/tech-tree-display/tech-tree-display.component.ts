@@ -32,17 +32,6 @@ export class TechTreeDisplayComponent implements OnInit, OnChanges {
                 this.researchTreeElementsById.clear();
                 return;
             }
-            /*
-            todo test with funny data
-             this.techTree.researches = [
-                {name: "One", idResearch: 1, levelCap:1, description: "yeah"},
-                {name: "Two", idResearch: 2, levelCap:1, description: "yeah"},
-                {name: "Three", idResearch: 3, levelCap:1, description: "yeah"},
-                {name: "Four", idResearch: 4, levelCap:1, description: "yeah"},
-                {name: "Five", idResearch: 5, levelCap:1, description: "yeah"}
-            ];
-            */
-
 
             this.techTree.researches.forEach(research => this.researchesById.set(research.idResearch, research));
             this.techTree.treeElements.forEach(treeElement => this.researchTreeElementsById.set(treeElement.idResearch, treeElement));
@@ -94,11 +83,9 @@ export class TechTreeDisplayComponent implements OnInit, OnChanges {
                 }
                 this.idResearchesByDepth[depthLevel + 1] = researchesOnDepth;
             }
-            console.log(this.idResearchesByDepth)
 
             this.idResearchesByDepth = this.idResearchesByDepth[0].map((_, colIndex) => this.idResearchesByDepth.map(row => row[colIndex]));
             this.maxDepth = this.idResearchesByDepth[0].length;
-            console.log(this.idResearchesByDepth)
         }
     }
 
