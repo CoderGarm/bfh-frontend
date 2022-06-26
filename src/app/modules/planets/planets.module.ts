@@ -21,7 +21,10 @@ import {PlanetsNotificationService} from "./planets-notification.service";
     imports: [
         SharedModuleModule,
         DisplayElementsModule
-    ], providers: [PlanetsNotificationService]
+    ],
+    providers: [
+        PlanetsNotificationService
+    ]
 })
 export class PlanetsModule {
 }

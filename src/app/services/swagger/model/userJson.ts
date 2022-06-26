@@ -29,5 +29,5 @@ export interface UserJson {
     /**
      * The user's role.
      */
-    role: string;
+    role?: string;
 }

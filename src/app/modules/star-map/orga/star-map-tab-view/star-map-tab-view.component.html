@@ -1,4 +1,4 @@
-<mat-tab-group #tabGroup [(selectedIndex)]="index" (selectedIndexChange)="indexChanged($event)" animationDuration="0ms">
+<mat-tab-group #tabGroup [(selectedIndex)]="index" (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
     <mat-tab [label]="actionTabTitles[0]">
         <app-universe-map-view (starSystemSelectionOutput)="run($event)"></app-universe-map-view>
     </mat-tab>

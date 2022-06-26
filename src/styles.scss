@@ -7,9 +7,19 @@ body {
   height: -webkit-fill-available;
 }
 
-// margin at the bottom of every tab body wrapper
-.mat-tab-body-wrapper {
+
+.bottom-spacer {
+  // margin at the bottom of every tab body wrapper
   margin-bottom: 60px;
+}
+
+.content-area {
+  margin: 25px 25px 25px 25px;
+}
+
+.mat-tab-body-wrapper {
+  // make sure that the tab body grows to the full height
+  flex-grow: 1;
 }
 
 body {
@@ -114,6 +124,9 @@ body {
   text-align: center;
 }
 
+/** placed here because of css encapsulation in angular **/
+
+// combat journal - which round is displayed
 #battle-round-stepper .mat-slider-thumb-label {
   transform: rotate(45deg) !important;
   border-radius: 50% 50% 0 !important;
@@ -127,7 +140,7 @@ body {
   opacity: 1 !important;
 }
 
-// placed here because class def not loaded in more precised css files
+// all the svg elements css
 .coordCross {
   stroke: dimgray;
   stroke-width: 1;
@@ -162,3 +175,7 @@ body {
     stroke-dashoffset: 0;
   }
 }
+
+
+
+

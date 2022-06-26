@@ -3,13 +3,14 @@
     <mat-chip-list>
         <mat-chip color="primary"
                   [selected]="!selectedForum"
+                  [disabled]="isAllianceForum"
                   (click)="selectForum(undefined)">
             Forums
         </mat-chip>
         <mat-chip color="primary"
                   [selected]="!!selectedForum && !selectedForumThread"
                   *ngIf="!!selectedForum"
-                  (click)="selectForum(selectedForum); selectThread(undefined)">
+                  (click)="selectThread(undefined)">
             {{selectedForum.title}}
         </mat-chip>
         <mat-chip color="primary"
@@ -36,70 +37,10 @@
     </div>
 
     <!-- forum threads -->
-    <div id="forum-thread-list" *ngIf="!!threads && !messagesInThread">
-        <div id="new-thread-field">
-            <form [formGroup]=newThreadFG>
-                <mat-form-field appearance="fill" id="thread-title">
-                    <mat-label>New thread's title</mat-label>
-                    <input matInput formControlName=newThreadsTitle placeholder="New thread's title" autocomplete="off" required>
-                </mat-form-field>
-                <mat-form-field appearance="fill" id="thread-description" class="description-field">
-                    <mat-label>New thread's description</mat-label>
-                    <input matInput formControlName=newThreadsDescription placeholder="New thread's description" autocomplete="off">
-                </mat-form-field>
-            </form>
-            <button type="button" mat-raised-button (click)="createThread()">
-                <mat-icon class="material-symbols-outlined">
-                    add
-                </mat-icon>
-            </button>
-        </div>
-        <mat-card class="forum-card" *ngFor="let thread of threads">
-            <mat-card-title (click)="selectThread(thread)">{{thread.title}}</mat-card-title>
-            <mat-card-subtitle>{{thread.description}}</mat-card-subtitle>
-            <mat-card-content>
-                <p>Messages in thread: {{thread.idForumMessages.length}}</p>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-button>LIKE</button>
-                <button mat-button>SHARE</button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
+    <app-forum-threads [selectedForum]="selectedForum"
+                       [isAllianceForum]="isAllianceForum"
+                       (selectedForumThreadOutput)="selectedForumThread = $event"></app-forum-threads>
 
     <!-- forum messages -->
-    <div id="forum-message-list" *ngIf="!!messagesInThread">
-        <mat-card class="forum-card" *ngFor="let message of messagesInThread">
-            <mat-card-title>Author: {{message.idAuthor}}</mat-card-title>
-            <mat-card-subtitle>{{message.sentAt}}</mat-card-subtitle>
-            <mat-card-content class="message">
-                <p>{{message.message}}</p>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-button>LIKE</button>
-                <button mat-button>SHARE</button>
-            </mat-card-actions>
-        </mat-card>
-        <mat-paginator [length]="messageAmountInThread"
-                       [pageIndex]="pageIndex"
-                       [pageSize]="pageSize"
-                       [pageSizeOptions]="[pageSize, pageSize*2, pageSize*3]"
-                       (page)="fetchByPagination($event)">
-        </mat-paginator>
-
-        <mat-card [className]="chooseStyleByChat()">
-            <mat-card-content>
-                <form [formGroup]=messageFG>
-                    <mat-form-field appearance="fill" id="forum-message-form-field">
-                        <mat-label>Message</mat-label>
-                        <textarea matInput autocomplete="off" placeholder="Message ..." formControlName=messageFC
-                                  (keyup.enter)="submitMessage()"></textarea>
-                    </mat-form-field>
-                </form>
-                <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
-                        [disabled]="!this.messageFG.controls.messageFC.value" id="send-forum-message-button">Submit
-                </button>
-            </mat-card-content>
-        </mat-card>
-    </div>
+    <app-forum-messages [selectedForumThread]="selectedForumThread"></app-forum-messages>
 </div>

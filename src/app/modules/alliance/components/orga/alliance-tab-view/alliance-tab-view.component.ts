@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Alliance, AllianceApiService} from "../../../../../services/swagger";
+import {Alliance, AllianceApiService, JWT} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
+import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({
     selector: 'app-alliance-tab-view',
@@ -11,17 +13,25 @@ export class AllianceTabViewComponent extends SubscriptionManager implements OnI
 
     static path: string = "alliance";
 
-    actionTabTitles: string[] = ['List', 'Dashboard', 'Forum'];
+    actionTabTitles: string[] = ['List', 'Dashboard', 'Forum', 'Members'];
 
     alliance?: Alliance;
+    isAdmin: boolean = false;
 
-    constructor(private allianceApi: AllianceApiService) {
+    constructor(private allianceApi: AllianceApiService,
+                private tokenStorage: TokenStorage) {
         super();
     }
 
     ngOnInit(): void {
         let sub = this.allianceApi.getAllianceForUser().subscribe(resp => this.alliance = resp);
         this.subscriptions.push(sub);
+
+        let gameRoles = this.tokenStorage.getGameRoles();
+        const index: number = gameRoles.indexOf(GameUserRolesEnum.ALLIANCE_ADMIN);
+        if (index != -1) {
+            this.isAdmin = true;
+        }
     }
 
 }

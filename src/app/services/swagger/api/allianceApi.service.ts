@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { Alliance } from '../model/alliance';
 import { FrontendError } from '../model/frontendError';
+import { UserJson } from '../model/userJson';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -57,24 +58,19 @@ export class AllianceApiService {
 
 
     /**
-     * Adds a user to an alliances.
+     * Starts the application of a user to an alliances.
      * 
      * @param idAlliance 
-     * @param idUserToAdd 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addUser(idAlliance: number, idUserToAdd: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public addUser(idAlliance: number, idUserToAdd: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public addUser(idAlliance: number, idUserToAdd: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public addUser(idAlliance: number, idUserToAdd: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public applyForMembership(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public applyForMembership(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public applyForMembership(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public applyForMembership(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idAlliance === null || idAlliance === undefined) {
-            throw new Error('Required parameter idAlliance was null or undefined when calling addUser.');
-        }
-
-        if (idUserToAdd === null || idUserToAdd === undefined) {
-            throw new Error('Required parameter idUserToAdd was null or undefined when calling addUser.');
+            throw new Error('Required parameter idAlliance was null or undefined when calling applyForMembership.');
         }
 
         let headers = this.defaultHeaders;
@@ -93,7 +89,7 @@ export class AllianceApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/alliances/${encodeURIComponent(String(idAlliance))}/${encodeURIComponent(String(idUserToAdd))}`,
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/alliances/membership/${encodeURIComponent(String(idAlliance))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -237,17 +233,54 @@ export class AllianceApiService {
     /**
      * Adds a user to an alliances.
      * 
-     * @param idAlliance 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteAlliance(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public deleteAlliance(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public deleteAlliance(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public deleteAlliance(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteAlliance(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public deleteAlliance(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public deleteAlliance(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public deleteAlliance(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idAlliance === null || idAlliance === undefined) {
-            throw new Error('Required parameter idAlliance was null or undefined when calling deleteAlliance.');
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/alliances/`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Denies the application of user to an alliances.
+     * 
+     * @param idUserToRemove 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public denyApplication(idUserToRemove: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public denyApplication(idUserToRemove: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public denyApplication(idUserToRemove: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public denyApplication(idUserToRemove: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUserToRemove === null || idUserToRemove === undefined) {
+            throw new Error('Required parameter idUserToRemove was null or undefined when calling denyApplication.');
         }
 
         let headers = this.defaultHeaders;
@@ -266,7 +299,7 @@ export class AllianceApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/alliances/${encodeURIComponent(String(idAlliance))}`,
+        return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/alliances/membership/${encodeURIComponent(String(idUserToRemove))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -383,6 +416,164 @@ export class AllianceApiService {
         ];
 
         return this.httpClient.request<Array<Alliance>>('get',`${this.basePath}/api/private/alliances/`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Fetches the applications of users to the alliance of the ally admin.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApplicationsForMembership(observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
+    public getApplicationsForMembership(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
+    public getApplicationsForMembership(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+    public getApplicationsForMembership(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/alliances/membership/application`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Gets an alliances.
+     * 
+     * @param idAlliance 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getMembers(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
+    public getMembers(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
+    public getMembers(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+    public getMembers(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling getMembers.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/alliances/members/${encodeURIComponent(String(idAlliance))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Grants the application of a user to an alliances.
+     * 
+     * @param idUserToAdd 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public grantApplication(idUserToAdd: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public grantApplication(idUserToAdd: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public grantApplication(idUserToAdd: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public grantApplication(idUserToAdd: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUserToAdd === null || idUserToAdd === undefined) {
+            throw new Error('Required parameter idUserToAdd was null or undefined when calling grantApplication.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/alliances/membership/${encodeURIComponent(String(idUserToAdd))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns where the user has an application to an alliance open.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public isApplicant(observe?: 'body', reportProgress?: boolean): Observable<Alliance>;
+    public isApplicant(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Alliance>>;
+    public isApplicant(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Alliance>>;
+    public isApplicant(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Alliance>('get',`${this.basePath}/api/private/alliances/membership/isApplicant`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

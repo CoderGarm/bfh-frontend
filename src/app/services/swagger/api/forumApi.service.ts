@@ -109,9 +109,9 @@ export class ForumApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createForumThread(body?: CreateForumThread, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public createForumThread(body?: CreateForumThread, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public createForumThread(body?: CreateForumThread, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public createForumThread(body?: CreateForumThread, observe?: 'body', reportProgress?: boolean): Observable<ForumThread>;
+    public createForumThread(body?: CreateForumThread, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ForumThread>>;
+    public createForumThread(body?: CreateForumThread, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ForumThread>>;
     public createForumThread(body?: CreateForumThread, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -136,7 +136,7 @@ export class ForumApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/createThread`,
+        return this.httpClient.request<ForumThread>('put',`${this.basePath}/api/private/forum/createThread`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

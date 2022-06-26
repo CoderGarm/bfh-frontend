@@ -16,19 +16,6 @@
   margin: 25px 25px 25px 25px;
 }
 
-#new-thread-field {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-}
-
-#thread-title {
-  margin: 0 25px 0 25px;
-}
-
-#thread-description {
-  margin: 0 25px 0 25px;
-}
 
 .forum-message-card {
   width: 70%;
@@ -98,4 +85,8 @@ mat-card.forum-message-card.set-left > mat-card-header {
   width: -webkit-fill-available;
   margin-left: 40px;
   margin-right: 40px;
+}
+
+.forum-pager {
+  display: revert !important;
 }

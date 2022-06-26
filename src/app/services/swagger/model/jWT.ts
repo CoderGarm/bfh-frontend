@@ -31,14 +31,26 @@ export interface JWT {
      */
     idUser: number;
     /**
+     * The id of the user's alliance.
+     */
+    idAlliance?: number;
+    /**
      * The user's role.
      */
     role: JWT.RoleEnum;
+    /**
+     * The user's in-game roles.
+     */
+    gameUserRoles: Array<JWT.GameUserRolesEnum>;
 }
 export namespace JWT {
     export type RoleEnum = 'USER' | 'ADMIN';
     export const RoleEnum = {
         USER: 'USER' as RoleEnum,
         ADMIN: 'ADMIN' as RoleEnum
+    };
+    export type GameUserRolesEnum = 'ALLIANCE_ADMIN';
+    export const GameUserRolesEnum = {
+        ALLIANCE_ADMIN: 'ALLIANCE_ADMIN' as GameUserRolesEnum
     };
 }

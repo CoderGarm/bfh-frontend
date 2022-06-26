@@ -11,7 +11,7 @@
  */
 
 /**
- * The hull type.
+ * .
  */
 export interface EHullType { 
     /**

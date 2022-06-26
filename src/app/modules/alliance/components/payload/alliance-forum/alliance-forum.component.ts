@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
-import {Alliance, AllianceApiService, Forum, ForumApiService} from "../../../../../services/swagger";
+import {AllianceApiService, Forum, ForumApiService} from "../../../../../services/swagger";
 
 @Component({
     selector: 'app-alliance-forum',
@@ -8,9 +8,6 @@ import {Alliance, AllianceApiService, Forum, ForumApiService} from "../../../../
     styleUrls: ['./alliance-forum.component.scss']
 })
 export class AllianceForumComponent extends SubscriptionManager implements OnInit {
-
-    @Input()
-    alliance?: Alliance;
 
     forum?: Forum;
 

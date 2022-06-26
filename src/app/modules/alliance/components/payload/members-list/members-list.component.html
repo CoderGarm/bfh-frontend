@@ -1,0 +1,12 @@
+<div class="holder">
+    <table mat-table [dataSource]="dataSource" matSort class="max-width">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" aria-label="Select page of applicants"></mat-paginator>
+</div>

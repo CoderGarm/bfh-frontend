@@ -68,7 +68,7 @@ export class ChatHistoryComponent implements OnInit, OnChanges {
             sender: {
                 idUser: this.tokenStorage.getUserID(),
                 username: this.tokenStorage.getLogin(),
-                role: "ROLE_USER"
+                role: this.tokenStorage.getRole()
             },
             sentAt: new Date()
         };
@@ -84,7 +84,7 @@ export class ChatHistoryComponent implements OnInit, OnChanges {
                 userOne: {
                     idUser: this.tokenStorage.getUserID(),
                     username: this.tokenStorage.getLogin(),
-                    role: "ROLE_USER"
+                    role: this.tokenStorage.getRole()
                 },
                 userTwo: this.selectedUserChatHistoryInput!,
                 messages: [chatMessage],

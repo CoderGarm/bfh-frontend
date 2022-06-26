@@ -31,5 +31,5 @@ export interface Alliance {
     /**
      * The amount of members
      */
-    membersAmount: number;
+    membersAmount?: number;
 }

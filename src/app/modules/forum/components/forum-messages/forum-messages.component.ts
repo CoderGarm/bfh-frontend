@@ -1,0 +1,106 @@
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {CreateForumThreadMessage, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
+import {FormControl, FormGroup} from "@angular/forms";
+import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {ForumsNotificationService} from "../../forums-notification.service";
+import {tap} from "rxjs/operators";
+
+@Component({
+    selector: 'app-forum-messages',
+    templateUrl: './forum-messages.component.html',
+    styleUrls: ['./forum-messages.component.scss']
+})
+export class ForumMessagesComponent extends SubscriptionManager implements OnInit, OnChanges {
+
+    @Input()
+    selectedForumThread?: ForumThread;
+    selectedForumThreadDefinition: string = 'selectedForumThread';
+
+    messagesInThread?: ForumMessage[];
+
+    messageFG: FormGroup = new FormGroup({
+        messageFC: new FormControl('')
+    });
+
+    @ViewChild('paginatorTop')
+    paginatorTop?: MatPaginator;
+
+    @ViewChild('paginatorBottom')
+    paginatorBottom?: MatPaginator;
+
+    pageIndex: number = 0;
+    pageSize: number = 15;
+    messageAmountInThread: number = 0;
+
+    constructor(private forumApi: ForumApiService, private forumsNotificationService: ForumsNotificationService) {
+        super();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes[this.selectedForumThreadDefinition]) {
+            this.selectThread(this.selectedForumThread);
+        }
+    }
+
+    ngOnInit(): void {
+        this.paginatorTop!.page.pipe(
+            tap(() => {
+                this.paginatorBottom!.pageIndex = this.paginatorTop!.pageIndex;
+                this.paginatorBottom!.pageSize = this.paginatorTop!.pageSize;
+            })
+        ).subscribe();
+
+        this.paginatorBottom!.page.pipe(
+            tap(() => {
+                this.paginatorTop!.pageIndex = this.paginatorBottom!.pageIndex;
+                this.paginatorTop!.pageSize = this.paginatorBottom!.pageSize;
+            })
+        ).subscribe();
+    }
+
+    fetchByPagination(pageEvent: PageEvent | any) {
+        this.pageIndex = pageEvent.pageIndex;
+        this.pageSize = pageEvent.pageSize;
+        this.selectThread(this.selectedForumThread);
+    }
+
+    selectThread(thread?: ForumThread) {
+        if (!thread) {
+            this.selectedForumThread = undefined;
+            this.messagesInThread = undefined;
+            this.messageAmountInThread = 0;
+            return;
+        }
+        this.selectedForumThread = thread;
+        let sub = this.forumApi.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize).subscribe(resp => this.messagesInThread = resp);
+        this.subscriptions.push(sub);
+        sub = this.forumApi.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
+        this.subscriptions.push(sub);
+    }
+
+    chooseStyleByChat() {
+        let baseClasses = "forum-message-card set-right";
+        if (!!this.messagesInThread && this.messagesInThread.length > 2) {
+            return baseClasses + " message-field-in-flow";
+        } else {
+            return baseClasses + " message-field-on-hold";
+        }
+    }
+
+    submitMessage() {
+        if (!!this.selectedForumThread) {
+            let message: CreateForumThreadMessage = {
+                message: this.messageFG.controls.messageFC.value,
+                idForumThread: this.selectedForumThread.idForumThread
+            }
+            let sub = this.forumApi.createThreadMessage(message).subscribe(resp => {
+                if (resp) {
+                    this.selectThread(this.selectedForumThread);
+                    this.messageFG.controls.messageFC.setValue('');
+                }
+            });
+            this.subscriptions.push(sub);
+        }
+    }
+}

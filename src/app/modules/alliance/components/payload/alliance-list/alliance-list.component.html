@@ -1,10 +1,26 @@
-<mat-card *ngFor="let alliance of alliances">
-    <mat-card-header>
-        <div mat-card-avatar class="avatar-image"></div>
-        <mat-card-title>{{alliance.name}}</mat-card-title>
-        <mat-card-subtitle>{{alliance.code}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <p>{{alliance.membersAmount}}</p>
-    </mat-card-content>
-</mat-card>
+<div class="bottom-spacer content-area">
+    <mat-card *ngFor="let alliance of alliances">
+        <mat-card-header>
+            <div mat-card-avatar class="avatar-image"></div>
+            <mat-card-title>{{alliance.name}}</mat-card-title>
+            <mat-card-subtitle>{{alliance.code}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Founder: {{alliance.founder.username}}</p>
+            <p>Members: {{alliance.membersAmount}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="secondary"
+                    *ngIf="!idAllianceUser && (!applicationOpenAt || applicationOpenAt.idAlliance != alliance.idAlliance)"
+                    [disabled]="!!applicationOpenAt"
+                    (click)="apply(alliance)">
+                Apply
+            </button>
+            <button mat-raised-button color="secondary"
+                    *ngIf="!!applicationOpenAt && applicationOpenAt.idAlliance === alliance.idAlliance"
+                    disabled>
+                Applied
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
