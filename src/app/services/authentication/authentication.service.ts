@@ -85,7 +85,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
      * @returns {boolean}
      */
     refreshShouldHappen(response: HttpErrorResponse): boolean {
-        return response.status === 401 || response.status === 403;
+        return response.status === 401;
     }
 
     /**
