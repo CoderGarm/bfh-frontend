@@ -5,6 +5,7 @@ import {NavigationCreationService} from './services/navigation-creation.service'
 import {Subscription} from "rxjs";
 import {StarMapTabViewComponent} from "./modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 import {JournalTabViewComponent} from "./modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
+import {ChatComponent} from "./modules/chat/components/chat/chat.component";
 
 @Component({
     selector: 'app-root',
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit {
     isNoScroll: Boolean = false;
     private noScrollingPaths: string[] = [
         StarMapTabViewComponent.path,
-        JournalTabViewComponent.path
+        JournalTabViewComponent.path,
+        ChatComponent.path
     ];
 
     constructor(private router: Router, private authenticationService: AuthenticationService) {

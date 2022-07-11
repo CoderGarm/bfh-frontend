@@ -1,5 +1,10 @@
 @import "src/styles/variables";
 
+#message-container {
+  height: calc(100% - 200px);
+  overflow-y: scroll;
+}
+
 .avatar-image {
   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
@@ -59,18 +64,19 @@ mat-card.chat-card.set-left > mat-card-header {
   word-wrap: break-word
 }
 
-.message-field-on-hold {
-  position: absolute;
-  bottom: 15px;
+.write-card {
   width: -webkit-fill-available;
   margin-left: 40px;
   margin-right: 40px;
 }
 
+.message-field-on-hold {
+  position: absolute; // todo positioning in real flex
+  bottom: 15px;
+  margin-top: calc(100vh - 130px);
+}
+
 .message-field-in-flow {
   position: sticky;
   bottom: 15px;
-  width: -webkit-fill-available;
-  margin-left: 40px;
-  margin-right: 40px;
 }

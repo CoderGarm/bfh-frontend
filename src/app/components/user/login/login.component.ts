@@ -5,6 +5,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {Subscription} from "rxjs";
+import {environment} from "../../../../environments/environment";
 
 @Component({
     selector: 'app-login',
@@ -12,6 +13,8 @@ import {Subscription} from "rxjs";
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+    protected basePath = environment.backendServer;
 
     static path: string = 'login';
 
@@ -23,9 +26,13 @@ export class LoginComponent implements OnInit {
     constructor(protected authService: AuthenticationService,
                 private permissionsService: NgxPermissionsService) {
         this.loginForm = new FormGroup({
-            login: new FormControl('flashkid'),
-            pass: new FormControl('12457aA!')
+            login: new FormControl(''),
+            pass: new FormControl('')
         });
+        if (this.basePath.includes("localhost")) {
+            this.loginForm.controls.login.setValue('flashkid');
+            this.loginForm.controls.pass.setValue('12457aA!');
+        }
     }
 
     ngOnInit(): void {

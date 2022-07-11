@@ -109,18 +109,13 @@ export class ChatApiService {
     /**
      * Get all active chats of the user without the messages
      * Get all active chats of the user without the messages
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getChatByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ChatHistory>>;
-    public getChatByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ChatHistory>>>;
-    public getChatByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ChatHistory>>>;
-    public getChatByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getChatByUser.');
-        }
+    public getChatByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<ChatHistory>>;
+    public getChatByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ChatHistory>>>;
+    public getChatByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ChatHistory>>>;
+    public getChatByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -138,7 +133,7 @@ export class ChatApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ChatHistory>>('get',`${this.basePath}/api/private/chat/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<ChatHistory>>('get',`${this.basePath}/api/private/chat/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -149,24 +144,19 @@ export class ChatApiService {
     }
 
     /**
-     * Get the chat history of the users and marks them as read
-     * Get the chat between the users and marks them as read
-     * @param idUserOne 
-     * @param idUserTwo 
+     * Get the chat history of the users.
+     * Get the chat between the users.
+     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getChatByUsers(idUserOne: number, idUserTwo: number, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
-    public getChatByUsers(idUserOne: number, idUserTwo: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
-    public getChatByUsers(idUserOne: number, idUserTwo: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
-    public getChatByUsers(idUserOne: number, idUserTwo: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getChatByUsers(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<ChatHistory>;
+    public getChatByUsers(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChatHistory>>;
+    public getChatByUsers(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChatHistory>>;
+    public getChatByUsers(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idUserOne === null || idUserOne === undefined) {
-            throw new Error('Required parameter idUserOne was null or undefined when calling getChatByUsers.');
-        }
-
-        if (idUserTwo === null || idUserTwo === undefined) {
-            throw new Error('Required parameter idUserTwo was null or undefined when calling getChatByUsers.');
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getChatByUsers.');
         }
 
         let headers = this.defaultHeaders;
@@ -185,7 +175,91 @@ export class ChatApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ChatHistory>('get',`${this.basePath}/api/private/chat/${encodeURIComponent(String(idUserOne))}/${encodeURIComponent(String(idUserTwo))}`,
+        return this.httpClient.request<ChatHistory>('get',`${this.basePath}/api/private/chat/${encodeURIComponent(String(idUser))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns if the chat has unread messages.
+     * Returns if the chat has unread messages.
+     * @param idChatHistory 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public hasUnread(idChatHistory: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public hasUnread(idChatHistory: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public hasUnread(idChatHistory: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public hasUnread(idChatHistory: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idChatHistory === null || idChatHistory === undefined) {
+            throw new Error('Required parameter idChatHistory was null or undefined when calling hasUnread.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/chat/hasUnread/${encodeURIComponent(String(idChatHistory))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Creates a chat message
+     * Creates a chat message
+     * @param idChatMessage 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public markMessageRead(idChatMessage: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public markMessageRead(idChatMessage: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public markMessageRead(idChatMessage: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public markMessageRead(idChatMessage: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idChatMessage === null || idChatMessage === undefined) {
+            throw new Error('Required parameter idChatMessage was null or undefined when calling markMessageRead.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/chat/markMessageRead/${encodeURIComponent(String(idChatMessage))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

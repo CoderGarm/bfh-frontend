@@ -1,22 +1,23 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
 import {ChatApiService, ChatHistory, ChatMessage, UserJson} from "../../../../services/swagger";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {Subscription} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
+import {SubscriptionManager} from "../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-chat-history',
     templateUrl: './chat-history.component.html',
     styleUrls: ['./chat-history.component.scss']
 })
-export class ChatHistoryComponent implements OnInit, OnChanges {
+export class ChatHistoryComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     /**
      * The current displayed chat history.
      */
     chatHistory?: ChatHistory;
 
-    private subscriptions: Subscription[] = [];
+    messages: ChatMessage[] = [];
 
     chatFG: FormGroup = new FormGroup({
         messageFC: new FormControl('')
@@ -33,15 +34,49 @@ export class ChatHistoryComponent implements OnInit, OnChanges {
     @Output()
     newChatStartedChatHistoryOutput: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    @ViewChildren("chatCardList", {read: ElementRef})
+    chatCardList?: QueryList<ElementRef>;
+
     constructor(private chatApi: ChatApiService, private tokenStorage: TokenStorage) {
+        super();
+    }
+
+    @HostListener('window:wheel', ['$event'])
+    isScrolledIntoView(event: WheelEvent) {
+        //this.messages = this.getPagingFromMessages(0, 2);
+        console.log(event)
+        if (event.deltaY < 0) {
+            console.log("scroll up")
+        } else {
+            console.log("scroll down")
+        }
+
+
+        if (this.chatCardList) {
+            let neededHeight = 0;
+            this.chatCardList.forEach(element => {
+                let rect = element.nativeElement.getBoundingClientRect();
+                neededHeight += (rect.height + 15); //15px for margin-top
+            });
+            console.log("heigth", neededHeight) // todo how to detect what is in viewport?
+
+            //console.log("---------------------------------------------------")
+            /*const rect = this.chatCardList.nativeElement.getBoundingClientRect();
+            const topShown = rect.top >= 0;
+            const bottomShown = rect.bottom <= window.innerHeight;
+            this.isTestDivScrolledIntoView = topShown && bottomShown;*/
+        }
     }
 
     ngOnChanges(changes: SimpleChanges) {
         // only run when property "user" changed
         if (changes[this.selectedUserDefinition]) {
-            let userID: number = this.tokenStorage.getUserID();
-            if (!!userID && !!this.selectedUserChatHistoryInput && !!this.selectedUserChatHistoryInput.idUser) {
-                const subscription = this.chatApi.getChatByUsers(this.selectedUserChatHistoryInput.idUser, userID).subscribe(resp => this.chatHistory = resp);
+            if (!!this.selectedUserChatHistoryInput && !!this.selectedUserChatHistoryInput.idUser) {
+                const subscription = this.chatApi.getChatByUsers(this.selectedUserChatHistoryInput.idUser)
+                    .subscribe(resp => {
+                        this.setChatHistory(resp);
+                        this.messages = this.getPagingFromMessages(0, 2);
+                    });
                 this.subscriptions.push(subscription);
             }
         }
@@ -75,7 +110,8 @@ export class ChatHistoryComponent implements OnInit, OnChanges {
 
         if (!!idChatHistory && idChatHistory != -1) {
             // add a new message to an old chat
-            const sub: Subscription = this.chatApi.sendChatMessage(chatMessage).subscribe(resp => this.chatHistory = resp);
+            const sub: Subscription = this.chatApi.sendChatMessage(chatMessage)
+                .subscribe(resp => this.setChatHistory(resp));
             this.subscriptions.push(sub);
         } else {
             // create a new chat
@@ -89,10 +125,27 @@ export class ChatHistoryComponent implements OnInit, OnChanges {
                 userTwo: this.selectedUserChatHistoryInput!,
                 messages: [chatMessage],
             }
-            const sub: Subscription = this.chatApi.createChatMessageThread(chatHistory).subscribe(resp => this.chatHistory = resp);
+            const sub: Subscription = this.chatApi.createChatMessageThread(chatHistory)
+                .subscribe(resp => this.setChatHistory(resp));
             this.subscriptions.push(sub);
         }
         this.chatFG.controls.messageFC.setValue('');
+    }
+
+    private setChatHistory(resp: ChatHistory) {
+        this.chatHistory = resp;
+    }
+
+    private getPagingFromMessages(from: number, to: number) {
+        if (!this.chatHistory) {
+            return [];
+        }
+        const messages = this.chatHistory.messages;
+        const result: ChatMessage[] = [];
+        for (let i = from; i <= to; i++) {
+            result.push(messages[i]);
+        }
+        return result;
     }
 
     ngOnInit(): void {
@@ -104,9 +157,10 @@ export class ChatHistoryComponent implements OnInit, OnChanges {
 
     chooseStyleByChat() {
         if (!!this.chatHistory && !!this.chatHistory.messages && this.chatHistory.messages.length > 6) {
-            return "chat-card set-right message-field-in-flow";
+            //return "chat-card set-right message-field-in-flow";
         } else {
-            return "chat-card set-right message-field-on-hold";
+            //return "chat-card set-right message-field-on-hold";
         }
+        return "chat-card set-right write-card message-field-in-flow";
     }
 }

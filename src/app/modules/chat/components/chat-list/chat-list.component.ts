@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {FormControl, FormGroup} from "@angular/forms";
+import {SubscriptionManager} from "../../../../SubscriptionManager";
 
 
 @Component({
@@ -11,7 +12,7 @@ import {FormControl, FormGroup} from "@angular/forms";
     templateUrl: './chat-list.component.html',
     styleUrls: ['./chat-list.component.scss']
 })
-export class ChatListComponent implements AfterViewInit, OnChanges {
+export class ChatListComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * Holds every user which is not part of an active chat, not the logged in user but found by the search-by-username.
@@ -27,8 +28,7 @@ export class ChatListComponent implements AfterViewInit, OnChanges {
      * Holds every active chat.
      */
     activeChats: ChatHistory[] = []
-
-    private subscriptions?: Subscription[];
+    activeChatsWithUnread: ChatHistory[] = []
 
     userSearchFromGroup: FormGroup = new FormGroup({
         searchUserNameFC: new FormControl('')
@@ -53,26 +53,36 @@ export class ChatListComponent implements AfterViewInit, OnChanges {
     constructor(private userApi: UserApiService,
                 private chatApi: ChatApiService,
                 private tokenStorage: TokenStorage) {
+        super();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.newChatPartnerDefinition]) {
-            const sub: Subscription = this.chatApi.getChatByUser(this.tokenStorage.getUserID()).subscribe(resp => {
-                this.activeChats = resp != null ? resp : [];
-                this.createListOfKnownChatPartners();
-            })
-            sub.unsubscribe();
+            this.createKnownChats();
         }
+    }
+
+    private createKnownChats() {
+        let sub: Subscription = this.chatApi.getChatByUser().subscribe(resp => {
+            this.activeChats = resp != null ? resp : [];
+            this.createListOfKnownChatPartners();
+            this.activeChats.forEach(chat => {
+                let sub1 = this.chatApi.hasUnread(chat.idChatHistory!).subscribe(resp => {
+                    if (resp) {
+                        this.activeChatsWithUnread.push(chat);
+                    }
+                })
+                this.subscriptions.push(sub1);
+            })
+        })
+        this.subscriptions.push(sub);
+
     }
 
     ngAfterViewInit(): void {
         this.myUserID = this.tokenStorage.getUserID();
 
-        const sub: Subscription = this.chatApi.getChatByUser(this.tokenStorage.getUserID()).subscribe(resp => {
-            this.activeChats = resp != null ? resp : [];
-            this.createListOfKnownChatPartners();
-        })
-        this.subscriptions?.push(sub);
+        this.createKnownChats();
 
         this.userSearchFromGroup.controls.searchUserNameFC.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe(change => {
             const sub: Subscription = this.userApi.getUsersByLikeUserName(change).subscribe(resp => {
@@ -81,7 +91,7 @@ export class ChatListComponent implements AfterViewInit, OnChanges {
                 resp = this.removeLoggedInUserFromListOfChatPartners(resp)
                 this.foundPossibleChatPartners = resp
             });
-            this.subscriptions?.push(sub);
+            this.subscriptions.push(sub);
         });
     }
 
@@ -137,5 +147,15 @@ export class ChatListComponent implements AfterViewInit, OnChanges {
 
     ngOnDestroy() {
         this.subscriptions?.forEach(subscription => subscription.unsubscribe());
+    }
+
+    getChatPartner(chat: ChatHistory): UserJson {
+        let userOne = chat.userOne;
+        let userTwo = chat.userTwo;
+        return userOne.idUser != this.myUserID ? userOne : userTwo;
+    }
+
+    hasUnread(chat: ChatHistory) {
+        return this.activeChatsWithUnread.indexOf(chat) != -1;
     }
 }

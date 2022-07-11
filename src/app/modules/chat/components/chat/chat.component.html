@@ -3,7 +3,7 @@
     <app-chat-list (selectedUserChatListOutput)="selectedUserChatInput = $event"
                    [newChatStartedChatListInput]="newChatStartedChatInput"></app-chat-list>
   </mat-drawer>
-  <mat-drawer-content>
+  <mat-drawer-content class="no-scrolling">
     <app-chat-history [selectedUserChatHistoryInput]="selectedUserChatInput"
                       (newChatStartedChatHistoryOutput)="newChatStartedChatInput = $event"></app-chat-history>
   </mat-drawer-content>
