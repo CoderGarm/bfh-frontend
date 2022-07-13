@@ -17,6 +17,8 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
 
     loginOutEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    unauthorizedCounter: number = 0;
+
     constructor(private router: Router,
                 private tokenStorage: TokenStorage,
                 private authService: AuthApiService,
@@ -72,8 +74,6 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
                 this.saveAccessData(resp)
             }));
         }));
-
-
         return this.getAccessData().pipe(map(tokens => tokens));
     }
 
@@ -85,7 +85,14 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
      * @returns {boolean}
      */
     refreshShouldHappen(response: HttpErrorResponse): boolean {
-        return response.status === 401;
+        let unauthorized = response.status === 401;
+        if (unauthorized) {
+            this.unauthorizedCounter++;
+        }
+        if (this.unauthorizedCounter > 5) {
+            this.logout();
+        }
+        return unauthorized;
     }
 
     /**

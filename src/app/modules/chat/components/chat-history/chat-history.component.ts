@@ -12,6 +12,8 @@ import {SubscriptionManager} from "../../../../SubscriptionManager";
 })
 export class ChatHistoryComponent extends SubscriptionManager implements OnInit, OnChanges {
 
+    myUserID: number = -1;
+
     /**
      * The current displayed chat history.
      */
@@ -37,45 +39,124 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     @ViewChildren("chatCardList", {read: ElementRef})
     chatCardList?: QueryList<ElementRef>;
 
+    private msgIndexFrom = -1;
+    private msgIndexTo = -1;
+
     constructor(private chatApi: ChatApiService, private tokenStorage: TokenStorage) {
         super();
     }
 
-    @HostListener('window:wheel', ['$event'])
-    isScrolledIntoView(event: WheelEvent) {
-        //this.messages = this.getPagingFromMessages(0, 2);
-        console.log(event)
-        if (event.deltaY < 0) {
-            console.log("scroll up")
-        } else {
-            console.log("scroll down")
+    isScrollingNeeded() {
+        let heightOfMessageContainer = this.getHeightOfMessageContainer();
+        let realHeightOfMessages = this.getRealHeightOfMessages();
+        return realHeightOfMessages > heightOfMessageContainer;
+    }
+
+    ngOnInit(): void {
+        this.myUserID = this.tokenStorage.getUserID();
+    }
+
+    private setWheelDown() {
+        const msgContainer = document.getElementById('message-container');
+        if (!msgContainer) {
+            return
         }
-
-
-        if (this.chatCardList) {
-            let neededHeight = 0;
-            this.chatCardList.forEach(element => {
-                let rect = element.nativeElement.getBoundingClientRect();
-                neededHeight += (rect.height + 15); //15px for margin-top
-            });
-            console.log("heigth", neededHeight) // todo how to detect what is in viewport?
-
-            //console.log("---------------------------------------------------")
-            /*const rect = this.chatCardList.nativeElement.getBoundingClientRect();
-            const topShown = rect.top >= 0;
-            const bottomShown = rect.bottom <= window.innerHeight;
-            this.isTestDivScrolledIntoView = topShown && bottomShown;*/
+        let from = this.msgIndexFrom;
+        let to = this.msgIndexTo;
+        if (msgContainer.offsetHeight + msgContainer.scrollTop >= msgContainer.scrollHeight) {
+            // scroll reaches the bottom of the message container
+            if (!!this.chatHistory && to < this.chatHistory?.messages.length - 1) {
+                if (this.isScrollingNeeded()) {
+                    from += 1;
+                }
+                to += 1;
+            }
+            this.setMessagesWithPaging(from, to);
         }
     }
 
+    private setWheelUp() {
+        const msgContainer = document.getElementById('message-container');
+        if (!msgContainer) {
+            return
+        }
+        let from = this.msgIndexFrom;
+        let to = this.msgIndexTo;
+        if (msgContainer.scrollTop == 0) {
+            // scroll reaches the top of the message container
+            if (!!this.chatHistory && this.msgIndexFrom > 0) {
+                from -= 1;
+                to -= 1;
+            }
+            this.setMessagesWithPaging(from, to);
+        }
+    }
+
+    @HostListener('window:wheel', ['$event'])
+    isScrolledIntoView(event: WheelEvent) {
+        if (event.deltaY < 0) {
+            // do nothing when scroll up
+            this.setWheelUp();
+            return;
+        }
+
+        this.setWheelDown();
+        if (this.chatCardList) {
+            this.chatCardList.forEach(element => {
+                let footer: HTMLCollection = element.nativeElement.getElementsByTagName('mat-card-footer');
+                let chatMessageId = footer[0].getAttribute("lang");
+                this.markAsReceived(chatMessageId!);
+            });
+        }
+    }
+
+    private getHeightOfMessageContainer() {
+        const msgContainer = document.getElementById('message-container');
+        return msgContainer!.offsetHeight;
+    }
+
+    private getRealHeightOfMessages() {
+        let neededHeight = 0;
+        this.chatCardList!.forEach(element => {
+            let rect = element.nativeElement.getBoundingClientRect();
+            neededHeight += (rect.height + 15); //15px for margin-top
+        });
+        return neededHeight;
+    }
+
+    /**
+     * Marks the message as read and fakes the receivedAt timestamp here in order to display the message not as unread.
+     */
+    markAsReceived(chatMessageId: string) {
+        const idChatMessage = Number.parseFloat(chatMessageId);
+        const chatMessage: ChatMessage | undefined = this.messages.find(msg => msg.idUserMessage == idChatMessage);
+        const chatMessageFromLibrary: ChatMessage | undefined = this.chatHistory?.messages.find(msg => msg.idUserMessage == idChatMessage);
+        if (!!chatMessageFromLibrary && !!chatMessageFromLibrary.receivedAt) {
+            // do not trigger mark as read if already known as read
+            return;
+        }
+        const sub = this.chatApi.markMessageRead(idChatMessage).subscribe(resp => {
+            if (resp && !!chatMessageFromLibrary) {
+                // mark it read in a transient way
+                if (!!chatMessageFromLibrary) {
+                    chatMessageFromLibrary.receivedAt = new Date();
+                }
+                if (!!chatMessage) {
+                    chatMessage.receivedAt = new Date();
+                }
+            }
+        });
+        this.subscriptions.push(sub);
+    }
+
     ngOnChanges(changes: SimpleChanges) {
-        // only run when property "user" changed
         if (changes[this.selectedUserDefinition]) {
             if (!!this.selectedUserChatHistoryInput && !!this.selectedUserChatHistoryInput.idUser) {
                 const subscription = this.chatApi.getChatByUsers(this.selectedUserChatHistoryInput.idUser)
                     .subscribe(resp => {
                         this.setChatHistory(resp);
-                        this.messages = this.getPagingFromMessages(0, 2);
+                        this.setMessagesWithPaging(0, 4);
+
                     });
                 this.subscriptions.push(subscription);
             }
@@ -136,31 +217,20 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         this.chatHistory = resp;
     }
 
-    private getPagingFromMessages(from: number, to: number) {
+    private setMessagesWithPaging(from: number, to: number) {
+        if (this.msgIndexFrom == from && this.msgIndexTo == to) {
+            return;
+        }
         if (!this.chatHistory) {
-            return [];
+            return;
         }
         const messages = this.chatHistory.messages;
         const result: ChatMessage[] = [];
         for (let i = from; i <= to; i++) {
             result.push(messages[i]);
         }
-        return result;
-    }
-
-    ngOnInit(): void {
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    }
-
-    chooseStyleByChat() {
-        if (!!this.chatHistory && !!this.chatHistory.messages && this.chatHistory.messages.length > 6) {
-            //return "chat-card set-right message-field-in-flow";
-        } else {
-            //return "chat-card set-right message-field-on-hold";
-        }
-        return "chat-card set-right write-card message-field-in-flow";
+        this.messages = result;
+        this.msgIndexFrom = from;
+        this.msgIndexTo = to;
     }
 }

@@ -4,27 +4,27 @@ import {AuthenticationService} from '../../../services/authentication';
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
-import {Subscription} from "rxjs";
 import {environment} from "../../../../environments/environment";
+import {SubscriptionManager} from "../../../SubscriptionManager";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends SubscriptionManager implements OnInit {
 
     protected basePath = environment.backendServer;
 
     static path: string = 'login';
-
-    private subscription?: Subscription;
 
     loginForm: FormGroup;
     isAuthenticated: boolean = false;
 
     constructor(protected authService: AuthenticationService,
                 private permissionsService: NgxPermissionsService) {
+        super();
+
         this.loginForm = new FormGroup({
             login: new FormControl(''),
             pass: new FormControl('')
@@ -39,38 +39,23 @@ export class LoginComponent implements OnInit {
     }
 
     submitLogin() {
-
         const login: AuthRequest = {
             username: this.loginForm.controls.login.value,
             password: this.loginForm.controls.pass.value,
         }
 
-        this.subscription = this.authService.login(login).subscribe(
-            resp => {
-                this.isAuthenticated = !!resp;
-            },
-            error => {
-                this.clear();
-            }
+        const sub = this.authService.login(login).subscribe(
+            resp => this.isAuthenticated = !!resp,
+            () => this.clear()
         );
-
+        this.subscriptions.push(sub);
     }
 
 
     clear() {
-
         this.authService.clear();
         this.permissionsService.flushPermissions();
-
-        this.loginForm = new FormGroup({
-            login: new FormControl(''),
-            pass: new FormControl('')
-        });
-    }
-
-    ngOnDestroy() {
-        if (!!this.subscription) {
-            this.subscription.unsubscribe()
-        }
+        this.loginForm.controls.login.setValue('');
+        this.loginForm.controls.pass.setValue('');
     }
 }

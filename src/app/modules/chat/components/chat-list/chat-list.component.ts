@@ -1,6 +1,6 @@
 import {ChatApiService, ChatHistory, UserApiService, UserJson} from '../../../../services/swagger';
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {Subscription} from "rxjs";
+import {interval, Subscription} from "rxjs";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -66,33 +66,55 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
         let sub: Subscription = this.chatApi.getChatByUser().subscribe(resp => {
             this.activeChats = resp != null ? resp : [];
             this.createListOfKnownChatPartners();
+            this.activeChatsWithUnread = [];
             this.activeChats.forEach(chat => {
                 let sub1 = this.chatApi.hasUnread(chat.idChatHistory!).subscribe(resp => {
                     if (resp) {
                         this.activeChatsWithUnread.push(chat);
                     }
-                })
+                });
                 this.subscriptions.push(sub1);
             })
         })
         this.subscriptions.push(sub);
+    }
 
+    private detectUnreadMessages(chat: ChatHistory) {
+        let indexOf = this.activeChatsWithUnread.indexOf(chat);
+        if (indexOf != -1) {
+            const sub = this.chatApi.hasUnread(chat.idChatHistory!).subscribe(resp => {
+                if (!resp) {
+                    if (indexOf == 0) {
+                        this.activeChatsWithUnread = [];
+                    } else {
+                        this.activeChatsWithUnread = this.activeChatsWithUnread.slice(indexOf);
+                    }
+                }
+            });
+            this.subscriptions.push(sub);
+        }
     }
 
     ngAfterViewInit(): void {
         this.myUserID = this.tokenStorage.getUserID();
+        this.userSearchFromGroup.controls.searchUserNameFC.valueChanges
+            .pipe(debounceTime(300), distinctUntilChanged())
+            .subscribe(change => {
+                const sub: Subscription = this.userApi.getUsersByLikeUserName(change)
+                    .subscribe(resp => {
 
-        this.createKnownChats();
-
-        this.userSearchFromGroup.controls.searchUserNameFC.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe(change => {
-            const sub: Subscription = this.userApi.getUsersByLikeUserName(change).subscribe(resp => {
-
-                resp = this.removeAlreadyKnownChatPartners(resp);
-                resp = this.removeLoggedInUserFromListOfChatPartners(resp)
-                this.foundPossibleChatPartners = resp
+                        resp = this.removeAlreadyKnownChatPartners(resp);
+                        resp = this.removeLoggedInUserFromListOfChatPartners(resp)
+                        this.foundPossibleChatPartners = resp
+                    });
+                this.subscriptions.push(sub);
             });
-            this.subscriptions.push(sub);
+
+        const source = interval(2000);
+        const sub = source.subscribe(val => {
+            this.activeChatsWithUnread.forEach(chat => this.detectUnreadMessages(chat));
         });
+        this.subscriptions.push(sub);
     }
 
     private removeAlreadyKnownChatPartners(resp: UserJson[]): UserJson[] {
