@@ -1,8 +1,21 @@
 @import "src/styles/variables";
 
-#message-container {
+#arrow-container {
   height: calc(100% - 200px);
+}
+
+.arrow {
+  height: 24px;
+}
+
+#message-container {
+  height: calc(100% - 35px);
   overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+#message-container::-webkit-scrollbar {
+  display: none;
 }
 
 .avatar-image {

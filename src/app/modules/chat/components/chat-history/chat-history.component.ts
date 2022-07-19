@@ -1,9 +1,10 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
 import {ChatApiService, ChatHistory, ChatMessage, UserJson} from "../../../../services/swagger";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
-import {Subscription} from "rxjs";
+import {interval, Subscription} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {take} from "rxjs/operators";
 
 @Component({
     selector: 'app-chat-history',
@@ -13,6 +14,8 @@ import {SubscriptionManager} from "../../../../SubscriptionManager";
 export class ChatHistoryComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     myUserID: number = -1;
+
+    private readonly intervalPeriod = 30;
 
     /**
      * The current displayed chat history.
@@ -39,6 +42,8 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     @ViewChildren("chatCardList", {read: ElementRef})
     chatCardList?: QueryList<ElementRef>;
 
+    private msgStartIndexFrom = 0;
+    private msgStartIndexTo = 4;
     private msgIndexFrom = -1;
     private msgIndexTo = -1;
 
@@ -46,62 +51,98 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         super();
     }
 
-    isScrollingNeeded() {
-        let heightOfMessageContainer = this.getHeightOfMessageContainer();
-        let realHeightOfMessages = this.getRealHeightOfMessages();
-        return realHeightOfMessages > heightOfMessageContainer;
-    }
-
     ngOnInit(): void {
         this.myUserID = this.tokenStorage.getUserID();
     }
 
-    private setWheelDown() {
-        const msgContainer = document.getElementById('message-container');
-        if (!msgContainer) {
-            return
-        }
-        let from = this.msgIndexFrom;
-        let to = this.msgIndexTo;
-        if (msgContainer.offsetHeight + msgContainer.scrollTop >= msgContainer.scrollHeight) {
-            // scroll reaches the bottom of the message container
-            if (!!this.chatHistory && to < this.chatHistory?.messages.length - 1) {
-                if (this.isScrollingNeeded()) {
-                    from += 1;
-                }
-                to += 1;
-            }
-            this.setMessagesWithPaging(from, to);
+    @HostListener('window:wheel', ['$event'])
+    isScrolledIntoView(wheelEvent: WheelEvent) {
+        if (wheelEvent.deltaY < 0) {
+            this.wheelUp(false);
+        } else {
+            this.wheelDown(false);
         }
     }
 
-    private setWheelUp() {
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes[this.selectedUserDefinition]) {
+            if (!!this.selectedUserChatHistoryInput && !!this.selectedUserChatHistoryInput.idUser) {
+                const subscription = this.chatApi.getChatByUsers(this.selectedUserChatHistoryInput.idUser)
+                    .subscribe(resp => {
+                        this.setChatHistory(resp);
+                        this.displayInitialMessages();
+
+                    });
+                this.subscriptions.push(subscription);
+            }
+        }
+    }
+
+    private displayInitialMessages() {
+        if (!this.chatHistory) {
+            return;
+        }
+
+        let from = this.msgStartIndexFrom;
+        let to = this.msgStartIndexTo;
+        let length = this.chatHistory.messages.length;
+        if (length > this.msgStartIndexTo) {
+            // more messages present than initial start index
+            to = length - 1;
+            from = to - 4;
+        } else if (length < this.msgStartIndexTo) {
+            from = 0;
+            to = length - 1;
+        }
+        this.setMessagesWithPaging(from, to); // displayInitialMessages
+        // force scroll down for the case that message is too high for normal mechanism
+        this.maxDown();
+    }
+
+    private wheelDown(isForced: boolean) {
+        const msgContainer = document.getElementById('message-container');
+
+        if (!msgContainer) {
+            return
+        }
+        let from = this.msgIndexFrom;
+        let to = this.msgIndexTo;
+        let updateByHeightNeeded = msgContainer.offsetHeight + msgContainer.scrollTop >= msgContainer.scrollHeight;
+        if (isForced || updateByHeightNeeded) {
+            // scroll reaches the bottom of the message container
+            if (!!this.chatHistory && to < this.chatHistory.messages.length - 1) {
+                from += 1;
+                to += 1;
+            }
+            this.setMessagesWithPaging(from, to); // wheelDown
+        }
+        this.markAllDisplayedMessagesAsRead();
+    }
+
+    private wheelUp(force: boolean) {
         const msgContainer = document.getElementById('message-container');
         if (!msgContainer) {
             return
         }
         let from = this.msgIndexFrom;
         let to = this.msgIndexTo;
-        if (msgContainer.scrollTop == 0) {
+        if (force || msgContainer.scrollTop == 0) {
             // scroll reaches the top of the message container
             if (!!this.chatHistory && this.msgIndexFrom > 0) {
                 from -= 1;
                 to -= 1;
             }
-            this.setMessagesWithPaging(from, to);
+            this.setMessagesWithPaging(from, to); // wheelUp
         }
     }
 
-    @HostListener('window:wheel', ['$event'])
-    isScrolledIntoView(event: WheelEvent) {
-        if (event.deltaY < 0) {
-            // do nothing when scroll up
-            this.setWheelUp();
-            return;
-        }
-
-        this.setWheelDown();
-        if (this.chatCardList) {
+    private markAllDisplayedMessagesAsRead() {
+        if (!!this.chatCardList && !!this.chatHistory) {
+            let isUnreadPresent: ChatMessage | undefined = this.chatHistory.messages.find(msg => !msg.receivedAt);
+            if (!isUnreadPresent) {
+                // nothing to mark as read
+                return;
+            }
             this.chatCardList.forEach(element => {
                 let footer: HTMLCollection = element.nativeElement.getElementsByTagName('mat-card-footer');
                 let chatMessageId = footer[0].getAttribute("lang");
@@ -110,27 +151,16 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         }
     }
 
-    private getHeightOfMessageContainer() {
-        const msgContainer = document.getElementById('message-container');
-        return msgContainer!.offsetHeight;
-    }
-
-    private getRealHeightOfMessages() {
-        let neededHeight = 0;
-        this.chatCardList!.forEach(element => {
-            let rect = element.nativeElement.getBoundingClientRect();
-            neededHeight += (rect.height + 15); //15px for margin-top
-        });
-        return neededHeight;
-    }
-
     /**
      * Marks the message as read and fakes the receivedAt timestamp here in order to display the message not as unread.
      */
     markAsReceived(chatMessageId: string) {
+        if (!this.chatHistory) {
+            return;
+        }
         const idChatMessage = Number.parseFloat(chatMessageId);
         const chatMessage: ChatMessage | undefined = this.messages.find(msg => msg.idUserMessage == idChatMessage);
-        const chatMessageFromLibrary: ChatMessage | undefined = this.chatHistory?.messages.find(msg => msg.idUserMessage == idChatMessage);
+        const chatMessageFromLibrary: ChatMessage | undefined = this.chatHistory.messages.find(msg => msg.idUserMessage == idChatMessage);
         if (!!chatMessageFromLibrary && !!chatMessageFromLibrary.receivedAt) {
             // do not trigger mark as read if already known as read
             return;
@@ -149,26 +179,13 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         this.subscriptions.push(sub);
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes[this.selectedUserDefinition]) {
-            if (!!this.selectedUserChatHistoryInput && !!this.selectedUserChatHistoryInput.idUser) {
-                const subscription = this.chatApi.getChatByUsers(this.selectedUserChatHistoryInput.idUser)
-                    .subscribe(resp => {
-                        this.setChatHistory(resp);
-                        this.setMessagesWithPaging(0, 4);
-
-                    });
-                this.subscriptions.push(subscription);
-            }
-        }
-    }
-
-    chooseStyleFromSender(sender: UserJson): string {
+    chooseStyleFromSender(message: ChatMessage): string {
+        let sender: UserJson = message.sender
         let userID: number = this.tokenStorage.getUserID();
         if (sender.idUser === userID) {
-            return "chat-card set-right";
+            return "chat-card set-right " + message.idUserMessage;
         }
-        return "chat-card set-left";
+        return "chat-card set-left " + message.idUserMessage;
     }
 
     submitMessage() {
@@ -232,5 +249,99 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         this.messages = result;
         this.msgIndexFrom = from;
         this.msgIndexTo = to;
+    }
+
+    /**
+     * Unused, I know. But interesting.
+     */
+    isScrollingNeeded() {
+        let heightOfMessageContainer = this.getHeightOfMessageContainer();
+        let realHeightOfMessages = this.getRealHeightOfMessages();
+        return realHeightOfMessages > heightOfMessageContainer;
+    }
+
+    private getHeightOfMessageContainer() {
+        const msgContainer = document.getElementById('message-container');
+        return msgContainer!.offsetHeight;
+    }
+
+    private getRealHeightOfMessages() {
+        let neededHeight = 0;
+        this.chatCardList!.forEach(element => {
+            let rect = element.nativeElement.getBoundingClientRect();
+            neededHeight += (rect.height + 15); //15px for margin-top
+        });
+        return neededHeight;
+    }
+
+    displayPreviousMessageArrow() {
+        if (!this.chatHistory) {
+            return false;
+        }
+        return this.msgIndexFrom > 0;
+    }
+
+    displayNextMessageArrow() {
+        if (!this.chatHistory) {
+            return false;
+        }
+        const lastMessageNotLoaded = this.msgIndexTo != (this.chatHistory.messages.length - 1);
+        const msgContainer = document.getElementById('message-container');
+        if (!msgContainer) {
+            return false;
+        }
+        let scrollEndReached = msgContainer.scrollHeight - msgContainer.offsetHeight == msgContainer.scrollTop;
+        return lastMessageNotLoaded || !scrollEndReached;
+    }
+
+    maxUp() {
+        if (!this.chatHistory) {
+            return;
+        }
+        const source = interval(this.intervalPeriod);
+        let counter = this.msgIndexFrom;
+        let numberObservable = source.pipe(take(this.msgIndexFrom));
+        let sub = numberObservable.subscribe(() => {
+            this.wheelUp(true);
+            counter--;
+            if (counter == 0) {
+                // force scroll down for the case that message is too high for normal mechanism
+                this.scrollUp();
+            }
+        });
+        this.subscriptions.push(sub);
+    }
+
+    maxDown() {
+        if (!this.chatHistory) {
+            return;
+        }
+        const source = interval(this.intervalPeriod);
+        let scrollTimes = this.chatHistory.messages.length - this.msgIndexTo;
+        let counter = scrollTimes;
+        let numberObservable = source.pipe(take(scrollTimes));
+        let sub = numberObservable.subscribe(() => {
+            this.wheelDown(true);
+            counter--;
+            if (counter == 0) {
+                // force scroll down for the case that message is too high for normal mechanism
+                this.scrollDown();
+            }
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private scrollDown() {
+        const msgContainer = document.getElementById('message-container');
+        if (!!msgContainer) {
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+    }
+
+    private scrollUp() {
+        const msgContainer = document.getElementById('message-container');
+        if (!!msgContainer) {
+            msgContainer.scrollTop = 0;
+        }
     }
 }

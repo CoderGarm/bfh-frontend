@@ -1,18 +1,26 @@
-<div id="message-container">
-    <mat-card #chatCardList *ngFor="let message of messages" [className]="chooseStyleFromSender(message.sender)">
-        <mat-card-header>
-            <div mat-card-avatar class="avatar-image"></div>
-            <mat-card-title>
-                {{message.sender.username}}
-                <mat-icon *ngIf="!message.receivedAt && message.sender.idUser != myUserID">mark_email_unread</mat-icon>
-            </mat-card-title>
-            <mat-card-subtitle>{{message.sentAt | date:'medium'}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <p class="message">{{message.message}}</p>
-        </mat-card-content>
-        <mat-card-footer style="display: none" [lang]="message.idUserMessage">If you see that, you are a hacker.</mat-card-footer>
-    </mat-card>
+<div id="arrow-container">
+    <div class="arrow">
+        <mat-icon *ngIf="displayPreviousMessageArrow()" (click)="maxUp()">keyboard_double_arrow_up</mat-icon>
+    </div>
+    <div id="message-container">
+        <mat-card #chatCardList *ngFor="let message of messages" [className]="chooseStyleFromSender(message)">
+            <mat-card-header>
+                <div mat-card-avatar class="avatar-image"></div>
+                <mat-card-title>
+                    {{message.sender.username}}
+                    <mat-icon *ngIf="!message.receivedAt && message.sender.idUser != myUserID">mark_email_unread</mat-icon>
+                </mat-card-title>
+                <mat-card-subtitle>{{message.sentAt | date:'medium'}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="message">{{message.message}}</p>
+            </mat-card-content>
+            <mat-card-footer style="display: none" [lang]="message.idUserMessage">If you see that, you are a hacker.</mat-card-footer>
+        </mat-card>
+    </div>
+    <div class="arrow">
+        <mat-icon *ngIf="displayNextMessageArrow()" (click)="maxDown()">keyboard_double_arrow_down</mat-icon>
+    </div>
 </div>
 
 <mat-card class="chat-card set-right write-card message-field-in-flow">

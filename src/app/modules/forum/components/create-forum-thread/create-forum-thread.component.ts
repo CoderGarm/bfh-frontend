@@ -28,7 +28,6 @@ export class CreateForumThreadComponent extends SubscriptionManager implements O
 
     ngOnInit(): void {
         this.newThreadFG.valueChanges.subscribe(value => {
-            console.log("fire")
             this.forumsNotificationService.pushCreatedThread(this.createThread());
         });
     }

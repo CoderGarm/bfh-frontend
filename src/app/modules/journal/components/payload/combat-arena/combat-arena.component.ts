@@ -85,7 +85,6 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
                 fleet = this.getFleetByText(text);
             }
         }
-        console.log(fleet)
     }
 
     /**
