@@ -36,7 +36,6 @@ export class ConstructionDisplayComponent implements AfterViewInit {
 
     /**
      * constructs and returns the url to the icon
-     * @param cap
      */
     getLink(): string {
         if (!!this.constructionInput) {

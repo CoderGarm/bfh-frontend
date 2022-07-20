@@ -1,14 +1,12 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {ColonizationApiService} from "../../../../../services/swagger/api/colonizationApi.service";
+import {ColonizationApiService, MiningFactors, Orbit, Planet, ResourcesApiService, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {MiningFactors, Orbit, Planet, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {ResourcesApiService} from "../../../../../services/swagger/api/resourcesApi.service";
 
 @Component({
     selector: 'app-organize-expansion',

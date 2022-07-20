@@ -125,7 +125,8 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
         this.permissionsService.flushPermissions();
         this.clearAccessData();
         this.loginOutEvent.next(true);
-        this.router.navigateByUrl(HomeComponent.path);
+        this.router.navigateByUrl(HomeComponent.path).then(() => {
+        });
     }
 
     clear(): void {

@@ -1,8 +1,8 @@
 import {PlanetsSidenavComponent} from '../modules/planets/components/orga/planets-sidenav/planets-sidenav.component';
 import {ChatComponent} from '../modules/chat/components/chat/chat.component';
-import {HomeComponent} from './../components/home/home.component';
-import {ProfileComponent} from './../components/user/profile/profile.component';
-import {LoginComponent} from './../components/user/login/login.component';
+import {HomeComponent} from '../components/home/home.component';
+import {ProfileComponent} from '../components/user/profile/profile.component';
+import {LoginComponent} from '../components/user/login/login.component';
 import {RegisterComponent} from '../components/user/register/register.component';
 import {Route, Routes} from '@angular/router';
 import {ProtectedGuard} from 'ngx-auth';

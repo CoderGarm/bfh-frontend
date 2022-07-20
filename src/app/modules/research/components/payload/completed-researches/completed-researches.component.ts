@@ -1,7 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {ResearchApiService} from "../../../../../services/swagger/api/researchApi.service";
-import {ResearchLevel} from "../../../../../services/swagger";
+import {ResearchApiService, ResearchLevel} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({

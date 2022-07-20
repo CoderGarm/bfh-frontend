@@ -1,7 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {ResearchApiService} from "../../../../../services/swagger/api/researchApi.service";
-import {JobApiService, ResearchLevel} from "../../../../../services/swagger";
+import {JobApiService, ResearchApiService, ResearchLevel} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -95,9 +94,7 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
         if (!this.researchPossible) {
             return false;
         }
-        if (researchLevel.level >= researchLevel.research.levelCap) {
-            return false;
-        }
-        return true;
+        return researchLevel.level < researchLevel.research.levelCap;
+
     }
 }

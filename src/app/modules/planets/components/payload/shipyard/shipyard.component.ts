@@ -2,7 +2,6 @@ import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} fr
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {
     EHullType,
-    EResourceType,
     Planet,
     PlanetApiService,
     ResourceDeposit,

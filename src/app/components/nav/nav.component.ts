@@ -1,5 +1,5 @@
-import {ProfileComponent} from './../user/profile/profile.component';
-import {AuthenticationService} from './../../services/authentication/authentication.service';
+import {ProfileComponent} from '../user/profile/profile.component';
+import {AuthenticationService} from '../../services/authentication';
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {TokenStorage} from "../../services/authentication/token-storage.service";
@@ -32,7 +32,8 @@ export class NavComponent extends SubscriptionManager implements OnInit {
             this.isLoggedIn = !!loggedIn;
             if (this.isLoggedIn && !this.tokenStorage.getInterruptedURL()) {
                 this.isAdmin = loggedIn.role === RoleEnum.ADMIN;
-                this.router.navigateByUrl(ProfileComponent.path);
+                this.router.navigateByUrl(ProfileComponent.path).then(() => {
+                });
             }
         });
         this.subscriptions.push(sub);

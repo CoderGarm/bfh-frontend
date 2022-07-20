@@ -11,7 +11,6 @@
 #message-container {
   height: calc(100% - 35px);
   overflow-y: scroll;
-  scroll-behavior: smooth;
 }
 
 #message-container::-webkit-scrollbar {
@@ -74,17 +73,17 @@ mat-card.chat-card.set-left > mat-card-header {
 }
 
 .message {
-  word-wrap: break-word
+  overflow-wrap: break-word
 }
 
 .write-card {
-  width: -webkit-fill-available;
+  width: 80%;
   margin-left: 40px;
   margin-right: 40px;
 }
 
 .message-field-on-hold {
-  position: absolute; // todo positioning in real flex
+  position: absolute;
   bottom: 15px;
   margin-top: calc(100vh - 130px);
 }

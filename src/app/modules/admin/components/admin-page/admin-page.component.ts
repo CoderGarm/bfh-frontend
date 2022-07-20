@@ -36,7 +36,8 @@ export class AdminPageComponent extends SubscriptionManager implements OnInit {
             this.isLoggedIn = false;
             this.isAdmin = false;
             this.authenticationService.logout();
-            this.router.navigateByUrl(LoginComponent.path);
+            this.router.navigateByUrl(LoginComponent.path).then(() => {
+            });
         }
     }
 

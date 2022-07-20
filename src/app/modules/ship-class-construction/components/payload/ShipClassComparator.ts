@@ -23,10 +23,8 @@ export class ShipClassComparator {
         if (!this.equalAmmunitionFittings(o1, o2)) {
             return false;
         }
-        if (!this.equalSupportFittings(o1, o2)) {
-            return false;
-        }
-        return true;
+        return this.equalSupportFittings(o1, o2);
+
     }
 
     /**

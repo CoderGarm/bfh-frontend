@@ -11,10 +11,8 @@ export class WeaponHelper {
      */
     static isLauncher(weapon: Weapon | Launcher): boolean {
         let weaponType = weapon.weaponType;
-        if (weaponType === Launcher.WeaponTypeEnum.MISSILE || weaponType === Launcher.WeaponTypeEnum.COUNTERMISSILE) {
-            return true;
-        }
-        return false;
+        return weaponType === Launcher.WeaponTypeEnum.MISSILE || weaponType === Launcher.WeaponTypeEnum.COUNTERMISSILE;
+
     }
 
     /**
@@ -24,10 +22,8 @@ export class WeaponHelper {
      */
     static isWeapon(weapon: Weapon | Launcher): boolean {
         let weaponType = weapon.weaponType;
-        if (weaponType === Weapon.WeaponTypeEnum.BEAM || weaponType === Weapon.WeaponTypeEnum.POINTDEFENSE) {
-            return true;
-        }
-        return false;
+        return weaponType === Weapon.WeaponTypeEnum.BEAM || weaponType === Weapon.WeaponTypeEnum.POINTDEFENSE;
+
     }
 
     /**

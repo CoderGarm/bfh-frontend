@@ -4,9 +4,8 @@
 
 html,
 body {
-  height: -webkit-fill-available;
+  height: 100%;
 }
-
 
 .bottom-spacer {
   // margin at the bottom of every tab body wrapper
@@ -48,7 +47,7 @@ body {
 }
 
 .drawer-container {
-  height: -webkit-fill-available;
+  height: 100%;
 }
 
 .drawer-list {
@@ -60,7 +59,7 @@ body {
   position: sticky;
   top: 0;
   width: 50px;
-  height: -webkit-fill-available;
+  height: 100%;
   float: left;
 }
 

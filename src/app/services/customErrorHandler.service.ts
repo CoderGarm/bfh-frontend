@@ -72,7 +72,8 @@ export class CustomErrorHandler implements ErrorHandler {
     navigateToLandingPage(role: string) {
         switch (role) {
             case "ROLE_USER":
-                this.router.navigateByUrl(ProfileComponent.path);
+                this.router.navigateByUrl(ProfileComponent.path).then(() => {
+                });
                 break;
             default:
                 break;

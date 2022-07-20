@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Job} from "../../../services/swagger/model/job";
+import {Job} from "../../../services/swagger";
 
 @Component({
     selector: 'app-job-display',
@@ -57,7 +57,6 @@ export class JobDisplayComponent implements AfterViewInit, OnChanges {
 
     /**
      * constructs and returns the url to the icon
-     * @param cap
      */
     getLink(): string {
         if (!!this.displayJobInput) {

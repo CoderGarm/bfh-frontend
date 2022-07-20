@@ -68,13 +68,13 @@ mat-card.forum-message-card.set-left > mat-card-header {
 }
 
 .message {
-  word-wrap: break-word
+  overflow-wrap: break-word
 }
 
 .message-field-on-hold {
   position: absolute;
   bottom: 15px;
-  width: -webkit-fill-available;
+  width: 80%;
   margin-left: 40px;
   margin-right: 40px;
 }
@@ -82,7 +82,7 @@ mat-card.forum-message-card.set-left > mat-card-header {
 .message-field-in-flow {
   position: sticky;
   bottom: 15px;
-  width: -webkit-fill-available;
+  width: 80%;
   margin-left: 40px;
   margin-right: 40px;
 }

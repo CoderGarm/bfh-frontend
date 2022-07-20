@@ -66,7 +66,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             route = NavigationCreationService.getLoginRoute();
         }
         this.activeRoute = route;
-        this.router.navigateByUrl("/" + route.path);
+        this.router.navigateByUrl("/" + route.path).then(() => {
+        });
         const path = this.activeRoute.path;
         this.isNoScroll = this.noScrollingPaths.includes(path!, 0);
     }

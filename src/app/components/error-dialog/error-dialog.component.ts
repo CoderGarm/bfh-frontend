@@ -1,5 +1,5 @@
 import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
-import {FrontendError} from './../../services/swagger/model/frontendError';
+import {FrontendError} from '../../services/swagger';
 import {Component, Inject, OnInit} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs'
 import {DataSource} from '@angular/cdk/collections';

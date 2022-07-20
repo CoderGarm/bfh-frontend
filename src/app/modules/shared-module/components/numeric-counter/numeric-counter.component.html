@@ -9,7 +9,7 @@
                step="1" min="0"
                (click)="$event.stopPropagation();"
                autocomplete="off"
-               [value]=getAmount()
+               [value]="getAmount() + ''"
                (change)="getAmount()">
     </div>
     <mat-icon *ngIf="disabled" matSuffix (click)="$event.stopPropagation();" class="disabled">add</mat-icon>
