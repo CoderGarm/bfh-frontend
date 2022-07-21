@@ -10,6 +10,7 @@ import {AuthenticationModule} from "../../services/authentication";
 import {ApiModule} from "../../services/swagger";
 import {NumericCounterComponent} from './components/numeric-counter/numeric-counter.component';
 import {OverlayModule} from "@angular/cdk/overlay";
+import {AngularEditorModule} from "@kolkov/angular-editor";
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
         ApiModule,
         MaterialComponentsModule,
         OverlayModule,
+        AngularEditorModule,
     ],
     exports: [
         CommonModule,
@@ -41,6 +43,7 @@ import {OverlayModule} from "@angular/cdk/overlay";
         MaterialComponentsModule,
         NumericCounterComponent,
         OverlayModule,
+        AngularEditorModule,
     ]
 })
 export class SharedModuleModule {

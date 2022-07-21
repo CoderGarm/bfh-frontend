@@ -5,6 +5,7 @@ import {interval, Subscription} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {take} from "rxjs/operators";
+import {AngularEditorConfig} from "@kolkov/angular-editor";
 
 @Component({
     selector: 'app-chat-history',
@@ -46,6 +47,13 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     private msgStartIndexTo = 4;
     private msgIndexFrom = -1;
     private msgIndexTo = -1;
+    editorConfig: AngularEditorConfig = {
+        editable: false,
+        placeholder: 'Write your message...',
+        showToolbar: false,
+        enableToolbar: false,
+        sanitize: true
+    };
 
     constructor(private chatApi: ChatApiService, private tokenStorage: TokenStorage) {
         super();
@@ -53,6 +61,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
 
     ngOnInit(): void {
         this.myUserID = this.tokenStorage.getUserID();
+        this.chatFG.controls.messageFC.valueChanges.subscribe(value => console.log(value))
     }
 
     @HostListener('window:wheel', ['$event'])
@@ -71,7 +80,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                     .subscribe(resp => {
                         this.setChatHistory(resp);
                         this.displayInitialMessages();
-
+                        this.editorConfig.editable = !!this.chatHistory;
                     });
                 this.subscriptions.push(subscription);
             }

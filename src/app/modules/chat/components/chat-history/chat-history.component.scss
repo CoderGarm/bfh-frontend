@@ -1,7 +1,7 @@
 @import "src/styles/variables";
 
 #arrow-container {
-  height: calc(100% - 200px);
+  height: calc(100% - 215px);
 }
 
 .arrow {
@@ -9,7 +9,7 @@
 }
 
 #message-container {
-  height: calc(100% - 35px);
+  height: calc(100% - 50px);
   overflow-y: scroll;
 }
 
@@ -20,6 +20,10 @@
 .avatar-image {
   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
+}
+
+#send-chat-message-button {
+  margin-top: 15px;
 }
 
 .chat-card {

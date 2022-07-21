@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~13.2.4",
     "@angular/platform-browser-dynamic": "~13.2.4",
     "@angular/router": "~13.2.4",
+    "@kolkov/angular-editor": "^3.0.0-beta.0",
     "@svgdotjs/svg.draggable.js": "^3.0.2",
     "@svgdotjs/svg.js": "^3.1.1",
     "@svgdotjs/svg.panzoom.js": "^2.1.2",
@@ -31,7 +32,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.2.5",
+    "@angular-devkit/build-angular": "^13.3.9",
     "@angular/cli": "~13.2.5",
     "@angular/compiler-cli": "~13.2.4",
     "@types/jasmine": "~3.8.0",

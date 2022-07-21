@@ -13,7 +13,7 @@
                 <mat-card-subtitle>{{message.sentAt | date:'medium'}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <p class="message">{{message.message}}</p>
+                <div class="message" [innerHTML]="message.message"></div>
             </mat-card-content>
             <mat-card-footer style="display: none;" [lang]="message.idUserMessage">If you see that, you are a hacker.</mat-card-footer>
         </mat-card>
@@ -26,11 +26,10 @@
 <mat-card class="chat-card set-right write-card message-field-in-flow">
     <mat-card-content>
         <form [formGroup]=chatFG>
-            <mat-form-field appearance="fill" id="chat-message-form-field">
-                <mat-label>Message</mat-label>
-                <textarea matInput autocomplete="off" placeholder="Message ..." formControlName=messageFC
-                          (keyup.enter)="submitMessage()"></textarea>
-            </mat-form-field>
+            <angular-editor
+                    id="chat-message-form-field"
+                    formControlName="messageFC"
+                    [config]="editorConfig"></angular-editor>
         </form>
         <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
                 [disabled]="!this.chatFG.controls.messageFC.value" id="send-chat-message-button">Submit
