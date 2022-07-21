@@ -5,6 +5,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
+import {AngularEditorConfig} from "@kolkov/angular-editor";
 
 @Component({
     selector: 'app-forum-messages',
@@ -32,6 +33,13 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
     pageIndex: number = 0;
     pageSize: number = 15;
     messageAmountInThread: number = 0;
+    editorConfig: AngularEditorConfig = {
+        editable: false,
+        placeholder: 'Write your message...',
+        showToolbar: false,
+        enableToolbar: false,
+        sanitize: true
+    };
 
     constructor(private forumApi: ForumApiService, private forumsNotificationService: ForumsNotificationService) {
         super();
@@ -70,13 +78,18 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
             this.selectedForumThread = undefined;
             this.messagesInThread = undefined;
             this.messageAmountInThread = 0;
+            this.editorConfig.editable = false;
             return;
         }
         this.selectedForumThread = thread;
-        let sub = this.forumApi.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize).subscribe(resp => this.messagesInThread = resp);
+        let sub = this.forumApi.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize).subscribe(resp => {
+            this.messagesInThread = resp;
+            this.markMessagesRead();
+        });
         this.subscriptions.push(sub);
         sub = this.forumApi.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
         this.subscriptions.push(sub);
+        this.editorConfig.editable = true;
     }
 
     chooseStyleByChat() {
@@ -102,5 +115,15 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
             });
             this.subscriptions.push(sub);
         }
+    }
+
+    private markMessagesRead() {
+        if (!this.messagesInThread) {
+            return;
+        }
+        this.messagesInThread.forEach(msg =>
+            this.forumApi.markForumMessageRead(msg.idForum, msg.idForumThread, msg.idForumMessage).subscribe(() => {
+            })
+        );
     }
 }

@@ -6,8 +6,9 @@ import {interval} from "rxjs";
 import {StarMapTabViewComponent} from "./modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 import {JournalTabViewComponent} from "./modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 import {ChatComponent} from "./modules/chat/components/chat/chat.component";
-import {ChatApiService} from "./services/swagger";
+import {ChatApiService, ForumApiService} from "./services/swagger";
 import {SubscriptionManager} from "./SubscriptionManager";
+import {ForumsListComponent} from "./modules/forum/components/forums-list/forums-list.component";
 
 @Component({
     selector: 'app-root',
@@ -22,7 +23,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     isLoggedIn: boolean = false;
 
-    hasUnread: boolean = false;
+    hasUnreadChat: boolean = false;
+    hasUnreadForum: boolean = false;
 
     activeRoute?: Route;
 
@@ -35,7 +37,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     constructor(private router: Router,
                 private authenticationService: AuthenticationService,
-                private chatApi: ChatApiService) {
+                private chatApi: ChatApiService,
+                private forumApi: ForumApiService) {
         super();
     }
 
@@ -56,7 +59,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     private detectUnreadMessages() {
         if (this.isLoggedIn) {
-            const sub = this.chatApi.hasUserUnread().subscribe(resp => this.hasUnread = resp)
+            let sub = this.chatApi.hasUserUnread().subscribe(resp => this.hasUnreadChat = resp)
+            this.subscriptions.push(sub);
+            sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.hasUnreadForum = resp)
             this.subscriptions.push(sub);
         }
     }
@@ -72,7 +77,12 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.isNoScroll = this.noScrollingPaths.includes(path!, 0);
     }
 
-    isChat(path: string) {
-        return path === ChatComponent.path;
+    hasUnread(path: string) {
+        if (path === ChatComponent.path) {
+            return this.hasUnreadChat;
+        } else if (path === ForumsListComponent.path) {
+            return this.hasUnreadForum;
+        }
+        return false;
     }
 }

@@ -4,7 +4,7 @@
         <mat-selection-list [multiple]="false">
             <mat-list-option *ngFor="let route of routes" (click)="navigate(route)">
                 {{route.path}}
-                <mat-icon *ngIf="hasUnread && isChat(route.path!)">mark_email_unread</mat-icon>
+                <mat-icon *ngIf="hasUnread(route.path!)">mark_email_unread</mat-icon>
             </mat-list-option>
         </mat-selection-list>
     </mat-drawer>

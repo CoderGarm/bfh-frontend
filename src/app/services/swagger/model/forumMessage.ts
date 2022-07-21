@@ -24,9 +24,17 @@ export interface ForumMessage {
      */
     idForumThread: number;
     /**
+     * The id of the forum.
+     */
+    idForum: number;
+    /**
      * The id of the author.
      */
     idAuthor: number;
+    /**
+     * The username of the author.
+     */
+    author: string;
     /**
      * The message itself.
      */

@@ -29,6 +29,8 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit, 
     pageIndex: number = 0;
     pageSize: number = 5;
 
+    unreadStateByIdForum: Map<number, boolean> = new Map<number, boolean>();
+
     constructor(private forumApi: ForumApiService, private forumsNotificationService: ForumsNotificationService) {
         super();
     }
@@ -40,7 +42,10 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit, 
     }
 
     ngOnInit(): void {
-        let sub = this.forumApi.getForumsForUser().subscribe(resp => this.forums = resp);
+        let sub = this.forumApi.getForumsForUser().subscribe(resp => {
+            this.forums = resp;
+            this.detectUnreadMessages();
+        });
         this.subscriptions.push(sub);
     }
 
@@ -60,5 +65,24 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit, 
         if (!this.selectedForumThread) {
             this.forumsNotificationService.pushDeselectThread();
         }
+    }
+
+    private detectUnreadMessages() {
+        this.unreadStateByIdForum.clear();
+        this.forums.forEach(forum => {
+            const sub = this.forumApi.hasForumUnread(forum.idForum).subscribe(resp => {
+                this.unreadStateByIdForum.set(forum.idForum, resp);
+            });
+            this.subscriptions.push(sub);
+        });
+    }
+
+    hasForumUnread(forum: Forum) {
+        let hasUnread = false;
+        const knownValue = this.unreadStateByIdForum.get(forum.idForum);
+        if (!!knownValue) {
+            hasUnread = knownValue;
+        }
+        return hasUnread;
     }
 }

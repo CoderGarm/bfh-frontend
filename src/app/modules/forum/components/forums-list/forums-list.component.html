@@ -24,7 +24,10 @@
     <!-- forums -->
     <div id="forum-list" *ngIf="!selectedForum">
         <mat-card class="forum-card" *ngFor="let forum of forums">
-            <mat-card-title (click)="selectForum(forum)">{{forum.title}}</mat-card-title>
+            <mat-card-title (click)="selectForum(forum)">
+                {{forum.title}}
+                <mat-icon *ngIf="hasForumUnread(forum)">mark_email_unread</mat-icon>
+            </mat-card-title>
             <mat-card-subtitle>{{forum.description}}</mat-card-subtitle>
             <mat-card-content>
                 <p>Thread in forum: {{forum.idForumThreads.length}}</p>

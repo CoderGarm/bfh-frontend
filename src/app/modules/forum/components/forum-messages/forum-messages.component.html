@@ -8,10 +8,10 @@
                    (page)="fetchByPagination($event)">
     </mat-paginator>
     <mat-card class="forum-card" *ngFor="let message of messagesInThread">
-        <mat-card-title>Author: {{message.idAuthor}}</mat-card-title>
+        <mat-card-title>Author: {{message.author}}</mat-card-title>
         <mat-card-subtitle>{{message.sentAt}}</mat-card-subtitle>
         <mat-card-content class="message">
-            <p>{{message.message}}</p>
+            <div [innerHTML]="message.message"></div>
         </mat-card-content>
         <mat-card-actions>
             <button mat-button>LIKE</button>
@@ -26,19 +26,18 @@
                    showFirstLastButtons
                    (page)="fetchByPagination($event)">
     </mat-paginator>
-
-    <mat-card [className]="chooseStyleByChat()">
-        <mat-card-content>
-            <form [formGroup]=messageFG>
-                <mat-form-field appearance="fill" id="forum-message-form-field">
-                    <mat-label>Message</mat-label>
-                    <textarea matInput autocomplete="off" placeholder="Message ..." formControlName=messageFC
-                              (keyup.enter)="submitMessage()"></textarea>
-                </mat-form-field>
-            </form>
-            <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
-                    [disabled]="!this.messageFG.controls.messageFC.value" id="send-forum-message-button">Submit
-            </button>
-        </mat-card-content>
-    </mat-card>
 </div>
+
+<mat-card [className]="chooseStyleByChat()" *ngIf="!!messagesInThread">
+    <mat-card-content>
+        <form [formGroup]=messageFG>
+            <angular-editor
+                    id="forum-message-form-field"
+                    formControlName="messageFC"
+                    [config]="editorConfig"></angular-editor>
+        </form>
+        <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
+                [disabled]="!this.messageFG.controls.messageFC.value" id="send-forum-message-button">Submit
+        </button>
+    </mat-card-content>
+</mat-card>

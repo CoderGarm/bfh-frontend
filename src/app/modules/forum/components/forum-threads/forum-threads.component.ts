@@ -42,6 +42,8 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
 
     createdThread?: CreateForumThread;
 
+    unreadStateByIdForumThread: Map<number, boolean> = new Map<number, boolean>();
+
     constructor(private forumApi: ForumApiService,
                 private forumsNotificationService: ForumsNotificationService,
                 private dialog: MatDialog) {
@@ -83,12 +85,14 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
             this.selectedForum = undefined;
             this.selectedForumThreadOutput.emit(undefined);
             this.threads = undefined;
+            this.detectUnreadMessages();
             return;
         }
         this.selectedForum = forum;
         let sub = this.forumApi.getForumThreadsByForumId(this.selectedForum.idForum).subscribe(resp => {
             this.threads = resp
             this.threadAmount = !!resp ? this.threads.length : 0;
+            this.detectUnreadMessages();
         });
         this.subscriptions.push(sub);
     }
@@ -134,5 +138,27 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
             }
             this.createdThread = undefined;
         })
+    }
+
+    private detectUnreadMessages() {
+        this.unreadStateByIdForumThread.clear();
+        if (!this.threads) {
+            return;
+        }
+        this.threads.forEach(thread => {
+            const sub = this.forumApi.hasThreadUnread(thread.idForumThread).subscribe(resp => {
+                this.unreadStateByIdForumThread.set(thread.idForumThread, resp);
+            });
+            this.subscriptions.push(sub);
+        });
+    }
+
+    hasThreadUnread(thread: ForumThread) {
+        let hasUnread = false;
+        const knownValue = this.unreadStateByIdForumThread.get(thread.idForumThread);
+        if (!!knownValue) {
+            hasUnread = knownValue;
+        }
+        return hasUnread;
     }
 }

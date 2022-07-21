@@ -403,4 +403,224 @@ export class ForumApiService {
         );
     }
 
+    /**
+     * Returns if the chat has unread messages.
+     * Returns if the chat has unread messages.
+     * @param idForum 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public hasForumUnread(idForum: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public hasForumUnread(idForum: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public hasForumUnread(idForum: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public hasForumUnread(idForum: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idForum === null || idForum === undefined) {
+            throw new Error('Required parameter idForum was null or undefined when calling hasForumUnread.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/forum/hasForumUnread/${encodeURIComponent(String(idForum))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns if the chat has unread messages.
+     * Returns if the chat has unread messages.
+     * @param idForumThread 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public hasThreadUnread(idForumThread: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public hasThreadUnread(idForumThread: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public hasThreadUnread(idForumThread: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public hasThreadUnread(idForumThread: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idForumThread === null || idForumThread === undefined) {
+            throw new Error('Required parameter idForumThread was null or undefined when calling hasThreadUnread.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/forum/hasThreadUnread/${encodeURIComponent(String(idForumThread))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns if the chat has unread messages.
+     * Returns if the chat has unread messages.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public hasUserUnreadMessages(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public hasUserUnreadMessages(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public hasUserUnreadMessages(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public hasUserUnreadMessages(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/forum/hasUserUnreadMessages`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns if the chat has unread messages.
+     * Returns if the chat has unread messages.
+     * @param idForumThread 
+     * @param idForumMessage 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public isMessageUnread(idForumThread: number, idForumMessage: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public isMessageUnread(idForumThread: number, idForumMessage: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public isMessageUnread(idForumThread: number, idForumMessage: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public isMessageUnread(idForumThread: number, idForumMessage: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idForumThread === null || idForumThread === undefined) {
+            throw new Error('Required parameter idForumThread was null or undefined when calling isMessageUnread.');
+        }
+
+        if (idForumMessage === null || idForumMessage === undefined) {
+            throw new Error('Required parameter idForumMessage was null or undefined when calling isMessageUnread.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/forum/isMessageUnread/${encodeURIComponent(String(idForumThread))}/${encodeURIComponent(String(idForumMessage))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Creates a chat message
+     * Creates a chat message
+     * @param idForum 
+     * @param idForumThread 
+     * @param idForumMessage 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idForum === null || idForum === undefined) {
+            throw new Error('Required parameter idForum was null or undefined when calling markForumMessageRead.');
+        }
+
+        if (idForumThread === null || idForumThread === undefined) {
+            throw new Error('Required parameter idForumThread was null or undefined when calling markForumMessageRead.');
+        }
+
+        if (idForumMessage === null || idForumMessage === undefined) {
+            throw new Error('Required parameter idForumMessage was null or undefined when calling markForumMessageRead.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/markForumMessageRead/${encodeURIComponent(String(idForum))}/${encodeURIComponent(String(idForumThread))}/${encodeURIComponent(String(idForumMessage))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
 }

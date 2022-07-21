@@ -13,7 +13,10 @@
                    (page)="fetchByPagination($event)">
     </mat-paginator>
     <mat-card class="forum-card" *ngFor="let thread of threads">
-        <mat-card-title (click)="selectThread(thread)">{{thread.title}}</mat-card-title>
+        <mat-card-title (click)="selectThread(thread)">
+            {{thread.title}}
+            <mat-icon *ngIf="hasThreadUnread(thread)">mark_email_unread</mat-icon>
+        </mat-card-title>
         <mat-card-subtitle>{{thread.description}}</mat-card-subtitle>
         <mat-card-content>
             <p>Messages in thread: {{thread.idForumMessages.length}}</p>
