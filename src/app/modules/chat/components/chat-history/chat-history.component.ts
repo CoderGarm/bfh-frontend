@@ -22,6 +22,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
      * The current displayed chat history.
      */
     chatHistory?: ChatHistory;
+    isNewChat: boolean = false;
 
     messages: ChatMessage[] = [];
 
@@ -47,9 +48,10 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     private msgStartIndexTo = 4;
     private msgIndexFrom = -1;
     private msgIndexTo = -1;
+    private readonly writeYourMessage = 'Write your message...';
     editorConfig: AngularEditorConfig = {
         editable: false,
-        placeholder: 'Write your message...',
+        placeholder: this.writeYourMessage,
         showToolbar: false,
         enableToolbar: false,
         sanitize: true
@@ -61,7 +63,6 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
 
     ngOnInit(): void {
         this.myUserID = this.tokenStorage.getUserID();
-        this.chatFG.controls.messageFC.valueChanges.subscribe(value => console.log(value))
     }
 
     @HostListener('window:wheel', ['$event'])
@@ -81,10 +82,15 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                         this.setChatHistory(resp);
                         this.displayInitialMessages();
                         this.editorConfig.editable = !!this.chatHistory;
+                        this.editorConfig.placeholder = this.getPlaceholder();
                     });
                 this.subscriptions.push(subscription);
             }
         }
+    }
+
+    private getPlaceholder() {
+        return this.writeYourMessage + ' to ' + this.selectedUserChatHistoryInput?.username;
     }
 
     private displayInitialMessages() {
@@ -233,14 +239,33 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 messages: [chatMessage],
             }
             const sub: Subscription = this.chatApi.createChatMessageThread(chatHistory)
-                .subscribe(resp => this.setChatHistory(resp));
+                .subscribe(resp => {
+                    this.setChatHistory(resp);
+                    this.displayInitialMessages();
+                });
             this.subscriptions.push(sub);
         }
         this.chatFG.controls.messageFC.setValue('');
     }
 
-    private setChatHistory(resp: ChatHistory) {
-        this.chatHistory = resp;
+    private setChatHistory(resp: ChatHistory | undefined) {
+        if (!this.selectedUserChatHistoryInput) {
+            return;
+        }
+        if (!!resp) {
+            this.chatHistory = resp;
+            this.isNewChat = false;
+        } else {
+            this.isNewChat = true;
+            this.chatHistory = {
+                userOne: {
+                    idUser: this.myUserID,
+                    username: this.tokenStorage.getLogin()
+                },
+                userTwo: this.selectedUserChatHistoryInput,
+                messages: []
+            };
+        }
     }
 
     private setMessagesWithPaging(from: number, to: number) {

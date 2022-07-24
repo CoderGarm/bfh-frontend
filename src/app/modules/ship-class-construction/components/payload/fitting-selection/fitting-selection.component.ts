@@ -149,9 +149,8 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
      * stores the designed class to the database
      */
     storeClass() {
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID && !!this.designedShipClassInput) {
-            let sub = this.shipYardApi.setShipClass(userID, this.designedShipClassInput)
+        if (!!this.designedShipClassInput) {
+            let sub = this.shipYardApi.setShipClass(this.designedShipClassInput)
                 .subscribe(resp => this.modifiedShipClassOutput.emit(resp));
             this.subscriptions.push(sub);
         }
@@ -173,13 +172,12 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
      * deletes the stored ship class
      */
     deleteClass() {
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID && !!this.designedShipClassInput) {
+        if (!!this.designedShipClassInput) {
             let idShipClass = this.designedShipClassInput.idShipClass;
             if (!idShipClass) {
                 return;
             }
-            let sub = this.shipYardApi.deleteShipClass(userID, idShipClass).subscribe(resp => {
+            let sub = this.shipYardApi.deleteShipClass(idShipClass).subscribe(resp => {
                 this.modifiedShipClassOutput.emit(resp);
             });
             this.subscriptions.push(sub);

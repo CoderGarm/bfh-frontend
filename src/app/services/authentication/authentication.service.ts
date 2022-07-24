@@ -13,9 +13,9 @@ import {SubscriptionManager} from "../../SubscriptionManager";
 @Injectable()
 export class AuthenticationService extends SubscriptionManager implements AuthService {
 
-    loginInEvent: EventEmitter<JWT> = new EventEmitter<JWT>();
+    loginEvent: EventEmitter<JWT> = new EventEmitter<JWT>();
 
-    loginOutEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+    logoutEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     unauthorizedCounter: number = 0;
 
@@ -80,7 +80,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
     /**
      * Function, checks response of failed request to determine,
      * whether token be refreshed or not.
-     * @description Essentialy checks status
+     * @description essential checks status
      * @param {Response} response
      * @returns {boolean}
      */
@@ -102,7 +102,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
      * @returns {boolean}
      */
     verifyTokenRequest(url: string): boolean {
-        return url.endsWith('/refresh');
+        return url.endsWith('/refresh') || url.endsWith('/login');
     }
 
 
@@ -114,9 +114,13 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
 
 
     login(login: AuthRequest): Observable<JWT> {
-        this.subscriptions.push(this.authService.login(login).subscribe(resp => {
+        let sub = this.authService.login(login).subscribe(resp => {
             this.saveAccessData(resp);
-        }));
+        }, () => {
+            this.clearAccessData();
+            return Observable.apply(null);
+        });
+        this.subscriptions.push(sub);
         return this.getAccessData();
     }
 
@@ -124,7 +128,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
         this.tokenStorage.clear();
         this.permissionsService.flushPermissions();
         this.clearAccessData();
-        this.loginOutEvent.next(true);
+        this.logoutEvent.next(true);
         this.router.navigateByUrl(HomeComponent.path).then(() => {
         });
     }
@@ -145,6 +149,6 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
 
         this.setAccessData(token);
 
-        this.loginInEvent.next(token);
+        this.loginEvent.next(token);
     }
 }

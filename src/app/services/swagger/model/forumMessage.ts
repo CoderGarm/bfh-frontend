@@ -14,7 +14,6 @@
  * The entry of a forum's thread.
  */
 export interface ForumMessage { 
-    id?: number;
     /**
      * The id of the message.
      */

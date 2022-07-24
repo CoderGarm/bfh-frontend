@@ -1,5 +1,5 @@
 <mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)" animationDuration="0ms" class="bottom-spacer">
-    <mat-tab [label]="actionTabTitles[0]">
+    <mat-tab [label]="actionTabTitles[0]" [disabled]="!selectedShipClassInput">
         <app-fitting-display [selectedIndexInput]="selectionEmitter"
                              [selectedShipClassInput]="selectedShipClassInput"></app-fitting-display>
     </mat-tab>

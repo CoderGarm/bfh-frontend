@@ -40,12 +40,8 @@ export class ShipClassSelectionComponent implements AfterViewInit, OnChanges {
      * @private
      */
     private fetchShipClasses() {
-        let userID = this.tokenService.getUserID();
-        if (!!userID) {
-            let sub = this.shipyardApi.getShipClassesByUser(userID)
-                .subscribe(resp => this.shipClasses = resp);
+            let sub = this.shipyardApi.getShipClassesByUser().subscribe(resp => this.shipClasses = resp);
             this.subscriptions.push(sub);
-        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {

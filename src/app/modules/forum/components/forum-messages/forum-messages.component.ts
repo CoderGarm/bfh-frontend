@@ -6,6 +6,8 @@ import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
 import {AngularEditorConfig} from "@kolkov/angular-editor";
+import {TokenStorage} from "../../../../services/authentication/token-storage.service";
+
 
 @Component({
     selector: 'app-forum-messages',
@@ -13,6 +15,13 @@ import {AngularEditorConfig} from "@kolkov/angular-editor";
     styleUrls: ['./forum-messages.component.scss']
 })
 export class ForumMessagesComponent extends SubscriptionManager implements OnInit, OnChanges {
+
+    /**
+     * the logged-in user
+     */
+    userID?: number;
+
+    private isEditMode?: ForumMessage;
 
     @Input()
     selectedForumThread?: ForumThread;
@@ -33,15 +42,18 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
     pageIndex: number = 0;
     pageSize: number = 15;
     messageAmountInThread: number = 0;
+    private readonly writeYourMessage = 'Write your message...';
     editorConfig: AngularEditorConfig = {
         editable: false,
-        placeholder: 'Write your message...',
+        placeholder: this.writeYourMessage,
         showToolbar: false,
         enableToolbar: false,
         sanitize: true
     };
 
-    constructor(private forumApi: ForumApiService, private forumsNotificationService: ForumsNotificationService) {
+    constructor(private tokenStorage: TokenStorage,
+                private forumApi: ForumApiService,
+                private forumsNotificationService: ForumsNotificationService) {
         super();
     }
 
@@ -52,6 +64,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
     }
 
     ngOnInit(): void {
+        this.userID = this.tokenStorage.getUserID();
         this.paginatorTop!.page.pipe(
             tap(() => {
                 this.paginatorBottom!.pageIndex = this.paginatorTop!.pageIndex;
@@ -79,6 +92,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
             this.messagesInThread = undefined;
             this.messageAmountInThread = 0;
             this.editorConfig.editable = false;
+            this.editorConfig.placeholder = this.writeYourMessage;
             return;
         }
         this.selectedForumThread = thread;
@@ -90,30 +104,39 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
         sub = this.forumApi.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
         this.subscriptions.push(sub);
         this.editorConfig.editable = true;
+        this.editorConfig.placeholder = this.getPlaceholder(thread);
     }
 
-    chooseStyleByChat() {
-        let baseClasses = "forum-message-card set-right";
-        if (!!this.messagesInThread && this.messagesInThread.length > 2) {
-            return baseClasses + " message-field-in-flow";
-        } else {
-            return baseClasses + " message-field-on-hold";
-        }
+    private getPlaceholder(thread: ForumThread) {
+        return this.writeYourMessage + ' to ' + thread.title;
     }
 
     submitMessage() {
         if (!!this.selectedForumThread) {
-            let message: CreateForumThreadMessage = {
-                message: this.messageFG.controls.messageFC.value,
-                idForumThread: this.selectedForumThread.idForumThread
-            }
-            let sub = this.forumApi.createThreadMessage(message).subscribe(resp => {
-                if (resp) {
-                    this.selectThread(this.selectedForumThread);
-                    this.messageFG.controls.messageFC.setValue('');
+            if (this.isEditMode) {
+                let message: ForumMessage = this.isEditMode;
+                this.isEditMode.message = this.messageFG.controls.messageFC.value;
+                let sub = this.forumApi.editThreadMessage(message).subscribe(resp => {
+                    if (resp) {
+                        this.selectThread(this.selectedForumThread);
+                        this.messageFG.controls.messageFC.setValue('');
+                    }
+                });
+                this.subscriptions.push(sub);
+            } else {
+                let message: CreateForumThreadMessage = {
+                    message: this.messageFG.controls.messageFC.value,
+                    idForumThread: this.selectedForumThread.idForumThread
                 }
-            });
-            this.subscriptions.push(sub);
+                let sub = this.forumApi.createThreadMessage(message).subscribe(resp => {
+                    if (resp) {
+                        this.selectThread(this.selectedForumThread);
+                        this.messageFG.controls.messageFC.setValue('');
+                    }
+                });
+                this.subscriptions.push(sub);
+            }
+            this.isEditMode = undefined;
         }
     }
 
@@ -125,5 +148,10 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
             this.forumApi.markForumMessageRead(msg.idForum, msg.idForumThread, msg.idForumMessage).subscribe(() => {
             })
         );
+    }
+
+    edit(message: ForumMessage) {
+        this.isEditMode = message;
+        this.messageFG.controls.messageFC.setValue(message.message);
     }
 }

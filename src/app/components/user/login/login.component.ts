@@ -43,10 +43,14 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
             username: this.loginForm.controls.login.value,
             password: this.loginForm.controls.pass.value,
         }
-
         const sub = this.authService.login(login).subscribe(
-            resp => this.isAuthenticated = !!resp,
-            () => this.clear()
+            resp => {
+                if (!!resp) {
+                    this.isAuthenticated = !!resp;
+                } else {
+                    this.clear();
+                }
+            }
         );
         this.subscriptions.push(sub);
     }

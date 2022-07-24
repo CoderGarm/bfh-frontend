@@ -37,14 +37,14 @@ export class NavComponent extends SubscriptionManager implements OnInit {
             }
         });
         this.subscriptions.push(sub);
-        sub = this.authenticationService.loginInEvent.subscribe(jwt => {
+        sub = this.authenticationService.loginEvent.subscribe(jwt => {
             if (!!jwt) {
                 sub = this.tickApi.getCurrentTick().subscribe(resp => this.currentTick = resp);
                 this.subscriptions.push(sub);
             }
         });
         this.subscriptions.push(sub);
-        sub = this.authenticationService.loginOutEvent.subscribe(loggedOut => {
+        sub = this.authenticationService.logoutEvent.subscribe(loggedOut => {
             if (loggedOut) {
                 this.currentTick = undefined;
             }

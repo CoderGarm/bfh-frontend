@@ -1,7 +1,12 @@
 <app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit"></app-resource-deposit-overlay-display>
 <div class="fitting">
     <div class="flex-items-container">
-        <button mat-button [disabled]="disabled" (click)="deleteClass()" class="ship-action-button">Delete ship class</button>
+        <button mat-button
+                [disabled]="disabled"
+                (click)="deleteClass()"
+                class="ship-action-button">
+            Delete ship class
+        </button>
         <div [formGroup]="form" shipClassNamePatternValidator>
             <mat-form-field appearance="fill">
                 <mat-label>Ship class</mat-label>
@@ -11,7 +16,13 @@
                 <mat-error *ngIf="form.get('scName')?.hasError('passAlreadyKnown')">{{errors.passAlreadyKnown}} </mat-error>
             </mat-form-field>
         </div>
-        <button mat-button [disabled]="disabled" (click)="storeClass()" class="ship-action-button">Store ship class</button>
+        <button mat-button
+                [disabled]="disabled"
+                (click)="storeClass()"
+                class="ship-action-button"
+                matTooltip="At least the name, a hull and a propulsion module is needed.">
+            Store ship class
+        </button>
     </div>
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
                         [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"

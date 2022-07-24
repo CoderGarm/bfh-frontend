@@ -1,1 +1,31 @@
 @import "src/app/modules/forum/components/forums-list/forums-list.component";
+
+#forum-message-list {
+
+}
+
+.forum-message-card {
+  width: 70%;
+  margin-top: 15px;
+  padding: 15px;
+  border: solid $secondary-background-color 2px;
+  float: right;
+  background: linear-gradient(45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
+  border-radius: 0 0 0 5px;
+  margin-right: 15px;
+}
+
+#send-forum-message-button {
+  float: right;
+  margin-top: 15px;
+}
+
+#forum-message-form-field {
+  float: left;
+  padding-left: 50px;
+  width: 90%;
+}
+
+.message {
+  overflow-wrap: break-word
+}

@@ -29,14 +29,14 @@ export class ShipClassNamePatternValidatorDirective implements Validator {
     validate(control: FormGroup): ValidationErrors {
         const passControl = control.get('scName');
         let validationResult: ValidationErrors = passPattern(control);
-        if (!passControl?.getError('passPattern')) {
+        if (!!passControl && passControl.dirty && !passControl?.getError('passPattern')) {
             if (!!passControl) {
                 let userID = this.tokenStorage.getUserID();
                 if (!userID) {
                     return validationResult;
                 }
                 let passString: string = passControl.value;
-                let sub = this.shipYardApi.checkClassName(userID, passString).subscribe(resp => {
+                let sub = this.shipYardApi.checkClassName(passString).subscribe(resp => {
                     if (!resp) {
                         passControl.setErrors({passAlreadyKnown: true});
                     }

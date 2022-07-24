@@ -62,19 +62,14 @@ export class ShipyardApiService {
     /**
      * Checks if the name for a ship class is free for new classes only.
      * 
-     * @param idUser 
      * @param className 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public checkClassName(idUser: number, className: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public checkClassName(idUser: number, className: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public checkClassName(idUser: number, className: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public checkClassName(idUser: number, className: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling checkClassName.');
-        }
+    public checkClassName(className: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public checkClassName(className: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public checkClassName(className: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public checkClassName(className: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (className === null || className === undefined) {
             throw new Error('Required parameter className was null or undefined when calling checkClassName.');
@@ -96,7 +91,7 @@ export class ShipyardApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(className))}`,
+        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/shipyard/checkName/${encodeURIComponent(String(className))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -109,19 +104,14 @@ export class ShipyardApiService {
     /**
      * Marks a ship classes as deleted.
      * 
-     * @param idUser 
      * @param idShipClass 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteShipClass(idUser: number, idShipClass: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteShipClass(idUser: number, idShipClass: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteShipClass(idUser: number, idShipClass: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteShipClass(idUser: number, idShipClass: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling deleteShipClass.');
-        }
+    public deleteShipClass(idShipClass: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteShipClass(idShipClass: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteShipClass(idShipClass: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteShipClass(idShipClass: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idShipClass === null || idShipClass === undefined) {
             throw new Error('Required parameter idShipClass was null or undefined when calling deleteShipClass.');
@@ -142,7 +132,7 @@ export class ShipyardApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('delete',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(idShipClass))}`,
+        return this.httpClient.request<any>('delete',`${this.basePath}/api/private/shipyard/${encodeURIComponent(String(idShipClass))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -229,18 +219,13 @@ export class ShipyardApiService {
     /**
      * Get all active ship classes for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipClassesByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ShipClass>>;
-    public getShipClassesByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ShipClass>>>;
-    public getShipClassesByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ShipClass>>>;
-    public getShipClassesByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getShipClassesByUser.');
-        }
+    public getShipClassesByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<ShipClass>>;
+    public getShipClassesByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ShipClass>>>;
+    public getShipClassesByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ShipClass>>>;
+    public getShipClassesByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -258,7 +243,7 @@ export class ShipyardApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ShipClass>>('get',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<ShipClass>>('get',`${this.basePath}/api/private/shipyard/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -271,19 +256,14 @@ export class ShipyardApiService {
     /**
      * Get all active ship classes for the owner .
      * 
-     * @param idUser 
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public setShipClass(idUser: number, body?: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ShipClass>;
-    public setShipClass(idUser: number, body?: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShipClass>>;
-    public setShipClass(idUser: number, body?: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShipClass>>;
-    public setShipClass(idUser: number, body?: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling setShipClass.');
-        }
+    public setShipClass(body?: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ShipClass>;
+    public setShipClass(body?: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShipClass>>;
+    public setShipClass(body?: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShipClass>>;
+    public setShipClass(body?: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let headers = this.defaultHeaders;
@@ -300,14 +280,14 @@ export class ShipyardApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            '*/*'
+            'application/json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected != undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShipClass>('post',`${this.basePath}/api/private/shipyard/forUser/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<ShipClass>('post',`${this.basePath}/api/private/shipyard/`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

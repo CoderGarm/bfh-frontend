@@ -15,7 +15,7 @@
             <mat-card-content>
                 <div class="message" [innerHTML]="message.message"></div>
             </mat-card-content>
-            <mat-card-footer style="display: none;" [lang]="message.idUserMessage">If you see that, you are a hacker.</mat-card-footer>
+            <mat-card-footer class="completely-hidden" [lang]="message.idUserMessage">If you see that, you are a hacker.</mat-card-footer>
         </mat-card>
     </div>
     <div class="arrow">
@@ -25,6 +25,7 @@
 
 <mat-card class="chat-card set-right write-card message-field-in-flow">
     <mat-card-content>
+        <mat-icon *ngIf="isNewChat">new_releases</mat-icon>
         <form [formGroup]=chatFG>
             <angular-editor
                     id="chat-message-form-field"

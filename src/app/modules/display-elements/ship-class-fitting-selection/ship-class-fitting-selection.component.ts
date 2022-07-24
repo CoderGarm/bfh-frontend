@@ -483,7 +483,7 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      */
     private createAndEmitDesignedShipClass() {
 
-        if (!this.hullSelection || !this.shipClassNameInput) {
+        if (!this.hullSelection || !this.shipClassNameInput || !this.propulsionSelection) {
             if (!!this.designedShipClassInputEmitter) {
                 this.designedShipClassInputEmitter.emit(undefined);
             }

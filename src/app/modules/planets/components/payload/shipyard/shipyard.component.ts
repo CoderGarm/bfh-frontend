@@ -118,9 +118,8 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedPlanetDefinition]) {
-            let userID: number = this.tokenStorage.getUserID();
-            if (!!userID && this.selectedPlanetInput) {
-                let subscription = this.shipyardApi.getShipClassesByUser(userID).subscribe(resp => {
+            if (this.selectedPlanetInput) {
+                let subscription = this.shipyardApi.getShipClassesByUser().subscribe(resp => {
                     this.possibleShipClasses = resp;
                     this.filterDisplayedShipClasses();
                 });

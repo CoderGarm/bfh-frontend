@@ -12,4 +12,11 @@ if [ "$1" == 'production' ] || [ "$1" == 'staging' ] || [ "$1" == 'development' 
 	then echo "build started for $1";  ng build --configuration="$1";
 fi
 
-echo 'build successful'
+check=$?
+if [ "$check" -eq 0 ]; then
+    echo 'build successful'
+else
+    echo 'build failure'; exit 1;
+fi
+
+

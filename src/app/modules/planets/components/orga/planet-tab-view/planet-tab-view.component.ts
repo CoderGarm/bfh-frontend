@@ -12,7 +12,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements OnIni
 
     actionTabTitles: string[] = ['Dashboard', 'Constructions', 'Shipyard', 'Jobs'];
 
-    @ViewChild((MatTabGroup))
+    @ViewChild(MatTabGroup)
     matTabGroup?: MatTabGroup;
 
     /**
