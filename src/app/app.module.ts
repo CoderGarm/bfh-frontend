@@ -28,6 +28,19 @@ import {AdminModule} from "./modules/admin/admin.module";
 import {ForumModule} from "./modules/forum/forum.module";
 import {EMailValidatorDirective, UserNameValidatorDirective} from "./validators/userNameValidator";
 import {AllianceModule} from "./modules/alliance/alliance.module";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {HttpClient} from "@angular/common/http";
+import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
+}
+
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
     declarations: [
@@ -48,6 +61,14 @@ import {AllianceModule} from "./modules/alliance/alliance.module";
     ],
     imports: [
         NgxPermissionsModule.forRoot(),
+        TranslateModule.forRoot({
+            defaultLanguage: TranslationEditorComponent.DEFAULT_LANGUAGE,
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        }),
         AuthenticationModule,
         SharedModuleModule,
         DisplayElementsModule,

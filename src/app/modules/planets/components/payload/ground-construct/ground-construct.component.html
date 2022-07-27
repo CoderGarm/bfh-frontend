@@ -2,7 +2,7 @@
                                       [costs]="costsToDisplay"
                                       [income]="income"></app-resource-deposit-overlay-display>
 <div>
-    <p>Filter</p>
+    {{'filter.title' | translate}}
     <mat-form-field appearance="outline">
         <mat-label>Resource types</mat-label>
         <mat-chip-list #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
@@ -40,7 +40,7 @@
     </mat-form-field>
 </div>
 
-<p>Constructions</p>
+{{'planetary.constructions' | translate}}
 
 <mat-accordion>
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"

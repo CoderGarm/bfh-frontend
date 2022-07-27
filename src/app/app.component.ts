@@ -9,6 +9,8 @@ import {ChatComponent} from "./modules/chat/components/chat/chat.component";
 import {ChatApiService, ForumApiService} from "./services/swagger";
 import {SubscriptionManager} from "./SubscriptionManager";
 import {ForumsListComponent} from "./modules/forum/components/forums-list/forums-list.component";
+import {TranslateService} from "@ngx-translate/core";
+import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
 
 @Component({
     selector: 'app-root',
@@ -35,11 +37,23 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         ChatComponent.path
     ];
 
-    constructor(private router: Router,
+    constructor(private translate: TranslateService,
+                private router: Router,
                 private authenticationService: AuthenticationService,
                 private chatApi: ChatApiService,
                 private forumApi: ForumApiService) {
         super();
+
+        // this language will be used as a fallback when a translation isn't found in the current language
+        translate.setDefaultLang(TranslationEditorComponent.DEFAULT_LANGUAGE);
+
+        // the lang to use, if the lang isn't available, it will use the current loader to get them
+        const userLang = navigator.language;
+        if (!!userLang) {
+            // from de-DE or en-US to de or en
+            const lang = userLang.substring(0, 2);
+            translate.use(lang);
+        }
     }
 
     ngOnInit(): void {

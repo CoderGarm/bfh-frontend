@@ -1,12 +1,12 @@
 <div class="sticky">
     <div class="modal" *ngIf="!!resourceDeposit">
         <div class="tick-box">
-            <p>Ticks needed</p>
+            {{'ticks.to.done' | translate}}
             <p class="tick-amount">
                 {{getTicksNeeded()}}
             </p>
         </div>
-        <p>Materials</p>
+        {{'materials.title' | translate}}
         <div *ngFor="let resource of resourceDeposit.resources" class="box">
             <div class="res-wrapper">
                 <div class="img-container">
@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <p>Manpower</p>
+        {{'manpower.title' | translate}}
         <div *ngFor="let resource of resourceDeposit.humanResources" class="box">
             <div class="res-wrapper">
                 <div class="img-container">

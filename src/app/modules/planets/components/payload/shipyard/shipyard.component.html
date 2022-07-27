@@ -2,7 +2,7 @@
                                       [costs]="costsToDisplay"
                                       [income]="income"></app-resource-deposit-overlay-display>
 <div>
-    <p>Filter</p>
+    {{'filter.title' | translate}}
     <mat-form-field appearance="outline">
         <mat-label>Hull types</mat-label>
         <mat-chip-list #hullTypeChipList multiple [formControl]="eHullTypeFC">
@@ -16,7 +16,7 @@
     </mat-form-field>
 </div>
 
-<p>Constructions</p>
+{{'shipyard.constructions' | translate}}
 
 <button mat-button [disabled]="!shipyardJobPossible" (click)="buildConstruction()">Build</button>
 

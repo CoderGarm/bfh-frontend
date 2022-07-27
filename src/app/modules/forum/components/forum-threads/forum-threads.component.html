@@ -19,7 +19,7 @@
         </mat-card-title>
         <mat-card-subtitle>{{thread.description}}</mat-card-subtitle>
         <mat-card-content>
-            <p>Messages in thread: {{thread.idForumMessages.length}}</p>
+            <p>{{'forum.thread.messages.in.thread' | translate}}: {{thread.idForumMessages.length}}</p>
         </mat-card-content>
     </mat-card>
     <mat-paginator #paginatorBottom

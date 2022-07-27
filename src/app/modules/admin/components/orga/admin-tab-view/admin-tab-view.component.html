@@ -1,0 +1,17 @@
+<mat-tab-group animationDuration="0ms" *ngIf="isAdmin">
+    <mat-tab [label]="actionTabTitles[0]">
+        <mat-toolbar color="secondary">
+            <mat-toolbar-row>
+                <span>Game Admin Area - don't fuck around!</span>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <button mat-flat-button color="primary" (click)='doTick()' *ngIf='isLoggedIn && isAdmin'>
+                    Do tick
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </mat-tab>
+    <mat-tab [label]="actionTabTitles[1]">
+        <app-translation></app-translation>
+    </mat-tab>
+</mat-tab-group>

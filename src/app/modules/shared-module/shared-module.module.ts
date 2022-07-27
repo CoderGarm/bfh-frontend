@@ -11,6 +11,7 @@ import {ApiModule} from "../../services/swagger";
 import {NumericCounterComponent} from './components/numeric-counter/numeric-counter.component';
 import {OverlayModule} from "@angular/cdk/overlay";
 import {AngularEditorModule} from "@kolkov/angular-editor";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import {AngularEditorModule} from "@kolkov/angular-editor";
         NumericCounterComponent,
         OverlayModule,
         AngularEditorModule,
+        TranslateModule,
     ]
 })
 export class SharedModuleModule {

@@ -12,7 +12,7 @@ import {ShipClassSidenavComponent} from "../modules/ship-class-construction/comp
 import {FleetSidenavComponent} from "../modules/fleet/components/orga/fleet-sidenav/fleet-sidenav.component";
 import {ExpansionTabViewComponent} from "../modules/expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
 import {JournalTabViewComponent} from "../modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
-import {AdminPageComponent} from "../modules/admin/components/admin-page/admin-page.component";
+import {AdminTabViewComponent} from "../modules/admin/components/orga/admin-tab-view/admin-tab-view.component";
 import {ForumsListComponent} from "../modules/forum/components/forums-list/forums-list.component";
 import {AllianceTabViewComponent} from "../modules/alliance/components/orga/alliance-tab-view/alliance-tab-view.component";
 
@@ -39,7 +39,7 @@ export class NavigationCreationService {
             {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
             {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
-            {path: AdminPageComponent.path, component: AdminPageComponent, canActivate: [ProtectedGuard]},
+            {path: AdminTabViewComponent.path, component: AdminTabViewComponent, canActivate: [ProtectedGuard]},
             // todo role based access in UI
         ];
     }

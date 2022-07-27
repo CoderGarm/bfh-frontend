@@ -1,0 +1,50 @@
+<mat-card *ngIf="!!referenceTranslation">
+    <mat-card-subtitle>For translatable<br>
+        {{'database id' | translate}}:  {{referenceTranslation.idTranslatable}}<br>
+        {{'type' | translate}}:  {{referenceTranslation.translationTarget}}<br>
+        {{'target' | translate}}:  {{referenceTranslation.translatableType}}<br>
+    </mat-card-subtitle>
+    <mat-card-content>
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>{{'Reference language' | translate}}</mat-label>
+                <input matInput autocomplete="off" placeholder="{{'Designated language' | translate}}" [disabled]="true" [value]="referenceTranslation.languageCode">
+            </mat-form-field>
+            <angular-editor
+                    matTooltip="{{'You cannot change the reference translation' | translate}}"
+                    placeholder="{{'Translated message' | translate}}"
+                    [ngModel]="referenceTranslation.translation"
+                    [config]="displayConfig"></angular-editor>
+        </div>
+        <div *ngFor="let translation of translations" class="input-translation">
+            <mat-form-field appearance="fill">
+                <mat-label>{{'Reference language' | translate}}</mat-label>
+                <input matInput autocomplete="off" placeholder="{{'Designated language' | translate}}" [disabled]="true" [value]="translation.languageCode">
+            </mat-form-field>
+            <angular-editor
+                    placeholder="{{'Translated message' | translate}}"
+                    [(ngModel)]="translation.translation"
+                    [config]="editorConfig"></angular-editor>
+        </div>
+        <div class="input-translation" *ngIf="getReducedLanguageCodes().length > 0">
+            <form [formGroup]=newTranslationFG>
+                <mat-form-field appearance="fill">
+                    <mat-label>{{'Designated language' | translate}}</mat-label>
+                    <mat-select formControlName="selectedLanguageCode">
+                        <mat-option *ngFor="let languageCode of getReducedLanguageCodes()" [value]="languageCode">
+                            {{languageCode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <angular-editor
+                        placeholder="{{'Translated message' | translate}}"
+                        formControlName="translationFC"
+                        [config]="editorConfig"></angular-editor>
+            </form>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="submit(referenceTranslation.idTranslatable)">{{'Submit' | translate}}</button>
+        <button mat-button (click)="clear()">{{'Clear' | translate}}</button>
+    </mat-card-actions>
+</mat-card>

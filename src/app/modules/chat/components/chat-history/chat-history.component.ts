@@ -28,7 +28,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
 
     chatFG: FormGroup = new FormGroup({
         messageFC: new FormControl('')
-    })
+    });
 
     /**
      * The user which was selected by the logged in user in order to chat with.

@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
 import { Tick } from '../model/tick';
+import { Translation } from '../model/translation';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -86,6 +87,125 @@ export class AdminApiService {
 
         return this.httpClient.request<Tick>('get',`${this.basePath}/api/admin/admin/doTick`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the current tick.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPossibleLanguages(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public getPossibleLanguages(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public getPossibleLanguages(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getPossibleLanguages(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/admin/admin/languages`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the current tick.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTranslations(observe?: 'body', reportProgress?: boolean): Observable<Array<Translation>>;
+    public getTranslations(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Translation>>>;
+    public getTranslations(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Translation>>>;
+    public getTranslations(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Translation>>('get',`${this.basePath}/api/admin/admin/translations`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the current tick.
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateTranslation(body?: Array<Translation>, observe?: 'body', reportProgress?: boolean): Observable<Array<Translation>>;
+    public updateTranslation(body?: Array<Translation>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Translation>>>;
+    public updateTranslation(body?: Array<Translation>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Translation>>>;
+    public updateTranslation(body?: Array<Translation>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Array<Translation>>('post',`${this.basePath}/api/admin/admin/translations`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

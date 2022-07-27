@@ -74,6 +74,7 @@ export * from './starSystem';
 export * from './starSystemColonization';
 export * from './supportFitting';
 export * from './tick';
+export * from './translation';
 export * from './userJson';
 export * from './userReq';
 export * from './validationResult';

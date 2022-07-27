@@ -1,0 +1,12 @@
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let entry of translationsByTranslatable | keyvalue" class="translatable">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{getDescription(entry.value)}}
+            </mat-panel-title>
+            <mat-panel-description>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-translation-editor [possibleLanguages]="possibleLanguages" [translations]="entry.value"></app-translation-editor>
+    </mat-expansion-panel>
+</mat-accordion>
