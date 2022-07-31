@@ -104,8 +104,8 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         if (length > this.msgStartIndexTo) {
             // more messages present than initial start index
             to = length - 1;
-            from = to - 4;
-        } else if (length < this.msgStartIndexTo) {
+            from = to - this.msgStartIndexTo;
+        } else if (length <= this.msgStartIndexTo) {
             from = 0;
             to = length - 1;
         }
