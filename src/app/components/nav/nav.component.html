@@ -7,18 +7,18 @@
     <div *ngIf="!!currentTick">Current tick {{currentTick.tickNo}}</div>
     <span class="spacer"></span>
     <button mat-flat-button color="primary" routerLink='/register' *ngIf='!isLoggedIn'>
-        Register
+        {{'path.button.register' | translate}}
     </button>
     <button mat-flat-button color="primary" routerLink='/login' *ngIf='!isLoggedIn'>
-        Login
+        {{'path.button.login' | translate}}
     </button>
     <button mat-flat-button color="primary" routerLink='/admin' *ngIf='isLoggedIn && isAdmin'>
-        Go to admin page
+        {{'path.button.admin' | translate}}
     </button>
     <button mat-flat-button color="primary" routerLink='/profile' *ngIf='isLoggedIn'>
-        Profile
+        {{'path.button.profile' | translate}}
     </button>
     <button mat-flat-button color="primary" (click)='logout()' *ngIf='isLoggedIn'>
-        Logout
+        {{'path.button.logout' | translate}}
     </button>
 </mat-toolbar>

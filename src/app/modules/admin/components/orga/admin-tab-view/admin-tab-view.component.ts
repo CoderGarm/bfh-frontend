@@ -16,8 +16,6 @@ export class AdminTabViewComponent extends SubscriptionManager implements OnInit
 
     static path: string = 'admin';
 
-    actionTabTitles: string[] = ['Tick', 'Translations'];
-
     isLoggedIn: boolean = false;
     isAdmin: boolean = false;
 

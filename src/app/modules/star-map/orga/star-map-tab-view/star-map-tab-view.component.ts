@@ -11,8 +11,6 @@ export class StarMapTabViewComponent implements OnInit, OnChanges {
 
     static path: string = 'star-map';
 
-    actionTabTitles: string[] = ['Universe map', 'Star system map'];
-
     @Input()
     starSystemSelectionInput?: StarSystem;
     private starSystemSelectionInputDefinition: string = "starSystemSelectionInput";

@@ -9,8 +9,6 @@ export class ExpansionTabViewComponent implements OnInit {
 
   static path: string = 'colonization';
 
-  actionTabTitles: string[] = ['Organize expansion', 'See expansion'];
-
   constructor() {
   }
 

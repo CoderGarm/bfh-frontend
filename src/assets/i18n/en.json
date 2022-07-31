@@ -1,16 +1,128 @@
 {
-	"alliance.no-applicants": "No applicants",
-	"alliance.founder": "Founder",
-	"alliance.members": "Members",
-	"chats.title": "Chats",
-	"shipyard.hull-capacities": "Construction capacities",
-	"ticks.to.done": "Ticks needed",
-	"materials.title": "Materials",
-	"manpower.title": "Manpower",
-	"forum.thread.messages.in.thread": "Messages in thread",
-	"forum.threads.in.forum": "Threads in forum",
-	"filter.title": "Filter",
-	"planetary.constructions": "Bodenkonstruktionen",
-	"jobs.active.title": "Active jobs",
-	"shipyard.constructions": "Schiffsbau"
+  "action": {
+    "clear": "Clear",
+    "submit": "Submit"
+  },
+  "alliance": {
+    "founder": "Founder",
+    "members": "Members",
+    "no-applicants": "No applicants"
+  },
+  "chats": {
+    "title": "Chats"
+  },
+  "filter": "Filter",
+  "forum": {
+    "thread": {
+      "in-forum": "Threads in forum",
+      "messages-in-thread": "Messages in thread"
+    }
+  },
+  "jobs": {
+    "active-title": "Active jobs"
+  },
+  "path": {
+    "button": {
+      "admin": "Game admin area",
+      "login": "Login",
+      "logout": "Logout",
+      "profile": "Profile",
+      "register": "Register"
+    },
+    "menu": {
+      "admin": "Admin Area",
+      "alliance": "Alliance",
+      "chat": "Chat",
+      "colonization": "Colonizations",
+      "fleet": "Fleets",
+      "forum": "Forum",
+      "home": "Home",
+      "journal": "Journal",
+      "login": "Login",
+      "planets": "Planets",
+      "profile": "Profile",
+      "register": "Register",
+      "researches": "Researches",
+      "ship-classes": "Ship yard",
+      "star-map": "Star map"
+    }
+  },
+  "planetary": {
+    "constructions": "Bodenkonstruktionen"
+  },
+  "resources": {
+    "manpower": {
+      "title": "Manpower"
+    },
+    "materials": {
+      "title": "Materials"
+    },
+    "ticks-to-done": "Ticks needed"
+  },
+  "shipyard": {
+    "constructions": "Schiffsbau",
+    "hull-capacities": "Construction capacities"
+  },
+  "tab": {
+    "admin": {
+      "do-tick": "Tick",
+      "translations": "Translations"
+    },
+    "alliance": {
+      "dashboard": "Dashboard",
+      "forum": "Forum",
+      "list": "Alliance list",
+      "members-list": "Members"
+    },
+    "expansion": {
+      "organize": "Organize expansion",
+      "view": "View expansion"
+    },
+    "fleet": {
+      "dashboard": "Dashboard",
+      "movements": "Movements"
+    },
+    "journal": {
+      "battles": "Battle reports",
+      "dashboard": "Dashboard",
+      "jobs": "Job reports",
+      "movements": "Fleet movement reports"
+    },
+    "planetary": {
+      "dashboard": "Dashboard",
+      "ground-constructions": "Constructions",
+      "jobs": "Jobs",
+      "shipyard": "Shipyard"
+    },
+    "research": {
+      "available": "Available researches",
+      "completed": "Completed researches",
+      "tech-tree": "Tech tree"
+    },
+    "shipyard": {
+      "fitting": {
+        "modify": "Modify fitting",
+        "view": "Display fitting"
+      }
+    },
+    "star-map": {
+      "star-map": "Star map",
+      "universe-map": "Universe map"
+    }
+  },
+  "translation": {
+    "designated": {
+      "language": "Designated language"
+    },
+    "idTranslatable": "idTranslatable",
+    "no-change-reference-translation": "You cannot change the reference translation",
+    "reference": {
+      "language": "Reference language"
+    },
+    "target": "translation target",
+    "text": {
+      "title": "Translated text"
+    },
+    "type": "kind of"
+  }
 }

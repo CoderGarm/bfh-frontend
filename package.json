@@ -9,7 +9,7 @@
     "test": "ng test",
     "postinstall": "ngcc",
     "i18n:init": "ngx-translate-extract --input ./src --output ./src/assets/i18n/template.json --replace --format json",
-    "i18n:extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/{en,de}.json --clean --format json"
+    "i18n:extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/{en,de}.json --sort --format namespaced-json"
   },
   "private": true,
   "dependencies": {

@@ -11,9 +11,7 @@ import GameUserRolesEnum = JWT.GameUserRolesEnum;
 })
 export class AllianceTabViewComponent extends SubscriptionManager implements OnInit {
 
-    static path: string = "alliance";
-
-    actionTabTitles: string[] = ['List', 'Dashboard', 'Forum', 'Members'];
+    static path: string = 'alliance';
 
     alliance?: Alliance;
     isAdmin: boolean = false;

@@ -1,16 +1,128 @@
 {
-	"alliance.no-applicants": "Keine Anwärter.",
-	"alliance.founder": "Gründer",
-	"alliance.members": "Mitglieder",
-	"chats.title": "Nachrichten",
-	"shipyard.hull-capacities": "Rumpfkapazität",
-	"ticks.to.done": "benötigte Ticks",
-	"materials.title": "Materialien",
-	"manpower.title": "Mitarbeiter",
-	"forum.thread.messages.in.thread": "Nachrichten im Faden",
-	"forum.threads.in.forum": "Beiträge im Forum",
-	"filter.title": "Filter",
-	"planetary.constructions": "Ground constructions",
-	"jobs.active.title": "laufende Aufträge",
-	"shipyard.constructions": "Shipyard constructions"
+  "action": {
+    "clear": "Zurücksetzen",
+    "submit": "Abschicken"
+  },
+  "alliance": {
+    "founder": "Gründer",
+    "members": "Mitglieder",
+    "no-applicants": "Keine Anwärter."
+  },
+  "chats": {
+    "title": "Nachrichten"
+  },
+  "filter": "Filter",
+  "forum": {
+    "thread": {
+      "in-forum": "Beiträge im Forum",
+      "messages-in-thread": "Nachrichten im Faden"
+    }
+  },
+  "jobs": {
+    "active-title": "laufende Aufträge"
+  },
+  "path": {
+    "button": {
+      "admin": "Spieladministration",
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "profile": "Profil",
+      "register": "Registrieren"
+    },
+    "menu": {
+      "admin": "Spieladministration",
+      "alliance": "Allianz",
+      "chat": "Nachrichten",
+      "colonization": "Kolonisierungen",
+      "fleet": "Flotten",
+      "forum": "Forum",
+      "home": "Startseite",
+      "journal": "Berichte",
+      "login": "Anmelden",
+      "planets": "Planeten",
+      "profile": "Profil",
+      "register": "Registrieren",
+      "researches": "Forschungen",
+      "ship-classes": "Werft",
+      "star-map": "Sternenkarte"
+    }
+  },
+  "planetary": {
+    "constructions": "Ground constructions"
+  },
+  "resources": {
+    "manpower": {
+      "title": "Mitarbeiter"
+    },
+    "materials": {
+      "title": "Materialien"
+    },
+    "ticks-to-done": "benötigte Ticks"
+  },
+  "shipyard": {
+    "constructions": "Shipyard constructions",
+    "hull-capacities": "Rumpfkapazität"
+  },
+  "tab": {
+    "admin": {
+      "do-tick": "Tick",
+      "translations": "Übersetzungen"
+    },
+    "alliance": {
+      "dashboard": "Übersicht",
+      "forum": "Forum",
+      "list": "Allianzliste",
+      "members-list": "Mitglieder"
+    },
+    "expansion": {
+      "organize": "Expansion planen",
+      "view": "Expansion anzeigen"
+    },
+    "fleet": {
+      "dashboard": "Übersicht",
+      "movements": "Flottenbewegungen"
+    },
+    "journal": {
+      "battles": "Kampfberichte",
+      "dashboard": "Übersicht",
+      "jobs": "Jobberichte",
+      "movements": "Flottenbewegungen"
+    },
+    "planetary": {
+      "dashboard": "Übersicht",
+      "ground-constructions": "Gebäude",
+      "jobs": "Jobs",
+      "shipyard": "Werft"
+    },
+    "research": {
+      "available": "Verfügbare Forschungen",
+      "completed": "Abgeschlossene Forschungen",
+      "tech-tree": "Tech tree"
+    },
+    "shipyard": {
+      "fitting": {
+        "modify": "Ausrüstung bearbeiten",
+        "view": "Ausrüstung anzeigen"
+      }
+    },
+    "star-map": {
+      "star-map": "Sternenkarte",
+      "universe-map": "Karte des Universum"
+    }
+  },
+  "translation": {
+    "designated": {
+      "language": "designierte Sprache"
+    },
+    "idTranslatable": "idTranslatable",
+    "no-change-reference-translation": "Die Übersetzung in der Referenzsprache kann nicht angepasst werden",
+    "reference": {
+      "language": "Referenzsprache"
+    },
+    "target": "Übersetzungsziel",
+    "text": {
+      "title": "Übersetzter Text"
+    },
+    "type": "Art"
+  }
 }

@@ -1,14 +1,14 @@
 <mat-tab-group animationDuration="0ms" class="bottom-spacer">
-    <mat-tab [label]="actionTabTitles[0]">
+    <mat-tab label="{{'tab.journal.dashboard' | translate}}">
         <p> Why I need a dashboard?</p>
     </mat-tab>
-    <mat-tab [label]="actionTabTitles[1]">
+    <mat-tab label="{{'tab.journal.battles' | translate}}">
         <app-battle-report></app-battle-report>
     </mat-tab>
-    <mat-tab [label]="actionTabTitles[2]">
+    <mat-tab label="{{'tab.journal.movements' | translate}}">
         <p>Ah yeah, the movements...</p>
     </mat-tab>
-    <mat-tab [label]="actionTabTitles[3]">
+    <mat-tab label="{{'tab.journal.jobs' | translate}}">
         <p>This is surprisingly not implemented...</p>
     </mat-tab>
 </mat-tab-group>

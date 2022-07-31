@@ -7,9 +7,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class JournalTabViewComponent implements OnInit {
 
-    static path: string = "journal";
-
-    actionTabTitles: string[] = ['Dashboard', 'Battle reports', 'Movement reports', 'Job reports'];
+    static path: string = 'journal';
 
     constructor() {
     }

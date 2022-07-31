@@ -8,8 +8,6 @@ import {Fleet} from "../../../../../services/swagger";
 })
 export class FleetTabViewComponent implements OnInit {
 
-    actionTabTitles: string[] = ['Dashboard', 'Movement'];
-
     /**
      * the user selected fleet
      */

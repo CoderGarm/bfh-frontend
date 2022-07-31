@@ -1,14 +1,14 @@
 <mat-tab-group animationDuration="0ms">
-    <mat-tab [label]="actionTabTitles[1]" [disabled]="!alliance" *ngIf="isAdmin">
+    <mat-tab label="{{'tab.alliance.dashboard' | translate}}" [disabled]="!alliance" *ngIf="isAdmin">
         <app-alliance-dashboard [alliance]="alliance"></app-alliance-dashboard>
     </mat-tab>
-    <mat-tab [label]="actionTabTitles[0]">
+    <mat-tab label="{{'tab.alliance.list' | translate}}">
         <app-alliance-list></app-alliance-list>
     </mat-tab>
-    <mat-tab [label]="actionTabTitles[2]" [disabled]="!alliance">
+    <mat-tab label="{{'tab.alliance.forum' | translate}}" [disabled]="!alliance">
         <app-alliance-forum></app-alliance-forum>
     </mat-tab>
-    <mat-tab [label]="actionTabTitles[3]" [disabled]="!alliance">
+    <mat-tab label="{{'tab.alliance.members-list' | translate}}" [disabled]="!alliance">
         <app-members-list [alliance]="alliance"></app-members-list>
     </mat-tab>
 </mat-tab-group>

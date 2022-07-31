@@ -11,7 +11,7 @@ import {ForumsNotificationService} from "../../forums-notification.service";
 })
 export class ForumsListComponent extends SubscriptionManager implements OnInit, OnChanges {
 
-    static path: string = "forum";
+    static path: string = 'forum';
 
     forums: Forum[] = [];
 

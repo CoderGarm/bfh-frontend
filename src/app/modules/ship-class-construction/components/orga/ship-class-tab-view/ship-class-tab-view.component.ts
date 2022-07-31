@@ -9,8 +9,6 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
 })
 export class ShipClassTabViewComponent implements OnInit {
 
-    actionTabTitles: string[] = ['View fitting', 'Modify fitting'];
-
     /**
      * The user selected ShipClass.
      */

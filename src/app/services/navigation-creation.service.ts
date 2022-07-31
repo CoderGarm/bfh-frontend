@@ -40,7 +40,6 @@ export class NavigationCreationService {
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
             {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
             {path: AdminTabViewComponent.path, component: AdminTabViewComponent, canActivate: [ProtectedGuard]},
-            // todo role based access in UI
         ];
     }
 

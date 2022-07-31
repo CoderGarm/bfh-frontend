@@ -10,8 +10,6 @@ import {SubscriptionManager} from "../../../../../SubscriptionManager";
 })
 export class PlanetTabViewComponent extends SubscriptionManager implements OnInit {
 
-    actionTabTitles: string[] = ['Dashboard', 'Constructions', 'Shipyard', 'Jobs'];
-
     @ViewChild(MatTabGroup)
     matTabGroup?: MatTabGroup;
 
