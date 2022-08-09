@@ -23,7 +23,6 @@ export class ForumsNotificationService {
 
 
     public pushCreatedThread(thread: CreateForumThread | undefined) {
-        console.log("event", thread)
         this.createdThreadEmitter.emit(thread);
     }
 

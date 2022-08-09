@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {CreateForumThread, Forum} from "../../../../services/swagger";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {AngularEditorConfig} from "@kolkov/angular-editor";
 
 @Component({
     selector: 'app-create-forum-thread',
@@ -19,6 +20,14 @@ export class CreateForumThreadComponent extends SubscriptionManager implements O
         newThreadsDescription: new FormControl(''),
         firstMessage: new FormControl(''),
     });
+
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        placeholder: 'The first message...',
+        showToolbar: false,
+        enableToolbar: false,
+        sanitize: true
+    };
 
     constructor(@Optional() @Inject('selectedForum') selectedForum: Forum | undefined,
                 private forumsNotificationService: ForumsNotificationService) {
@@ -42,7 +51,6 @@ export class CreateForumThreadComponent extends SubscriptionManager implements O
                 firstMessage: this.newThreadFG.controls.firstMessage.value
             };
         }
-        console.log("result", result)
         return result;
     }
 }
