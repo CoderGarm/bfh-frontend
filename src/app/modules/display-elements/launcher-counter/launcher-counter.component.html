@@ -1,15 +1,20 @@
 <mat-accordion *ngIf="!!weapon">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
-            <app-numeric-counter [disabled]="supportsAlignment('STERN')" [startAt]="getAmountByAlignment('STERN')" [min]="min" [max]="max"
-                                 (amount)="setAmount('STERN', $event)"></app-numeric-counter>
-            <app-numeric-counter [disabled]="supportsAlignment('BROADSIDE')" [startAt]="getAmountByAlignment('BROADSIDE')" [min]="min"
-                                 [max]="max"
-                                 (amount)="setAmount('BROADSIDE', $event)"></app-numeric-counter>
-            <app-numeric-counter [disabled]="supportsAlignment('BOW')" [startAt]="getAmountByAlignment('BOW')" [min]="min" [max]="max"
-                                 (amount)="setAmount('BOW', $event)"></app-numeric-counter>
+            <app-numeric-counter [disabled]="supportsAlignment('STERN')" [startAt]="getAmountByAlignment('STERN')"
+                                 caption='Stern'
+                                 [min]="min" [max]="max" (amount)="setAmount('STERN', $event)"></app-numeric-counter>
+            <app-numeric-counter [disabled]="supportsAlignment('BROADSIDE')" [startAt]="getAmountByAlignment('BROADSIDE')"
+                                 caption='Broadside'
+                                 [min]="min" [max]="max" (amount)="setAmount('BROADSIDE', $event)"></app-numeric-counter>
+            <app-numeric-counter [disabled]="supportsAlignment('BOW')" [startAt]="getAmountByAlignment('BOW')"
+                                 caption='Bow'
+                                 [min]="min" [max]="max" (amount)="setAmount('BOW', $event)"></app-numeric-counter>
             <mat-panel-title>
                 {{weapon.baseModule.name}}
+                <mat-icon *ngIf="!!ammunitionModule"
+                          matTooltip="{{'shipyard.fitting.ammunition.remember' | translate}}">report
+                </mat-icon>
             </mat-panel-title>
             <mat-panel-description>
                 {{weapon.baseModule.description}}

@@ -75,9 +75,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedShipClassInputDefinition]) {
-            if (!this.selectedShipClassInput) {
-                this.clearCanvas();
-            }
+            this.clearCanvas();
             this.createHullOutlines();
             this.createWeaponSlots(undefined);
         }

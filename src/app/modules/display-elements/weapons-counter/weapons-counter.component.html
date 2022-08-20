@@ -1,12 +1,14 @@
 <mat-accordion *ngIf="!!weapon">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
-            <app-numeric-counter [disabled]="supportsAlignment('STERN')" [startAt]="getAmountByAlignment('STERN')" [min]="min" [max]="max"
-                                 (amount)="setAmount('STERN', $event)"></app-numeric-counter>
+            <app-numeric-counter [disabled]="supportsAlignment('STERN')" [startAt]="getAmountByAlignment('STERN')" [min]="min"
+                                 caption='Stern'
+                                 [max]="max" (amount)="setAmount('STERN', $event)"></app-numeric-counter>
             <app-numeric-counter [disabled]="supportsAlignment('BROADSIDE')" [startAt]="getAmountByAlignment('BROADSIDE')" [min]="min"
-                                 [max]="max"
-                                 (amount)="setAmount('BROADSIDE', $event)"></app-numeric-counter>
+                                 caption='Broadside'
+                                 [max]="max" (amount)="setAmount('BROADSIDE', $event)"></app-numeric-counter>
             <app-numeric-counter [disabled]="supportsAlignment('BOW')" [startAt]="getAmountByAlignment('BOW')" [min]="min" [max]="max"
+                                 caption='Bow'
                                  (amount)="setAmount('BOW', $event)"></app-numeric-counter>
             <mat-panel-title>
                 {{weapon.baseModule.name}}

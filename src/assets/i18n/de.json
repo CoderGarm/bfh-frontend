@@ -48,7 +48,7 @@
     }
   },
   "planetary": {
-    "constructions": "Ground constructions"
+    "constructions": "Gebäude"
   },
   "resources": {
     "manpower": {
@@ -60,7 +60,13 @@
     "ticks-to-done": "benötigte Ticks"
   },
   "shipyard": {
-    "constructions": "Shipyard constructions",
+    "constructions": "Schiffsbau",
+    "create-new-class": "Neue Klasse erzeugen",
+    "fitting": {
+      "ammunition": {
+        "remember": "Wähle Munition für die Werfer aus."
+      }
+    },
     "hull-capacities": "Rumpfkapazität"
   },
   "tab": {

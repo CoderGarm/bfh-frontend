@@ -134,6 +134,8 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      */
     private setShipClass() {
         let shipClass = this.shipClassInput;
+        // clear the selection
+        this.clearAllFittings();
         if (!!shipClass) {
             this.chooseHull(shipClass.hull);
             this.chooseArmor(shipClass.armor);
@@ -143,49 +145,33 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
 
             // set ammunition fittings
             let ammunitionFittings = shipClass.ammunitionFittings;
-            ammunitionFittings.forEach(ammo => {
-                let ammunitionModule = ammo.ammunitionModule;
-                let ammoAmount = ammo.amount;
-                this.setAmmunitionModule(ammunitionModule, ammoAmount);
-            });
+            ammunitionFittings.forEach(ammo => this.setAmmunitionModule(ammo.ammunitionModule, ammo.amount));
             // set fittings
             if (!!shipClass.fittings) {
                 let fittings = shipClass.fittings;
-                let weaponsSelection: Map<String, Map<AlignedFitting.WeaponAlignmentEnum, number>> = new Map<String, Map<AlignedFitting.WeaponAlignmentEnum, number>>();
+
+                let weaponSelectionMap: Map<String, WeaponsSelection> = new Map<String, WeaponsSelection>();
                 fittings.forEach(fitting => {
-                    let alignment = fitting.weaponAlignment as keyof typeof AlignedFitting.WeaponAlignmentEnum;
                     let weapon: Weapon | Launcher | undefined = fitting.weapon || fitting.launcher;
                     if (!weapon) {
                         return;
                     }
-                    let key = ShipClassFittingSelectionComponent.getWeaponSystemMapKey(weapon, alignment);
-                    let map = weaponsSelection.get(key);
-                    if (!map) {
-                        map = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
-                        weaponsSelection.set(key, map);
+                    let weaponKey = ShipClassFittingSelectionComponent.getWeaponSystemMapKey(weapon, undefined);
+                    let selection: WeaponsSelection | undefined = weaponSelectionMap.get(weaponKey);
+                    if (!selection) {
+                        let amountByAlignmentMap = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
+                        selection = {
+                            weapon: weapon,
+                            weaponAmountPerAlignment: amountByAlignmentMap!
+                        }
+                        weaponSelectionMap.set(weaponKey, selection);
                     }
-                    let amountPerAlignment = map.get(alignment);
-                    if (!amountPerAlignment) {
-                        amountPerAlignment = 0;
-                    }
-                    amountPerAlignment += fitting.amount;
-                    map.set(alignment, amountPerAlignment);
-                });
-                fittings.forEach(fitting => {
                     let alignment = fitting.weaponAlignment as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-                    let weapon: Weapon | Launcher | undefined = fitting.weapon || fitting.launcher;
-                    if (!weapon) {
-                        return;
-                    }
-                    let key = ShipClassFittingSelectionComponent.getWeaponSystemMapKey(weapon, alignment);
-                    let map = weaponsSelection.get(key);
-                    let w: WeaponsSelection = {
-                        weapon: weapon,
-                        weaponAmountPerAlignment: map!
-                    }
+                    selection.weaponAmountPerAlignment.set(alignment, fitting.amount);
+
                     if (!!ammunitionFittings && WeaponHelper.isLauncher(weapon)) {
                         // match ammunition with weapons
-                        let ammoFittingForWeapon = ammunitionFittings
+                        let ammoFittingForWeapon: AmmunitionFitting[] = ammunitionFittings
                             .filter(ammo => {
                                 if (!!(<Launcher>weapon).ammunitionModule) {
                                     return ammo.ammunitionModule.baseModule.idModule === (<Launcher>weapon).ammunitionModule.baseModule.idModule
@@ -194,35 +180,36 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
                             });
                         // currently there is only one ammunition type present per weapon
                         ammoFittingForWeapon.forEach(ammo => {
-                            let ammunitionModule = ammo.ammunitionModule;
-                            let ammoAmount = ammo.amount;
-                            w.ammo = ammunitionModule;
-                            w.ammoAmount = ammoAmount;
+                            if (!!selection) {
+                                selection.ammo = ammo.ammunitionModule;
+                                selection.ammoAmount = (!!selection.ammoAmount ? selection.ammoAmount : 0) + ammo.amount;
+                            }
                         });
                     }
-                    this.chooseWeapon(w);
                 });
+                weaponSelectionMap.forEach((weaponSelection, key) => this.chooseWeapon(weaponSelection));
+                // old code end
             }
-            let supportFittings = shipClass.supportFittings;
-            if (!!supportFittings) {
-                supportFittings.forEach(fitting => {
+            if (!!shipClass.supportFittings) {
+                shipClass.supportFittings.forEach(fitting => {
                     let passiveModule = fitting.passiveModule;
                     let amount = fitting.amount;
                     this.choosePassiveModule(amount, passiveModule);
                 });
             }
-        } else {
-            // clear the selection
-            this.chooseHull(undefined);
-            this.chooseArmor(undefined);
-            this.chooseEloka(undefined);
-            this.choosePropulsion(undefined);
-            this.chooseSidewall(undefined);
-            this.ammoSelection.clear();
-            this.weaponsSelection.clear();
-            this.supportSelection.clear();
         }
         this.createAndEmitDesignedShipClass();
+    }
+
+    private clearAllFittings() {
+        this.chooseHull(undefined);
+        this.chooseArmor(undefined);
+        this.chooseEloka(undefined);
+        this.choosePropulsion(undefined);
+        this.chooseSidewall(undefined);
+        this.ammoSelection.clear();
+        this.weaponsSelection.clear();
+        this.supportSelection.clear();
     }
 
     ngOnDestroy() {
@@ -245,13 +232,18 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      */
     chooseWeapon(loadout: WeaponsSelection) {
         this.setWeaponModule(loadout);
-        if (!!loadout.ammo && (!loadout.ammoAmount || loadout.ammoAmount == 0)) {
-            let ammoAmount = this.getAmmunitionModuleAmount(loadout.ammo);
+        let hasAmmoModule = !!loadout.ammo;
+        let hasAmmoAmount = !!loadout.ammoAmount;
+        let hasNoAmmoAmount = !hasAmmoAmount || loadout.ammoAmount == 0;
+        if (hasAmmoModule && hasNoAmmoAmount) {
+            let ammoAmount = this.getAmmunitionModuleAmount(loadout!.ammo!);
             if (ammoAmount != loadout.ammoAmount) {
-                this.setAmmunitionModule(loadout.ammo, ammoAmount);
+                this.setAmmunitionModule(loadout!.ammo!, ammoAmount);
             }
-        } else if (!!loadout.ammo && !!loadout.ammoAmount) {
-            this.setAmmunitionModule(loadout.ammo, loadout.ammoAmount);
+        } else {
+            if (hasAmmoModule && hasAmmoAmount) {
+                this.setAmmunitionModule(loadout!.ammo!, loadout!.ammoAmount!);
+            }
         }
         this.createAndEmitDesignedShipClass();
     }
@@ -368,7 +360,7 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
         return map;
     }
 
-    private static getWeaponSystemMapKey(weapon: Weapon | Launcher, key: AlignedFitting.WeaponAlignmentEnum) {
+    private static getWeaponSystemMapKey(weapon: Weapon | Launcher, key: AlignedFitting.WeaponAlignmentEnum | undefined): string {
         let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
         let id: string = "";
         if (WeaponHelper.isWeapon(weapon)) {
@@ -386,8 +378,8 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      * @param key
      * @private
      */
-    private static getWeaponMapKey(weapon: Weapon, key: AlignedFitting.WeaponAlignmentEnum): string {
-        return weapon.baseModule.idModule + "-weapon-" + key;
+    private static getWeaponMapKey(weapon: Weapon, key: AlignedFitting.WeaponAlignmentEnum | undefined): string {
+        return weapon.baseModule.idModule + "-weapon-" + (!!key ? key : '');
     }
 
     /**
@@ -396,8 +388,8 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      * @param key
      * @private
      */
-    private static getLauncherMapKey(weapon: Launcher, key: AlignedFitting.WeaponAlignmentEnum): string {
-        return weapon.baseModule.idModule + "-launcher-" + key;
+    private static getLauncherMapKey(weapon: Launcher, key: AlignedFitting.WeaponAlignmentEnum | undefined): string {
+        return weapon.baseModule.idModule + "-launcher-" + (!!key ? key : '');
     }
 
     /**
@@ -433,6 +425,7 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      * @private
      */
     private setWeaponModule(weapon: WeaponsSelection) {
+        //console.log("setWeaponModule", weapon)
         let event: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
         weapon.weapon.alignmentTypes.forEach(key => {
             // set the current selection to data structure
@@ -471,7 +464,9 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
                 event.set(alignment, stern);
             }
         });
-        if (this.checkIfChanged(event)) {
+        let ifChanged = this.checkIfChanged(event);
+        //console.log("event", ifChanged, event)
+        if (ifChanged) {
             // if changed, notify the svg component to re-render the slots
             this.weaponsAmountByAlignmentOutput.emit(event);
         }

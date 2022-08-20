@@ -48,7 +48,7 @@
     }
   },
   "planetary": {
-    "constructions": "Bodenkonstruktionen"
+    "constructions": "Ground constructions"
   },
   "resources": {
     "manpower": {
@@ -60,7 +60,13 @@
     "ticks-to-done": "Ticks needed"
   },
   "shipyard": {
-    "constructions": "Schiffsbau",
+    "constructions": "Shipyard constructions",
+    "create-new-class": "Create new class",
+    "fitting": {
+      "ammunition": {
+        "remember": "Set up ammunition for launchers."
+      }
+    },
     "hull-capacities": "Construction capacities"
   },
   "tab": {

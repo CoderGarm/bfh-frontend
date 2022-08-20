@@ -42,6 +42,12 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     @Input()
     disabled: boolean = false;
 
+    /**
+     * The caption of the field.
+     */
+    @Input()
+    caption: string = '';
+
     constructor() {
     }
 

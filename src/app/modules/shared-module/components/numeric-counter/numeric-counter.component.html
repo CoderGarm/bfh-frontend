@@ -1,5 +1,6 @@
 <mat-form-field appearance="outline" class="numeric-input">
-    <mat-label>Amount</mat-label>
+    <mat-label *ngIf="caption != ''">{{caption}}</mat-label>
+    <mat-label *ngIf="caption == ''">Amount</mat-label>
     <mat-icon *ngIf="disabled" matPrefix (click)="$event.stopPropagation();" class="disabled">remove</mat-icon>
     <mat-icon *ngIf="!disabled" matPrefix (click)="sub(); $event.stopPropagation();">remove</mat-icon>
     <div style="text-align:center;">
