@@ -5,6 +5,7 @@ import {TokenStorage} from "../../../../services/authentication/token-storage.se
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {AppComponent} from "../../../../app.component";
 
 
 @Component({
@@ -110,10 +111,8 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
                 this.subscriptions.push(sub);
             });
 
-        const source = interval(2000);
-        const sub = source.subscribe(val => {
-            this.activeChatsWithUnread.forEach(chat => this.detectUnreadMessages(chat));
-        });
+        const source = interval(AppComponent.CHECK_MESSAGES_INTERVAL_IN_SECONDS);
+        const sub = source.subscribe(() => this.activeChatsWithUnread.forEach(chat => this.detectUnreadMessages(chat)));
         this.subscriptions.push(sub);
     }
 

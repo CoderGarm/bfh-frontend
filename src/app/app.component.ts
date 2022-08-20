@@ -12,6 +12,7 @@ import {ForumsListComponent} from "./modules/forum/components/forums-list/forums
 import {TranslateService} from "@ngx-translate/core";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
 
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -20,6 +21,8 @@ import {TranslationEditorComponent} from "./modules/admin/components/payload/tra
 export class AppComponent extends SubscriptionManager implements OnInit {
 
     title: string = 'bfh-fe';
+
+    static CHECK_MESSAGES_INTERVAL_IN_SECONDS: number = 60 * 1000;
 
     routes: Routes = NavigationCreationService.createNavDrawerRoutes();
 
@@ -57,13 +60,14 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     }
 
     ngOnInit(): void {
-        let sub = this.authenticationService.getAccessData().subscribe(loggedIn => this.isLoggedIn = !!loggedIn);
+        let sub = this.authenticationService.getAccessData().subscribe(loggedIn => {
+            this.isLoggedIn = !!loggedIn;
+            this.detectUnreadMessages();
+        });
         this.subscriptions.push(sub);
 
-        // detect unread at login ...
-        this.detectUnreadMessages();
 
-        const source = interval(2000);
+        const source = interval(AppComponent.CHECK_MESSAGES_INTERVAL_IN_SECONDS);
         sub = source.subscribe(val => {
             // and later again repetitive
             this.detectUnreadMessages();
