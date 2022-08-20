@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
 import {MatTabGroup} from "@angular/material/tabs";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
@@ -8,7 +8,7 @@ import {SubscriptionManager} from "../../../../../SubscriptionManager";
     templateUrl: './planet-tab-view.component.html',
     styleUrls: ['./planet-tab-view.component.scss']
 })
-export class PlanetTabViewComponent extends SubscriptionManager implements OnInit {
+export class PlanetTabViewComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @ViewChild(MatTabGroup)
     matTabGroup?: MatTabGroup;
@@ -18,6 +18,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements OnIni
      */
     @Input()
     selectedPlanetInput?: Planet;
+    private selectedPlanetDefinition = "selectedPlanetInput";
 
     shipyardJobPossible: boolean = false;
 
@@ -25,9 +26,14 @@ export class PlanetTabViewComponent extends SubscriptionManager implements OnIni
         super();
     }
 
-    ngOnInit(): void {
-        let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanetInput!.idPlanet)
-            .subscribe(resp => this.shipyardJobPossible = resp);
-        this.subscriptions.push(subscription);
+    ngAfterViewInit(): void {
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes[this.selectedPlanetDefinition]) {
+            let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanetInput!.idPlanet)
+                .subscribe(resp => this.shipyardJobPossible = resp);
+            this.subscriptions.push(subscription);
+        }
     }
 }
