@@ -4,20 +4,25 @@
   margin: 5px 5px 10px 5px;
 }
 
-.sticky {
-  position: relative;
-  top: 0;
-  width: 100%;
+.isParent {
+  background: $secondary-background-color;
+  height: 100px;
+  margin: 15px 50px 15px 0;
+  z-index: 1000;
 }
 
-.modal {
-  z-index: 1000;
-  right: 25px;
-  position: fixed;
-  margin: 0 auto;
-  width: 120px;
-  background: $secondary-background-color;
-  opacity: 0.5;
+.flex {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.fixed-under-tab-header {
+  position: relative;
+}
+
+.hasMargin {
+  margin-left: 50px;
 }
 
 .img-container {
@@ -39,16 +44,22 @@
   line-height: 18px;
 }
 
-.amount-holder {
-  display: flex;
-  justify-content: space-around;
+.hasSize {
+  height: 18px;
+  width: 16px;
 }
 
-.tick-box {
-  display: flex;
-  justify-content: flex-start;
+.invisible {
+  color: $secondary-background-color;
 }
 
-.tick-amount {
-  margin-left: 5px;
+.open-bracket {
+  border-left: dashed $disabled-text-color 2px;
+  border-radius: 9px;
+  padding-left: 10px;
+}
+
+.close-bracket {
+  border-right: dashed $disabled-text-color 2px;
+  border-radius: 9px;
 }

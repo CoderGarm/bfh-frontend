@@ -81,7 +81,7 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
         scName: new FormControl({value: '', disabled: !!this.selectedShipClassInput})
     });
 
-    resourceDeposit?: ResourceDeposit;
+    costs?: ResourceDeposit;
 
     compareClass?: ShipClass;
 
@@ -192,10 +192,10 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
         let userID = this.tokenStorage.getUserID();
         if (!!this.designedShipClassInput && !!userID && this.idChangePending()) {
             let sub = this.resourceApi.getShipClassCosts(this.designedShipClassInput, userID)
-                .subscribe(resp => this.resourceDeposit = resp);
+                .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
         } else if (!this.designedShipClassInput) {
-            this.resourceDeposit = undefined;
+            this.costs = undefined;
             this.compareClass = undefined;
         }
     }

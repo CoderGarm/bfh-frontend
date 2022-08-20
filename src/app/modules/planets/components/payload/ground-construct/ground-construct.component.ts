@@ -184,19 +184,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.subscriptions.push(sub);
 
             sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
-                .subscribe(resp => {
-                    const c: ResourceDeposit = {
-                        subType: resp.subType,
-                        resources: [],
-                        humanResources: resp.humanResources
-                    };
-                    resp.resources.forEach(r => {
-                        if (r.resourceType.collectableType != EResourceType.CollectableTypeEnum.FORFEITABLE) {
-                            c.resources.push(r);
-                        }
-                    });
-                    this.resourceDeposit = c;
-                });
+                .subscribe(resp => this.resourceDeposit = resp);
             this.subscriptions.push(sub);
 
             sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanetInput.idPlanet)

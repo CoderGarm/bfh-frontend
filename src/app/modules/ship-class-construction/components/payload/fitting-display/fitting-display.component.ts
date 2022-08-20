@@ -41,7 +41,7 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
      */
     shipClassName: string = "";
 
-    resourceDeposit?: ResourceDeposit;
+    costs?: ResourceDeposit;
 
     compareClass?: ShipClass;
 
@@ -82,10 +82,10 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
         let userID = this.tokenStorage.getUserID();
         if (!!this.selectedShipClassInput && !!userID && this.idChangePending()) {
             let sub = this.resourceApi.getShipClassCosts(this.selectedShipClassInput, userID)
-                .subscribe(resp => this.resourceDeposit = resp);
+                .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
         } else if (!this.selectedShipClassInput) {
-            this.resourceDeposit = undefined;
+            this.costs = undefined;
             this.compareClass = undefined;
         }
     }

@@ -1,37 +1,59 @@
-<div class="sticky">
-    <div class="modal" *ngIf="!!resourceDeposit">
-        <div class="tick-box">
-            {{'resources.ticks-to-done' | translate}}
-            <p class="tick-amount">
-                {{getTicksNeeded()}}
-            </p>
+<div class="fixed-under-tab-header isParent" *ngIf="isDisplayingPossible()">
+    <div class="flex">
+        <div class="box">
+            <div class="res-wrapper">
+                <div class="img-container hasSize"></div>
+                <div *ngIf="!!resourceDeposit">
+                    <mat-icon [inline]="true">warehouse</mat-icon>
+                </div>
+                <div *ngIf="!!income">
+                    <mat-icon [inline]="true">add</mat-icon>
+                </div>
+                <div *ngIf="!!costs">
+                    <mat-icon [inline]="true">remove</mat-icon>
+                </div>
+            </div>
         </div>
-        {{'resources.materials.title' | translate}}
-        <div *ngFor="let resource of resourceDeposit.resources" class="box">
+        <div class="box">
+            <div class="res-wrapper">
+                <div class="img-container">
+                    <mat-icon [inline]="true">schedule</mat-icon>
+                </div>
+                <div class="amount-present" *ngIf="!!resourceDeposit">
+                    <mat-icon [inline]="true">all_inclusive</mat-icon>
+                </div>
+                <div class="amount-present" *ngIf="!!income">
+                    <mat-icon [inline]="true">all_inclusive</mat-icon>
+                </div>
+                <div class="diffAmount">
+                    {{getTicksNeeded()}}
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let resource of getBase().resources" class="box">
             <div class="res-wrapper">
                 <div class="img-container">
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.singularName}}" matTooltip="{{resource.resourceType.typeName}}">
                 </div>
-                <div>
+                <div [ngClass]="getOpeningBracketClass(resource)">
                     <label class="amount-present">
-                        {{resource.amount}}
+                        {{getResourceAsString(resource.resourceType, resourceDeposit)}}
                     </label>
-                    <div class="amount-holder">
+                    <div>
                         <div *ngIf="!!income" class="diffAmount">{{getResourceAsString(resource.resourceType, income)}}</div>
                         <div *ngIf="!!costs" class="diffAmount">{{getResourceAsString(resource.resourceType, costs)}}</div>
                     </div>
                 </div>
             </div>
         </div>
-        {{'resources.manpower.title' | translate}}
-        <div *ngFor="let resource of resourceDeposit.humanResources" class="box">
+        <div *ngFor="let resource of getBase().humanResources" class="box">
             <div class="res-wrapper">
                 <div class="img-container">
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
                 </div>
-                <div>
+                <div [ngClass]="getClosingBracketClass(resource)">
                     <label class="amount-present">
-                        {{resource.amount}}
+                        {{getHRCostsAsString(resource.resourceType, resourceDeposit)}}
                     </label>
                     <div class="amount-holder">
                         <div *ngIf="!!income" class="diffAmount">{{getHRCostsAsString(resource.resourceType, income)}}</div>
