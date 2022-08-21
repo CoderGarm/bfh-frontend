@@ -50,6 +50,11 @@
   "planetary": {
     "constructions": "Gebäude"
   },
+  "register": {
+    "email": {
+      "info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet."
+    }
+  },
   "resources": {
     "manpower": {
       "title": "Mitarbeiter"

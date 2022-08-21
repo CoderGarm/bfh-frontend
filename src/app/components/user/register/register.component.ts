@@ -2,31 +2,43 @@ import {AuthApiService, UserApiService, UserReq} from '../../../services/swagger
 import {PasswordErrorMessages} from '../../../validators/passwordValidator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
 import {UserErrorMessages} from "../../../validators/userNameValidator";
+import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
+import {environment} from "../../../../environments/environment";
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent extends SubscriptionManager implements OnInit {
 
     static path: string = 'register';
 
-    private subscription?: Subscription;
+    protected basePath = environment.backendServer;
 
     passErrors = PasswordErrorMessages;
     userErrors = UserErrorMessages;
     registerForm: FormGroup;
 
-    constructor(private userApiService: UserApiService, private authService: AuthApiService) {
+    constructor(private userApiService: UserApiService,
+                private authService: AuthApiService,
+                private snackbarService: SnackbarNotificationService) {
+        super();
+        let utcDate = new Date().getMilliseconds();
         this.registerForm = new FormGroup({
             login: new FormControl('', Validators.required),
             pass: new FormControl('', [Validators.required]),
             passRepeat: new FormControl('', Validators.required),
             email: new FormControl('', Validators.email)
         });
+        if (this.basePath.includes("localhost")) {
+            this.registerForm.controls.login.setValue(utcDate);
+            this.registerForm.controls.pass.setValue('12457aA!');
+            this.registerForm.controls.passRepeat.setValue('12457aA!');
+            this.registerForm.controls.email.setValue(utcDate + '@' + utcDate);
+        }
     }
 
     ngOnInit(): void {
@@ -39,9 +51,9 @@ export class RegisterComponent implements OnInit {
             password: this.registerForm.controls.pass.value,
             username: this.registerForm.controls.login.value
         };
-        this.subscription = this.authService.createUser(newUser).subscribe(
-            resp => console.log(resp) // todo login created user
-        );
+        const sub = this.authService.createUser(newUser)
+            .subscribe(() => this.snackbarService.open("Yeah nice, you are registered! Log in now."));
+        this.subscriptions.push(sub);
     }
 
     clear(): void {
@@ -49,11 +61,5 @@ export class RegisterComponent implements OnInit {
         this.registerForm.controls.pass.setValue('');
         this.registerForm.controls.passRepeat.setValue('');
         this.registerForm.controls.email.setValue('');
-    }
-
-    ngOnDestroy() {
-        if (!!this.subscription) {
-            this.subscription.unsubscribe()
-        }
     }
 }

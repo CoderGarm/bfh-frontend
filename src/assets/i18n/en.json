@@ -50,6 +50,11 @@
   "planetary": {
     "constructions": "Ground constructions"
   },
+  "register": {
+    "email": {
+      "info": "Your eMail address will be used only for resetting the password."
+    }
+  },
   "resources": {
     "manpower": {
       "title": "Manpower"
