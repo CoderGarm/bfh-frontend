@@ -1,5 +1,7 @@
+@import "src/styles/variables";
+
 .mat-expansion-panel {
-  width: 90%;
+  width: $page-with;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -24,4 +26,8 @@ input[type=number] {
   height: 45px;
   font-size: 10px;
   cursor: pointer;
+}
+
+.filter {
+  width: $page-with;
 }

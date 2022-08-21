@@ -1,19 +1,6 @@
 <app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit" [costs]="costsToDisplay" [income]="income"></app-resource-deposit-overlay-display>
 <div>
-    {{'filter' | translate}}
-    <mat-form-field appearance="outline">
-        <mat-label>Resource types</mat-label>
-        <mat-chip-list #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
-            <mat-chip
-                    *ngFor="let eResourceType of eResourceTypes"
-                    [value]="eResourceType.typeName"
-                    (click)="clickAChip(eResourceType.typeName, resourceTypeChipList)">
-                {{eResourceType.typeName}}
-            </mat-chip>
-        </mat-chip-list>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="filter">
         <mat-label>Product category</mat-label>
         <mat-chip-list #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
             <mat-chip
@@ -24,8 +11,8 @@
             </mat-chip>
         </mat-chip-list>
     </mat-form-field>
-
-    <mat-form-field appearance="outline">
+    <br>
+    <mat-form-field appearance="outline" class="filter">
         <mat-label>Refinement sequence</mat-label>
         <mat-chip-list #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
             <mat-chip
@@ -36,6 +23,18 @@
             </mat-chip>
         </mat-chip-list>
     </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="filter">
+        <mat-label>Resource types</mat-label>
+        <mat-chip-list #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
+            <mat-chip
+                    *ngFor="let eResourceType of eResourceTypes"
+                    [value]="eResourceType.typeName"
+                    (click)="clickAChip(eResourceType.typeName, resourceTypeChipList)">
+                {{eResourceType.typeName}}
+            </mat-chip>
+        </mat-chip-list>
+    </mat-form-field>
 </div>
 
 {{'planetary.constructions' | translate}}
@@ -43,7 +42,9 @@
 <mat-accordion>
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"
                          (opened)="setOpened(construction)"
-                         (closed)="setClosed(construction)" (mouseover)="showCosts(construction)" (mouseout)="showCosts(null)">
+                         (closed)="setClosed(construction)"
+                         (mouseover)="showCosts(construction)"
+                         (mouseout)="showCosts(null)">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 {{construction.building.name}}, Level {{construction.level}}

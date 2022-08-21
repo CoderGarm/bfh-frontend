@@ -1,3 +1,5 @@
+@import "src/styles/variables";
+
 .mat-chip {
   font-size: 0.8rem;
   min-height: 18px;
@@ -10,5 +12,9 @@
 }
 
 .mat-expansion-panel {
-  width: 90%;
+  width: $page-with;
+}
+
+.filter {
+  width: $page-with;
 }
