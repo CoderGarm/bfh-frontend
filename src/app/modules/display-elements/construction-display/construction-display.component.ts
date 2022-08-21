@@ -1,12 +1,13 @@
-import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Construction, ERefinementSequence} from "../../../services/swagger";
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Construction, ERefinementSequence, ResourceDeposit} from "../../../services/swagger";
+import {ResourceHelper} from "../../../ResourceHelper";
 
 @Component({
     selector: 'app-construction-display',
     templateUrl: './construction-display.component.html',
     styleUrls: ['./construction-display.component.scss']
 })
-export class ConstructionDisplayComponent implements AfterViewInit {
+export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
 
     /**
      * the construction which should be displayed
@@ -22,7 +23,15 @@ export class ConstructionDisplayComponent implements AfterViewInit {
      * and it's field name
      */
     @Input()
-    constructionPossibleInput?: boolean;
+    constructionPossible?: boolean;
+
+    @Input()
+    resourceDeposit?: ResourceDeposit;
+
+    @Input()
+    costsToDisplay?: ResourceDeposit;
+
+    jobTooExpensive: boolean = false;
 
     constructor() {
     }
@@ -48,5 +57,17 @@ export class ConstructionDisplayComponent implements AfterViewInit {
 
     getRefinementDescription(refSeq: ERefinementSequence) {
         return refSeq.educt.typeName + " to " + refSeq.product.typeName
+    }
+
+    private checkBalances() {
+        if (!this.costsToDisplay || !this.resourceDeposit) {
+            this.jobTooExpensive = true;
+            return;
+        }
+        this.jobTooExpensive = !ResourceHelper.canPayTheBill(this.costsToDisplay, this.resourceDeposit);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.checkBalances();
     }
 }

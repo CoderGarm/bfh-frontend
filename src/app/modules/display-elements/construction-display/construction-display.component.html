@@ -27,6 +27,8 @@
         </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-button [disabled]="!constructionPossibleInput" (click)="buildConstruction()">Build</button>
+        <button mat-button disabled *ngIf="!constructionPossible && !jobTooExpensive">{{'planetary.constructions.build.not-possible' | translate}}</button>
+        <button mat-button disabled *ngIf="jobTooExpensive && constructionInput">{{'planetary.constructions.build.too-expensive' | translate}}</button>
+        <button mat-button *ngIf="constructionPossible && !jobTooExpensive" (click)="buildConstruction()">{{'planetary.constructions.build.start-building' | translate}}</button>
     </mat-card-actions>
 </mat-card>

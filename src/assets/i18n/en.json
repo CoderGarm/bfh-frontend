@@ -48,7 +48,14 @@
     }
   },
   "planetary": {
-    "constructions": "Ground constructions"
+    "constructions": {
+      "build": {
+        "not-possible": "Job running",
+        "too-expensive": "Job too expensive",
+        "start-building": "Start job"
+      },
+      "title": "Ground constructions"
+    }
   },
   "register": {
     "email": {
@@ -65,7 +72,14 @@
     "ticks-to-done": "Ticks needed"
   },
   "shipyard": {
-    "constructions": "Shipyard constructions",
+    "constructions": {
+      "build": {
+        "not-possible": "Job already running",
+        "too-expensive": "Job is too expensive",
+        "start-building": "Build the fleet"
+      },
+      "title": "Shipyard constructions"
+    },
     "create-new-class": "Create new class",
     "fitting": {
       "ammunition": {

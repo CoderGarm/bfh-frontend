@@ -11,10 +11,16 @@ export class PlanetsNotificationService {
     constructor() {
     }
 
+    /**
+     * Tell the others that some kind of construction was started.
+     */
     public push() {
         this.emitter.emit(true);
     }
 
+    /**
+     * Ask if you are interested if some construction was started.
+     */
     public ask() {
         return this.emitter;
     }

@@ -48,7 +48,14 @@
     }
   },
   "planetary": {
-    "constructions": "Gebäude"
+    "constructions": {
+      "build": {
+        "not-possible": "Es wird bereits gebaut",
+        "too-expensive": "Bau zu teuer",
+        "start-building": "Starte den Bau"
+      },
+      "title": "Gebäude"
+    }
   },
   "register": {
     "email": {
@@ -65,7 +72,14 @@
     "ticks-to-done": "benötigte Ticks"
   },
   "shipyard": {
-    "constructions": "Schiffsbau",
+    "constructions": {
+      "build": {
+        "not-possible": "Es wird bereits gebaut",
+        "too-expensive": "Auftrag zu teuer",
+        "start-building": "Baue die Flotte"
+      },
+      "title": "Schiffsbau"
+    },
     "create-new-class": "Neue Klasse erzeugen",
     "fitting": {
       "ammunition": {

@@ -1,6 +1,6 @@
 <app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit" [costs]="costsToDisplay" [income]="income"></app-resource-deposit-overlay-display>
 <div>
-    <mat-form-field appearance="outline" class="filter">
+    <mat-form-field appearance="outline" class="filter" (click)="toggle('productCategoryChipList')">
         <mat-label>Product category</mat-label>
         <mat-chip-list #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
             <mat-chip
@@ -12,7 +12,7 @@
         </mat-chip-list>
     </mat-form-field>
     <br>
-    <mat-form-field appearance="outline" class="filter">
+    <mat-form-field appearance="outline" class="filter" (click)="toggle('refinementSequenceChipList')">
         <mat-label>Refinement sequence</mat-label>
         <mat-chip-list #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
             <mat-chip
@@ -24,7 +24,7 @@
         </mat-chip-list>
     </mat-form-field>
     <br>
-    <mat-form-field appearance="outline" class="filter">
+    <mat-form-field appearance="outline" class="filter" (click)="toggle('resourceTypeChipList')">
         <mat-label>Resource types</mat-label>
         <mat-chip-list #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
             <mat-chip
@@ -37,7 +37,7 @@
     </mat-form-field>
 </div>
 
-{{'planetary.constructions' | translate}}
+{{'planetary.constructions.title' | translate}}
 
 <mat-accordion>
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"
@@ -55,7 +55,9 @@
         </mat-expansion-panel-header>
         <app-construction-display
                 [constructionInput]="construction"
-                [constructionPossibleInput]="constructionPossible"
+                [resourceDeposit]="resourceDeposit"
+                [costsToDisplay]="costsToDisplay"
+                [constructionPossible]="constructionPossible"
                 (constructionOutput)="startConstruction($event)"></app-construction-display>
     </mat-expansion-panel>
 </mat-accordion>

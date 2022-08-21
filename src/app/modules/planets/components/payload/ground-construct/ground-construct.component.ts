@@ -335,4 +335,30 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         let s1 = construction.level + 1;
         return construction.building.idBuilding + "-" + s1;
     }
+
+    /**
+     * toggles all chips depending on the current selected chips
+     */
+    toggle(event: string) {
+        let chipList: MatChipList | undefined;
+        if (event == 'resourceTypeChipList') {
+            chipList = this.resourceTypeChipList;
+        }
+        if (event == 'productCategoryChipList') {
+            chipList = this.productCategoryChipList;
+        }
+        if (event == 'refinementSequenceChipList') {
+            chipList = this.refinementSequenceChipList;
+        }
+        if (!!chipList) {
+            let selected = chipList.chips.filter(chip => chip.selected);
+            let unselected = chipList.chips.filter(chip => !chip.selected);
+            if (selected.length > unselected.length) {
+                chipList.chips.forEach(chip => chip.deselect());
+            } else {
+                chipList.chips.forEach(chip => chip.select());
+            }
+            this.filterDisplayedConstructions();
+        }
+    }
 }

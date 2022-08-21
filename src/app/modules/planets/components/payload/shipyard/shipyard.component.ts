@@ -16,6 +16,7 @@ import {MatChip, MatChipList} from "@angular/material/chips";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
+import {ResourceHelper} from "../../../../../ResourceHelper";
 
 @Component({
     selector: 'app-shipyard',
@@ -74,6 +75,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     private buildShipClassDefinition: string = "buildShipClass";
 
     shipyardJobPossible: boolean = false;
+    jobTooExpensive: boolean = false;
 
     /**
      * the job order which will be used at this planet
@@ -284,16 +286,26 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
      * fetches the costs for the current selection
      * @private
      */
-    private getCosts() {
+    private getCostsAndCheckBalances() {
         if (!!this.order && this.selection.length != 0) {
             let sub = this.resourceApi.getShipyardOrderCosts(this.selection)
                 .subscribe(resp => {
                     this.costsToDisplay = resp;
+                    this.checkBalances();
                 });
             this.subscriptions.push(sub);
         } else {
             this.costsToDisplay = undefined;
+            this.jobTooExpensive = false;
         }
+    }
+
+    private checkBalances() {
+        if (!this.costsToDisplay || !this.resourceDeposit) {
+            this.jobTooExpensive = true;
+            return;
+        }
+        this.jobTooExpensive = !ResourceHelper.canPayTheBill(this.costsToDisplay, this.resourceDeposit);
     }
 
     /**
@@ -312,7 +324,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
         } else {
             singleSelection.amount--;
         }
-        this.getCosts();
+        this.getCostsAndCheckBalances();
     }
 
     /**
@@ -338,6 +350,31 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
         if (indexOf == -1) {
             this.selection.push(singleSelection);
         }
-        this.getCosts();
+        this.getCostsAndCheckBalances();
+    }
+
+    /**
+     * toggles all chips depending on the current selected chips
+     */
+    toggle() {
+        if (!!this.hullTypeChipList) {
+            let selected = this.hullTypeChipList.chips.filter(chip => chip.selected);
+            let unselected = this.hullTypeChipList.chips.filter(chip => !chip.selected);
+            if (selected.length > unselected.length) {
+                this.hullTypeChipList.chips.forEach(chip => chip.deselect());
+            } else {
+                this.hullTypeChipList.chips.forEach(chip => chip.select());
+            }
+            this.filterDisplayedShipClasses();
+        }
+    }
+
+    hasSomeShipsForBuildSelected() {
+        if (!this.order) {
+            return false;
+        }
+        let amount = 0;
+        this.order.shipJobPayload.forEach(o => amount += o.amount);
+        return amount != 0;
     }
 }

@@ -1,6 +1,6 @@
 <app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit" [costs]="costsToDisplay" [income]="income"></app-resource-deposit-overlay-display>
 <div>
-    <mat-form-field appearance="outline" class="filter">
+    <mat-form-field appearance="outline" class="filter" (click)="toggle()">
         <mat-label>Hull types</mat-label>
         <mat-chip-list #hullTypeChipList multiple [formControl]="eHullTypeFC">
             <mat-chip
@@ -13,10 +13,13 @@
     </mat-form-field>
 </div>
 
-{{'shipyard.constructions' | translate}}
-
-<button mat-button [disabled]="!shipyardJobPossible" (click)="buildConstruction()">Build</button>
-
+{{'shipyard.constructions.title' | translate}}
+<br>
+<button mat-button *ngIf="!shipyardJobPossible && !jobTooExpensive" disabled>{{'shipyard.constructions.build.not-possible' | translate}}</button>
+<button mat-button *ngIf="jobTooExpensive && shipyardJobPossible" disabled>{{'shipyard.constructions.build.too-expensive' | translate}}</button>
+<button mat-button *ngIf="shipyardJobPossible && !jobTooExpensive" [disabled]="!hasSomeShipsForBuildSelected()"
+        (click)="buildConstruction()">{{'shipyard.constructions.build.start-building' | translate}}</button>
+<br>
 <mat-accordion>
     <mat-expansion-panel *ngFor="let shipClass of filteredShipClasses"
                          (opened)="setOpened(shipClass)"
