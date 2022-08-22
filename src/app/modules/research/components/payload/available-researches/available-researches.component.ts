@@ -30,7 +30,7 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
 
     ngAfterViewInit() {
         if (!!this.tokenStorage.getUserID()) {
-            let sub = this.researchApi.getResearchByUser(this.tokenStorage.getUserID())
+            let sub = this.researchApi.getAvailableResearchByUser(this.tokenStorage.getUserID())
                 .subscribe(resp => this.availableResearches = resp);
             this.subscriptions.push(sub);
 

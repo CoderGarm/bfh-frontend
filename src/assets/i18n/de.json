@@ -121,6 +121,7 @@
     },
     "research": {
       "available": "Verfügbare Forschungen",
+      "no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
       "completed": "Abgeschlossene Forschungen",
       "tech-tree": "Tech tree"
     },

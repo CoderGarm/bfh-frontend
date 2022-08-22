@@ -121,6 +121,7 @@
     },
     "research": {
       "available": "Available researches",
+      "no-available": "There are currently no researches available.",
       "completed": "Completed researches",
       "tech-tree": "Tech tree"
     },
