@@ -95,6 +95,22 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
             return false;
         }
         return researchLevel.level < researchLevel.research.levelCap;
+    }
 
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(researchLevel: ResearchLevel): string {
+        let hasIcon = researchLevel.research.hasIcon;
+        if (!hasIcon) {
+            return '';
+        }
+        let folder = hasIcon.folder;
+        let iconName = hasIcon.iconName;
+        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+    }
+
+    getInvisibility(researchLevel: ResearchLevel) {
+        return this.currentlyOpenedItemIndex === researchLevel ? 'invisible' : '';
     }
 }

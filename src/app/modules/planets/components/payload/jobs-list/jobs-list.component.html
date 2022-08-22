@@ -8,6 +8,10 @@
                          (closed)="setClosed(job)">
         <mat-expansion-panel-header>
             <mat-panel-title>
+                <img mat-card-avatar class="avatar-image icon"
+                     src="{{getLink(job)}}"
+                     [ngClass]="getInvisibility(job)"
+                     alt="job">
                 {{getTitle(job)}}
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(job)">

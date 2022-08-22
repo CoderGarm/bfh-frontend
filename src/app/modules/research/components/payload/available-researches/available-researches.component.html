@@ -6,6 +6,9 @@
                          (closed)="setClosed(research)">
         <mat-expansion-panel-header>
             <mat-panel-title>
+                <img mat-card-avatar class="avatar-image icon"
+                     src="{{getLink(research)}}"
+                     [ngClass]="getInvisibility(research)">
                 {{research.research.name}}
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(research)">

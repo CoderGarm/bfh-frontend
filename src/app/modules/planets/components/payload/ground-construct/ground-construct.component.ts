@@ -361,4 +361,17 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.filterDisplayedConstructions();
         }
     }
+
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(construction: Construction): string {
+        let folder = construction.building.productionTarget.folder;
+        let iconName = construction.building.productionTarget.iconName;
+        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+    }
+
+    getInvisibility(construction: Construction) {
+        return this.currentlyOpenedItemIndex === construction ? 'invisible' : '';
+    }
 }

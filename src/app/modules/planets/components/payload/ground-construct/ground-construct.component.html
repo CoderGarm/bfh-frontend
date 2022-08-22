@@ -47,6 +47,10 @@
                          (mouseout)="showCosts(null)">
         <mat-expansion-panel-header>
             <mat-panel-title>
+                <img mat-card-avatar class="avatar-image icon"
+                     src="{{getLink(construction)}}"
+                     [ngClass]="getInvisibility(construction)"
+                     alt="construction">
                 {{construction.building.name}}, Level {{construction.level}}
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(construction)">

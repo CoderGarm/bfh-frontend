@@ -55,7 +55,20 @@ export class CompletedResearchesComponent extends SubscriptionManager implements
         return this.currentlyOpenedItemIndex != research;
     }
 
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(researchLevel: ResearchLevel): string {
+        let hasIcon = researchLevel.research.hasIcon;
+        if (!hasIcon) {
+            return '';
+        }
+        let folder = hasIcon.folder;
+        let iconName = hasIcon.iconName;
+        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+    }
+
+    getInvisibility(researchLevel: ResearchLevel) {
+        return this.currentlyOpenedItemIndex === researchLevel ? 'invisible' : '';
     }
 }

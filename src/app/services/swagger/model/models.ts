@@ -40,6 +40,7 @@ export * from './forum';
 export * from './forumMessage';
 export * from './forumThread';
 export * from './frontendError';
+export * from './hasIcon';
 export * from './hitLog';
 export * from './hull';
 export * from './humanResourceAmount';

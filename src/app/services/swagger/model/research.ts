@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { HasIcon } from './hasIcon';
 
 /**
  * .
@@ -30,4 +31,5 @@ export interface Research {
      * The maximum level of this research.
      */
     levelCap: number;
+    hasIcon?: HasIcon;
 }

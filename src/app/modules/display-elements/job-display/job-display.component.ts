@@ -62,7 +62,6 @@ export class JobDisplayComponent implements AfterViewInit, OnChanges {
         if (!!this.displayJobInput) {
             let folder = this.displayJobInput.facility.building.productionTarget.folder;
             let iconName = this.displayJobInput.facility.building.productionTarget.iconName;
-            //todo check
             return "assets/" + folder + "/png24x/" + iconName + "_c.png";
         }
         return "";

@@ -5,20 +5,13 @@
 <mat-grid-list cols="{{maxDepth}}" rowHeight="40px">
     <div class="inner" *ngFor="let idResearches of idResearchesByDepth; let i = index; ">
         <mat-grid-tile *ngFor="let idResearch of idResearches">
-            <mat-chip *ngIf="!!getResearch(idResearch)" style="width: 250px;">
+            <mat-chip *ngIf="!!getResearch(idResearch)" class="research-chip"
+                      [matTooltip]="getResearch(idResearch)!.description">
+                <img mat-card-avatar class="avatar-image icon"
+                     src="{{getLink(idResearch)}}">
                 {{getResearch(idResearch)!.name}}
             </mat-chip>
         </mat-grid-tile>
     </div>
 </mat-grid-list>
-
-<!--
-<mat-form-field appearance="outline">
-    <mat-chip-list class="mat-chip-list-stacked" *ngIf="!!techTree">
-        <mat-chip *ngFor="let research of basicResearches">
-            {{research.name}}
-        </mat-chip>
-    </mat-chip-list>
-</mat-form-field>
--->
 

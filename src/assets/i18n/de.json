@@ -51,8 +51,8 @@
     "constructions": {
       "build": {
         "not-possible": "Es wird bereits gebaut",
-        "too-expensive": "Bau zu teuer",
-        "start-building": "Starte den Bau"
+        "start-building": "Starte den Bau",
+        "too-expensive": "Bau zu teuer"
       },
       "title": "Gebäude"
     }
@@ -61,6 +61,9 @@
     "email": {
       "info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet."
     }
+  },
+  "research": {
+    "no-available": "Es gibt derzeit keine verfügbaren Forschungen."
   },
   "resources": {
     "manpower": {
@@ -75,8 +78,8 @@
     "constructions": {
       "build": {
         "not-possible": "Es wird bereits gebaut",
-        "too-expensive": "Auftrag zu teuer",
-        "start-building": "Baue die Flotte"
+        "start-building": "Baue die Flotte",
+        "too-expensive": "Auftrag zu teuer"
       },
       "title": "Schiffsbau"
     },
@@ -121,7 +124,6 @@
     },
     "research": {
       "available": "Verfügbare Forschungen",
-      "no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
       "completed": "Abgeschlossene Forschungen",
       "tech-tree": "Tech tree"
     },

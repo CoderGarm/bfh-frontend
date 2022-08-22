@@ -43,7 +43,6 @@ export class JobsListComponent extends SubscriptionManager implements AfterViewI
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        // todo reload at new job
         if (changes[this.selectedPlanetDefinition]) {
             this.loadData();
         }
@@ -54,7 +53,6 @@ export class JobsListComponent extends SubscriptionManager implements AfterViewI
             let sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)
                 .subscribe(resp => this.runningJobs = resp);
             this.subscriptions.push(sub);
-
 
             sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
                 .subscribe(resp => {
@@ -113,5 +111,18 @@ export class JobsListComponent extends SubscriptionManager implements AfterViewI
      */
     getDescription(job: Job): string {
         return job.ticksLeft + " ticks left";
+    }
+
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(job: Job): string {
+        let folder = job.facility.building.productionTarget.folder;
+        let iconName = job.facility.building.productionTarget.iconName;
+        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+    }
+
+    getInvisibility(job: Job) {
+        return this.currentlyOpenedItemIndex === job ? 'invisible' : '';
     }
 }

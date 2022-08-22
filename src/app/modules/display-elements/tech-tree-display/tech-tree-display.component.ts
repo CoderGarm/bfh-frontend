@@ -102,4 +102,22 @@ export class TechTreeDisplayComponent implements OnInit, OnChanges {
     getResearch(idResearch: number) {
         return this.researchesById.get(idResearch);
     }
+
+
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(idResearch: number): string {
+        let research = this.getResearch(idResearch)
+        if (!research) {
+            return '';
+        }
+        let hasIcon = research.hasIcon;
+        if (!hasIcon) {
+            return '';
+        }
+        let folder = hasIcon.folder;
+        let iconName = hasIcon.iconName;
+        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
+    }
 }
