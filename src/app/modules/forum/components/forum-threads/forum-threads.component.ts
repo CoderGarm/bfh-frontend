@@ -28,6 +28,7 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
 
     selectedForumThread?: ForumThread;
     threads?: ForumThread[];
+    displayedThreads?: ForumThread[];
 
 
     @ViewChild('paginatorTop')
@@ -93,6 +94,12 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
             this.threads = resp
             this.threadAmount = !!resp ? this.threads.length : 0;
             this.detectUnreadMessages();
+            this.displayByPagination({
+                pageIndex: this.pageIndex,
+                pageSize: this.pageSize,
+                previousPageIndex: 0,
+                length: this.threadAmount
+            });
         });
         this.subscriptions.push(sub);
     }
@@ -103,13 +110,25 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
     }
 
 
-    fetchByPagination(pageEvent: PageEvent | any) {
+    displayByPagination(pageEvent: PageEvent) {
+        if (!this.threads) {
+            return;
+        }
         this.pageIndex = pageEvent.pageIndex;
         this.pageSize = pageEvent.pageSize;
+        const startIndex = this.pageIndex * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        const topics = [];
+        for (let i = startIndex; i < endIndex; i++) {
+            let topic = this.threads[i];
+            if (!!topic) {
+                topics.push(topic);
+            }
+        }
+        this.displayedThreads = topics;
     }
 
     createThread(thread: CreateForumThread | undefined) {
-        console.log("create", thread)
         if (!!thread) {
             let sub = this.forumApi.createForumThread(thread).subscribe(resp => {
                 if (resp) {

@@ -10,7 +10,7 @@
                     {{message.sender.username}}
                     <mat-icon *ngIf="!message.receivedAt && message.sender.idUser != myUserID">mark_email_unread</mat-icon>
                 </mat-card-title>
-                <mat-card-subtitle>{{message.sentAt | date:'medium'}}</mat-card-subtitle>
+                <mat-card-subtitle>{{message.sentAt  | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
                 <div class="message" [innerHTML]="message.message"></div>

@@ -10,9 +10,9 @@
                    [pageIndex]="pageIndex"
                    [pageSize]="pageSize"
                    showFirstLastButtons
-                   (page)="fetchByPagination($event)">
+                   (page)="displayByPagination($event)">
     </mat-paginator>
-    <mat-card class="forum-card" *ngFor="let thread of threads">
+    <mat-card class="forum-card" *ngFor="let thread of displayedThreads">
         <mat-card-title (click)="selectThread(thread)">
             {{thread.title}}
             <mat-icon *ngIf="hasThreadUnread(thread)">mark_email_unread</mat-icon>
@@ -28,6 +28,6 @@
                    [pageIndex]="pageIndex"
                    [pageSize]="pageSize"
                    showFirstLastButtons
-                   (page)="fetchByPagination($event)">
+                   (page)="displayByPagination($event)">
     </mat-paginator>
 </div>

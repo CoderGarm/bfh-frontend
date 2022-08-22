@@ -96,6 +96,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
             return;
         }
         this.selectedForumThread = thread;
+        console.log(this.pageIndex, this.pageSize)
         let sub = this.forumApi.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize).subscribe(resp => {
             this.messagesInThread = resp;
             this.markMessagesRead();

@@ -32,6 +32,7 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from "@angular/common/http";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
+import {DatePipe} from "@angular/common";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -84,9 +85,12 @@ export function createTranslateLoader(http: HttpClient) {
         ForumModule,
         AllianceModule,
     ],
-    providers: [NgxPermissionsModule,
+    providers: [
+        NgxPermissionsModule,
         {provide: ErrorHandler, useClass: CustomErrorHandler},
-        SnackbarNotificationService],
+        SnackbarNotificationService,
+        DatePipe
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
