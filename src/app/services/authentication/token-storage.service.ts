@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {JWT} from "../swagger";
+import {environment} from "../../../environments/environment";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Injectable()
@@ -14,6 +15,12 @@ export class TokenStorage {
     private readonly allianceID = 'allianceID';
     private readonly refreshToken = 'refreshToken';
     private readonly interruptedURL = 'interruptedURL';
+
+    protected basePath = environment.backendServer;
+
+    isLocalhost() {
+        return this.basePath.includes("localhost");
+    }
 
     /**
      * Get access token
@@ -69,9 +76,7 @@ export class TokenStorage {
     getInterruptedURL(): boolean {
         let item = <string>localStorage.getItem(this.interruptedURL);
         return !!item;
-
     }
-
 
     /**
      * Set access token

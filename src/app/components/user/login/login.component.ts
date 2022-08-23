@@ -4,8 +4,8 @@ import {AuthenticationService} from '../../../services/authentication';
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
-import {environment} from "../../../../environments/environment";
 import {SubscriptionManager} from "../../../SubscriptionManager";
+import {TokenStorage} from "../../../services/authentication/token-storage.service";
 
 @Component({
     selector: 'app-login',
@@ -14,14 +14,13 @@ import {SubscriptionManager} from "../../../SubscriptionManager";
 })
 export class LoginComponent extends SubscriptionManager implements OnInit {
 
-    protected basePath = environment.backendServer;
-
     static path: string = 'login';
 
     loginForm: FormGroup;
     isAuthenticated: boolean = false;
 
     constructor(protected authService: AuthenticationService,
+                private tokenService: TokenStorage,
                 private permissionsService: NgxPermissionsService) {
         super();
 
@@ -29,7 +28,7 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
             login: new FormControl(''),
             pass: new FormControl('')
         });
-        if (this.basePath.includes("localhost")) {
+        if (this.tokenService.isLocalhost()) {
             this.loginForm.controls.login.setValue('flashkid');
             this.loginForm.controls.pass.setValue('12457aA!');
         }
