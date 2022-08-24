@@ -4,6 +4,12 @@
     "submit": "Abschicken"
   },
   "alliance": {
+    "create": {
+      "code": "Allianztag",
+      "name": "Allianzname",
+      "submit": "Gründe",
+      "title": "Gründe eine Allianz"
+    },
     "founder": "Gründer",
     "members": "Mitglieder",
     "no-applicants": "Keine Anwärter."
@@ -60,7 +66,8 @@
   "register": {
     "email": {
       "info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet."
-    }
+    },
+    "spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
   },
   "research": {
     "no-available": "Es gibt derzeit keine verfügbaren Forschungen."
@@ -97,6 +104,7 @@
       "translations": "Übersetzungen"
     },
     "alliance": {
+      "create": "Gründe eine Allianz",
       "dashboard": "Übersicht",
       "forum": "Forum",
       "list": "Allianzliste",

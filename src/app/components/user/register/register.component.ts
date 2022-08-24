@@ -20,6 +20,8 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
     userErrors = UserErrorMessages;
     registerForm: FormGroup;
 
+    inProgress: boolean = false;
+
     constructor(private userApiService: UserApiService,
                 private authService: AuthApiService,
                 private tokenService: TokenStorage,
@@ -45,13 +47,17 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
 
 
     submitRegister(): void {
+        this.inProgress = true;
         let newUser: UserReq = {
             email: this.registerForm.controls.email.value,
             password: this.registerForm.controls.pass.value,
             username: this.registerForm.controls.login.value
         };
         const sub = this.authService.createUser(newUser)
-            .subscribe(() => this.snackbarService.open("Yeah nice, you are registered! Log in now."));
+            .subscribe(() => {
+                this.inProgress = false;
+                this.snackbarService.open("Yeah nice, you are registered! Log in now.");
+            });
         this.subscriptions.push(sub);
     }
 

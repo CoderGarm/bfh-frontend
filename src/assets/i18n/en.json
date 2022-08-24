@@ -4,6 +4,12 @@
     "submit": "Submit"
   },
   "alliance": {
+    "create": {
+      "code": "Alliance tag",
+      "name": "Alliance name",
+      "submit": "Found",
+      "title": "Found an alliance"
+    },
     "founder": "Founder",
     "members": "Members",
     "no-applicants": "No applicants"
@@ -60,7 +66,8 @@
   "register": {
     "email": {
       "info": "Your eMail address will be used only for resetting the password."
-    }
+    },
+    "spinner-message": "Please wait while you navy is fighting for you."
   },
   "research": {
     "no-available": "There are currently no researches available."
@@ -97,6 +104,7 @@
       "translations": "Translations"
     },
     "alliance": {
+      "create": "Found an alliance",
       "dashboard": "Dashboard",
       "forum": "Forum",
       "list": "Alliance list",

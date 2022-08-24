@@ -6,6 +6,7 @@ import {AllianceForumComponent} from './components/payload/alliance-forum/allian
 import {AllianceDashboardComponent} from './components/payload/alliance-dashboard/alliance-dashboard.component';
 import {ForumModule} from "../forum/forum.module";
 import {MembersListComponent} from './components/payload/members-list/members-list.component';
+import {AllianceCreateComponent} from "./components/payload/alliance-create/alliance-create.component";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {MembersListComponent} from './components/payload/members-list/members-li
         AllianceListComponent,
         AllianceForumComponent,
         AllianceDashboardComponent,
-        MembersListComponent
+        MembersListComponent,
+        AllianceCreateComponent
     ],
     imports: [
         SharedModuleModule,
