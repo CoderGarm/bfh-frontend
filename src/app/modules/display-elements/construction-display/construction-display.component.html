@@ -1,34 +1,44 @@
 <mat-card>
     <mat-card-header>
-        <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="construction">
-        <mat-card-title>{{constructionInput.building.name}}</mat-card-title>
-        <mat-card-subtitle>{{constructionInput.building.description}}</mat-card-subtitle>
+        <img mat-card-avatar
+             class="avatar-image icon"
+             src="{{getLink()}}"
+             alt="construction"
+             matTooltip="{{construction.building.productionTarget.typeName}}">
+        <mat-card-title>{{construction.building.name}}</mat-card-title>
+        <mat-card-subtitle>{{construction.building.description}}</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content class="flex-items-container">
+    <mat-card-content>
+        <div class="flex-items-container">
+            <mat-form-field appearance="fill" class="short-field">
+                <mat-label>Target Level</mat-label>
+                <input matInput disabled value="{{construction.level}}">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill" class="short-field">
-            <mat-label>Target Level</mat-label>
-            <input matInput disabled value="{{constructionInput.level}}">
-        </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Level improvement</mat-label>
+                <input matInput disabled value="{{getLevelImprovement(construction)}}">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Production Target</mat-label>
-            <input matInput disabled value="{{constructionInput.building.productionTarget.typeName}}">
-        </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Production Target</mat-label>
+                <input matInput disabled value="{{construction.building.productionTarget.typeName}}">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Production Category</mat-label>
-            <input matInput disabled value="{{constructionInput.building.productionCategory}}">
-        </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Production Category</mat-label>
+                <input matInput disabled value="{{construction.building.productionCategory}}">
+            </mat-form-field>
 
-        <mat-form-field *ngIf="!!constructionInput.building.refinementSequence" appearance="fill">
-            <mat-label>Refinement Sequence</mat-label>
-            <input matInput disabled value="{{getRefinementDescription(constructionInput.building.refinementSequence)}}">
-        </mat-form-field>
+            <mat-form-field *ngIf="!!construction.building.refinementSequence" appearance="fill">
+                <mat-label>Refinement Sequence</mat-label>
+                <input matInput disabled value="{{getRefinementDescription(construction.building.refinementSequence)}}">
+            </mat-form-field>
+        </div>
     </mat-card-content>
     <mat-card-actions>
         <button mat-button disabled *ngIf="!constructionPossible && !jobTooExpensive">{{'planetary.constructions.build.not-possible' | translate}}</button>
-        <button mat-button disabled *ngIf="jobTooExpensive && constructionInput">{{'planetary.constructions.build.too-expensive' | translate}}</button>
+        <button mat-button disabled *ngIf="jobTooExpensive && constructionPossible">{{'planetary.constructions.build.too-expensive' | translate}}</button>
         <button mat-button *ngIf="constructionPossible && !jobTooExpensive" (click)="buildConstruction()">{{'planetary.constructions.build.start-building' | translate}}</button>
     </mat-card-actions>
 </mat-card>

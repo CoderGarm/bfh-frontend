@@ -1,4 +1,4 @@
-import {Acceleration, ResourceDeposit} from "./services/swagger";
+import {EResourceType, ResourceDeposit} from "./services/swagger";
 
 export class ResourceHelper {
 
@@ -13,8 +13,10 @@ export class ResourceHelper {
         let map = new Map<string, number>();
         costs.resources.forEach(costAmount => {
             let resourceType = costAmount.resourceType;
-            let toPay = costAmount.amount;
-            map.set(resourceType.typeName, toPay);
+            if (resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
+                let toPay = costAmount.amount;
+                map.set(resourceType.typeName, toPay);
+            }
         });
         costs.humanResources.forEach(costAmount => {
             let resourceType = costAmount.resourceType;

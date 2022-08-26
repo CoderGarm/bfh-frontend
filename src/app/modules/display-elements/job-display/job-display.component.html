@@ -10,17 +10,17 @@
             {{getDescription()}}
         </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content class="flex-items-container">
+    <mat-card-content>
+        <div class="flex-items-container">
+            <mat-form-field appearance="fill">
+                <mat-label>Target Level</mat-label>
+                <input matInput disabled value="{{displayJobInput!.targetLevel}}">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Target Level</mat-label>
-            <input matInput disabled value="{{displayJobInput!.targetLevel}}">
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Resource costs</mat-label>
-            <input matInput disabled [value]="getCostsType().typeName">
-        </mat-form-field>
-
+            <mat-form-field appearance="fill">
+                <mat-label>Resource costs</mat-label>
+                <input matInput disabled [value]="getCostsType().typeName">
+            </mat-form-field>
+        </div>
     </mat-card-content>
 </mat-card>

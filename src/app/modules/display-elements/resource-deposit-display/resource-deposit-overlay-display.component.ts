@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, Inject, Input, Optional} from '@angular/core';
-import {EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../services/swagger";
+import {EDepositType, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
+import {TranslateService} from "@ngx-translate/core";
 import CollectableTypeEnum = EResourceType.CollectableTypeEnum;
 
 @Component({
@@ -19,16 +20,46 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
     @Input()
     income?: ResourceDeposit;
 
+    translations: Map<string, string> = new Map<string, string>();
+
+    private readonly depositPopulation = 'resource-overlay.deposit.population';
+    private readonly incomePopulation = 'resource-overlay.income.population';
+    private readonly costsPopulation = 'resource-overlay.costs.population';
+
     constructor(@Optional() @Inject('resourceDeposit') resourceDeposit: ResourceDeposit | undefined,
                 @Optional() @Inject('costs') costs: ResourceDeposit | undefined,
-                @Optional() @Inject('income') income: ResourceDeposit | undefined) {
+                @Optional() @Inject('income') income: ResourceDeposit | undefined,
+                public translate: TranslateService) {
         super();
         this.resourceDeposit = resourceDeposit;
         this.costs = costs;
         this.income = income;
+
+        this.translations.set(this.incomePopulation, this.incomePopulation);
+        this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
+            this.translations.set(this.incomePopulation, translated);
+        });
+        this.translations.set(this.costsPopulation, this.costsPopulation);
+        this.translate.get('resource-overlay.costs.population').subscribe((translated: string) => {
+            this.translations.set(this.costsPopulation, translated);
+        });
+        this.translations.set(this.depositPopulation, this.depositPopulation);
+        this.translate.get('resource-overlay.deposit.population').subscribe((translated: string) => {
+            this.translations.set(this.depositPopulation, translated);
+        });
     }
 
     ngAfterViewInit(): void {
+    }
+
+
+    getTooltip(type: EDepositType, resourceType: EResourceType) {
+        let key = 'resource-overlay.' + type.typeName.toLowerCase() + "." + resourceType.typeName.toLowerCase();
+        let translation = this.translations.get(key);
+        if (!translation) {
+            return "";
+        }
+        return translation;
     }
 
     /**
@@ -53,7 +84,7 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         return "" + resources[0].amount;
     }
 
-    getHRCostsAsString(resource: EEducationType, costs?: ResourceDeposit): string {
+    getHumansAsString(resource: EEducationType, costs?: ResourceDeposit): string {
         if (!costs) {
             return "";
         }
@@ -127,7 +158,8 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         let length = base.resources.length;
         let indexOf = base.resources.indexOf(resource);
 
-        return (length - 1) == indexOf ? 'open-bracket' : '';
+        let isLast = (length - 1) == indexOf;
+        return isLast ? 'open-bracket' : '';
     }
 
     getClosingBracketClass(resource: HumanResourceAmount) {
@@ -136,13 +168,5 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         let indexOf = base.humanResources.indexOf(resource);
 
         return (length - 1) == indexOf ? 'close-bracket' : '';
-    }
-
-    getUnderlineClass(resource: ResourceAmount) {
-        let base = this.getBase();
-        let length = base.resources.length;
-        let indexOf = base.resources.indexOf(resource);
-
-        return (length - 1) == indexOf ? 'underline' : '';
     }
 }

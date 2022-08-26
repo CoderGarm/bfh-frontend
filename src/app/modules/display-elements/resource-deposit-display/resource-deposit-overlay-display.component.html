@@ -20,10 +20,10 @@
                     <mat-icon [inline]="true">schedule</mat-icon>
                 </div>
                 <div class="amount-present" *ngIf="!!resourceDeposit">
-                    <mat-icon [inline]="true">all_inclusive</mat-icon>
+                    <mat-icon [inline]="true" matTooltip="{{'resource-overlay.deposit.tick' | translate}}">all_inclusive</mat-icon>
                 </div>
                 <div class="amount-present" *ngIf="!!income">
-                    <mat-icon [inline]="true">all_inclusive</mat-icon>
+                    <mat-icon [inline]="true" matTooltip="{{'resource-overlay.income.tick' | translate}}">all_inclusive</mat-icon>
                 </div>
                 <div class="diffAmount">
                     {{getTicksNeeded()}}
@@ -40,8 +40,10 @@
                         {{getResourceAsString(resource.resourceType, resourceDeposit)}}
                     </label>
                     <div>
-                        <div *ngIf="!!income" class="diffAmount">{{getResourceAsString(resource.resourceType, income)}}</div>
-                        <div *ngIf="!!costs" class="diffAmount">{{getResourceAsString(resource.resourceType, costs)}}</div>
+                        <div *ngIf="!!income" class="diffAmount"
+                             matTooltip="{{getTooltip(income!.subType, resource.resourceType)}}">{{getResourceAsString(resource.resourceType, income)}}</div>
+                        <div *ngIf="!!costs" class="diffAmount"
+                             matTooltip="{{getTooltip(income!.subType, resource.resourceType)}}">{{getResourceAsString(resource.resourceType, costs)}}</div>
                     </div>
                 </div>
             </div>
@@ -53,11 +55,11 @@
                 </div>
                 <div [ngClass]="getClosingBracketClass(resource)">
                     <label class="amount-present">
-                        {{getHRCostsAsString(resource.resourceType, resourceDeposit)}}
+                        {{getHumansAsString(resource.resourceType, resourceDeposit)}}
                     </label>
                     <div class="amount-holder">
-                        <div *ngIf="!!income" class="diffAmount">{{getHRCostsAsString(resource.resourceType, income)}}</div>
-                        <div *ngIf="!!costs" class="diffAmount">{{getHRCostsAsString(resource.resourceType, costs)}}</div>
+                        <div *ngIf="!!income" class="diffAmount">{{getHumansAsString(resource.resourceType, income)}}</div>
+                        <div *ngIf="!!costs" class="diffAmount">{{getHumansAsString(resource.resourceType, costs)}}</div>
                     </div>
                 </div>
             </div>

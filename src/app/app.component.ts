@@ -51,11 +51,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         translate.setDefaultLang(TranslationEditorComponent.DEFAULT_LANGUAGE);
 
         // the lang to use, if the lang isn't available, it will use the current loader to get them
-        const userLang = navigator.language;
-        if (!!userLang) {
-            // from de-DE or en-US to de or en
-            const lang = userLang.substring(0, 2);
-            translate.use(lang);
+        const browserLang = translate.getBrowserLang();
+        if (!!browserLang) {
+            translate.use(browserLang);
         }
     }
 

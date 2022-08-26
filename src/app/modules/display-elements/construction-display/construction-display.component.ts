@@ -10,10 +10,11 @@ import {ResourceHelper} from "../../../ResourceHelper";
 export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
 
     /**
-     * the construction which should be displayed
+     * the construction which is displayed
      */
     @Input()
-    constructionInput!: Construction;
+    construction!: Construction;
+    constructionDefinition: string = 'construction';
 
     @Output()
     constructionOutput: EventEmitter<Construction> = new EventEmitter<Construction>();
@@ -40,16 +41,16 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     buildConstruction() {
-        this.constructionOutput.emit(this.constructionInput);
+        this.constructionOutput.emit(this.construction);
     }
 
     /**
      * constructs and returns the url to the icon
      */
     getLink(): string {
-        if (!!this.constructionInput) {
-            let folder = this.constructionInput.building.productionTarget.folder;
-            let iconName = this.constructionInput.building.productionTarget.iconName;
+        if (!!this.construction) {
+            let folder = this.construction.building.productionTarget.folder;
+            let iconName = this.construction.building.productionTarget.iconName;
             return "assets/" + folder + "/png24x/" + iconName + "_c.png";
         }
         return "";
@@ -68,6 +69,15 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.checkBalances();
+        if (!!this.costsToDisplay && !!this.resourceDeposit) {
+            this.checkBalances();
+        }
+    }
+
+    getLevelImprovement(construction: Construction) {
+        let level = construction.level;
+        let baseValue = construction.building.baseValue;
+        let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
+        return "" + baseValue * level * increasingFactorPerLevel;
     }
 }

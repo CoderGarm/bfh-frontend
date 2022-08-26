@@ -72,6 +72,19 @@
   "research": {
     "no-available": "There are currently no researches available."
   },
+  "resource-overlay": {
+    "costs": {
+      "population": "The amount of workers which are needed."
+    },
+    "deposit": {
+      "population": "The total population.",
+      "tick": "The time flows independently from you."
+    },
+    "income": {
+      "population": "If this is below zero, your population needs more housings.",
+      "tick": "The time flows independently from you."
+    }
+  },
   "resources": {
     "manpower": {
       "title": "Manpower"

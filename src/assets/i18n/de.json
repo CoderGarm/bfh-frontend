@@ -72,6 +72,19 @@
   "research": {
     "no-available": "Es gibt derzeit keine verfügbaren Forschungen."
   },
+  "resource-overlay": {
+    "costs": {
+      "population": "Die Anzahl der benötigten Arbeitskräfte."
+    },
+    "deposit": {
+      "population": "Die Gesamtbevölkerung.",
+      "tick": "Die Zeit wird von dir nicht beeinflusst."
+    },
+    "income": {
+      "population": "Wenn der Wert negativ ist, benötigt deine Bevölkerung mehr Wohnraum.",
+      "tick": "Die Zeit wird von dir nicht beeinflusst."
+    }
+  },
   "resources": {
     "manpower": {
       "title": "Mitarbeiter"
