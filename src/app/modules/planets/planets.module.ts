@@ -8,6 +8,7 @@ import {JobsListComponent} from './components/payload/jobs-list/jobs-list.compon
 import {ShipyardComponent} from './components/payload/shipyard/shipyard.component';
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {PlanetsNotificationService} from "./planets-notification.service";
+import {PlanetaryDashboardComponent} from './components/payload/planetary-dashboard/planetary-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import {PlanetsNotificationService} from "./planets-notification.service";
         GroundConstructComponent,
         JobsListComponent,
         ShipyardComponent,
+        PlanetaryDashboardComponent,
     ],
     imports: [
         SharedModuleModule,

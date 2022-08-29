@@ -1,5 +1,8 @@
 <div class="flex-items-container" *ngIf="!!miningFactors">
     <div *ngFor="let resource of miningFactors.resources" class="box">
-        <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.singularName}}"> x {{resource.amount}}
+        <img class="icon"
+             src="{{getLink(resource)}}"
+             alt="{{resource.resourceType.singularName}}"
+             matTooltip="{{resource.resourceType.typeName}}">{{getAsString(resource.amount)}}
     </div>
 </div>

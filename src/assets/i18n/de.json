@@ -61,6 +61,9 @@
         "too-expensive": "Bau zu teuer"
       },
       "title": "Gebäude"
+    },
+    "mining-factors": {
+      "title": "Mining factors"
     }
   },
   "register": {

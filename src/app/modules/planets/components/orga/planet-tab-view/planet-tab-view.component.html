@@ -1,14 +1,14 @@
 <mat-tab-group animationDuration="0ms" class="bottom-spacer">
     <mat-tab label="{{'tab.planetary.dashboard' | translate}}">
-        <p> Why I need a dashboard?</p>
+        <app-planetary-dashboard [planet]="selectedPlanet"></app-planetary-dashboard>
     </mat-tab>
     <mat-tab label="{{'tab.planetary.ground-constructions' | translate}}">
-        <app-ground-construct [selectedPlanetInput]="selectedPlanetInput"></app-ground-construct>
+        <app-ground-construct [selectedPlanetInput]="selectedPlanet"></app-ground-construct>
     </mat-tab>
     <mat-tab label="{{'tab.planetary.shipyard' | translate}}" [disabled]="!shipyardJobPossible">
-        <app-shipyard [selectedPlanetInput]="selectedPlanetInput"></app-shipyard>
+        <app-shipyard [selectedPlanetInput]="selectedPlanet"></app-shipyard>
     </mat-tab>
     <mat-tab label="{{'tab.planetary.jobs' | translate}}">
-        <app-jobs-list [selectedPlanetInput]="selectedPlanetInput"></app-jobs-list>
+        <app-jobs-list [selectedPlanetInput]="selectedPlanet"></app-jobs-list>
     </mat-tab>
 </mat-tab-group>

@@ -17,8 +17,8 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
      * The user selected planet.
      */
     @Input()
-    selectedPlanetInput?: Planet;
-    private selectedPlanetDefinition = "selectedPlanetInput";
+    selectedPlanet?: Planet;
+    private selectedPlanetDefinition = "selectedPlanet";
 
     shipyardJobPossible: boolean = false;
 
@@ -31,7 +31,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedPlanetDefinition]) {
-            let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanetInput!.idPlanet)
+            let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanet!.idPlanet)
                 .subscribe(resp => this.shipyardJobPossible = resp);
             this.subscriptions.push(subscription);
         }

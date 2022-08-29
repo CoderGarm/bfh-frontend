@@ -27,7 +27,12 @@ export class MiningFactorsDisplayComponent extends SubscriptionManager implement
     getLink(cap: ResourceAmount): string {
         let folder = cap.resourceType.folder;
         let iconName = cap.resourceType.iconName;
-        //todo check
         return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+    }
+
+    // todo mining factors wie resource display?
+
+    getAsString(amount: number) {
+        return "0." + amount;
     }
 }
