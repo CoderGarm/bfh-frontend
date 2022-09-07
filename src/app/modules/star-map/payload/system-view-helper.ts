@@ -8,7 +8,7 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export class SystemViewHelper extends BasicViewHelper {
 
-    private static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
+    static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
     constructor(protected tokenStorage: TokenStorage) {
         super(SystemViewHelper.STANDARD_METRIC);

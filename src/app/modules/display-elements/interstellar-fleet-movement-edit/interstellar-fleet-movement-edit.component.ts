@@ -5,6 +5,7 @@ import {TokenStorage} from "../../../services/authentication/token-storage.servi
 import {InterstellarViewHelper} from "../../star-map/payload/interstellar-view-helper";
 import {NavigationCalculator} from "../../../NavigationCalculator";
 import {BasicViewHelper} from "../../../basic-view-helper";
+import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
 
 @Component({
     selector: 'app-interstellar-fleet-movement-edit',
@@ -98,11 +99,11 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         return {
             xCoordinate: {
                 coordinate: x,
-                distanceMetric: InterstellarViewHelper.STANDARD_METRIC
+                distanceMetric: SystemViewHelper.STANDARD_METRIC
             },
             yCoordinate: {
                 coordinate: y,
-                distanceMetric: InterstellarViewHelper.STANDARD_METRIC
+                distanceMetric: SystemViewHelper.STANDARD_METRIC
             }
         };
     }
