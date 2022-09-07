@@ -2,7 +2,6 @@ import {AfterViewInit, Component, EventEmitter, Input, OnChanges, SimpleChanges}
 import {AlignedFitting, ShipClass} from "../../../../../services/swagger";
 import {ArrayXY, G, Polygon, Svg, SVG} from "@svgdotjs/svg.js";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
-import {BasicViewHelper} from "../../../../../basic-view-helper";
 
 @Component({
     selector: 'app-ship-class-svg',
@@ -110,7 +109,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
     private createCanvas() {
         if (!this.canvas) {
             if (this.checkIfSvgDivExists()) {
-                this.canvas = SVG().addTo('#' + this.svgSelector).panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
+                this.canvas = SVG().addTo('#' + this.svgSelector);
                 this.canvas!.viewbox({
                     x: 0,
                     y: 0,
