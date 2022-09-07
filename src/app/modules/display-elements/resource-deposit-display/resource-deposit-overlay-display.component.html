@@ -43,7 +43,7 @@
                         <div *ngIf="!!income" class="diffAmount"
                              matTooltip="{{getTooltip(income!.subType, resource.resourceType)}}">{{getResourceAsString(resource.resourceType, income)}}</div>
                         <div *ngIf="!!costs" class="diffAmount"
-                             matTooltip="{{getTooltip(income!.subType, resource.resourceType)}}">{{getResourceAsString(resource.resourceType, costs)}}</div>
+                             matTooltip="{{getTooltip(costs!.subType, resource.resourceType)}}">{{getResourceAsString(resource.resourceType, costs)}}</div>
                     </div>
                 </div>
             </div>
