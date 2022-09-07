@@ -27,6 +27,18 @@
   "jobs": {
     "active-title": "Active jobs"
   },
+  "mining-factor": {
+    "tooltip": {
+      "construction": "Describes the difficulties of building construction, e.g. the strength of the soil.",
+      "credits": "The general ability of the planet to create positive gross domestic product.",
+      "heavy_metals": "The possibility of the planet to mine heavier materials.",
+      "metalore": "The possibility of the planet to mine basic ores.",
+      "orbital_construction": "The ability of the planet to support orbital shipyards.",
+      "population": "The ability of the planet to feed humans.",
+      "rare_elements": "The possibility of the planet to mine radioactive and rare-earth elements.",
+      "research": "The ability of the planet to support the process of gaining knowledge."
+    }
+  },
   "path": {
     "button": {
       "admin": "Game admin area",

@@ -27,6 +27,18 @@
   "jobs": {
     "active-title": "laufende Aufträge"
   },
+  "mining-factor": {
+    "tooltip": {
+      "construction": "Beschreibt die Schwierigkeiten des Gebäudebaus, z.B. die Festigkeit des Bodens.",
+      "credits": "Die allgemeine Fähigkeit des Planeten, ein positives Bruttoinlandsprodukt zu schaffen.",
+      "heavy_metals": "Die Möglichkeit des Planeten, schwerere Materialien abzubauen.",
+      "metalore": "Die Möglichkeit des Planeten, grundlegende Erze abzubauen.",
+      "orbital_construction": "Die Fähigkeit des Planeten, orbitale Werften zu unterstützen.",
+      "population": "Die Fähigkeit des Planeten, Menschen zu ernähren.",
+      "rare_elements": "Die Möglichkeit des Planeten, radioaktive und Seltenerdelemente abzubauen.",
+      "research": "Die Fähigkeit des Planeten, den Erkenntnisprozess zu unterstützen."
+    }
+  },
   "path": {
     "button": {
       "admin": "Spieladministration",
