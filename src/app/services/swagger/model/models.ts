@@ -3,6 +3,7 @@ export * from './alignedFitting';
 export * from './alliance';
 export * from './ammunitionFitting';
 export * from './ammunitionModule';
+export * from './applicationInfo';
 export * from './armor';
 export * from './authRequest';
 export * from './baseModule';

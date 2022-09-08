@@ -3,7 +3,7 @@ import {AuthenticationService} from '../../services/authentication';
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {TokenStorage} from "../../services/authentication/token-storage.service";
-import {JWT, Tick, TickApiService} from "../../services/swagger";
+import {AdminApiService, ApplicationInfo, JWT, Tick, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../SubscriptionManager";
 import RoleEnum = JWT.RoleEnum;
 
@@ -18,20 +18,23 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     isLoggedIn: boolean = false;
     isAdmin: boolean = false;
 
+    applicationInfo?: ApplicationInfo;
+
     currentTick?: Tick;
 
     constructor(private router: Router,
                 private authenticationService: AuthenticationService,
                 private tokenStorage: TokenStorage,
-                private tickApi: TickApiService) {
+                private tickApi: TickApiService,
+                private adminApi: AdminApiService) {
         super();
     }
 
     ngOnInit(): void {
-        let sub = this.authenticationService.getAccessData().subscribe(loggedIn => {
-            this.isLoggedIn = !!loggedIn;
+        let sub = this.authenticationService.getAccessData().subscribe(jwt => {
+            this.isLoggedIn = !!jwt;
             if (this.isLoggedIn && !this.tokenStorage.getInterruptedURL()) {
-                this.isAdmin = loggedIn.role === RoleEnum.ADMIN;
+                this.isAdmin = jwt.role === RoleEnum.ADMIN;
                 this.router.navigateByUrl(ProfileComponent.path).then(() => {
                 });
             }
@@ -41,6 +44,11 @@ export class NavComponent extends SubscriptionManager implements OnInit {
             if (!!jwt) {
                 sub = this.tickApi.getCurrentTick().subscribe(resp => this.currentTick = resp);
                 this.subscriptions.push(sub);
+                const isAdmin = jwt.role === RoleEnum.ADMIN;
+                if (isAdmin) {
+                    sub = this.adminApi.getVersion().subscribe(resp => this.applicationInfo = resp);
+                    this.subscriptions.push(sub);
+                }
             }
         });
         this.subscriptions.push(sub);

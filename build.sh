@@ -9,7 +9,7 @@ fi
 
 rm -r dist/
 if [ "$1" == 'production' ] || [ "$1" == 'staging' ] || [ "$1" == 'development' ];
-	then echo "build started for $1";  ng build --configuration="$1";
+	then echo "build started for $1";  ng build --aot --output-hashing=all --configuration="$1";
 fi
 
 check=$?

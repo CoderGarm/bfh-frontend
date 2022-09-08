@@ -6,6 +6,9 @@
     <span class="spacer"></span>
     <div *ngIf="!!currentTick">Current tick {{currentTick.tickNo}}</div>
     <span class="spacer"></span>
+    <button mat-flat-button color="primary" *ngIf="!!applicationInfo" disabled>
+        {{applicationInfo.applicationVersion}}
+    </button>
     <button mat-flat-button color="primary" routerLink='/register' *ngIf='!isLoggedIn'>
         {{'path.button.register' | translate}}
     </button>

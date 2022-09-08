@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { ApplicationInfo } from '../model/applicationInfo';
 import { FrontendError } from '../model/frontendError';
 import { Tick } from '../model/tick';
 import { Translation } from '../model/translation';
@@ -160,6 +161,43 @@ export class AdminApiService {
         ];
 
         return this.httpClient.request<Array<Translation>>('get',`${this.basePath}/api/admin/admin/translations`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the current application version.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getVersion(observe?: 'body', reportProgress?: boolean): Observable<ApplicationInfo>;
+    public getVersion(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationInfo>>;
+    public getVersion(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationInfo>>;
+    public getVersion(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<string>('get',`${this.basePath}/api/admin/admin/version`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
