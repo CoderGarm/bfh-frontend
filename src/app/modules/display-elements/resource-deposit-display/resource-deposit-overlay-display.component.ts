@@ -20,6 +20,12 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
     @Input()
     income?: ResourceDeposit;
 
+    @Input()
+    levelImprovementResources?: ResourceAmount;
+
+    @Input()
+    levelImprovementHumanResources?: HumanResourceAmount;
+
     translations: Map<string, string> = new Map<string, string>();
 
     private readonly depositPopulation = 'resource-overlay.deposit.population';
@@ -29,11 +35,15 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
     constructor(@Optional() @Inject('resourceDeposit') resourceDeposit: ResourceDeposit | undefined,
                 @Optional() @Inject('costs') costs: ResourceDeposit | undefined,
                 @Optional() @Inject('income') income: ResourceDeposit | undefined,
+                @Optional() @Inject('levelImprovementResources') levelImprovementResources: ResourceAmount | undefined,
+                @Optional() @Inject('levelImprovementHumanResources') levelImprovementHumanResources: HumanResourceAmount | undefined,
                 public translate: TranslateService) {
         super();
         this.resourceDeposit = resourceDeposit;
         this.costs = costs;
         this.income = income;
+        this.levelImprovementResources = levelImprovementResources;
+        this.levelImprovementHumanResources = levelImprovementHumanResources;
 
         this.translations.set(this.incomePopulation, this.incomePopulation);
         this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
@@ -72,7 +82,7 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
-    getResourceAsString(resource: EResourceType, costs?: ResourceDeposit): string {
+    getResource(resource: EResourceType, costs?: ResourceDeposit): string {
         if (!costs) {
             return "";
         }
@@ -84,7 +94,15 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         return "" + resources[0].amount;
     }
 
-    getHumansAsString(resource: EEducationType, costs?: ResourceDeposit): string {
+    getResourceImprovement(resource: EResourceType): string {
+        let perNextLevelIncome = "";
+        if (!!this.levelImprovementResources && this.levelImprovementResources.resourceType.typeName === resource.typeName) {
+            perNextLevelIncome = " " + this.levelImprovementResources.amount;
+        }
+        return perNextLevelIncome;
+    }
+
+    getHumans(resource: EEducationType, costs?: ResourceDeposit): string {
         if (!costs) {
             return "";
         }
@@ -94,6 +112,14 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
             return "";
         }
         return "" + resources[0].amount;
+    }
+
+    getHumanResourceImprovement(resource: EEducationType): string {
+        let perNextLevelIncome = "";
+        if (!!this.levelImprovementHumanResources && this.levelImprovementHumanResources.resourceType.typeName === resource.typeName) {
+            perNextLevelIncome = " " + this.levelImprovementHumanResources.amount;
+        }
+        return perNextLevelIncome;
     }
 
     getTicksNeeded() {

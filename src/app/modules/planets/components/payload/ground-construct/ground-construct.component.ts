@@ -1,13 +1,17 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {
+    Building,
     BuildingApiService,
     Construction,
     ConstructionApiService,
+    EEducationType,
     ERefinementSequence,
     EResourceType,
+    HumanResourceAmount,
     Planet,
     PlanetApiService,
     PlannedConstruction,
+    ResourceAmount,
     ResourceDeposit,
     ResourcesApiService
 } from "../../../../../services/swagger";
@@ -16,6 +20,7 @@ import {FormControl} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
+import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
 @Component({
     selector: 'app-ground-construct',
@@ -46,6 +51,11 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     eResourceTypes: EResourceType[] = [];
 
     /**
+     * all EEducationType enum elements
+     */
+    eEducationTypes: EEducationType[] = [];
+
+    /**
      * all EProductionCategory enum elements
      */
     eProductionCategories: string[] = [];
@@ -65,7 +75,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     resourceDeposit?: ResourceDeposit;
     income?: ResourceDeposit;
-
+    levelImprovementResources?: ResourceAmount;
+    levelImprovementHumanResources?: HumanResourceAmount;
 
     /**
      * the EResourceType mat chip list
@@ -127,6 +138,13 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             .subscribe(resp => {
                 this.eResourceTypes = resp;
                 this.setResourceTypeFormControlData()
+            });
+        this.subscriptions.push(subscription);
+
+        subscription = this.resourceApi
+            .getEEducationTypes()
+            .subscribe(resp => {
+                this.eEducationTypes = resp;
             });
         this.subscriptions.push(subscription);
 
@@ -308,6 +326,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     }
 
     showCosts(construction: Construction | null) {
+        this.setLevelImprovement(construction)
         if (!construction) {
             this.costsToDisplay = undefined;
             this.activeConstructionKey = undefined;
@@ -329,6 +348,45 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.subscriptions.push(sub);
         }
         this.costsToDisplay = costs;
+    }
+
+    setLevelImprovement(construction: Construction | null) {
+        if (!construction) {
+            this.levelImprovementResources = undefined;
+            this.levelImprovementHumanResources = undefined;
+            return;
+        }
+        let level = construction.level;
+        let baseValue = construction.building.baseValue;
+        let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
+        let valueAtLevel = baseValue * level * increasingFactorPerLevel;
+
+        let productionTarget = construction.building.productionTarget;
+        let productionCategory = construction.building.productionCategory;
+        let population = this.eResourceTypes.filter(r => r.collectableType == "VIABLE")[0];
+        switch (productionCategory) {
+            case ProductionCategoryEnum.CAPACITY:
+                // todo how to display capacity
+                this.levelImprovementResources = {
+                    resourceType: population,
+                    amount: valueAtLevel
+                }
+                break;
+            case ProductionCategoryEnum.PRODUCE:
+                this.levelImprovementResources = {
+                    resourceType: productionTarget,
+                    amount: valueAtLevel
+                }
+                break;
+            case ProductionCategoryEnum.REFINEMENT:
+                let refinementSequence = construction.building.refinementSequence;
+                let product = refinementSequence!.product;
+                this.levelImprovementHumanResources = {
+                    resourceType: product,
+                    amount: valueAtLevel
+                }
+                break;
+        }
     }
 
     private getConstructionKey(construction: Construction) {

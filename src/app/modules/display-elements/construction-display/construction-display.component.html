@@ -17,7 +17,7 @@
 
             <mat-form-field appearance="fill">
                 <mat-label>Level improvement</mat-label>
-                <input matInput disabled value="{{getLevelImprovement(construction)}}">
+                <input matInput disabled value="{{getLevelImprovement()}}">
             </mat-form-field>
 
             <mat-form-field appearance="fill">
@@ -32,7 +32,7 @@
 
             <mat-form-field *ngIf="!!construction.building.refinementSequence" appearance="fill">
                 <mat-label>Refinement Sequence</mat-label>
-                <input matInput disabled value="{{getRefinementDescription(construction.building.refinementSequence)}}">
+                <input matInput disabled value="{{getRefinementDescription()}}">
             </mat-form-field>
         </div>
     </mat-card-content>

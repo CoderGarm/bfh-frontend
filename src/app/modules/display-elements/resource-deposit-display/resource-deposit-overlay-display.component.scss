@@ -45,6 +45,17 @@
   line-height: 18px;
 }
 
+.diffImprovementAmount {
+  font-size: 10px;
+  line-height: 18px;
+  margin-left: 5px;
+  color: #46a35e;
+}
+
+.no-flex {
+  display: flex;
+}
+
 .hasSize {
   height: 18px;
   width: 16px;

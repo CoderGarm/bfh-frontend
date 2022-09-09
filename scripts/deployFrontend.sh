@@ -22,11 +22,3 @@ sudo rm -r /var/www/html/bfh-fe/
 sudo cp -r /home/karsten/uploadTarget/dist/bfh-fe/ /var/www/html/
 sudo chown -R www-data:www-data /var/www/html/bfh-fe/
 echo 'deployment of frontend done'
-
-# old style
-#rm -f dist/
-#tar -xf dist.tar.gz
-#sudo rm -r /var/www/html/bfh-fe/
-#sudo cp -r dist/bfh-fe/ /var/www/html/
-#sudo chown -R www-data:www-data /var/www/html/bfh-fe/
-

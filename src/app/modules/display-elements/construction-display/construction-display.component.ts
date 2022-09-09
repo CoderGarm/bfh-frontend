@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {Construction, ERefinementSequence, ResourceDeposit} from "../../../services/swagger";
+import {Construction, ResourceDeposit} from "../../../services/swagger";
 import {ResourceHelper} from "../../../ResourceHelper";
 
 @Component({
@@ -56,8 +56,9 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
         return "";
     }
 
-    getRefinementDescription(refSeq: ERefinementSequence) {
-        return refSeq.educt.typeName + " to " + refSeq.product.typeName
+    getRefinementDescription() {
+        const refSeq = this.construction.building.refinementSequence;
+        return refSeq!.educt.typeName + " to " + refSeq!.product.typeName;
     }
 
     private checkBalances() {
@@ -74,10 +75,10 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
         }
     }
 
-    getLevelImprovement(construction: Construction) {
-        let level = construction.level;
-        let baseValue = construction.building.baseValue;
-        let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
+    getLevelImprovement() {
+        let level = this.construction.level;
+        let baseValue = this.construction.building.baseValue;
+        let increasingFactorPerLevel = this.construction.building.increasingFactorPerLevel;
         return "" + baseValue * level * increasingFactorPerLevel;
     }
 }

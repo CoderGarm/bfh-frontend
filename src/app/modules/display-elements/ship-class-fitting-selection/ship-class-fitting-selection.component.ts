@@ -425,7 +425,6 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
      * @private
      */
     private setWeaponModule(weapon: WeaponsSelection) {
-        //console.log("setWeaponModule", weapon)
         let event: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
         weapon.weapon.alignmentTypes.forEach(key => {
             // set the current selection to data structure
@@ -465,7 +464,6 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
             }
         });
         let ifChanged = this.checkIfChanged(event);
-        //console.log("event", ifChanged, event)
         if (ifChanged) {
             // if changed, notify the svg component to re-render the slots
             this.weaponsAmountByAlignmentOutput.emit(event);
