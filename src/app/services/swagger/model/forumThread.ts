@@ -35,6 +35,10 @@ export interface ForumThread {
      */
     createdAt: Date;
     /**
+     * The timestamp of the last added message.
+     */
+    lastChanged: Date;
+    /**
      * The id of the thread.
      */
     idForumMessages: Array<number>;
