@@ -1,8 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {SpinnerService} from "../../../../../services/spinner.service";
-import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -21,23 +19,15 @@ export class PlanetSelectionComponent extends SubscriptionManager implements Aft
     selectedPlanetOutput: EventEmitter<Planet> = new EventEmitter<Planet>();
 
     constructor(private tokenStorage: TokenStorage,
-                private planetApi: PlanetApiService,
-                private spinnerService: SpinnerService,
-                public translate: TranslateService) {
+                private planetApi: PlanetApiService) {
         super();
-
-        // just make sure that the key exists
-        this.translate.get('planetary.load.wait-for-load');
     }
 
     ngAfterViewInit(): void {
-        // todo not displayed?
-        this.spinnerService.activateSpinner('planetary.load.wait-for-load');
         const userID = this.tokenStorage.getUserID();
         let subscription = this.planetApi.getPlanetByUsers(userID).subscribe(resp => {
             this.planets = resp
             this.selectFirst();
-            this.spinnerService.deactivateSpinner();
         });
         this.subscriptions.push(subscription);
     }

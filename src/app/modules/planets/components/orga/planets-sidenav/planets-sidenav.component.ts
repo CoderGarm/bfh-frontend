@@ -31,6 +31,8 @@ export class PlanetsSidenavComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        // todo strange effect: planet page will not loaded without toggling the sidenav
+        this.onSideNavToggle();
     }
 
     /**
