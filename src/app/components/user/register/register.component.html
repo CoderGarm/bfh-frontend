@@ -1,13 +1,3 @@
-<div *ngIf="inProgress" class="flex" id="spinner-container">
-    <div>
-        <div class="flex">
-            <mat-spinner></mat-spinner>
-        </div>
-        <p *ngIf="inProgress">{{'register.spinner-message' | translate}}</p>
-    </div>
-</div>
-
-
 <form [formGroup]="registerForm" passwordPatternValidator passwordEqualityValidator userNameValidator eMailValidator>
     <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>

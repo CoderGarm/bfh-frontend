@@ -33,6 +33,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from "@angular/common/http";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
 import {DatePipe} from "@angular/common";
+import {GlobalSpinnerComponent} from './global-spinner/global-spinner.component';
+import {SpinnerService} from "./services/spinner.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -59,6 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
         UserNameValidatorDirective,
         EMailValidatorDirective,
         ConfirmDialogComponent,
+        GlobalSpinnerComponent,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),
@@ -89,6 +92,7 @@ export function createTranslateLoader(http: HttpClient) {
         NgxPermissionsModule,
         {provide: ErrorHandler, useClass: CustomErrorHandler},
         SnackbarNotificationService,
+        SpinnerService,
         DatePipe
     ],
     bootstrap: [AppComponent]

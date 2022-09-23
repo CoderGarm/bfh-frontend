@@ -6,6 +6,8 @@ import {UserErrorMessages} from "../../../validators/userNameValidator";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
+import {TranslateService} from "@ngx-translate/core";
+import {SpinnerService} from "../../../services/spinner.service";
 
 @Component({
     selector: 'app-register',
@@ -25,7 +27,9 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
     constructor(private userApiService: UserApiService,
                 private authService: AuthApiService,
                 private tokenService: TokenStorage,
-                private snackbarService: SnackbarNotificationService) {
+                private snackbarService: SnackbarNotificationService,
+                private spinnerService: SpinnerService,
+                public translate: TranslateService) {
         super();
         let utcDate = new Date().getMilliseconds();
         this.registerForm = new FormGroup({
@@ -40,14 +44,17 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
             this.registerForm.controls.passRepeat.setValue('12457aA!');
             this.registerForm.controls.email.setValue(utcDate + '@' + utcDate);
         }
+
+        // just make sure that the key exists
+        this.translate.get('register.spinner-message');
     }
 
     ngOnInit(): void {
     }
 
-
     submitRegister(): void {
-        this.inProgress = true;
+        //this.inProgress = true;
+        this.spinnerService.activateSpinner('register.spinner-message');
         let newUser: UserReq = {
             email: this.registerForm.controls.email.value,
             password: this.registerForm.controls.pass.value,
@@ -55,7 +62,8 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
         };
         const sub = this.authService.createUser(newUser)
             .subscribe(() => {
-                this.inProgress = false;
+                //this.inProgress = false;
+                this.spinnerService.deactivateSpinner();
                 this.snackbarService.open("Yeah nice, you are registered! Log in now.");
             });
         this.subscriptions.push(sub);

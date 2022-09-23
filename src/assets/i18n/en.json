@@ -76,6 +76,9 @@
       },
       "title": "Ground constructions"
     },
+    "load": {
+      "wait-for-load": "Loading planets..."
+    },
     "mining-factors": {
       "title": "Mining factors"
     }

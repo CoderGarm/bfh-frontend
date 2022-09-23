@@ -76,6 +76,9 @@
       },
       "title": "Gebäude"
     },
+    "load": {
+      "wait-for-load": "Lade Planeten..."
+    },
     "mining-factors": {
       "title": "Mining factors"
     }

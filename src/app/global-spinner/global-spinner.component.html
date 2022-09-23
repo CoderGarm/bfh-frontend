@@ -1,0 +1,8 @@
+<div *ngIf="inProgress" class="spinner-flex" id="spinner-container">
+    <div>
+        <div class="spinner-flex">
+            <mat-spinner></mat-spinner>
+        </div>
+        <p *ngIf="!!message">{{getMessage()}}</p>
+    </div>
+</div>

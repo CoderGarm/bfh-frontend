@@ -9,6 +9,7 @@
         </mat-selection-list>
     </mat-drawer>
     <mat-drawer-content [ngClass]="{'no-scrolling' : !!isNoScroll}">
+        <app-global-spinner></app-global-spinner>
         <router-outlet></router-outlet>
     </mat-drawer-content>
 </mat-drawer-container>
