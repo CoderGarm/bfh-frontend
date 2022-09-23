@@ -25,7 +25,9 @@
     }
   },
   "jobs": {
-    "active-title": "Active jobs"
+    "active-title": "Active jobs",
+    "level": "Level",
+    "ticks-left": "Ticks"
   },
   "mining-factor": {
     "tooltip": {
@@ -87,7 +89,8 @@
     "spinner-message": "Please wait while you navy is fighting for you."
   },
   "research": {
-    "no-available": "There are currently no researches available."
+    "no-available": "There are currently no researches available.",
+    "title": "Research"
   },
   "resource-overlay": {
     "costs": {

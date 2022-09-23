@@ -12,6 +12,9 @@
 import { Building } from './building';
 import { Construction } from './construction';
 import { EResourceType } from './eResourceType';
+import { Planet } from './planet';
+import { Research } from './research';
+import { ShipClass } from './shipClass';
 import { UserJson } from './userJson';
 
 /**
@@ -20,6 +23,7 @@ import { UserJson } from './userJson';
 export interface Job { 
     user: UserJson;
     facility: Construction;
+    facilityPlanet: Planet;
     /**
      * The left duration of this job.
      */
@@ -37,19 +41,13 @@ export interface Job {
      * Is this a research job.
      */
     isResearchJob: boolean;
-    /**
-     * If this if a research job.
-     */
-    researchTarget?: string;
+    researchTarget?: Research;
     buildingTarget?: Building;
     /**
      * The targeted level if it is a research or building.
      */
     targetLevel?: number;
-    /**
-     * If this if a shipyard job.
-     */
-    shipYardTarget?: string;
+    shipYardTarget?: ShipClass;
     /**
      * The targeted amount of ships in case of an shipyard job..
      */

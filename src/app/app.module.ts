@@ -33,7 +33,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from "@angular/common/http";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
 import {DatePipe} from "@angular/common";
-import {GlobalSpinnerComponent} from './global-spinner/global-spinner.component';
+import {GlobalSpinnerComponent} from './components/global-spinner/global-spinner.component';
 import {SpinnerService} from "./services/spinner.service";
 
 // AoT requires an exported function for factories

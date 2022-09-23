@@ -1,0 +1,35 @@
+.mat-expansion-panel {
+  width: 90%;
+}
+
+.icon {
+  height: 24px;
+  width: 24px;
+  margin-right: 15px;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+#job-list {
+  width: 90%;
+}
+
+.job-items-container {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+.height-fit-content {
+  height: -moz-fit-content !important;
+  height: fit-content !important;
+}
+
+.name-field {
+  width: 145px;
+  max-width: 145px;
+  overflow-wrap: anywhere;
+}

@@ -33,13 +33,13 @@ export class JobDisplayComponent implements AfterViewInit, OnChanges {
      */
     getTitle(): string {
         if (this.displayJobInput!.isBuildingJob) {
-            return this.displayJobInput!.buildingTarget?.name + " lvl " + this.displayJobInput!.targetLevel;
+            return this.displayJobInput!.buildingTarget!.name + " lvl " + this.displayJobInput!.targetLevel;
         }
         if (this.displayJobInput!.isResearchJob) {
-            return this.displayJobInput!.researchTarget + " lvl " + this.displayJobInput!.targetLevel;
+            return this.displayJobInput!.researchTarget!.name + " lvl " + this.displayJobInput!.targetLevel;
         }
         if (this.displayJobInput!.isShipyardJob) {
-            return this.displayJobInput!.shipYardTarget + " x" + this.displayJobInput!.amountShips;
+            return this.displayJobInput!.shipYardTarget!.name + " x" + this.displayJobInput!.amountShips;
         }
         return "";
     }

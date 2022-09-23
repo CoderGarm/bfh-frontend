@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
-import {SpinnerService} from "../services/spinner.service";
-import {SubscriptionManager} from "../SubscriptionManager";
+import {SpinnerService} from "../../services/spinner.service";
+import {SubscriptionManager} from "../../SubscriptionManager";
 
 @Component({
     selector: 'app-global-spinner',

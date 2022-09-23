@@ -25,7 +25,9 @@
     }
   },
   "jobs": {
-    "active-title": "laufende Aufträge"
+    "active-title": "laufende Aufträge",
+    "level": "Level",
+    "ticks-left": "Ticks"
   },
   "mining-factor": {
     "tooltip": {
@@ -87,7 +89,8 @@
     "spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
   },
   "research": {
-    "no-available": "Es gibt derzeit keine verfügbaren Forschungen."
+    "no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
+    "title": "Forschung"
   },
   "resource-overlay": {
     "costs": {

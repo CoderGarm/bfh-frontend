@@ -374,7 +374,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
             return false;
         }
         let amount = 0;
-        this.order.shipJobPayload.forEach(o => amount += o.amount);
+        this.selection.forEach(o => amount += o.amount);
         return amount != 0;
     }
 }
