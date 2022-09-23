@@ -5,7 +5,7 @@
     <mat-icon *ngIf="!disabled" matPrefix (click)="sub(); $event.stopPropagation();">remove</mat-icon>
     <div style="text-align:center;">
         <input matInput
-               [disabled]="disabled"
+               disabled
                type="number"
                step="1" min="0"
                (click)="$event.stopPropagation();"
