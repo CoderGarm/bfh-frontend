@@ -55,7 +55,7 @@
                      src="{{getLink(construction)}}"
                      [ngClass]="getInvisibility(construction)"
                      alt="construction">
-                {{construction.building.name}}, Level {{construction.level}}
+                {{getTitle(construction)}}
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(construction)">
                 {{construction.building.description}}

@@ -20,6 +20,7 @@ import {FormControl} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
+import {TranslateService} from "@ngx-translate/core";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
 @Component({
@@ -111,15 +112,31 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     private knownCosts: Map<String, ResourceDeposit> = new Map<String, ResourceDeposit>();
     costsToDisplay?: ResourceDeposit;
 
+    private readonly newConstruction = 'planetary.constructions.build.is-new';
+    private readonly hasConstruction = 'planetary.constructions.build.has-level';
+
+    translations: Map<string, string> = new Map<string, string>();
+
     constructor(private constructionApi: ConstructionApiService,
                 private buildingApi: BuildingApiService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
-                private planetsNotificationService: PlanetsNotificationService) {
+                private planetsNotificationService: PlanetsNotificationService,
+                public translate: TranslateService) {
         super();
         let subscription = planetsNotificationService.ask().subscribe(() => this.fetchPlanet());
         this.subscriptions.push(subscription);
+
+        this.translations.set(this.newConstruction, this.newConstruction);
+        this.translate.get('planetary.constructions.build.is-new').subscribe((translated: string) => {
+            this.translations.set(this.newConstruction, translated);
+        });
+
+        this.translations.set(this.hasConstruction, this.hasConstruction);
+        this.translate.get('planetary.constructions.build.has-level').subscribe((translated: string) => {
+            this.translations.set(this.hasConstruction, translated);
+        });
     }
 
     ngAfterViewInit(): void {
@@ -431,5 +448,17 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     getInvisibility(construction: Construction) {
         return this.currentlyOpenedItemIndex === construction ? 'invisible' : '';
+    }
+
+    getTitle(construction: Construction) {
+        let levelComplement = '';
+        if (construction.level > 1) {
+            let tr = this.translations.get(this.hasConstruction);
+            levelComplement = tr + ' ' + construction.level;
+        } else {
+            let tr = this.translations.get(this.newConstruction);
+            levelComplement = tr!;
+        }
+        return construction.building.name + ', ' + levelComplement;
     }
 }

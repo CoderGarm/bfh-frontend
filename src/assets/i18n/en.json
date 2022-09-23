@@ -68,6 +68,8 @@
   "planetary": {
     "constructions": {
       "build": {
+        "has-level": "current level",
+        "is-new": "new construction",
         "not-possible": "Job running",
         "start-building": "Start job",
         "too-expensive": "Job too expensive"

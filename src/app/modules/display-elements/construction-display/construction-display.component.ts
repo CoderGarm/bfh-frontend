@@ -14,7 +14,6 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
      */
     @Input()
     construction!: Construction;
-    constructionDefinition: string = 'construction';
 
     @Output()
     constructionOutput: EventEmitter<Construction> = new EventEmitter<Construction>();
