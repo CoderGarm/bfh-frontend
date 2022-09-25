@@ -18,6 +18,15 @@
     "title": "Nachrichten"
   },
   "filter": "Filter",
+  "fleets": {
+    "movement": {
+      "no-ftl-present": "Kein Flotte mit Warshawski-Segel verfügbar.",
+      "select-for-move": {
+        "checkbox": "Wähle Flotte für Flug",
+        "title": "Wähle Flotten für den Flug aus, Ziel:"
+      }
+    }
+  },
   "forum": {
     "thread": {
       "in-forum": "Beiträge im Forum",

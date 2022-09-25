@@ -1,5 +1,7 @@
+@import "src/styles/variables";
+
 .mat-expansion-panel {
-  width: 90%;
+  width: $page-with;
 }
 
 .icon {

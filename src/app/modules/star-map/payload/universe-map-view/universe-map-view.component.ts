@@ -215,6 +215,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
         this.fleetApi.getFleetsBySystemAndOwner(fromSystem.idStarSystem, draggedFleetSharkForUser.idUser)
             .subscribe((resp: Fleet[]) => {
+                resp = resp.filter(fleet => fleet.isFTLCapable);
                 dialogData.addDialogDataPerTemplate(InterstellarFleetMovementEditComponent,
                     ['fleets', 'destination', 'callback'],
                     [resp, starSystems[0], this.callbackFleetMove]);

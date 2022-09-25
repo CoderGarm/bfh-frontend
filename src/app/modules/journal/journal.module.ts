@@ -6,6 +6,7 @@ import {JournalTabViewComponent} from './components/orga/journal-tab-view/journa
 import {LostWarshipOverlayComponent} from './components/payload/lost-warship-overlay/lost-warship-overlay.component';
 import {CombatArenaComponent} from './components/payload/combat-arena/combat-arena.component';
 import {JobJournalComponent} from './components/payload/job-journal/job-journal.component';
+import {FleetMovementJournalComponent} from './components/payload/fleet-movement-journal/fleet-movement-journal.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {JobJournalComponent} from './components/payload/job-journal/job-journal.
         JournalTabViewComponent,
         LostWarshipOverlayComponent,
         CombatArenaComponent,
-        JobJournalComponent
+        JobJournalComponent,
+        FleetMovementJournalComponent
     ],
     imports: [
         SharedModuleModule,

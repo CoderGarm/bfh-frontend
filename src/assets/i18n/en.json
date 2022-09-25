@@ -18,6 +18,15 @@
     "title": "Chats"
   },
   "filter": "Filter",
+  "fleets": {
+    "movement": {
+      "no-ftl-present": "No fleets with Warshawski sail present.",
+      "select-for-move": {
+        "checkbox": "Select for flight",
+        "title": "Select the fleet which should move to"
+      }
+    }
+  },
   "forum": {
     "thread": {
       "in-forum": "Threads in forum",

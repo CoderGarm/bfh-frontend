@@ -131,7 +131,7 @@ export class SystemViewHelper extends BasicViewHelper {
         let xText = sortedPointsX[sortedPointsX.length - 1];
         let yText = sortedPointsY[0];
 
-        let text: Text = group!.text(fleet.name)
+        let text: Text = group!.text(fleet.name + " of " + fleet.owner.username)
             .x(xText[0])
             .y(yText[1])
             .addClass("text")
