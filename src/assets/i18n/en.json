@@ -188,6 +188,9 @@
       "universe-map": "Universe map"
     }
   },
+  "tick": {
+    "current": "Current tick"
+  },
   "translation": {
     "designated": {
       "language": "Designated language"

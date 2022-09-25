@@ -188,6 +188,9 @@
       "universe-map": "Karte des Universum"
     }
   },
+  "tick": {
+    "current": "Aktueller Tick"
+  },
   "translation": {
     "designated": {
       "language": "designierte Sprache"
