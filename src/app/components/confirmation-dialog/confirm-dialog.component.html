@@ -6,7 +6,7 @@
         <ng-container *ngComponentOutlet="dataPerTemplate.template; injector: injectors.get(dataPerTemplate.template)!;"></ng-container>
     </div>
 </div>
-<div mat-dialog-actions>
-    <button mat-raised-button color="secondary" (click)="cancel()">{{ data.cancelText }}</button>
+<div mat-dialog-actions class="dialog-actions">
     <button mat-raised-button color="secondary" (click)="confirm()">{{ data.confirmText }}</button>
+    <button mat-raised-button color="secondary" (click)="cancel()">{{ data.cancelText }}</button>
 </div>
