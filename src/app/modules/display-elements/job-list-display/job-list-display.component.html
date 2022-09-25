@@ -1,18 +1,14 @@
 <mat-list id="job-list">
     <div mat-subheader>{{'jobs.active-title' | translate}}</div>
     <mat-list-item *ngFor="let pJob of jobs" class="height-fit-content">
-        <img mat-list-icon class="avatar-image icon"
-             src="assets/icons/planets/png24x/planet_c.png"
-             alt="job">
+        <img mat-list-avatar src="assets/icons/planets/png24x/planet_c.png">
         <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
 
         <div class="job-items-container">
             <mat-list *ngIf="pJob.researches!.length > 0">
                 <div mat-subheader>{{'research.title' | translate}}</div>
                 <mat-list-item *ngFor="let research of pJob.researches" class="height-fit-content">
-                    <img mat-list-icon class="avatar-image icon"
-                         src="{{getLink(research)}}"
-                         alt="job">
+                    <img mat-list-avatar src="{{getLink(research)}}">
                     <div mat-line>{{research.researchTarget!.name}}</div>
                     <div mat-line>{{'jobs.level' | translate}} {{research.targetLevel}}</div>
                     <div mat-line>{{'jobs.ticks-left' | translate}} {{research.ticksLeft}}</div>
@@ -22,9 +18,7 @@
             <mat-list *ngIf="pJob.constructions!.length > 0">
                 <div mat-subheader>{{'planetary.constructions.title' | translate}}</div>
                 <mat-list-item *ngFor="let construction of pJob.constructions" class="height-fit-content">
-                    <img mat-list-icon class="avatar-image icon"
-                         src="{{getLink(construction)}}"
-                         alt="job">
+                    <img mat-list-avatar src="{{getLink(construction)}}">
                     <div mat-line>{{construction.buildingTarget!.name}}</div>
                     <div mat-line>{{'jobs.level' | translate}} {{construction.targetLevel}}</div>
                     <div mat-line>{{'jobs.ticks-left' | translate}} {{construction.ticksLeft}}</div>
@@ -34,9 +28,7 @@
             <mat-list *ngIf="pJob.shipyard!.length > 0">
                 <div mat-subheader>{{'shipyard.constructions.title' | translate}}</div>
                 <mat-list-item *ngFor="let shipyard of pJob.shipyard" class="height-fit-content">
-                    <img mat-list-icon class="avatar-image icon"
-                         src="{{getLink(shipyard)}}"
-                         alt="job">
+                    <img mat-list-avatar src="{{getLink(shipyard)}}">
                     <div mat-line>{{shipyard.amountShips}}x {{shipyard.shipYardTarget!.name}}</div>
                     <div mat-line>{{shipyard.shipYardTarget!.hull.name}}</div>
                     <div mat-line>{{'jobs.ticks-left' | translate}} {{shipyard.ticksLeft}}</div>

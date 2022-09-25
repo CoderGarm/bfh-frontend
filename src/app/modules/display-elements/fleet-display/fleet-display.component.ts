@@ -14,6 +14,8 @@ export class FleetDisplayComponent implements AfterViewInit {
     @Input()
     fleetInput?: Fleet;
 
+    isOpen: boolean = false;
+
     constructor(@Optional() @Inject('fleetInput') fleet: Fleet | undefined) {
         this.fleetInput = fleet;
     }
@@ -27,5 +29,13 @@ export class FleetDisplayComponent implements AfterViewInit {
     getLink(): string {
         //todo amend fleet size icon
         return "assets/icons/fleets/png64x/small_fleet_c.png";
+    }
+
+    setOpened() {
+        this.isOpen = true;
+    }
+
+    setClosed() {
+        this.isOpen = false;
     }
 }

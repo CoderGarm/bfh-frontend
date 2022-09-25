@@ -18,6 +18,15 @@
     "title": "Nachrichten"
   },
   "filter": "Filter",
+  "fleet": {
+    "composition": {
+      "class": {
+        "title": "Klasse"
+      },
+      "title": "Flottenzusammensetzung",
+      "warShip-names": "Kriegsschiffe"
+    }
+  },
   "fleets": {
     "movement": {
       "no-ftl-present": "Kein Flotte mit Warshawski-Segel verfügbar.",

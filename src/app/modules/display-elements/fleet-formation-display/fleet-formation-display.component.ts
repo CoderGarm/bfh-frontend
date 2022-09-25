@@ -15,11 +15,10 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
     selectedFleetInput?: Fleet;
     selectedFleetInputDefinition: string = "selectedFleetInput";
 
-    hullAmountByType: Map<EHullType, number> = new Map<EHullType, number>();
-
-    hullsByType: Map<EHullType, Hull> = new Map<EHullType, Hull>();
-
-    warShipsByType: Map<EHullType, WarShip[]> = new Map<EHullType, WarShip[]>();
+    private hullTypes: Map<string, EHullType> = new Map<string, EHullType>();
+    hullAmountByType: Map<string, number> = new Map<string, number>();
+    hullsByType: Map<string, Hull> = new Map<string, Hull>();
+    warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
 
     constructor() {
     }
@@ -29,56 +28,63 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedFleetInputDefinition]) {
+            this.hullTypes.clear();
             this.hullsByType.clear();
             this.hullAmountByType.clear();
             this.warShipsByType.clear();
-            if (!!this.selectedFleetInput) {
-                let warShips: WarShip[] = this.selectedFleetInput.ships;
-                warShips.forEach(warShip => {
-                    let hullType = warShip.shipClass.hull.hullType;
-                    let amount = this.hullAmountByType.get(hullType);
-                    let warShips: WarShip[] | undefined = this.warShipsByType.get(hullType);
-                    if (!amount) {
-                        amount = 1;
-                        this.hullsByType.set(hullType, warShip.shipClass.hull);
-                        warShips = [warShip];
-                    } else {
-                        amount++;
-                        warShips?.push(warShip);
-                    }
-                    this.warShipsByType.set(hullType, warShips!);
-                    this.hullAmountByType.set(hullType, amount);
-                });
-            }
+            this.sortWarshipsByHull();
         }
     }
 
-    getWarShips(key: EHullType): WarShip[] {
-        let warShips = this.warShipsByType.get(key);
+    private sortWarshipsByHull() {
+        if (!!this.selectedFleetInput) {
+            let warShips: WarShip[] = this.selectedFleetInput.ships;
+            warShips.forEach(warShip => {
+                let hullType = warShip.shipClass.hull.hullType;
+                this.hullTypes.set(hullType.typeName, hullType);
+                let amount = this.hullAmountByType.get(hullType.typeName);
+                let warShips: WarShip[] | undefined = this.warShipsByType.get(hullType.typeName);
+                if (!amount) {
+                    amount = 1;
+                    this.hullsByType.set(hullType.typeName, warShip.shipClass.hull);
+                    warShips = [warShip];
+                } else {
+                    amount++;
+                    warShips?.push(warShip);
+                }
+                this.warShipsByType.set(hullType.typeName, warShips!);
+                this.hullAmountByType.set(hullType.typeName, amount);
+            });
+        }
+    }
+
+    getWarShips(typeName: string): WarShip[] {
+        let warShips = this.warShipsByType.get(typeName);
         if (!warShips) {
             return [];
         }
         return warShips;
     }
 
-    getDescription(key: EHullType) {
-        let hull = this.hullsByType.get(key);
+    getDescription(typeName: string): string {
+        let hull = this.hullsByType.get(typeName);
         if (!!hull) {
             return hull.description;
         }
         return "";
     }
 
-    getAmount(key: EHullType) {
-        return this.hullAmountByType.get(key) || 0;
+    getAmount(typeName: string) {
+        return this.hullAmountByType.get(typeName) || 0;
     }
 
     /**
      * constructs and returns the url to the icon
      */
-    getLink(hullType: EHullType): string {
-        let folder = hullType.folder;
-        let iconName = hullType.iconName;
+    getLink(typeName: string): string {
+        const hullType = this.hullTypes.get(typeName);
+        let folder = hullType!.folder;
+        let iconName = hullType!.iconName;
         return "assets/" + folder + "/png24x/" + iconName + "_c.png";
     }
 }

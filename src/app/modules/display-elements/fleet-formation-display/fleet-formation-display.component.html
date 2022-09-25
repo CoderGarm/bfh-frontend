@@ -1,19 +1,19 @@
-<mat-accordion>
-    <mat-expansion-panel *ngFor="let entry of hullsByType  | keyvalue">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                {{entry.key.typeName}} - {{getAmount(entry.key)}}x
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-card>
-            <mat-card-header>
-                <img mat-card-avatar class="avatar-image icon" src="{{getLink(entry.key)}}" alt="construction">
-                <mat-card-title>{{entry.key.typeName}}</mat-card-title>
-                <mat-card-subtitle>{{getDescription(entry.key)}}</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content *ngIf="!!hullsByType.get(entry.key)">
-                <p *ngFor="let warShip of getWarShips(entry.key)">WarShip: {{warShip.name}}</p>
-            </mat-card-content>
-        </mat-card>
-    </mat-expansion-panel>
-</mat-accordion>
+<mat-list>
+    <div mat-subheader>{{'fleet.composition.title' | translate}}</div>
+    <mat-list-item *ngFor="let entry of warShipsByType  | keyvalue">
+        <img mat-list-avatar src="{{getLink(entry.key)}}">
+        <div>
+            <div mat-subheader class="left height-fit-content">{{entry.key}}</div>
+            <div mat-subheader class="left height-fit-content">{{getDescription(entry.key)}}</div>
+        </div>
+
+        <mat-list class="inner-list">
+            <div mat-subheader>{{'fleet.composition.warShip-names' | translate}}</div>
+            <mat-list-item *ngFor="let warShip of entry.value" class="height-fit-content">
+                <div mat-subheader class="item height-fit-content">{{warShip.name}} -
+                    {{warShip.shipClass.name}}
+                    {{'fleet.composition.class.title' | translate}}</div>
+            </mat-list-item>
+        </mat-list>
+    </mat-list-item>
+</mat-list>

@@ -3,3 +3,22 @@
 .mat-expansion-panel {
   width: $page-with;
 }
+
+.height-fit-content {
+  height: -moz-fit-content !important;
+  height: fit-content !important;
+}
+
+.inner-list {
+  margin-left: 25px;
+}
+
+.left {
+  margin-left: 25px;
+  padding: 15px 0 0 0;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+}

@@ -74,6 +74,6 @@ export class JobListDisplayComponent implements OnInit, OnChanges {
     getLink(job: Job): string {
         let folder = job.facility.building.productionTarget.folder;
         let iconName = job.facility.building.productionTarget.iconName;
-        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+        return "assets/" + folder + "/png64x/" + iconName + "_c.png";
     }
 }

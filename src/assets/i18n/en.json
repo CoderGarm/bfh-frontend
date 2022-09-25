@@ -18,6 +18,15 @@
     "title": "Chats"
   },
   "filter": "Filter",
+  "fleet": {
+    "composition": {
+      "class": {
+        "title": "Class"
+      },
+      "title": "Fleet composition",
+      "warShip-names": "Warships"
+    }
+  },
   "fleets": {
     "movement": {
       "no-ftl-present": "No fleets with Warshawski sail present.",
