@@ -205,7 +205,7 @@ export class SystemViewHelper extends BasicViewHelper {
         this.createCoordinateCross();
         this.setViewBox();
 
-        this.hyperLimit = this.calculateHyperLimit(system, orbitDefinitions);
+        this.hyperLimit = this.calculateHyperLimit(system);
         this.canvas!
             .circle()
             .x(0)

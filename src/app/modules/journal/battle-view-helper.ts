@@ -703,7 +703,7 @@ export class BattleViewHelper extends BasicViewHelper {
         this.sortByOrbit();
         this.createCoordinateCross();
 
-        this.hyperLimit = this.calculateHyperLimit(system, orbitDefinitions);
+        this.hyperLimit = this.calculateHyperLimit(system);
         this.canvas!
             .circle()
             .x(0)

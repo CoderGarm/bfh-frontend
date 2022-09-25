@@ -518,22 +518,14 @@ export class BasicViewHelper extends SubscriptionManager {
     /**
      * calculates the hyper limit
      * @param system
-     * @param orbitDefinitions
-     * @private
      */
-    protected calculateHyperLimit(system: StarSystem, orbitDefinitions: OrbitDefinition[]) {
-        // todo convert light minutes to distance units
+    protected calculateHyperLimit(system: StarSystem) {
         const lightMinutesToHyperLimit = system.starClassType.lightMinutesToHyperLimit;
-        let sortedRaises = orbitDefinitions
-            .sort((o1, o2) => {
-                let o1Radius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(o1.orbit.xCoordinate), this.convertToStandardMetric(o1.orbit.yCoordinate));
-                let o2Radius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(o2.orbit.xCoordinate), this.convertToStandardMetric(o2.orbit.yCoordinate));
-                return o1Radius > o2Radius ? 1 : -1;
-            });
-
-        const biggestRadiusOrbit = sortedRaises[sortedRaises.length - 1];
-        const biggestRadius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(biggestRadiusOrbit.orbit.xCoordinate), this.convertToStandardMetric(biggestRadiusOrbit.orbit.yCoordinate));
-        return biggestRadius + lightMinutesToHyperLimit;
+        const hyperRadius: Distance = {
+            coordinate: lightMinutesToHyperLimit,
+            distanceMetric: DistanceMetricEnum.LM
+        }
+        return this.convertToStandardMetric(hyperRadius);
     }
 
     protected getFleetSharkID(fleet: Fleet): string {

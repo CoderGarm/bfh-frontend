@@ -2,10 +2,9 @@ import {AfterViewInit, Component, Inject, Input, Optional, SimpleChanges} from '
 import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
-import {InterstellarViewHelper} from "../../star-map/payload/interstellar-view-helper";
 import {NavigationCalculator} from "../../../NavigationCalculator";
-import {BasicViewHelper} from "../../../basic-view-helper";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
+import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 @Component({
     selector: 'app-interstellar-fleet-movement-edit',
@@ -67,22 +66,17 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         if (!this.destination) {
             return 0;
         }
-        // todo convert light minutes to distance units
-        const lightMinutesToHyperLimit = this.destination.starClassType.lightMinutesToHyperLimit;
-        let sortedRaises = this.destination.planets
-            .sort((o1, o2) => {
-                let o1Radius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(o1.orbit.xCoordinate), this.convertToStandardMetric(o1.orbit.yCoordinate));
-                let o2Radius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(o2.orbit.xCoordinate), this.convertToStandardMetric(o2.orbit.yCoordinate));
-                return o1Radius > o2Radius ? 1 : -1;
-            });
 
-        const biggestRadiusOrbit = sortedRaises[sortedRaises.length - 1];
-        const biggestRadius = BasicViewHelper.calculateDistance(this.convertToStandardMetric(biggestRadiusOrbit.orbit.xCoordinate), this.convertToStandardMetric(biggestRadiusOrbit.orbit.yCoordinate));
-        return biggestRadius + lightMinutesToHyperLimit;
+        const lightMinutesToHyperLimit = this.destination.starClassType.lightMinutesToHyperLimit;
+        const hyperRadius: Distance = {
+            coordinate: lightMinutesToHyperLimit,
+            distanceMetric: DistanceMetricEnum.LM
+        }
+        return this.convertToStarSystemStandardMetric(hyperRadius);
     }
 
-    private convertToStandardMetric(distance: Distance) {
-        return NavigationCalculator.convertDistanceToMetric(distance, InterstellarViewHelper.STANDARD_METRIC);
+    private convertToStarSystemStandardMetric(distance: Distance) {
+        return NavigationCalculator.convertDistanceToMetric(distance, SystemViewHelper.STANDARD_METRIC);
     }
 
     /**
