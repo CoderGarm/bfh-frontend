@@ -16,7 +16,6 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
     selectedFleetInputDefinition: string = "selectedFleetInput";
 
     private hullTypes: Map<string, EHullType> = new Map<string, EHullType>();
-    hullAmountByType: Map<string, number> = new Map<string, number>();
     hullsByType: Map<string, Hull> = new Map<string, Hull>();
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
 
@@ -30,7 +29,6 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
         if (changes[this.selectedFleetInputDefinition]) {
             this.hullTypes.clear();
             this.hullsByType.clear();
-            this.hullAmountByType.clear();
             this.warShipsByType.clear();
             this.sortWarshipsByHull();
         }
@@ -42,28 +40,16 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
             warShips.forEach(warShip => {
                 let hullType = warShip.shipClass.hull.hullType;
                 this.hullTypes.set(hullType.typeName, hullType);
-                let amount = this.hullAmountByType.get(hullType.typeName);
                 let warShips: WarShip[] | undefined = this.warShipsByType.get(hullType.typeName);
-                if (!amount) {
-                    amount = 1;
+                if (!warShips) {
                     this.hullsByType.set(hullType.typeName, warShip.shipClass.hull);
                     warShips = [warShip];
                 } else {
-                    amount++;
                     warShips?.push(warShip);
                 }
                 this.warShipsByType.set(hullType.typeName, warShips!);
-                this.hullAmountByType.set(hullType.typeName, amount);
             });
         }
-    }
-
-    getWarShips(typeName: string): WarShip[] {
-        let warShips = this.warShipsByType.get(typeName);
-        if (!warShips) {
-            return [];
-        }
-        return warShips;
     }
 
     getDescription(typeName: string): string {
@@ -72,10 +58,6 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
             return hull.description;
         }
         return "";
-    }
-
-    getAmount(typeName: string) {
-        return this.hullAmountByType.get(typeName) || 0;
     }
 
     /**

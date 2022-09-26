@@ -1,4 +1,4 @@
 <div *ngFor="let fleet of fleets">
     <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
-    <app-spacecraft-capabilities-display [fleetInput]="fleet"></app-spacecraft-capabilities-display>
+    <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet.fleetCapabilities"></app-spacecraft-capabilities-display>
 </div>

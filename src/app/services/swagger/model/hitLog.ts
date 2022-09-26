@@ -23,10 +23,6 @@ export interface HitLog {
     damageDealer: string;
     warShip: WarShip;
     /**
-     * The string representation of the target's health state.
-     */
-    warshipHealthState: string;
-    /**
      * The applied damage.
      */
     damageValue: number;
@@ -38,8 +34,8 @@ export interface HitLog {
      * The attacked part of the ship.
      */
     attackedPart: HitLog.AttackedPartEnum;
-    alive?: boolean;
-    fightingCapable?: boolean;
+    alive: boolean;
+    fightingCapable: boolean;
 }
 export namespace HitLog {
     export type AttackedPartEnum = 'FITTING_AND_HULL' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'ELOKA';

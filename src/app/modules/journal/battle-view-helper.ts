@@ -1,4 +1,4 @@
-import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Svg} from "@svgdotjs/svg.js";
+import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Svg, Text} from "@svgdotjs/svg.js";
 import {
     BattleReport,
     CounterMissileHit,
@@ -57,7 +57,8 @@ export class BattleViewHelper extends BasicViewHelper {
     setActiveRound(activeRound: number | undefined,
                    starSystem: StarSystem,
                    canvas: Svg,
-                   dblClickForFleet: (event: PointerEvent) => void) {
+                   clickForFleet: (event: PointerEvent) => void,
+                   mouseoverForWarship: (event: PointerEvent) => void) {
         this.clearCanvas();
         this.setOrbits(canvas, starSystem);
         if (!activeRound || !this.combatArenaData || !this.canvas) {
@@ -67,8 +68,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
         const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound);
         if (!!movementByFleet) {
-            let hitLogs = this.combatArenaData.hitLogsByRound.get(activeRound);
-            this.setFleetsInBattle(this.canvas, movementByFleet, !!hitLogs ? hitLogs : [], dblClickForFleet);
+            this.setFleetsInBattle(this.canvas, movementByFleet, activeRound, this.combatArenaData.hitLogsByRound, clickForFleet, mouseoverForWarship);
         }
         let missileMovements = this.combatArenaData.missileMovementsByRound.get(activeRound);
         if (!!missileMovements) {
@@ -349,16 +349,12 @@ export class BattleViewHelper extends BasicViewHelper {
 
     /**
      * prints a fleet in the current combat round to the canvas and also the course plot
-     *
-     * @param canvas the canvas
-     * @param fleetsInMotion the fleets to print by movement
-     * @param dblClickForFleet the double click callback
-     * @param hitLogs the hit logs
      */
     private setFleetsInBattle(canvas: Svg,
                               fleetsInMotion: MovementAction[],
-                              hitLogs: HitLog[],
-                              dblClickForFleet: (event: PointerEvent) => void) {
+                              activeRound: number,
+                              hitLogsByRound: Map<number, HitLog[]>,
+                              clickForFleet: (event: PointerEvent) => void, mouseoverForWarship: (event: PointerEvent) => void) {
         this.setCanvas(canvas);
         const baseOrbit = this.createBaseOrbit();
 
@@ -380,18 +376,24 @@ export class BattleViewHelper extends BasicViewHelper {
                 this.canvas!.path(arr).fill(color).opacity(0.2);
             }
 
-            const warshipsToDisplay = this.removeNonFightingWarships(fleet, hitLogs);
-            let fleetSharkID = this.getFleetSharkID(fleet);
-            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(warshipsToDisplay, startOrbit, baseOrbit);
-            this.createHullOutlinesAndPrint(fleetSharkID, warshipsToDisplay, warshipHullPoints, dblClickForFleet, fleet);
+            const fightingWarships: WarShip[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
+            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit);
+            this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints, clickForFleet, mouseoverForWarship);
         });
     }
 
-    private removeNonFightingWarships(fleet: Fleet, hitLogs: HitLog[]) {
+    private getFightingWarships(fleet: Fleet, activeRound: number, hitLogsByRound: Map<number, HitLog[]>) {
+        let hitLogs: HitLog[] = [];
+        for (let i = 1; i <= activeRound; i++) {
+            const logsPerRound = hitLogsByRound.get(i);
+            if (!!logsPerRound) {
+                logsPerRound.forEach(l => hitLogs.push(l));
+            }
+        }
         let warShips = fleet.ships;
         let destroyedWarships = warShips.filter(warShip => !!hitLogs.find(value => {
             let isSameShip = warShip.idWarship == value.warShip.idWarship;
-            let canFight = value.fightingCapable;
+            let canFight = value.fightingCapable && value.alive;
             return !canFight && isSameShip;
         }));
         const warshipsToDisplay: WarShip[] = [];
@@ -505,20 +507,22 @@ export class BattleViewHelper extends BasicViewHelper {
 
     /**
      * creates a fleet shark, a text and groups them in the svg
-     *
-     * @param fleetSharkID the id
-     * @param warships
-     * @param warshipHullPoints the polygon points itself
-     * @param dblClickForFleet the double click callback
-     * @param fleet the fleet to print the fleet shark for
-     * @private
      */
-    private createHullOutlinesAndPrint(fleetSharkID: string,
+    private createHullOutlinesAndPrint(fleet: Fleet,
                                        warships: Array<WarShip>,
                                        warshipHullPoints: Array<Array<ArrayXY[]>>,
-                                       dblClickForFleet: (event: PointerEvent) => void, fleet: Fleet) {
+                                       clickForFleet: (event: PointerEvent) => void,
+                                       mouseoverForWarship: (event: PointerEvent) => void) {
+        let fleetSharkID = this.getFleetSharkID(fleet);
+
+        // set events to canvas to reset effect
+        this.canvas?.click(clickForFleet).mouseover(mouseoverForWarship);
+
         let group = this.canvas?.group()
+            .click(clickForFleet)
             .id(fleetSharkID + "-group");
+
+        this.fleetsById.set(fleetSharkID, fleet);
 
         this.groupsByID.set(fleetSharkID + "-group", group!);
 
@@ -527,13 +531,45 @@ export class BattleViewHelper extends BasicViewHelper {
         if (fleet.owner.idUser == userID) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
+        // sort by is to display the names in a non-permuting way
+        warships = warships.sort((a, b) => a.idWarship > b.idWarship ? 1 : -1);
         for (let i = 0; i < warshipHullPoints.length; i++) {
             let warshipHullPoint = warshipHullPoints[i];
             let warship = warships[i];
             let warshipID = this.getWarshipID(warship);
+            this.warshipsById.set(warshipID, warship);
+
+            const mergedPoints: ArrayXY[] = [];
+            warshipHullPoint.forEach(p => p.forEach(i => mergedPoints.push(i)));
+
+            let sortedPointsX = mergedPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
+            let sortedPointsY = mergedPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
+            let xText = sortedPointsX[sortedPointsX.length - 1];
+            let yText = sortedPointsY[0];
+
+            let text: Text = group!.text(warship.name)
+                .x(xText[0])
+                .y(yText[1])
+                .addClass("warship-text")
+                .id(warshipID + "-txt")
+                .click(clickForFleet)
+                .mouseover(mouseoverForWarship);
+
+            this.warshipsByText.set(text, warship);
+            this.warshipTextsById.set(warshipID + "-txt", text);
+
+            this.fleetsById.set(warshipID, fleet);
+            this.fleetTextsById.set(warshipID + "-txt", text);
+            this.fleetsByText.set(text, fleet);
+
             warshipHullPoint.forEach(hullElements => {
-                let polygon = group!.polygon(hullElements).id(warshipID).fill(fleetSharkColor);
+                let polygon = group!.polygon(hullElements)
+                    .id(warshipID)
+                    .fill(fleetSharkColor)
+                    .click(clickForFleet)
+                    .mouseover(mouseoverForWarship);
                 this.warshipPolygonsById.set(warshipID, polygon);
+
             });
         }
         this.canvas?.add(group!);

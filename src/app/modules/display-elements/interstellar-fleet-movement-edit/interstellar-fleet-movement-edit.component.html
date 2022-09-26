@@ -8,6 +8,6 @@
     <mat-card-content>
         <mat-checkbox (change)="selectForFlight($event.checked, fleet)">{{'fleets.movement.select-for-move.checkbox' | translate}}</mat-checkbox>
         <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
-        <app-spacecraft-capabilities-display [fleetInput]="fleet"></app-spacecraft-capabilities-display>
+        <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet.fleetCapabilities"></app-spacecraft-capabilities-display>
     </mat-card-content>
 </mat-card>

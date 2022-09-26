@@ -41,6 +41,7 @@ import {LauncherModuleDisplayComponent} from './launcher-module-display/launcher
 import {LauncherCounterComponent} from './launcher-counter/launcher-counter.component';
 import {TechTreeDisplayComponent} from './tech-tree-display/tech-tree-display.component';
 import {JobListDisplayComponent} from './job-list-display/job-list-display.component';
+import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability-display-small/spacecraft-capability-display-small.component";
 
 @NgModule({
     declarations: [
@@ -74,6 +75,7 @@ import {JobListDisplayComponent} from './job-list-display/job-list-display.compo
         ShipClassBuildComponent,
         FleetFormationDisplay,
         SpacecraftCapabilitiesDisplayComponent,
+        SpacecraftCapabilityDisplaySmallComponent,
         FleetMergeEditComponent,
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,
@@ -120,6 +122,7 @@ import {JobListDisplayComponent} from './job-list-display/job-list-display.compo
         ShipClassBuildComponent,
         FleetFormationDisplay,
         SpacecraftCapabilitiesDisplayComponent,
+        SpacecraftCapabilityDisplaySmallComponent,
         FleetMergeEditComponent,
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,

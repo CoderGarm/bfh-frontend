@@ -16,7 +16,7 @@ import { CapabilityValue } from './capabilityValue';
  */
 export interface FleetCapabilities { 
     /**
-     * The effect value per module type.
+     * The effect values per module type.
      */
     capabilities: Array<CapabilityValue>;
 }

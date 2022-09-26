@@ -28,6 +28,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatRadioModule} from "@angular/material/radio";
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatSliderModule} from "@angular/material/slider";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import {MatSliderModule} from "@angular/material/slider";
         MatRadioModule,
         MatStepperModule,
         MatSliderModule,
+        MatProgressBarModule,
     ],
     exports: [
         MatButtonModule,
@@ -96,6 +98,7 @@ import {MatSliderModule} from "@angular/material/slider";
         MatRadioModule,
         MatStepperModule,
         MatSliderModule,
+        MatProgressBarModule,
     ],
     providers: []
 })

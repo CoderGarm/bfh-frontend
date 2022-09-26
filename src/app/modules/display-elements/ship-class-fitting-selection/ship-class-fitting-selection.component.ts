@@ -565,7 +565,9 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
                 role: role,
                 username: username
             },
-
+            shipClassCapabilities: {
+                capabilities: []
+            }
         };
         if (!!this.designedShipClassInputEmitter) {
             this.designedShipClassInputEmitter.emit(output);

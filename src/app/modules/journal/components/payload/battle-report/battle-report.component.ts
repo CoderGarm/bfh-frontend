@@ -14,6 +14,7 @@ import {
     MovementAction,
     PlanetApiService,
     ReleasedVolley,
+    ShipClass,
     ShipKillerHit,
     StarSystem
 } from "../../../../../services/swagger";
@@ -26,6 +27,7 @@ import {CombatStatistics} from "../../../combat.statistics";
 import {CombatArenaData} from "../combat-arena/combat-arena.component";
 import {MatSlider, MatSliderChange} from "@angular/material/slider";
 import {Subscription, timer} from "rxjs";
+import {SpinnerService} from "../../../../../services/spinner.service";
 
 @Component({
     selector: 'app-battle-report',
@@ -77,6 +79,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     shipKillerHitsByRound: Map<number, ShipKillerHit[]> = new Map<number, ShipKillerHit[]>();
     counterMissileHitsByRound: Map<number, CounterMissileHit[]> = new Map<number, CounterMissileHit[]>();
     hitLogsByRound: Map<number, HitLog[]> = new Map<number, HitLog[]>();
+    shipClasses: Map<number, ShipClass> = new Map<number, ShipClass>();
 
     combatArenaData?: CombatArenaData;
     private activeRoundIndex: number = 0;
@@ -96,7 +99,8 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
 
     constructor(private tokenStorage: TokenStorage,
                 private reportApi: BattleReportApiService,
-                private planetApi: PlanetApiService) {
+                private planetApi: PlanetApiService,
+                private spinnerService: SpinnerService) {
         super();
     }
 
@@ -192,7 +196,11 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         if (!!battleReport) {
             this.setActiveReport(battleReport);
         } else {
-            let sub = this.reportApi.getReportsById(reportStat.idBattleReport).subscribe(resp => this.setActiveReport(resp));
+            this.spinnerService.activateSpinner("Battle is loading...")
+            let sub = this.reportApi.getReportsById(reportStat.idBattleReport).subscribe(resp => {
+                this.setActiveReport(resp);
+                this.spinnerService.deactivateSpinner();
+            });
             this.subscriptions.push(sub);
         }
         this.starSystem = reportStat.orbit.system;
@@ -207,13 +215,16 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.currentlyOpenedItem.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));
         this.currentlyOpenedItem.shipKillerHits.forEach(rv => this.setShipKillerHitsMapValue(rv));
         this.currentlyOpenedItem.counterMissileHits.forEach(rv => this.setCounterMissileHitsMapValue(rv));
+        this.currentlyOpenedItem.participatingFleets.forEach(fleet => this.setShipClasses(fleet));
         this.mergeCombatRounds();
         this.combatArenaData = new CombatArenaData(this.combatRounds,
-            this.movementsByRound, this.volleysByRound,
+            this.movementsByRound,
+            this.volleysByRound,
             this.missileMovementsByRound,
             this.shipKillerHitsByRound,
             this.counterMissileHitsByRound,
-            this.hitLogsByRound);
+            this.hitLogsByRound,
+            Array.from(this.shipClasses.values()));
         this.activeRoundIndex = 0;
         this.setActiveRound();
         this.battleReportsById.set(report.battleReportStatistics.idBattleReport, report);
@@ -243,6 +254,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.shipKillerHitsByRound = new Map<number, ShipKillerHit[]>();
         this.counterMissileHitsByRound = new Map<number, CounterMissileHit[]>();
         this.hitLogsByRound = new Map<number, HitLog[]>();
+        this.shipClasses = new Map<number, ShipClass>();
     }
 
     private setCounterMissileHitsMapValue(volley: CounterMissileHit) {
@@ -479,6 +491,13 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
             return this.currentlyOpenedItem.participatingFleets;
         }
         return [];
+    }
+
+    private setShipClasses(fleet: Fleet) {
+        fleet.ships.forEach(warShip => {
+            let idShipClass = warShip.shipClass.idShipClass;
+            this.shipClasses.set(idShipClass!, warShip.shipClass);
+        });
     }
 }
 

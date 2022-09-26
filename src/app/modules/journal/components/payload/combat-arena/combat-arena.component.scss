@@ -1,15 +1,9 @@
 
 .info-div {
   position: absolute;
-  top: 15px;
-}
-
-.left-block {
+  top: 10%; /* todo display with overflow and do a real overlay */
+  width: 250px;
   left: 15px;
-}
-
-.right-block {
-  right: 15px;
 }
 
 svg {

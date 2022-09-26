@@ -114,8 +114,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
         let text: Text = group!.text(fleet.owner.username)
             .x(xText[0])
             .y(yText[1])
-            .addClass("text")
-            .stroke("white")
+            .addClass("fleet-text")
             .id(fleetSharkID + "-txt")
             .dblclick(dblClickForFleet);
 
@@ -196,8 +195,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
         let text: Text = group!.text(owner.username)
             .x(xText[0])
             .y(yText[1])
-            .addClass("text")
-            .stroke("white")
+            .addClass("fleet-text")
             .id(fleetSharkID + "-txt")
             .dblclick((event: PointerEvent) => {
                 dblClickForFleet(event, system);

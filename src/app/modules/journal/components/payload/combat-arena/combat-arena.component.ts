@@ -1,6 +1,19 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {BattleReport, CounterMissileHit, Fleet, HitLog, MissileMovement, MovementAction, Planet, ReleasedVolley, ShipKillerHit, StarSystem} from "../../../../../services/swagger";
+import {
+    BattleReport,
+    CounterMissileHit,
+    Fleet,
+    HitLog,
+    MissileMovement,
+    MovementAction,
+    Planet,
+    ReleasedVolley,
+    ShipClass,
+    ShipKillerHit,
+    StarSystem,
+    WarShip
+} from "../../../../../services/swagger";
 import {SVG} from "@svgdotjs/svg.js";
 import {BattleViewHelper} from "../../../battle-view-helper";
 import {BasicViewHelper} from "../../../../../basic-view-helper";
@@ -36,6 +49,9 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     activeRound?: number;
     private activeRoundInputDefinition: string = "activeRound";
 
+    hoveredWarship?: WarShip;
+    clickedFleet?: Fleet;
+
     constructor(tokenStorage: TokenStorage) {
         super(tokenStorage)
     }
@@ -54,7 +70,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         if (changes[this.activeRoundInputDefinition]) {
             if (!!this.starSystem) {
                 this.createCanvas();
-                this.setActiveRound(this.activeRound, this.starSystem, this.canvas!, this.dblClickForFleet);
+                this.setActiveRound(this.activeRound, this.starSystem, this.canvas!, this.clickForFleet, this.mouseoverForWarship);
                 let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
             }
@@ -63,7 +79,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
             if (!!this.combatArenaData && !!this.starSystem) {
                 this.setCombatData(this.combatArenaData);
                 this.createCanvas();
-                this.setActiveRound(1, this.starSystem, this.canvas!, this.dblClickForFleet);
+                this.setActiveRound(1, this.starSystem, this.canvas!, this.clickForFleet, this.mouseoverForWarship);
                 let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
             } else {
@@ -77,7 +93,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
      *
      * @param event
      */
-    private dblClickForFleet = (event: PointerEvent) => {
+    private clickForFleet = (event: PointerEvent) => {
         let fleet = this.getFleetByEvent(event);
         if (!fleet) {
             let text = this.getFleetTextByEvent(event);
@@ -85,6 +101,23 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
                 fleet = this.getFleetByText(text);
             }
         }
+        this.clickedFleet = fleet;
+    }
+
+    /**
+     * call back function for hovering over a fleet
+     *
+     * @param event
+     */
+    private mouseoverForWarship = (event: PointerEvent) => {
+        let warship = this.getWarshipByEvent(event);
+        if (!warship) {
+            let text = this.getWarshipTextByEvent(event);
+            if (!!text) {
+                warship = this.getWarshipByText(text);
+            }
+        }
+        this.hoveredWarship = warship;
     }
 
     /**
@@ -152,13 +185,16 @@ export class CombatArenaData {
 
     hitLogsByRound: Map<number, HitLog[]>;
 
+    shipClasses: ShipClass[];
+
     constructor(combatRounds: Int8Array,
                 movementsByRound: Map<number, MovementAction[]>,
                 volleysByRound: Map<number, ReleasedVolley[]>,
                 missileMovementsByRound: Map<number, MissileMovement[]>,
                 shipKillerHitsByRound: Map<number, ShipKillerHit[]>,
                 counterMissileHitsByRound: Map<number, CounterMissileHit[]>,
-                hitLogsByRound: Map<number, HitLog[]>) {
+                hitLogsByRound: Map<number, HitLog[]>,
+                shipClasses: ShipClass[]) {
         this.combatRounds = combatRounds;
         this.movementsByRound = movementsByRound;
         this.volleysByRound = volleysByRound;
@@ -166,5 +202,6 @@ export class CombatArenaData {
         this.shipKillerHitsByRound = shipKillerHitsByRound;
         this.counterMissileHitsByRound = counterMissileHitsByRound;
         this.hitLogsByRound = hitLogsByRound;
+        this.shipClasses = shipClasses;
     }
 }

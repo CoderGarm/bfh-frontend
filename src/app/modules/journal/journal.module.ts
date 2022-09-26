@@ -7,6 +7,7 @@ import {LostWarshipOverlayComponent} from './components/payload/lost-warship-ove
 import {CombatArenaComponent} from './components/payload/combat-arena/combat-arena.component';
 import {JobJournalComponent} from './components/payload/job-journal/job-journal.component';
 import {FleetMovementJournalComponent} from './components/payload/fleet-movement-journal/fleet-movement-journal.component';
+import {FleetRoundStateComponent} from './components/payload/fleet-round-state/fleet-round-state.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {FleetMovementJournalComponent} from './components/payload/fleet-movement
         LostWarshipOverlayComponent,
         CombatArenaComponent,
         JobJournalComponent,
-        FleetMovementJournalComponent
+        FleetMovementJournalComponent,
+        FleetRoundStateComponent
     ],
     imports: [
         SharedModuleModule,

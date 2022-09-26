@@ -1,0 +1,58 @@
+#battle-round-stepper .mat-slider-thumb-label {
+  transform: rotate(45deg) !important;
+  border-radius: 50% 50% 0 !important;
+}
+
+#battle-round-stepper .mat-slider-thumb {
+  transform: scale(0) !important;
+}
+
+#battle-round-stepper .mat-slider-thumb-label-text {
+  opacity: 1 !important;
+}
+
+// all the svg elements css
+.warship-text {
+  font-size: 10px;
+  fill: dimgray;
+}
+
+.fleet-text {
+  font-size: 10px;
+  fill: dimgray;
+}
+
+.coordCross {
+  stroke: dimgray;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.roundCap {
+  stroke-linecap: round;
+}
+
+.orbit {
+  stroke: darkgray;
+  stroke-width: 1;
+}
+
+.hyper-limit {
+  stroke: darkblue;
+  stroke-width: 1;
+}
+
+.beamVolley {
+  stroke: yellow;
+  stroke-width: 1;
+  stroke-dasharray: 6;
+  stroke-dashoffset: 50;
+  animation: move 1s linear 1;
+}
+
+@keyframes move {
+  // the animation in journal for beam volleys
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

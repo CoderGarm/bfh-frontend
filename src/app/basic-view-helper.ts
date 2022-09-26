@@ -67,11 +67,16 @@ export class BasicViewHelper extends SubscriptionManager {
     protected celestialBodyById: Map<String, Orbit> = new Map<String, Orbit>();
     protected orbitsById: Map<String, Orbit> = new Map<String, Orbit>();
     protected fleetsById: Map<String, Fleet> = new Map<String, Fleet>();
+
+    protected warshipsById: Map<String, WarShip> = new Map<String, WarShip>();
     protected warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
+    protected warshipsByText: Map<Text, WarShip> = new Map<Text, WarShip>();
+    protected warshipTextsById: Map<String, Text> = new Map<String, Text>();
+
     protected missileSalvoPolygonsById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
     protected fleetsByText: Map<Text, Fleet> = new Map<Text, Fleet>();
-    protected fleetOwnersById: Map<String, UserJson> = new Map<String, UserJson>();
     protected fleetTextsById: Map<String, Text> = new Map<String, Text>();
+    protected fleetOwnersById: Map<String, UserJson> = new Map<String, UserJson>();
     protected fleetOwnerByText: Map<Text, UserJson> = new Map<Text, UserJson>();
     protected restrictedAreasByOrbitId: Map<String, RestrictedFleetArea[]> = new Map<String, RestrictedFleetArea[]>();
     protected groupsByID: Map<String, G> = new Map<String, G>();
@@ -543,7 +548,7 @@ export class BasicViewHelper extends SubscriptionManager {
 
     protected getWarshipID(warShip: WarShip): string {
         let id: string = this.WARSHIP_SELECTOR_ID_PREFIX;
-        return id + "-" + warShip.idFleet + "-" + warShip.name + "-" + warShip.shipClass.idShipClass;
+        return id + "-" + warShip.idWarship;
     }
 
     protected getMissileSalvoID(missileMovement: MissileMovement): string {
@@ -586,8 +591,7 @@ export class BasicViewHelper extends SubscriptionManager {
     }
 
     protected getOrbitOfCelestialByEvent(event: PointerEvent | MouseEvent): Orbit | undefined {
-        let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
+        let id = this.getIdFromEvent(event);
         return this.getOrbitOfCelestialByID(id);
     }
 
@@ -608,15 +612,23 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.fleetOwnerByText.get(text);
     }
 
-    protected getFleetByEvent(event: PointerEvent | MouseEvent): Fleet | undefined {
-        let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
+    protected getFleetByEvent(event: PointerEvent | MouseEvent | any): Fleet | undefined {
+        let id = this.getIdFromEvent(event);
         return this.getFleetByID(id);
     }
 
-    protected getFleetOwnerForOwnerByEvent(event: PointerEvent | MouseEvent): UserJson | undefined {
+    private getIdFromEvent(event: PointerEvent | MouseEvent | any) {
         let target: Shape = event.target as Shape;
-        let id: string = target.id as unknown as string;
+        const id = target.id as unknown as string;
+        if (!id) {
+            const parent = event.path[1];
+            return parent.id;
+        }
+        return id;
+    }
+
+    protected getFleetOwnerForOwnerByEvent(event: PointerEvent | MouseEvent): UserJson | undefined {
+        let id = this.getIdFromEvent(event);
         return this.getOwnerByID(id);
     }
 
@@ -624,5 +636,28 @@ export class BasicViewHelper extends SubscriptionManager {
         let p = event.composedPath()[1];
         let x = <HTMLElement>p;
         return this.getFleetTextByID(x.id);
+    }
+
+    protected getWarshipByID(id: string): WarShip | undefined {
+        return this.warshipsById.get(id);
+    }
+
+    protected getWarshipByEvent(event: PointerEvent | MouseEvent | any): WarShip | undefined {
+        let id = this.getIdFromEvent(event);
+        return this.getWarshipByID(id);
+    }
+
+    protected getWarshipTextByEvent(event: PointerEvent | MouseEvent): Text | undefined {
+        let p = event.composedPath()[1];
+        let x = <HTMLElement>p;
+        return this.getWarshipTextByID(x.id);
+    }
+
+    protected getWarshipTextByID(id: string): Text | undefined {
+        return this.warshipTextsById.get(id);
+    }
+
+    protected getWarshipByText(text: Text): WarShip | undefined {
+        return this.warshipsByText.get(text);
     }
 }

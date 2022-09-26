@@ -1,11 +1,17 @@
 <div class="combat-outline">
-    <div class="info-div left-block">
-        green
-        <div *ngFor="let fleet of green">{{fleet.name}}</div>
-    </div>
-    <div class="info-div right-block">
-        red
-        <div *ngFor="let fleet of red">{{fleet.name}}</div>
+    <div class="info-div">
+        <app-fleet-round-state *ngFor="let fleet of green"
+                               [fleet]="fleet"
+                               [combatArenaData]="combatArenaData"
+                               [activeRound]="activeRound"
+                               [hoveredWarship]="hoveredWarship"
+                               [clickedFleet]="clickedFleet"></app-fleet-round-state>
+        <app-fleet-round-state *ngFor="let fleet of red"
+                               [fleet]="fleet"
+                               [combatArenaData]="combatArenaData"
+                               [activeRound]="activeRound"
+                               [hoveredWarship]="hoveredWarship"
+                               [clickedFleet]="clickedFleet"></app-fleet-round-state>
     </div>
     <div id="arena">
         <!-- svg elements will be created programmatically -->

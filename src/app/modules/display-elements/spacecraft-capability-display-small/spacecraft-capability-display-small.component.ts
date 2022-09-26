@@ -1,12 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CapabilityValue, FleetCapabilities} from "../../../services/swagger";
+import {StateByRound} from "../../journal/components/payload/fleet-round-state/fleet-round-state.component";
 
 @Component({
-    selector: 'app-spacecraft-capabilities-display',
-    templateUrl: './spacecraft-capabilities-display.component.html',
-    styleUrls: ['./spacecraft-capabilities-display.component.scss']
+    selector: 'app-spacecraft-capability-display-small',
+    templateUrl: './spacecraft-capability-display-small.component.html',
+    styleUrls: ['./spacecraft-capability-display-small.component.scss']
 })
-export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
+export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
 
     /**
      * the base data to display
@@ -15,7 +16,7 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
     baseFleetCapabilities?: FleetCapabilities;
 
     @Input()
-    currentFleetCapabilities?: FleetCapabilities;
+    currentFleetState?: StateByRound;
 
     @Input()
     ngClass: string = "";
@@ -29,12 +30,12 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
     getLink(cap: CapabilityValue): any {
         let iconName = cap.moduleType.iconName;
         let folder = cap.moduleType.folder;
-        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
     getPercentage(cap: CapabilityValue) {
         let moduleType = cap.moduleType;
-        if (!this.currentFleetCapabilities || !this.baseFleetCapabilities) {
+        if (!this.currentFleetState || !this.baseFleetCapabilities) {
             return 100;
         }
 
@@ -44,7 +45,7 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
             return 100;
         }
 
-        let currentCapValues = this.currentFleetCapabilities.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        let currentCapValues = this.currentFleetState.state.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!currentCapValues || currentCapValues.length != 1) {
             console.log("Capability value for module type " + moduleType.typeName + " can't be displayed because current is away.");
             return 100;
@@ -58,7 +59,7 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
         let moduleType = cap.moduleType;
 
         let currentValue = -1;
-        let currentCapValues = this.currentFleetCapabilities?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        let currentCapValues = this.currentFleetState?.state.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!!currentCapValues && currentCapValues.length == 1) {
             currentValue = currentCapValues[0].value;
         }
@@ -73,6 +74,16 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
             currentValue = baseValue;
         }
 
-        return currentValue + " / " + baseValue;
+        return cap.moduleType.typeName + ' - ' + currentValue + " / " + baseValue;
+    }
+
+    getStateClass() {
+        let state = this.currentFleetState;
+        if (!!state) {
+            if (!state.fightingCapable) {
+                return "unable";
+            }
+        }
+        return "";
     }
 }
