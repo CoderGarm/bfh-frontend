@@ -26,7 +26,6 @@ export class ShipClassBuildComponent implements AfterViewInit {
     getLink(): string {
         let folder = this.shipClassInput.hull.hullType.folder;
         let iconName = this.shipClassInput.hull.hullType.iconName;
-        //todo check
         return "assets/" + folder + "/png24x/" + iconName + "_c.png";
     }
 }

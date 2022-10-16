@@ -23,6 +23,10 @@ export interface Planet {
     idPlanet: number;
     owner?: UserJson;
     /**
+     * If this planet is the main planet of the owner.
+     */
+    isMain: boolean;
+    /**
      * The name of this planet.
      */
     name: string;

@@ -1,3 +1,5 @@
+@import "src/styles/variables";
+
 .mat-badge-content {
   font-weight: 600;
   font-size: 12px;
@@ -762,7 +764,7 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-pseudo-checkbox::after {
-  color: #303030
+  color: $background-color
 }
 
 .mat-pseudo-checkbox-disabled {
@@ -786,108 +788,108 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-app-background {
-  background-color: #303030;
+  background-color: $background-color;
   color: #fff
 }
 
 .mat-elevation-z0 {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 0px 0 0px rgba(0, 0, 0, 0.2), 0 0px 0 0px rgba(0, 0, 0, 0.14), 0 0px 0 0px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z1 {
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z2 {
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z3 {
-  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z4 {
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z5 {
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 5px 8px 0 rgba(0, 0, 0, 0.14), 0 1px 14px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z6 {
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z7 {
-  box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 4px 5px -2px rgba(0, 0, 0, 0.2), 0 7px 10px 1px rgba(0, 0, 0, 0.14), 0 2px 16px 1px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z8 {
-  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z9 {
-  box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.2), 0px 9px 12px 1px rgba(0, 0, 0, 0.14), 0px 3px 16px 2px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 5px 6px -3px rgba(0, 0, 0, 0.2), 0 9px 12px 1px rgba(0, 0, 0, 0.14), 0 3px 16px 2px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z10 {
-  box-shadow: 0px 6px 6px -3px rgba(0, 0, 0, 0.2), 0px 10px 14px 1px rgba(0, 0, 0, 0.14), 0px 4px 18px 3px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 6px 6px -3px rgba(0, 0, 0, 0.2), 0 10px 14px 1px rgba(0, 0, 0, 0.14), 0 4px 18px 3px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z11 {
-  box-shadow: 0px 6px 7px -4px rgba(0, 0, 0, 0.2), 0px 11px 15px 1px rgba(0, 0, 0, 0.14), 0px 4px 20px 3px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2), 0 11px 15px 1px rgba(0, 0, 0, 0.14), 0 4px 20px 3px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z12 {
-  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z13 {
-  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 13px 19px 2px rgba(0, 0, 0, 0.14), 0 5px 24px 4px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z14 {
-  box-shadow: 0px 7px 9px -4px rgba(0, 0, 0, 0.2), 0px 14px 21px 2px rgba(0, 0, 0, 0.14), 0px 5px 26px 4px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 7px 9px -4px rgba(0, 0, 0, 0.2), 0 14px 21px 2px rgba(0, 0, 0, 0.14), 0 5px 26px 4px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z15 {
-  box-shadow: 0px 8px 9px -5px rgba(0, 0, 0, 0.2), 0px 15px 22px 2px rgba(0, 0, 0, 0.14), 0px 6px 28px 5px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 8px 9px -5px rgba(0, 0, 0, 0.2), 0 15px 22px 2px rgba(0, 0, 0, 0.14), 0 6px 28px 5px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z16 {
-  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z17 {
-  box-shadow: 0px 8px 11px -5px rgba(0, 0, 0, 0.2), 0px 17px 26px 2px rgba(0, 0, 0, 0.14), 0px 6px 32px 5px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 8px 11px -5px rgba(0, 0, 0, 0.2), 0 17px 26px 2px rgba(0, 0, 0, 0.14), 0 6px 32px 5px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z18 {
-  box-shadow: 0px 9px 11px -5px rgba(0, 0, 0, 0.2), 0px 18px 28px 2px rgba(0, 0, 0, 0.14), 0px 7px 34px 6px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 9px 11px -5px rgba(0, 0, 0, 0.2), 0 18px 28px 2px rgba(0, 0, 0, 0.14), 0 7px 34px 6px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z19 {
-  box-shadow: 0px 9px 12px -6px rgba(0, 0, 0, 0.2), 0px 19px 29px 2px rgba(0, 0, 0, 0.14), 0px 7px 36px 6px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 9px 12px -6px rgba(0, 0, 0, 0.2), 0 19px 29px 2px rgba(0, 0, 0, 0.14), 0 7px 36px 6px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z20 {
-  box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.2), 0px 20px 31px 3px rgba(0, 0, 0, 0.14), 0px 8px 38px 7px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 10px 13px -6px rgba(0, 0, 0, 0.2), 0 20px 31px 3px rgba(0, 0, 0, 0.14), 0 8px 38px 7px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z21 {
-  box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.2), 0px 21px 33px 3px rgba(0, 0, 0, 0.14), 0px 8px 40px 7px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 10px 13px -6px rgba(0, 0, 0, 0.2), 0 21px 33px 3px rgba(0, 0, 0, 0.14), 0 8px 40px 7px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z22 {
-  box-shadow: 0px 10px 14px -6px rgba(0, 0, 0, 0.2), 0px 22px 35px 3px rgba(0, 0, 0, 0.14), 0px 8px 42px 7px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 10px 14px -6px rgba(0, 0, 0, 0.2), 0 22px 35px 3px rgba(0, 0, 0, 0.14), 0 8px 42px 7px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z23 {
-  box-shadow: 0px 11px 14px -7px rgba(0, 0, 0, 0.2), 0px 23px 36px 3px rgba(0, 0, 0, 0.14), 0px 9px 44px 8px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 11px 14px -7px rgba(0, 0, 0, 0.2), 0 23px 36px 3px rgba(0, 0, 0, 0.14), 0 9px 44px 8px rgba(0, 0, 0, 0.12)
 }
 
 .mat-elevation-z24 {
-  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12)
 }
 
 .mat-theme-loaded-marker {
@@ -895,16 +897,16 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-autocomplete-panel {
-  background: #424242;
+  background: $secondary-background-color;
   color: #fff
 }
 
 .mat-autocomplete-panel:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-autocomplete-panel .mat-option.mat-selected:not(.mat-active):not(:hover) {
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-autocomplete-panel .mat-option.mat-selected:not(.mat-active):not(:hover):not(.mat-option-disabled) {
@@ -1116,8 +1118,8 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-bottom-sheet-container {
-  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12);
-  background: #424242;
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+  background: $secondary-background-color;
   color: #fff
 }
 
@@ -1173,7 +1175,7 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 
 .mat-flat-button, .mat-raised-button, .mat-fab, .mat-mini-fab {
   color: #fff;
-  background-color: #424242
+  background-color: $secondary-background-color
 }
 
 .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
@@ -1221,35 +1223,35 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-stroked-button:not([class*=mat-elevation-z]), .mat-flat-button:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 0px 0 0px rgba(0, 0, 0, 0.2), 0 0px 0 0px rgba(0, 0, 0, 0.14), 0 0px 0 0px rgba(0, 0, 0, 0.12)
 }
 
 .mat-raised-button:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-raised-button:not(.mat-button-disabled):active:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
 }
 
 .mat-raised-button.mat-button-disabled:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 0px 0 0px rgba(0, 0, 0, 0.2), 0 0px 0 0px rgba(0, 0, 0, 0.14), 0 0px 0 0px rgba(0, 0, 0, 0.12)
 }
 
 .mat-fab:not([class*=mat-elevation-z]), .mat-mini-fab:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-fab:not(.mat-button-disabled):active:not([class*=mat-elevation-z]), .mat-mini-fab:not(.mat-button-disabled):active:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12)
 }
 
 .mat-fab.mat-button-disabled:not([class*=mat-elevation-z]), .mat-mini-fab.mat-button-disabled:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 0px 0 0px rgba(0, 0, 0, 0.2), 0 0px 0 0px rgba(0, 0, 0, 0.14), 0 0px 0 0px rgba(0, 0, 0, 0.12)
 }
 
 .mat-button-toggle-standalone, .mat-button-toggle-group {
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-button-toggle-standalone.mat-button-toggle-appearance-standard, .mat-button-toggle-group-appearance-standard {
@@ -1266,7 +1268,7 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 
 .mat-button-toggle-appearance-standard {
   color: #fff;
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
@@ -1303,11 +1305,11 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-button-toggle-disabled.mat-button-toggle-appearance-standard {
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-button-toggle-disabled.mat-button-toggle-checked {
-  background-color: #424242
+  background-color: $secondary-background-color
 }
 
 .mat-button-toggle-standalone.mat-button-toggle-appearance-standard, .mat-button-toggle-group-appearance-standard {
@@ -1319,16 +1321,16 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-card {
-  background: #424242;
+  background: $secondary-background-color;
   color: #fff
 }
 
 .mat-card:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-card.mat-card-flat:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 0px 0 0px rgba(0, 0, 0, 0.2), 0 0px 0 0px rgba(0, 0, 0, 0.14), 0 0px 0 0px rgba(0, 0, 0, 0.12)
 }
 
 .mat-card-subtitle {
@@ -1340,15 +1342,15 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-checkbox-checkmark {
-  fill: #303030
+  fill: $background-color
 }
 
 .mat-checkbox-checkmark-path {
-  stroke: #303030 !important
+  stroke: $background-color !important
 }
 
 .mat-checkbox-mixedmark {
-  background-color: #303030
+  background-color: $background-color
 }
 
 .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background, .mat-checkbox-checked.mat-primary .mat-checkbox-background {
@@ -1402,7 +1404,7 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-chip.mat-standard-chip:not(.mat-chip-disabled):active {
-  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-chip.mat-standard-chip:not(.mat-chip-disabled) .mat-chip-remove:hover {
@@ -1460,7 +1462,7 @@ textarea.cdk-textarea-autosize-measuring-firefox {
 }
 
 .mat-table {
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-table thead, .mat-table tbody, .mat-table tfoot, mat-header-row, mat-row, mat-footer-row, [mat-header-row], [mat-row], [mat-footer-row], .mat-table-sticky {
@@ -1566,8 +1568,8 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-datepicker-content {
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  background-color: #424242;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  background-color: $secondary-background-color;
   color: #fff
 }
 
@@ -1654,7 +1656,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-datepicker-content-touch {
-  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12)
 }
 
 .mat-datepicker-toggle-active {
@@ -1674,8 +1676,8 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-dialog-container {
-  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
-  background: #424242;
+  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+  background: $secondary-background-color;
   color: #fff
 }
 
@@ -1688,12 +1690,12 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-expansion-panel {
-  background: #424242;
+  background: $secondary-background-color;
   color: #fff
 }
 
 .mat-expansion-panel:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-action-row {
@@ -1706,7 +1708,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 
 @media (hover: none) {
   .mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {
-    background: #424242
+    background: $secondary-background-color
   }
 }
 
@@ -1967,11 +1969,11 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-menu-panel {
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-menu-panel:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-menu-item {
@@ -1992,7 +1994,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-paginator {
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-paginator, .mat-paginator-page-size .mat-select-trigger {
@@ -2125,11 +2127,11 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-select-panel {
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-select-panel:not([class*=mat-elevation-z]) {
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
@@ -2157,21 +2159,21 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-drawer-container {
-  background-color: #303030;
+  background-color: $background-color;
   color: #fff
 }
 
 .mat-drawer {
-  background-color: #424242;
+  background-color: $secondary-background-color;
   color: #fff
 }
 
 .mat-drawer.mat-drawer-push {
-  background-color: #424242
+  background-color: $secondary-background-color
 }
 
 .mat-drawer:not(.mat-drawer-side) {
-  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12)
 }
 
 .mat-drawer-side {
@@ -2238,7 +2240,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-slide-toggle-thumb {
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
   background-color: #bdbdbd
 }
 
@@ -2392,7 +2394,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-stepper-horizontal, .mat-stepper-vertical {
-  background-color: #424242
+  background-color: $secondary-background-color
 }
 
 .mat-stepper-vertical-line::before {
@@ -2633,7 +2635,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 }
 
 .mat-tree {
-  background: #424242
+  background: $secondary-background-color
 }
 
 .mat-tree-node, .mat-nested-tree-node {
@@ -2647,7 +2649,7 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 .mat-snack-bar-container {
   color: rgba(0, 0, 0, .87);
   background: #fafafa;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12)
 }
 
 .mat-simple-snackbar-action {

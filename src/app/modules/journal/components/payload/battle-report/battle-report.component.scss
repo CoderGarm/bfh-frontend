@@ -1,10 +1,11 @@
 @import "src/app/modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 @import "src/styles/variables";
 
-.info-div {
+.battle-report-info-div {
   position: fixed;
   left: 25%;
   right: 12%;
+  z-index: 1;
 }
 
 .player-control {
@@ -13,6 +14,7 @@
   left: 30%;
   right: 15%;
   bottom: 25px;
+  height: 100px;
 }
 
 .center {

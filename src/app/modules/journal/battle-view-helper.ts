@@ -35,6 +35,7 @@ export class BattleViewHelper extends BasicViewHelper {
      * The multiplier is just to make all relevant distances and positions more visible.
      */
     private readonly POSITION_MULTIPLIER = 20;
+    private readonly BATTLE_COORDINATE_SYSTEM_RADIUS = 50;
 
     battleReport?: BattleReport;
     combatArenaData?: CombatArenaData;
@@ -700,7 +701,7 @@ export class BattleViewHelper extends BasicViewHelper {
             // translate the center coords basically to the planetary center*
             let c = orbit.orbit;
             if (!c) {
-                this.setViewBox();
+                this.setViewBox(undefined, 0.7);
                 return;
             }
             if (!!this.orbitForViewBox && this.isSameOrbit(this.orbitForViewBox, c)) {
@@ -733,11 +734,11 @@ export class BattleViewHelper extends BasicViewHelper {
 
         let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
         system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
-        let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), system.planets);
+        let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
 
         this.orbits = orbitDefinitions.map(od => od.orbit);
         this.sortByOrbit();
-        this.createCoordinateCross();
+        this.createPolarCoordinateSystem();
 
         this.hyperLimit = this.calculateHyperLimit(system);
         this.canvas!
@@ -764,9 +765,19 @@ export class BattleViewHelper extends BasicViewHelper {
                 .addClass("orbit")
                 .radius(radius);
 
+            this.canvas!
+                .circle()
+                .x(0)
+                .y(0)
+                .id("star-of-" + system.idStarSystem)
+                .fill("yellow")
+                .addClass("star")
+                .radius(BasicViewHelper.STAR_RADIUS);
+
             let multiplier = this.getScalingMultiplierForOrbit(orbit);
 
-            this.createCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50 * multiplier, orbitID);
+            //this.createCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50 * multiplier, orbitID);
+            this.createLocalPolarCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), this.BATTLE_COORDINATE_SYSTEM_RADIUS, orbitID);
 
             this.orbitsById.set(orbitID, orbit);
             this.celestialAreas.push(new CelestialAreaDefinition(orbit, orbitID, 50));

@@ -197,12 +197,12 @@ export class SystemViewHelper extends BasicViewHelper {
 
         let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
         system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
-        let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), system.planets);
+        let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
 
         this.orbits = orbitDefinitions.map(od => od.orbit);
         this.sortByOrbit();
-        this.createCoordinateCross();
-        this.setViewBox();
+        this.createPolarCoordinateSystem();
+        this.setViewBox(undefined, 0.7);
 
         this.hyperLimit = this.calculateHyperLimit(system);
         this.canvas!
@@ -214,9 +214,17 @@ export class SystemViewHelper extends BasicViewHelper {
             .addClass("hyper-limit")
             .radius(this.hyperLimit);
 
+        this.canvas!
+            .circle()
+            .x(0)
+            .y(0)
+            .id("star-of-" + system.idStarSystem)
+            .fill("yellow")
+            .addClass("star")
+            .radius(BasicViewHelper.STAR_RADIUS);
+
         orbitDefinitions.forEach(orbitDefinition => {
             const orbit = orbitDefinition.orbit;
-            let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
             let radius: number = BasicViewHelper.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
 
@@ -229,9 +237,10 @@ export class SystemViewHelper extends BasicViewHelper {
                 .addClass("orbit")
                 .radius(radius);
 
-            this.createCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50, orbitID);
+            //this.createCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50, orbitID);
+            this.createLocalPolarCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50, orbitID);
 
-            this.drawOrbit(orbitID, orbit, orbitDefinition, celestialBodyID, callbackFunctionForClick);
+            this.drawCelestial(orbitDefinition, callbackFunctionForClick);
         });
     }
 }

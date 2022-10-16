@@ -18,7 +18,7 @@ export class BasicViewHelper extends SubscriptionManager {
     public static readonly PAN_ZOOM_OPTIONS = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
         zoomFactor: 0.3, // zooming per wheel tick
-        zoomMin: 0.2, // zoom max out to display the full svg payload as 20% of the screen
+        zoomMin: 0.1, // zoom max out to display the full svg payload as 20% of the screen
         zoomMax: 4 // zoom max 4 times in
     };
     public readonly STANDARD_METRIC;
@@ -40,6 +40,9 @@ export class BasicViewHelper extends SubscriptionManager {
     protected readonly COLONIZED_BY_OTHERS_COLOR = "#6f1585";
     protected readonly COLONIZABLE_SYSTEM_MARKER_COLOR = "#306f91";
 
+    protected static readonly PLANET_RADIUS = 5;
+    protected static readonly STAR_RADIUS = 15;
+
     protected orbits?: Orbit[];
 
     protected smallestXOrbit?: Orbit;
@@ -58,6 +61,8 @@ export class BasicViewHelper extends SubscriptionManager {
     protected WARSHIP_SELECTOR_ID_PREFIX: string = Math.random() + "-warship";
     protected MISSILE_SALVO_SELECTOR_ID_PREFIX: string = Math.random() + "-missile-salvo";
 
+    private readonly INVISIBLE_CLASS = "invisible";
+
     /**
      * the radius of the hyper limit
      * @private
@@ -66,7 +71,13 @@ export class BasicViewHelper extends SubscriptionManager {
 
     protected celestialBodyById: Map<String, Orbit> = new Map<String, Orbit>();
     protected orbitsById: Map<String, Orbit> = new Map<String, Orbit>();
+    protected orbitTextsById: Map<String, Text> = new Map<String, Text>();
+
     protected fleetsById: Map<String, Fleet> = new Map<String, Fleet>();
+    protected fleetsByText: Map<Text, Fleet> = new Map<Text, Fleet>();
+    protected fleetTextsById: Map<String, Text> = new Map<String, Text>();
+    protected fleetOwnersById: Map<String, UserJson> = new Map<String, UserJson>();
+    protected fleetOwnerByText: Map<Text, UserJson> = new Map<Text, UserJson>();
 
     protected warshipsById: Map<String, WarShip> = new Map<String, WarShip>();
     protected warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
@@ -74,12 +85,9 @@ export class BasicViewHelper extends SubscriptionManager {
     protected warshipTextsById: Map<String, Text> = new Map<String, Text>();
 
     protected missileSalvoPolygonsById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
-    protected fleetsByText: Map<Text, Fleet> = new Map<Text, Fleet>();
-    protected fleetTextsById: Map<String, Text> = new Map<String, Text>();
-    protected fleetOwnersById: Map<String, UserJson> = new Map<String, UserJson>();
-    protected fleetOwnerByText: Map<Text, UserJson> = new Map<Text, UserJson>();
     protected restrictedAreasByOrbitId: Map<String, RestrictedFleetArea[]> = new Map<String, RestrictedFleetArea[]>();
     protected groupsByID: Map<String, G> = new Map<String, G>();
+
     protected areaDefinitions: AreaDefinition[] = [];
     protected celestialAreas: CelestialAreaDefinition[] = [];
 
@@ -116,6 +124,13 @@ export class BasicViewHelper extends SubscriptionManager {
             this.restrictedAreasByOrbitId.clear();
             this.groupsByID.clear();
             this.warshipPolygonsById.clear();
+            this.orbitTextsById.clear();
+            this.fleetsByText.clear();
+            this.fleetOwnersById.clear();
+            this.warshipsById.clear();
+            this.warshipsByText.clear();
+            this.warshipTextsById.clear();
+            this.missileSalvoPolygonsById.clear();
             this.areaDefinitions = [];
             this.celestialAreas = [];
         }
@@ -135,11 +150,16 @@ export class BasicViewHelper extends SubscriptionManager {
         }
     }
 
-    protected convertToStandardMetric(distance: Distance) {
+    protected convertToStandardMetric(distance: Distance): number {
         return NavigationCalculator.convertDistanceToMetric(distance, this.standardDistanceMetric);
     }
 
-    protected drawOrbit(orbitID: string, orbit: Orbit, orbitDefinition: OrbitDefinition, celestialBodyID: string, callbackFunctionForClick: Function | null) {
+    protected drawCelestial(orbitDefinition: OrbitDefinition,
+                            callbackFunctionForClick: Function | null) {
+        const orbit: Orbit = orbitDefinition.orbit;
+        let orbitID = this.getOrbitID(orbit);
+        let celestialBodyID = this.getCelestialBodyID(orbit);
+
         this.orbitsById.set(orbitID, orbit);
         this.celestialAreas.push(new CelestialAreaDefinition(orbit, orbitID, 50));
 
@@ -154,7 +174,6 @@ export class BasicViewHelper extends SubscriptionManager {
             let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
 
             let arr: PathArrayAlias = [p1, p2];
-            // todo remember the path?
             this.canvas!.path(arr)
                 .fill("none")
                 .stroke({color: this.COLONIZABLE_SYSTEM_MARKER_COLOR, width: 1})
@@ -168,16 +187,55 @@ export class BasicViewHelper extends SubscriptionManager {
             color = this.COLONIZED_BY_OTHERS_COLOR;
         }
 
-        this.canvas!
+        const circle = this.canvas!
             .circle()
             .x(this.convertToStandardMetric(orbit.xCoordinate))
             .y(this.convertToStandardMetric(orbit.yCoordinate))
-            .radius(5)
+            .radius(BasicViewHelper.PLANET_RADIUS)
             .id(celestialBodyID)
             .fill(color)
-            .click(callbackFunctionForClick);
+            .click(callbackFunctionForClick)
+            .mouseover(this.mouseoverForCelestial)
+            .mouseleave(this.mouseleaveForCelestial);
 
+        let text: Text = new Text()
+            .text(orbitDefinition.name)
+            .x(circle.cx() + 10)
+            .y(circle.cy() - 20)
+            .addClass("celestial-text");
+
+        if (!orbitDefinition.isColonizedByLoggedInUser && !orbitDefinition.isColonizedByOtherUser) {
+            // add only texts which must be switched
+            this.orbitTextsById.set(orbitID, text);
+        } else {
+            // display constantly
+            this.canvas!.add(text);
+        }
         this.celestialBodyById.set(celestialBodyID, orbit);
+    }
+
+    /**
+     * call back function for hovering over a celestial
+     *
+     * @param event
+     */
+    private mouseoverForCelestial = (event: PointerEvent) => {
+        const orbitText = this.getOrbitTextByEvent(event);
+        if (!!orbitText) {
+            this.canvas?.add(orbitText)
+        }
+    }
+
+    /**
+     * call back function for hovering over a celestial
+     *
+     * @param event
+     */
+    private mouseleaveForCelestial = (event: PointerEvent) => {
+        const orbitText = this.getOrbitTextByEvent(event);
+        if (!!orbitText) {
+            this.canvas?.removeElement(orbitText)
+        }
     }
 
     /**
@@ -191,23 +249,98 @@ export class BasicViewHelper extends SubscriptionManager {
         return Math.sqrt(Math.pow(firstCoordinate, 2) + Math.pow(secondCoordinate, 2));
     }
 
-    /**
-     * creates the coordinate axis cross
-     *
-     * @private
-     */
-    protected createCoordinateCross() {
-        let minXCoord = this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate);
-        let maxXCoord = this.convertToStandardMetric(this.biggestXOrbit!.xCoordinate);
-        let x = Math.abs(minXCoord) < Math.abs(maxXCoord) ? Math.abs(maxXCoord) : Math.abs(minXCoord);
-        let minYCoord = this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate);
-        let maxYCoord = this.convertToStandardMetric(this.biggestYOrbit!.yCoordinate);
-        let y = Math.abs(minYCoord) < Math.abs(maxYCoord) ? Math.abs(maxYCoord) : Math.abs(minYCoord);
+    protected createPolarCoordinateSystem() {
+
+        // getting biggest, absolute coord because
+        let minXCoord = Math.abs(this.convertToStandardMetric(this.smallestXOrbit!.xCoordinate));
+        let maxXCoord = Math.abs(this.convertToStandardMetric(this.biggestXOrbit!.xCoordinate));
+        let x = Math.max(minXCoord, maxXCoord);
+        let minYCoord = Math.abs(this.convertToStandardMetric(this.smallestYOrbit!.yCoordinate));
+        let maxYCoord = Math.abs(this.convertToStandardMetric(this.biggestYOrbit!.yCoordinate));
+        let y = Math.max(minYCoord, maxYCoord);
 
         this.radiusOfCoordinateCross = BasicViewHelper.calculateDistance(x, y);
         this.radiusOfCoordinateCross *= 1.1;
 
-        this.createCoordinateSystem(0, 0, this.radiusOfCoordinateCross, "main");
+        this.createLocalPolarCoordinateSystem(0, 0, this.radiusOfCoordinateCross, undefined);
+
+        /*let steps = 6;
+        const radiusSteps = this.radiusOfCoordinateCross / steps;
+        for (let i = 0; i < steps; i++) {
+            this.canvas!
+                .circle()
+                .x(0)
+                .y(0)
+                .fill("none")
+                .id("coordCross" + i)
+                .addClass("coordCross")
+                .radius(radiusSteps * i);
+        }
+        const degree = 12;
+        for (let j = 1; j <= 30; j++) {
+            const angle = j * degree;
+            const x = this.radiusOfCoordinateCross * Math.cos(angle * Math.PI / 180);
+            const y = this.radiusOfCoordinateCross * Math.sin(angle * Math.PI / 180);
+            const points: ArrayXY[] = [[0, 0], [x, y]];
+            this.canvas!
+                .line(points)
+                .addClass("coordCross")
+        }
+                */
+    }
+
+    protected createLocalPolarCoordinateSystem(xBase: number, yBase: number, radius: number, idPrefix?: string) {
+        let steps = 6;
+        const radiusSteps = radius / steps;
+        for (let i = 0; i < steps; i++) {
+            this.canvas!
+                .circle()
+                .x(xBase)
+                .y(yBase)
+                .fill("none")
+                .id(idPrefix + "-coordCross" + i)
+                .addClass("coordCross")
+                .radius(radiusSteps * i);
+        }
+        const degree = 12;
+        for (let j = 1; j <= 30; j++) {
+            const angle = j * degree;
+            const x = radius * Math.cos(angle * Math.PI / 180);
+            const y = radius * Math.sin(angle * Math.PI / 180);
+            const points: ArrayXY[] = [[xBase, yBase], [xBase + x, yBase + y]];
+            this.canvas!
+                .line(points)
+                .id(idPrefix + "-coordCross-line" + j)
+                .addClass("coordCross")
+        }
+    }
+
+    /**
+     * todo some kind of art - could be accidentally very useful for wormhole junction resonance zones
+     */
+    protected drawResonanceZone(xBase: number, yBase: number, radius: number, idPrefix?: string) {
+        let steps = 6;
+        const radiusSteps = radius / steps;
+        for (let i = 0; i < steps; i++) {
+            this.canvas!
+                .circle()
+                .x(xBase)
+                .y(yBase)
+                .fill("none")
+                .id("coordCross" + i)
+                .addClass("coordCross")
+                .radius(radiusSteps * i);
+        }
+        const degree = 12;
+        for (let j = 1; j <= 30; j++) {
+            const angle = j * degree;
+            const x = radius * Math.cos(angle * Math.PI / 180);
+            const y = radius * Math.sin(angle * Math.PI / 180);
+            const points: ArrayXY[] = [[xBase, yBase], [x, y]];
+            this.canvas!
+                .line(points)
+                .addClass("coordCross")
+        }
     }
 
     /**
@@ -308,15 +441,22 @@ export class BasicViewHelper extends SubscriptionManager {
     /**
      * returns the view box string for the svg
      */
-    public setViewBox() {
+    public setViewBox(orbit: Orbit | undefined, factor: number) {
         let viewBoxDef: string = "0 0 0 0";
         if (!!this.radiusOfCoordinateCross) {
-
-            let width = this.radiusOfCoordinateCross! * 0.9;
-            let height = this.radiusOfCoordinateCross! * 0.9;
+            let width = this.radiusOfCoordinateCross! * factor;
+            let height = this.radiusOfCoordinateCross! * factor;
             let startX = -width;
             let startY = -height / this.aspectRatio;
-            viewBoxDef = startX + " " + startY + " " + width * 2 + " " + height * 2;
+
+            let xOffset = 0;
+            let yOffset = 0;
+            if (!!orbit) {
+                xOffset = this.convertToStandardMetric(orbit?.xCoordinate);
+                yOffset = this.convertToStandardMetric(orbit?.yCoordinate)
+            }
+
+            viewBoxDef = (startX + xOffset) + " " + (startY + yOffset) + " " + width * 2 + " " + height * 2;
         }
         this.canvas!.viewbox(viewBoxDef);
     }
@@ -593,6 +733,19 @@ export class BasicViewHelper extends SubscriptionManager {
     protected getOrbitOfCelestialByEvent(event: PointerEvent | MouseEvent): Orbit | undefined {
         let id = this.getIdFromEvent(event);
         return this.getOrbitOfCelestialByID(id);
+    }
+
+    protected getOrbitTextByEvent(event: PointerEvent | MouseEvent): Text | undefined {
+        const byEvent = this.getOrbitOfCelestialByEvent(event);
+        if (!byEvent) {
+            return undefined;
+        }
+        const orbitID = this.getOrbitID(byEvent);
+        return this.getOrbitTextByID(orbitID);
+    }
+
+    protected getOrbitTextByID(id: string): Text | undefined {
+        return this.orbitTextsById.get(id);
     }
 
     protected getOwnerByID(id: string): UserJson | undefined {

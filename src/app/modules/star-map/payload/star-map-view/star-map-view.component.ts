@@ -116,7 +116,6 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
      */
     private clickEventForPlanet = (event: PointerEvent) => {
         let orbitOfCelestialByEvent: Orbit | undefined = this.getOrbitOfCelestialByEvent(event);
-        console.log(orbitOfCelestialByEvent);
     }
 
     /**
@@ -180,7 +179,6 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
 
         const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
             if (result) {
                 let userID = this.tokenStorage.getUserID();
                 if (!userID) {
@@ -220,7 +218,6 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
 
         const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
             if (result) {
                 let userID = this.tokenStorage.getUserID();
                 if (!userID) {
@@ -290,7 +287,6 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
             dialogConfig.data = dialogData;
             const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
             dialogRef.afterClosed().subscribe(result => {
-                console.log(`Dialog result: ${result}`);
             });
             this.fleetInfoDialog = dialogRef;
         }

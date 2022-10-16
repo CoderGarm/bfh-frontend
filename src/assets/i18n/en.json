@@ -149,6 +149,11 @@
     },
     "hull-capacities": "Construction capacities"
   },
+  "star-map": {
+    "universe-map": {
+      "loading-spinner-message": "Gather information for star map..."
+    }
+  },
   "tab": {
     "admin": {
       "do-tick": "Tick",
@@ -193,8 +198,8 @@
       }
     },
     "star-map": {
-      "star-map": "Star map",
-      "universe-map": "Universe map"
+      "star-map": "Star system map",
+      "universe-map": "Star map"
     }
   },
   "tick": {

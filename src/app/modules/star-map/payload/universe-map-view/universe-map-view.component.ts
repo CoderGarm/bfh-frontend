@@ -12,6 +12,8 @@ import {InterstellarFleetDisplayComponent} from "../../../display-elements/inter
 import {InterstellarFleetMovementEditComponent} from "../../../display-elements/interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component";
 import {InterstellarViewHelper} from "../interstellar-view-helper";
 import {BasicViewHelper} from "../../../../basic-view-helper";
+import {SpinnerService} from "../../../../services/spinner.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -43,8 +45,12 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     constructor(private starMapApi: StarMapApiService,
                 private fleetApi: FleetApiService,
                 tokenStorage: TokenStorage,
-                private dialog: MatDialog) {
+                private dialog: MatDialog,
+                private spinnerService: SpinnerService,
+                private translate: TranslateService) {
         super(tokenStorage);
+        // just make sure that the key exists
+        this.translate.get('star-map.universe-map.loading-spinner-message');
     }
 
     ngAfterViewInit(): void {
@@ -53,12 +59,13 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     }
 
     private createUniverseMap() {
+        this.spinnerService.activateSpinner('star-map.universe-map.loading-spinner-message');
         let outerSub = this.starMapApi.getStarSystems().subscribe(resp => {
             this.knownStarSystems = resp;
 
             this.clearCanvas();
             this.knownStarSystems.forEach((system) => this.knownStarSystemsByOrbit.set(system.orbit, system));
-            let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForUniverse(this.tokenStorage.getUserID(), this.knownStarSystems);
+            let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), this.knownStarSystems);
             this.setOrbits(this.canvas!, orbitDefinitions, this.clickEventForStarSystem);
             let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
                 this.fleetDistributionPerUsers = resp;
@@ -91,6 +98,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 this.setFleetsInInterstellarMotion(this.canvas!, fleetsInMotion, this.dblClickForMovingFleet);
             });
             this.subscriptions.push(sub);
+            this.spinnerService.deactivateSpinner();
         });
         this.subscriptions.push(outerSub);
     }
@@ -125,7 +133,6 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         dialogConfig.data = dialogData;
         let dialogRef: MatDialogRef<any> = this.dialog.open(ConfirmDialogComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
         });
         this.userFleetInfoDialog = dialogRef;
     }
@@ -174,7 +181,6 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
         if (!!dialogRef) {
             dialogRef.afterClosed().subscribe(result => {
-                console.log(`Dialog result: ${result}`);
             });
             this.userFleetInfoDialog = dialogRef;
         }

@@ -218,7 +218,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
             if (!fleetOwner) {
                 return;
             }
-            // detect if dragged fleet is inside of a celestial body areaF
+            // detect if dragged fleet is inside a celestial body areaF
             let celestialAreas = this.celestialAreas.filter(a => a.isInside(group!));
             if (celestialAreas.length > 0) {
                 let detectedMoveTarget = celestialAreas[0];
@@ -242,16 +242,11 @@ export class InterstellarViewHelper extends BasicViewHelper {
         this.setCanvas(canvas);
         this.orbits = orbits.map(od => od.orbit);
         this.sortByOrbit();
-        this.createCoordinateCross();
-        this.setViewBox();
+        this.createPolarCoordinateSystem();
+        const homeDef = orbits.filter(od => od.isMain)[0];
+        this.setViewBox(homeDef.orbit, 0.2);
 
-        orbits.forEach(orbitDefinition => {
-            const orbit = orbitDefinition.orbit;
-            let celestialBodyID = this.getCelestialBodyID(orbit);
-            let orbitID = this.getOrbitID(orbit);
-
-            this.drawOrbit(orbitID, orbit, orbitDefinition, celestialBodyID, callbackFunctionForClick);
-        });
+        orbits.forEach(orbitDefinition => this.drawCelestial(orbitDefinition, callbackFunctionForClick));
     }
 
 

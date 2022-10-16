@@ -10,5 +10,40 @@
 svg {
   height: 100%;
   width: 100%;
+  contain: paint;
 }
 
+.coordCross {
+  stroke: cadetblue;
+  stroke-width: 1;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+}
+
+.star {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+.roundCap {
+  stroke-linecap: round;
+}
+
+.orbit {
+  stroke: cadetblue;
+  stroke-width: 1;
+}
+
+.hyper-limit {
+  stroke: darkblue;
+  stroke-width: 1;
+}
+
+.celestial-text {
+  font-size: 10px;
+  fill: cadetblue;
+}
+
+.invisible {
+  visibility: hidden;
+}

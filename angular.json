@@ -31,7 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles/purple-green.css",
+              "src/styles/purple-green.scss",
               "src/styles.scss"
             ],
             "scripts": []
@@ -125,7 +125,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles/purple-green.css",
+              "src/styles/purple-green.scss",
               "src/styles.scss"
             ],
             "scripts": []

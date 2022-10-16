@@ -15,8 +15,16 @@ $error-color: #de2839;
 $error-text-color: $error-color;
 
 /* Background colors */
-$background-color: #383838;
-$secondary-background-color: #3b3b3b;
+$purple-green-background-color: #383838;
+$new-background-color: #3E444C;
+
+$purple-green-secondary-background-color: #3b3b3b;
+$new-secondary-background-color: #2E3338;
+
+$background-color: $purple-green-background-color;
+$secondary-background-color: $purple-green-secondary-background-color;
+// todo define useful color set
+
 $tertiary-background-color: hsla(214, 90%, 52%, 0.1);
 $disabled-color: rgba(255, 255, 255, 0.3);
 $element-background-color: rgb(66, 66, 66);

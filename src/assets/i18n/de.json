@@ -149,6 +149,11 @@
     },
     "hull-capacities": "Rumpfkapazität"
   },
+  "star-map": {
+    "universe-map": {
+      "loading-spinner-message": "Lade Sternenkarte..."
+    }
+  },
   "tab": {
     "admin": {
       "do-tick": "Tick",
@@ -193,8 +198,8 @@
       }
     },
     "star-map": {
-      "star-map": "Sternenkarte",
-      "universe-map": "Karte des Universum"
+      "star-map": "Karte des Sternensystems",
+      "universe-map": "Sternenkarte"
     }
   },
   "tick": {
