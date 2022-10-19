@@ -454,7 +454,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         let levelComplement = '';
         if (construction.level > 1) {
             let tr = this.translations.get(this.hasConstruction);
-            levelComplement = tr + ' ' + construction.level;
+            levelComplement = tr + ' ' + (construction.level - 1);
         } else {
             let tr = this.translations.get(this.newConstruction);
             levelComplement = tr!;
