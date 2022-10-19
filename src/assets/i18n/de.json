@@ -17,6 +17,13 @@
   "chats": {
     "title": "Nachrichten"
   },
+  "expansion": {
+    "organize": {
+      "spinner-message": {
+        "wait": "Lade Sternensysteme"
+      }
+    }
+  },
   "filter": "Filter",
   "fleet": {
     "composition": {

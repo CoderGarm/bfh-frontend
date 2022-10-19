@@ -1,4 +1,11 @@
-<div class="holder">
+<div class="spacer-left">
+
+    <app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit"
+                                          [costs]="costs"></app-resource-deposit-overlay-display>
+</div>
+
+
+<div class="holder spacer-left">
     <mat-checkbox #onlyKnownSystems (change)="applyOnlyKnownFilter($event.checked)">Show only known systems</mat-checkbox>
     <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="max-width">
         <ng-container matColumnDef="Star system">
@@ -70,9 +77,8 @@
                                         {{planet.name}} is already colonized
                                     </div>
                                     <div [hidden]="!!checkIfPlanetIsAlreadyColonized(planet) || checkIfColonizationIsInProgress(colo, planet)" class="bordered">
-                                        Costs to colonize the planet:
-                                        {{planet.name}}: {{getCostsToColonize(colo, planet)}}
-                                        <button mat-raised-button color="secondary" (click)="colonizePlanet(planet)">Colonize</button>
+                                        <mat-checkbox (change)="addToCosts($event.checked,colo, planet)" class="payBox">Show costs</mat-checkbox>
+                                        <button mat-raised-button color="secondary" (click)="colonizePlanet(planet)" [disabled]="!isPayPossible(colo, planet)">Colonize</button>
                                     </div>
                                     <div [hidden]="!checkIfColonizationIsInProgress(colo, planet)" class="bordered">
                                         {{planet.name}} has a colonization in progress - Ticks left: {{getTicksLeft(colo, planet)}}

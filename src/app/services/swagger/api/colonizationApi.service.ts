@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { Colonization } from '../model/colonization';
 import { FrontendError } from '../model/frontendError';
 import { Planet } from '../model/planet';
+import { ResourceDeposit } from '../model/resourceDeposit';
 import { StarSystem } from '../model/starSystem';
 import { StarSystemColonization } from '../model/starSystemColonization';
 
@@ -68,9 +69,9 @@ export class ColonizationApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<StarSystemColonization>;
+    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystemColonization>>;
+    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystemColonization>>;
     public buyInformationForSystem(body: StarSystem, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -102,9 +103,57 @@ export class ColonizationApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/colonization/buy/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<StarSystemColonization>('post',`${this.basePath}/api/private/colonization/buy/${encodeURIComponent(String(idUser))}`,
             {
                 body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs to colonize the targeted planet.
+     * 
+     * @param planet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getColonizationCosts(planet: Planet, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getColonizationCosts(planet: Planet, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getColonizationCosts(planet: Planet, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getColonizationCosts(planet: Planet, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (planet === null || planet === undefined) {
+            throw new Error('Required parameter planet was null or undefined when calling getColonizationCosts.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (planet !== undefined && planet !== null) {
+            queryParameters = queryParameters.set('planet', <any>planet);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/colonization/costs`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

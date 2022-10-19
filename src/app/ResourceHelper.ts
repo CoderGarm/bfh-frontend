@@ -1,9 +1,9 @@
-import {EResourceType, ResourceDeposit} from "./services/swagger";
+import {EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "./services/swagger";
 
 export class ResourceHelper {
 
     /**
-     * Calculates if you can pay the bill
+     * Calculates if you can pay the bill.
      *
      * @param costs the costs
      * @param deposit the account which must pay
@@ -52,5 +52,86 @@ export class ResourceHelper {
             }
         });
         return canPay;
+    }
+
+    /**
+     * Adds the payment to the given bill.
+     *
+     * @param costs the payment
+     * @param bill the bill
+     */
+    static addToBill(costs: ResourceDeposit, bill: ResourceDeposit) {
+
+        costs.resources.forEach(costAmount => {
+            let resourceType = costAmount.resourceType;
+            if (resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
+                bill.resources.forEach(billAmount => {
+                    if (billAmount.resourceType.typeName === resourceType.typeName) {
+                        let toPay = costAmount.amount;
+                        billAmount.amount += toPay;
+                    }
+                });
+            }
+        });
+        costs.humanResources.forEach(costAmount => {
+            let resourceType = costAmount.resourceType;
+            bill.humanResources.forEach(billAmount => {
+                if (billAmount.resourceType.typeName === resourceType.typeName) {
+                    let toPay = costAmount.amount;
+                    billAmount.amount += toPay;
+                }
+            });
+        });
+    }
+
+    /**
+     * Reduces the payment from the given bill.
+     *
+     * @param costs the payment
+     * @param bill the bill
+     */
+    static reduceTheBill(costs: ResourceDeposit, bill: ResourceDeposit) {
+
+        costs.resources.forEach(costAmount => {
+            let resourceType = costAmount.resourceType;
+            if (resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
+                bill.resources.forEach(billAmount => {
+                    if (billAmount.resourceType.typeName === resourceType.typeName) {
+                        let toPay = costAmount.amount;
+                        billAmount.amount -= toPay;
+                    }
+                });
+            }
+        });
+        costs.humanResources.forEach(costAmount => {
+            let resourceType = costAmount.resourceType;
+            bill.humanResources.forEach(billAmount => {
+                if (billAmount.resourceType.typeName === resourceType.typeName) {
+                    let toPay = costAmount.amount;
+                    billAmount.amount -= toPay;
+                }
+            });
+        });
+    }
+
+    static getBlankCosts(resourceTypes: EResourceType[], educationTypes: EEducationType[]) {
+        const costs: ResourceDeposit = {
+            resources: resourceTypes.map(type => {
+                const am: ResourceAmount = {
+                    resourceType: type,
+                    amount: 0
+                }
+                return am;
+            }),
+            subType: {typeName: 'COSTS', calculationType: {typeName: 'SUBTRACT', multiplier: -1}},
+            humanResources: educationTypes.map(type => {
+                const am: HumanResourceAmount = {
+                    resourceType: type,
+                    amount: 0
+                }
+                return am;
+            })
+        };
+        return costs;
     }
 }

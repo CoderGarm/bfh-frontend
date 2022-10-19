@@ -17,6 +17,13 @@
   "chats": {
     "title": "Chats"
   },
+  "expansion": {
+    "organize": {
+      "spinner-message": {
+        "wait": "Gathering star systems..."
+      }
+    }
+  },
   "filter": "Filter",
   "fleet": {
     "composition": {

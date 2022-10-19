@@ -11,6 +11,7 @@
  */
 import { Colonization } from './colonization';
 import { Distance } from './distance';
+import { ResourceDeposit } from './resourceDeposit';
 import { StarSystem } from './starSystem';
 
 /**
@@ -29,7 +30,7 @@ export interface StarSystemColonization {
     /**
      * The costs to colonize the planet by idPlanet.
      */
-    costsToColonization: { [key: string]: string; };
+    costsToColonization: { [key: string]: ResourceDeposit; };
     /**
      * The costs to colonize the planet by idPlanet.
      */

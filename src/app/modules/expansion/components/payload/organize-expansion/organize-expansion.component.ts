@@ -1,5 +1,17 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {ColonizationApiService, MiningFactors, Orbit, Planet, ResourcesApiService, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
+import {
+    ColonizationApiService,
+    EEducationType,
+    EResourceType,
+    MiningFactors,
+    Orbit,
+    Planet,
+    PlanetApiService,
+    ResourceDeposit,
+    ResourcesApiService,
+    StarSystem,
+    StarSystemColonization
+} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {MatTableDataSource} from "@angular/material/table";
@@ -7,6 +19,9 @@ import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ResourceHelper} from "../../../../../ResourceHelper";
+import {SpinnerService} from "../../../../../services/spinner.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-organize-expansion',
@@ -39,6 +54,13 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
      */
     miningFactors: Map<Number, MiningFactors> = new Map<Number, MiningFactors>();
 
+    private resourceTypes?: EResourceType[];
+    private educationTypes?: EEducationType[];
+
+    private main?: Planet;
+    resourceDeposit?: ResourceDeposit;
+    costs?: ResourceDeposit;
+
     showOnlyKnownStarSystems: boolean = false;
 
     q1: boolean = true;
@@ -52,9 +74,15 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
 
     constructor(private tokenStorage: TokenStorage,
                 private colonizationApi: ColonizationApiService,
-                private resourceApi: ResourcesApiService) {
+                private resourceApi: ResourcesApiService,
+                private planetApi: PlanetApiService,
+                private spinnerService: SpinnerService,
+                public translate: TranslateService) {
         super();
         this.defineFilterPredicate();
+
+        // just make sure that the key exists
+        this.translate.get('expansion.organize.spinner-message.wait');
     }
 
     ngAfterViewInit(): void {
@@ -76,6 +104,27 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
                 }
             };
         }
+        let sub = this.planetApi.getMainPlanet().subscribe(resp => {
+            this.main = resp;
+            sub = this.resourceApi.getResourceDeposit(this.main.idPlanet)
+                .subscribe(resp => this.resourceDeposit = resp);
+            this.subscriptions.push(sub);
+        });
+        this.subscriptions.push(sub);
+        sub = this.resourceApi.getEResourceTypes().subscribe(resp => {
+            this.resourceTypes = resp;
+            if (!!this.resourceTypes && !!this.educationTypes) {
+                this.costs = ResourceHelper.getBlankCosts(this.resourceTypes, this.educationTypes);
+            }
+        });
+        this.subscriptions.push(sub);
+        sub = this.resourceApi.getEEducationTypes().subscribe(resp => {
+            this.educationTypes = resp;
+            if (!!this.resourceTypes && !!this.educationTypes) {
+                this.costs = ResourceHelper.getBlankCosts(this.resourceTypes, this.educationTypes);
+            }
+        });
+        this.subscriptions.push(sub);
     }
 
     /**
@@ -83,6 +132,7 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
      * @private
      */
     private fetchData() {
+        this.spinnerService.activateSpinner('expansion.organize.spinner-message.wait');
         let userID = this.tokenStorage.getUserID();
         if (!!userID) {
             let sub = this.colonizationApi.getKnownStarSystemsForUser(userID)
@@ -99,6 +149,7 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
                 .subscribe(resp => {
                     this.starSystems = this.starSystems.concat(resp);
                     this.dataSource.data = this.starSystems;
+                    this.spinnerService.deactivateSpinner();
                 });
             this.subscriptions.push(sub);
         }
@@ -200,24 +251,6 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
     }
 
     /**
-     * returns the input as a boolean
-     * @param value
-     */
-    getBoolean(value: any) {
-        switch (value) {
-            case true:
-            case "true":
-            case 1:
-            case "1":
-            case "on":
-            case "yes":
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    /**
      * returns the orbit's string representation
      * @param orbit
      */
@@ -264,13 +297,18 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
      * @param colo
      */
     buySystemsInformation(colo: StarSystemColonization) {
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID) {
-            let sub = this.colonizationApi.buyInformationForSystem(colo.starSystem, userID).subscribe(() => {
-                // noop todo check validation mechanism for paying
-            });
-            this.subscriptions.push(sub);
-        }
+        let sub = this.colonizationApi.buyInformationForSystem(colo.starSystem, this.tokenStorage.getUserID()).subscribe(resp => {
+            const item = this.dataSource.data.filter(value => value.starSystem.idStarSystem === resp.starSystem.idStarSystem)[0];
+            const index = this.dataSource.data.indexOf(item);
+            if (index !== -1) {
+                this.dataSource.data[index].distanceMap = resp.distanceMap;
+                this.dataSource.data[index].costsToBuyColonizationInformation = resp.costsToBuyColonizationInformation;
+                this.dataSource.data[index].costsToColonization = resp.costsToColonization;
+                this.dataSource.data[index].colonizationsByPlanet = resp.colonizationsByPlanet;
+                this.knownSystems.push(resp.starSystem);
+            }
+        });
+        this.subscriptions.push(sub);
     }
 
     /**
@@ -280,6 +318,28 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
      */
     getCostsToColonize(colo: StarSystemColonization, planet: Planet) {
         return colo.costsToColonization[planet.idPlanet];
+    }
+
+    isPayPossible(colo: StarSystemColonization, planet: Planet) {
+        if (!this.costs || !this.resourceDeposit) {
+            return false;
+        }
+        const costs = this.getCostsToColonize(colo, planet);
+        return ResourceHelper.canPayTheBill(costs, this.resourceDeposit);
+    }
+
+    addToCosts(checked: boolean, colo: StarSystemColonization, planet: Planet) {
+        if (!this.costs) {
+            return;
+        }
+        const costs = this.getCostsToColonize(colo, planet);
+        if (checked) {
+            // add costs
+            ResourceHelper.addToBill(costs, this.costs);
+        } else {
+            // remove costs
+            ResourceHelper.reduceTheBill(costs, this.costs);
+        }
     }
 
     /**

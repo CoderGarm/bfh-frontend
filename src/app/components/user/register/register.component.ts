@@ -53,7 +53,6 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
     }
 
     submitRegister(): void {
-        //this.inProgress = true;
         this.spinnerService.activateSpinner('register.spinner-message');
         let newUser: UserReq = {
             email: this.registerForm.controls.email.value,
