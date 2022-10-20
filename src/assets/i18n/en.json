@@ -164,6 +164,7 @@
   "tab": {
     "admin": {
       "do-tick": "Tick",
+      "statistics": "Statistics",
       "translations": "Translations"
     },
     "alliance": {

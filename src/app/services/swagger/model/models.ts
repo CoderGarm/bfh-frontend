@@ -31,6 +31,7 @@ export * from './eRefinementSequence';
 export * from './eResourceType';
 export * from './eStarClassType';
 export * from './electronicWarfare';
+export * from './fileUpload';
 export * from './fleet';
 export * from './fleetCapabilities';
 export * from './fleetDistributionPerUser';

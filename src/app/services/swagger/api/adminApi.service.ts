@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ApplicationInfo } from '../model/applicationInfo';
+import { FileUpload } from '../model/fileUpload';
 import { FrontendError } from '../model/frontendError';
 import { Tick } from '../model/tick';
 import { Translation } from '../model/translation';
@@ -87,6 +88,80 @@ export class AdminApiService {
         ];
 
         return this.httpClient.request<Tick>('get',`${this.basePath}/api/admin/admin/doTick`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all building data as csv file.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getBuildings(observe?: 'body', reportProgress?: boolean): Observable<FileUpload>;
+    public getBuildings(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileUpload>>;
+    public getBuildings(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileUpload>>;
+    public getBuildings(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<FileUpload>('get',`${this.basePath}/api/admin/admin/buildings`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all modules data as compressed csv file.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getModules(observe?: 'body', reportProgress?: boolean): Observable<Array<FileUpload>>;
+    public getModules(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FileUpload>>>;
+    public getModules(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FileUpload>>>;
+    public getModules(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<FileUpload>>('get',`${this.basePath}/api/admin/admin/modules`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

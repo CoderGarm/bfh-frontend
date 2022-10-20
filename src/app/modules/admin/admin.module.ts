@@ -4,13 +4,15 @@ import {DisplayElementsModule} from "../display-elements/display-elements.module
 import {AdminTabViewComponent} from './components/orga/admin-tab-view/admin-tab-view.component';
 import {TranslationComponent} from './components/payload/translation/translation.component';
 import {TranslationEditorComponent} from './components/payload/translation-editor/translation-editor.component';
+import {StatisticsComponent} from './components/payload/statistics/statistics.component';
 
 
 @NgModule({
     declarations: [
         AdminTabViewComponent,
         TranslationComponent,
-        TranslationEditorComponent
+        TranslationEditorComponent,
+        StatisticsComponent
     ],
     imports: [
         SharedModuleModule,
