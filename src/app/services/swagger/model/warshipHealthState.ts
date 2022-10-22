@@ -9,14 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { CapabilityValue } from './capabilityValue';
+import { SpacecraftCapabilities } from './spacecraftCapabilities';
 
 /**
  * .
  */
-export interface FleetCapabilities { 
-    /**
-     * The effect values per module type.
-     */
-    capabilities: Array<CapabilityValue>;
+export interface WarshipHealthState { 
+    spacecraftCapabilities: SpacecraftCapabilities;
 }

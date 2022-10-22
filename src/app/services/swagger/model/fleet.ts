@@ -9,9 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { FleetCapabilities } from './fleetCapabilities';
 import { FleetOrbit } from './fleetOrbit';
 import { Move } from './move';
+import { SpacecraftCapabilities } from './spacecraftCapabilities';
 import { UserJson } from './userJson';
 import { WarShip } from './warShip';
 
@@ -34,9 +34,9 @@ export interface Fleet {
     ships: Array<WarShip>;
     orbit?: FleetOrbit;
     move?: Move;
-    fleetCapabilities: FleetCapabilities;
     /**
      * If the fleet can run interstellar movements.
      */
     isFTLCapable: boolean;
+    fleetCapabilities?: SpacecraftCapabilities;
 }

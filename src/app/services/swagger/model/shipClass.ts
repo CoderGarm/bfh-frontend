@@ -13,10 +13,10 @@ import { AlignedFitting } from './alignedFitting';
 import { AmmunitionFitting } from './ammunitionFitting';
 import { Armor } from './armor';
 import { ElectronicWarfare } from './electronicWarfare';
-import { FleetCapabilities } from './fleetCapabilities';
 import { Hull } from './hull';
 import { Propulsion } from './propulsion';
 import { Sidewall } from './sidewall';
+import { SpacecraftCapabilities } from './spacecraftCapabilities';
 import { SupportFitting } from './supportFitting';
 import { UserJson } from './userJson';
 
@@ -62,5 +62,5 @@ export interface ShipClass {
      * The mark of this class.
      */
     mark: number;
-    shipClassCapabilities: FleetCapabilities;
+    shipClassCapabilities: SpacecraftCapabilities;
 }

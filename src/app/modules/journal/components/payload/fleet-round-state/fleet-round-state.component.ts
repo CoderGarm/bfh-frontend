@@ -1,11 +1,11 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {CapabilityValue, EHullType, Fleet, FleetCapabilities, HitLog, WarShip} from "../../../../../services/swagger";
+import {CapabilityValue, EHullType, Fleet, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
 import {CombatArenaData} from "../combat-arena/combat-arena.component";
 
 export interface StateByRound {
     round: number;
     warship: WarShip;
-    state: FleetCapabilities;
+    state: SpacecraftCapabilities;
     alive: boolean;
     fightingCapable: boolean;
 }

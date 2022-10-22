@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CapabilityValue, FleetCapabilities} from "../../../services/swagger";
+import {CapabilityValue, SpacecraftCapabilities} from "../../../services/swagger";
 import {StateByRound} from "../../journal/components/payload/fleet-round-state/fleet-round-state.component";
 
 @Component({
@@ -13,7 +13,7 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
      * the base data to display
      */
     @Input()
-    baseFleetCapabilities?: FleetCapabilities;
+    baseFleetCapabilities?: SpacecraftCapabilities;
 
     @Input()
     currentFleetState?: StateByRound;

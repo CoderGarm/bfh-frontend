@@ -4,6 +4,6 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <div class="side-nav-open-change-area" (mouseenter)="onSideNavToggle()" (mouseout)="onSideNavToggle()"></div>
-        <app-fleet-tab-view [selectedFleetInput]="selectedFleetInput"></app-fleet-tab-view>
+        <app-fleet-tab-view [fleet]="selectedFleetInput"></app-fleet-tab-view>
     </mat-sidenav-content>
 </mat-sidenav-container>

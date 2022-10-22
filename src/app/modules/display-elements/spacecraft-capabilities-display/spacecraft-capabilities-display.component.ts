@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CapabilityValue, FleetCapabilities} from "../../../services/swagger";
+import {CapabilityValue, EModuleType, Fleet, SpacecraftCapabilities} from "../../../services/swagger";
 
 @Component({
     selector: 'app-spacecraft-capabilities-display',
@@ -12,10 +12,10 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
      * the base data to display
      */
     @Input()
-    baseFleetCapabilities?: FleetCapabilities;
+    baseFleetCapabilities?: SpacecraftCapabilities;
 
     @Input()
-    currentFleetCapabilities?: FleetCapabilities;
+    currentFleetCapabilities?: SpacecraftCapabilities;
 
     @Input()
     ngClass: string = "";
@@ -74,5 +74,53 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
         }
 
         return currentValue + " / " + baseValue;
+    }
+
+    static getCurrentCaps(moduleTypes: EModuleType[], fleet?: Fleet) {
+        if (!fleet) {
+            return undefined;
+        }
+
+        const map = new Map<string, number>();
+        moduleTypes.forEach(m => map.set(m.typeName, 0));
+
+        const healthStates = fleet.ships.map(warship => {
+            let caps: SpacecraftCapabilities;
+            const healthState = warship.warshipHealthState;
+            if (!!healthState) {
+                caps = healthState.spacecraftCapabilities;
+            } else {
+                caps = warship.shipClass.shipClassCapabilities;
+            }
+            return caps;
+        });
+
+        healthStates.forEach(spacecraftCapabilities => {
+            spacecraftCapabilities.capabilities.forEach(cap => {
+                const moduleType = cap.moduleType;
+                const value = cap.value;
+                const currentAmount = map.get(moduleType.typeName);
+                if (moduleType.typeName.includes('PROPULSION')) {
+                    // speeds will not be added - the  lowest one defines the fleets speed
+                    if (!currentAmount || value < currentAmount) {
+                        map.set(moduleType.typeName, value);
+                    }
+                } else {
+                    const toAdd = !!currentAmount ? currentAmount : 0;
+                    map.set(moduleType.typeName, value + toAdd);
+                }
+            });
+        });
+
+        const caps: SpacecraftCapabilities = {
+            capabilities: moduleTypes.map(m => {
+                const cap: CapabilityValue = {
+                    moduleType: m,
+                    value: map.get(m.typeName)!
+                }
+                return cap;
+            })
+        }
+        return caps;
     }
 }

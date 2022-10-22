@@ -11,6 +11,7 @@
  */
 import { Planet } from './planet';
 import { ShipClass } from './shipClass';
+import { WarshipHealthState } from './warshipHealthState';
 
 /**
  * .
@@ -30,4 +31,5 @@ export interface WarShip {
      */
     idFleet: number;
     shipClass: ShipClass;
+    warshipHealthState?: WarshipHealthState;
 }
