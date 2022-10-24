@@ -31,5 +31,5 @@ export interface WarShip {
      */
     idFleet: number;
     shipClass: ShipClass;
-    warshipHealthState?: WarshipHealthState;
+    warshipHealthState?: WarshipHealthState; // todo is required - check
 }

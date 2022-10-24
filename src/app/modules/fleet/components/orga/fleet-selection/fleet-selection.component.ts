@@ -27,11 +27,8 @@ export class FleetSelectionComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID) {
-            let sub = this.fleetApi.getFleetsForUser(userID).subscribe(resp => this.fleets = resp);
-            this.subscriptions.push(sub);
-        }
+        let sub = this.fleetApi.getFleetsForUser().subscribe(resp => this.fleets = resp);
+        this.subscriptions.push(sub);
     }
 
     selectFleet(fleet?: Fleet) {

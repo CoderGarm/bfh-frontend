@@ -210,6 +210,22 @@ export class FleetRoundStateComponent implements OnInit, OnChanges {
         return undefined;
     }
 
+    getCurrentWarshipSpacecraftCapabilities(warShip: WarShip): SpacecraftCapabilities | undefined {
+        const state = this.getCurrentWarshipState(warShip);
+        if (!!state) {
+            return state.state;
+        }
+        return undefined;
+    }
+
+    getCurrentWarshipIsFightingCapable(warShip: WarShip): boolean | undefined {
+        const state = this.getCurrentWarshipState(warShip);
+        if (!!state) {
+            return state.fightingCapable;
+        }
+        return undefined;
+    }
+
     getStateClass(state?: StateByRound) {
         if (!!state) {
             if (!state.alive) {

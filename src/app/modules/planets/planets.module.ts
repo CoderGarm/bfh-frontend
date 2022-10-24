@@ -9,6 +9,7 @@ import {ShipyardComponent} from './components/payload/shipyard/shipyard.componen
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {PlanetsNotificationService} from "./planets-notification.service";
 import {PlanetaryDashboardComponent} from './components/payload/planetary-dashboard/planetary-dashboard.component';
+import {FleetsInOrbitComponent} from './components/payload/fleets-in-orbit/fleets-in-orbit.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import {PlanetaryDashboardComponent} from './components/payload/planetary-dashbo
         PlanetaryJobListComponent,
         ShipyardComponent,
         PlanetaryDashboardComponent,
+        FleetsInOrbitComponent,
     ],
     imports: [
         SharedModuleModule,

@@ -38,5 +38,9 @@ export interface Fleet {
      * If the fleet can run interstellar movements.
      */
     isFTLCapable: boolean;
+    /**
+     * If the fleet needs a repair.
+     */
+    needsRepair: boolean;
     fleetCapabilities?: SpacecraftCapabilities;
 }

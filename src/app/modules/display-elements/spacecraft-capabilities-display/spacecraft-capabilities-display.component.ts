@@ -40,13 +40,11 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
 
         let baseCapValues = this.baseFleetCapabilities.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!baseCapValues || baseCapValues.length != 1) {
-            console.log("Capability value for module type " + moduleType.typeName + " can't be displayed because base is away.");
             return 100;
         }
 
         let currentCapValues = this.currentFleetCapabilities.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!currentCapValues || currentCapValues.length != 1) {
-            console.log("Capability value for module type " + moduleType.typeName + " can't be displayed because current is away.");
             return 100;
         }
         let baseValue = baseCapValues[0];

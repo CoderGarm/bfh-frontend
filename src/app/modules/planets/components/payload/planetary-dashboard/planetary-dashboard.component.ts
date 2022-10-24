@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {MiningFactors, Planet, ResourcesApiService} from "../../../../../services/swagger";
+import {Fleet, FleetApiService, MiningFactors, Planet, PlanetApiService, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -18,8 +18,11 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     private planetDefinition = "planet";
 
     miningFactors?: MiningFactors;
+    fleetsInOrbit?: Fleet[];
 
-    constructor(private resourceApi: ResourcesApiService) {
+    constructor(private resourceApi: ResourcesApiService,
+                private planetApi: PlanetApiService,
+                private fleetApi: FleetApiService) {
         super();
     }
 
@@ -29,7 +32,16 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.planetDefinition]) {
             this.getMiningFactors();
+            this.fetFleetsInOrbit();
         }
+    }
+
+    private fetFleetsInOrbit() {
+        if (!this.planet) {
+            return;
+        }
+        const sub = this.fleetApi.getFleetsByPlanet(this.planet?.idPlanet).subscribe(resp => this.fleetsInOrbit = resp);
+        this.subscriptions.push(sub);
     }
 
     /**

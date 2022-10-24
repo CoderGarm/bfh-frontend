@@ -1,0 +1,21 @@
+<p>{{'planetary.fleets-in-orbit.title' | translate }}</p>
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{fleet.name}}
+            </mat-panel-title>
+            <mat-panel-description>
+                <div class="progress-bar">
+                    <mat-progress-bar
+                            mode="determinate"
+                            [value]="getPercentage(fleet)"
+                            [matTooltip]="getPercentage(fleet) + '%'"></mat-progress-bar>
+                </div>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
+        <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet.fleetCapabilities"
+                                             [currentFleetCapabilities]="getCurrentCaps(fleet)"></app-spacecraft-capabilities-display>
+    </mat-expansion-panel>
+</mat-accordion>

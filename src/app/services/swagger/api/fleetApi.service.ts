@@ -147,6 +147,48 @@ export class FleetApiService {
     }
 
     /**
+     * Get all fleets inside the orbit of a planet.
+     * 
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFleetsByPlanet(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
+    public getFleetsByPlanet(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
+    public getFleetsByPlanet(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public getFleetsByPlanet(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getFleetsByPlanet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/atPlanet/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all fleets inside of a star system.
      * 
      * @param idStarSystem 
@@ -238,18 +280,13 @@ export class FleetApiService {
     /**
      * Get all fleets of an owner.
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFleetsForUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
-    public getFleetsForUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
-    public getFleetsForUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
-    public getFleetsForUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getFleetsForUser.');
-        }
+    public getFleetsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
+    public getFleetsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
+    public getFleetsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public getFleetsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -267,7 +304,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/perUser/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/perUser`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

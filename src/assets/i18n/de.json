@@ -103,6 +103,10 @@
       },
       "title": "Gebäude"
     },
+    "fleets-in-orbit": {
+      "not-present": "Keine Flotten im Orbit",
+      "title": "Flotten im Orbit"
+    },
     "mining-factors": {
       "title": "Mining factors"
     }

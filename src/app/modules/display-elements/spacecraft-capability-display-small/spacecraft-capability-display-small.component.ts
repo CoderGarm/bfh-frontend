@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CapabilityValue, SpacecraftCapabilities} from "../../../services/swagger";
-import {StateByRound} from "../../journal/components/payload/fleet-round-state/fleet-round-state.component";
 
 @Component({
     selector: 'app-spacecraft-capability-display-small',
@@ -16,7 +15,13 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
     baseFleetCapabilities?: SpacecraftCapabilities;
 
     @Input()
-    currentFleetState?: StateByRound;
+    currentFleetState?: SpacecraftCapabilities;
+
+    @Input()
+    fightingCapable?: boolean;
+
+    @Input()
+    alive?: boolean;
 
     @Input()
     ngClass: string = "";
@@ -41,13 +46,11 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
 
         let baseCapValues = this.baseFleetCapabilities.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!baseCapValues || baseCapValues.length != 1) {
-            console.log("Capability value for module type " + moduleType.typeName + " can't be displayed because base is away.");
             return 100;
         }
 
-        let currentCapValues = this.currentFleetState.state.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        let currentCapValues = this.currentFleetState.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!currentCapValues || currentCapValues.length != 1) {
-            console.log("Capability value for module type " + moduleType.typeName + " can't be displayed because current is away.");
             return 100;
         }
         let baseValue = baseCapValues[0];
@@ -59,7 +62,7 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
         let moduleType = cap.moduleType;
 
         let currentValue = -1;
-        let currentCapValues = this.currentFleetState?.state.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        let currentCapValues = this.currentFleetState?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!!currentCapValues && currentCapValues.length == 1) {
             currentValue = currentCapValues[0].value;
         }
@@ -78,9 +81,9 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
     }
 
     getStateClass() {
-        let state = this.currentFleetState;
+        let state = this.fightingCapable;
         if (!!state) {
-            if (!state.fightingCapable) {
+            if (!this.fightingCapable) {
                 return "unable";
             }
         }

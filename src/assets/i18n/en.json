@@ -103,6 +103,10 @@
       },
       "title": "Ground constructions"
     },
+    "fleets-in-orbit": {
+      "not-present": "No fleets in orbit",
+      "title": "Fleets in orbit"
+    },
     "mining-factors": {
       "title": "Mining factors"
     }
