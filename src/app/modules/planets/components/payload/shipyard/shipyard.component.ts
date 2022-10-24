@@ -17,6 +17,7 @@ import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";
+import {TypeService} from "../../../../../services/type.service";
 
 @Component({
     selector: 'app-shipyard',
@@ -54,7 +55,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     /**
      * all EResourceType enum elements
      */
-    eHullTypes: EHullType[] = [];
+    readonly eHullTypes: EHullType[] = [];
 
     /**
      * some needed form controls to use the mat chip list
@@ -91,22 +92,21 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
 
     constructor(private tokenStorage: TokenStorage,
                 private shipyardApi: ShipyardApiService,
+                private typeService: TypeService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
                 private planetsNotificationService: PlanetsNotificationService) {
         super();
+
+        this.eHullTypes = typeService.eHullTypes;
     }
 
     ngAfterViewInit(): void {
-        let subscription = this.shipyardApi.getEHullTypes().subscribe(resp => {
-            this.eHullTypes = resp;
-            this.setHullTypeFormControlData();
-            this.filterDisplayedShipClasses();
-        });
-        this.subscriptions.push(subscription);
-        subscription = this.planetsNotificationService.ask().subscribe(() => this.updateDepositsAndIncome());
-        this.subscriptions.push(subscription);
+        this.setHullTypeFormControlData();
+        this.filterDisplayedShipClasses();
+        const sub = this.planetsNotificationService.ask().subscribe(() => this.updateDepositsAndIncome());
+        this.subscriptions.push(sub);
     }
 
     /**

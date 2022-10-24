@@ -1,7 +1,8 @@
 import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {EModuleType, Fleet, ShipyardApiService} from "../../../services/swagger";
+import {EModuleType, Fleet} from "../../../services/swagger";
 import {SpacecraftCapabilitiesDisplayComponent} from "../spacecraft-capabilities-display/spacecraft-capabilities-display.component";
 import {SubscriptionManager} from "../../../SubscriptionManager";
+import {TypeService} from "../../../services/type.service";
 
 @Component({
     selector: 'app-interstellar-fleet-display',
@@ -16,10 +17,10 @@ export class InterstellarFleetDisplayComponent extends SubscriptionManager imple
     @Input()
     fleets: Fleet[] = [];
 
-    private moduleTypes: EModuleType[] = [];
+    private readonly moduleTypes: EModuleType[] = [];
 
     constructor(@Optional() @Inject('fleets') fleets: Fleet[] | undefined,
-                private shipyardApi: ShipyardApiService) {
+                private typeService: TypeService) {
         super();
         if (!!fleets) {
             this.fleets = fleets;
@@ -27,8 +28,7 @@ export class InterstellarFleetDisplayComponent extends SubscriptionManager imple
             this.fleets = [];
         }
 
-        const sub = shipyardApi.getEModuleTypes().subscribe(resp => this.moduleTypes = resp);
-        this.subscriptions.push(sub);
+        this.moduleTypes = typeService.eModuleTypes;
     }
 
     ngOnInit(): void {

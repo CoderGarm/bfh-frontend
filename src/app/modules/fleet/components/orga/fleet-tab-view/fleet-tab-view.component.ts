@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {EModuleType, Fleet, ShipyardApiService} from "../../../../../services/swagger";
+import {EModuleType, Fleet} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SpacecraftCapabilitiesDisplayComponent} from "../../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
+import {TypeService} from "../../../../../services/type.service";
 
 @Component({
     selector: 'app-fleet-tab-view',
@@ -16,13 +17,12 @@ export class FleetTabViewComponent extends SubscriptionManager implements OnInit
     @Input()
     fleet?: Fleet;
 
-    private moduleTypes: EModuleType[] = [];
+    private readonly moduleTypes: EModuleType[] = [];
 
-    constructor(private shipyardApi: ShipyardApiService) {
+    constructor(private typeService: TypeService) {
         super();
 
-        const sub = shipyardApi.getEModuleTypes().subscribe(resp => this.moduleTypes = resp);
-        this.subscriptions.push(sub);
+        this.moduleTypes = typeService.eModuleTypes;
     }
 
     ngOnInit(): void {

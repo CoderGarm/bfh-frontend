@@ -21,6 +21,7 @@ import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {TranslateService} from "@ngx-translate/core";
+import {TypeService} from "../../../../../services/type.service";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
 @Component({
@@ -121,6 +122,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 private buildingApi: BuildingApiService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
+                private typeService: TypeService,
                 private notificationService: SnackbarNotificationService,
                 private planetsNotificationService: PlanetsNotificationService,
                 public translate: TranslateService) {
@@ -137,41 +139,19 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         this.translate.get('planetary.constructions.build.has-level').subscribe((translated: string) => {
             this.translations.set(this.hasConstruction, translated);
         });
+
+        this.eEducationTypes = typeService.educationTypes;
+        this.eResourceTypes = typeService.eResourceTypes;
+        this.eRefinementSequences = typeService.eRefinementSequences;
+        this.eProductionCategories = typeService.eProductionCategories;
     }
 
     ngAfterViewInit(): void {
         this.fetchPlanet();
 
-        let subscription = this.buildingApi
-            .getEProductionCategories()
-            .subscribe((resp: string[]) => {
-                this.eProductionCategories = resp;
-                this.eProductionCategoryFC.setValue(resp);
-            });
-        this.subscriptions.push(subscription);
-
-        subscription = this.resourceApi
-            .getEResourceTypes()
-            .subscribe(resp => {
-                this.eResourceTypes = resp;
-                this.setResourceTypeFormControlData()
-            });
-        this.subscriptions.push(subscription);
-
-        subscription = this.resourceApi
-            .getEEducationTypes()
-            .subscribe(resp => {
-                this.eEducationTypes = resp;
-            });
-        this.subscriptions.push(subscription);
-
-        subscription = this.buildingApi
-            .getERefinementSequences()
-            .subscribe(resp => {
-                this.eRefinementSequences = resp;
-                this.setRefinementSequenceFormControlData()
-            });
-        this.subscriptions.push(subscription);
+        this.eProductionCategoryFC.setValue(this.eProductionCategories);
+        this.setResourceTypeFormControlData()
+        this.setRefinementSequenceFormControlData()
 
         this.filterDisplayedConstructions();
     }

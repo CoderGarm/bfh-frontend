@@ -22,6 +22,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ResourceHelper} from "../../../../../ResourceHelper";
 import {SpinnerService} from "../../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
+import {TypeService} from "../../../../../services/type.service";
 
 @Component({
     selector: 'app-organize-expansion',
@@ -54,8 +55,8 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
      */
     miningFactors: Map<Number, MiningFactors> = new Map<Number, MiningFactors>();
 
-    private resourceTypes?: EResourceType[];
-    private educationTypes?: EEducationType[];
+    private readonly resourceTypes?: EResourceType[];
+    private readonly educationTypes?: EEducationType[];
 
     private main?: Planet;
     resourceDeposit?: ResourceDeposit;
@@ -76,6 +77,7 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
                 private colonizationApi: ColonizationApiService,
                 private resourceApi: ResourcesApiService,
                 private planetApi: PlanetApiService,
+                private typeService: TypeService,
                 private spinnerService: SpinnerService,
                 public translate: TranslateService) {
         super();
@@ -83,6 +85,9 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
 
         // just make sure that the key exists
         this.translate.get('expansion.organize.spinner-message.wait');
+
+        this.educationTypes = typeService.educationTypes;
+        this.resourceTypes = typeService.eResourceTypes;
     }
 
     ngAfterViewInit(): void {
@@ -111,20 +116,10 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
             this.subscriptions.push(sub);
         });
         this.subscriptions.push(sub);
-        sub = this.resourceApi.getEResourceTypes().subscribe(resp => {
-            this.resourceTypes = resp;
-            if (!!this.resourceTypes && !!this.educationTypes) {
-                this.costs = ResourceHelper.getBlankCosts(this.resourceTypes, this.educationTypes);
-            }
-        });
-        this.subscriptions.push(sub);
-        sub = this.resourceApi.getEEducationTypes().subscribe(resp => {
-            this.educationTypes = resp;
-            if (!!this.resourceTypes && !!this.educationTypes) {
-                this.costs = ResourceHelper.getBlankCosts(this.resourceTypes, this.educationTypes);
-            }
-        });
-        this.subscriptions.push(sub);
+
+        if (!!this.resourceTypes && !!this.educationTypes) {
+            this.costs = ResourceHelper.getBlankCosts(this.resourceTypes, this.educationTypes);
+        }
     }
 
     /**

@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, Inject, Input, Optional, SimpleChanges} from '@angular/core';
-import {Distance, EModuleType, Fleet, FleetApiService, FleetMove, Move, Orbit, ShipyardApiService, StarSystem} from "../../../services/swagger";
+import {Distance, EModuleType, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {NavigationCalculator} from "../../../NavigationCalculator";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
 import {SpacecraftCapabilitiesDisplayComponent} from "../spacecraft-capabilities-display/spacecraft-capabilities-display.component";
+import {TypeService} from "../../../services/type.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 @Component({
@@ -35,21 +36,20 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
 
     plannedMovements: Move[] = [];
 
-    private moduleTypes: EModuleType[] = [];
+    private readonly moduleTypes: EModuleType[] = [];
 
     constructor(@Optional() @Inject('fleets') fleets: Fleet[] | undefined,
                 @Optional() @Inject('destination') destination: StarSystem | undefined,
                 @Optional() @Inject('callback') cb: Function | null,
                 private tokenStorage: TokenStorage,
                 private fleetApi: FleetApiService,
-                private shipyardApi: ShipyardApiService) {
+                private typeService: TypeService) {
         super();
         this.fleets = !!fleets ? fleets : [];
         this.destination = destination;
         this.callback = cb;
 
-        const sub = shipyardApi.getEModuleTypes().subscribe(resp => this.moduleTypes = resp);
-        this.subscriptions.push(sub);
+        this.moduleTypes = typeService.eModuleTypes;
     }
 
     ngAfterViewInit(): void {
