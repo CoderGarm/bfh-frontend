@@ -17,6 +17,12 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     planet?: Planet;
     private planetDefinition = "planet";
 
+    @Input()
+    shipyardJobPossible: boolean = false;
+
+    @Input()
+    shipyardExists: boolean = false;
+
     miningFactors?: MiningFactors;
     fleetsInOrbit?: Fleet[];
 

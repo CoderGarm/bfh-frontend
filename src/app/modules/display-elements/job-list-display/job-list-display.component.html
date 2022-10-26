@@ -10,8 +10,9 @@
                 <mat-list-item *ngFor="let research of pJob.researches" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(research)}}">
                     <div mat-line>{{research.researchTarget!.name}}</div>
-                    <div mat-line>{{'jobs.level' | translate}} {{research.targetLevel}}</div>
-                    <div mat-line>{{'jobs.ticks-left' | translate}} {{research.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.level' | translate}}: {{research.targetLevel}}</div>
+                    <div mat-line>{{'jobs.ticks-left' | translate}}: {{research.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.priority' | translate}}: {{research.priority}}</div>
                 </mat-list-item>
             </mat-list>
 
@@ -20,8 +21,9 @@
                 <mat-list-item *ngFor="let construction of pJob.constructions" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(construction)}}">
                     <div mat-line>{{construction.buildingTarget!.name}}</div>
-                    <div mat-line>{{'jobs.level' | translate}} {{construction.targetLevel}}</div>
-                    <div mat-line>{{'jobs.ticks-left' | translate}} {{construction.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.level' | translate}}: {{construction.targetLevel}}</div>
+                    <div mat-line>{{'jobs.ticks-left' | translate}}: {{construction.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.priority' | translate}}: {{construction.priority}}</div>
                 </mat-list-item>
             </mat-list>
 
@@ -29,9 +31,12 @@
                 <div mat-subheader>{{'shipyard.constructions.title' | translate}}</div>
                 <mat-list-item *ngFor="let shipyard of pJob.shipyard" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(shipyard)}}">
-                    <div mat-line>{{shipyard.amountShips}}x {{shipyard.shipYardTarget!.name}}</div>
-                    <div mat-line>{{shipyard.shipYardTarget!.hull.name}}</div>
-                    <div mat-line>{{'jobs.ticks-left' | translate}} {{shipyard.ticksLeft}}</div>
+                    <div mat-line *ngIf="!!shipyard.shipYardTarget">{{shipyard.amountShips}}x {{shipyard.shipYardTarget!.name}}</div>
+                    <div mat-line *ngIf="!!shipyard.shipYardTarget">{{shipyard.shipYardTarget!.hull.name}}</div>
+                    <div mat-line *ngIf="!!shipyard.repairTarget">{{'shipyard.constructions.fleet-to-repair' | translate}}: {{shipyard.repairTarget.name}}</div>
+                    <div mat-line *ngIf="!!shipyard.repairTarget">{{'shipyard.constructions.fleet-state' | translate}}: {{getPercentage(shipyard.repairTarget)}}</div>
+                    <div mat-line>{{'jobs.ticks-left' | translate}}: {{shipyard.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.priority' | translate}}: {{shipyard.priority}}</div>
                 </mat-list-item>
             </mat-list>
         </div>

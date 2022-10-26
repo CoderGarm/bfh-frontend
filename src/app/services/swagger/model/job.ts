@@ -12,6 +12,7 @@
 import { Building } from './building';
 import { Construction } from './construction';
 import { EResourceType } from './eResourceType';
+import { Fleet } from './fleet';
 import { Planet } from './planet';
 import { Research } from './research';
 import { ShipClass } from './shipClass';
@@ -29,6 +30,10 @@ export interface Job {
      */
     ticksLeft: number;
     resourceType: EResourceType;
+    /**
+     * The priority of the job.
+     */
+    priority: string;
     /**
      * Is this a building job build.
      */
@@ -52,4 +57,5 @@ export interface Job {
      * The targeted amount of ships in case of an shipyard job..
      */
     amountShips?: number;
+    repairTarget?: Fleet;
 }

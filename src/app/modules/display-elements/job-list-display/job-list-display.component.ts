@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Job, Planet} from "../../../services/swagger";
+import {Fleet, Job, Planet} from "../../../services/swagger";
 
 export interface PlanetaryJobs {
     idPlanet: number,
@@ -75,5 +75,19 @@ export class JobListDisplayComponent implements OnInit, OnChanges {
         let folder = job.facility.building.productionTarget.folder;
         let iconName = job.facility.building.productionTarget.iconName;
         return "assets/" + folder + "/png64x/" + iconName + "_c.png";
+    }
+
+    getPercentage(fleet: Fleet) {
+        let max = 0;
+        fleet.spacecraftCapabilities.capabilities.forEach(value => max += value.value);
+
+        let current = 0;
+        const currentCaps = fleet.spacecraftCapabilities;
+        if (!currentCaps) {
+            current = max;
+        } else {
+            currentCaps.capabilities.forEach(value => current += value.value);
+        }
+        return Math.round((current / max) * 100) + " %";
     }
 }

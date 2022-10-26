@@ -2,9 +2,11 @@
     <mat-tab label="{{'tab.fleet.dashboard' | translate}}">
         <div class="holder">
             <app-fleet-display [fleetInput]="fleet">
-                <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet?.baseSpacecraftCapabilities"
+                <app-spacecraft-capabilities-display body
+                                                     [baseFleetCapabilities]="fleet?.baseSpacecraftCapabilities"
                                                      [currentFleetCapabilities]="fleet?.spacecraftCapabilities"></app-spacecraft-capabilities-display>
-                <app-fleet-move-display [fleetInput]="fleet"></app-fleet-move-display>
+                <app-fleet-move-display body
+                                        [fleetInput]="fleet"></app-fleet-move-display>
             </app-fleet-display>
         </div>
     </mat-tab>

@@ -102,7 +102,8 @@ export class SystemViewHelper extends BasicViewHelper {
     private createFleetSharkAndPrint(fleetSharkID: string,
                                      dragEndForFleet: (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => void,
                                      fleetSharkPoints: ArrayXY[],
-                                     dblClickForFleet: (event: PointerEvent) => void, fleet: Fleet) {
+                                     dblClickForFleet: (event: PointerEvent) => void,
+                                     fleet: Fleet) {
         let sd: StrokeData = {
             color: "black",
             width: 1
@@ -112,7 +113,7 @@ export class SystemViewHelper extends BasicViewHelper {
             .id(fleetSharkID + "-group");
 
         let userID = this.tokenStorage.getUserID();
-        if (!fleet.move && fleet.owner.idUser == userID) {
+        if (!fleet.move && fleet.owner.idUser == userID && fleet.isActive) {
             // make fleet group draggable if it is not in motion
             group!.draggable(true).on('dragend', this.dragEndFleetGroup(dragEndForFleet));
         }
@@ -124,10 +125,42 @@ export class SystemViewHelper extends BasicViewHelper {
         if (fleet.owner.idUser == userID) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
-        group!.polygon(fleetSharkPoints).fill(fleetSharkColor).stroke(sd).id(fleetSharkID).dblclick(dblClickForFleet);
+
+        const cssActivityMarker = fleet.isActive ? '' : 'under-construction';
+
+        group!
+            .polygon(fleetSharkPoints)
+            .fill(fleetSharkColor)
+            .stroke(sd)
+            .addClass(cssActivityMarker)
+            .id(fleetSharkID)
+            .dblclick(dblClickForFleet);
 
         let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
+
+        if (!fleet.isActive) {
+            let xMarker = sortedPointsX[0];
+            let yMarker = sortedPointsY[sortedPointsY.length - 1];
+
+            group!
+                .circle(5)
+                .stroke(sd)
+                .x(xMarker[0] - 2.5)
+                .y(yMarker[1] - 2.5)
+                .fill("blue")
+                .mouseover(this.mouseoverForMarker)
+                .mouseleave(this.mouseleaveForMarker);
+
+            let text: Text = new Text().text("Fleet is in dock")
+                .x(xMarker[0] - 2.5)
+                .y(yMarker[1] - 2.5)
+                .addClass("marker-text")
+                .id(fleetSharkID + "-txt");
+
+            this.markerTextsById.set(fleetSharkID + "-txt", text);
+        }
+
         let xText = sortedPointsX[sortedPointsX.length - 1];
         let yText = sortedPointsY[0];
 

@@ -35,6 +35,7 @@ export * from './electronicWarfare';
 export * from './fileUpload';
 export * from './fleet';
 export * from './fleetDistributionPerUser';
+export * from './fleetMarker';
 export * from './fleetMerge';
 export * from './fleetMove';
 export * from './fleetOrbit';

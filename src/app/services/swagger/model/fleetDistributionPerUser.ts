@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { FleetMarker } from './fleetMarker';
 import { StarSystem } from './starSystem';
 import { UserJson } from './userJson';
 
@@ -21,4 +22,8 @@ export interface FleetDistributionPerUser {
      * The owner of the fleets in the system.
      */
     users: Array<UserJson>;
+    /**
+     * The fleets by owner.
+     */
+    fleetMarker: Array<FleetMarker>;
 }

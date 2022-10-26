@@ -1,5 +1,5 @@
 import {SubscriptionManager} from "./SubscriptionManager";
-import {AbstractId, CounterMissileHit, Distance, Fleet, MissileMovement, Move, Orbit, StarSystem, UserJson, WarShip} from "./services/swagger";
+import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Move, Orbit, StarSystem, UserJson, WarShip} from "./services/swagger";
 import {ArrayXY, CurveCommand, G, LineCommand, PathArrayAlias, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
 import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
 import {CelestialAreaDefinition} from "./modules/star-map/payload/celestial-area-definition";
@@ -78,6 +78,7 @@ export class BasicViewHelper extends SubscriptionManager {
     protected fleetTextsById: Map<String, Text> = new Map<String, Text>();
     protected fleetOwnersById: Map<String, UserJson> = new Map<String, UserJson>();
     protected fleetOwnerByText: Map<Text, UserJson> = new Map<Text, UserJson>();
+    protected markerTextsById: Map<String, Text> = new Map<String, Text>();
 
     protected warshipsById: Map<String, WarShip> = new Map<String, WarShip>();
     protected warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
@@ -233,6 +234,20 @@ export class BasicViewHelper extends SubscriptionManager {
      */
     private mouseleaveForCelestial = (event: PointerEvent) => {
         const orbitText = this.getOrbitTextByEvent(event);
+        if (!!orbitText) {
+            this.canvas?.removeElement(orbitText)
+        }
+    }
+
+    mouseoverForMarker = (event: PointerEvent) => {
+        const orbitText = this.getMarkerTextByEvent(event);
+        if (!!orbitText) {
+            this.canvas?.add(orbitText)
+        }
+    }
+
+    mouseleaveForMarker = (event: PointerEvent) => {
+        const orbitText = this.getMarkerTextByEvent(event);
         if (!!orbitText) {
             this.canvas?.removeElement(orbitText)
         }
@@ -742,6 +757,12 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.orbitTextsById.get(id);
     }
 
+    protected getMarkerTextByEvent(event: PointerEvent | MouseEvent): Text | undefined {
+        let id = this.getIdFromEvent(event);
+        id = id.replace("group", "txt");
+        return this.markerTextsById.get(id);
+    }
+
     protected getOwnerByID(id: string): UserJson | undefined {
         return this.fleetOwnersById.get(id);
     }
@@ -751,8 +772,8 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.getOwnerByID(reducedId);
     }
 
-    protected getFleetSharkIdForOwner(user: UserJson): string {
-        return this.USER_SELECTOR_ID_PREFIX + "-" + user.idUser;
+    protected getFleetSharkIdByFleetMarker(fleetMarker: FleetMarker): string {
+        return this.USER_SELECTOR_ID_PREFIX + "-" + fleetMarker.owner.id + "-" + fleetMarker.fleet.id;
     }
 
     protected getFleetOwnerByText(text: Text): UserJson | undefined {

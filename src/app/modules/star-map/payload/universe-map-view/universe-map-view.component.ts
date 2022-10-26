@@ -79,7 +79,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                         throw new Error("This fleet is in motion and should know this.");
                     }
                     let move: Move = {
-                        idFleetInMotion: -1, // this is to ignore the id but it must be present
+                        idFleetInMotion: -1, // this is to ignore the id, but it must be present
                         startOrbit: fleet.move.startOrbit,
                         targetOrbit: fleet.move.targetOrbit,
                         originalDuration: fleet.move.originalDuration,

@@ -13,13 +13,15 @@
     </mat-form-field>
 </div>
 
-{{'shipyard.constructions.title' | translate}}
-<br>
-<button mat-button *ngIf="!shipyardJobPossible && !jobTooExpensive" disabled>{{'shipyard.constructions.build.not-possible' | translate}}</button>
-<button mat-button *ngIf="jobTooExpensive && shipyardJobPossible" disabled>{{'shipyard.constructions.build.too-expensive' | translate}}</button>
-<button mat-button *ngIf="shipyardJobPossible && !jobTooExpensive" [disabled]="!hasSomeShipsForBuildSelected()"
-        (click)="buildConstruction()">{{'shipyard.constructions.build.start-building' | translate}}</button>
-<br>
+<div>
+
+    {{'shipyard.constructions.title' | translate}}
+</div>
+<div [matTooltip]="getJobButtonText()" class="tooltip-container">
+    <button mat-raised-button color="secondary"
+            (click)="buildConstruction()"
+            [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected()">{{'shipyard.constructions.build.start-building' | translate }}</button>
+</div>
 <mat-accordion>
     <mat-expansion-panel *ngFor="let shipClass of filteredShipClasses"
                          (opened)="setOpened(shipClass)"

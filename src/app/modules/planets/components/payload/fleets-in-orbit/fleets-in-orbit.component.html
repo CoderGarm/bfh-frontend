@@ -1,21 +1,28 @@
 <p>{{'planetary.fleets-in-orbit.title' | translate }}</p>
 <mat-accordion>
     <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
+        <mat-expansion-panel-header [matTooltip]="getPercentageString(fleet)">
+            <mat-panel-title class="align-center">
+                <mat-icon *ngIf="isInRepair(fleet)" [matTooltip]="getRepairJobButtonText(fleet)">construction</mat-icon>
                 {{fleet.name}}
             </mat-panel-title>
             <mat-panel-description>
-                <div class="progress-bar">
+                <div class="progress-bar align-center">
                     <mat-progress-bar
                             mode="determinate"
-                            [value]="getPercentage(fleet)"
-                            [matTooltip]="getPercentage(fleet) + '%'"></mat-progress-bar>
+                            [value]="getPercentage(fleet)"></mat-progress-bar>
                 </div>
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
-        <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
-                                             [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
+        <app-fleet-display [fleetInput]="fleet">
+            <app-spacecraft-capabilities-display body
+                                                 [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
+                                                 [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
+            <div actions [matTooltip]="getRepairJobButtonText(fleet)" class="tooltip-container">
+                <button mat-raised-button color="secondary"
+                        (click)="repair(fleet)"
+                        [disabled]="!repairPossible(fleet)">{{'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
+            </div>
+        </app-fleet-display>
     </mat-expansion-panel>
 </mat-accordion>

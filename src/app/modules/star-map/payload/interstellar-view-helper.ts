@@ -1,5 +1,5 @@
 import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, StrokeData, Svg, Text} from "@svgdotjs/svg.js";
-import {Distance, Fleet, FleetDistributionPerUser, Move, Orbit, StarSystem, UserJson} from "../../../services/swagger";
+import {Distance, Fleet, FleetDistributionPerUser, FleetMarker, Move, Orbit, StarSystem, UserJson} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {BasicViewHelper} from "../../../basic-view-helper";
@@ -130,28 +130,32 @@ export class InterstellarViewHelper extends BasicViewHelper {
         this.setCanvas(canvas);
 
         fleetDistributionPerUsers.forEach(fd => {
-            let system = fd.starSystem;
-            let orbit = system.orbit;
-            let users = fd.users;
-            users.forEach(owner => {
-                let fleetSharkIdForOwner = this.getFleetSharkIdForOwner(owner);
-                this.fleetOwnersById.set(fleetSharkIdForOwner, owner);
+            const system = fd.starSystem;
+            const orbit = system.orbit;
+            const users = fd.users;
+            const fleetMarkers = fd.fleetMarker;
+            fleetMarkers.forEach(fleetMarker => {
+                const positionShift = fleetMarkers.indexOf(fleetMarker);
+                const owner = users.filter(u => u.idUser == fleetMarker.owner.id)[0];
 
-                let x: number = this.convertToStandardMetric(orbit.xCoordinate) + 25 + (users.indexOf(owner) % 2 == 0 ? 15 : 0);
+                let x: number = this.convertToStandardMetric(orbit.xCoordinate) + 25 + (positionShift % 2 == 0 ? 15 : 0);
                 let y: number = this.convertToStandardMetric(orbit.yCoordinate) + 25;
                 let fleetSharkPoints: ArrayXY[] = this.createFleetSharkPoints(x, y, orbit);
-                this.createFleetSharkAndPrintAtSystem(fleetSharkIdForOwner, dragEndForFleet, fleetSharkPoints, dblClickForFleet, system, owner);
+                this.createFleetSharkAndPrintAtSystem(system, owner, fleetMarker, dragEndForFleet, dblClickForFleet, fleetSharkPoints);
             });
-
         });
     }
 
-    private createFleetSharkAndPrintAtSystem(fleetSharkID: string,
+    private createFleetSharkAndPrintAtSystem(system: StarSystem,
+                                             owner: UserJson,
+                                             fleetMarker: FleetMarker,
                                              dragEndForFleet: (draggedFleet?: UserJson, fromSystem?: StarSystem, targetOrbit?: Orbit) => void,
-                                             fleetSharkPoints: ArrayXY[],
                                              dblClickForFleet: (event: PointerEvent, system: StarSystem) => void,
-                                             system: StarSystem,
-                                             owner: UserJson) {
+                                             fleetSharkPoints: ArrayXY[]) {
+
+        let fleetSharkID = this.getFleetSharkIdByFleetMarker(fleetMarker);
+        this.fleetOwnersById.set(fleetSharkID, owner);
+
         let sd: StrokeData = {
             color: "black",
             width: 1
@@ -163,8 +167,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
 
         let userID = this.tokenStorage.getUserID();
-        if (userID == owner.idUser) {
-            // make owner group draggable if it is dragged by the owner
+        if (userID == owner.idUser && fleetMarker.isActive) {
             group!
                 .draggable(true)
                 .on('dragend', this.dragEndFleetGroupAtSystem((draggedUser, targetOrbit) => {
@@ -172,6 +175,8 @@ export class InterstellarViewHelper extends BasicViewHelper {
                         dragEndForFleet(draggedUser, system, targetOrbit)
                     }
                 }));
+        }
+        if (userID == owner.idUser) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
 
@@ -186,9 +191,31 @@ export class InterstellarViewHelper extends BasicViewHelper {
                 dblClickForFleet(event, system);
             });
 
-
         let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
+
+        if (!fleetMarker.isActive) {
+            let xMarker = sortedPointsX[0];
+            let yMarker = sortedPointsY[sortedPointsY.length - 1];
+
+            group!
+                .circle(5)
+                .stroke(sd)
+                .x(xMarker[0] - 2.5)
+                .y(yMarker[1] - 2.5)
+                .fill("blue")
+                .mouseover(this.mouseoverForMarker)
+                .mouseleave(this.mouseleaveForMarker);
+
+            let text: Text = new Text().text("Fleet is in dock")
+                .x(xMarker[0] - 2.5)
+                .y(yMarker[1] - 2.5)
+                .addClass("marker-text")
+                .id(fleetSharkID + "-txt");
+
+            this.markerTextsById.set(fleetSharkID + "-txt", text);
+        }
+
         let xText = sortedPointsX[sortedPointsX.length - 1];
         let yText = sortedPointsY[0];
 

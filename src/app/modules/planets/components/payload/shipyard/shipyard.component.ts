@@ -18,6 +18,7 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";
 import {TypeService} from "../../../../../services/type.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-shipyard',
@@ -68,10 +69,6 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
     @ViewChild('hullTypeChipList')
     hullTypeChipList!: MatChipList;
 
-    /**
-     * the ship class which should be build
-     * and it's field name
-     */
     buildShipClass?: ShipyardConstructionSelection;
     private buildShipClassDefinition: string = "buildShipClass";
 
@@ -90,16 +87,31 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
 
     costsToDisplay?: ResourceDeposit;
 
+    translations: Map<string, string> = new Map<string, string>();
+
     constructor(private tokenStorage: TokenStorage,
                 private shipyardApi: ShipyardApiService,
                 private typeService: TypeService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
-                private planetsNotificationService: PlanetsNotificationService) {
+                private planetsNotificationService: PlanetsNotificationService,
+                private translate: TranslateService) {
         super();
 
         this.eHullTypes = typeService.eHullTypes;
+
+        this.translations.set('shipyard.constructions.build.already-in-use', 'shipyard.constructions.build.already-in-use');
+        let sub = this.translate.get('shipyard.constructions.build.already-in-use').subscribe((translated: string) => {
+            this.translations.set('shipyard.constructions.build.already-in-use', translated);
+        });
+        this.subscriptions.push(sub);
+
+        this.translations.set('shipyard.constructions.build.too-expensive', 'shipyard.constructions.build.too-expensive');
+        sub = this.translate.get('shipyard.constructions.build.too-expensive').subscribe((translated: string) => {
+            this.translations.set('shipyard.constructions.build.too-expensive', translated);
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {
@@ -376,5 +388,18 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
         let amount = 0;
         this.selection.forEach(o => amount += o.amount);
         return amount != 0;
+    }
+
+    getJobButtonText() {
+        if (this.shipyardJobPossible) {
+            return this.translations.get('shipyard.constructions.build.already-in-use')!;
+        }
+        if (this.jobTooExpensive) {
+            return this.translations.get('shipyard.constructions.build.too-expensive')!;
+        }
+        if (!this.hasSomeShipsForBuildSelected()) {
+            return this.translations.get('shipyard.constructions.build.nothing-to-do')!;
+        }
+        return this.translations.get('shipyard.constructions.build.start-building')!;
     }
 }

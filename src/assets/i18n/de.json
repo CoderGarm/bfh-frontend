@@ -61,6 +61,7 @@
   "jobs": {
     "active-title": "laufende Aufträge",
     "level": "Level",
+    "priority": "Priorität",
     "ticks-left": "Ticks"
   },
   "mining-factor": {
@@ -114,6 +115,15 @@
     },
     "fleets-in-orbit": {
       "not-present": "Keine Flotten im Orbit",
+      "percentage-message": "Kampfbereitschaft",
+      "repair-btn": {
+        "already-in-use": "Es wird bereits gebaut",
+        "is-in-repair": "Wird repariert",
+        "no-repair-needed": "Flotte unbeschädigt",
+        "no-shipyard": "Kein Werft vor Ort",
+        "start-job": "Starte Reparaturauftrag"
+      },
+      "repair-job-started-message": "Die Flotte wurde in Dock beordert",
       "title": "Flotten im Orbit"
     },
     "mining-factors": {
@@ -155,10 +165,13 @@
   "shipyard": {
     "constructions": {
       "build": {
-        "not-possible": "Es wird bereits gebaut",
+        "already-in-use": "Es wird bereits gebaut",
+        "nothing-to-do": "Keine Schiffe ausgewählt",
         "start-building": "Baue die Flotte",
         "too-expensive": "Auftrag zu teuer"
       },
+      "fleet-state": "Flottenstatus",
+      "fleet-to-repair": "Flotte im Dock",
       "title": "Schiffsbau"
     },
     "create-new-class": "Neue Klasse erzeugen",

@@ -61,6 +61,7 @@
   "jobs": {
     "active-title": "Active jobs",
     "level": "Level",
+    "priority": "Priority",
     "ticks-left": "Ticks"
   },
   "mining-factor": {
@@ -114,6 +115,15 @@
     },
     "fleets-in-orbit": {
       "not-present": "No fleets in orbit",
+      "percentage-message": "Combat readiness",
+      "repair-btn": {
+        "already-in-use": "Shipyard already in use",
+        "is-in-repair": "Under construction",
+        "no-repair-needed": "No need of repair",
+        "no-shipyard": "No shipyard on site",
+        "start-job": "Start repair job"
+      },
+      "repair-job-started-message": "The fleet was sent to the dock",
       "title": "Fleets in orbit"
     },
     "mining-factors": {
@@ -155,10 +165,13 @@
   "shipyard": {
     "constructions": {
       "build": {
-        "not-possible": "Job already running",
-        "start-building": "Build the fleet",
+        "already-in-use": "Shipyard already in use",
+        "nothing-to-do": "No ships selected",
+        "start-building": "Start construction of warships",
         "too-expensive": "Job is too expensive"
       },
+      "fleet-state": "Fleet state",
+      "fleet-to-repair": "Fleet in dock",
       "title": "Shipyard constructions"
     },
     "create-new-class": "Create new class",

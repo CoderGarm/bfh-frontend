@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {CapabilityValue, EHullType, Fleet, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
 import {CombatArenaData} from "../combat-arena/combat-arena.component";
 import {TranslateService} from "@ngx-translate/core";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 export interface StateByRound {
     round: number;
@@ -17,7 +18,7 @@ export interface StateByRound {
     templateUrl: './fleet-round-state.component.html',
     styleUrls: ['./fleet-round-state.component.scss']
 })
-export class FleetRoundStateComponent implements OnInit, OnChanges {
+export class FleetRoundStateComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     /**
      * the fleet to display
@@ -48,18 +49,23 @@ export class FleetRoundStateComponent implements OnInit, OnChanges {
     translations: Map<string, string> = new Map<string, string>();
 
     constructor(private translate: TranslateService) {
+        super();
+
         this.translations.set('combat-arena.tooltip.warship-state.incapacitated', 'combat-arena.tooltip.warship-state.incapacitated');
-        this.translate.get('combat-arena.tooltip.warship-state.destroyed').subscribe((translated: string) => {
+        let sub = this.translate.get('combat-arena.tooltip.warship-state.incapacitated').subscribe((translated: string) => {
             this.translations.set('combat-arena.tooltip.warship-state.incapacitated', translated);
         });
+        this.subscriptions.push(sub);
         this.translations.set('combat-arena.tooltip.warship-state.incapacitated', 'combat-arena.tooltip.warship-state.incapacitated');
-        this.translate.get('combat-arena.tooltip.warship-state.incapacitated').subscribe((translated: string) => {
+        sub = this.translate.get('combat-arena.tooltip.warship-state.incapacitated').subscribe((translated: string) => {
             this.translations.set('combat-arena.tooltip.warship-state.incapacitated', translated);
         });
+        this.subscriptions.push(sub);
         this.translations.set('combat-arena.tooltip.warship-state.active', 'combat-arena.tooltip.warship-state.active');
-        this.translate.get('combat-arena.tooltip.warship-state.active').subscribe((translated: string) => {
+        sub = this.translate.get('combat-arena.tooltip.warship-state.active').subscribe((translated: string) => {
             this.translations.set('combat-arena.tooltip.warship-state.active', translated);
         });
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {

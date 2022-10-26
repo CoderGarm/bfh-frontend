@@ -1,5 +1,16 @@
 .progress-bar {
   width: 50%;
+}
+
+.align-center {
   display: flex;
   align-items: center;
+}
+
+.tooltip-container {
+  width: fit-content;
+}
+
+mat-icon {
+  margin-right: 15px;
 }

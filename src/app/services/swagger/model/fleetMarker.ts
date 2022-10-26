@@ -9,33 +9,22 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { FleetOrbit } from './fleetOrbit';
 import { Move } from './move';
-import { SpacecraftCapabilities } from './spacecraftCapabilities';
-import { UserJson } from './userJson';
-import { WarShip } from './warShip';
 
 /**
  * .
  */
-export interface Fleet { 
-    /**
-     * The id.
-     */
-    idFleet: number;
+export interface FleetMarker { 
+    fleet: AbstractId;
     /**
      * The name of the fleet
      */
     name: string;
-    owner: UserJson;
-    /**
-     * The fleet's individual war ships.
-     */
-    ships: Array<WarShip>;
+    owner: AbstractId;
     orbit?: FleetOrbit;
     move?: Move;
-    spacecraftCapabilities: SpacecraftCapabilities;
-    baseSpacecraftCapabilities: SpacecraftCapabilities;
     /**
      * If the fleet can run interstellar movements.
      */

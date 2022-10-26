@@ -31,3 +31,8 @@ input[type=number] {
 .filter {
   width: $page-with;
 }
+
+.tooltip-container {
+  margin: 10px 0 10px 0;
+  width: fit-content;
+}

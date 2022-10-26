@@ -17,6 +17,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     private selectedPlanetDefinition = "selectedPlanet";
 
     shipyardJobPossible: boolean = false;
+    shipyardExists: boolean = false;
 
     constructor(private planetApi: PlanetApiService) {
         super();
@@ -29,6 +30,10 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
         if (changes[this.selectedPlanetDefinition]) {
             let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanet!.idPlanet)
                 .subscribe(resp => this.shipyardJobPossible = resp);
+            this.subscriptions.push(subscription);
+
+            subscription = this.planetApi.isShipyardExistsOnPlanet(this.selectedPlanet!.idPlanet)
+                .subscribe(resp => this.shipyardExists = resp);
             this.subscriptions.push(subscription);
         }
     }
