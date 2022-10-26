@@ -9,17 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
-import { Fleet } from './fleet';
-import { Missile } from './missile';
 
 /**
  * .
  */
 export interface CounterMissileHit { 
     combatRoundKey: CombatRoundKey;
-    actor: Fleet;
-    target: Fleet;
+    actor: AbstractId;
+    target: AbstractId;
     /**
      * The leftover amount of missiles of the given type in the salvo.
      */
@@ -32,5 +31,5 @@ export interface CounterMissileHit {
      * The amount of destroyed missiles.
      */
     destroyedMissiles: number;
-    missile: Missile;
+    missile: AbstractId;
 }

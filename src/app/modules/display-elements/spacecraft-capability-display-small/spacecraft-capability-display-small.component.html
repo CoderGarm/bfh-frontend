@@ -4,6 +4,7 @@
          class="flex-items-container-value"
          [matTooltip]="getCapValue(cap)">
         <img class="icon"
+             [ngClass]="getCss(cap)"
              src="{{getLink(cap)}}"
              alt="{{cap.moduleType}}">
         <mat-progress-bar

@@ -73,7 +73,7 @@ export class FleetRoundStateComponent implements OnInit, OnChanges {
     }
 
     private stateWarshipByRound(hitLogs: HitLog[] | undefined, idWarship: number, round: number) {
-        let hits = hitLogs?.filter(hitLog => hitLog.warShip.idWarship == idWarship);
+        let hits = hitLogs?.filter(hitLog => hitLog.warShip.id == idWarship);
         const lastRound = round - 1;
         let thisStates = this.statesByRound.filter(state => state.round == round && state.warship.idWarship == idWarship);
         let lastStates = this.statesByRound.filter(state => state.round == lastRound && state.warship.idWarship == idWarship);
@@ -119,11 +119,11 @@ export class FleetRoundStateComponent implements OnInit, OnChanges {
     private setHealthState(thisState: StateByRound, hitLog: HitLog) {
         const isAlive = thisState.alive;
         if (isAlive) {
-            thisState.alive = hitLog.alive;
+            thisState.alive = hitLog.isAlive;
         }
         const isFightingCapable = thisState.fightingCapable;
         if (isFightingCapable) {
-            thisState.fightingCapable = hitLog.fightingCapable;
+            thisState.fightingCapable = hitLog.isFightingCapable;
         }
     }
 
@@ -229,10 +229,10 @@ export class FleetRoundStateComponent implements OnInit, OnChanges {
     getStateClass(state?: StateByRound) {
         if (!!state) {
             if (!state.alive) {
-                return "dead";
+                return "dead has-hit";
             }
             if (!state.fightingCapable) {
-                return "unable";
+                return "unable has-hit";
             }
         }
         return "";

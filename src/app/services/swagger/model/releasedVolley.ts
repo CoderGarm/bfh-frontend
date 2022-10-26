@@ -9,17 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
 import { Distance } from './distance';
-import { Fleet } from './fleet';
 
 /**
  * .
  */
 export interface ReleasedVolley { 
     combatRoundKey: CombatRoundKey;
-    actor: Fleet;
-    target: Fleet;
+    actor: AbstractId;
+    actorOwner: AbstractId;
+    target: AbstractId;
     /**
      * The UUID of the damage dealer.
      */

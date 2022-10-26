@@ -9,8 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
-import { WarShip } from './warShip';
 
 /**
  * .
@@ -21,7 +21,7 @@ export interface HitLog {
      * The UUID of the damage dealer.
      */
     damageDealer: string;
-    warShip: WarShip;
+    warShip: AbstractId;
     /**
      * The applied damage.
      */
@@ -34,8 +34,14 @@ export interface HitLog {
      * The attacked part of the ship.
      */
     attackedPart: HitLog.AttackedPartEnum;
-    alive: boolean;
-    fightingCapable: boolean;
+    /**
+     * If the ship is alive after damage.
+     */
+    isAlive: boolean;
+    /**
+     * If the ship is capable of staying in the battle after damage.
+     */
+    isFightingCapable: boolean;
 }
 export namespace HitLog {
     export type AttackedPartEnum = 'FITTING_AND_HULL' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'ELOKA';

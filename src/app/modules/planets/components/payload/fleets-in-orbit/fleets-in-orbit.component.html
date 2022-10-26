@@ -15,7 +15,7 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
-        <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet.fleetCapabilities"
-                                             [currentFleetCapabilities]="getCurrentCaps(fleet)"></app-spacecraft-capabilities-display>
+        <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
+                                             [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
     </mat-expansion-panel>
 </mat-accordion>

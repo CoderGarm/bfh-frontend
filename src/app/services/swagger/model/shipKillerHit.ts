@@ -9,9 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
 import { Distance } from './distance';
-import { Fleet } from './fleet';
 import { HitLog } from './hitLog';
 import { LossRole } from './lossRole';
 
@@ -20,8 +20,8 @@ import { LossRole } from './lossRole';
  */
 export interface ShipKillerHit { 
     combatRoundKey: CombatRoundKey;
-    actor: Fleet;
-    target: Fleet;
+    actor: AbstractId;
+    target: AbstractId;
     /**
      * The UUID of the damage dealer.
      */

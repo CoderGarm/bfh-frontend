@@ -1,5 +1,5 @@
 import {SubscriptionManager} from "./SubscriptionManager";
-import {CounterMissileHit, Distance, Fleet, MissileMovement, Move, Orbit, StarSystem, UserJson, WarShip} from "./services/swagger";
+import {AbstractId, CounterMissileHit, Distance, Fleet, MissileMovement, Move, Orbit, StarSystem, UserJson, WarShip} from "./services/swagger";
 import {ArrayXY, CurveCommand, G, LineCommand, PathArrayAlias, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
 import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
 import {CelestialAreaDefinition} from "./modules/star-map/payload/celestial-area-definition";
@@ -673,22 +673,16 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.convertToStandardMetric(hyperRadius);
     }
 
-    protected getFleetSharkID(fleet: Fleet): string {
-        let id: string = this.FLEET_SHARK_SELECTOR_ID_PREFIX;
-        if (!!fleet.orbit) {
-            if (!!fleet.orbit.orbit) {
-                id += fleet.orbit.orbit.xCoordinate.coordinate + "." + fleet.orbit.orbit.yCoordinate.coordinate + "-";
-            }
-            if (!!fleet.orbit.system) {
-                id += fleet.orbit.system.idStarSystem + "-";
-            }
-        }
-        return id + "-" + fleet.idFleet;
+    protected getFleetSharkID(fleet: Fleet | AbstractId): string {
+        let prefix: string = this.FLEET_SHARK_SELECTOR_ID_PREFIX;
+        let id = 'id' in fleet ? fleet.id : fleet.idFleet;
+        return prefix + "-" + id;
     }
 
-    protected getWarshipID(warShip: WarShip): string {
-        let id: string = this.WARSHIP_SELECTOR_ID_PREFIX;
-        return id + "-" + warShip.idWarship;
+    protected getWarshipID(warShip: WarShip | AbstractId): string {
+        let prefix: string = this.WARSHIP_SELECTOR_ID_PREFIX;
+        let id = 'id' in warShip ? warShip.id : warShip.idWarship
+        return prefix + "-" + id;
     }
 
     protected getMissileSalvoID(missileMovement: MissileMovement): string {

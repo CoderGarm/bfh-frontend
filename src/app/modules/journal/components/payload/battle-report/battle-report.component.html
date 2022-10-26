@@ -29,7 +29,7 @@
                                  (mouseleave)="lossReport = undefined"
                                  cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                                  class="lost-warship-block">
-                                {{loss.warShipName}} ({{loss.shipClass.hull.hullType.type}}) from {{loss.owner.username}}
+                                {{loss.warShipName}} from {{loss.owner.username}}
                                 <app-lost-warship-overlay
                                         *ngIf="checkDisplayOverlay(reportStat, loss)"
                                         [openOverlay]="!!lossReport"

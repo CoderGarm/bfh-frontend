@@ -363,7 +363,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         );
         report.shipKillerHits.forEach(hit => {
             hit.hitLogs.forEach(hitLog => {
-                let actorReport = dataByFleet.get(hit.actor.idFleet);
+                let actorReport = dataByFleet.get(hit.actor.id);
                 let lossRole = hit.lossesByHit[hitLog.combatRoundKey.id];
                 if (!!lossRole) {
                     let lossRep = dataByFleet.get(lossRole.fleet.idFleet);
@@ -373,7 +373,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
             });
         });
         report.releasedVolleys.forEach(volley => {
-            let combatReport = dataByFleet.get(volley.actor.idFleet);
+            let combatReport = dataByFleet.get(volley.actor.id);
             if (volley.weaponType === ReleasedVolley.WeaponTypeEnum.MISSILE) {
                 combatReport!.releasedMissiles++;
             }
@@ -479,14 +479,14 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.slide($event.value);
     }
 
-    getLosses(reportStat: BattleReportStatistics) {
+    getLosses(reportStat: BattleReportStatistics): LossRole[] {
         if (!!this.currentlyOpenedItem && this.currentlyOpenedItem.battleReportStatistics.idBattleReport == reportStat.idBattleReport) {
             return this.currentlyOpenedItem.lossRole;
         }
         return [];
     }
 
-    getFleets(reportStat: BattleReportStatistics) {
+    getFleets(reportStat: BattleReportStatistics): Fleet[] {
         if (!!this.currentlyOpenedItem && this.currentlyOpenedItem.battleReportStatistics.idBattleReport == reportStat.idBattleReport) {
             return this.currentlyOpenedItem.participatingFleets;
         }

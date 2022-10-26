@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {EModuleType, Fleet, FleetApiService} from "../../../../../services/swagger";
+import {Fleet, FleetApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
-import {SpacecraftCapabilitiesDisplayComponent} from "../../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
-import {TypeService} from "../../../../../services/type.service";
 
 @Component({
     selector: 'app-fleet-movement-journal',
@@ -13,13 +11,9 @@ export class FleetMovementJournalComponent extends SubscriptionManager implement
 
     movingFleets: Fleet[] = [];
 
-    private readonly moduleTypes: EModuleType[] = [];
 
-    constructor(private fleetService: FleetApiService,
-                private typeService: TypeService) {
+    constructor(private fleetService: FleetApiService) {
         super();
-
-        this.moduleTypes = typeService.eModuleTypes;
     }
 
     ngOnInit(): void {
@@ -29,9 +23,5 @@ export class FleetMovementJournalComponent extends SubscriptionManager implement
     private loadData() {
         let sub = this.fleetService.getMovingFleetsForUser().subscribe(resp => this.movingFleets = resp);
         this.subscriptions.push(sub);
-    }
-
-    getCurrentCaps(fleet?: Fleet) {
-        return SpacecraftCapabilitiesDisplayComponent.getCurrentCaps(this.moduleTypes, fleet);
     }
 }

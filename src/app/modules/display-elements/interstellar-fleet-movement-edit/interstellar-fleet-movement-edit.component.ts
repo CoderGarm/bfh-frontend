@@ -1,11 +1,9 @@
 import {AfterViewInit, Component, Inject, Input, Optional, SimpleChanges} from '@angular/core';
-import {Distance, EModuleType, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
+import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {NavigationCalculator} from "../../../NavigationCalculator";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
-import {SpacecraftCapabilitiesDisplayComponent} from "../spacecraft-capabilities-display/spacecraft-capabilities-display.component";
-import {TypeService} from "../../../services/type.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 @Component({
@@ -36,20 +34,16 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
 
     plannedMovements: Move[] = [];
 
-    private readonly moduleTypes: EModuleType[] = [];
-
     constructor(@Optional() @Inject('fleets') fleets: Fleet[] | undefined,
                 @Optional() @Inject('destination') destination: StarSystem | undefined,
                 @Optional() @Inject('callback') cb: Function | null,
                 private tokenStorage: TokenStorage,
-                private fleetApi: FleetApiService,
-                private typeService: TypeService) {
+                private fleetApi: FleetApiService) {
         super();
         this.fleets = !!fleets ? fleets : [];
         this.destination = destination;
         this.callback = cb;
 
-        this.moduleTypes = typeService.eModuleTypes;
     }
 
     ngAfterViewInit(): void {
@@ -159,9 +153,5 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
             return "";
         }
         return moves[0].moveDoneAtZero;
-    }
-
-    getCurrentCaps(fleet?: Fleet) {
-        return SpacecraftCapabilitiesDisplayComponent.getCurrentCaps(this.moduleTypes, fleet);
     }
 }

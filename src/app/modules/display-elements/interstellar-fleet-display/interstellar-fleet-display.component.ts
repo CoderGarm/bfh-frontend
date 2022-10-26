@@ -1,8 +1,6 @@
 import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {EModuleType, Fleet} from "../../../services/swagger";
-import {SpacecraftCapabilitiesDisplayComponent} from "../spacecraft-capabilities-display/spacecraft-capabilities-display.component";
+import {Fleet} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
-import {TypeService} from "../../../services/type.service";
 
 @Component({
     selector: 'app-interstellar-fleet-display',
@@ -17,24 +15,15 @@ export class InterstellarFleetDisplayComponent extends SubscriptionManager imple
     @Input()
     fleets: Fleet[] = [];
 
-    private readonly moduleTypes: EModuleType[] = [];
-
-    constructor(@Optional() @Inject('fleets') fleets: Fleet[] | undefined,
-                private typeService: TypeService) {
+    constructor(@Optional() @Inject('fleets') fleets: Fleet[] | undefined) {
         super();
         if (!!fleets) {
             this.fleets = fleets;
         } else {
             this.fleets = [];
         }
-
-        this.moduleTypes = typeService.eModuleTypes;
     }
 
     ngOnInit(): void {
-    }
-
-    getCurrentCaps(fleet?: Fleet) {
-        return SpacecraftCapabilitiesDisplayComponent.getCurrentCaps(this.moduleTypes, fleet);
     }
 }

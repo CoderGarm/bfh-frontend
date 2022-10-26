@@ -1,3 +1,4 @@
+export * from './abstractId';
 export * from './acceleration';
 export * from './alignedFitting';
 export * from './alliance';

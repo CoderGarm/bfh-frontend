@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {EModuleType, Fleet} from "../../../../../services/swagger";
-import {SpacecraftCapabilitiesDisplayComponent} from "../../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
-import {TypeService} from "../../../../../services/type.service";
+import {Fleet} from "../../../../../services/swagger";
 
 @Component({
     selector: 'app-fleets-in-orbit',
@@ -13,26 +11,18 @@ export class FleetsInOrbitComponent implements OnInit {
     @Input()
     fleetsInOrbit?: Fleet[];
 
-    private readonly moduleTypes: EModuleType[];
-
-    constructor(private typeService: TypeService) {
-        this.moduleTypes = typeService.eModuleTypes;
+    constructor() {
     }
 
     ngOnInit(): void {
     }
 
-
-    getCurrentCaps(fleet?: Fleet) {
-        return SpacecraftCapabilitiesDisplayComponent.getCurrentCaps(this.moduleTypes, fleet);
-    }
-
     getPercentage(fleet: Fleet) {
         let max = 0;
-        fleet.fleetCapabilities?.capabilities.forEach(value => max += value.value);
+        fleet.spacecraftCapabilities.capabilities.forEach(value => max += value.value);
 
         let current = 0;
-        const currentCaps = this.getCurrentCaps(fleet);
+        const currentCaps = fleet.spacecraftCapabilities;
         if (!currentCaps) {
             current = max;
         } else {

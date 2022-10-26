@@ -9,8 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
-import { Fleet } from './fleet';
 import { Orbit } from './orbit';
 
 /**
@@ -18,8 +18,9 @@ import { Orbit } from './orbit';
  */
 export interface MissileMovement { 
     combatRoundKey: CombatRoundKey;
-    actor: Fleet;
-    target: Fleet;
+    actor: AbstractId;
+    actorOwner: AbstractId;
+    target: AbstractId;
     /**
      * The UUID of the moving missile salvo.
      */

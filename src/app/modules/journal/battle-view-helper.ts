@@ -139,8 +139,7 @@ export class BattleViewHelper extends BasicViewHelper {
             }
 
             hit.hitLogs.forEach(hitLog => {
-                let warship = hitLog.warShip;
-                let warshipID = this.getWarshipID(warship);
+                let warshipID = this.getWarshipID(hitLog.warShip);
                 let icon = this.warshipPolygonsById.get(warshipID);
                 if (!icon) {
                     return;
@@ -206,10 +205,9 @@ export class BattleViewHelper extends BasicViewHelper {
         const baseOrbit = this.createBaseOrbit();
 
         volleys.forEach((volley) => {
-            let shooter = volley.actor;
-            let missileOutlines: Array<ArrayXY[]> = this.defineMissileHullPoints(volley, shooter, baseOrbit);
+            let missileOutlines: Array<ArrayXY[]> = this.defineMissileHullPoints(volley, baseOrbit);
             let missileSalvoID = this.getMissileSalvoID(volley);
-            this.createMissileHullOutlinesAndPrint(missileSalvoID, missileOutlines, shooter);
+            this.createMissileHullOutlinesAndPrint(missileSalvoID, missileOutlines, volley.actorOwner.id);
         });
     }
 
@@ -218,12 +216,12 @@ export class BattleViewHelper extends BasicViewHelper {
      *
      * @param missileSalvoId the id
      * @param missileHullPoints the polygon points itself
-     * @param fleet the fleet to print the fleet shark for
+     * @param fleetOwnerId the fleet owner
      * @private
      */
     private createMissileHullOutlinesAndPrint(missileSalvoId: string,
                                               missileHullPoints: Array<ArrayXY[]>,
-                                              fleet: Fleet) {
+                                              fleetOwnerId: number) {
         let group = this.canvas?.group()
             .id(missileSalvoId + "-group");
 
@@ -231,7 +229,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
-        if (fleet.owner.idUser == userID) {
+        if (fleetOwnerId == userID) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
         const stroke = {color: fleetSharkColor, width: 1};
@@ -253,11 +251,10 @@ export class BattleViewHelper extends BasicViewHelper {
      * The outer array is a missile - the inner array are for the outline coordinates of the missile itself.
      *
      * @param missileMovement
-     * @param orbit
      * @param centerOrbit the center of the local coordinate system
      * @private
      */
-    private defineMissileHullPoints(missileMovement: MissileMovement, orbit: Fleet, centerOrbit: Orbit): Array<ArrayXY[]> {
+    private defineMissileHullPoints(missileMovement: MissileMovement, centerOrbit: Orbit): Array<ArrayXY[]> {
         // 500 pixel radius from the orbits coordinate cross
 
         let lastPosition = missileMovement.lastPosition;
@@ -393,8 +390,8 @@ export class BattleViewHelper extends BasicViewHelper {
         }
         let warShips = fleet.ships;
         let destroyedWarships = warShips.filter(warShip => !!hitLogs.find(value => {
-            let isSameShip = warShip.idWarship == value.warShip.idWarship;
-            let canFight = value.fightingCapable && value.alive;
+            let isSameShip = warShip.idWarship == value.warShip.id;
+            let canFight = value.isFightingCapable && value.isAlive;
             return !canFight && isSameShip;
         }));
         const warshipsToDisplay: WarShip[] = [];

@@ -10,7 +10,7 @@ export class CombatReport {
         })
         report.shipKillerHits.forEach(hit => {
             hit.hitLogs.forEach(hitLog => {
-                if (hitLog.warShip.name === lossRole.warShipName) {
+                if (hitLog.warShip.id === lossRole.warship.id) {
                     let releasedVolley = releasedVolleysByDamageDealerId.get(hit.damageDealer);
                     if (!releasedVolley) {
                         throw new Error("It seems that you was hit by a ghost missile. Please call the administrator.")
@@ -21,11 +21,11 @@ export class CombatReport {
                     if (releasedVolley!.weaponType === ReleasedVolley.WeaponTypeEnum.MISSILE) {
                         this.missileHits++;
                     }
-                    if (!hitLog.alive) {
-                        this.destroyedBy = releasedVolley.actor.name;
+                    if (!hitLog.isAlive) {
+                        this.destroyedBy = report.participatingFleets.filter(f => f.idFleet === releasedVolley!.actor.id)[0].name;
                     }
-                    if (!hitLog.fightingCapable) {
-                        this.finalHitBy = releasedVolley.actor.name;
+                    if (!hitLog.isFightingCapable) {
+                        this.finalHitBy = report.participatingFleets.filter(f => f.idFleet === releasedVolley!.actor.id)[0].name;
                     }
                 }
             });

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CapabilityValue, SpacecraftCapabilities} from "../../../services/swagger";
+import {CapabilityValue, EModuleType, SpacecraftCapabilities} from "../../../services/swagger";
 
 @Component({
     selector: 'app-spacecraft-capability-display-small',
@@ -22,9 +22,6 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
 
     @Input()
     alive?: boolean;
-
-    @Input()
-    ngClass: string = "";
 
     constructor() {
     }
@@ -61,17 +58,9 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
     getCapValue(cap: CapabilityValue) {
         let moduleType = cap.moduleType;
 
-        let currentValue = -1;
-        let currentCapValues = this.currentFleetState?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
-        if (!!currentCapValues && currentCapValues.length == 1) {
-            currentValue = currentCapValues[0].value;
-        }
+        let currentValue = this.getCurrentCapValue(moduleType);
 
-        let baseValue = -1;
-        let baseCapValues = this.baseFleetCapabilities?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
-        if (!!baseCapValues && baseCapValues.length == 1) {
-            baseValue = baseCapValues[0].value;
-        }
+        let baseValue = this.getBaseCapValue(moduleType);
 
         if (currentValue == -1) {
             currentValue = baseValue;
@@ -80,13 +69,37 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
         return cap.moduleType.typeName + ' - ' + currentValue + " / " + baseValue;
     }
 
+    private getBaseCapValue(moduleType: EModuleType) {
+        let baseValue = -1;
+        let baseCapValues = this.baseFleetCapabilities?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        if (!!baseCapValues && baseCapValues.length == 1) {
+            baseValue = baseCapValues[0].value;
+        }
+        return baseValue;
+    }
+
+    private getCurrentCapValue(moduleType: EModuleType) {
+        let currentValue = -1;
+        let currentCapValues = this.currentFleetState?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        if (!!currentCapValues && currentCapValues.length == 1) {
+            currentValue = currentCapValues[0].value;
+        }
+        return currentValue;
+    }
+
     getStateClass() {
         let state = this.fightingCapable;
         if (!!state) {
             if (!this.fightingCapable) {
-                return "unable";
+                return "unable has-hit";
             }
         }
         return "";
+    }
+
+    getCss(cap: CapabilityValue) {
+        let currentValue = this.getCurrentCapValue(cap.moduleType);
+        let baseValue = this.getBaseCapValue(cap.moduleType);
+        return currentValue === baseValue ? 'unchanged-stat' : '';
     }
 }

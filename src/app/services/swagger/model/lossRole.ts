@@ -9,8 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { Fleet } from './fleet';
-import { ShipClass } from './shipClass';
 import { UserJson } from './userJson';
 
 /**
@@ -23,5 +23,6 @@ export interface LossRole {
      * The name of the war ship which was destroyed.
      */
     warShipName: string;
-    shipClass: ShipClass;
+    warship: AbstractId;
+    shipClass: AbstractId;
 }

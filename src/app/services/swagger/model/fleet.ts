@@ -34,6 +34,8 @@ export interface Fleet {
     ships: Array<WarShip>;
     orbit?: FleetOrbit;
     move?: Move;
+    spacecraftCapabilities: SpacecraftCapabilities;
+    baseSpacecraftCapabilities: SpacecraftCapabilities;
     /**
      * If the fleet can run interstellar movements.
      */
@@ -42,5 +44,4 @@ export interface Fleet {
      * If the fleet needs a repair.
      */
     needsRepair: boolean;
-    fleetCapabilities?: SpacecraftCapabilities;
 }
