@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {CapabilityValue, EHullType, Fleet, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
 import {CombatArenaData} from "../combat-arena/combat-arena.component";
+import {TranslateService} from "@ngx-translate/core";
 
 export interface StateByRound {
     round: number;
@@ -44,7 +45,21 @@ export class FleetRoundStateComponent implements OnInit, OnChanges {
 
     private statesByRound: StateByRound[] = [];
 
-    constructor() {
+    translations: Map<string, string> = new Map<string, string>();
+
+    constructor(private translate: TranslateService) {
+        this.translations.set('combat-arena.tooltip.warship-state.incapacitated', 'combat-arena.tooltip.warship-state.incapacitated');
+        this.translate.get('combat-arena.tooltip.warship-state.destroyed').subscribe((translated: string) => {
+            this.translations.set('combat-arena.tooltip.warship-state.incapacitated', translated);
+        });
+        this.translations.set('combat-arena.tooltip.warship-state.incapacitated', 'combat-arena.tooltip.warship-state.incapacitated');
+        this.translate.get('combat-arena.tooltip.warship-state.incapacitated').subscribe((translated: string) => {
+            this.translations.set('combat-arena.tooltip.warship-state.incapacitated', translated);
+        });
+        this.translations.set('combat-arena.tooltip.warship-state.active', 'combat-arena.tooltip.warship-state.active');
+        this.translate.get('combat-arena.tooltip.warship-state.active').subscribe((translated: string) => {
+            this.translations.set('combat-arena.tooltip.warship-state.active', translated);
+        });
     }
 
     ngOnInit(): void {
@@ -240,16 +255,15 @@ export class FleetRoundStateComponent implements OnInit, OnChanges {
 
     getShipIconTooltip(warShip: WarShip) {
         let state = this.getCurrentWarshipState(warShip);
-        // todo translate
         if (!!state) {
             if (!state.alive) {
-                return "destroyed";
+                return this.translations.get('combat-arena.tooltip.warship-state.destroyed')!;
             }
             if (!state.fightingCapable) {
-                return "incapacitated";
+                return this.translations.get('combat-arena.tooltip.warship-state.incapacitated')!;
             }
         }
-        return "active";
+        return this.translations.get('combat-arena.tooltip.warship-state.active')!;
     }
 
     isWarshipHovered(warShip: WarShip) {

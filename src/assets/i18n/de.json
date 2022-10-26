@@ -17,6 +17,15 @@
   "chats": {
     "title": "Nachrichten"
   },
+  "combat-arena": {
+    "tooltip": {
+      "warship-state": {
+        "active": "Kampfbereit",
+        "destroyed": "Zerstört",
+        "incapacitated": "Kampfunfähig"
+      }
+    }
+  },
   "expansion": {
     "organize": {
       "spinner-message": {

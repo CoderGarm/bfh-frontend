@@ -66,7 +66,7 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
             currentValue = baseValue;
         }
 
-        return cap.moduleType.typeName + ' - ' + currentValue + " / " + baseValue;
+        return cap.moduleType.typeName + ' - ' + Math.round(currentValue) + " / " + Math.round(baseValue);
     }
 
     private getBaseCapValue(moduleType: EModuleType) {

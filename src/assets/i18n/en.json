@@ -17,6 +17,15 @@
   "chats": {
     "title": "Chats"
   },
+  "combat-arena": {
+    "tooltip": {
+      "warship-state": {
+        "active": "Combative",
+        "destroyed": "Destroyed",
+        "incapacitated": "Incapacitated"
+      }
+    }
+  },
   "expansion": {
     "organize": {
       "spinner-message": {
