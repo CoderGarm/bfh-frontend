@@ -60,6 +60,7 @@
   },
   "jobs": {
     "active-title": "laufende Aufträge",
+    "finished-title": "Beendete Aufträge",
     "level": "Level",
     "priority": "Priorität",
     "ticks-left": "Ticks"

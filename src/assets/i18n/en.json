@@ -60,6 +60,7 @@
   },
   "jobs": {
     "active-title": "Active jobs",
+    "finished-title": "Finished jobs",
     "level": "Level",
     "priority": "Priority",
     "ticks-left": "Ticks"

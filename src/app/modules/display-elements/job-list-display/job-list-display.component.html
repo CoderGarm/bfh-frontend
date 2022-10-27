@@ -1,5 +1,5 @@
 <mat-list id="job-list">
-    <div mat-subheader>{{'jobs.active-title' | translate}}</div>
+    <div mat-subheader>{{title_key | translate}}</div>
     <mat-list-item *ngFor="let pJob of jobs" class="height-fit-content">
         <img mat-list-avatar src="assets/icons/planets/png24x/planet_c.png">
         <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
@@ -7,36 +7,36 @@
         <div class="job-items-container">
             <mat-list *ngIf="pJob.researches!.length > 0">
                 <div mat-subheader>{{'research.title' | translate}}</div>
-                <mat-list-item *ngFor="let research of pJob.researches" class="height-fit-content">
-                    <img mat-list-avatar src="{{getLink(research)}}">
-                    <div mat-line>{{research.researchTarget!.name}}</div>
-                    <div mat-line>{{'jobs.level' | translate}}: {{research.targetLevel}}</div>
-                    <div mat-line>{{'jobs.ticks-left' | translate}}: {{research.ticksLeft}}</div>
-                    <div mat-line>{{'jobs.priority' | translate}}: {{research.priority}}</div>
+                <mat-list-item *ngFor="let job of pJob.researches" class="height-fit-content">
+                    <img mat-list-avatar src="{{getLink(job)}}">
+                    <div mat-line>{{job.researchTarget!.name}}</div>
+                    <div mat-line>{{'jobs.level' | translate}}: {{job.targetLevel}}</div>
+                    <div mat-line *ngIf="job.ticksLeft > 0">{{'jobs.ticks-left' | translate}}: {{job.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.priority' | translate}}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-list>
 
             <mat-list *ngIf="pJob.constructions!.length > 0">
                 <div mat-subheader>{{'planetary.constructions.title' | translate}}</div>
-                <mat-list-item *ngFor="let construction of pJob.constructions" class="height-fit-content">
-                    <img mat-list-avatar src="{{getLink(construction)}}">
-                    <div mat-line>{{construction.buildingTarget!.name}}</div>
-                    <div mat-line>{{'jobs.level' | translate}}: {{construction.targetLevel}}</div>
-                    <div mat-line>{{'jobs.ticks-left' | translate}}: {{construction.ticksLeft}}</div>
-                    <div mat-line>{{'jobs.priority' | translate}}: {{construction.priority}}</div>
+                <mat-list-item *ngFor="let job of pJob.constructions" class="height-fit-content">
+                    <img mat-list-avatar src="{{getLink(job)}}">
+                    <div mat-line>{{job.buildingTarget!.name}}</div>
+                    <div mat-line>{{'jobs.level' | translate}}: {{job.targetLevel}}</div>
+                    <div mat-line *ngIf="job.ticksLeft > 0">{{'jobs.ticks-left' | translate}}: {{job.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.priority' | translate}}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-list>
 
             <mat-list *ngIf="pJob.shipyard!.length > 0">
                 <div mat-subheader>{{'shipyard.constructions.title' | translate}}</div>
-                <mat-list-item *ngFor="let shipyard of pJob.shipyard" class="height-fit-content">
-                    <img mat-list-avatar src="{{getLink(shipyard)}}">
-                    <div mat-line *ngIf="!!shipyard.shipYardTarget">{{shipyard.amountShips}}x {{shipyard.shipYardTarget!.name}}</div>
-                    <div mat-line *ngIf="!!shipyard.shipYardTarget">{{shipyard.shipYardTarget!.hull.name}}</div>
-                    <div mat-line *ngIf="!!shipyard.repairTarget">{{'shipyard.constructions.fleet-to-repair' | translate}}: {{shipyard.repairTarget.name}}</div>
-                    <div mat-line *ngIf="!!shipyard.repairTarget">{{'shipyard.constructions.fleet-state' | translate}}: {{getPercentage(shipyard.repairTarget)}}</div>
-                    <div mat-line>{{'jobs.ticks-left' | translate}}: {{shipyard.ticksLeft}}</div>
-                    <div mat-line>{{'jobs.priority' | translate}}: {{shipyard.priority}}</div>
+                <mat-list-item *ngFor="let job of pJob.shipyard" class="height-fit-content">
+                    <img mat-list-avatar src="{{getLink(job)}}">
+                    <div mat-line *ngIf="!!job.shipYardTarget">{{job.amountShips}}x {{job.shipYardTarget!.name}}</div>
+                    <div mat-line *ngIf="!!job.shipYardTarget">{{job.shipYardTarget!.hull.name}}</div>
+                    <div mat-line *ngIf="!!job.repairTarget">{{'shipyard.constructions.fleet-to-repair' | translate}}: {{job.repairTarget.name}}</div>
+                    <div mat-line *ngIf="!!job.repairTarget">{{'shipyard.constructions.fleet-state' | translate}}: {{getPercentage(job.repairTarget)}}</div>
+                    <div mat-line *ngIf="job.ticksLeft > 0">{{'jobs.ticks-left' | translate}}: {{job.ticksLeft}}</div>
+                    <div mat-line>{{'jobs.priority' | translate}}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-list>
         </div>

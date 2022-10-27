@@ -1,5 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Fleet, Job, Planet} from "../../../services/swagger";
+import {SubscriptionManager} from "../../../SubscriptionManager";
+import {TranslateService} from "@ngx-translate/core";
 
 export interface PlanetaryJobs {
     idPlanet: number,
@@ -14,12 +16,10 @@ export interface PlanetaryJobs {
     templateUrl: './job-list-display.component.html',
     styleUrls: ['./job-list-display.component.scss']
 })
-export class JobListDisplayComponent implements OnInit, OnChanges {
+export class JobListDisplayComponent extends SubscriptionManager implements OnInit, OnChanges {
 
-    /**
-     * the displayed construction
-     */
-    currentlyOpenedItemIndex?: Job;
+    @Input()
+    title_key: string = 'jobs.active-title';
 
     @Input()
     runningJobs: Job[] = [];
@@ -28,7 +28,22 @@ export class JobListDisplayComponent implements OnInit, OnChanges {
     jobsPerIdPlanet: Map<number, Job[]> = new Map<number, Job[]>();
     jobs: PlanetaryJobs[] = [];
 
-    constructor() {
+    translations: Map<string, string> = new Map<string, string>();
+
+    constructor(private translate: TranslateService) {
+        super();
+
+        this.translations.set('jobs.active-title', 'jobs.active-title');
+        let sub = this.translate.get('jobs.active-title').subscribe((translated: string) => {
+            this.translations.set('jobs.active-title', translated);
+        });
+        this.subscriptions.push(sub);
+
+        this.translations.set('jobs.finished-title', 'jobs.finished-title');
+        sub = this.translate.get('jobs.finished-title').subscribe((translated: string) => {
+            this.translations.set('jobs.finished-title', translated);
+        });
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {
