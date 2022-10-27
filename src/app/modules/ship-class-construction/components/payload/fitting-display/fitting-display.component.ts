@@ -15,8 +15,8 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
      * The user selected ShipClass.
      */
     @Input()
-    selectedShipClassInput?: ShipClass;
-    selectedShipClassInputDefinition: string = "selectedShipClassInput";
+    shipClass?: ShipClass;
+    selectedShipClassInputDefinition: string = "shipClass";
 
     /**
      * listens to the parents event which tab is selected
@@ -65,8 +65,8 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
             }
         }
         if (changes[this.selectedShipClassInputDefinition]) {
-            if (!!this.selectedShipClassInput) {
-                this.shipClassName = this.selectedShipClassInput.name;
+            if (!!this.shipClass) {
+                this.shipClassName = this.shipClass.name;
             } else {
                 this.shipClassName = "";
             }
@@ -79,12 +79,11 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
      * @private
      */
     private getCosts() {
-        let userID = this.tokenStorage.getUserID();
-        if (!!this.selectedShipClassInput && !!userID && this.idChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(this.selectedShipClassInput, userID)
+        if (!!this.shipClass && this.idChangePending()) {
+            let sub = this.resourceApi.getShipClassCosts(this.shipClass)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
-        } else if (!this.selectedShipClassInput) {
+        } else if (!this.shipClass) {
             this.costs = undefined;
             this.compareClass = undefined;
         }
@@ -96,12 +95,12 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
      */
     private idChangePending() {
         let result: boolean = false;
-        if (!!this.compareClass && !!this.selectedShipClassInput) {
-            result = !ShipClassComparator.equals(this.compareClass, this.selectedShipClassInput);
-        } else if (!this.compareClass && !!this.selectedShipClassInput) {
+        if (!!this.compareClass && !!this.shipClass) {
+            result = !ShipClassComparator.equals(this.compareClass, this.shipClass);
+        } else if (!this.compareClass && !!this.shipClass) {
             result = true;
         }
-        this.compareClass = this.selectedShipClassInput;
+        this.compareClass = this.shipClass;
         return result;
     }
 }

@@ -1,11 +1,11 @@
 <mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)" animationDuration="0ms" class="bottom-spacer">
     <mat-tab label="{{'tab.shipyard.fitting.view' | translate}}" [disabled]="!selectedShipClassInput">
         <app-fitting-display [selectedIndexInput]="selectionEmitter"
-                             [selectedShipClassInput]="selectedShipClassInput"></app-fitting-display>
+                             [shipClass]="selectedShipClassInput"></app-fitting-display>
     </mat-tab>
     <mat-tab label="{{'tab.shipyard.fitting.modify' | translate}}">
         <app-fitting-selection [selectedIndexInput]="selectionEmitter"
                                (modifiedShipClassOutput)="passOutput($event)"
-                               [selectedShipClassInput]="selectedShipClassInput"></app-fitting-selection>
+                               [shipClass]="selectedShipClassInput"></app-fitting-selection>
     </mat-tab>
 </mat-tab-group>

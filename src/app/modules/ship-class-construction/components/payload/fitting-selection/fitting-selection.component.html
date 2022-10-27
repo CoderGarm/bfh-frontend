@@ -26,8 +26,13 @@
     </div>
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
                         [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"
-                        [selectedShipClassInput]="selectedShipClassInput"></app-ship-class-svg>
-    <app-ship-class-fitting-selection [shipClassInput]="selectedShipClassInput"
+                        [selectedShipClassInput]="shipClass"></app-ship-class-svg>
+
+    <div class="middle">
+        <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
+    </div>
+
+    <app-ship-class-fitting-selection [shipClassInput]="shipClass"
                                       [shipClassNameInput]="shipClassNameOutput"
                                       [designedShipClassInputEmitter]="designedShipClassOutputEmitter"
                                       (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-selection>

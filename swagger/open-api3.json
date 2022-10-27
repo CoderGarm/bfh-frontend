@@ -2383,79 +2383,6 @@
         }
       }
     },
-    "/api/private/resources/costsShipClass/{idUser}": {
-      "post": {
-        "tags": [
-          "ResourcesApi"
-        ],
-        "summary": "Get the costs of the given shipyard order.",
-        "operationId": "getShipClassCosts",
-        "parameters": [
-          {
-            "name": "idUser",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "default response",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ShipClass"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResourceDeposit"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FrontendError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FrontendError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FrontendError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/private/forum/hasForumUnread/{idForum}": {
       "get": {
         "tags": [
@@ -4640,6 +4567,68 @@
                   "items": {
                     "$ref": "#/components/schemas/ForumMessage"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/resources/costsShipClass": {
+      "post": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get the costs of the given shipyard order.",
+        "operationId": "getShipClassCosts",
+        "requestBody": {
+          "description": "default response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipClass"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceDeposit"
                 }
               }
             }
@@ -7536,6 +7525,68 @@
                   "items": {
                     "$ref": "#/components/schemas/StarSystemColonization"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontendError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/resources/capsShipClass": {
+      "post": {
+        "tags": [
+          "ResourcesApi"
+        ],
+        "summary": "Get the costs of the given shipyard order.",
+        "operationId": "getShipClassCaps",
+        "requestBody": {
+          "description": "default response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipClass"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpacecraftCapabilities"
                 }
               }
             }

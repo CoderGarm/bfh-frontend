@@ -25,6 +25,7 @@ import { PlannedConstruction } from '../model/plannedConstruction';
 import { ResourceDeposit } from '../model/resourceDeposit';
 import { ShipClass } from '../model/shipClass';
 import { ShipyardConstructionSelection } from '../model/shipyardConstructionSelection';
+import { SpacecraftCapabilities } from '../model/spacecraftCapabilities';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -315,21 +316,16 @@ export class ResourcesApiService {
      * Get the costs of the given shipyard order.
      * 
      * @param body default response
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipClassCosts(body: ShipClass, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
-    public getShipClassCosts(body: ShipClass, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
-    public getShipClassCosts(body: ShipClass, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
-    public getShipClassCosts(body: ShipClass, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShipClassCaps(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapabilities>;
+    public getShipClassCaps(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapabilities>>;
+    public getShipClassCaps(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapabilities>>;
+    public getShipClassCaps(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling getShipClassCosts.');
-        }
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getShipClassCosts.');
+            throw new Error('Required parameter body was null or undefined when calling getShipClassCaps.');
         }
 
         let headers = this.defaultHeaders;
@@ -353,7 +349,55 @@ export class ResourcesApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipClass/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<SpacecraftCapabilities>('post',`${this.basePath}/api/private/resources/capsShipClass`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getShipClassCosts(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipClassCosts(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipClassCosts(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipClassCosts(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getShipClassCosts.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipClass`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

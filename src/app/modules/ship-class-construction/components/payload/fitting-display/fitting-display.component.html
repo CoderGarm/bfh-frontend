@@ -5,6 +5,11 @@
         <input matInput disabled value="{{shipClassName}}" autocomplete="off">
     </mat-form-field>
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
-                        [selectedShipClassInput]="selectedShipClassInput"></app-ship-class-svg>
-    <app-ship-class-display *ngIf="!!selectedShipClassInput" [shipClassInput]="selectedShipClassInput"></app-ship-class-display>
+                        [selectedShipClassInput]="shipClass"></app-ship-class-svg>
+
+    <div class="middle">
+        <app-spacecraft-capabilities-display [baseFleetCapabilities]="shipClass?.shipClassCapabilities"></app-spacecraft-capabilities-display>
+    </div>
+
+    <app-ship-class-display *ngIf="!!shipClass" [shipClassInput]="shipClass"></app-ship-class-display>
 </div>

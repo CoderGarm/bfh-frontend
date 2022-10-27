@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {AlignedFitting, ResourceDeposit, ResourcesApiService, ShipClass, ShipyardApiService} from "../../../../../services/swagger";
+import {AlignedFitting, ResourceDeposit, ResourcesApiService, ShipClass, ShipyardApiService, SpacecraftCapabilities} from "../../../../../services/swagger";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
@@ -17,8 +17,8 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
      * The user selected ShipClass.
      */
     @Input()
-    selectedShipClassInput?: ShipClass;
-    selectedShipClassInputDefinition: string = "selectedShipClassInput";
+    shipClass?: ShipClass;
+    selectedShipClassInputDefinition: string = "shipClass";
 
     /**
      * listens to the parents event which tab is selected
@@ -78,12 +78,13 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
      * the form group which defines the name field
      */
     form: FormGroup = new FormGroup({
-        scName: new FormControl({value: '', disabled: !!this.selectedShipClassInput})
+        scName: new FormControl({value: '', disabled: !!this.shipClass})
     });
 
     costs?: ResourceDeposit;
 
     compareClass?: ShipClass;
+    capabilities?: SpacecraftCapabilities;
 
     constructor(private shipYardApi: ShipyardApiService,
                 private tokenStorage: TokenStorage,
@@ -120,20 +121,20 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
         }
         if (changes[this.selectedShipClassInputDefinition]) {
             // detecting ship class name
-            if (!!this.selectedShipClassInput) {
-                this.shipClassNameOutput = this.selectedShipClassInput.name;
+            if (!!this.shipClass) {
+                this.shipClassNameOutput = this.shipClass.name;
             } else {
                 this.shipClassNameOutput = '';
             }
             // setting detected name
             this.form.controls.scName.setValue(this.shipClassNameOutput);
             // enable or disable input depending on if the name could be changed or is fixed
-            if (!!this.selectedShipClassInput) {
+            if (!!this.shipClass) {
                 this.form.controls.scName.disable();
             } else {
                 this.form.controls.scName.enable();
             }
-            this.setShipClass(this.selectedShipClassInput)
+            this.setShipClass(this.shipClass)
         }
     }
 
@@ -189,13 +190,17 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
      * @private
      */
     private getCosts() {
-        let userID = this.tokenStorage.getUserID();
-        if (!!this.designedShipClassInput && !!userID && this.idChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(this.designedShipClassInput, userID)
+        if (!!this.designedShipClassInput && this.idChangePending()) {
+            let sub = this.resourceApi.getShipClassCosts(this.designedShipClassInput)
                 .subscribe(resp => this.costs = resp);
+            this.subscriptions.push(sub);
+
+            sub = this.resourceApi.getShipClassCaps(this.designedShipClassInput)
+                .subscribe(resp => this.capabilities = resp);
             this.subscriptions.push(sub);
         } else if (!this.designedShipClassInput) {
             this.costs = undefined;
+            this.capabilities = undefined;
             this.compareClass = undefined;
         }
     }
