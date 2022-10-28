@@ -29,15 +29,11 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
     }
 
     ngAfterViewInit() {
-        if (!!this.tokenStorage.getUserID()) {
-            let sub = this.researchApi.getAvailableResearchByUser(this.tokenStorage.getUserID())
-                .subscribe(resp => this.availableResearches = resp);
-            this.subscriptions.push(sub);
+        let sub = this.researchApi.getAvailableResearchByUser().subscribe(resp => this.availableResearches = resp);
+        this.subscriptions.push(sub);
 
-            sub = this.researchApi.researchPossibleForUser(this.tokenStorage.getUserID())
-                .subscribe(resp => this.researchPossible = resp);
-            this.subscriptions.push(sub);
-        }
+        sub = this.researchApi.researchPossibleForUser().subscribe(resp => this.researchPossible = resp);
+        this.subscriptions.push(sub);
     }
 
     /**
@@ -47,10 +43,7 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
      */
     runResearch(research: ResearchLevel) {
         if (!!research) {
-            let sub = this.researchApi.startResearchByUser(research, this.tokenStorage.getUserID())
-                .subscribe(resp => {
-                    this.researchPossible = false;
-                });
+            let sub = this.researchApi.startResearchByUser(research).subscribe(resp => this.researchPossible = false);
             this.subscriptions.push(sub);
         }
     }

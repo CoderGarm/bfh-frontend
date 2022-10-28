@@ -1,6 +1,12 @@
+@import "src/styles/variables";
+
 .research-chip {
   width: 250px;
   height: auto !important;
+}
+
+.completed-research {
+  background-color: $success;
 }
 
 .icon {

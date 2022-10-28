@@ -1,12 +1,13 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Research, ResearchTree, ResearchTreeElement} from "../../../services/swagger";
+import {Research, ResearchApiService, ResearchLevel, ResearchTree, ResearchTreeElement} from "../../../services/swagger";
+import {SubscriptionManager} from "../../../SubscriptionManager";
 
 @Component({
     selector: 'app-tech-tree-display',
     templateUrl: './tech-tree-display.component.html',
     styleUrls: ['./tech-tree-display.component.scss']
 })
-export class TechTreeDisplayComponent implements OnInit, OnChanges {
+export class TechTreeDisplayComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     @Input()
     techTree?: ResearchTree;
@@ -18,10 +19,15 @@ export class TechTreeDisplayComponent implements OnInit, OnChanges {
     idResearchesByDepth: number[][] = [];
     maxDepth: number = 0;
 
-    constructor() {
+    completedResearches: ResearchLevel[] = [];
+
+    constructor(private researchApi: ResearchApiService) {
+        super();
     }
 
     ngOnInit(): void {
+        let sub = this.researchApi.getResearchByUser().subscribe(resp => this.completedResearches = resp);
+        this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -119,5 +125,12 @@ export class TechTreeDisplayComponent implements OnInit, OnChanges {
         let folder = hasIcon.folder;
         let iconName = hasIcon.iconName;
         return "assets/" + folder + "/png16x/" + iconName + "_c.png";
+    }
+
+    getCssClass(idResearch: number) {
+        if (this.completedResearches.filter(r => r.research.idResearch === idResearch).length > 0) {
+            return "completed-research";
+        }
+        return "";
     }
 }

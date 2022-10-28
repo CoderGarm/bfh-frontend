@@ -22,11 +22,8 @@ export class CompletedResearchesComponent extends SubscriptionManager implements
     }
 
     ngAfterViewInit() {
-        if (!!this.tokenStorage.getUserID()) {
-            let sub = this.researchApi.getResearchByUser(this.tokenStorage.getUserID())
-                .subscribe(resp => this.completedResearches = resp);
-            this.subscriptions.push(sub);
-        }
+        let sub = this.researchApi.getResearchByUser().subscribe(resp => this.completedResearches = resp);
+        this.subscriptions.push(sub);
     }
 
     /**

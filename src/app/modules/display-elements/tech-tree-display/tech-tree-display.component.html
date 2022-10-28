@@ -5,7 +5,9 @@
 <mat-grid-list cols="{{maxDepth}}" rowHeight="40px">
     <div class="inner" *ngFor="let idResearches of idResearchesByDepth; let i = index; ">
         <mat-grid-tile *ngFor="let idResearch of idResearches">
-            <mat-chip *ngIf="!!getResearch(idResearch)" class="research-chip"
+            <mat-chip *ngIf="!!getResearch(idResearch)"
+                      class="research-chip"
+                      [ngClass]="getCssClass(idResearch)"
                       [matTooltip]="getResearch(idResearch)!.description">
                 <img mat-card-avatar class="avatar-image icon"
                      src="{{getLink(idResearch)}}">

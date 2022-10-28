@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ResearchApiService, ResearchTree} from "../../../../services/swagger";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {ResearchApiService, ResearchTree} from "../../../../../services/swagger";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-tech-tree',
