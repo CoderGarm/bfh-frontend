@@ -66,9 +66,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         });
         this.subscriptions.push(sub);
 
-        sub = this.jobApi.areUnknownFinishedJobsPresent().subscribe(resp => this.hasFinishedJobs = resp);
-        this.subscriptions.push(sub);
-
         const source = interval(AppComponent.CHECK_MESSAGES_INTERVAL_IN_SECONDS);
         sub = source.subscribe(val => {
             // and later again repetitive
@@ -82,6 +79,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             let sub = this.chatApi.hasUserUnread().subscribe(resp => this.hasUnreadChat = resp)
             this.subscriptions.push(sub);
             sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.hasUnreadForum = resp)
+            this.subscriptions.push(sub);
+            sub = this.jobApi.areUnknownFinishedJobsPresent().subscribe(resp => this.hasFinishedJobs = resp);
             this.subscriptions.push(sub);
         }
     }

@@ -356,7 +356,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         let level = construction.level;
         let baseValue = construction.building.baseValue;
         let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
-        let valueAtLevel = baseValue * level * increasingFactorPerLevel;
+        let valueAtLevel = Math.round(baseValue * level * increasingFactorPerLevel);
 
         let productionTarget = construction.building.productionTarget;
         let productionCategory = construction.building.productionCategory;
