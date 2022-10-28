@@ -29,7 +29,7 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
             pass: new FormControl('')
         });
         if (this.tokenService.isLocalhost()) {
-            this.loginForm.controls.login.setValue('238');
+            this.loginForm.controls.login.setValue('abfozqfiuo');
             this.loginForm.controls.pass.setValue('12457aA!');
         }
     }

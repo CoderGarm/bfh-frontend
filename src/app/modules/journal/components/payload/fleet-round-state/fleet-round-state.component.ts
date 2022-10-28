@@ -51,9 +51,9 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
     constructor(private translate: TranslateService) {
         super();
 
-        this.translations.set('combat-arena.tooltip.warship-state.incapacitated', 'combat-arena.tooltip.warship-state.incapacitated');
-        let sub = this.translate.get('combat-arena.tooltip.warship-state.incapacitated').subscribe((translated: string) => {
-            this.translations.set('combat-arena.tooltip.warship-state.incapacitated', translated);
+        this.translations.set('combat-arena.tooltip.warship-state.destroyed', 'combat-arena.tooltip.warship-state.destroyed');
+        let sub = this.translate.get('combat-arena.tooltip.warship-state.destroyed').subscribe((translated: string) => {
+            this.translations.set('combat-arena.tooltip.warship-state.destroyed', translated);
         });
         this.subscriptions.push(sub);
         this.translations.set('combat-arena.tooltip.warship-state.incapacitated', 'combat-arena.tooltip.warship-state.incapacitated');
@@ -151,7 +151,7 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
     private createInitialState(warShip: WarShip) {
         let hullType = warShip.shipClass.hull.hullType;
         this.hullTypes.set(hullType.typeName, hullType);
-        let capabilityValues = this.deepCloneSpacecraftCapabilities(warShip.shipClass.shipClassCapabilities.capabilities);
+        let capabilityValues = this.deepCloneSpacecraftCapabilities(warShip.warshipHealthState.spacecraftCapabilities.capabilities);
         const state: StateByRound = {
             round: 1,
             warship: warShip,
