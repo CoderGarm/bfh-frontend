@@ -1,6 +1,22 @@
-import {EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "./services/swagger";
+import {Construction, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "./services/swagger";
 
 export class ResourceHelper {
+
+    static calculateLevelOutput(construction: Construction | undefined): number {
+        if (!construction) {
+            return 0;
+        }
+        let level = construction.level;
+        let baseValue = construction.building.baseValue;
+        let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
+        let valueAtLevel;
+        if (level === 1) {
+            valueAtLevel = baseValue;
+        } else {
+            valueAtLevel = Math.round(baseValue + (baseValue * level * increasingFactorPerLevel));
+        }
+        return valueAtLevel;
+    }
 
     /**
      * Calculates if you can pay the bill.

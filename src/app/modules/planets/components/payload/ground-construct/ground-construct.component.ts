@@ -22,6 +22,7 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
+import {ResourceHelper} from "../../../../../ResourceHelper";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
 @Component({
@@ -353,11 +354,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.levelImprovementHumanResources = undefined;
             return;
         }
-        let level = construction.level;
-        let baseValue = construction.building.baseValue;
-        let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
-        let valueAtLevel = Math.round(baseValue * level * increasingFactorPerLevel);
 
+        let valueAtLevel = ResourceHelper.calculateLevelOutput(construction);
         let productionTarget = construction.building.productionTarget;
         let productionCategory = construction.building.productionCategory;
         let population = this.eResourceTypes.filter(r => r.collectableType == "VIABLE")[0];
