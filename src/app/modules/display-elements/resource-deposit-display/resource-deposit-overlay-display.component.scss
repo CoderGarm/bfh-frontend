@@ -33,6 +33,7 @@
 
 .res-wrapper {
   height: 38px;
+  max-width: 35px; // todo strange flex if width is too small or too wide per element
 }
 
 .amount-present {
@@ -46,14 +47,15 @@
 }
 
 .diffImprovementAmount {
-  font-size: 10px;
-  line-height: 18px;
+  font-size: 1vmin;
   margin-left: 5px;
   color: #46a35e;
+  display: inline-flex;
 }
 
 .no-flex {
   display: flex;
+  width: 100%;
 }
 
 .hasSize {
@@ -74,4 +76,26 @@
 .close-bracket {
   border-right: dashed $disabled-text-color 2px;
   border-radius: 9px;
+}
+
+.info-holder {
+  position: relative;
+}
+
+.capacity {
+  position: absolute;
+  top: -10px;
+  right: -15px px;
+}
+
+.uprising {
+  color: red;
+}
+
+.warning {
+  color: purple;
+}
+
+.fine {
+  color: darkgreen;
 }

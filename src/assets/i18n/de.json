@@ -142,6 +142,12 @@
     "title": "Forschung"
   },
   "resource-overlay": {
+    "capacity": {
+      "info": {
+        "population": "Der Wohnraum für AMOUNT Menschen wird noch TICKS Ticks ausreichen",
+        "resource": "Der Lagerplatz für AMOUNT RESOURCE_NAME wird noch TICKS Ticks ausreichen"
+      }
+    },
     "costs": {
       "population": "Die Anzahl der benötigten Arbeitskräfte."
     },

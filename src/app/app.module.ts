@@ -36,6 +36,8 @@ import {DatePipe} from "@angular/common";
 import {GlobalSpinnerComponent} from './components/global-spinner/global-spinner.component';
 import {SpinnerService} from "./services/spinner.service";
 import {TypeService} from "./services/type.service";
+import {NumberShortPipe} from "./services/pipes/number-short.pipe";
+import {NumberThousandSeparatorPipe} from "./services/pipes/number-thousand-separator.pipe";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -95,7 +97,9 @@ export function createTranslateLoader(http: HttpClient) {
         SnackbarNotificationService,
         SpinnerService,
         TypeService,
-        DatePipe
+        DatePipe,
+        NumberShortPipe,
+        NumberThousandSeparatorPipe
     ],
     bootstrap: [AppComponent]
 })

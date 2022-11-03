@@ -78,6 +78,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     resourceDeposit?: ResourceDeposit;
     income?: ResourceDeposit;
+    capacity?: ResourceDeposit;
     levelImprovementResources?: ResourceAmount;
     levelImprovementHumanResources?: HumanResourceAmount;
 
@@ -206,6 +207,11 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanetInput.idPlanet)
                 .subscribe(resp => {
                     this.income = resp;
+                });
+            this.subscriptions.push(sub);
+            sub = this.resourceApi.getPlanetaryCapacity(this.selectedPlanetInput.idPlanet)
+                .subscribe(resp => {
+                    this.capacity = resp;
                 });
             this.subscriptions.push(sub);
         }
@@ -358,14 +364,9 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         let valueAtLevel = ResourceHelper.calculateLevelOutput(construction);
         let productionTarget = construction.building.productionTarget;
         let productionCategory = construction.building.productionCategory;
-        let population = this.eResourceTypes.filter(r => r.collectableType == "VIABLE")[0];
         switch (productionCategory) {
             case ProductionCategoryEnum.CAPACITY:
-                // todo how to display capacity
-                this.levelImprovementResources = {
-                    resourceType: population,
-                    amount: valueAtLevel
-                }
+                // do not display capacity because the value is shown by a tooltip
                 break;
             case ProductionCategoryEnum.PRODUCE:
                 this.levelImprovementResources = {

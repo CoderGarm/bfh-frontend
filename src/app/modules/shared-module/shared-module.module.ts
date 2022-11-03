@@ -12,10 +12,14 @@ import {NumericCounterComponent} from './components/numeric-counter/numeric-coun
 import {OverlayModule} from "@angular/cdk/overlay";
 import {AngularEditorModule} from "@kolkov/angular-editor";
 import {TranslateModule} from "@ngx-translate/core";
+import {NumberShortPipe} from "../../services/pipes/number-short.pipe";
+import {NumberThousandSeparatorPipe} from "../../services/pipes/number-thousand-separator.pipe";
 
 @NgModule({
     declarations: [
         NumericCounterComponent,
+        NumberShortPipe,
+        NumberThousandSeparatorPipe,
     ],
     imports: [
         CommonModule,
@@ -46,6 +50,8 @@ import {TranslateModule} from "@ngx-translate/core";
         OverlayModule,
         AngularEditorModule,
         TranslateModule,
+        NumberShortPipe,
+        NumberThousandSeparatorPipe,
     ]
 })
 export class SharedModuleModule {

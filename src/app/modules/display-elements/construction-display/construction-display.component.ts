@@ -74,7 +74,7 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
         }
     }
 
-    getLevelImprovement() {
+    getOutput() {
         return "" + ResourceHelper.calculateLevelOutput(this.construction);
         ;
     }

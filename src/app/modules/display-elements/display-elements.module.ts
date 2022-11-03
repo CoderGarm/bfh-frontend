@@ -41,6 +41,7 @@ import {LauncherCounterComponent} from './launcher-counter/launcher-counter.comp
 import {TechTreeDisplayComponent} from './tech-tree-display/tech-tree-display.component';
 import {JobListDisplayComponent} from './job-list-display/job-list-display.component';
 import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability-display-small/spacecraft-capability-display-small.component";
+import {NumberShortComponent} from './number-short/number-short.component';
 
 @NgModule({
     declarations: [
@@ -85,6 +86,7 @@ import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability
         LauncherCounterComponent,
         TechTreeDisplayComponent,
         JobListDisplayComponent,
+        NumberShortComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -130,7 +132,8 @@ import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability
         LauncherModuleDisplayComponent,
         LauncherCounterComponent,
         TechTreeDisplayComponent,
-        JobListDisplayComponent
+        JobListDisplayComponent,
+        NumberShortComponent,
     ]
 })
 export class DisplayElementsModule {

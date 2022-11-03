@@ -32,26 +32,33 @@
         </div>
         <div *ngFor="let resource of getBase().resources" class="box">
             <div class="res-wrapper">
-                <div class="img-container">
+                <div class="img-container info-holder">
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.singularName}}" matTooltip="{{resource.resourceType.typeName}}">
+                    <mat-icon *ngIf="isCapPresent(resource)" class="capacity"
+                              [ngClass]="getCapacityWarningClass(resource)"
+                              [inline]="true"
+                              matTooltip="{{getCapacityTooltip(resource)}}">info
+                    </mat-icon>
                 </div>
                 <div [ngClass]="getOpeningBracketClass(resource)">
-                    <label class="amount-present">
-                        {{getResource(resource.resourceType, resourceDeposit)}}
-                    </label>
+                    <div>
+                        <app-number-short [input]="getResourceAmount(resource.resourceType, resourceDeposit)"></app-number-short>
+                    </div>
                     <div>
                         <div *ngIf="!!income" class="diffAmount no-flex"
                              matTooltip="{{getTooltip(income!.subType, resource.resourceType)}}">
                             <div>
-                                {{getResource(resource.resourceType, income)}}
+                                <app-number-short [input]="getResourceAmount(resource.resourceType, income)"></app-number-short>
                             </div>
-                            <div *ngIf="!!getResourceImprovement(resource.resourceType)"
-                                 class="diffImprovementAmount">
-                                ({{getResourceImprovement(resource.resourceType)}})
+                            <div *ngIf="!!getResourceImprovement(resource.resourceType)" class="diffImprovementAmount">
+                                (+
+                                <app-number-short [input]="getResourceImprovement(resource.resourceType)"></app-number-short>
+                                )
                             </div>
                         </div>
-                        <div *ngIf="!!costs" class="diffAmount"
-                             matTooltip="{{getTooltip(costs!.subType, resource.resourceType)}}">{{getResource(resource.resourceType, costs)}}</div>
+                        <div *ngIf="!!costs" class="diffAmount" matTooltip="{{getTooltip(costs!.subType, resource.resourceType)}}">
+                            <app-number-short [input]="getResourceAmount(resource.resourceType, costs)"></app-number-short>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,19 +70,23 @@
                 </div>
                 <div [ngClass]="getClosingBracketClass(resource)">
                     <label class="amount-present">
-                        {{getHumans(resource.resourceType, resourceDeposit)}}
+                        <app-number-short [input]="getHumans(resource.resourceType, resourceDeposit)"></app-number-short>
                     </label>
                     <div class="amount-holder">
                         <div *ngIf="!!income" class="diffAmount no-flex">
                             <div>
-                                {{getHumans(resource.resourceType, income)}}
+                                <app-number-short [input]="getHumans(resource.resourceType, income)"></app-number-short>
                             </div>
                             <div *ngIf="!!getHumanResourceImprovement(resource.resourceType)"
                                  class="diffImprovementAmount">
-                                ({{getHumanResourceImprovement(resource.resourceType)}})
+                                (+
+                                <app-number-short [input]="getHumanResourceImprovement(resource.resourceType)"></app-number-short>
+                                )
                             </div>
                         </div>
-                        <div *ngIf="!!costs" class="diffAmount">{{getHumans(resource.resourceType, costs)}}</div>
+                        <div *ngIf="!!costs" class="diffAmount">
+                            <app-number-short [input]="getHumans(resource.resourceType, costs)"></app-number-short>
+                        </div>
                     </div>
                 </div>
             </div>

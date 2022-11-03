@@ -21,6 +21,9 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
     income?: ResourceDeposit;
 
     @Input()
+    capacity?: ResourceDeposit;
+
+    @Input()
     levelImprovementResources?: ResourceAmount;
 
     @Input()
@@ -31,6 +34,8 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
     private readonly depositPopulation = 'resource-overlay.deposit.population';
     private readonly incomePopulation = 'resource-overlay.income.population';
     private readonly costsPopulation = 'resource-overlay.costs.population';
+    private readonly capacityPopulationKey = 'resource-overlay.capacity.info.population';
+    private readonly capacityResourceKey = 'resource-overlay.capacity.info.resource';
 
     constructor(@Optional() @Inject('resourceDeposit') resourceDeposit: ResourceDeposit | undefined,
                 @Optional() @Inject('costs') costs: ResourceDeposit | undefined,
@@ -46,17 +51,34 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         this.levelImprovementHumanResources = levelImprovementHumanResources;
 
         this.translations.set(this.incomePopulation, this.incomePopulation);
-        this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
+        let sub = this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
             this.translations.set(this.incomePopulation, translated);
         });
+        this.subscriptions.push(sub);
+
         this.translations.set(this.costsPopulation, this.costsPopulation);
-        this.translate.get('resource-overlay.costs.population').subscribe((translated: string) => {
+        sub = this.translate.get('resource-overlay.costs.population').subscribe((translated: string) => {
             this.translations.set(this.costsPopulation, translated);
         });
+        this.subscriptions.push(sub);
+
         this.translations.set(this.depositPopulation, this.depositPopulation);
-        this.translate.get('resource-overlay.deposit.population').subscribe((translated: string) => {
+        sub = this.translate.get('resource-overlay.deposit.population').subscribe((translated: string) => {
             this.translations.set(this.depositPopulation, translated);
         });
+        this.subscriptions.push(sub);
+
+        this.translations.set(this.capacityPopulationKey, this.capacityPopulationKey);
+        sub = this.translate.get('resource-overlay.capacity.info.population').subscribe((translated: string) => {
+            this.translations.set(this.capacityPopulationKey, translated);
+        });
+        this.subscriptions.push(sub);
+
+        this.translations.set(this.capacityResourceKey, this.capacityResourceKey);
+        sub = this.translate.get('resource-overlay.capacity.info.resource').subscribe((translated: string) => {
+            this.translations.set(this.capacityResourceKey, translated);
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {
@@ -82,44 +104,46 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
-    getResource(resource: EResourceType, costs?: ResourceDeposit): string {
-        if (!costs) {
-            return "";
+    getResourceAmount(resource: EResourceType, deposit?: ResourceDeposit): number | undefined {
+        if (!deposit) {
+            return undefined;
         }
-        let resources: ResourceAmount[] | undefined = costs.resources
+        let resources: ResourceAmount[] | undefined = deposit.resources
             .filter(r => r.resourceType.typeName == resource.typeName);
         if (resources.length != 1) {
-            return "";
+            return undefined;
         }
-        return "" + resources[0].amount;
+        return resources[0].amount;
     }
 
-    getResourceImprovement(resource: EResourceType): string {
-        let perNextLevelIncome = "";
+    getResourceImprovement(resource: EResourceType): number {
         if (!!this.levelImprovementResources && this.levelImprovementResources.resourceType.typeName === resource.typeName) {
-            perNextLevelIncome = " " + this.levelImprovementResources.amount;
+            let incoming = this.getResourceAmount(resource, this.income);
+            if (!incoming) {
+                incoming = 0;
+            }
+            return (this.levelImprovementResources.amount - incoming);
         }
-        return perNextLevelIncome;
+        return 0;
     }
 
-    getHumans(resource: EEducationType, costs?: ResourceDeposit): string {
+    getHumans(resource: EEducationType, costs?: ResourceDeposit): number | undefined {
         if (!costs) {
-            return "";
+            return undefined;
         }
         let resources: HumanResourceAmount[] | undefined = costs.humanResources
             .filter(r => r.resourceType.typeName == resource.typeName);
         if (resources.length != 1) {
-            return "";
+            return undefined;
         }
-        return "" + resources[0].amount;
+        return resources[0].amount;
     }
 
-    getHumanResourceImprovement(resource: EEducationType): string {
-        let perNextLevelIncome = "";
+    getHumanResourceImprovement(resource: EEducationType): number {
         if (!!this.levelImprovementHumanResources && this.levelImprovementHumanResources.resourceType.typeName === resource.typeName) {
-            perNextLevelIncome = " " + this.levelImprovementHumanResources.amount;
+            return this.levelImprovementHumanResources.amount;
         }
-        return perNextLevelIncome;
+        return 0;
     }
 
     getTicksNeeded() {
@@ -176,7 +200,7 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
     }
 
     isDisplayingPossible() {
-        return !!this.resourceDeposit || !!this.costs || !!this.income;
+        return !!this.capacity || !!this.resourceDeposit || !!this.costs || !!this.income;
     }
 
     getOpeningBracketClass(resource: ResourceAmount) {
@@ -194,5 +218,56 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         let indexOf = base.humanResources.indexOf(resource);
 
         return (length - 1) == indexOf ? 'close-bracket' : '';
+    }
+
+    isCapPresent(resource: ResourceAmount) {
+        const resourceAmount = this.getResourceAmount(resource.resourceType, this.capacity);
+        return !!resourceAmount;
+    }
+
+    getCapacityTooltip(resource: ResourceAmount) {
+        let key = this.capacityResourceKey;
+        if (resource.resourceType.typeName === 'POPULATION') {
+            key = this.capacityPopulationKey;
+        }
+        let translation = this.translations.get(key);
+        if (!translation) {
+            return "";
+        }
+
+        const capacityAmount = this.getResourceAmount(resource.resourceType, this.capacity);
+        const resourceName = resource.resourceType.typeName.toLocaleLowerCase(this.translate.getLangs());
+
+        const lastingTicks = this.calculateLastingCapacityTicks(resource);
+
+        translation = translation.replace("AMOUNT", capacityAmount + "");
+        translation = translation.replace("RESOURCE_NAME", resourceName);
+        translation = translation.replace("TICKS", lastingTicks + "");
+
+        return translation;
+    }
+
+    private calculateLastingCapacityTicks(resource: ResourceAmount) {
+        const incoming = this.getResourceAmount(resource.resourceType, this.income);
+        if (!incoming) {
+            throw new Error("There should be an incoming if requested.");
+        }
+        const current = this.getResourceAmount(resource.resourceType, this.resourceDeposit);
+        const capacity = this.getResourceAmount(resource.resourceType, this.capacity);
+        if (!capacity || !current) {
+            throw new Error("There should be a capacity or a current if requested.");
+        }
+        return Math.round((capacity - current) / incoming);
+    }
+
+    getCapacityWarningClass(resource: ResourceAmount) {
+        const lastingTicks = this.calculateLastingCapacityTicks(resource);
+        if (lastingTicks <= 3) {
+            return 'uprising';
+        }
+        if (lastingTicks <= 5) {
+            return 'warning';
+        }
+        return 'fine';
     }
 }
