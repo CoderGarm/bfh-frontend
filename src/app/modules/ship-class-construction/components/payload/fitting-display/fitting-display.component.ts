@@ -31,6 +31,9 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
     @Output()
     isSelectedOutput: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    @Input()
+    resourceDeposit?: ResourceDeposit;
+
     /**
      * the css selector which should be used to create the svg div in the svg component
      */

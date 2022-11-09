@@ -1,13 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ShipClass} from "../../../../../services/swagger";
+import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
 import {MatTabChangeEvent} from "@angular/material/tabs";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-ship-class-tab-view',
     templateUrl: './ship-class-tab-view.component.html',
     styleUrls: ['./ship-class-tab-view.component.scss']
 })
-export class ShipClassTabViewComponent implements OnInit {
+export class ShipClassTabViewComponent extends SubscriptionManager implements OnInit {
 
     /**
      * The user selected ShipClass.
@@ -27,10 +28,15 @@ export class ShipClassTabViewComponent implements OnInit {
     @Output()
     modifiedShipClassOutput: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
 
-    constructor() {
+    resourceDeposit?: ResourceDeposit;
+
+    constructor(private resourceApi: ResourcesApiService) {
+        super();
     }
 
     ngOnInit() {
+        const sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
+        this.subscriptions.push(sub);
     }
 
     emitTabSelectedIndex($event: MatTabChangeEvent) {

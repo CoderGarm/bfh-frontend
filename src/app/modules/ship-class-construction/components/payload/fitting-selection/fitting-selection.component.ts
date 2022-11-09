@@ -33,6 +33,9 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
     @Output()
     isSelectedOutput: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    @Input()
+    resourceDeposit?: ResourceDeposit;
+
     /**
      * the css selector which should be used to create the svg div in the svg component
      */
