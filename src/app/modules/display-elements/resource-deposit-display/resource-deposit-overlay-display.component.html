@@ -77,10 +77,10 @@
                             <div>
                                 <app-number-short [input]="getHumans(resource.resourceType, income)"></app-number-short>
                             </div>
-                            <div *ngIf="!!getHumanResourceImprovement(resource.resourceType)"
+                            <div *ngIf="!!getHumanImprovement(resource.resourceType)"
                                  class="diffImprovementAmount">
                                 (+
-                                <app-number-short [input]="getHumanResourceImprovement(resource.resourceType)"></app-number-short>
+                                <app-number-short [input]="getHumanImprovement(resource.resourceType)"></app-number-short>
                                 )
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, Job, Planet} from "../../../services/swagger";
+import {EHullType, Fleet, Job, Planet} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -104,5 +104,21 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
             currentCaps.capabilities.forEach(value => current += value.value);
         }
         return Math.round((current / max) * 100) + " %";
+    }
+
+    getHullAmount(fleet: Fleet) {
+        let m: Map<EHullType, number> = new Map<EHullType, number>();
+        fleet.ships.forEach(w => {
+            const hullType = w.shipClass.hull!.hullType;
+            let amount = m.get(hullType);
+            if (!amount) {
+                amount = 0;
+            }
+            amount += 1;
+            m.set(hullType, amount);
+        });
+        let result = "";
+        m.forEach((amount, hullType) => result += ", " + amount + " " + hullType.typeName);
+        return fleet.ships.length + " ships";
     }
 }

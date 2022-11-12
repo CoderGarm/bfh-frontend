@@ -319,6 +319,48 @@ export class ResourcesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public getResourceDemand(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getResourceDemand(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getResourceDemand(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getResourceDemand(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getResourceDemand.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/demand/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EResourceTypes.
+     * 
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public getResourceDeposit(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
     public getResourceDeposit(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
     public getResourceDeposit(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
@@ -344,7 +386,7 @@ export class ResourcesApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/resourceDeposit/${encodeURIComponent(String(idPlanet))}`,
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/deposit/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -381,7 +423,49 @@ export class ResourcesApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/resourceDeposit`,
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/deposit`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EResourceTypes.
+     * 
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getResourceUtilization(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getResourceUtilization(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getResourceUtilization(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getResourceUtilization(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getResourceUtilization.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/utilization/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

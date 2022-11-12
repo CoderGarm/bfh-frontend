@@ -181,7 +181,7 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
                 attackedTypeName = "PROPULSION"
                 break;
             case "SIDEWALL":
-                attackedTypeName = "SHIELD"
+                attackedTypeName = "SIDEWALL"
                 break;
             default:
                 return;

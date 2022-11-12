@@ -15,7 +15,6 @@ import { EResourceType } from './eResourceType';
 import { Fleet } from './fleet';
 import { Planet } from './planet';
 import { Research } from './research';
-import { ShipClass } from './shipClass';
 import { UserJson } from './userJson';
 
 /**
@@ -43,6 +42,10 @@ export interface Job {
      */
     isShipyardJob: boolean;
     /**
+     * Is this a repair job.
+     */
+    isRepairJob: boolean;
+    /**
      * Is this a research job.
      */
     isResearchJob: boolean;
@@ -52,10 +55,5 @@ export interface Job {
      * The targeted level if it is a research or building.
      */
     targetLevel?: number;
-    shipYardTarget?: ShipClass;
-    /**
-     * The targeted amount of ships in case of an shipyard job..
-     */
-    amountShips?: number;
-    repairTarget?: Fleet;
+    fleet?: Fleet;
 }

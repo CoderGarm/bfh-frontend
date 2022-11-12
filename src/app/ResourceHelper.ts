@@ -19,7 +19,46 @@ export class ResourceHelper {
     }
 
     /**
-     * Calculates if you can pay the bill.
+     * Calculates if you can pay the bill.<br>
+     * <b>Attention:<b> This excludes the population.
+     *
+     * @param costs the costs
+     * @param deposit the account which must pay
+     */
+    static canPayTheCollectableBill(costs: ResourceDeposit, deposit: ResourceDeposit): boolean {
+
+        let map = new Map<string, number>();
+        costs.resources.forEach(costAmount => {
+            let resourceType = costAmount.resourceType;
+            if (resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
+                let toPay = costAmount.amount;
+                map.set(resourceType.typeName, toPay);
+            }
+        });
+
+        let canPay: boolean = true;
+        map.forEach((toPay, resourceTypeName) => {
+            let depositedResource = deposit.resources.filter(dep => dep.resourceType.typeName === resourceTypeName);
+            if (depositedResource.length == 0) {
+                canPay = false;
+                return;
+            }
+
+            if (depositedResource.length != 0) {
+                let depositAmount = depositedResource[0];
+                let currentAmount = depositAmount.amount;
+                if (currentAmount < toPay) {
+                    canPay = false;
+                    return;
+                }
+            }
+        });
+        return canPay;
+    }
+
+    /**
+     * Calculates if you can pay the bill.<br>
+     * <b>Attention:<b> This includes in population.
      *
      * @param costs the costs
      * @param deposit the account which must pay

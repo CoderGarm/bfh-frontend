@@ -139,9 +139,13 @@ export class ResourceDepositOverlayDisplayComponent extends SubscriptionManager 
         return resources[0].amount;
     }
 
-    getHumanResourceImprovement(resource: EEducationType): number {
+    getHumanImprovement(resource: EEducationType): number {
         if (!!this.levelImprovementHumanResources && this.levelImprovementHumanResources.resourceType.typeName === resource.typeName) {
-            return this.levelImprovementHumanResources.amount;
+            let incoming = this.getHumans(resource, this.income);
+            if (!incoming) {
+                incoming = 0;
+            }
+            return (this.levelImprovementHumanResources.amount - incoming);
         }
         return 0;
     }

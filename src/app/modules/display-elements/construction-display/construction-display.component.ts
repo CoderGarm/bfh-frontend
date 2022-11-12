@@ -65,7 +65,7 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
             this.jobTooExpensive = true;
             return;
         }
-        this.jobTooExpensive = !ResourceHelper.canPayTheBill(this.costsToDisplay, this.resourceDeposit);
+        this.jobTooExpensive = !ResourceHelper.canPayTheCollectableBill(this.costsToDisplay, this.resourceDeposit);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
