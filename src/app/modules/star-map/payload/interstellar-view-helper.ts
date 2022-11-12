@@ -194,7 +194,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
         let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
 
-        if (!fleetMarker.isActive) {
+        if (!fleetMarker.isActive && fleetMarker.needsRepair) {
             let xMarker = sortedPointsX[0];
             let yMarker = sortedPointsY[sortedPointsY.length - 1];
 
