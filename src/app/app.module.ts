@@ -3,7 +3,7 @@ import {ErrorDialogComponent} from './components/error-dialog/error-dialog.compo
 import {CustomErrorHandler} from './services/customErrorHandler.service';
 import {PasswordEqualityValidatorDirective, PasswordPatternValidatorDirective} from './validators/passwordValidator';
 import {AuthenticationModule} from './services/authentication';
-import {ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, Injector, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/user/login/login.component';
 import {RegisterComponent} from './components/user/register/register.component';
@@ -30,7 +30,7 @@ import {EMailValidatorDirective, UserNameValidatorDirective} from "./validators/
 import {AllianceModule} from "./modules/alliance/alliance.module";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient} from "@angular/common/http";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
 import {DatePipe} from "@angular/common";
 import {GlobalSpinnerComponent} from './components/global-spinner/global-spinner.component';
@@ -38,6 +38,8 @@ import {SpinnerService} from "./services/spinner.service";
 import {TypeService} from "./services/type.service";
 import {NumberShortPipe} from "./services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "./services/pipes/number-thousand-separator.pipe";
+import {HttpCacheInterceptor} from "./services/interceptors/http-cache-interceptor";
+import {ResourceDisplayModule} from "./modules/display-elements/modules/resource-display/resource-display.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -47,6 +49,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+export let AppInjector: Injector;
 
 @NgModule({
     declarations: [
@@ -79,6 +83,7 @@ export function createTranslateLoader(http: HttpClient) {
         AuthenticationModule,
         SharedModuleModule,
         DisplayElementsModule,
+        ResourceDisplayModule,
         ChatModule,
         PlanetsModule,
         StarMapModule,
@@ -94,14 +99,18 @@ export function createTranslateLoader(http: HttpClient) {
     providers: [
         NgxPermissionsModule,
         {provide: ErrorHandler, useClass: CustomErrorHandler},
+        {provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true},
         SnackbarNotificationService,
         SpinnerService,
         TypeService,
         DatePipe,
         NumberShortPipe,
-        NumberThousandSeparatorPipe
+        NumberThousandSeparatorPipe,
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
+    constructor(private injector: Injector) {
+        AppInjector = this.injector;
+    }
 }

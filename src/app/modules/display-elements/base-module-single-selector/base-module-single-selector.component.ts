@@ -78,7 +78,7 @@ export class BaseModuleSingleSelectorComponent implements AfterViewInit, OnChang
      */
     private checkRB(checked: boolean) {
         setTimeout(() => {
-            // because of https://angular.io/errors/NG0100
+            // because of https://angular.io/errors/NG0100 -> https://stackoverflow.com/a/45341146/18296598
             if (!!this.radioButton) {
                 this.radioButton.checked = checked;
             }

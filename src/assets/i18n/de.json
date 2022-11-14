@@ -129,6 +129,23 @@
     },
     "mining-factors": {
       "title": "Mining factors"
+    },
+    "population-development": {
+      "title": "Bevölkerungsentwicklung"
+    }
+  },
+  "population-development": {
+    "demand": {
+      "toolTip": "Die benötigte Bevölkerung"
+    },
+    "deposit": {
+      "toolTip": "Die vorhandene Bevölkerung"
+    },
+    "income": {
+      "toolTip": "Das prognostizierte Wachstum"
+    },
+    "utilization": {
+      "toolTip": "Die eingesetzte Bevölkerung"
     }
   },
   "register": {

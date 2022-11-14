@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
 
 @Component({
     selector: 'app-ship-class-tab-view',
@@ -30,7 +31,8 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements On
 
     resourceDeposit?: ResourceDeposit;
 
-    constructor(private resourceApi: ResourcesApiService) {
+    constructor(private resourceApi: ResourcesApiService,
+                private resourceEmitter: ResourceEmitterService) {
         super();
     }
 
@@ -45,5 +47,9 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements On
 
     passOutput(event: ShipClass) {
         this.modifiedShipClassOutput.emit(event);
+    }
+
+    indexChanged(event: number) {
+        this.resourceEmitter.clear();
     }
 }

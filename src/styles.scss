@@ -60,6 +60,7 @@ body {
 
 .drawer-list {
   padding: 15px;
+  width: 180px;
 }
 
 .side-nav-open-change-area {
@@ -116,7 +117,22 @@ body {
   top: 0;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 .height-fit-content {
   height: -moz-fit-content !important;
   height: fit-content !important;
+}
+
+[mat-dialog-title] {
+  margin: -24px -24px 0px -24px !important;
+  padding: 10px 24px;
+  background: $primary-color;
+}
+
+.resource-mat-dialog-panel .mat-dialog-container {
+  background: linear-gradient(45deg, $secondary-background-color 20px, $background-color 20px);
+  border-radius: 5px 5px 5px 0;
 }

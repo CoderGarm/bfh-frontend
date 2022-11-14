@@ -115,7 +115,7 @@ export class ResourceHelper {
      * @param costs the payment
      * @param bill the bill
      */
-    static addToBill(costs: ResourceDeposit, bill: ResourceDeposit) {
+    static addToBill(costs: ResourceDeposit, bill: ResourceDeposit): ResourceDeposit {
 
         costs.resources.forEach(costAmount => {
             let resourceType = costAmount.resourceType;
@@ -137,6 +137,11 @@ export class ResourceHelper {
                 }
             });
         });
+        return {
+            resources: bill.resources,
+            humanResources: bill.humanResources,
+            subType: bill.subType
+        };
     }
 
     /**
@@ -145,7 +150,7 @@ export class ResourceHelper {
      * @param costs the payment
      * @param bill the bill
      */
-    static reduceTheBill(costs: ResourceDeposit, bill: ResourceDeposit) {
+    static reduceTheBill(costs: ResourceDeposit, bill: ResourceDeposit): ResourceDeposit {
 
         costs.resources.forEach(costAmount => {
             let resourceType = costAmount.resourceType;
@@ -167,10 +172,15 @@ export class ResourceHelper {
                 }
             });
         });
+        return {
+            resources: bill.resources,
+            humanResources: bill.humanResources,
+            subType: bill.subType
+        };
     }
 
-    static getBlankCosts(resourceTypes: EResourceType[], educationTypes: EEducationType[]) {
-        const costs: ResourceDeposit = {
+    static getBlankCosts(resourceTypes: EResourceType[], educationTypes: EEducationType[]): ResourceDeposit {
+        return {
             resources: resourceTypes.map(type => {
                 const am: ResourceAmount = {
                     resourceType: type,
@@ -187,6 +197,5 @@ export class ResourceHelper {
                 return am;
             })
         };
-        return costs;
     }
 }

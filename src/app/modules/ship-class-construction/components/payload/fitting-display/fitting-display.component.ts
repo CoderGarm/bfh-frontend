@@ -1,15 +1,15 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {ShipClassComparator} from "../ShipClassComparator";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 
 @Component({
     selector: 'app-fitting-display',
     templateUrl: './fitting-display.component.html',
     styleUrls: ['./fitting-display.component.scss']
 })
-export class FittingDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class FittingDisplayComponent extends ResourceDisplayManager implements AfterViewInit, OnChanges {
 
     /**
      * The user selected ShipClass.

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {
     EHullType,
@@ -13,19 +13,19 @@ import {
 } from "../../../../../services/swagger";
 import {FormControl} from "@angular/forms";
 import {MatChip, MatChipList} from "@angular/material/chips";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 
 @Component({
     selector: 'app-shipyard',
     templateUrl: './shipyard.component.html',
     styleUrls: ['./shipyard.component.scss']
 })
-export class ShipyardComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class ShipyardComponent extends ResourceDisplayManager implements AfterContentInit, OnChanges {
 
     /**
      * the displayed ship class
@@ -114,7 +114,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
         this.subscriptions.push(sub);
     }
 
-    ngAfterViewInit(): void {
+    ngAfterContentInit(): void {
         this.setHullTypeFormControlData();
         this.filterDisplayedShipClasses();
         const sub = this.planetsNotificationService.ask().subscribe(() => this.updateDepositsAndIncome());
@@ -233,7 +233,10 @@ export class ShipyardComponent extends SubscriptionManager implements AfterViewI
      * @private
      */
     private filterDisplayedShipClasses() {
-        const selectedResourceTypes: string[] = this.getStringArrayFromMatChips(this.hullTypeChipList!.selected);
+        if (!this.hullTypeChipList) {
+            return;
+        }
+        const selectedResourceTypes: string[] = this.getStringArrayFromMatChips(this.hullTypeChipList.selected);
 
         this.filteredShipClasses = this.possibleShipClasses.filter(shipClass => {
             return selectedResourceTypes.includes(shipClass.hull.hullType.typeName);

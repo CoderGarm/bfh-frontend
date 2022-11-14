@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, ViewChild} from '@angular/core';
 import {
     ColonizationApiService,
     EEducationType,
@@ -12,7 +12,6 @@ import {
     StarSystem,
     StarSystemColonization
 } from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
@@ -23,6 +22,7 @@ import {ResourceHelper} from "../../../../../ResourceHelper";
 import {SpinnerService} from "../../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 
 @Component({
     selector: 'app-organize-expansion',
@@ -35,7 +35,7 @@ import {TypeService} from "../../../../../services/type.service";
             transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
         ])]
 })
-export class OrganizeExpansionComponent extends SubscriptionManager implements AfterViewInit {
+export class OrganizeExpansionComponent extends ResourceDisplayManager implements AfterViewInit, AfterContentInit {
 
     @ViewChild("onlyKnownSystems", {static: false})
     onlyKnownCheckBox?: MatCheckbox;
@@ -90,7 +90,7 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
         this.resourceTypes = typeService.eResourceTypes;
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() {
         this.starSystems = [];
         this.fetchData();
         if (!!this.paginator) {
@@ -112,11 +112,15 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
         let sub = this.planetApi.getMainPlanet().subscribe(resp => {
             this.main = resp;
             sub = this.resourceApi.getResourceDeposit(this.main.idPlanet)
-                .subscribe(resp => this.resourceDeposit = resp);
+                .subscribe(resp => {
+                    this.resourceDeposit = resp
+                });
             this.subscriptions.push(sub);
         });
         this.subscriptions.push(sub);
+    }
 
+    ngAfterContentInit(): void {
         if (!!this.resourceTypes && !!this.educationTypes) {
             this.costs = ResourceHelper.getBlankCosts(this.resourceTypes, this.educationTypes);
         }
@@ -330,10 +334,10 @@ export class OrganizeExpansionComponent extends SubscriptionManager implements A
         const costs = this.getCostsToColonize(colo, planet);
         if (checked) {
             // add costs
-            ResourceHelper.addToBill(costs, this.costs);
+            this.costs = ResourceHelper.addToBill(costs, this.costs);
         } else {
             // remove costs
-            ResourceHelper.reduceTheBill(costs, this.costs);
+            this.costs = ResourceHelper.reduceTheBill(costs, this.costs);
         }
     }
 

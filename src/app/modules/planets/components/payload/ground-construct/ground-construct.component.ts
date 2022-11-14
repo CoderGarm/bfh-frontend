@@ -17,12 +17,12 @@ import {
 } from "../../../../../services/swagger";
 import {MatChip, MatChipList} from "@angular/material/chips";
 import {FormControl} from "@angular/forms";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
 @Component({
@@ -30,7 +30,7 @@ import ProductionCategoryEnum = Building.ProductionCategoryEnum;
     templateUrl: './ground-construct.component.html',
     styleUrls: ['./ground-construct.component.scss']
 })
-export class GroundConstructComponent extends SubscriptionManager implements OnChanges, AfterViewInit {
+export class GroundConstructComponent extends ResourceDisplayManager implements OnChanges, AfterViewInit {
 
     /**
      * the displayed construction
@@ -81,6 +81,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     capacity?: ResourceDeposit;
     levelImprovementResources?: ResourceAmount;
     levelImprovementHumanResources?: HumanResourceAmount;
+    costsToDisplay?: ResourceDeposit;
+    private knownCosts: Map<String, ResourceDeposit> = new Map<String, ResourceDeposit>();
 
     /**
      * the EResourceType mat chip list
@@ -112,9 +114,6 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
      */
     constructionPossible: boolean = false;
 
-    private knownCosts: Map<String, ResourceDeposit> = new Map<String, ResourceDeposit>();
-    costsToDisplay?: ResourceDeposit;
-
     private readonly newConstruction = 'planetary.constructions.build.is-new';
     private readonly hasConstruction = 'planetary.constructions.build.has-level';
 
@@ -129,6 +128,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 private planetsNotificationService: PlanetsNotificationService,
                 public translate: TranslateService) {
         super();
+
         let subscription = planetsNotificationService.ask().subscribe(() => this.fetchPlanet());
         this.subscriptions.push(subscription);
 
@@ -146,15 +146,12 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         this.eResourceTypes = typeService.eResourceTypes;
         this.eRefinementSequences = typeService.eRefinementSequences;
         this.eProductionCategories = typeService.eProductionCategories;
-    }
-
-    ngAfterViewInit(): void {
-        this.fetchPlanet();
-
         this.eProductionCategoryFC.setValue(this.eProductionCategories);
         this.setResourceTypeFormControlData()
         this.setRefinementSequenceFormControlData()
+    }
 
+    ngAfterViewInit(): void {
         this.filterDisplayedConstructions();
     }
 

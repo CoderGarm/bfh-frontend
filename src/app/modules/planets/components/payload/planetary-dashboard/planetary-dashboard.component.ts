@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, MiningFactors, Planet, PlanetApiService, ResourcesApiService} from "../../../../../services/swagger";
+import {Fleet, FleetApiService, MiningFactors, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -23,6 +23,11 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     @Input()
     shipyardExists: boolean = false;
 
+    deposit?: ResourceDeposit;
+    income?: ResourceDeposit;
+    demand?: ResourceDeposit;
+    utilization?: ResourceDeposit;
+    capacity?: ResourceDeposit;
     miningFactors?: MiningFactors;
     fleetsInOrbit?: Fleet[];
 
@@ -37,12 +42,12 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.planetDefinition]) {
-            this.getMiningFactors();
-            this.fetFleetsInOrbit();
+            this.fetchData();
+            this.fetchFleetsInOrbit();
         }
     }
 
-    private fetFleetsInOrbit() {
+    private fetchFleetsInOrbit() {
         if (!this.planet) {
             return;
         }
@@ -53,12 +58,37 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     /**
      * fetches the mining factors if needed
      */
-    private getMiningFactors() {
+    private fetchData() {
         if (!this.planet) {
             return;
         }
         let sub = this.resourceApi.getMiningFactors(this.planet.idPlanet).subscribe(resp => {
             this.miningFactors = resp;
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getResourceDeposit(this.planet.idPlanet).subscribe(resp => {
+            this.deposit = resp;
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getResourceDemand(this.planet.idPlanet).subscribe(resp => {
+            this.demand = resp;
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getResourceUtilization(this.planet.idPlanet).subscribe(resp => {
+            this.utilization = resp;
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getPlanetaryCapacity(this.planet.idPlanet).subscribe(resp => {
+            this.capacity = resp;
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getPlanetaryIncome(this.planet.idPlanet).subscribe(resp => {
+            this.income = resp;
         });
         this.subscriptions.push(sub);
     }

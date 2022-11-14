@@ -1,14 +1,14 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Job, JobApiService, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {Job, JobApiService, Planet} from "../../../../../services/swagger";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 
 @Component({
     selector: 'app-planetary-job-list',
     templateUrl: './planetary-job-list.component.html',
     styleUrls: ['./planetary-job-list.component.scss']
 })
-export class PlanetaryJobListComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class PlanetaryJobListComponent extends ResourceDisplayManager implements AfterViewInit, OnChanges {
 
     /**
      * the current selected planet
@@ -18,15 +18,12 @@ export class PlanetaryJobListComponent extends SubscriptionManager implements Af
     selectedPlanetInput?: Planet;
     private selectedPlanetDefinition = "selectedPlanetInput";
 
-    resourceDeposit?: ResourceDeposit;
-
     /**
      * all active jobs on the planet
      */
     runningJobs: Job[] = [];
 
     constructor(private jobApi: JobApiService,
-                private resourceApi: ResourcesApiService,
                 private notificationService: PlanetsNotificationService) {
         super();
         let subscription = notificationService.ask().subscribe(() => this.loadData());
@@ -46,12 +43,6 @@ export class PlanetaryJobListComponent extends SubscriptionManager implements Af
         if (this.selectedPlanetInput) {
             let sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)
                 .subscribe(resp => this.runningJobs = resp);
-            this.subscriptions.push(sub);
-
-            sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
-                .subscribe(resp => {
-                    this.resourceDeposit = resp;
-                });
             this.subscriptions.push(sub);
         }
     }

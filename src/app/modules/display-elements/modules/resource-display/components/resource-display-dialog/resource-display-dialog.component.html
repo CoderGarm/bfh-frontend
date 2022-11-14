@@ -1,0 +1,12 @@
+<div cdkDrag
+     cdkDragRootElement=".resource-mat-dialog-panel"
+     cdkDragBoundary=".cdk-overlay-container"
+     [cdkDragFreeDragPosition]="dialogPosition"
+     (cdkDragEnded)="dragEnd($event)"
+>
+    <h1 mat-dialog-title
+        cdkDragHandle>Resources</h1>
+    <mat-dialog-content>
+        <app-resource-display></app-resource-display>
+    </mat-dialog-content>
+</div>

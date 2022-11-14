@@ -1,9 +1,4 @@
-<div class="spacer-left">
-
-    <app-resource-deposit-overlay-display [resourceDeposit]="resourceDeposit"
-                                          [costs]="costs"></app-resource-deposit-overlay-display>
-</div>
-
+<app-resource-service [deposit]="resourceDeposit" [costs]="costs"></app-resource-service>
 
 <div class="holder spacer-left">
     <mat-checkbox #onlyKnownSystems (change)="applyOnlyKnownFilter($event.checked)">Show only known systems</mat-checkbox>

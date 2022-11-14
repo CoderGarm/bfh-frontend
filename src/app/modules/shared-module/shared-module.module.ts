@@ -14,10 +14,12 @@ import {AngularEditorModule} from "@kolkov/angular-editor";
 import {TranslateModule} from "@ngx-translate/core";
 import {NumberShortPipe} from "../../services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "../../services/pipes/number-thousand-separator.pipe";
+import {NumberShortComponent} from "./components/number-short/number-short.component";
 
 @NgModule({
     declarations: [
         NumericCounterComponent,
+        NumberShortComponent,
         NumberShortPipe,
         NumberThousandSeparatorPipe,
     ],
@@ -47,6 +49,7 @@ import {NumberThousandSeparatorPipe} from "../../services/pipes/number-thousand-
         ApiModule,
         MaterialComponentsModule,
         NumericCounterComponent,
+        NumberShortComponent,
         OverlayModule,
         AngularEditorModule,
         TranslateModule,

@@ -3,6 +3,14 @@
         <p>{{'planetary.mining-factors.title' | translate }}</p>
         <app-mining-factors-display [miningFactors]="miningFactors"></app-mining-factors-display>
     </div>
+    <div class="dash pops">
+        <p>{{'planetary.population-development.title' | translate }}</p>
+        <app-population-development [deposit]="deposit"
+                                    [income]="income"
+                                    [demand]="demand"
+                                    [utilization]="utilization"
+                                    [capacity]="capacity"></app-population-development>
+    </div>
     <div class="dash">
         <app-fleets-in-orbit [fleetsInOrbit]="fleetsInOrbit"
                              [shipyardJobPossible]="shipyardJobPossible"

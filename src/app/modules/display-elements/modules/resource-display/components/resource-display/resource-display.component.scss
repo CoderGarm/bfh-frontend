@@ -5,21 +5,13 @@
 }
 
 .isParent {
-  background: $secondary-background-color;
   height: 100px;
-  margin: 15px 50px 15px 0;
-  z-index: 1000;
-  width: $page-with;
 }
 
 .flex {
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
-}
-
-.fixed-under-tab-header {
-  position: relative;
 }
 
 .hasMargin {
@@ -61,10 +53,6 @@
 .hasSize {
   height: 18px;
   width: 16px;
-}
-
-.invisible {
-  color: $secondary-background-color;
 }
 
 .open-bracket {

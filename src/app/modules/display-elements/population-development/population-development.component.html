@@ -1,0 +1,40 @@
+<div class="fixed-under-tab-header isParent" *ngIf="isDisplayingPossible()">
+    <div class="flex">
+        <div class="box">
+            <div class="res-wrapper">
+                <div class="img-container hasSize"></div>
+                <div>
+                    <mat-icon [inline]="true" matTooltip="{{ 'population-development.utilization.toolTip' | translate }}">{{getIcon(utilization!)}}</mat-icon>
+                </div>
+                <div>
+                    <mat-icon [inline]="true" matTooltip="{{ 'population-development.deposit.toolTip' | translate }}">{{getIcon(deposit!)}}</mat-icon>
+                </div>
+                <div>
+                    <mat-icon [inline]="true" matTooltip="{{ 'population-development.demand.toolTip' | translate }}">{{getIcon(demand!)}}</mat-icon>
+                </div>
+                <div>
+                    <mat-icon [inline]="true" matTooltip="{{ 'population-development.income.toolTip' | translate }}">{{getIcon(income!)}}</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let resource of deposit!.humanResources" class="box">
+            <div class="res-wrapper">
+                <div class="img-container">
+                    <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
+                </div>
+                <div class="amount-present">
+                    <app-number-short [input]="getHumans(resource.resourceType, utilization)"></app-number-short>
+                </div>
+                <div class="amount-present">
+                    <app-number-short [input]="getHumans(resource.resourceType, deposit)"></app-number-short>
+                </div>
+                <div class="amount-present">
+                    <app-number-short [input]="getHumans(resource.resourceType, demand)"></app-number-short>
+                </div>
+                <div class="amount-present">
+                    <app-number-short [input]="getHumans(resource.resourceType, income)"></app-number-short>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

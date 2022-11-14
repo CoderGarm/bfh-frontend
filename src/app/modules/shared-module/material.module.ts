@@ -29,7 +29,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
 
@@ -66,6 +66,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         MatStepperModule,
         MatSliderModule,
         MatProgressBarModule,
+        DragDropModule,
     ],
     exports: [
         MatButtonModule,
@@ -99,6 +100,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         MatStepperModule,
         MatSliderModule,
         MatProgressBarModule,
+        DragDropModule,
     ],
     providers: []
 })

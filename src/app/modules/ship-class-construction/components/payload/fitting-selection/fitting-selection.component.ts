@@ -3,15 +3,15 @@ import {AlignedFitting, ResourceDeposit, ResourcesApiService, ShipClass, Shipyar
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {ShipClassComparator} from "../ShipClassComparator";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 
 @Component({
     selector: 'app-fitting-selection',
     templateUrl: './fitting-selection.component.html',
     styleUrls: ['./fitting-selection.component.scss']
 })
-export class FittingSelectionComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class FittingSelectionComponent extends ResourceDisplayManager implements AfterViewInit, OnChanges {
 
     /**
      * The user selected ShipClass.
@@ -96,7 +96,6 @@ export class FittingSelectionComponent extends SubscriptionManager implements Af
     }
 
     ngAfterViewInit(): void {
-        // detect changed value
         let sub = this.form.controls.scName.valueChanges.subscribe(value => {
             if (this.shipClassNameOutput != value) {
                 this.shipClassNameOutput = value;

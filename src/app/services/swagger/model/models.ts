@@ -32,6 +32,7 @@ export * from './eRefinementSequence';
 export * from './eResourceType';
 export * from './eStarClassType';
 export * from './electronicWarfare';
+export * from './enumValueDto';
 export * from './fileUpload';
 export * from './fleet';
 export * from './fleetDistributionPerUser';

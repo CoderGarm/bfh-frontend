@@ -3,14 +3,14 @@
         <div class="box">
             <div class="res-wrapper">
                 <div class="img-container hasSize"></div>
-                <div *ngIf="!!resourceDeposit">
-                    <mat-icon [inline]="true">warehouse</mat-icon>
+                <div *ngIf="!!deposit">
+                    <mat-icon [inline]="true">{{getIcon(deposit!)}}</mat-icon>
                 </div>
                 <div *ngIf="!!income">
-                    <mat-icon [inline]="true">add</mat-icon>
+                    <mat-icon [inline]="true">{{getIcon(income!)}}</mat-icon>
                 </div>
                 <div *ngIf="!!costs">
-                    <mat-icon [inline]="true">remove</mat-icon>
+                    <mat-icon [inline]="true">{{getIcon(costs!)}}</mat-icon>
                 </div>
             </div>
         </div>
@@ -19,7 +19,7 @@
                 <div class="img-container">
                     <mat-icon [inline]="true">schedule</mat-icon>
                 </div>
-                <div class="amount-present" *ngIf="!!resourceDeposit">
+                <div class="amount-present" *ngIf="!!deposit">
                     <mat-icon [inline]="true" matTooltip="{{'resource-overlay.deposit.tick' | translate}}">all_inclusive</mat-icon>
                 </div>
                 <div class="amount-present" *ngIf="!!income">
@@ -30,11 +30,12 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let resource of getBase().resources" class="box">
+        <div *ngFor="let resource of getBase()!.resources" class="box">
             <div class="res-wrapper">
                 <div class="img-container info-holder">
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.singularName}}" matTooltip="{{resource.resourceType.typeName}}">
-                    <mat-icon *ngIf="isCapPresent(resource)" class="capacity"
+                    <mat-icon *ngIf="isCapPresent(resource)"
+                              class="capacity"
                               [ngClass]="getCapacityWarningClass(resource)"
                               [inline]="true"
                               matTooltip="{{getCapacityTooltip(resource)}}">info
@@ -42,7 +43,7 @@
                 </div>
                 <div [ngClass]="getOpeningBracketClass(resource)">
                     <div>
-                        <app-number-short [input]="getResourceAmount(resource.resourceType, resourceDeposit)"></app-number-short>
+                        <app-number-short [input]="getResourceAmount(resource.resourceType, deposit)"></app-number-short>
                     </div>
                     <div>
                         <div *ngIf="!!income" class="diffAmount no-flex"
@@ -63,14 +64,14 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let resource of getBase().humanResources" class="box">
+        <div *ngFor="let resource of getBase()!.humanResources" class="box">
             <div class="res-wrapper">
                 <div class="img-container">
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
                 </div>
                 <div [ngClass]="getClosingBracketClass(resource)">
                     <label class="amount-present">
-                        <app-number-short [input]="getHumans(resource.resourceType, resourceDeposit)"></app-number-short>
+                        <app-number-short [input]="getHumans(resource.resourceType, deposit)"></app-number-short>
                     </label>
                     <div class="amount-holder">
                         <div *ngIf="!!income" class="diffAmount no-flex">

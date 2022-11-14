@@ -29,11 +29,14 @@ export class CustomErrorHandler implements ErrorHandler {
      * @param receivedError
      */
     handleError(receivedError: any) {
+        if (!receivedError) {
+            return;
+        }
 
-        if (!!receivedError && !this.errorDialog) {
+        if (!this.errorDialog) {
             let snack = new MatSnackBarConfig();
 
-            const feError: FrontendError = {}
+            const feError: FrontendError = {};
             if (receivedError instanceof HttpErrorResponse) {
                 let error: HttpErrorResponse = receivedError;
                 console.log(error);
@@ -56,16 +59,19 @@ export class CustomErrorHandler implements ErrorHandler {
                      */
                     return;
                 }
-
-                snack.data = feError;
-                snack.horizontalPosition = this.horizontalPosition;
-                snack.verticalPosition = this.verticalPosition;
-                snack.panelClass = "error-snackbar";
-                this.zone.run(() => {
-                    this.errorDialog = this.snackBar.openFromComponent(ErrorDialogComponent, snack);
-                    this.errorDialog.afterDismissed().subscribe(dismissed => this.errorDialog = undefined)
-                });
+            } else if (receivedError instanceof Error) {
+                console.log(receivedError);
+                feError.message = receivedError.message;
             }
+
+            snack.data = feError;
+            snack.horizontalPosition = this.horizontalPosition;
+            snack.verticalPosition = this.verticalPosition;
+            snack.panelClass = "error-snackbar";
+            this.zone.run(() => {
+                this.errorDialog = this.snackBar.openFromComponent(ErrorDialogComponent, snack);
+                this.errorDialog.afterDismissed().subscribe(dismissed => this.errorDialog = undefined)
+            });
         }
     }
 
