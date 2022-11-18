@@ -32,9 +32,24 @@
             ],
             "styles": [
               "src/styles/purple-green.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
+              "node_modules/bootstrap-dark-5/dist/css/bootstrap.css",
+              "node_modules/bootstrap-markdown/css/bootstrap-markdown.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/prismjs/themes/prism.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/marked/marked.min.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-css.min.js",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/bootstrap-markdown/js/bootstrap-markdown.js",
+              "node_modules/prismjs/components/prism-javascript.min.js",
+              "node_modules/prismjs/components/prism-typescript.min.js"
+            ]
           },
           "configurations": {
             "production": {

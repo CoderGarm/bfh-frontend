@@ -3,7 +3,7 @@ import {ErrorDialogComponent} from './components/error-dialog/error-dialog.compo
 import {CustomErrorHandler} from './services/customErrorHandler.service';
 import {PasswordEqualityValidatorDirective, PasswordPatternValidatorDirective} from './validators/passwordValidator';
 import {AuthenticationModule} from './services/authentication';
-import {ErrorHandler, Injector, NgModule} from '@angular/core';
+import {ErrorHandler, Injector, NgModule, SecurityContext} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/user/login/login.component';
 import {RegisterComponent} from './components/user/register/register.component';
@@ -40,6 +40,9 @@ import {NumberShortPipe} from "./services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "./services/pipes/number-thousand-separator.pipe";
 import {HttpCacheInterceptor} from "./services/interceptors/http-cache-interceptor";
 import {ResourceDisplayModule} from "./modules/display-elements/modules/resource-display/resource-display.module";
+import {WikiModule} from "./modules/wiki/wiki.module";
+import {MarkdownModule, MarkdownService} from "ngx-markdown";
+import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -95,6 +98,11 @@ export let AppInjector: Injector;
         AdminModule,
         ForumModule,
         AllianceModule,
+        MarkdownModule.forRoot({
+            sanitize: SecurityContext.URL
+        }),
+        AngularMarkdownEditorModule.forRoot(),
+        WikiModule,
     ],
     providers: [
         NgxPermissionsModule,
@@ -106,6 +114,11 @@ export let AppInjector: Injector;
         DatePipe,
         NumberShortPipe,
         NumberThousandSeparatorPipe,
+        MarkdownService,
+    ],
+    exports: [
+        MarkdownModule,
+        AngularMarkdownEditorModule,
     ],
     bootstrap: [AppComponent]
 })

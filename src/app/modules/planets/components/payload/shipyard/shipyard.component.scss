@@ -1,7 +1,7 @@
 @import "src/styles/variables";
 
 .mat-expansion-panel {
-  width: $page-with;
+  width: $page-width;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -29,7 +29,7 @@ input[type=number] {
 }
 
 .filter {
-  width: $page-with;
+  width: $page-width;
 }
 
 .tooltip-container {

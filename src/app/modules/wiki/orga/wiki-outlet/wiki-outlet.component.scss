@@ -1,0 +1,37 @@
+@import "src/styles/variables";
+@import "../../payload/create-article/create-article.component";
+
+#wiki-outlet {
+  margin-left: 25px;
+}
+
+.content-box {
+  margin-top: 25px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  min-height: calc(100vh - 200px);
+  overflow-y: scroll;
+}
+
+.header {
+}
+
+.body {
+  margin: 25px 0;
+}
+
+.footer {
+  margin-bottom: 25px;
+  width: 95%;
+  height: 70px;
+}
+
+.side {
+  max-width: 200px;
+  width: fit-content;
+}
+
+.other-side {
+  width: calc($page-width - 7%);
+}

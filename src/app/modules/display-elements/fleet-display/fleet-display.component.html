@@ -7,6 +7,18 @@
         <mat-card-subtitle>
             idFleet: {{fleetInput.idFleet}}
         </mat-card-subtitle>
+        <mat-icon
+                *ngIf="!fleetInput.isActive"
+                matTooltip="Fleet is not active">report_problem
+        </mat-icon>
+        <mat-icon
+                *ngIf="!fleetInput.isOperational"
+                matTooltip="Fleet is not operational">report_problem
+        </mat-icon>
+        <mat-icon
+                *ngIf="fleetInput.needsRepair"
+                matTooltip="Fleet needs repair">report_problem
+        </mat-icon>
     </mat-card-header>
     <mat-card-content class="flex-items-container">
         <app-fleet-formation-display [selectedFleetInput]="fleetInput"></app-fleet-formation-display>

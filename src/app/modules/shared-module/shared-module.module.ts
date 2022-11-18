@@ -15,6 +15,8 @@ import {TranslateModule} from "@ngx-translate/core";
 import {NumberShortPipe} from "../../services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "../../services/pipes/number-thousand-separator.pipe";
 import {NumberShortComponent} from "./components/number-short/number-short.component";
+import {MarkdownModule} from "ngx-markdown";
+import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 
 @NgModule({
     declarations: [
@@ -36,6 +38,8 @@ import {NumberShortComponent} from "./components/number-short/number-short.compo
         MaterialComponentsModule,
         OverlayModule,
         AngularEditorModule,
+        MarkdownModule.forChild(),
+        AngularMarkdownEditorModule,
     ],
     exports: [
         CommonModule,
@@ -55,6 +59,8 @@ import {NumberShortComponent} from "./components/number-short/number-short.compo
         TranslateModule,
         NumberShortPipe,
         NumberThousandSeparatorPipe,
+        MarkdownModule,
+        AngularMarkdownEditorModule,
     ]
 })
 export class SharedModuleModule {

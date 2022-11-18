@@ -1,0 +1,31 @@
+@import "src/styles/variables";
+
+.container {
+  margin: 15px 50px;
+  max-width: $page-width;
+  overflow: auto;
+  padding: 10px;
+}
+
+.mar-ri {
+  margin-right: 15px;
+}
+
+mat-select {
+  width: 150px;
+}
+
+.angular-markdown-editor-minimalistic {
+  // See here: https://css-tricks.com/almanac/selectors/a/attribute/
+  ::ng-deep [data-handler$="cmdPreview"] {
+    display: none;
+  }
+
+  ::ng-deep [data-handler$="cmdImage"] {
+    display: none;
+  }
+
+  ::ng-deep [data-handler$="cmdUrl"] {
+    display: none;
+  }
+}

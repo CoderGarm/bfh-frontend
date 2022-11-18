@@ -194,7 +194,10 @@ export class InterstellarViewHelper extends BasicViewHelper {
         let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
 
-        if (!fleetMarker.isActive && fleetMarker.needsRepair) {
+        const cssActivityMarker = fleetMarker.isActive && fleetMarker.needsRepair ? '' : 'under-construction';
+        const cssOperationalMarker = fleetMarker.isOperational ? '' : 'inoperational';
+
+        if (!fleetMarker.isActive) {
             let xMarker = sortedPointsX[0];
             let yMarker = sortedPointsY[sortedPointsY.length - 1];
 
@@ -203,11 +206,15 @@ export class InterstellarViewHelper extends BasicViewHelper {
                 .stroke(sd)
                 .x(xMarker[0] - 2.5)
                 .y(yMarker[1] - 2.5)
-                .fill("blue")
+                .addClass(cssActivityMarker)
+                .addClass(cssOperationalMarker)
                 .mouseover(this.mouseoverForMarker)
                 .mouseleave(this.mouseleaveForMarker);
 
-            let text: Text = new Text().text("Fleet is in dock")
+            let txt = fleetMarker.needsRepair ? 'Fleet is in dock' : '';
+            txt = fleetMarker.isOperational ? 'Fleet is inoperational' : txt;
+
+            let text: Text = new Text().text(txt)
                 .x(xMarker[0] - 2.5)
                 .y(yMarker[1] - 2.5)
                 .addClass("marker-text")

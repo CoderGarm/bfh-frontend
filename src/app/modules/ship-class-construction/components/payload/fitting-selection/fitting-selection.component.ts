@@ -166,7 +166,11 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
     setShipClass(shipClass?: ShipClass) {
         this.designedShipClassInput = shipClass;
         if (this.disabled != !this.designedShipClassInput) {
-            this.disabled = !this.designedShipClassInput;
+            setTimeout(() => {
+                // because of https://angular.io/errors/NG0100 -> https://stackoverflow.com/a/45341146/18296598
+
+                this.disabled = !this.designedShipClassInput;
+            }, 100);
         }
         this.getCosts();
     }

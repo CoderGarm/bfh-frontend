@@ -1,0 +1,25 @@
+<div class="container">
+    <mat-form-field class="example-full-width mar-ri" appearance="fill">
+        <mat-label>{{ 'wiki.article.create.title' | translate }}</mat-label>
+        <input matInput type='text' [value]="title" disabled required autocomplete="off">
+    </mat-form-field>
+    <mat-select [value]="langCode" class="mar-ri">
+        <mat-option [value]="langCode">
+            {{langCode}}
+        </mat-option>
+    </mat-select>
+    <button mat-raised-button class="mar-ri" color="secondary" type="submit" (click)="submit()" [disabled]="canSend()">{{ 'wiki.article.edit.button' | translate }}</button>
+</div>
+<div class="container">
+    <angular-markdown-editor
+            textareaId="editor1"
+            [rows]="15"
+            name="markdownText"
+            [(ngModel)]="content"
+            [options]="editorOptions"
+            class="angular-markdown-editor-minimalistic">
+    </angular-markdown-editor>
+</div>
+<div class="container">
+    <markdown lineNumbers [data]="content"></markdown>
+</div>

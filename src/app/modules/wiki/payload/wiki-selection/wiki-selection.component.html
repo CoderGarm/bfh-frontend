@@ -1,0 +1,10 @@
+<mat-selection-list [multiple]="false">
+    <div mat-subheader>{{ 'wiki.selection.content.menu-entry' | translate }}</div>
+    <mat-divider></mat-divider>
+    <div *ngFor="let entry of display  | keyvalue" class="category-block">
+        <div mat-subheader>{{getDisplayName(entry.key)}}</div>
+        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)">
+            {{article.title}}
+        </mat-list-option>
+    </div>
+</mat-selection-list>

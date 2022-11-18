@@ -14,6 +14,9 @@
     "members": "Mitglieder",
     "no-applicants": "Keine Anwärter."
   },
+  "burger-menu": {
+    "wiki": "Wiki"
+  },
   "chats": {
     "title": "Nachrichten"
   },
@@ -288,5 +291,39 @@
       "title": "Übersetzter Text"
     },
     "type": "Art"
+  },
+  "wiki": {
+    "article": {
+      "create": {
+        "button": "Speichern",
+        "menu-entry": "Erstelle neuen Artikel",
+        "title": "Titel"
+      },
+      "display": {
+        "author": "Autor",
+        "menu-entry": "Lesen",
+        "revision": "Revision"
+      },
+      "edit": {
+        "button": "Speichern",
+        "menu-entry": "Bearbeiten"
+      }
+    },
+    "header": {
+      "search-wiki": {
+        "label": "Wiki durchsuchen"
+      }
+    },
+    "home": {
+      "menu-entry": "Hauptseite"
+    },
+    "selection": {
+      "content": {
+        "menu-entry": "Artikel"
+      },
+      "orga": {
+        "menu-entry": "Orga"
+      }
+    }
   }
 }

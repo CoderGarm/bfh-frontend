@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AdminApiService, Translation} from "../../../../../services/swagger";
+import {AdminApiService, Translation, WikiApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -13,12 +13,13 @@ export class TranslationComponent extends SubscriptionManager implements OnInit 
     translations: Translation[] = [];
     translationsByTranslatable: Map<number, Translation[]> = new Map<number, Translation[]>();
 
-    constructor(private adminApi: AdminApiService) {
+    constructor(private adminApi: AdminApiService,
+                private wikiApi: WikiApiService) {
         super();
     }
 
     ngOnInit(): void {
-        this.adminApi.getPossibleLanguages().subscribe(resp => this.possibleLanguages = resp);
+        this.wikiApi.getPossibleLanguages().subscribe(resp => this.possibleLanguages = resp);
         this.adminApi.getTranslations().subscribe(resp => {
             this.translations = resp;
             this.translationsByTranslatable.clear();

@@ -30,6 +30,7 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
 
@@ -67,6 +68,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
         MatSliderModule,
         MatProgressBarModule,
         DragDropModule,
+        MatButtonToggleModule,
     ],
     exports: [
         MatButtonModule,
@@ -101,6 +103,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
         MatSliderModule,
         MatProgressBarModule,
         DragDropModule,
+        MatButtonToggleModule,
     ],
     providers: []
 })

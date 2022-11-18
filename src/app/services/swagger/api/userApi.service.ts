@@ -168,7 +168,7 @@ export class UserApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<UserJson>('get',`${this.basePath}/api/private/user/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<UserJson>('get',`${this.basePath}/api/public/user/${encodeURIComponent(String(idUser))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

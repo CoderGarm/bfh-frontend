@@ -15,6 +15,7 @@ import {JournalTabViewComponent} from "../modules/journal/components/orga/journa
 import {AdminTabViewComponent} from "../modules/admin/components/orga/admin-tab-view/admin-tab-view.component";
 import {ForumsListComponent} from "../modules/forum/components/forums-list/forums-list.component";
 import {AllianceTabViewComponent} from "../modules/alliance/components/orga/alliance-tab-view/alliance-tab-view.component";
+import {WikiMainComponent} from "../modules/wiki/orga/wiki-main/wiki-main.component";
 
 
 export class NavigationCreationService {
@@ -40,6 +41,7 @@ export class NavigationCreationService {
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
             {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
             {path: AdminTabViewComponent.path, component: AdminTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: WikiMainComponent.path, component: WikiMainComponent},
         ];
     }
 
@@ -55,6 +57,12 @@ export class NavigationCreationService {
             {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
             {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
+        ];
+    }
+
+    static createBurgerMenuRoutes(): Routes {
+        return [
+            {path: WikiMainComponent.path, component: WikiMainComponent},
         ];
     }
 }

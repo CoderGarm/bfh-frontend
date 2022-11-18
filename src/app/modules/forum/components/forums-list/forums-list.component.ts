@@ -14,7 +14,6 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit, 
     static path: string = 'forum';
 
     forums: Forum[] = [];
-    displayedForums: Forum[] = [];
 
     @Input()
     selectedForum?: Forum;

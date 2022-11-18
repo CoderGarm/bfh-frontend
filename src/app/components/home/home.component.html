@@ -1,4 +1,5 @@
-<div id="home-center">
-  <p>Battle for Honor</p>
-  <p>The browser game</p>
+<div id="home-center" *ngIf="!latestContent">
+    <p>Battle for Honor</p>
+    <p>The browser game</p>
 </div>
+<app-display-article [latestContent]="latestContent"></app-display-article>

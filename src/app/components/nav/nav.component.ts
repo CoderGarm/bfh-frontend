@@ -1,10 +1,11 @@
 import {ProfileComponent} from '../user/profile/profile.component';
 import {AuthenticationService} from '../../services/authentication';
 import {Component, HostListener, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Route, Router, Routes} from '@angular/router';
 import {TokenStorage} from "../../services/authentication/token-storage.service";
 import {AdminApiService, ApplicationInfo, JWT, Tick, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../SubscriptionManager";
+import {NavigationCreationService} from "../../services/navigation-creation.service";
 import RoleEnum = JWT.RoleEnum;
 
 
@@ -15,12 +16,16 @@ import RoleEnum = JWT.RoleEnum;
 })
 export class NavComponent extends SubscriptionManager implements OnInit {
 
+    routes: Routes = NavigationCreationService.createBurgerMenuRoutes();
+
     isLoggedIn: boolean = false;
     isAdmin: boolean = false;
 
     applicationInfo?: ApplicationInfo;
 
     currentTick?: Tick;
+
+    activeRoute?: Route;
 
     constructor(private router: Router,
                 private authenticationService: AuthenticationService,
@@ -64,6 +69,16 @@ export class NavComponent extends SubscriptionManager implements OnInit {
         this.isLoggedIn = false;
         this.isAdmin = false;
         this.authenticationService.logout();
+    }
+
+    navigate(route?: Route) {
+        if (!route) {
+            route = NavigationCreationService.getLoginRoute();
+        }
+        this.activeRoute = route;
+        this.router.navigateByUrl("/" + route.path).then(() => {
+        });
+        const path = this.activeRoute.path;
     }
 
     @HostListener('window:beforeunload', ['$event'])

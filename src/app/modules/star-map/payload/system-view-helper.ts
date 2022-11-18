@@ -127,12 +127,14 @@ export class SystemViewHelper extends BasicViewHelper {
         }
 
         const cssActivityMarker = fleet.isActive ? '' : 'under-construction';
+        const cssOperationalMarker = fleet.isOperational ? '' : 'inoperational';
 
         group!
             .polygon(fleetSharkPoints)
             .fill(fleetSharkColor)
             .stroke(sd)
             .addClass(cssActivityMarker)
+            .addClass(cssOperationalMarker)
             .id(fleetSharkID)
             .dblclick(dblClickForFleet);
 

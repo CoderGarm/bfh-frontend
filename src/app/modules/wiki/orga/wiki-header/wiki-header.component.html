@@ -1,0 +1,22 @@
+<h4 class="mat-headline">{{headline}}</h4>
+<div class="container flex-end-items-container">
+    <section class="mar-ri">
+        <mat-button-toggle-group (change)="setPageType($event)" [(ngModel)]="pageType">
+            <mat-button-toggle value="home">{{ 'wiki.home.menu-entry' | translate }}</mat-button-toggle>
+            <mat-button-toggle value="display-article">{{ 'wiki.article.display.menu-entry' | translate }}</mat-button-toggle>
+            <mat-button-toggle value="edit-article" *ngIf="isLoggedIn">{{ 'wiki.article.edit.menu-entry' | translate }}</mat-button-toggle>
+            <mat-button-toggle value="create-article" *ngIf="isLoggedIn">{{ 'wiki.article.create.menu-entry' | translate }}</mat-button-toggle>
+        </mat-button-toggle-group>
+    </section>
+
+    <mat-form-field appearance="fill">
+        <mat-label>{{ 'wiki.header.search-wiki.label' | translate }}</mat-label>
+        <input matInput [matAutocomplete]="auto" [(ngModel)]="searchTerm" (ngModelChange)="searchForTerm($event)">
+        <mat-icon matSuffix (click)="$event.stopPropagation();" class="disabled">search</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)" [displayWith]="mapIdToTitle.bind(this)">
+            <mat-option *ngFor="let article of articles" [value]="article.idArticle">
+                {{article.title}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</div>

@@ -34,6 +34,10 @@ export interface FleetMarker {
      */
     isActive: boolean;
     /**
+     * If the fleet have all the crew.
+     */
+    isOperational: boolean;
+    /**
      * If the fleet needs a repair.
      */
     needsRepair: boolean;

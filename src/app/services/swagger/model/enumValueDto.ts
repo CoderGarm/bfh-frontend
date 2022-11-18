@@ -28,6 +28,7 @@ export interface EnumValueDto {
     eWarheadType?: Array<EnumValueDto.EWarheadTypeEnum>;
     eWeaponAlignment?: Array<EnumValueDto.EWeaponAlignmentEnum>;
     eWeaponType?: Array<EnumValueDto.EWeaponTypeEnum>;
+    eWikiCategories?: Array<EnumValueDto.EWikiCategoriesEnum>;
 }
 export namespace EnumValueDto {
     export type EDepositTypeEnum = 'DEPOSITS' | 'DEMAND' | 'UTILIZATION' | 'COSTS' | 'INCOME' | 'CAPACITY';
@@ -151,5 +152,10 @@ export namespace EnumValueDto {
         BEAM: 'BEAM' as EWeaponTypeEnum,
         COUNTERMISSILE: 'COUNTER_MISSILE' as EWeaponTypeEnum,
         POINTDEFENSE: 'POINT_DEFENSE' as EWeaponTypeEnum
+    };
+    export type EWikiCategoriesEnum = 'WELCOME_MESSAGE' | 'GAME_MECHANICS';
+    export const EWikiCategoriesEnum = {
+        WELCOMEMESSAGE: 'WELCOME_MESSAGE' as EWikiCategoriesEnum,
+        GAMEMECHANICS: 'GAME_MECHANICS' as EWikiCategoriesEnum
     };
 }

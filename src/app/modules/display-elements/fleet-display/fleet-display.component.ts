@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, Optional} from '@angular/core';
+import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
 import {Fleet} from "../../../services/swagger";
 
 @Component({
@@ -6,7 +6,7 @@ import {Fleet} from "../../../services/swagger";
     templateUrl: './fleet-display.component.html',
     styleUrls: ['./fleet-display.component.scss']
 })
-export class FleetDisplayComponent implements AfterViewInit {
+export class FleetDisplayComponent implements AfterViewInit, OnChanges {
 
     /**
      * the fleet to display
@@ -37,5 +37,9 @@ export class FleetDisplayComponent implements AfterViewInit {
 
     setClosed() {
         this.isOpen = false;
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.fleetInput)
     }
 }

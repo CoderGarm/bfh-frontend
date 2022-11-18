@@ -1,27 +1,33 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button aria-label="Example icon-button with menu icon">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
     </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngFor="let route of routes" (click)="navigate(route)">
+            <mat-icon>menu_book</mat-icon>
+            <span>{{'burger-menu.' + route.path | translate }}</span>
+        </button>
+    </mat-menu>
     <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">Battle for Honor</button>
     <span class="spacer"></span>
-    <div *ngIf="!!currentTick">{{'tick.current' | translate}} {{currentTick.tickNo}}</div>
+    <div *ngIf="!!currentTick">{{'tick.current' | translate }} {{currentTick.tickNo}}</div>
     <span class="spacer"></span>
     <button mat-flat-button color="primary" *ngIf="!!applicationInfo" disabled>
         {{applicationInfo.applicationVersion}}
     </button>
     <button mat-flat-button color="primary" routerLink='/register' *ngIf='!isLoggedIn'>
-        {{'path.button.register' | translate}}
+        {{'path.button.register' | translate }}
     </button>
     <button mat-flat-button color="primary" routerLink='/login' *ngIf='!isLoggedIn'>
-        {{'path.button.login' | translate}}
+        {{'path.button.login' | translate }}
     </button>
     <button mat-flat-button color="primary" routerLink='/admin' *ngIf='isLoggedIn && isAdmin'>
-        {{'path.button.admin' | translate}}
+        {{'path.button.admin' | translate }}
     </button>
     <button mat-flat-button color="primary" routerLink='/profile' *ngIf='isLoggedIn'>
-        {{'path.button.profile' | translate}}
+        {{'path.button.profile' | translate }}
     </button>
     <button mat-flat-button color="primary" (click)='logout()' *ngIf='isLoggedIn'>
-        {{'path.button.logout' | translate}}
+        {{'path.button.logout' | translate }}
     </button>
 </mat-toolbar>

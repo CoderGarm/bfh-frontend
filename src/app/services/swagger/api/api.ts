@@ -38,4 +38,6 @@ export * from './tickApi.service';
 import { TickApiService } from './tickApi.service';
 export * from './userApi.service';
 import { UserApiService } from './userApi.service';
-export const APIS = [AdminApiService, AllianceApiService, AuthApiService, BattleReportApiService, BuildingApiService, ChatApiService, ColonizationApiService, ConstructionApiService, FakeApiService, FleetApiService, ForumApiService, JobApiService, ModuleApiService, PlanetApiService, ResearchApiService, ResourcesApiService, ShipyardApiService, StarMapApiService, TickApiService, UserApiService];
+export * from './wikiApi.service';
+import { WikiApiService } from './wikiApi.service';
+export const APIS = [AdminApiService, AllianceApiService, AuthApiService, BattleReportApiService, BuildingApiService, ChatApiService, ColonizationApiService, ConstructionApiService, FakeApiService, FleetApiService, ForumApiService, JobApiService, ModuleApiService, PlanetApiService, ResearchApiService, ResourcesApiService, ShipyardApiService, StarMapApiService, TickApiService, UserApiService, WikiApiService];

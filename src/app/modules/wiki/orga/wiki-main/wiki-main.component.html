@@ -1,0 +1,27 @@
+<app-wiki-outlet>
+    <app-wiki-selection side
+                        (selectedArticleEmitter)="setArticle($event)"
+                        [articleChangeReceiver]="articleChangeEmitter"></app-wiki-selection>
+    <app-wiki-header header
+                     headline="header works"
+                     (pageTypeEmitter)="pageType = $event"
+                     [pageTypeReceiver]="pageTypeEmitter"
+                     (articleEmitter)="setArticle($event)"></app-wiki-header>
+
+    <div body *ngIf="isHome()">
+        <p>Nothing to see here.</p>
+    </div>
+
+    <app-display-article body *ngIf="isDisplay()"
+                         [article]="article"
+                         [author]="author"
+                         [latestContent]="latestContent"></app-display-article>
+
+    <app-create-article body *ngIf="isCreate()" (createArticle)="createArticle($event)"></app-create-article>
+
+    <app-edit-article body *ngIf="isEdit()"
+                      [article]="article"
+                      [latestContent]="latestContent"
+                      (createEdit)="editArticle($event)"></app-edit-article>
+    <app-wiki-footer footer></app-wiki-footer>
+</app-wiki-outlet>

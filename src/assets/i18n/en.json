@@ -14,6 +14,9 @@
     "members": "Members",
     "no-applicants": "No applicants"
   },
+  "burger-menu": {
+    "wiki": "Wiki"
+  },
   "chats": {
     "title": "Chats"
   },
@@ -288,5 +291,39 @@
       "title": "Translated text"
     },
     "type": "kind of"
+  },
+  "wiki": {
+    "article": {
+      "create": {
+        "button": "Create article",
+        "menu-entry": "Create article",
+        "title": "Title"
+      },
+      "display": {
+        "author": "Author",
+        "menu-entry": "Read article",
+        "revision": "Revision"
+      },
+      "edit": {
+        "button": "Edit article",
+        "menu-entry": "Edit article"
+      }
+    },
+    "header": {
+      "search-wiki": {
+        "label": "Search in wiki"
+      }
+    },
+    "home": {
+      "menu-entry": "Home"
+    },
+    "selection": {
+      "content": {
+        "menu-entry": "Articles"
+      },
+      "orga": {
+        "menu-entry": "Orga"
+      }
+    }
   }
 }

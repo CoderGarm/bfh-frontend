@@ -3,7 +3,7 @@
     <mat-drawer mode="side" #drawer [opened]="isLoggedIn" id="nav-drawer">
         <mat-selection-list [multiple]="false">
             <mat-list-option *ngFor="let route of routes" (click)="navigate(route)">
-                {{'path.menu.' + route.path | translate}}
+                {{'path.menu.' + route.path | translate }}
                 <mat-icon *ngIf="hasUnread(route.path!)">mark_email_unread</mat-icon>
             </mat-list-option>
         </mat-selection-list>

@@ -1,0 +1,20 @@
+<div id="wiki-outlet">
+    <div class="content-box">
+        <div class="side">
+            <ng-content select="[side]"></ng-content>
+        </div>
+        <div class="other-side">
+            <div class="header">
+                <ng-content select="[header]"></ng-content>
+                <hr>
+            </div>
+            <div class="body">
+                <ng-content select="[body]"></ng-content>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <hr>
+        <ng-content select="[footer]"></ng-content>
+    </div>
+</div>

@@ -11,6 +11,7 @@ import { BuildingApiService } from './api/buildingApi.service';
 import { ChatApiService } from './api/chatApi.service';
 import { ColonizationApiService } from './api/colonizationApi.service';
 import { ConstructionApiService } from './api/constructionApi.service';
+import { FakeApiService } from './api/fakeApi.service';
 import { FleetApiService } from './api/fleetApi.service';
 import { ForumApiService } from './api/forumApi.service';
 import { JobApiService } from './api/jobApi.service';
@@ -22,6 +23,7 @@ import { ShipyardApiService } from './api/shipyardApi.service';
 import { StarMapApiService } from './api/starMapApi.service';
 import { TickApiService } from './api/tickApi.service';
 import { UserApiService } from './api/userApi.service';
+import { WikiApiService } from './api/wikiApi.service';
 
 @NgModule({
   imports:      [],
@@ -36,6 +38,7 @@ import { UserApiService } from './api/userApi.service';
     ChatApiService,
     ColonizationApiService,
     ConstructionApiService,
+    FakeApiService,
     FleetApiService,
     ForumApiService,
     JobApiService,
@@ -46,7 +49,8 @@ import { UserApiService } from './api/userApi.service';
     ShipyardApiService,
     StarMapApiService,
     TickApiService,
-    UserApiService ]
+    UserApiService,
+    WikiApiService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
