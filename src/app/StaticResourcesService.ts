@@ -1,4 +1,4 @@
-import {EDepositType, EnumValueDto} from "./services/swagger";
+import {EDepositType, EEducationType, EnumValueDto} from "./services/swagger";
 
 export class StaticResourcesService {
 
@@ -23,6 +23,21 @@ export class StaticResourcesService {
                 return 'add';
             case "UTILIZATION":
                 return 'factory';
+        }
+    }
+
+    static isMilitary(educationType: EEducationType) {
+        const type = educationType.typeName as keyof typeof EnumValueDto.EEducationTypeEnum;
+        switch (type) {
+            case "ENLISTED":
+            case "OFFICER":
+                return true;
+            case "SCHOOL":
+            case "COLLEGE":
+            case "NONE":
+            case "UNIVERSITY":
+            default:
+                return false;
         }
     }
 }

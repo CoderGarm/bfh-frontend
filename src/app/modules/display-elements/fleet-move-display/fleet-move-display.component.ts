@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, Planet, PlanetApiService} from "../../../services/swagger";
+import {Fleet, FleetOrbit, Planet, PlanetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 
 @Component({
@@ -13,18 +13,21 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
      * the fleet which will take all the other war ships
      */
     @Input()
-    fleetInput?: Fleet;
-    fleetInputDefinition: string = "fleetInput";
+    fleet?: Fleet;
+    fleetInputDefinition: string = "fleet";
 
     destination?: Planet;
+    position?: Planet;
 
     destinationRepresentation: string = "";
+    orbitRepresentation?: string;
 
-    constructor(@Optional() @Inject('fleetInput') fleet: Fleet | undefined,
+    constructor(@Optional() @Inject('fleet') fleet: Fleet | undefined,
                 private planetApi: PlanetApiService) {
         super();
-        this.fleetInput = fleet;
+        this.fleet = fleet;
         this.fetchDestination();
+        this.fetchPosition();
     }
 
     ngAfterViewInit(): void {
@@ -33,13 +36,14 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.fleetInputDefinition]) {
             this.fetchDestination();
+            this.fetchPosition();
         }
     }
 
     private fetchDestination() {
-        if (!!this.fleetInput && !!this.fleetInput.move && !!this.fleetInput.move.targetOrbit.system) {
-            let idStarSystem = this.fleetInput.move.targetOrbit.system.idStarSystem;
-            let orbit = this.fleetInput.move.targetOrbit.orbit;
+        if (!!this.fleet && !!this.fleet.move && !!this.fleet.move.targetOrbit.system) {
+            let idStarSystem = this.fleet.move.targetOrbit.system.idStarSystem;
+            let orbit = this.fleet.move.targetOrbit.orbit;
             let sub = this.planetApi.getPlanetByCoordinates(orbit!, idStarSystem)
                 .subscribe(resp => {
                     this.destination = resp;
@@ -52,24 +56,51 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
         }
     }
 
+    private fetchPosition() {
+        if (!!this.fleet && !!this.fleet.orbit) {
+            const fleetOrbit: FleetOrbit | undefined = this.fleet.orbit;
+            if (!!fleetOrbit) {
+                let idStarSystem = fleetOrbit.system!.idStarSystem;
+                let orbit = fleetOrbit.orbit;
+                let sub = this.planetApi.getPlanetByCoordinates(orbit!, idStarSystem)
+                    .subscribe(resp => {
+                        this.position = resp;
+                        this.createOrbitRepresentation();
+                    });
+                this.subscriptions.push(sub);
+            }
+        }
+        if (!this.orbitRepresentation) {
+            this.createOrbitRepresentation();
+        }
+    }
+
     getTicksLeft() {
-        return this.fleetInput!.move!.originalDuration - this.fleetInput!.move!.moveDoneAtZero;
+        return this.fleet!.move!.originalDuration - this.fleet!.move!.moveDoneAtZero;
     }
 
     private createDestinationRepresentation() {
         let destination = "";
-        if (!!this.fleetInput && !!this.fleetInput.move) {
-
+        if (!!this.fleet && !!this.fleet.move) {
             if (!!this.destination) {
                 destination += this.destination.name;
-            } else if (!!this.fleetInput.move.targetOrbit.orbit) {
-                let orbit = this.fleetInput.move.targetOrbit.orbit;
+            } else if (!!this.fleet.move.targetOrbit.orbit) {
+                let orbit = this.fleet.move.targetOrbit.orbit;
                 destination += orbit.xCoordinate.coordinate + ", " + orbit.yCoordinate.coordinate;
             }
-            if (!!this.fleetInput.move.targetOrbit.system) {
-                destination += " in " + this.fleetInput.move.targetOrbit.system.name;
+            if (!!this.fleet.move.targetOrbit.system) {
+                destination += " in " + this.fleet.move.targetOrbit.system.name;
             }
         }
         this.destinationRepresentation = destination;
+    }
+
+    createOrbitRepresentation() {
+        if (!!this.fleet && !!this.fleet.orbit && !!this.position) {
+            const orbit: FleetOrbit = this.fleet.orbit;
+            this.orbitRepresentation = this.position.name + " in " + orbit.system!.name;
+        } else {
+            this.orbitRepresentation = undefined;
+        }
     }
 }

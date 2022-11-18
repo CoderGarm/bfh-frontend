@@ -41,6 +41,14 @@
       },
       "title": "Fleet composition",
       "warShip-names": "Warships"
+    },
+    "display": {
+      "move": {
+        "title": "Fleet movement"
+      },
+      "population": {
+        "title": "Crew"
+      }
     }
   },
   "fleets": {
@@ -139,7 +147,7 @@
       "toolTip": "The needed people"
     },
     "deposit": {
-      "toolTip": "The present people"
+      "toolTip": "The available people"
     },
     "income": {
       "toolTip": "The projected growth"
@@ -166,15 +174,18 @@
       }
     },
     "costs": {
-      "population": "The amount of workers which are needed."
+      "population": "The amount of workers which are needed.",
+      "toolTip": "The costs"
     },
     "deposit": {
       "population": "The total population.",
-      "tick": "The time flows independently from you."
+      "tick": "The time flows independently from you.",
+      "toolTip": "The deposit"
     },
     "income": {
       "population": "If this is below zero, your population needs more housings.",
-      "tick": "The time flows independently from you."
+      "tick": "The time flows independently from you.",
+      "toolTip": "The income"
     }
   },
   "resources": {

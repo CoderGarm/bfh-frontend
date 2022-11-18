@@ -113,6 +113,90 @@ export class ResourcesApiService {
     }
 
     /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param idFleet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCostsForFleet(idFleet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getCostsForFleet(idFleet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getCostsForFleet(idFleet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getCostsForFleet(idFleet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idFleet === null || idFleet === undefined) {
+            throw new Error('Required parameter idFleet was null or undefined when calling getCostsForFleet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/costsFleet/${encodeURIComponent(String(idFleet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param idShipClass 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCostsForShipClass(idShipClass: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getCostsForShipClass(idShipClass: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getCostsForShipClass(idShipClass: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getCostsForShipClass(idShipClass: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idShipClass === null || idShipClass === undefined) {
+            throw new Error('Required parameter idShipClass was null or undefined when calling getCostsForShipClass.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/costsShipClass/${encodeURIComponent(String(idShipClass))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all EEducationTypes.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

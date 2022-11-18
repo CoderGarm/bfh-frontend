@@ -4,13 +4,13 @@
             <div class="res-wrapper">
                 <div class="img-container hasSize"></div>
                 <div *ngIf="!!deposit">
-                    <mat-icon [inline]="true">{{getIcon(deposit!)}}</mat-icon>
+                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.deposit.toolTip' | translate }}">{{getIcon(deposit!)}}</mat-icon>
                 </div>
                 <div *ngIf="!!income">
-                    <mat-icon [inline]="true">{{getIcon(income!)}}</mat-icon>
+                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.toolTip' | translate }}">{{getIcon(income!)}}</mat-icon>
                 </div>
                 <div *ngIf="!!costs">
-                    <mat-icon [inline]="true">{{getIcon(costs!)}}</mat-icon>
+                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.costs.toolTip' | translate }}">{{getIcon(costs!)}}</mat-icon>
                 </div>
             </div>
         </div>

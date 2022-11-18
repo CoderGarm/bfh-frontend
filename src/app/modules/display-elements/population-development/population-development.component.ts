@@ -12,6 +12,12 @@ import {StaticResourcesService} from "../../../StaticResourcesService";
 export class PopulationDevelopmentComponent extends SubscriptionManager implements OnInit {
 
     @Input()
+    workforceOnly: boolean = false;
+
+    @Input()
+    militaryOnly: boolean = false;
+
+    @Input()
     utilization?: ResourceDeposit;
 
     @Input()
@@ -57,11 +63,52 @@ export class PopulationDevelopmentComponent extends SubscriptionManager implemen
         return resources[0].amount;
     }
 
+    getBase(): ResourceDeposit | undefined {
+        if (!!this.utilization) {
+            return this.utilization;
+        }
+        if (!!this.deposit) {
+            return this.deposit;
+        }
+        if (!!this.demand) {
+            return this.demand;
+        }
+        if (!!this.income) {
+            return this.income;
+        }
+        return undefined;
+    }
+
     isDisplayingPossible() {
-        return !!this.utilization && !!this.deposit && !!this.demand && !!this.income;
+        return !!this.getBase();
+    }
+
+    isPresent(resourceDeposit: ResourceDeposit | undefined) {
+        return !!resourceDeposit;
     }
 
     getIcon(deposit: ResourceDeposit) {
         return StaticResourcesService.getMatIconForDepositType(deposit.subType);
+    }
+
+    getDisplayableResources(): HumanResourceAmount[] {
+        const base = this.getBase();
+        const result: HumanResourceAmount[] = [];
+        if (!!base) {
+            base.humanResources.forEach(dto => {
+                if (this.militaryOnly) {
+                    if (StaticResourcesService.isMilitary(dto.resourceType)) {
+                        result.push(dto);
+                    }
+                } else if (this.workforceOnly) {
+                    if (dto.resourceType.isWorkforce) {
+                        result.push(dto);
+                    }
+                } else {
+                    result.push(dto);
+                }
+            });
+        }
+        return result;
     }
 }

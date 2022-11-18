@@ -41,6 +41,14 @@
       },
       "title": "Flottenzusammensetzung",
       "warShip-names": "Kriegsschiffe"
+    },
+    "display": {
+      "move": {
+        "title": "Flottenbewegung"
+      },
+      "population": {
+        "title": "Crew"
+      }
     }
   },
   "fleets": {
@@ -139,7 +147,7 @@
       "toolTip": "Die benötigte Bevölkerung"
     },
     "deposit": {
-      "toolTip": "Die vorhandene Bevölkerung"
+      "toolTip": "Die verfügbare Bevölkerung"
     },
     "income": {
       "toolTip": "Das prognostizierte Wachstum"
@@ -166,15 +174,18 @@
       }
     },
     "costs": {
-      "population": "Die Anzahl der benötigten Arbeitskräfte."
+      "population": "Die Anzahl der benötigten Arbeitskräfte.",
+      "toolTip": "Die Kosten"
     },
     "deposit": {
       "population": "Die Gesamtbevölkerung.",
-      "tick": "Die Zeit wird von dir nicht beeinflusst."
+      "tick": "Die Zeit wird von dir nicht beeinflusst.",
+      "toolTip": "Die gelagerten Ressourcen"
     },
     "income": {
       "population": "Wenn der Wert negativ ist, benötigt deine Bevölkerung mehr Wohnraum.",
-      "tick": "Die Zeit wird von dir nicht beeinflusst."
+      "tick": "Die Zeit wird von dir nicht beeinflusst.",
+      "toolTip": "Das Einkommen"
     }
   },
   "resources": {
