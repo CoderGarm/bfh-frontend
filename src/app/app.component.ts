@@ -11,6 +11,9 @@ import {SubscriptionManager} from "./SubscriptionManager";
 import {ForumsListComponent} from "./modules/forum/components/forums-list/forums-list.component";
 import {TranslateService} from "@ngx-translate/core";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
+import {LoginComponent} from "./components/user/login/login.component";
+import {HomeComponent} from "./components/home/home.component";
+import {WikiMainComponent} from "./modules/wiki/orga/wiki-main/wiki-main.component";
 
 
 @Component({
@@ -109,6 +112,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     displayWelcome() {
         console.log(this.router.url)
-        return !this.isLoggedIn && (!this.router.url.endsWith('login'));
+        return !this.isLoggedIn
+            && !this.router.url.endsWith(LoginComponent.path)
+            && !this.router.url.endsWith(HomeComponent.path)
+            && !this.router.url.endsWith(WikiMainComponent.path);
     }
 }
