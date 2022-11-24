@@ -21,6 +21,10 @@ import { UserJson } from './userJson';
  * .
  */
 export interface Job { 
+    /**
+     * The id
+     */
+    idJob: number;
     user: UserJson;
     facility: Construction;
     facilityPlanet: Planet;

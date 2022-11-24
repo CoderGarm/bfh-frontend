@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EHullType, Fleet, Job, Planet} from "../../../services/swagger";
+import {EHullType, Fleet, Job, JobApiService, Planet} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -25,12 +25,16 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
     runningJobs: Job[] = [];
     runningJobsDefinition: string = 'runningJobs';
 
+    @Input()
+    allowCancel: boolean = false;
+
     jobsPerIdPlanet: Map<number, Job[]> = new Map<number, Job[]>();
     jobs: PlanetaryJobs[] = [];
 
     translations: Map<string, string> = new Map<string, string>();
 
-    constructor(private translate: TranslateService) {
+    constructor(private translate: TranslateService,
+                private jobService: JobApiService) {
         super();
 
         this.translations.set('jobs.active-title', 'jobs.active-title');
@@ -51,9 +55,13 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.runningJobsDefinition]) {
-            this.sortJobsByPlanet();
-            this.organizeJobsPerPlanet();
+            this.prepareData();
         }
+    }
+
+    private prepareData() {
+        this.sortJobsByPlanet();
+        this.organizeJobsPerPlanet();
     }
 
     private organizeJobsPerPlanet() {
@@ -120,5 +128,22 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
         let result = "";
         m.forEach((amount, hullType) => result += ", " + amount + " " + hullType.typeName);
         return fleet.ships.length + " ships";
+    }
+
+    cancelJob(job: Job) {
+        let sub = this.jobService.cancelJob(job.idJob).subscribe(resp => {
+            if (resp) {
+                this.loadData();
+            }
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private loadData() {
+        let sub = this.jobService.getJobsForEmpire().subscribe(resp => {
+            this.runningJobs = resp;
+            this.prepareData();
+        });
+        this.subscriptions.push(sub);
     }
 }

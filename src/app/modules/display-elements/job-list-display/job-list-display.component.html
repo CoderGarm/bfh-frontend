@@ -9,6 +9,12 @@
                 <div mat-subheader>{{ 'research.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.researches" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(job)}}">
+                    <button mat-icon-button class="cancel-btn"
+                            (click)="cancelJob(job)"
+                            *ngIf="allowCancel"
+                            matTooltip="{{ 'jobs.cancel-btn' | translate }}">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
                     <div mat-line>{{job.researchTarget!.name}}</div>
                     <div mat-line>{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
                     <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
@@ -20,6 +26,12 @@
                 <div mat-subheader>{{ 'planetary.constructions.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.constructions" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(job)}}">
+                    <button mat-icon-button class="cancel-btn"
+                            (click)="cancelJob(job)"
+                            *ngIf="allowCancel"
+                            matTooltip="{{ 'jobs.cancel-btn' | translate }}">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
                     <div mat-line>{{job.buildingTarget!.name}}</div>
                     <div mat-line>{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
                     <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
@@ -31,6 +43,12 @@
                 <div mat-subheader>{{ 'shipyard.constructions.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.shipyard" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(job)}}">
+                    <button mat-icon-button class="cancel-btn"
+                            (click)="cancelJob(job)"
+                            *ngIf="allowCancel"
+                            matTooltip="{{ 'jobs.cancel-btn' | translate }}">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{job.fleet.name}}</div>
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{getHullAmount(job.fleet)}}</div>
                     <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{ 'shipyard.constructions.fleet-to-repair' | translate }}: {{job.fleet.name}}</div>

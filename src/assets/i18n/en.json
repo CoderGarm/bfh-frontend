@@ -71,6 +71,7 @@
   },
   "jobs": {
     "active-title": "Active jobs",
+    "cancel-btn": "Cancel the job",
     "finished-title": "Finished jobs",
     "level": "Level",
     "priority": "Priority",

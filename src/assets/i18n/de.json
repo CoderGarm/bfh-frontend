@@ -71,6 +71,7 @@
   },
   "jobs": {
     "active-title": "laufende Aufträge",
+    "cancel-btn": "Auftrag abbrechen",
     "finished-title": "Beendete Aufträge",
     "level": "Level",
     "priority": "Priorität",
