@@ -18,12 +18,12 @@
 
 <div>
 
-    {{'shipyard.constructions.title' | translate}}
+    {{ 'shipyard.constructions.title' | translate }}
 </div>
 <div [matTooltip]="getJobButtonText()" class="tooltip-container">
     <button mat-raised-button color="secondary"
             (click)="buildConstruction()"
-            [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected()">{{'shipyard.constructions.build.start-building' | translate }}</button>
+            [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected()">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
 </div>
 <mat-accordion>
     <mat-expansion-panel *ngFor="let shipClass of filteredShipClasses"

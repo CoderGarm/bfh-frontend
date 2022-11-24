@@ -143,7 +143,10 @@ body {
   border-radius: 5px 5px 5px 0;
 }
 
-.progress-bar {
-  // overriding bootstrap
-  background-color: transparent !important;
+.mat-expansion-panel-header-title {
+  justify-content: flex-start;
+}
+
+.mat-expansion-panel-header-description {
+  justify-content: flex-end;
 }

@@ -20,10 +20,10 @@
                     <mat-icon [inline]="true">schedule</mat-icon>
                 </div>
                 <div class="amount-present" *ngIf="!!deposit">
-                    <mat-icon [inline]="true" matTooltip="{{'resource-overlay.deposit.tick' | translate}}">all_inclusive</mat-icon>
+                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.deposit.tick' | translate }}">all_inclusive</mat-icon>
                 </div>
                 <div class="amount-present" *ngIf="!!income">
-                    <mat-icon [inline]="true" matTooltip="{{'resource-overlay.income.tick' | translate}}">all_inclusive</mat-icon>
+                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.tick' | translate }}">all_inclusive</mat-icon>
                 </div>
                 <div class="diffAmount">
                     {{getTicksNeeded()}}

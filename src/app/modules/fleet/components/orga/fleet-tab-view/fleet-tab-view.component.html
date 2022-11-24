@@ -1,21 +1,21 @@
 <mat-tab-group animationDuration="0ms" class="bottom-spacer">
-    <mat-tab label="{{'tab.fleet.dashboard' | translate}}">
+    <mat-tab label="{{ 'tab.fleet.dashboard' | translate }}">
         <div class="holder">
             <app-fleet-display [fleetInput]="fleet">
                 <app-spacecraft-capabilities-display body
                                                      [baseFleetCapabilities]="fleet?.baseSpacecraftCapabilities"
                                                      [currentFleetCapabilities]="fleet?.spacecraftCapabilities"></app-spacecraft-capabilities-display>
-                <div mat-subheader body>{{'fleet.display.population.title' | translate}}</div>
+                <div mat-subheader body>{{ 'fleet.display.population.title' | translate }}</div>
                 <app-population-development body
                                             [militaryOnly]="true"
                                             [utilization]="utilization"></app-population-development>
-                <div mat-subheader body>{{'fleet.display.move.title' | translate}}</div>
+                <div mat-subheader body>{{ 'fleet.display.move.title' | translate }}</div>
                 <app-fleet-move-display body
                                         [fleet]="fleet"></app-fleet-move-display>
             </app-fleet-display>
         </div>
     </mat-tab>
-    <mat-tab label="{{'tab.fleet.movements' | translate}}">
+    <mat-tab label="{{ 'tab.fleet.movements' | translate }}">
         <div class="holder">
             <app-fleet-move-display [fleet]="fleet"></app-fleet-move-display>
         </div>

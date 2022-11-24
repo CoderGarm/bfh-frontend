@@ -32,12 +32,4 @@ export interface WarShip {
     idFleet: number;
     shipClass: ShipClass;
     warshipHealthState: WarshipHealthState;
-    /**
-     * If the ship is marked as wrecked.
-     */
-    isDeleted: boolean;
-    /**
-     * If the ship is marked as active.
-     */
-    isOperational: boolean;
 }

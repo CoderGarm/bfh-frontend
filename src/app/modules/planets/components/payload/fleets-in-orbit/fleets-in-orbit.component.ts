@@ -100,7 +100,7 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
         if (this.isInRepair(fleet)) {
             return false;
         }
-        return fleet.needsRepair && this.shipyardJobPossible;
+        return fleet.state.needsRepair && this.shipyardJobPossible;
     }
 
     isInRepair(fleet: Fleet) {
@@ -144,7 +144,7 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
         if (!this.shipyardExists) {
             return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-shipyard')!;
         }
-        if (!fleet.needsRepair) {
+        if (!fleet.state.needsRepair) {
             return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-repair-needed')!;
         }
         return this.translations.get('planetary.fleets-in-orbit.repair-btn.start-job')!;

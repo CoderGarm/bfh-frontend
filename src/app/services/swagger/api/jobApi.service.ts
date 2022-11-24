@@ -22,7 +22,7 @@ import { Job } from '../model/job';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
-import {environment} from "../../../../environments/environment";
+import {environment} from '../../../../environments/environment';
 
 
 @Injectable()
@@ -58,7 +58,7 @@ export class JobApiService {
 
 
     /**
-     * Get all jobs which finished today.
+     * Get all jobs which finished today and wasn&#x27;t questioned before.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

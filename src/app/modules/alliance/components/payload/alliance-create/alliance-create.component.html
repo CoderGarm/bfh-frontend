@@ -1,15 +1,15 @@
-<p id="title">{{'alliance.create.title' | translate}}</p>
+<p id="title">{{ 'alliance.create.title' | translate }}</p>
 
 <form [formGroup]=allianceG id="create-form">
     <mat-form-field appearance="fill">
-        <mat-label>{{'alliance.create.name' | translate}}</mat-label>
+        <mat-label>{{ 'alliance.create.name' | translate }}</mat-label>
         <input matInput autocomplete="off" placeholder="Name ..." formControlName=allianceNameFC>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-        <mat-label>{{'alliance.create.code' | translate}}</mat-label>
+        <mat-label>{{ 'alliance.create.code' | translate }}</mat-label>
         <input matInput autocomplete="off" placeholder="Name ..." formControlName=allianceCodeFC>
     </mat-form-field>
 </form>
 
-<button id="create-btn" mat-flat-button color="primary" mat-button (click)="create()">{{'alliance.create.submit' | translate}}</button>
+<button id="create-btn" mat-flat-button color="primary" mat-button (click)="create()">{{ 'alliance.create.submit' | translate }}</button>

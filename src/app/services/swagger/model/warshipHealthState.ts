@@ -10,18 +10,12 @@
  * Do not edit the class manually.
  */
 import { SpacecraftCapabilities } from './spacecraftCapabilities';
+import { StateBlock } from './stateBlock';
 
 /**
  * .
  */
 export interface WarshipHealthState { 
     spacecraftCapabilities: SpacecraftCapabilities;
-    /**
-     * If the ship is alive after damage.
-     */
-    isAlive: boolean;
-    /**
-     * If the ship is capable of staying in the battle after damage.
-     */
-    isFightingCapable: boolean;
+    state: StateBlock;
 }

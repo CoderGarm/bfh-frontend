@@ -1,5 +1,5 @@
 <mat-list>
-    <div mat-subheader>{{'fleet.composition.title' | translate}}</div>
+    <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
     <mat-list-item *ngFor="let entry of warShipsByType  | keyvalue">
         <img mat-list-avatar src="{{getLink(entry.key)}}">
         <div>
@@ -8,11 +8,11 @@
         </div>
 
         <mat-list class="inner-list">
-            <div mat-subheader>{{'fleet.composition.warShip-names' | translate}}</div>
+            <div mat-subheader>{{ 'fleet.composition.warShip-names' | translate }}</div>
             <mat-list-item *ngFor="let warShip of entry.value" class="height-fit-content">
                 <div mat-subheader class="item height-fit-content">{{warShip.name}} -
                     {{warShip.shipClass.name}}
-                    {{'fleet.composition.class.title' | translate}}</div>
+                    {{ 'fleet.composition.class.title' | translate }}</div>
             </mat-list-item>
         </mat-list>
     </mat-list-item>

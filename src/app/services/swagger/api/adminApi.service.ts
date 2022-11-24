@@ -25,7 +25,7 @@ import { Translation } from '../model/translation';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
-import {environment} from "../../../../environments/environment";
+import {environment} from '../../../../environments/environment';
 
 
 @Injectable()
@@ -135,7 +135,7 @@ export class AdminApiService {
     }
 
     /**
-     * Get all modules data as compressed csv file.
+     * Get all modules data as csv files.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

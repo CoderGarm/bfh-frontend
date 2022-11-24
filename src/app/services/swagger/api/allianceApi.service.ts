@@ -23,7 +23,7 @@ import { UserJson } from '../model/userJson';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
-import {environment} from "../../../../environments/environment";
+import {environment} from '../../../../environments/environment';
 
 
 @Injectable()
@@ -311,7 +311,7 @@ export class AllianceApiService {
     }
 
     /**
-     * Gets an alliances.
+     * Gets an alliance.
      * 
      * @param idAlliance 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

@@ -1,12 +1,12 @@
 <mat-tab-group (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
-    <mat-tab label="{{'tab.expansion.organize' | translate}}">
+    <mat-tab label="{{ 'tab.expansion.organize' | translate }}">
         <ng-template matTabContent>
             <!--<div>--> <!-- necessary due panel expansion problem-->
             <app-organize-expansion></app-organize-expansion>
             <!--</div>-->
         </ng-template>
     </mat-tab>
-    <mat-tab label="{{'tab.expansion.view' | translate}}">
+    <mat-tab label="{{ 'tab.expansion.view' | translate }}">
         <ng-template matTabContent>
             <!--<div>--> <!-- necessary due panel expansion problem-->
             <app-see-expansion></app-see-expansion>

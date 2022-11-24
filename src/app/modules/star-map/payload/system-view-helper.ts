@@ -113,7 +113,7 @@ export class SystemViewHelper extends BasicViewHelper {
             .id(fleetSharkID + "-group");
 
         let userID = this.tokenStorage.getUserID();
-        if (!fleet.move && fleet.owner.idUser == userID && fleet.isActive) {
+        if (!fleet.move && fleet.owner.idUser == userID && fleet.state.isActive) {
             // make fleet group draggable if it is not in motion
             group!.draggable(true).on('dragend', this.dragEndFleetGroup(dragEndForFleet));
         }
@@ -126,8 +126,8 @@ export class SystemViewHelper extends BasicViewHelper {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
 
-        const cssActivityMarker = fleet.isActive ? '' : 'under-construction';
-        const cssOperationalMarker = fleet.isOperational ? '' : 'inoperational';
+        const cssActivityMarker = !fleet.state.isActive && fleet.state.needsRepair ? 'under-construction' : '';
+        const cssOperationalMarker = fleet.state.isOperational ? 'inoperational' : '';
 
         group!
             .polygon(fleetSharkPoints)
@@ -141,7 +141,7 @@ export class SystemViewHelper extends BasicViewHelper {
         let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
 
-        if (!fleet.isActive) {
+        if (!fleet.state.isActive) {
             let xMarker = sortedPointsX[0];
             let yMarker = sortedPointsY[sortedPointsY.length - 1];
 
@@ -150,11 +150,15 @@ export class SystemViewHelper extends BasicViewHelper {
                 .stroke(sd)
                 .x(xMarker[0] - 2.5)
                 .y(yMarker[1] - 2.5)
-                .fill("blue")
+                .addClass(cssActivityMarker)
+                .addClass(cssOperationalMarker)
                 .mouseover(this.mouseoverForMarker)
                 .mouseleave(this.mouseleaveForMarker);
 
-            let text: Text = new Text().text("Fleet is in dock")
+            let txt = fleet.state.needsRepair ? 'Fleet is in dock' : '';
+            txt = fleet.state.isOperational ? 'Fleet is inoperational' : txt;
+
+            let text: Text = new Text().text(txt)
                 .x(xMarker[0] - 2.5)
                 .y(yMarker[1] - 2.5)
                 .addClass("marker-text")

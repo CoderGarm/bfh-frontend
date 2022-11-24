@@ -12,6 +12,7 @@
 import { FleetOrbit } from './fleetOrbit';
 import { Move } from './move';
 import { SpacecraftCapabilities } from './spacecraftCapabilities';
+import { StateBlock } from './stateBlock';
 import { UserJson } from './userJson';
 import { WarShip } from './warShip';
 
@@ -40,16 +41,5 @@ export interface Fleet {
      * If the fleet can run interstellar movements.
      */
     isFTLCapable: boolean;
-    /**
-     * If the fleet can do actions.
-     */
-    isActive: boolean;
-    /**
-     * If the fleet have all the crew.
-     */
-    isOperational: boolean;
-    /**
-     * If the fleet needs a repair.
-     */
-    needsRepair: boolean;
+    state: StateBlock;
 }

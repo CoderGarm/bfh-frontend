@@ -123,6 +123,15 @@
         "start-building": "Start job",
         "too-expensive": "Job too expensive"
       },
+      "info": {
+        "title": "Details"
+      },
+      "level": {
+        "current": "current",
+        "next": "next",
+        "operational": "active",
+        "title": "Construction level"
+      },
       "title": "Ground constructions"
     },
     "fleets-in-orbit": {

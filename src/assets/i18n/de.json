@@ -123,6 +123,15 @@
         "start-building": "Starte den Bau",
         "too-expensive": "Bau zu teuer"
       },
+      "info": {
+        "title": "Details"
+      },
+      "level": {
+        "current": "gebaut",
+        "next": "nächstes",
+        "operational": "aktiv",
+        "title": "Gebäudelevel"
+      },
       "title": "Gebäude"
     },
     "fleets-in-orbit": {

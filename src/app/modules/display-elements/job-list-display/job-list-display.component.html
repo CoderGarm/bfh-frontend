@@ -1,42 +1,42 @@
 <mat-list id="job-list">
-    <div mat-subheader>{{title_key | translate}}</div>
+    <div mat-subheader>{{title_key | translate }}</div>
     <mat-list-item *ngFor="let pJob of jobs" class="height-fit-content">
         <img mat-list-avatar src="assets/icons/planets/png24x/planet_c.png">
         <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
 
         <div class="job-items-container">
             <mat-list *ngIf="pJob.researches!.length > 0">
-                <div mat-subheader>{{'research.title' | translate}}</div>
+                <div mat-subheader>{{ 'research.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.researches" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(job)}}">
                     <div mat-line>{{job.researchTarget!.name}}</div>
-                    <div mat-line>{{'jobs.level' | translate}}: {{job.targetLevel}}</div>
-                    <div mat-line *ngIf="job.ticksLeft > 0">{{'jobs.ticks-left' | translate}}: {{job.ticksLeft}}</div>
-                    <div mat-line>{{'jobs.priority' | translate}}: {{job.priority}}</div>
+                    <div mat-line>{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
+                    <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
+                    <div mat-line>{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-list>
 
             <mat-list *ngIf="pJob.constructions!.length > 0">
-                <div mat-subheader>{{'planetary.constructions.title' | translate}}</div>
+                <div mat-subheader>{{ 'planetary.constructions.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.constructions" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(job)}}">
                     <div mat-line>{{job.buildingTarget!.name}}</div>
-                    <div mat-line>{{'jobs.level' | translate}}: {{job.targetLevel}}</div>
-                    <div mat-line *ngIf="job.ticksLeft > 0">{{'jobs.ticks-left' | translate}}: {{job.ticksLeft}}</div>
-                    <div mat-line>{{'jobs.priority' | translate}}: {{job.priority}}</div>
+                    <div mat-line>{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
+                    <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
+                    <div mat-line>{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-list>
 
             <mat-list *ngIf="pJob.shipyard!.length > 0">
-                <div mat-subheader>{{'shipyard.constructions.title' | translate}}</div>
+                <div mat-subheader>{{ 'shipyard.constructions.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.shipyard" class="height-fit-content">
                     <img mat-list-avatar src="{{getLink(job)}}">
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{job.fleet.name}}</div>
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{getHullAmount(job.fleet)}}</div>
-                    <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{'shipyard.constructions.fleet-to-repair' | translate}}: {{job.fleet.name}}</div>
-                    <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{'shipyard.constructions.fleet-state' | translate}}: {{getPercentage(job.fleet)}}</div>
-                    <div mat-line *ngIf="job.ticksLeft > 0">{{'jobs.ticks-left' | translate}}: {{job.ticksLeft}}</div>
-                    <div mat-line>{{'jobs.priority' | translate}}: {{job.priority}}</div>
+                    <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{ 'shipyard.constructions.fleet-to-repair' | translate }}: {{job.fleet.name}}</div>
+                    <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{ 'shipyard.constructions.fleet-state' | translate }}: {{getPercentage(job.fleet)}}</div>
+                    <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
+                    <div mat-line>{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-list>
         </div>

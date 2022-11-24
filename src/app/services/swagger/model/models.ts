@@ -83,6 +83,7 @@ export * from './sidewall';
 export * from './spacecraftCapabilities';
 export * from './starSystem';
 export * from './starSystemColonization';
+export * from './stateBlock';
 export * from './supportFitting';
 export * from './tick';
 export * from './translation';

@@ -1,5 +1,5 @@
 <mat-tab-group animationDuration="0ms" *ngIf="isAdmin">
-    <mat-tab label="{{'tab.admin.do-tick' | translate}}">
+    <mat-tab label="{{ 'tab.admin.do-tick' | translate }}">
         <mat-toolbar color="secondary" class="stat-tool-bar">
             <mat-toolbar-row>
                 <span>Game Admin Area - don't fuck around!</span>
@@ -11,10 +11,10 @@
             </mat-toolbar-row>
         </mat-toolbar>
     </mat-tab>
-    <mat-tab label="{{'tab.admin.translations' | translate}}">
+    <mat-tab label="{{ 'tab.admin.translations' | translate }}">
         <app-translation></app-translation>
     </mat-tab>
-    <mat-tab label="{{'tab.admin.statistics' | translate}}">
+    <mat-tab label="{{ 'tab.admin.statistics' | translate }}">
         <app-statistics></app-statistics>
     </mat-tab>
 </mat-tab-group>

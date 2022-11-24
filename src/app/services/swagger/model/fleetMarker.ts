@@ -12,6 +12,7 @@
 import { AbstractId } from './abstractId';
 import { FleetOrbit } from './fleetOrbit';
 import { Move } from './move';
+import { StateBlock } from './stateBlock';
 
 /**
  * .
@@ -29,16 +30,5 @@ export interface FleetMarker {
      * If the fleet can run interstellar movements.
      */
     isFTLCapable: boolean;
-    /**
-     * If the fleet can do actions.
-     */
-    isActive: boolean;
-    /**
-     * If the fleet have all the crew.
-     */
-    isOperational: boolean;
-    /**
-     * If the fleet needs a repair.
-     */
-    needsRepair: boolean;
+    state: StateBlock;
 }

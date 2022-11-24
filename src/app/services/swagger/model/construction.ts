@@ -24,4 +24,8 @@ export interface Construction {
      * The level of this construction.
      */
     level: number;
+    /**
+     * The active level of this construction.
+     */
+    operationalLevel: number;
 }

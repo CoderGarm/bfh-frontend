@@ -12,7 +12,7 @@
 </mat-selection-list>
 
 <br>
-{{'chats.title' | translate}}
+{{ 'chats.title' | translate }}
 
 <mat-selection-list [multiple]="false">
     <mat-list-option *ngFor="let chat of activeChats" (click)="displayChatHistoryBetweenMeAnd(getChatPartner(chat))">

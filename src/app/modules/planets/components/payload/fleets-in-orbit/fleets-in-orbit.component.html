@@ -1,4 +1,4 @@
-<p>{{'planetary.fleets-in-orbit.title' | translate }}</p>
+<p>{{ 'planetary.fleets-in-orbit.title' | translate }}</p>
 <mat-accordion>
     <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit">
         <mat-expansion-panel-header [matTooltip]="getPercentageString(fleet)">
@@ -7,7 +7,7 @@
                 {{fleet.name}}
             </mat-panel-title>
             <mat-panel-description>
-                <div class="progress-bar align-center">
+                <div class="readiness-progress-bar">
                     <mat-progress-bar
                             mode="determinate"
                             [value]="getPercentage(fleet)"></mat-progress-bar>
@@ -21,7 +21,7 @@
             <div actions [matTooltip]="getRepairJobButtonText(fleet)" class="tooltip-container">
                 <button mat-raised-button color="secondary"
                         (click)="repair(fleet)"
-                        [disabled]="!repairPossible(fleet)">{{'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
+                        [disabled]="!repairPossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
             </div>
         </app-fleet-display>
     </mat-expansion-panel>

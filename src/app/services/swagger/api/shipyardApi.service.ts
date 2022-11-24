@@ -24,7 +24,7 @@ import { ShipClass } from '../model/shipClass';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
-import {environment} from "../../../../environments/environment";
+import {environment} from '../../../../environments/environment';
 
 
 @Injectable()

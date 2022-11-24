@@ -8,15 +8,15 @@
             idFleet: {{fleetInput.idFleet}}
         </mat-card-subtitle>
         <mat-icon
-                *ngIf="!fleetInput.isActive"
+                *ngIf="!fleetInput.state.isActive"
                 matTooltip="Fleet is not active">report_problem
         </mat-icon>
         <mat-icon
-                *ngIf="!fleetInput.isOperational"
+                *ngIf="!fleetInput.state.isOperational"
                 matTooltip="Fleet is not operational">report_problem
         </mat-icon>
         <mat-icon
-                *ngIf="fleetInput.needsRepair"
+                *ngIf="fleetInput.state.needsRepair"
                 matTooltip="Fleet needs repair">report_problem
         </mat-icon>
     </mat-card-header>

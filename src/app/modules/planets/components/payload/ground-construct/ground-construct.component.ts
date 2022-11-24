@@ -430,7 +430,7 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
         let levelComplement = '';
         if (construction.level > 1) {
             let tr = this.translations.get(this.hasConstruction);
-            levelComplement = tr + ' ' + (construction.level - 1);
+            levelComplement = tr + ' ' + construction.operationalLevel + '/' + construction.level;
         } else {
             let tr = this.translations.get(this.newConstruction);
             levelComplement = tr!;
