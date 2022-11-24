@@ -12,7 +12,6 @@ import {
     StarSystem,
     StarSystemColonization
 } from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
 import {MatPaginator} from "@angular/material/paginator";
@@ -73,8 +72,7 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
     @ViewChild(MatPaginator) paginator?: MatPaginator;
     @ViewChild(MatSort, {static: false}) sort?: MatSort;
 
-    constructor(private tokenStorage: TokenStorage,
-                private colonizationApi: ColonizationApiService,
+    constructor(private colonizationApi: ColonizationApiService,
                 private resourceApi: ResourcesApiService,
                 private planetApi: PlanetApiService,
                 private typeService: TypeService,
@@ -109,15 +107,6 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
                 }
             };
         }
-        let sub = this.planetApi.getMainPlanet().subscribe(resp => {
-            this.main = resp;
-            sub = this.resourceApi.getResourceDeposit(this.main.idPlanet)
-                .subscribe(resp => {
-                    this.resourceDeposit = resp
-                });
-            this.subscriptions.push(sub);
-        });
-        this.subscriptions.push(sub);
     }
 
     ngAfterContentInit(): void {
@@ -132,26 +121,31 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
      */
     private fetchData() {
         this.spinnerService.activateSpinner('expansion.organize.spinner-message.wait');
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID) {
-            let sub = this.colonizationApi.getKnownStarSystemsForUser(userID)
-                .subscribe(resp => this.knownSystems = resp);
-            this.subscriptions.push(sub);
-            sub = this.colonizationApi.getHomeSystem(userID)
+        let sub = this.colonizationApi.getKnownStarSystemsForUser()
+            .subscribe(resp => this.knownSystems = resp);
+        this.subscriptions.push(sub);
+        sub = this.colonizationApi.getHomeSystem()
+            .subscribe(resp => {
+                this.homeSystem = resp;
+                this.reference = this.homeSystem;
+            });
+        this.subscriptions.push(sub);
+        sub = this.colonizationApi.getColonizationStarSystemsForUser()
+            .subscribe(resp => {
+                this.starSystems = this.starSystems.concat(resp);
+                this.dataSource.data = this.starSystems;
+                this.spinnerService.deactivateSpinner();
+            });
+        this.subscriptions.push(sub);
+        sub = this.planetApi.getMainPlanet().subscribe(resp => {
+            this.main = resp;
+            sub = this.resourceApi.getResourceDeposit(this.main.idPlanet)
                 .subscribe(resp => {
-                    this.homeSystem = resp;
-                    this.reference = this.homeSystem;
-                    // todo reference not pre-selected in mat-select
+                    this.resourceDeposit = resp
                 });
             this.subscriptions.push(sub);
-            sub = this.colonizationApi.getColonizationStarSystemsForUser(userID)
-                .subscribe(resp => {
-                    this.starSystems = this.starSystems.concat(resp);
-                    this.dataSource.data = this.starSystems;
-                    this.spinnerService.deactivateSpinner();
-                });
-            this.subscriptions.push(sub);
-        }
+        });
+        this.subscriptions.push(sub);
     }
 
     /**
@@ -296,7 +290,7 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
      * @param colo
      */
     buySystemsInformation(colo: StarSystemColonization) {
-        let sub = this.colonizationApi.buyInformationForSystem(colo.starSystem, this.tokenStorage.getUserID()).subscribe(resp => {
+        let sub = this.colonizationApi.buyInformationForSystem(colo.starSystem).subscribe(resp => {
             const item = this.dataSource.data.filter(value => value.starSystem.idStarSystem === resp.starSystem.idStarSystem)[0];
             const index = this.dataSource.data.indexOf(item);
             if (index !== -1) {
@@ -346,13 +340,10 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
      * @param planet
      */
     colonizePlanet(planet: Planet) {
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID) {
-            let sub = this.colonizationApi.startColonizingPlanet(planet, userID).subscribe(resp => {
-                this.fetchData();
-            });
-            this.subscriptions.push(sub);
-        }
+        let sub = this.colonizationApi.startColonizingPlanet(planet).subscribe(resp => {
+            this.fetchData();
+        });
+        this.subscriptions.push(sub);
     }
 
     /**
@@ -405,5 +396,12 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
             return colonization.doneAtZero;
         }
         return NaN;
+    }
+
+    getRef() {
+        if (!this.reference) {
+            return 0;
+        }
+        return this.reference.idStarSystem;
     }
 }

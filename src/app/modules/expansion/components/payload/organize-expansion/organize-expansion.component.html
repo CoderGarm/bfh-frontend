@@ -47,8 +47,8 @@
                 <div>
                     <mat-form-field appearance="fill">
                         <mat-label>Select a star system</mat-label>
-                        <mat-select [(value)]="reference">
-                            <mat-option *ngFor="let sys of knownSystems" [value]="sys">{{sys.name}}</mat-option>
+                        <mat-select [value]="getRef()">
+                            <mat-option *ngFor="let sys of knownSystems" [value]="sys.idStarSystem">{{sys.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>

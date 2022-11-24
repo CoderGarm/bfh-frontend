@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {ColonizationApiService, MiningFactors, Orbit, Planet, ResourcesApiService, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {MatTableDataSource} from "@angular/material/table";
@@ -46,8 +45,7 @@ export class SeeExpansionComponent extends SubscriptionManager implements AfterV
     @ViewChild(MatPaginator) paginator?: MatPaginator;
     @ViewChild(MatSort, {static: false}) sort?: MatSort;
 
-    constructor(private tokenStorage: TokenStorage,
-                private colonizationApi: ColonizationApiService,
+    constructor(private colonizationApi: ColonizationApiService,
                 private resourceApi: ResourcesApiService) {
         super();
         this.defineFilterPredicate();
@@ -79,25 +77,23 @@ export class SeeExpansionComponent extends SubscriptionManager implements AfterV
      * @private
      */
     private fetchData() {
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID) {
-            let sub = this.colonizationApi.getKnownStarSystemsForUser(userID)
-                .subscribe(resp => this.knownSystems = resp);
-            this.subscriptions.push(sub);
-            sub = this.colonizationApi.getHomeSystem(userID)
-                .subscribe(resp => {
-                    this.homeSystem = resp;
-                    this.reference = this.homeSystem;
-                    // todo reference not pre-selected in mat-select
-                });
-            this.subscriptions.push(sub);
-            sub = this.colonizationApi.getPendingColonizationsForUser(userID)
-                .subscribe(resp => {
-                    this.starSystems = this.starSystems.concat(resp);
-                    this.dataSource.data = this.starSystems;
-                });
-            this.subscriptions.push(sub);
-        }
+
+        let sub = this.colonizationApi.getKnownStarSystemsForUser()
+            .subscribe(resp => this.knownSystems = resp);
+        this.subscriptions.push(sub);
+        sub = this.colonizationApi.getHomeSystem()
+            .subscribe(resp => {
+                this.homeSystem = resp;
+                this.reference = this.homeSystem;
+                // todo reference not pre-selected in mat-select
+            });
+        this.subscriptions.push(sub);
+        sub = this.colonizationApi.getPendingColonizationsForUser()
+            .subscribe(resp => {
+                this.starSystems = this.starSystems.concat(resp);
+                this.dataSource.data = this.starSystems;
+            });
+        this.subscriptions.push(sub);
     }
 
     /**

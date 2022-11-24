@@ -65,21 +65,16 @@ export class ColonizationApiService {
      * Get all not colonized but known systems for a user.
      * 
      * @param body default response
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<StarSystemColonization>;
-    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystemColonization>>;
-    public buyInformationForSystem(body: StarSystem, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystemColonization>>;
-    public buyInformationForSystem(body: StarSystem, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public buyInformationForSystem(body: StarSystem, observe?: 'body', reportProgress?: boolean): Observable<StarSystemColonization>;
+    public buyInformationForSystem(body: StarSystem, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystemColonization>>;
+    public buyInformationForSystem(body: StarSystem, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystemColonization>>;
+    public buyInformationForSystem(body: StarSystem, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling buyInformationForSystem.');
-        }
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling buyInformationForSystem.');
         }
 
         let headers = this.defaultHeaders;
@@ -103,7 +98,7 @@ export class ColonizationApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<StarSystemColonization>('post',`${this.basePath}/api/private/colonization/buy/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<StarSystemColonization>('post',`${this.basePath}/api/private/colonization/buy`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -165,18 +160,13 @@ export class ColonizationApiService {
     /**
      * Get all colonizable systems for a user with their distances to all known systems.
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getColonizationStarSystemsForUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystemColonization>>;
-    public getColonizationStarSystemsForUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystemColonization>>>;
-    public getColonizationStarSystemsForUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystemColonization>>>;
-    public getColonizationStarSystemsForUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getColonizationStarSystemsForUser.');
-        }
+    public getColonizationStarSystemsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystemColonization>>;
+    public getColonizationStarSystemsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystemColonization>>>;
+    public getColonizationStarSystemsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystemColonization>>>;
+    public getColonizationStarSystemsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -194,7 +184,7 @@ export class ColonizationApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<StarSystemColonization>>('get',`${this.basePath}/api/private/colonization/all/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<StarSystemColonization>>('get',`${this.basePath}/api/private/colonization/all`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -207,18 +197,13 @@ export class ColonizationApiService {
     /**
      * Get all not colonized but known systems for a user.
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getHomeSystem(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<StarSystem>;
-    public getHomeSystem(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystem>>;
-    public getHomeSystem(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystem>>;
-    public getHomeSystem(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getHomeSystem.');
-        }
+    public getHomeSystem(observe?: 'body', reportProgress?: boolean): Observable<StarSystem>;
+    public getHomeSystem(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StarSystem>>;
+    public getHomeSystem(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StarSystem>>;
+    public getHomeSystem(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -236,7 +221,7 @@ export class ColonizationApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<StarSystem>('get',`${this.basePath}/api/private/colonization/home/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<StarSystem>('get',`${this.basePath}/api/private/colonization/home`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -249,18 +234,13 @@ export class ColonizationApiService {
     /**
      * Get all not known systems for a user.
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getKnownStarSystemsForUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystem>>;
-    public getKnownStarSystemsForUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystem>>>;
-    public getKnownStarSystemsForUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystem>>>;
-    public getKnownStarSystemsForUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getKnownStarSystemsForUser.');
-        }
+    public getKnownStarSystemsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystem>>;
+    public getKnownStarSystemsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystem>>>;
+    public getKnownStarSystemsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystem>>>;
+    public getKnownStarSystemsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -278,7 +258,7 @@ export class ColonizationApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<StarSystem>>('get',`${this.basePath}/api/private/colonization/knownSystems/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<StarSystem>>('get',`${this.basePath}/api/private/colonization/knownSystems`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -291,18 +271,13 @@ export class ColonizationApiService {
     /**
      * Get all pending colonizations for the user with their distances to all known systems.
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPendingColonizationsForUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystemColonization>>;
-    public getPendingColonizationsForUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystemColonization>>>;
-    public getPendingColonizationsForUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystemColonization>>>;
-    public getPendingColonizationsForUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getPendingColonizationsForUser.');
-        }
+    public getPendingColonizationsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystemColonization>>;
+    public getPendingColonizationsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystemColonization>>>;
+    public getPendingColonizationsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystemColonization>>>;
+    public getPendingColonizationsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -320,7 +295,7 @@ export class ColonizationApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<StarSystemColonization>>('get',`${this.basePath}/api/private/colonization/pendingColonizations/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<StarSystemColonization>>('get',`${this.basePath}/api/private/colonization/pendingColonizations`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -333,18 +308,13 @@ export class ColonizationApiService {
     /**
      * Get all not colonized but known systems for a user.
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUnknownStarSystemsForUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystem>>;
-    public getUnknownStarSystemsForUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystem>>>;
-    public getUnknownStarSystemsForUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystem>>>;
-    public getUnknownStarSystemsForUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getUnknownStarSystemsForUser.');
-        }
+    public getUnknownStarSystemsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<StarSystem>>;
+    public getUnknownStarSystemsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<StarSystem>>>;
+    public getUnknownStarSystemsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<StarSystem>>>;
+    public getUnknownStarSystemsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -362,7 +332,7 @@ export class ColonizationApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<StarSystem>>('get',`${this.basePath}/api/private/colonization/freeSystems/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<StarSystem>>('get',`${this.basePath}/api/private/colonization/freeSystems`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -376,21 +346,16 @@ export class ColonizationApiService {
      * Starts the colonization of a planet for a user.
      * 
      * @param body default response
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public startColonizingPlanet(body: Planet, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Colonization>;
-    public startColonizingPlanet(body: Planet, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Colonization>>;
-    public startColonizingPlanet(body: Planet, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Colonization>>;
-    public startColonizingPlanet(body: Planet, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public startColonizingPlanet(body: Planet, observe?: 'body', reportProgress?: boolean): Observable<Colonization>;
+    public startColonizingPlanet(body: Planet, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Colonization>>;
+    public startColonizingPlanet(body: Planet, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Colonization>>;
+    public startColonizingPlanet(body: Planet, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling startColonizingPlanet.');
-        }
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling startColonizingPlanet.');
         }
 
         let headers = this.defaultHeaders;
@@ -414,7 +379,7 @@ export class ColonizationApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Colonization>('put',`${this.basePath}/api/private/colonization/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Colonization>('put',`${this.basePath}/api/private/colonization/`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
