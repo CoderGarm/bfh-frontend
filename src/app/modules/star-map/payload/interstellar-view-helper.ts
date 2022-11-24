@@ -194,12 +194,13 @@ export class InterstellarViewHelper extends BasicViewHelper {
         let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
 
-        const cssActivityMarker = !fleetMarker.state.isActive && fleetMarker.state.needsRepair ? 'under-construction' : '';
-        const cssOperationalMarker = fleetMarker.state.isOperational ? 'inoperational' : '';
 
         if (!fleetMarker.state.isActive) {
             let xMarker = sortedPointsX[0];
             let yMarker = sortedPointsY[sortedPointsY.length - 1];
+
+            const cssActivityMarker = fleetMarker.state.needsRepair ? 'under-construction' : '';
+            const cssOperationalMarker = !fleetMarker.state.isOperational ? 'inoperational' : '';
 
             group!
                 .circle(5)
@@ -212,7 +213,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
                 .mouseleave(this.mouseleaveForMarker);
 
             let txt = fleetMarker.state.needsRepair ? 'Fleet is in dock' : '';
-            txt = fleetMarker.state.isOperational ? 'Fleet is inoperational' : txt;
+            txt = !fleetMarker.state.isOperational ? 'Fleet is inoperational' : txt;
 
             let text: Text = new Text().text(txt)
                 .x(xMarker[0] - 2.5)

@@ -126,15 +126,10 @@ export class SystemViewHelper extends BasicViewHelper {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
 
-        const cssActivityMarker = !fleet.state.isActive && fleet.state.needsRepair ? 'under-construction' : '';
-        const cssOperationalMarker = fleet.state.isOperational ? 'inoperational' : '';
-
         group!
             .polygon(fleetSharkPoints)
             .fill(fleetSharkColor)
             .stroke(sd)
-            .addClass(cssActivityMarker)
-            .addClass(cssOperationalMarker)
             .id(fleetSharkID)
             .dblclick(dblClickForFleet);
 
@@ -144,6 +139,9 @@ export class SystemViewHelper extends BasicViewHelper {
         if (!fleet.state.isActive) {
             let xMarker = sortedPointsX[0];
             let yMarker = sortedPointsY[sortedPointsY.length - 1];
+
+            const cssActivityMarker = fleet.state.needsRepair ? 'under-construction' : '';
+            const cssOperationalMarker = !fleet.state.isOperational ? 'inoperational' : '';
 
             group!
                 .circle(5)
@@ -156,7 +154,7 @@ export class SystemViewHelper extends BasicViewHelper {
                 .mouseleave(this.mouseleaveForMarker);
 
             let txt = fleet.state.needsRepair ? 'Fleet is in dock' : '';
-            txt = fleet.state.isOperational ? 'Fleet is inoperational' : txt;
+            txt = !fleet.state.isOperational ? 'Fleet is inoperational' : txt;
 
             let text: Text = new Text().text(txt)
                 .x(xMarker[0] - 2.5)
