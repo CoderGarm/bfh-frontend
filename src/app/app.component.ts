@@ -106,4 +106,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         }
         return false;
     }
+
+    displayWelcome() {
+        console.log(this.router.url)
+        return !this.isLoggedIn && (!this.router.url.endsWith('login'));
+    }
 }
