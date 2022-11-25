@@ -14,6 +14,7 @@ import {InterstellarViewHelper} from "../interstellar-view-helper";
 import {BasicViewHelper} from "../../../../basic-view-helper";
 import {SpinnerService} from "../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
+import {BackgroundService} from "../../../../services/background.service";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -47,6 +48,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 tokenStorage: TokenStorage,
                 private dialog: MatDialog,
                 private spinnerService: SpinnerService,
+                private backgroundService: BackgroundService,
                 private translate: TranslateService) {
         super(tokenStorage);
         // just make sure that the key exists
@@ -60,7 +62,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
     private createUniverseMap() {
         this.spinnerService.activateSpinner('star-map.universe-map.loading-spinner-message');
-        let outerSub = this.starMapApi.getStarSystems().subscribe(resp => {
+        let outerSub = this.backgroundService.getStarSystems().subscribe(resp => {
             this.knownStarSystems = resp;
 
             this.clearCanvas();

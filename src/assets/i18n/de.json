@@ -75,7 +75,16 @@
     "finished-title": "Beendete Aufträge",
     "level": "Level",
     "priority": "Priorität",
-    "ticks-left": "Ticks"
+    "ticks-left": "Ticks",
+    "transports": {
+      "human-resources": {
+        "title": "Personen"
+      },
+      "resources": {
+        "title": "Ressourcen"
+      },
+      "title": "Transporte"
+    }
   },
   "mining-factor": {
     "tooltip": {
@@ -112,7 +121,8 @@
       "register": "Registrieren",
       "researches": "Forschungen",
       "ship-classes": "Werft",
-      "star-map": "Sternenkarte"
+      "star-map": "Sternenkarte",
+      "transportation": "Transport"
     }
   },
   "planetary": {
@@ -282,6 +292,11 @@
     "star-map": {
       "star-map": "Karte des Sternensystems",
       "universe-map": "Sternenkarte"
+    },
+    "transportation": {
+      "goods": "Waren",
+      "humans": "Bevölkerung",
+      "resources": "Ressourcen"
     }
   },
   "tick": {
@@ -301,6 +316,22 @@
       "title": "Übersetzter Text"
     },
     "type": "Art"
+  },
+  "transportation": {
+    "amount": {
+      "delivery": {
+        "caption": "Lieferung"
+      },
+      "demand": {
+        "caption": "Bedarf"
+      }
+    },
+    "human-resources": {
+      "help": "Wähle den Bedarf und die Liefermöglichkeiten je Planet"
+    },
+    "resources": {
+      "help": "Wähle den Bedarf und die Liefermöglichkeiten je Planet"
+    }
   },
   "wiki": {
     "article": {

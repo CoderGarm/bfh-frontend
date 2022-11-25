@@ -75,7 +75,16 @@
     "finished-title": "Finished jobs",
     "level": "Level",
     "priority": "Priority",
-    "ticks-left": "Ticks"
+    "ticks-left": "Ticks",
+    "transports": {
+      "human-resources": {
+        "title": "Humans"
+      },
+      "resources": {
+        "title": "Resources"
+      },
+      "title": "Transportation"
+    }
   },
   "mining-factor": {
     "tooltip": {
@@ -112,7 +121,8 @@
       "register": "Register",
       "researches": "Researches",
       "ship-classes": "Ship yard",
-      "star-map": "Star map"
+      "star-map": "Star map",
+      "transportation": "Transportation"
     }
   },
   "planetary": {
@@ -282,6 +292,11 @@
     "star-map": {
       "star-map": "Star system map",
       "universe-map": "Star map"
+    },
+    "transportation": {
+      "goods": "Goods",
+      "humans": "People",
+      "resources": "Resources"
     }
   },
   "tick": {
@@ -301,6 +316,22 @@
       "title": "Translated text"
     },
     "type": "kind of"
+  },
+  "transportation": {
+    "amount": {
+      "delivery": {
+        "caption": "Delivery"
+      },
+      "demand": {
+        "caption": "Demand"
+      }
+    },
+    "human-resources": {
+      "help": "Select the demand and the possibility to deliver of every planet"
+    },
+    "resources": {
+      "help": "Select the demand and the possibility to deliver of every planet"
+    }
   },
   "wiki": {
     "article": {

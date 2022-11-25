@@ -1,0 +1,40 @@
+.mar-ri {
+  margin-right: 25px;
+}
+
+.icon {
+  height: 16px !important;
+  width: 16px !important;
+  margin-right: 10px;
+}
+
+.transportation-tree {
+  margin: 15px;
+  padding: 15px;
+}
+
+.transportation-tree-invisible {
+  display: none;
+}
+
+.transportation-tree ul,
+.transportation-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.transportation-tree .mat-nested-tree-node div[role=group] {
+  padding-left: 40px;
+}
+
+.transportation-tree div[role=group] > .mat-tree-node {
+  padding-left: 40px;
+}
+
+.left-side {
+  float: left;
+}
+
+.right-side {
+  float: right;
+}

@@ -1,4 +1,7 @@
-import {Construction, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "./services/swagger";
+import {Construction, EEducationType, EnumValueDto, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "./services/swagger";
+import {PlanetaryResourceTransportation} from "./modules/transportation/payload/components/transportation-resource-demand/transportation-resource-demand.component";
+import {PlanetaryHumanTransportation} from "./modules/transportation/payload/components/transportation-humans-demand/transportation-humans-demand.component";
+import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
 
 export class ResourceHelper {
 
@@ -188,7 +191,7 @@ export class ResourceHelper {
                 }
                 return am;
             }),
-            subType: {typeName: 'COSTS', calculationType: {typeName: 'SUBTRACT', multiplier: -1}},
+            subType: {typeName: EDepositTypeEnum.COSTS},
             humanResources: educationTypes.map(type => {
                 const am: HumanResourceAmount = {
                     resourceType: type,
@@ -196,6 +199,22 @@ export class ResourceHelper {
                 }
                 return am;
             })
+        };
+    }
+
+    static transformHumanTransportationToDeposit(event: PlanetaryHumanTransportation): ResourceDeposit {
+        return {
+            subType: {typeName: EDepositTypeEnum.TRANSPORTATIONDEMAND},
+            humanResources: event.transportations,
+            resources: []
+        };
+    }
+
+    static transformResourceTransportationToDeposit(event: PlanetaryResourceTransportation): ResourceDeposit {
+        return {
+            subType: {typeName: EDepositTypeEnum.TRANSPORTATIONDEMAND},
+            humanResources: [],
+            resources: event.transportations
         };
     }
 }

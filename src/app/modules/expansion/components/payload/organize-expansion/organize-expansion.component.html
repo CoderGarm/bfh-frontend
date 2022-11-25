@@ -1,8 +1,8 @@
 <app-resource-service [deposit]="resourceDeposit" [costs]="costs"></app-resource-service>
 
-<div class="holder spacer-left">
+<div class="holder content-area">
     <mat-checkbox #onlyKnownSystems (change)="applyOnlyKnownFilter($event.checked)">Show only known systems</mat-checkbox>
-    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="max-width">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="Distance" matSortDirection="asc" multiTemplateDataRows class="max-width">
         <ng-container matColumnDef="Star system">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Star system</th>
             <td mat-cell *matCellDef="let colo"> {{colo.starSystem.name}}</td>

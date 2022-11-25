@@ -31,6 +31,7 @@ import {MatSliderModule} from "@angular/material/slider";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatTreeModule} from "@angular/material/tree";
 
 @NgModule({
 
@@ -58,6 +59,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
         MatGridListModule,
         MatSortModule,
         MatListModule,
+        MatTreeModule,
         MatSidenavModule,
         MatGridListModule,
         MatMenuModule,
@@ -95,6 +97,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
         MatGridListModule,
         MatSortModule,
         MatListModule,
+        MatTreeModule,
         MatMenuModule,
         MatExpansionModule,
         MatSnackBarModule,

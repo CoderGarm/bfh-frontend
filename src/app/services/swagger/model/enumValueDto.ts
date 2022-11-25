@@ -31,14 +31,16 @@ export interface EnumValueDto {
     eWikiCategories?: Array<EnumValueDto.EWikiCategoriesEnum>;
 }
 export namespace EnumValueDto {
-    export type EDepositTypeEnum = 'DEPOSITS' | 'DEMAND' | 'UTILIZATION' | 'COSTS' | 'INCOME' | 'CAPACITY';
+    export type EDepositTypeEnum = 'DEPOSITS' | 'DEMAND' | 'UTILIZATION' | 'COSTS' | 'INCOME' | 'CAPACITY' | 'TRANSPORTATION_DEMAND' | 'TRANSPORTATION_DELIVERY';
     export const EDepositTypeEnum = {
         DEPOSITS: 'DEPOSITS' as EDepositTypeEnum,
         DEMAND: 'DEMAND' as EDepositTypeEnum,
         UTILIZATION: 'UTILIZATION' as EDepositTypeEnum,
         COSTS: 'COSTS' as EDepositTypeEnum,
         INCOME: 'INCOME' as EDepositTypeEnum,
-        CAPACITY: 'CAPACITY' as EDepositTypeEnum
+        CAPACITY: 'CAPACITY' as EDepositTypeEnum,
+        TRANSPORTATIONDEMAND: 'TRANSPORTATION_DEMAND' as EDepositTypeEnum,
+        TRANSPORTATIONDELIVERY: 'TRANSPORTATION_DELIVERY' as EDepositTypeEnum
     };
     export type EResourceTypeEnum = 'CONSTRUCTION' | 'ORBITAL_CONSTRUCTION' | 'RESEARCH' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION';
     export const EResourceTypeEnum = {

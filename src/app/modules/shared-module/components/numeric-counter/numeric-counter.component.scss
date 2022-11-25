@@ -14,9 +14,16 @@ input[type=number] {
   height: 5vw;
 }
 
+.small {
+  width: 100px;
+}
+
+.big {
+  //width: 100px;
+}
+
 .numeric-input {
   margin-right: 15px;
-  width: 100px;
   height: 45px;
   font-size: 10px;
   cursor: pointer;
@@ -24,4 +31,8 @@ input[type=number] {
 
 .disabled {
   color: rgba(255, 255, 255, .5);
+}
+
+.direct-input {
+  text-align: center;
 }

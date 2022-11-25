@@ -17,6 +17,8 @@ import {NumberThousandSeparatorPipe} from "../../services/pipes/number-thousand-
 import {NumberShortComponent} from "./components/number-short/number-short.component";
 import {MarkdownModule} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
+import {ResourceCounterComponent} from "./components/resource-counter/resource-counter.component";
+import {HumanResourceCounterComponent} from './components/human-resource-counter/human-resource-counter.component';
 
 @NgModule({
     declarations: [
@@ -24,6 +26,8 @@ import {AngularMarkdownEditorModule} from "angular-markdown-editor";
         NumberShortComponent,
         NumberShortPipe,
         NumberThousandSeparatorPipe,
+        ResourceCounterComponent,
+        HumanResourceCounterComponent,
     ],
     imports: [
         CommonModule,
@@ -54,6 +58,8 @@ import {AngularMarkdownEditorModule} from "angular-markdown-editor";
         MaterialComponentsModule,
         NumericCounterComponent,
         NumberShortComponent,
+        ResourceCounterComponent,
+        HumanResourceCounterComponent,
         OverlayModule,
         AngularEditorModule,
         TranslateModule,

@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
 import { Job } from '../model/job';
+import { TransportJob } from '../model/transportJob';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -243,6 +244,43 @@ export class JobApiService {
         ];
 
         return this.httpClient.request<Array<Job>>('get',`${this.basePath}/api/private/job/runningAt/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all jobs which are running on this planet.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTransportJobs(observe?: 'body', reportProgress?: boolean): Observable<Array<TransportJob>>;
+    public getTransportJobs(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TransportJob>>>;
+    public getTransportJobs(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TransportJob>>>;
+    public getTransportJobs(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<TransportJob>>('get',`${this.basePath}/api/private/job/transports`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

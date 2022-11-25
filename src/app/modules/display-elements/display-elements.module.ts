@@ -42,6 +42,7 @@ import {JobListDisplayComponent} from './job-list-display/job-list-display.compo
 import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability-display-small/spacecraft-capability-display-small.component";
 import {ResourceDisplayModule} from "./modules/resource-display/resource-display.module";
 import {PopulationDevelopmentComponent} from './population-development/population-development.component';
+import {TransportationListDisplayComponent} from './transportation-list-display/transportation-list-display.component';
 
 @NgModule({
     declarations: [
@@ -86,6 +87,7 @@ import {PopulationDevelopmentComponent} from './population-development/populatio
         TechTreeDisplayComponent,
         JobListDisplayComponent,
         PopulationDevelopmentComponent,
+        TransportationListDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -134,6 +136,7 @@ import {PopulationDevelopmentComponent} from './population-development/populatio
         JobListDisplayComponent,
         ResourceDisplayModule,
         PopulationDevelopmentComponent,
+        TransportationListDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

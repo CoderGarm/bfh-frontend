@@ -428,7 +428,7 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
 
     getTitle(construction: Construction) {
         let levelComplement = '';
-        if (construction.level > 1) {
+        if (construction.level > 0) {
             let tr = this.translations.get(this.hasConstruction);
             levelComplement = tr + ' ' + construction.operationalLevel + '/' + construction.level;
         } else {

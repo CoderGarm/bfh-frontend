@@ -1,14 +1,22 @@
 <mat-tab-group animationDuration="0ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.journal.dashboard' | translate }}">
-        <app-dashboard-journal></app-dashboard-journal>
+        <ng-template matTabContent>
+            <app-dashboard-journal></app-dashboard-journal>
+        </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.journal.battles' | translate }}">
-        <app-battle-report></app-battle-report>
+        <ng-template matTabContent>
+            <app-battle-report></app-battle-report>
+        </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.journal.movements' | translate }}">
-        <app-fleet-movement-journal></app-fleet-movement-journal>
+        <ng-template matTabContent>
+            <app-fleet-movement-journal></app-fleet-movement-journal>
+        </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.journal.jobs' | translate }}">
-        <app-job-journal></app-job-journal>
+        <ng-template matTabContent>
+            <app-job-journal></app-job-journal>
+        </ng-template>
     </mat-tab>
 </mat-tab-group>

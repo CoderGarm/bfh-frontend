@@ -26,6 +26,13 @@ export interface EEducationType {
      * The folder name for resources.
      */
     folder: string;
-    isWorkforce?: boolean;
+    /**
+     * If this education type is part of the workforce.
+     */
+    isWorkforce: boolean;
+    /**
+     * If this education type is part of the military.
+     */
+    isMilitary: boolean;
     requirement?: EEducationType;
 }

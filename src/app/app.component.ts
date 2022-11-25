@@ -14,6 +14,7 @@ import {TranslationEditorComponent} from "./modules/admin/components/payload/tra
 import {LoginComponent} from "./components/user/login/login.component";
 import {HomeComponent} from "./components/home/home.component";
 import {WikiMainComponent} from "./modules/wiki/orga/wiki-main/wiki-main.component";
+import {RegisterComponent} from "./components/user/register/register.component";
 
 
 @Component({
@@ -111,10 +112,10 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     }
 
     displayWelcome() {
-        console.log(this.router.url)
         return !this.isLoggedIn
             && !this.router.url.endsWith(LoginComponent.path)
             && !this.router.url.endsWith(HomeComponent.path)
+            && !this.router.url.endsWith(RegisterComponent.path)
             && !this.router.url.endsWith(WikiMainComponent.path);
     }
 }

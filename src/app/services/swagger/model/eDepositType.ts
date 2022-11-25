@@ -9,7 +9,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ECalculationType } from './eCalculationType';
 
 /**
  * .
@@ -19,5 +18,4 @@ export interface EDepositType {
      * The type name of this  transformed enum.
      */
     typeName: string;
-    calculationType: ECalculationType;
 }

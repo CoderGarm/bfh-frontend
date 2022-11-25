@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CreateForumThreadMessage, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -14,7 +14,7 @@ import {TokenStorage} from "../../../../services/authentication/token-storage.se
     templateUrl: './forum-messages.component.html',
     styleUrls: ['./forum-messages.component.scss']
 })
-export class ForumMessagesComponent extends SubscriptionManager implements OnInit, OnChanges {
+export class ForumMessagesComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * the logged-in user
@@ -33,10 +33,10 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
         messageFC: new FormControl('')
     });
 
-    @ViewChild('paginatorTop')
+    @ViewChild('paginatorTop', {static: true})
     paginatorTop?: MatPaginator;
 
-    @ViewChild('paginatorBottom')
+    @ViewChild('paginatorBottom', {static: true})
     paginatorBottom?: MatPaginator;
 
     pageIndex: number = 0;
@@ -63,21 +63,22 @@ export class ForumMessagesComponent extends SubscriptionManager implements OnIni
         }
     }
 
-    ngOnInit(): void {
-        this.userID = this.tokenStorage.getUserID();
-        this.paginatorTop!.page.pipe(
-            tap(() => {
-                this.paginatorBottom!.pageIndex = this.paginatorTop!.pageIndex;
-                this.paginatorBottom!.pageSize = this.paginatorTop!.pageSize;
-            })
-        ).subscribe();
+    ngAfterViewInit(): void {
+        if (!!this.paginatorTop && !!this.paginatorBottom) {
+            this.paginatorTop.page.pipe(
+                tap(() => {
+                    this.paginatorBottom!.pageIndex = this.paginatorTop!.pageIndex;
+                    this.paginatorBottom!.pageSize = this.paginatorTop!.pageSize;
+                })
+            ).subscribe();
 
-        this.paginatorBottom!.page.pipe(
-            tap(() => {
-                this.paginatorTop!.pageIndex = this.paginatorBottom!.pageIndex;
-                this.paginatorTop!.pageSize = this.paginatorBottom!.pageSize;
-            })
-        ).subscribe();
+            this.paginatorBottom.page.pipe(
+                tap(() => {
+                    this.paginatorTop!.pageIndex = this.paginatorBottom!.pageIndex;
+                    this.paginatorTop!.pageSize = this.paginatorBottom!.pageSize;
+                })
+            ).subscribe();
+        }
     }
 
     fetchByPagination(pageEvent: PageEvent | any) {

@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -18,14 +17,12 @@ export class PlanetSelectionComponent extends SubscriptionManager implements Aft
     @Output()
     selectedPlanetOutput: EventEmitter<Planet> = new EventEmitter<Planet>();
 
-    constructor(private tokenStorage: TokenStorage,
-                private planetApi: PlanetApiService) {
+    constructor(private planetApi: PlanetApiService) {
         super();
     }
 
     ngAfterViewInit(): void {
-        const userID = this.tokenStorage.getUserID();
-        let subscription = this.planetApi.getPlanetByUsers(userID).subscribe(resp => {
+        let subscription = this.planetApi.getPlanetByUsers().subscribe(resp => {
             this.planets = resp
             this.selectFirst();
         });

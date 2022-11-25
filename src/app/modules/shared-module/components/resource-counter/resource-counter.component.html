@@ -1,0 +1,14 @@
+<div *ngIf="!!resourceType">
+    <img class="icon"
+         src="{{getLink(resourceType)}}"
+         alt="{{resourceType.singularName}}"
+         matTooltip="{{resourceType.typeName}}">
+    <app-numeric-counter [inputDisabled]="false"
+                         ngClass="big"
+                         [startAt]="startAt"
+                         [min]="min"
+                         [max]="max"
+                         [caption]="caption"
+                         [disabled]="disabled"
+                         (amount)="setAmount($event)"></app-numeric-counter>
+</div>

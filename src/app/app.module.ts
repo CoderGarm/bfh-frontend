@@ -43,6 +43,8 @@ import {ResourceDisplayModule} from "./modules/display-elements/modules/resource
 import {WikiModule} from "./modules/wiki/wiki.module";
 import {MarkdownModule, MarkdownService} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
+import {TransportationModule} from "./modules/transportation/transportation.module";
+import {BackgroundService} from "./services/background.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -103,6 +105,7 @@ export let AppInjector: Injector;
         }),
         AngularMarkdownEditorModule.forRoot(),
         WikiModule,
+        TransportationModule,
     ],
     providers: [
         NgxPermissionsModule,
@@ -111,6 +114,7 @@ export let AppInjector: Injector;
         SnackbarNotificationService,
         SpinnerService,
         TypeService,
+        BackgroundService,
         DatePipe,
         NumberShortPipe,
         NumberThousandSeparatorPipe,

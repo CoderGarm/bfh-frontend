@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {CreateForumThread, Forum, ForumApiService, ForumThread} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
@@ -14,7 +14,7 @@ import {CreateForumThreadComponent} from "../create-forum-thread/create-forum-th
     templateUrl: './forum-threads.component.html',
     styleUrls: ['./forum-threads.component.scss']
 })
-export class ForumThreadsComponent extends SubscriptionManager implements OnInit, OnChanges {
+export class ForumThreadsComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @Input()
     selectedForum?: Forum;
@@ -31,10 +31,10 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
     displayedThreads?: ForumThread[];
 
 
-    @ViewChild('paginatorTop')
+    @ViewChild('paginatorTop', {static: true})
     paginatorTop?: MatPaginator;
 
-    @ViewChild('paginatorBottom')
+    @ViewChild('paginatorBottom', {static: true})
     paginatorBottom?: MatPaginator;
 
     pageIndex: number = 0;
@@ -61,20 +61,22 @@ export class ForumThreadsComponent extends SubscriptionManager implements OnInit
         }
     }
 
-    ngOnInit(): void {
-        this.paginatorTop!.page.pipe(
-            tap(() => {
-                this.paginatorBottom!.pageIndex = this.paginatorTop!.pageIndex;
-                this.paginatorBottom!.pageSize = this.paginatorTop!.pageSize;
-            })
-        ).subscribe();
+    ngAfterViewInit(): void {
+        if (!!this.paginatorTop && !!this.paginatorBottom) {
+            this.paginatorTop.page.pipe(
+                tap(() => {
+                    this.paginatorBottom!.pageIndex = this.paginatorTop!.pageIndex;
+                    this.paginatorBottom!.pageSize = this.paginatorTop!.pageSize;
+                })
+            ).subscribe();
 
-        this.paginatorBottom!.page.pipe(
-            tap(() => {
-                this.paginatorTop!.pageIndex = this.paginatorBottom!.pageIndex;
-                this.paginatorTop!.pageSize = this.paginatorBottom!.pageSize;
-            })
-        ).subscribe();
+            this.paginatorBottom.page.pipe(
+                tap(() => {
+                    this.paginatorTop!.pageIndex = this.paginatorBottom!.pageIndex;
+                    this.paginatorTop!.pageSize = this.paginatorBottom!.pageSize;
+                })
+            ).subscribe();
+        }
     }
 
     selectForum(forum?: Forum) {

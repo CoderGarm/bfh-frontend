@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { FrontendError } from '../model/frontendError';
 import { Orbit } from '../model/orbit';
 import { Planet } from '../model/planet';
+import { ResourceDeposit } from '../model/resourceDeposit';
 import { ShipyardConstructionOrder } from '../model/shipyardConstructionOrder';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -247,17 +248,54 @@ export class PlanetApiService {
     /**
      * Get all planets which are colonized by a user.
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPlanetByUsers(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Planet>>;
-    public getPlanetByUsers(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Planet>>>;
-    public getPlanetByUsers(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Planet>>>;
-    public getPlanetByUsers(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPlanetByUsers(observe?: 'body', reportProgress?: boolean): Observable<Array<Planet>>;
+    public getPlanetByUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Planet>>>;
+    public getPlanetByUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Planet>>>;
+    public getPlanetByUsers(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getPlanetByUsers.');
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Planet>>('get',`${this.basePath}/api/private/planet/`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns the transportation delivery of this planet.
+     * 
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTransportationDelivery(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getTransportationDelivery(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getTransportationDelivery(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getTransportationDelivery(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getTransportationDelivery.');
         }
 
         let headers = this.defaultHeaders;
@@ -276,7 +314,49 @@ export class PlanetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Planet>>('get',`${this.basePath}/api/private/planet/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/planet/transportation/delivery/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns the transportation need of this planet.
+     * 
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTransportationDemand(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getTransportationDemand(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getTransportationDemand(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getTransportationDemand(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getTransportationDemand.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/planet/transportation/demand/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -442,11 +522,116 @@ export class PlanetApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
         ];
 
         return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/planet/shipyardConstructionBuild/repair/${encodeURIComponent(String(idFleet))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Sets the transportation delivery.
+     * 
+     * @param body default response
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setTransportationDelivery(body: ResourceDeposit, idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public setTransportationDelivery(body: ResourceDeposit, idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public setTransportationDelivery(body: ResourceDeposit, idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public setTransportationDelivery(body: ResourceDeposit, idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling setTransportationDelivery.');
+        }
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling setTransportationDelivery.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ResourceDeposit>('put',`${this.basePath}/api/private/planet/transportation/delivery/${encodeURIComponent(String(idPlanet))}`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Sets the transportation demand.
+     * 
+     * @param body default response
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setTransportationDemand(body: ResourceDeposit, idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public setTransportationDemand(body: ResourceDeposit, idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public setTransportationDemand(body: ResourceDeposit, idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public setTransportationDemand(body: ResourceDeposit, idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling setTransportationDemand.');
+        }
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling setTransportationDemand.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ResourceDeposit>('put',`${this.basePath}/api/private/planet/transportation/demand/${encodeURIComponent(String(idPlanet))}`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

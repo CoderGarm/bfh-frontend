@@ -16,6 +16,7 @@ import {AdminTabViewComponent} from "../modules/admin/components/orga/admin-tab-
 import {ForumsListComponent} from "../modules/forum/components/forums-list/forums-list.component";
 import {AllianceTabViewComponent} from "../modules/alliance/components/orga/alliance-tab-view/alliance-tab-view.component";
 import {WikiMainComponent} from "../modules/wiki/orga/wiki-main/wiki-main.component";
+import {TransportTabViewComponent} from "../modules/transportation/orga/transport-tab-view/transport-tab-view.component";
 
 
 export class NavigationCreationService {
@@ -29,6 +30,7 @@ export class NavigationCreationService {
             {path: HomeComponent.path, component: HomeComponent},
             {path: RegisterComponent.path, component: RegisterComponent},
             {path: LoginComponent.path, component: LoginComponent},
+            {path: WikiMainComponent.path, component: WikiMainComponent},
             {path: ProfileComponent.path, component: ProfileComponent, canActivate: [ProtectedGuard]},
             {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
             {path: PlanetsSidenavComponent.path, component: PlanetsSidenavComponent, canActivate: [ProtectedGuard]},
@@ -41,7 +43,7 @@ export class NavigationCreationService {
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
             {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
             {path: AdminTabViewComponent.path, component: AdminTabViewComponent, canActivate: [ProtectedGuard]},
-            {path: WikiMainComponent.path, component: WikiMainComponent},
+            {path: TransportTabViewComponent.path, component: TransportTabViewComponent, canActivate: [ProtectedGuard]},
         ];
     }
 
@@ -57,6 +59,7 @@ export class NavigationCreationService {
             {path: ShipClassSidenavComponent.path, component: ShipClassSidenavComponent, canActivate: [ProtectedGuard]},
             {path: FleetSidenavComponent.path, component: FleetSidenavComponent, canActivate: [ProtectedGuard]},
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: TransportTabViewComponent.path, component: TransportTabViewComponent, canActivate: [ProtectedGuard]},
         ];
     }
 

@@ -1,0 +1,13 @@
+<div *ngIf="!!planet" class="clearfix">
+    <div class="the-left">
+        <div *ngFor="let resource of collectables">
+            <app-resource-counter
+                    [resourceType]="resource"
+                    [startAt]="getStartAt(resource)"
+                    (numericEmitter)="setAmount($event)"
+                    caption="{{ 'transportation.amount.delivery.caption' | translate }}">
+            </app-resource-counter>
+        </div>
+        <button mat-button (click)="submit()" [disabled]="amounts.length == 0">{{ 'action.submit' | translate }}</button>
+    </div>
+</div>

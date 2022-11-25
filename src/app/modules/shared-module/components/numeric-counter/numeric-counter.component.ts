@@ -20,15 +20,10 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     amount: EventEmitter<number> = new EventEmitter<number>();
 
     /**
-     * holds the internal value
-     */
-    internalAmount: number = this.startAt;
-
-    /**
      * defines the minimum value
      */
     @Input()
-    min: number = Number.MIN_VALUE;
+    min: number = -Number.MAX_VALUE;
 
     /**
      * defines the maximum value
@@ -48,6 +43,17 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     @Input()
     caption: string = '';
 
+    @Input()
+    inputDisabled: boolean = true;
+
+    @Input()
+    ngClass: string = 'small';
+
+    /**
+     * holds the internal value
+     */
+    internalAmount: number = this.startAt;
+
     constructor() {
     }
 
@@ -58,10 +64,6 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-    }
-
-    getAmount(): number {
-        return this.internalAmount;
     }
 
     sub() {
@@ -80,5 +82,11 @@ export class NumericCounterComponent implements OnInit, OnChanges {
 
     private fire() {
         this.amount.emit(this.internalAmount);
+    }
+
+    change() {
+        if (this.internalAmount <= this.max && this.internalAmount >= this.min) {
+            this.fire();
+        }
     }
 }

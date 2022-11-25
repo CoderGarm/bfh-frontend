@@ -22,6 +22,7 @@ import {SpinnerService} from "../../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
+import {BackgroundService} from "../../../../../services/background.service";
 
 @Component({
     selector: 'app-organize-expansion',
@@ -77,6 +78,7 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
                 private planetApi: PlanetApiService,
                 private typeService: TypeService,
                 private spinnerService: SpinnerService,
+                private backgroundService: BackgroundService,
                 public translate: TranslateService) {
         super();
         this.defineFilterPredicate();
@@ -130,7 +132,7 @@ export class OrganizeExpansionComponent extends ResourceDisplayManager implement
                 this.reference = this.homeSystem;
             });
         this.subscriptions.push(sub);
-        sub = this.colonizationApi.getColonizationStarSystemsForUser()
+        sub = this.backgroundService.getColonizationStarSystemsForUser()
             .subscribe(resp => {
                 this.starSystems = this.starSystems.concat(resp);
                 this.dataSource.data = this.starSystems;
