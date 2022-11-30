@@ -31,7 +31,7 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     miningFactors?: MiningFactors;
     fleetsInOrbit?: Fleet[];
 
-    constructor(private resourceApi: ResourcesApiService,
+    constructor(private resourceService: ResourcesApiService,
                 private planetApi: PlanetApiService,
                 private fleetApi: FleetApiService) {
         super();
@@ -62,32 +62,32 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
         if (!this.planet) {
             return;
         }
-        let sub = this.resourceApi.getMiningFactors(this.planet.idPlanet).subscribe(resp => {
+        let sub = this.resourceService.getMiningFactors(this.planet.idPlanet).subscribe(resp => {
             this.miningFactors = resp;
         });
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getResourceDeposit(this.planet.idPlanet).subscribe(resp => {
+        sub = this.resourceService.getResourceDeposit(this.planet.idPlanet).subscribe(resp => {
             this.deposit = resp;
         });
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getResourceDemand(this.planet.idPlanet).subscribe(resp => {
+        sub = this.resourceService.getResourceDemand(this.planet.idPlanet).subscribe(resp => {
             this.demand = resp;
         });
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getResourceUtilization(this.planet.idPlanet).subscribe(resp => {
+        sub = this.resourceService.getResourceUtilization(this.planet.idPlanet).subscribe(resp => {
             this.utilization = resp;
         });
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getPlanetaryCapacity(this.planet.idPlanet).subscribe(resp => {
+        sub = this.resourceService.getPlanetaryCapacity(this.planet.idPlanet).subscribe(resp => {
             this.capacity = resp;
         });
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getPlanetaryIncome(this.planet.idPlanet).subscribe(resp => {
+        sub = this.resourceService.getPlanetaryIncome(this.planet.idPlanet).subscribe(resp => {
             this.income = resp;
         });
         this.subscriptions.push(sub);

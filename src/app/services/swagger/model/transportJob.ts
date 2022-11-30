@@ -10,15 +10,20 @@
  * Do not edit the class manually.
  */
 import { HumanResourceAmount } from './humanResourceAmount';
-import { Planet } from './planet';
 import { ResourceAmount } from './resourceAmount';
 
 /**
  * .
  */
 export interface TransportJob { 
-    from: Planet;
-    to: Planet;
+    /**
+     * The origin from which it comes.
+     */
+    from: string;
+    /**
+     * The designation to which it goes.
+     */
+    to: string;
     /**
      * The transferred resources.
      */

@@ -1,5 +1,13 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {AlignedFitting, ResourceDeposit, ResourcesApiService, ShipClass, ShipyardApiService, SpacecraftCapabilities} from "../../../../../services/swagger";
+import {
+    AlignedFitting,
+    ResourceDeposit,
+    ResourcesApiService,
+    ShipClass,
+    ShipyardApiService,
+    SpacecraftCapabilities,
+    SpacecraftCapacityAreas
+} from "../../../../../services/swagger";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
@@ -88,6 +96,7 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
 
     compareClass?: ShipClass;
     capabilities?: SpacecraftCapabilities;
+    capacities?: SpacecraftCapacityAreas;
 
     constructor(private shipYardApi: ShipyardApiService,
                 private tokenStorage: TokenStorage,
@@ -201,12 +210,17 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCaps(this.designedShipClassInput)
+            sub = this.resourceApi.getShipClassCapabilities(this.designedShipClassInput)
                 .subscribe(resp => this.capabilities = resp);
+            this.subscriptions.push(sub);
+
+            sub = this.resourceApi.getShipClassCapacities(this.designedShipClassInput)
+                .subscribe(resp => this.capacities = resp);
             this.subscriptions.push(sub);
         } else if (!this.designedShipClassInput) {
             this.costs = undefined;
             this.capabilities = undefined;
+            this.capacities = undefined;
             this.compareClass = undefined;
         }
     }

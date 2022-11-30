@@ -52,7 +52,7 @@ export class ResourceServiceComponent extends SubscriptionManager implements OnI
                     right: '0'
                 },
                 hasBackdrop: false,
-                panelClass: 'resource-mat-dialog-panel'
+                panelClass: ['resource-mat-dialog-panel', 'mat-elevation-z8']
             });
         let sub = this.emitterService.dialogRef.afterOpened().subscribe(() => this.emit());
         this.subscriptions.push(sub);

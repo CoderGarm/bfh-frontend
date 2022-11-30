@@ -10,5 +10,6 @@
         <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
                                              [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
+        <app-construction-capacity-display [capacities]="fleet.spacecraftCapacityAreas"></app-construction-capacity-display>
     </mat-card-content>
 </mat-card>

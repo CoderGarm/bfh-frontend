@@ -11,6 +11,7 @@
 
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="shipClass?.shipClassCapabilities"></app-spacecraft-capabilities-display>
+        <app-construction-capacity-display [capacities]="shipClass?.spacecraftCapacityAreas"></app-construction-capacity-display>
     </div>
 
     <app-ship-class-display *ngIf="!!shipClass" [shipClassInput]="shipClass"></app-ship-class-display>

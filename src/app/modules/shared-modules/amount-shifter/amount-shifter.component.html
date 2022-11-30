@@ -1,0 +1,26 @@
+<div>
+    <button mat-button (click)="setLeft(-1)" [disabled]="disabledLeft" matTooltip="{{ 'amount-shifter.all' | translate }}">
+        <mat-icon mat-list-icon [inline]="true">keyboard_double_arrow_left</mat-icon>
+    </button>
+
+    <button mat-button (click)="setLeft(1000)" [disabled]="disabledLeft" matTooltip="{{ 'amount-shifter.thousand' | translate }}">
+        <mat-icon mat-list-icon [inline]="true">keyboard_arrow_left</mat-icon>
+    </button>
+
+    <button mat-button (click)="setLeft(100)" [disabled]="disabledLeft" matTooltip="{{ 'amount-shifter.hundred' | translate }}">
+        <mat-icon mat-list-icon [inline]="true">arrow_left</mat-icon>
+    </button>
+
+
+    <button mat-button (click)="setRight(100)" [disabled]="disabledRight" matTooltip="{{ 'amount-shifter.hundred' | translate }}">
+        <mat-icon mat-list-icon [inline]="true">arrow_right</mat-icon>
+    </button>
+
+    <button mat-button (click)="setRight(1000)" [disabled]="disabledRight" matTooltip="{{ 'amount-shifter.thousand' | translate }}">
+        <mat-icon mat-list-icon [inline]="true">keyboard_arrow_right</mat-icon>
+    </button>
+
+    <button mat-button (click)="setRight(-1)" [disabled]="disabledRight" matTooltip="{{ 'amount-shifter.all' | translate }}">
+        <mat-icon mat-list-icon [inline]="true">keyboard_double_arrow_right</mat-icon>
+    </button>
+</div>

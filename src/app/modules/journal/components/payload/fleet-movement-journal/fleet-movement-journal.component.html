@@ -5,6 +5,7 @@
             <app-spacecraft-capabilities-display body
                                                  [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
                                                  [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
+            <app-construction-capacity-display body [capacities]="fleet.spacecraftCapacityAreas"></app-construction-capacity-display>
             <app-fleet-move-display body
                                     [fleet]="fleet"></app-fleet-move-display>
         </app-fleet-display>

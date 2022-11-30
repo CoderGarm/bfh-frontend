@@ -19,6 +19,8 @@ import {MarkdownModule} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {ResourceCounterComponent} from "./components/resource-counter/resource-counter.component";
 import {HumanResourceCounterComponent} from './components/human-resource-counter/human-resource-counter.component';
+import {NumericSliderCounterComponent} from "./components/numeric-slider-counter/numeric-slider-counter.component";
+import {AmountShifterComponent} from "../shared-modules/amount-shifter/amount-shifter.component";
 
 @NgModule({
     declarations: [
@@ -28,6 +30,8 @@ import {HumanResourceCounterComponent} from './components/human-resource-counter
         NumberThousandSeparatorPipe,
         ResourceCounterComponent,
         HumanResourceCounterComponent,
+        NumericSliderCounterComponent,
+        AmountShifterComponent,
     ],
     imports: [
         CommonModule,
@@ -44,6 +48,7 @@ import {HumanResourceCounterComponent} from './components/human-resource-counter
         AngularEditorModule,
         MarkdownModule.forChild(),
         AngularMarkdownEditorModule,
+        TranslateModule,
     ],
     exports: [
         CommonModule,
@@ -55,11 +60,6 @@ import {HumanResourceCounterComponent} from './components/human-resource-counter
         AppRoutingModule,
         AuthenticationModule,
         ApiModule,
-        MaterialComponentsModule,
-        NumericCounterComponent,
-        NumberShortComponent,
-        ResourceCounterComponent,
-        HumanResourceCounterComponent,
         OverlayModule,
         AngularEditorModule,
         TranslateModule,
@@ -67,6 +67,13 @@ import {HumanResourceCounterComponent} from './components/human-resource-counter
         NumberThousandSeparatorPipe,
         MarkdownModule,
         AngularMarkdownEditorModule,
+        MaterialComponentsModule,
+        NumericCounterComponent,
+        NumberShortComponent,
+        ResourceCounterComponent,
+        HumanResourceCounterComponent,
+        NumericSliderCounterComponent,
+        AmountShifterComponent,
     ]
 })
 export class SharedModuleModule {

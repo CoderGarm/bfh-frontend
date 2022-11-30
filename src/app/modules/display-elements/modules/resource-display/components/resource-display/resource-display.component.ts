@@ -190,8 +190,7 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
             }
         });
         if (ticksNeeded == Number.POSITIVE_INFINITY) {
-            const msg = "Yeah, you probably want to build something without a facility. Good luck.";
-            console.log(msg);
+            console.log("Yeah, you probably want to build something without a facility. Good luck.");
         }
         return ticksNeeded;
     }

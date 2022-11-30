@@ -32,6 +32,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTreeModule} from "@angular/material/tree";
+import {MatBadgeModule} from "@angular/material/badge";
 
 @NgModule({
 
@@ -71,6 +72,7 @@ import {MatTreeModule} from "@angular/material/tree";
         MatProgressBarModule,
         DragDropModule,
         MatButtonToggleModule,
+        MatBadgeModule,
     ],
     exports: [
         MatButtonModule,
@@ -107,6 +109,7 @@ import {MatTreeModule} from "@angular/material/tree";
         MatProgressBarModule,
         DragDropModule,
         MatButtonToggleModule,
+        MatBadgeModule,
     ],
     providers: []
 })

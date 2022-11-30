@@ -13,6 +13,8 @@ import {SpacecraftCapabilitiesDisplayComponent} from "../../../display-elements/
 import {FleetMoveDisplayComponent} from "../../../display-elements/fleet-move-display/fleet-move-display.component";
 import {SystemViewHelper} from "../system-view-helper";
 import {BasicViewHelper} from "../../../../basic-view-helper";
+import {DialogConfigHelper} from "../../../../DialogConfigHelper";
+import {ManualTransportComponent} from "../../../display-elements/manual-transport/manual-transport.component";
 
 @Component({
     selector: 'app-star-map-view',
@@ -130,10 +132,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
             return;
         }
         // todo if open dont open again
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
+        const dialogConfig = DialogConfigHelper.createDialog();
 
         let inMotion = draggedFleet.move;
         if (!!draggedFleet && !inMotion && !!targetFleet && !targetFleet.move) {
@@ -260,17 +259,17 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
     openFleetInfoDialog(fleet: Fleet | undefined) {
         if (!!fleet) {
             // todo if open dont open again
-            const dialogConfig = new MatDialogConfig();
-
-            dialogConfig.disableClose = true;
-            dialogConfig.autoFocus = true;
+            const dialogConfig = DialogConfigHelper.createDialog();
 
             let dialogData = new DialogData(fleet.name);
             dialogData.addDialogDataPerTemplate(FleetDisplayComponent,
                 ['fleetInput'],
                 [fleet]);
             dialogData.addDialogDataPerTemplate(SpacecraftCapabilitiesDisplayComponent,
-                ['fleetInput'],
+                ['baseFleetCapabilities', 'currentFleetCapabilities'],
+                [fleet.baseSpacecraftCapabilities, fleet.spacecraftCapabilities]);
+            dialogData.addDialogDataPerTemplate(ManualTransportComponent,
+                ['fleet'],
                 [fleet]);
             if (!!fleet.move) {
                 let userID = this.tokenStorage.getUserID();

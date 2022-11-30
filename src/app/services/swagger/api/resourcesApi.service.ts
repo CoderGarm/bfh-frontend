@@ -23,9 +23,11 @@ import { FrontendError } from '../model/frontendError';
 import { MiningFactors } from '../model/miningFactors';
 import { PlannedConstruction } from '../model/plannedConstruction';
 import { ResourceDeposit } from '../model/resourceDeposit';
+import { ResourceTransfer } from '../model/resourceTransfer';
 import { ShipClass } from '../model/shipClass';
 import { ShipyardConstructionSelection } from '../model/shipyardConstructionSelection';
 import { SpacecraftCapabilities } from '../model/spacecraftCapabilities';
+import { SpacecraftCapacityAreas } from '../model/spacecraftCapacityAreas';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -313,7 +315,7 @@ export class ResourcesApiService {
     }
 
     /**
-     * Get all incomes by EResourceTypes.
+     * Returns the capacity of the planet.
      * 
      * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -355,7 +357,7 @@ export class ResourcesApiService {
     }
 
     /**
-     * Get all incomes by EResourceTypes.
+     * Returns the income of the planet.
      * 
      * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -397,7 +399,7 @@ export class ResourcesApiService {
     }
 
     /**
-     * Get all EResourceTypes.
+     * Returns the demand of the planet.
      * 
      * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -439,7 +441,7 @@ export class ResourcesApiService {
     }
 
     /**
-     * Get all EResourceTypes.
+     * Returns the deposit of the planet.
      * 
      * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -481,7 +483,49 @@ export class ResourcesApiService {
     }
 
     /**
-     * Get all EResourceTypes.
+     * Returns the deposit of the fleet.
+     * 
+     * @param idFleet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getResourceDepositForFleet(idFleet: number, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getResourceDepositForFleet(idFleet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getResourceDepositForFleet(idFleet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getResourceDepositForFleet(idFleet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idFleet === null || idFleet === undefined) {
+            throw new Error('Required parameter idFleet was null or undefined when calling getResourceDepositForFleet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/deposit/fleet/${encodeURIComponent(String(idFleet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns the combined deposits from all planets of the user.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -518,7 +562,7 @@ export class ResourcesApiService {
     }
 
     /**
-     * Get all EResourceTypes.
+     * Returns the used population of the planet.
      * 
      * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -566,13 +610,13 @@ export class ResourcesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipClassCaps(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapabilities>;
-    public getShipClassCaps(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapabilities>>;
-    public getShipClassCaps(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapabilities>>;
-    public getShipClassCaps(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShipClassCapabilities(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapabilities>;
+    public getShipClassCapabilities(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapabilities>>;
+    public getShipClassCapabilities(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapabilities>>;
+    public getShipClassCapabilities(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling getShipClassCaps.');
+            throw new Error('Required parameter body was null or undefined when calling getShipClassCapabilities.');
         }
 
         let headers = this.defaultHeaders;
@@ -597,6 +641,54 @@ export class ResourcesApiService {
         }
 
         return this.httpClient.request<SpacecraftCapabilities>('post',`${this.basePath}/api/private/resources/capsShipClass`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getShipClassCapacities(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapacityAreas>;
+    public getShipClassCapacities(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapacityAreas>>;
+    public getShipClassCapacities(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapacityAreas>>;
+    public getShipClassCapacities(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getShipClassCapacities.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<SpacecraftCapacityAreas>('post',`${this.basePath}/api/private/resources/capacitiesShipClass`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -693,6 +785,54 @@ export class ResourcesApiService {
         }
 
         return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipyard`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public transferResources(body: Array<ResourceTransfer>, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public transferResources(body: Array<ResourceTransfer>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public transferResources(body: Array<ResourceTransfer>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public transferResources(body: Array<ResourceTransfer>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling transferResources.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/resources/transfer`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

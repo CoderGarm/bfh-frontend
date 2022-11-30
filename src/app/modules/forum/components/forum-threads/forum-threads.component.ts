@@ -6,8 +6,9 @@ import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
 import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {CreateForumThreadComponent} from "../create-forum-thread/create-forum-thread.component";
+import {DialogConfigHelper} from "../../../../DialogConfigHelper";
 
 @Component({
     selector: 'app-forum-threads',
@@ -142,10 +143,8 @@ export class ForumThreadsComponent extends SubscriptionManager implements AfterV
     }
 
     openCreateThreadDialog() {
-        const dialogConfig = new MatDialogConfig();
+        const dialogConfig = DialogConfigHelper.createDialog();
 
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
         let dialogData = new DialogData("New thread in " + this.selectedForum?.title);
         dialogData.addDialogDataPerTemplate(CreateForumThreadComponent,
             ['selectedForum'],

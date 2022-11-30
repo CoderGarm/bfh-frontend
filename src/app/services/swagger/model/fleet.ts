@@ -12,6 +12,7 @@
 import { FleetOrbit } from './fleetOrbit';
 import { Move } from './move';
 import { SpacecraftCapabilities } from './spacecraftCapabilities';
+import { SpacecraftCapacityAreas } from './spacecraftCapacityAreas';
 import { StateBlock } from './stateBlock';
 import { UserJson } from './userJson';
 import { WarShip } from './warShip';
@@ -37,6 +38,7 @@ export interface Fleet {
     move?: Move;
     spacecraftCapabilities: SpacecraftCapabilities;
     baseSpacecraftCapabilities: SpacecraftCapabilities;
+    spacecraftCapacityAreas: SpacecraftCapacityAreas;
     /**
      * If the fleet can run interstellar movements.
      */

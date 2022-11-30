@@ -15,6 +15,7 @@ import {BasicViewHelper} from "../../../../basic-view-helper";
 import {SpinnerService} from "../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
 import {BackgroundService} from "../../../../services/background.service";
+import {DialogConfigHelper} from "../../../../DialogConfigHelper";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -121,10 +122,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             return;
         }
         // todo if open dont open again
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
+        const dialogConfig = DialogConfigHelper.createDialog();
 
         const fleets = [fleet];
         let dialogData = new DialogData('The ' + fleet.name + ' onwards to ' + fleet.move.targetOrbit.system.name);
@@ -165,10 +163,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             return;
         }
         // todo if open dont open again
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
+        const dialogConfig = DialogConfigHelper.createDialog();
 
         let dialogData = new DialogData('Fleets of ' + owner.username + ' in ' + system.name);
         let dialogRef: MatDialogRef<any> | undefined;
@@ -200,10 +195,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             return;
         }
         // todo if open dont open again
-        const dialogConfig = new MatDialogConfig();
-
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
+        const dialogConfig = DialogConfigHelper.createDialog();
 
         let sameOrbit = this.isSameOrbit(fromSystem.orbit, targetOrbit);
         if (!sameOrbit) {

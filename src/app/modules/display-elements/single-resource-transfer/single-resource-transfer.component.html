@@ -1,0 +1,23 @@
+<div *ngIf="!!resourceType">
+    <div class="clearfix">
+        <div class="the-left vert-center">
+            <img class="icon" src="{{getLink(resourceType)}}" alt="{{resourceType.typeName}}" matTooltip="{{resourceType.typeName}}">
+            <app-number-short [input]="left"></app-number-short>
+        </div>
+
+        <div class="the-right vert-center">
+            <img class="icon" src="{{getLink(resourceType)}}" alt="{{resourceType.typeName}}" matTooltip="{{resourceType.typeName}}">
+            <app-number-short [input]="right"></app-number-short>
+        </div>
+
+        <div class="the-right shifter">
+            <app-amount-shifter
+                    [limitLeft]="limitLeft"
+                    [leftAvailableValue]="leftPresent"
+                    [disabledLeft]="disabledLeft"
+                    [disabledRight]="disabledRight"
+                    [rightAvailableValue]="rightPresent"
+                    (amountChange)="setAmount($event)"></app-amount-shifter>
+        </div>
+    </div>
+</div>

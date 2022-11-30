@@ -17,6 +17,7 @@ import { Hull } from './hull';
 import { Propulsion } from './propulsion';
 import { Sidewall } from './sidewall';
 import { SpacecraftCapabilities } from './spacecraftCapabilities';
+import { SpacecraftCapacityAreas } from './spacecraftCapacityAreas';
 import { SupportFitting } from './supportFitting';
 import { UserJson } from './userJson';
 
@@ -63,4 +64,5 @@ export interface ShipClass {
      */
     mark: number;
     shipClassCapabilities: SpacecraftCapabilities;
+    spacecraftCapacityAreas: SpacecraftCapacityAreas;
 }

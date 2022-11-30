@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, JobApiService, PlanetApiService} from "../../../../../services/swagger";
+import {Fleet, JobApiService, Planet, PlanetApiService} from "../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
@@ -10,6 +10,9 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
     styleUrls: ['./fleets-in-orbit.component.scss']
 })
 export class FleetsInOrbitComponent extends SubscriptionManager implements OnInit, OnChanges {
+
+    @Input()
+    planet?: Planet;
 
     @Input()
     fleetsInOrbit?: Fleet[];

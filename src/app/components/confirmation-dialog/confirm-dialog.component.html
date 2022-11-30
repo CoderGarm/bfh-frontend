@@ -1,4 +1,7 @@
-<div class="header">
+<div class="header"
+     cdkDrag
+     cdkDragRootElement=".confirm-mat-dialog-panel"
+     cdkDragBoundary=".cdk-overlay-container">
     <h1 mat-dialog-title>{{ data.title }}</h1>
 </div>
 <div mat-dialog-content>

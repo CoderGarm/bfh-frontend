@@ -59,8 +59,8 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
     private fetchPosition() {
         if (!!this.fleet && !!this.fleet.orbit) {
             const fleetOrbit: FleetOrbit | undefined = this.fleet.orbit;
-            if (!!fleetOrbit) {
-                let idStarSystem = fleetOrbit.system!.idStarSystem;
+            if (!!fleetOrbit && !!fleetOrbit.orbit && !!fleetOrbit.system) {
+                let idStarSystem = fleetOrbit.system.idStarSystem;
                 let orbit = fleetOrbit.orbit;
                 let sub = this.planetApi.getPlanetByCoordinates(orbit!, idStarSystem)
                     .subscribe(resp => {

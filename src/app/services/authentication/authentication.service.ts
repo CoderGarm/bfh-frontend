@@ -3,7 +3,7 @@ import {HomeComponent} from '../../components/home/home.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {EventEmitter, Injectable} from '@angular/core';
 import {AuthService} from 'ngx-auth';
-import {Observable, Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TokenStorage} from './token-storage.service';
 import {Router} from '@angular/router';
@@ -118,7 +118,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
             this.saveAccessData(resp);
         }, () => {
             this.clearAccessData();
-            return Observable.apply(null);
+            return of();
         });
         this.subscriptions.push(sub);
         return this.getAccessData();

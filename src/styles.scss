@@ -44,6 +44,10 @@ body {
   margin: 25px 25px 25px 25px;
 }
 
+.clear-float {
+  clear: both;
+}
+
 .mat-tab-body-wrapper {
   // make sure that the tab body grows to the full height
   flex-grow: 1;
@@ -169,4 +173,8 @@ body {
 
 .mat-expansion-panel-header-description {
   justify-content: flex-end;
+}
+
+.confirm-mat-dialog-panel .mat-dialog-container {
+  // todo resize: both;
 }

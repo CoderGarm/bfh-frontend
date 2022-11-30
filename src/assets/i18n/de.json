@@ -14,6 +14,11 @@
     "members": "Mitglieder",
     "no-applicants": "Keine Anwärter."
   },
+  "amount-shifter": {
+    "all": "Alles",
+    "hundred": "100",
+    "thousand": "1000"
+  },
   "burger-menu": {
     "wiki": "Wiki"
   },
@@ -74,12 +79,16 @@
     "cancel-btn": "Auftrag abbrechen",
     "finished-title": "Beendete Aufträge",
     "level": "Level",
+    "list": {
+      "nothing": "Keine Jobs"
+    },
     "priority": "Priorität",
     "ticks-left": "Ticks",
     "transports": {
       "human-resources": {
         "title": "Personen"
       },
+      "nothing": "Keine Transporte",
       "resources": {
         "title": "Ressourcen"
       },
@@ -316,6 +325,14 @@
       "title": "Übersetzter Text"
     },
     "type": "Art"
+  },
+  "transport": {
+    "manual": {
+      "transfer-btn": {
+        "title": "Transferiere Ressourcen",
+        "tooltip": "Transferiere die ausgewählten Ressourcen"
+      }
+    }
   },
   "transportation": {
     "amount": {

@@ -52,8 +52,16 @@ export class TypeService extends SubscriptionManager {
         return this._educationTypes;
     }
 
+    get militaryEducationTypes(): EEducationType[] {
+        return this._educationTypes.filter(e => e.isMilitary);
+    }
+
     get eResourceTypes(): EResourceType[] {
         return this._eResourceTypes;
+    }
+
+    get collectableResourceTypes(): EResourceType[] {
+        return this._eResourceTypes.filter(resourceType => resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE);
     }
 
     get eProductionCategories(): string[] {

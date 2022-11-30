@@ -52,17 +52,14 @@ export class EditArticleComponent extends SubscriptionManager implements OnInit,
     }
 
     submit() {
-        console.log("submit 1")
         if (!this.title || !this.article) {
             return;
         }
-        console.log("submit 2")
         const a: ArticleEdit = {
             idArticle: this.article.idArticle,
             title: this.title,
             content: this.content
         }
-        console.log(a)
         this.createEdit.emit(a);
     }
 

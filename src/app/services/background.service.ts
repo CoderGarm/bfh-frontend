@@ -24,7 +24,6 @@ export class BackgroundService extends SubscriptionManager {
             let sub = this.colonizationService.getColonizationStarSystemsForUser()
                 .subscribe(resp => {
                     this.colonizations = resp;
-                    this.fireColonizations();
                 });
             this.subscriptions.push(sub);
         });
@@ -33,7 +32,6 @@ export class BackgroundService extends SubscriptionManager {
             let sub = this.mapService.getStarSystems()
                 .subscribe(resp => {
                     this.starSystems = resp;
-                    this.fireStarSystems();
                 });
             this.subscriptions.push(sub);
         });

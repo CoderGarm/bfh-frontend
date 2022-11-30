@@ -1,0 +1,7 @@
+<div class="flex-items-container content-area">
+    <mat-list-item *ngFor="let cap of capacities?.capacityValues">
+        <div mat-line>
+            {{cap.capacityArea}}: {{cap.usedCapacity}} / {{cap.capacity}}
+        </div>
+    </mat-list-item>
+</div>

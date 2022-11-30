@@ -17,8 +17,6 @@ export class FleetTabViewComponent extends SubscriptionManager implements OnInit
 
     utilization?: ResourceDeposit;
 
-    private costsByClass: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
-
     constructor(private resourceApi: ResourcesApiService) {
         super();
     }

@@ -29,6 +29,7 @@ export interface EnumValueDto {
     eWeaponAlignment?: Array<EnumValueDto.EWeaponAlignmentEnum>;
     eWeaponType?: Array<EnumValueDto.EWeaponTypeEnum>;
     eWikiCategories?: Array<EnumValueDto.EWikiCategoriesEnum>;
+    eCapacityAreaTypes?: Array<EnumValueDto.ECapacityAreaTypesEnum>;
 }
 export namespace EnumValueDto {
     export type EDepositTypeEnum = 'DEPOSITS' | 'DEMAND' | 'UTILIZATION' | 'COSTS' | 'INCOME' | 'CAPACITY' | 'TRANSPORTATION_DEMAND' | 'TRANSPORTATION_DELIVERY';
@@ -159,5 +160,13 @@ export namespace EnumValueDto {
     export const EWikiCategoriesEnum = {
         WELCOMEMESSAGE: 'WELCOME_MESSAGE' as EWikiCategoriesEnum,
         GAMEMECHANICS: 'GAME_MECHANICS' as EWikiCategoriesEnum
+    };
+    export type ECapacityAreaTypesEnum = 'OVERALL' | 'BOW' | 'STERN' | 'BROADSIDE' | 'MODULE';
+    export const ECapacityAreaTypesEnum = {
+        OVERALL: 'OVERALL' as ECapacityAreaTypesEnum,
+        BOW: 'BOW' as ECapacityAreaTypesEnum,
+        STERN: 'STERN' as ECapacityAreaTypesEnum,
+        BROADSIDE: 'BROADSIDE' as ECapacityAreaTypesEnum,
+        MODULE: 'MODULE' as ECapacityAreaTypesEnum
     };
 }

@@ -34,5 +34,4 @@ export interface EEducationType {
      * If this education type is part of the military.
      */
     isMilitary: boolean;
-    requirement?: EEducationType;
 }

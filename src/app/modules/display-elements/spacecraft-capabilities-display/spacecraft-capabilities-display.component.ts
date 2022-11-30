@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
 import {CapabilityValue, SpacecraftCapabilities} from "../../../services/swagger";
 
 @Component({
@@ -20,7 +20,10 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
     @Input()
     ngClass: string = "";
 
-    constructor() {
+    constructor(@Optional() @Inject('baseFleetCapabilities') base: SpacecraftCapabilities | undefined,
+                @Optional() @Inject('currentFleetCapabilities') current: SpacecraftCapabilities | undefined) {
+        this.baseFleetCapabilities = base;
+        this.currentFleetCapabilities = current;
     }
 
     ngOnInit(): void {

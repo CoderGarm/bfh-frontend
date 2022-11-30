@@ -61,7 +61,6 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
         };
         const sub = this.authService.createUser(newUser)
             .subscribe(() => {
-                //this.inProgress = false;
                 this.spinnerService.deactivateSpinner();
                 this.snackbarService.open("Yeah nice, you are registered! Log in now.");
             });

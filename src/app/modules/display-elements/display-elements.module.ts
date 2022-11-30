@@ -43,6 +43,9 @@ import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability
 import {ResourceDisplayModule} from "./modules/resource-display/resource-display.module";
 import {PopulationDevelopmentComponent} from './population-development/population-development.component';
 import {TransportationListDisplayComponent} from './transportation-list-display/transportation-list-display.component';
+import {ConstructionCapacityDisplayComponent} from './construction-capacity-display/construction-capacity-display.component';
+import {ManualTransportComponent} from './manual-transport/manual-transport.component';
+import {SingleResourceTransferComponent} from './single-resource-transfer/single-resource-transfer.component';
 
 @NgModule({
     declarations: [
@@ -88,6 +91,9 @@ import {TransportationListDisplayComponent} from './transportation-list-display/
         JobListDisplayComponent,
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
+        ConstructionCapacityDisplayComponent,
+        ManualTransportComponent,
+        SingleResourceTransferComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -137,6 +143,9 @@ import {TransportationListDisplayComponent} from './transportation-list-display/
         ResourceDisplayModule,
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
+        ConstructionCapacityDisplayComponent,
+        ManualTransportComponent,
+        SingleResourceTransferComponent,
     ]
 })
 export class DisplayElementsModule {

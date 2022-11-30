@@ -217,4 +217,29 @@ export class ResourceHelper {
             resources: event.transportations
         };
     }
+
+    static copy(deposit?: ResourceDeposit): ResourceDeposit | undefined {
+        if (!deposit) {
+            return undefined;
+        }
+
+        const r: ResourceDeposit = {
+            subType: deposit.subType,
+            resources: deposit.resources.map(r => {
+                const rv: ResourceAmount = {
+                    amount: r.amount,
+                    resourceType: r.resourceType
+                }
+                return rv;
+            }),
+            humanResources: deposit.humanResources.map(r => {
+                const rv: HumanResourceAmount = {
+                    amount: r.amount,
+                    resourceType: r.resourceType
+                }
+                return rv;
+            })
+        }
+        return r;
+    }
 }
