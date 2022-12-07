@@ -1,6 +1,6 @@
 <div class="bottom-spacer content-area height-fit-content">
     <mat-accordion multi>
-        <mat-expansion-panel *ngFor="let planet of planets" class="example-box">
+        <mat-expansion-panel *ngFor="let planet of planets">
             <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="{{ 'transportation.human-resources.help' | translate }}">
                     <img mat-list-avatar src="assets/icons/planets/png24x/planet_c.png">
@@ -10,6 +10,9 @@
                     <div *ngIf="planet.isMain">Main planet</div>
                 </mat-panel-description>
             </mat-expansion-panel-header>
+
+            <app-resource-display [deposit]="deposits.get(planet.idPlanet)" [showTick]="false"></app-resource-display>
+
             <div class="flex-items-container">
                 <app-transportation-humans-demand [planet]="planet" (demandEmitter)="setDemand($event)"></app-transportation-humans-demand>
                 <app-transportation-humans-delivery [planet]="planet" (deliveryEmitter)="setDelivery($event)"></app-transportation-humans-delivery>

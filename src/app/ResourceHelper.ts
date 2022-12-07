@@ -218,21 +218,31 @@ export class ResourceHelper {
         };
     }
 
-    static copy(deposit?: ResourceDeposit): ResourceDeposit | undefined {
+    static copy(deposit?: ResourceDeposit, resourceTypes?: EResourceType[], educationTypes?: EEducationType[]): ResourceDeposit | undefined {
         if (!deposit) {
             return undefined;
         }
 
         const r: ResourceDeposit = {
             subType: deposit.subType,
-            resources: deposit.resources.map(r => {
+            resources: deposit.resources.filter(r => {
+                if (!!resourceTypes) {
+                    return resourceTypes.filter(type => type.typeName === r.resourceType.typeName).length > 0;
+                }
+                return true;
+            }).map(r => {
                 const rv: ResourceAmount = {
                     amount: r.amount,
                     resourceType: r.resourceType
                 }
                 return rv;
             }),
-            humanResources: deposit.humanResources.map(r => {
+            humanResources: deposit.humanResources.filter(r => {
+                if (!!educationTypes) {
+                    return educationTypes.filter(type => type.typeName === r.resourceType.typeName).length > 0;
+                }
+                return true;
+            }).map(r => {
                 const rv: HumanResourceAmount = {
                     amount: r.amount,
                     resourceType: r.resourceType

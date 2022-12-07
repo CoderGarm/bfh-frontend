@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Planet, PlanetApiService, ResourceDeposit} from "../../../../services/swagger";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
 import {ResourceHelper} from "../../../../ResourceHelper";
@@ -12,7 +12,11 @@ import {PlanetaryHumanTransportation} from "../components/transportation-humans-
 })
 export class TransportHumansComponent extends SubscriptionManager implements OnInit {
 
+    @Input()
     planets: Planet[] = [];
+
+    @Input()
+    deposits: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
     constructor(private planetService: PlanetApiService,
                 private snackbar: SnackbarNotificationService) {
@@ -20,8 +24,6 @@ export class TransportHumansComponent extends SubscriptionManager implements OnI
     }
 
     ngOnInit(): void {
-        let sub = this.planetService.getPlanetByUsers().subscribe(resp => this.planets = resp);
-        this.subscriptions.push(sub);
     }
 
     setDemand(event: PlanetaryHumanTransportation) {

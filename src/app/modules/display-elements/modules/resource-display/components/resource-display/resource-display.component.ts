@@ -32,6 +32,9 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     @Input()
     levelImprovementHumanResources?: HumanResourceAmount;
 
+    @Input()
+    showTick: boolean = true;
+
     resourceTypes: EResourceType[];
     educationTypes: EEducationType[];
 
@@ -213,11 +216,19 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     }
 
     getOpeningBracketClass(resource: ResourceAmount) {
+        const presentResources = this.getBase()?.resources.length;
+        if (!presentResources || presentResources < this.resourceTypes.length) {
+            return '';
+        }
         let isMatching = resource.resourceType.typeName === 'POPULATION';
         return isMatching ? 'open-bracket' : '';
     }
 
     getClosingBracketClass(resource: HumanResourceAmount) {
+        const presentResources = this.getBase()?.humanResources.length;
+        if (!presentResources || presentResources < this.educationTypes.length) {
+            return '';
+        }
         let isMatching = resource.resourceType.typeName === 'OFFICER';
         return isMatching ? 'close-bracket' : '';
     }

@@ -1,9 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {Planet, PlanetApiService, ResourceDeposit} from "../../../../services/swagger";
 import {PlanetaryResourceTransportation} from "../components/transportation-resource-demand/transportation-resource-demand.component";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
 import {ResourceHelper} from "../../../../ResourceHelper";
+
+interface DepositHolder {
+    idPlanet: number
+    resourceDeposit: ResourceDeposit;
+}
 
 @Component({
     selector: 'app-transport-resources',
@@ -12,7 +17,11 @@ import {ResourceHelper} from "../../../../ResourceHelper";
 })
 export class TransportResourcesComponent extends SubscriptionManager implements OnInit {
 
+    @Input()
     planets: Planet[] = [];
+
+    @Input()
+    deposits: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
     constructor(private planetService: PlanetApiService,
                 private snackbar: SnackbarNotificationService) {
@@ -20,8 +29,6 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     }
 
     ngOnInit(): void {
-        let sub = this.planetService.getPlanetByUsers().subscribe(resp => this.planets = resp);
-        this.subscriptions.push(sub);
     }
 
     setDemand(event: PlanetaryResourceTransportation) {
