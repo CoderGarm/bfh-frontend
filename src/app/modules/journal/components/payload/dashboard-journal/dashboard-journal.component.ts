@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Job, JobApiService, TransportJob} from "../../../../../services/swagger";
+import {FleetApiService, FleetMovement, Job, JobApiService, TransportJob} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -13,15 +13,21 @@ export class DashboardJournalComponent extends SubscriptionManager implements On
 
     transportJobs: TransportJob[] = [];
 
-    constructor(private jobApi: JobApiService) {
+    finishedMovements: FleetMovement[] = [];
+
+    constructor(private jobService: JobApiService,
+                private fleetService: FleetApiService) {
         super();
     }
 
     ngOnInit(): void {
-        let sub = this.jobApi.getFinishedJobs().subscribe(resp => this.finishedJobs = resp);
+        let sub = this.jobService.getFinishedJobs().subscribe(resp => this.finishedJobs = resp);
         this.subscriptions.push(sub);
 
-        sub = this.jobApi.getTransportJobs().subscribe(resp => this.transportJobs = resp);
+        sub = this.jobService.getTransportJobs().subscribe(resp => this.transportJobs = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.fleetService.getFinishedMovements().subscribe(resp => this.finishedMovements = resp);
         this.subscriptions.push(sub);
     }
 }

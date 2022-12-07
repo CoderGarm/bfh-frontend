@@ -44,6 +44,7 @@ export * from './fleetDistributionPerUser';
 export * from './fleetMarker';
 export * from './fleetMerge';
 export * from './fleetMove';
+export * from './fleetMovement';
 export * from './fleetOrbit';
 export * from './forum';
 export * from './forumMessage';

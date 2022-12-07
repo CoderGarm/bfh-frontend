@@ -57,6 +57,10 @@
       "population": {
         "title": "Crew"
       }
+    },
+    "finished-movement": {
+      "nothing": "Keine Flottenbewegungen",
+      "title": "Beendete Flottenbewegungen"
     }
   },
   "fleets": {
