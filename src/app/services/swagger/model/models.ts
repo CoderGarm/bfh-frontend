@@ -39,6 +39,7 @@ export * from './eStarClassType';
 export * from './electronicWarfare';
 export * from './enumValueDto';
 export * from './fileUpload';
+export * from './finishedColonization';
 export * from './fleet';
 export * from './fleetDistributionPerUser';
 export * from './fleetMarker';

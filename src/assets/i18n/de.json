@@ -25,6 +25,12 @@
   "chats": {
     "title": "Nachrichten"
   },
+  "colonizations": {
+    "finished": {
+      "nothing": "Keine fertiggestellten Kolonisierungen",
+      "title": "Fertiggestellte Kolonisierungen"
+    }
+  },
   "combat-arena": {
     "tooltip": {
       "warship-state": {

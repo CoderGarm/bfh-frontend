@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FleetApiService, FleetMovement, Job, JobApiService, TransportJob} from "../../../../../services/swagger";
+import {ColonizationApiService, FinishedColonization, FleetApiService, FleetMovement, Job, JobApiService, TransportJob} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -14,9 +14,11 @@ export class DashboardJournalComponent extends SubscriptionManager implements On
     transportJobs: TransportJob[] = [];
 
     finishedMovements: FleetMovement[] = [];
+    finishedColonizations: FinishedColonization[] = [];
 
     constructor(private jobService: JobApiService,
-                private fleetService: FleetApiService) {
+                private fleetService: FleetApiService,
+                private colonizationService: ColonizationApiService) {
         super();
     }
 
@@ -28,6 +30,9 @@ export class DashboardJournalComponent extends SubscriptionManager implements On
         this.subscriptions.push(sub);
 
         sub = this.fleetService.getFinishedMovements().subscribe(resp => this.finishedMovements = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.colonizationService.getFinishedColonizations().subscribe(resp => this.finishedColonizations = resp);
         this.subscriptions.push(sub);
     }
 }

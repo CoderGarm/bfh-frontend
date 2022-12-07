@@ -47,6 +47,7 @@ import {ConstructionCapacityDisplayComponent} from './construction-capacity-disp
 import {ManualTransportComponent} from './manual-transport/manual-transport.component';
 import {SingleResourceTransferComponent} from './single-resource-transfer/single-resource-transfer.component';
 import {FinishedMovementsListComponent} from "./finished-movements-list/finished-movements-list.component";
+import {FinishedColonizationsListComponent} from "./finished-colonizations-list/finished-colonizations-list.component";
 
 @NgModule({
     declarations: [
@@ -96,6 +97,7 @@ import {FinishedMovementsListComponent} from "./finished-movements-list/finished
         ManualTransportComponent,
         SingleResourceTransferComponent,
         FinishedMovementsListComponent,
+        FinishedColonizationsListComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -149,6 +151,7 @@ import {FinishedMovementsListComponent} from "./finished-movements-list/finished
         ManualTransportComponent,
         SingleResourceTransferComponent,
         FinishedMovementsListComponent,
+        FinishedColonizationsListComponent,
     ]
 })
 export class DisplayElementsModule {
