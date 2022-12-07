@@ -1,7 +1,7 @@
 <mat-tab-group (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.planetary.dashboard' | translate }}">
         <ng-template matTabContent>
-            <app-planetary-dashboard [planet]="selectedPlanet" [shipyardJobPossible]="shipyardJobPossible"></app-planetary-dashboard>
+            <app-planetary-dashboard [planet]="selectedPlanet" [shipyardJobPossible]="shipyardJobPossible" [shipyardExists]="shipyardExists"></app-planetary-dashboard>
         </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.ground-constructions' | translate }}">
