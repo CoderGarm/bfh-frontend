@@ -64,6 +64,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     ngAfterViewInit(): void {
+        this.userID = this.tokenStorage.getUserID();
         if (!!this.paginatorTop && !!this.paginatorBottom) {
             this.paginatorTop.page.pipe(
                 tap(() => {
