@@ -811,7 +811,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 .id(celestialBodyID)
                 .fill(color);
 
-            this.celestialBodyById.set(celestialBodyID, orbit);
+            this.celestialOrbitById.set(celestialBodyID, orbit);
         });
     }
 

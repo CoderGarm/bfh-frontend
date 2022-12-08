@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {JWT} from "../swagger";
+import {JWT, StarSystem} from "../swagger";
 import {environment} from "../../../environments/environment";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
@@ -144,4 +144,16 @@ export class TokenStorage {
         localStorage.removeItem(this.interruptedURL);
     }
 
+    getSystems(): StarSystem[] | undefined {
+        // fixme remove
+        const json = localStorage.getItem('systems');
+        if (!!json) {
+            return JSON.parse(json);
+        }
+        return undefined;
+    }
+
+    setSystems(systems: StarSystem[]) {
+        localStorage.setItem('systems', JSON.stringify(systems));
+    }
 }

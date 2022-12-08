@@ -266,14 +266,10 @@ export class InterstellarViewHelper extends BasicViewHelper {
         };
     }
 
-    /**
-     * starts the complete process of building the canvas and it's attachments
-     *
-     * @param canvas the canvas to draw at
-     * @param orbits all orbits to display
-     * @param callbackFunctionForClick the callback function to every orbit
-     */
-    setOrbits(canvas: Svg, orbits: OrbitDefinition[], callbackFunctionForClick: Function | null) {
+    setOrbits(canvas: Svg,
+              orbits: OrbitDefinition[],
+              callbackFunctionForClick: Function | null,
+              mouseoverForInfo: (event: PointerEvent) => (StarSystem | undefined)) {
         this.setCanvas(canvas);
         this.orbits = orbits.map(od => od.orbit);
         this.sortByOrbit();
@@ -281,8 +277,8 @@ export class InterstellarViewHelper extends BasicViewHelper {
         const homeDef = orbits.filter(od => od.isMain)[0];
         this.setViewBox(homeDef.orbit, 0.2);
 
-        orbits.forEach(orbitDefinition => this.drawCelestial(orbitDefinition, callbackFunctionForClick));
+        orbits.forEach(orbitDefinition => this.drawCelestial(orbitDefinition,
+            callbackFunctionForClick,
+            mouseoverForInfo));
     }
-
-
 }

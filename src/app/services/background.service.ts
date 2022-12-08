@@ -2,6 +2,7 @@ import {EventEmitter, Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../SubscriptionManager";
 import {ColonizationApiService, StarMapApiService, StarSystem, StarSystemColonization} from "./swagger";
 import {interval} from "rxjs";
+import {TokenStorage} from "./authentication/token-storage.service";
 
 /**
  * Executed slow queries in the background and sends the data if the original request is finished.
@@ -17,7 +18,8 @@ export class BackgroundService extends SubscriptionManager {
 
     constructor(private zone: NgZone,
                 private colonizationService: ColonizationApiService,
-                private mapService: StarMapApiService) {
+                private mapService: StarMapApiService,
+                private tokenStorage: TokenStorage) {
         super();
 
         this.zone.run(() => {
@@ -29,11 +31,17 @@ export class BackgroundService extends SubscriptionManager {
         });
 
         this.zone.run(() => {
-            let sub = this.mapService.getStarSystems()
-                .subscribe(resp => {
-                    this.starSystems = resp;
-                });
-            this.subscriptions.push(sub);
+            let systems: StarSystem[] | undefined = this.tokenStorage.getSystems()
+            if (!systems) {
+                let sub = this.mapService.getStarSystems()
+                    .subscribe(resp => {
+                        this.starSystems = resp;
+                        this.tokenStorage.setSystems(resp); // fixme remove
+                    });
+                this.subscriptions.push(sub);
+            } else {
+                this.starSystems = systems;
+            }
         });
     }
 

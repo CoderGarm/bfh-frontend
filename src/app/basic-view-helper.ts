@@ -1,6 +1,6 @@
 import {SubscriptionManager} from "./SubscriptionManager";
 import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Move, Orbit, StarSystem, UserJson, WarShip} from "./services/swagger";
-import {ArrayXY, CurveCommand, G, LineCommand, PathArrayAlias, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
+import {ArrayXY, Circle, CurveCommand, G, LineCommand, PathArrayAlias, Polygon, Rect, Shape, Svg, Text} from "@svgdotjs/svg.js";
 import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
 import {CelestialAreaDefinition} from "./modules/star-map/payload/celestial-area-definition";
 import {AreaDefinition} from "./modules/star-map/area-definition";
@@ -67,7 +67,8 @@ export class BasicViewHelper extends SubscriptionManager {
      */
     protected hyperLimit?: number;
 
-    protected celestialBodyById: Map<String, Orbit> = new Map<String, Orbit>();
+    protected celestialBodyById: Map<String, Circle> = new Map<String, Circle>();
+    protected celestialOrbitById: Map<String, Orbit> = new Map<String, Orbit>();
     protected orbitsById: Map<String, Orbit> = new Map<String, Orbit>();
     protected orbitTextsById: Map<String, Text> = new Map<String, Text>();
 
@@ -92,11 +93,14 @@ export class BasicViewHelper extends SubscriptionManager {
 
     protected aspectRatio: number = 1;
 
+
+    // noinspection JSUnusedLocalSymbols
     @HostListener('window:resize', ['$event'])
     onResize(event?: UIEvent) {
         this.determineAspectRatio();
     }
 
+    // noinspection JSUnusedLocalSymbols
     @HostListener('window:click', ['$event'])
     onClick(event?: UIEvent) {
         this.determineAspectRatio();
@@ -116,6 +120,7 @@ export class BasicViewHelper extends SubscriptionManager {
             // remove all elements from canvas a little bit more performant
             this.canvas.node.innerHTML = '';
             this.celestialBodyById.clear();
+            this.celestialOrbitById.clear();
             this.orbitsById.clear();
             this.fleetsById.clear();
             this.fleetTextsById.clear();
@@ -154,7 +159,8 @@ export class BasicViewHelper extends SubscriptionManager {
     }
 
     protected drawCelestial(orbitDefinition: OrbitDefinition,
-                            callbackFunctionForClick: Function | null) {
+                            callbackFunctionForClick: Function | null,
+                            mouseoverForInfo?: (event: PointerEvent) => (StarSystem | undefined)) {
         const orbit: Orbit = orbitDefinition.orbit;
         let orbitID = this.getOrbitID(orbit);
         let celestialBodyID = this.getCelestialBodyID(orbit);
@@ -194,8 +200,10 @@ export class BasicViewHelper extends SubscriptionManager {
             .id(celestialBodyID)
             .fill(color)
             .click(callbackFunctionForClick)
-            .mouseover(this.mouseoverForCelestial)
+            .mouseover((e: PointerEvent) => this.mouseoverForCelestial(e, mouseoverForInfo))
             .mouseleave(this.mouseleaveForCelestial);
+
+        this.celestialBodyById.set(celestialBodyID, circle);
 
         let text: Text = new Text()
             .text(orbitDefinition.name)
@@ -210,18 +218,54 @@ export class BasicViewHelper extends SubscriptionManager {
             // display constantly
             this.canvas!.add(text);
         }
-        this.celestialBodyById.set(celestialBodyID, orbit);
+        this.celestialOrbitById.set(celestialBodyID, orbit);
     }
 
-    /**
-     * call back function for hovering over a celestial
-     *
-     * @param event
-     */
-    private mouseoverForCelestial = (event: PointerEvent) => {
+    private mouseoverForCelestial = (event: PointerEvent, mouseoverForInfo?: Function) => {
         const orbitText = this.getOrbitTextByEvent(event);
         if (!!orbitText) {
-            this.canvas?.add(orbitText)
+            // fixme replace this.canvas?.add(orbitText)
+        }
+
+        const celestial = this.getCelestialByEvent(event);
+        if (!!celestial) {
+            let id = this.getIdFromEvent(event);
+            let elements = this.canvas!.children().filter(value => value.id() === id + "-circle-cycle");
+            if (elements.length > 0) {
+                const indexOf = this.canvas!.children().indexOf(elements[0]);
+                if (indexOf == -1) {
+                    this.canvas!.removeElement(celestial);
+//fixme idee: select subject und object und notch unten zeigt aktionen an
+                    let x = celestial.cx();
+                    let y = celestial.cy();
+                    const circle = new Circle().x(x).y(y).radius(BasicViewHelper.PLANET_RADIUS * 3).addClass("circle-cycle").id(celestial.id() + "-circle-cycle");
+
+                    this.canvas!.add(circle)
+                    this.canvas!.add(celestial)
+
+                    if (!!mouseoverForInfo) {
+                        const starSystem: StarSystem = mouseoverForInfo(event);
+                        if (!starSystem) {
+                            return;
+                        }
+                        const group = new G().x(x).y(y).addClass("info-group").id(celestial.id() + "-info-group");
+
+                        const rect = new Rect().x(x).y(y).addClass("info-block").id(celestial.id() + "-info-block");
+                        group.add(rect);
+
+                        x += 10;
+                        y += 10;
+                        let text = new Text().cx(x).cy(y).text(starSystem.name);
+                        group.add(text);
+
+                        y += 15;
+                        text = new Text().cx(x).cy(y).text(starSystem.starClassType.spectralClass);
+                        group.add(text);
+
+                        this.canvas!.add(group);
+                    }
+                }
+            }
         }
     }
 
@@ -233,7 +277,18 @@ export class BasicViewHelper extends SubscriptionManager {
     private mouseleaveForCelestial = (event: PointerEvent) => {
         const orbitText = this.getOrbitTextByEvent(event);
         if (!!orbitText) {
-            this.canvas?.removeElement(orbitText)
+            // fixme remove if info is shown this.canvas?.removeElement(orbitText)
+        }
+        /* fixme display as long as no other info is shown
+        */
+        let id = this.getIdFromEvent(event);
+        let elements = this.canvas!.children().filter(value => value.id() === id + "-circle-cycle");
+        if (elements.length > 0) {
+            //this.canvas!.removeElement(elements[0]);
+        }
+        elements = this.canvas!.children().filter(value => value.id() === id + "-info-group");
+        if (elements.length > 0) {
+            //this.canvas!.removeElement(elements[0]);
         }
     }
 
@@ -328,10 +383,9 @@ export class BasicViewHelper extends SubscriptionManager {
         }
     }
 
-    /**
-     * todo some kind of art - could be accidentally very useful for wormhole junction resonance zones
-     */
-    protected drawResonanceZone(xBase: number, yBase: number, radius: number, idPrefix?: string) {
+    // noinspection JSUnusedGlobalSymbols
+    protected drawResonanceZone(xBase: number, yBase: number, radius: number) {
+        // todo some kind of art - could be accidentally very useful for wormhole junction resonance zones
         let steps = 6;
         const radiusSteps = radius / steps;
         for (let i = 0; i < steps; i++) {
@@ -356,15 +410,7 @@ export class BasicViewHelper extends SubscriptionManager {
         }
     }
 
-    /**
-     * creates a coordinate cross for the given base
-     *
-     * @param xBase the x coord
-     * @param yBase the y coord
-     * @param radius the radius for the axis
-     * @param idPrefix the css id selector prefix
-     * @private
-     */
+    // noinspection JSUnusedGlobalSymbols
     protected createCoordinateSystem(xBase: number, yBase: number, radius: number, idPrefix: string) {
         // y-axis
         // x-axis
@@ -472,29 +518,6 @@ export class BasicViewHelper extends SubscriptionManager {
             viewBoxDef = (startX + xOffset) + " " + (startY + yOffset) + " " + width * 2 + " " + height * 2;
         }
         this.canvas!.viewbox(viewBoxDef);
-    }
-
-    /**
-     * returns the difference of two values
-     *
-     * @param a first value
-     * @param b second value
-     * @private
-     */
-    public static getSum(a: number, b: number): number {
-        return Math.abs(a) + Math.abs(b);
-    }
-
-    /**
-     * returns the difference of two values
-     *
-     * @param a first value
-     * @param b second value
-     * @param c the third value
-     * @private
-     */
-    public static getSumOfThree(a: number, b: number, c: number): number {
-        return Math.abs(a) + Math.abs(b) + Math.abs(c);
     }
 
     /**
@@ -722,7 +745,7 @@ export class BasicViewHelper extends SubscriptionManager {
     }
 
     protected getOrbitOfCelestialByID(id: string): Orbit | undefined {
-        return this.celestialBodyById.get(id);
+        return this.celestialOrbitById.get(id);
     }
 
     protected getOrbitOfOrbitByID(id: string): Orbit | undefined {
@@ -744,6 +767,15 @@ export class BasicViewHelper extends SubscriptionManager {
     protected getFleetByGroupID(id: string): FleetMarker | undefined {
         let reducedId = id.replace("-group", "");
         return this.getFleetByID(reducedId);
+    }
+
+    protected getCelestialByEvent(event: PointerEvent | MouseEvent): Circle | undefined {
+        let id = this.getIdFromEvent(event);
+        return this.getCelestialByID(id);
+    }
+
+    protected getCelestialByID(id: string): Circle | undefined {
+        return this.celestialBodyById.get(id);
     }
 
     protected getOrbitOfCelestialByEvent(event: PointerEvent | MouseEvent): Orbit | undefined {

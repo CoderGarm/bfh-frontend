@@ -1,3 +1,4 @@
+@import "src/styles/variables";
 @import "src/styles/combat-states";
 
 #battle-round-stepper .mat-slider-thumb-label {
@@ -50,4 +51,32 @@
   100% {
     stroke-dashoffset: 0;
   }
+}
+
+.circle-cycle {
+  animation: cycling-circle 5s infinite;
+  stroke: $metal-glace;
+  stroke-dasharray: 15px;
+  stroke-width: 3px;
+  stroke-linecap: square;
+  animation-timing-function: linear;
+  transform-origin: center;
+  transform-box: fill-box;
+  fill: transparent;
+}
+
+@keyframes cycling-circle {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.info-block {
+  width: 50px;
+  height: 50px;
+  fill: transparent;
+  stroke: red;
 }

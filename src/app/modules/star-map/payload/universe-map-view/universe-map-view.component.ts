@@ -69,7 +69,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             this.clearCanvas();
             this.knownStarSystems.forEach((system) => this.knownStarSystemsByOrbit.set(system.orbit, system));
             let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), this.knownStarSystems);
-            this.setOrbits(this.canvas!, orbitDefinitions, this.clickEventForStarSystem);
+            this.setOrbits(this.canvas!, orbitDefinitions, this.clickEventForStarSystem, this.mouseoverForInfo);
             let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
                 this.fleetDistributionPerUsers = resp;
                 this.setFleetsAtSystem(this.canvas!, resp, this.dblClickForFleet, this.dragEndForFleet);
@@ -261,16 +261,19 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         });
     }
 
-    /**
-     * call back function for using a click at an element
-     *
-     * @param event
-     */
     private clickEventForStarSystem = (event: PointerEvent) => {
         let orbitByID = this.getOrbitOfCelestialByEvent(event);
         if (!!orbitByID) {
             let system = this.knownStarSystemsByOrbit.get(orbitByID);
             this.starSystemSelectionOutput.emit(system);
         }
+    };
+
+    private mouseoverForInfo = (event: PointerEvent): StarSystem | undefined => {
+        let orbitByID = this.getOrbitOfCelestialByEvent(event);
+        if (!!orbitByID) {
+            return this.knownStarSystemsByOrbit.get(orbitByID);
+        }
+        return undefined;
     };
 }
