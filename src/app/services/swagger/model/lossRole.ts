@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { AbstractId } from './abstractId';
-import { Fleet } from './fleet';
 import { UserJson } from './userJson';
 
 /**
@@ -18,7 +17,7 @@ import { UserJson } from './userJson';
  */
 export interface LossRole { 
     owner: UserJson;
-    fleet: Fleet;
+    fleet: AbstractId;
     /**
      * The name of the war ship which was destroyed.
      */

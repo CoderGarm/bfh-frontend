@@ -1,5 +1,5 @@
 import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, StrokeData, Svg, Text} from "@svgdotjs/svg.js";
-import {Distance, Fleet, FleetDistributionPerUser, FleetMarker, Move, Orbit, StarSystem, UserJson} from "../../../services/swagger";
+import {Distance, FleetDistributionPerUser, FleetMarker, Move, Orbit, StarSystem, UserJson} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {BasicViewHelper} from "../../../basic-view-helper";
@@ -14,7 +14,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
     }
 
     setFleetsInInterstellarMotion(canvas: Svg,
-                                  fleetsInMotion: Map<Move, Fleet[]>,
+                                  fleetsInMotion: Map<Move, FleetMarker[]>,
                                   dblClickForFleet: (event: PointerEvent) => void) {
         fleetsInMotion.forEach((fleets, move) => {
 
@@ -88,7 +88,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
     private createFleetSharkInterstellarMotionAndPrint(fleetSharkID: string,
                                                        fleetSharkPoints: ArrayXY[],
                                                        dblClickForFleet: (event: PointerEvent) => void,
-                                                       fleet: Fleet) {
+                                                       fleet: FleetMarker) {
         let sd: StrokeData = {
             color: "black",
             width: 1
@@ -101,7 +101,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
-        if (fleet.owner.idUser == userID) {
+        if (fleet.owner.id == userID) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
         group!.polygon(fleetSharkPoints).fill(fleetSharkColor).stroke(sd).id(fleetSharkID).dblclick(dblClickForFleet);
@@ -111,7 +111,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
         let xText = sortedPointsX[sortedPointsX.length - 1];
         let yText = sortedPointsY[0];
 
-        let text: Text = group!.text(fleet.owner.username)
+        let text: Text = group!.text(fleet.owner.name!)
             .x(xText[0])
             .y(yText[1])
             .addClass("fleet-text")

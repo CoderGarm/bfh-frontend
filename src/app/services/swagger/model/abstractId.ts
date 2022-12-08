@@ -18,4 +18,8 @@ export interface AbstractId {
      * The database id.
      */
     id: number;
+    /**
+     * The name.
+     */
+    name?: string;
 }

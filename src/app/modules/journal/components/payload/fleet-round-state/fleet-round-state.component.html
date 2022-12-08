@@ -6,7 +6,8 @@
                  class="fleet-round-state-icon"
                  [matTooltip]="getShipIconTooltip(warShip)"
                  [ngClass]="getStateClass(getCurrentWarshipState(warShip))"
-                 src="{{getLink(warShip.shipClass.hull.hullType.typeName)}}">
+                 src="{{getLink(warShip.shipClass.hull.hullType.typeName)}}"
+                 alt="{{warShip.shipClass.hull.hullType.typeName}}-icon">
             <div mat-subheader class="fleet-round-state-ship-name">{{warShip.name}}</div>
         </div>
         <div class="fleet-round-state-title-container-below">

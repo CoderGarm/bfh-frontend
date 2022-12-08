@@ -1,9 +1,11 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {
+    AbstractId,
     BattleReport,
     CounterMissileHit,
     Fleet,
+    FleetMarker,
     HitLog,
     MissileMovement,
     MovementAction,
@@ -11,8 +13,7 @@ import {
     ReleasedVolley,
     ShipClass,
     ShipKillerHit,
-    StarSystem,
-    WarShip
+    StarSystem
 } from "../../../../../services/swagger";
 import {SVG} from "@svgdotjs/svg.js";
 import {BattleViewHelper} from "../../../battle-view-helper";
@@ -49,8 +50,8 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     activeRound?: number;
     private activeRoundInputDefinition: string = "activeRound";
 
-    hoveredWarship?: WarShip;
-    clickedFleet?: Fleet;
+    hoveredWarship?: AbstractId;
+    clickedFleet?: FleetMarker;
 
     constructor(tokenStorage: TokenStorage) {
         super(tokenStorage)
@@ -76,13 +77,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
             }
         }
         if (changes[this.combatArenaDataInputDefinition]) {
-            if (!!this.combatArenaData && !!this.starSystem) {
-                this.setCombatData(this.combatArenaData);
-                this.createCanvas();
-                this.setActiveRound(1, this.starSystem, this.canvas!, this.clickForFleet, this.mouseoverForWarship);
-                let orbit = this.battleReport!.battleReportStatistics.orbit;
-                this.setViewBoxByFleetOrbit(orbit);
-            } else {
+            if (!this.combatArenaData && !this.starSystem) {
                 this.clearCanvas();
             }
         }
@@ -94,14 +89,14 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
      * @param event
      */
     private clickForFleet = (event: PointerEvent) => {
-        let fleet = this.getFleetByEvent(event);
-        if (!fleet) {
+        let fleetMarker = this.getFleetByEvent(event);
+        if (!fleetMarker) {
             let text = this.getFleetTextByEvent(event);
             if (!!text) {
-                fleet = this.getFleetByText(text);
+                fleetMarker = this.getFleetByText(text);
             }
         }
-        this.clickedFleet = fleet;
+        this.clickedFleet = fleetMarker;
     }
 
     /**
@@ -152,7 +147,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
      */
     private setUpCombat() {
         const green: Fleet[] = [];
-        const blue: Fleet[] = [];
+        const red: Fleet[] = [];
         if (!!this.battleReport) {
             const userID = this.tokenStorage.getUserID();
             this.battleReport.participatingFleets.forEach(fleet => {
@@ -160,12 +155,12 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
                 if (idUser === userID) {
                     green.push(fleet);
                 } else {
-                    blue.push(fleet);
+                    red.push(fleet);
                 }
             });
         }
         this.green = green;
-        this.red = blue;
+        this.red = red;
     }
 }
 

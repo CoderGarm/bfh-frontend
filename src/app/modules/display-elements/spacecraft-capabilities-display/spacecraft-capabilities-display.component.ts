@@ -1,12 +1,13 @@
 import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {CapabilityValue, SpacecraftCapabilities} from "../../../services/swagger";
+import {CapabilityValue, Fleet, FleetApiService, FleetMarker, SpacecraftCapabilities} from "../../../services/swagger";
+import {SubscriptionManager} from "../../../SubscriptionManager";
 
 @Component({
     selector: 'app-spacecraft-capabilities-display',
     templateUrl: './spacecraft-capabilities-display.component.html',
     styleUrls: ['./spacecraft-capabilities-display.component.scss']
 })
-export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
+export class SpacecraftCapabilitiesDisplayComponent extends SubscriptionManager implements OnInit {
 
     /**
      * the base data to display
@@ -20,10 +21,27 @@ export class SpacecraftCapabilitiesDisplayComponent implements OnInit {
     @Input()
     ngClass: string = "";
 
+    fleetMarker?: FleetMarker;
+
+    private fleet?: Fleet;
+
     constructor(@Optional() @Inject('baseFleetCapabilities') base: SpacecraftCapabilities | undefined,
-                @Optional() @Inject('currentFleetCapabilities') current: SpacecraftCapabilities | undefined) {
+                @Optional() @Inject('currentFleetCapabilities') current: SpacecraftCapabilities | undefined,
+                @Optional() @Inject('fleetMarker') fleetMarker: FleetMarker | undefined,
+                private fleetService: FleetApiService) {
+        super();
+
         this.baseFleetCapabilities = base;
         this.currentFleetCapabilities = current;
+        this.fleetMarker = fleetMarker;
+        if (!!this.fleetMarker) {
+            const sub = this.fleetService.getFleet(this.fleetMarker.fleet.id).subscribe(resp => {
+                this.fleet = resp;
+                this.baseFleetCapabilities = this.fleet.baseSpacecraftCapabilities;
+                this.currentFleetCapabilities = this.fleet.spacecraftCapabilities;
+            });
+            this.subscriptions.push(sub);
+        }
     }
 
     ngOnInit(): void {

@@ -61,8 +61,6 @@ export class BasicViewHelper extends SubscriptionManager {
     protected WARSHIP_SELECTOR_ID_PREFIX: string = Math.random() + "-warship";
     protected MISSILE_SALVO_SELECTOR_ID_PREFIX: string = Math.random() + "-missile-salvo";
 
-    private readonly INVISIBLE_CLASS = "invisible";
-
     /**
      * the radius of the hyper limit
      * @private
@@ -73,16 +71,16 @@ export class BasicViewHelper extends SubscriptionManager {
     protected orbitsById: Map<String, Orbit> = new Map<String, Orbit>();
     protected orbitTextsById: Map<String, Text> = new Map<String, Text>();
 
-    protected fleetsById: Map<String, Fleet> = new Map<String, Fleet>();
-    protected fleetsByText: Map<Text, Fleet> = new Map<Text, Fleet>();
+    protected fleetsById: Map<String, FleetMarker> = new Map<String, FleetMarker>();
+    protected fleetsByText: Map<Text, FleetMarker> = new Map<Text, FleetMarker>();
     protected fleetTextsById: Map<String, Text> = new Map<String, Text>();
     protected fleetOwnersById: Map<String, UserJson> = new Map<String, UserJson>();
     protected fleetOwnerByText: Map<Text, UserJson> = new Map<Text, UserJson>();
     protected markerTextsById: Map<String, Text> = new Map<String, Text>();
 
-    protected warshipsById: Map<String, WarShip> = new Map<String, WarShip>();
+    protected warshipsById: Map<String, AbstractId> = new Map<String, AbstractId>();
     protected warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
-    protected warshipsByText: Map<Text, WarShip> = new Map<Text, WarShip>();
+    protected warshipsByText: Map<Text, AbstractId> = new Map<Text, AbstractId>();
     protected warshipTextsById: Map<String, Text> = new Map<String, Text>();
 
     protected missileSalvoPolygonsById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
@@ -688,9 +686,18 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.convertToStandardMetric(hyperRadius);
     }
 
-    protected getFleetSharkID(fleet: Fleet | AbstractId): string {
+    protected getFleetSharkID(fleet: Fleet | AbstractId | FleetMarker): string {
         let prefix: string = this.FLEET_SHARK_SELECTOR_ID_PREFIX;
-        let id = 'id' in fleet ? fleet.id : fleet.idFleet;
+        let id;
+        if ('fleet' in fleet) {
+            id = fleet.fleet.id;
+        }
+        if ('id' in fleet) {
+            id = fleet.id;
+        }
+        if ('idFleet' in fleet) {
+            id = fleet.idFleet;
+        }
         return prefix + "-" + id;
     }
 
@@ -726,15 +733,15 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.fleetTextsById.get(id);
     }
 
-    protected getFleetByText(text: Text): Fleet | undefined {
+    protected getFleetByText(text: Text): FleetMarker | undefined {
         return this.fleetsByText.get(text);
     }
 
-    protected getFleetByID(id: string): Fleet | undefined {
+    protected getFleetByID(id: string): FleetMarker | undefined {
         return this.fleetsById.get(id);
     }
 
-    protected getFleetByGroupID(id: string): Fleet | undefined {
+    protected getFleetByGroupID(id: string): FleetMarker | undefined {
         let reducedId = id.replace("-group", "");
         return this.getFleetByID(reducedId);
     }
@@ -780,7 +787,7 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.fleetOwnerByText.get(text);
     }
 
-    protected getFleetByEvent(event: PointerEvent | MouseEvent | any): Fleet | undefined {
+    protected getFleetByEvent(event: PointerEvent | MouseEvent | any): FleetMarker | undefined {
         let id = this.getIdFromEvent(event);
         return this.getFleetByID(id);
     }
@@ -806,11 +813,11 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.getFleetTextByID(x.id);
     }
 
-    protected getWarshipByID(id: string): WarShip | undefined {
+    protected getWarshipByID(id: string): AbstractId | undefined {
         return this.warshipsById.get(id);
     }
 
-    protected getWarshipByEvent(event: PointerEvent | MouseEvent | any): WarShip | undefined {
+    protected getWarshipByEvent(event: PointerEvent | MouseEvent | any): AbstractId | undefined {
         let id = this.getIdFromEvent(event);
         return this.getWarshipByID(id);
     }
@@ -825,7 +832,7 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.warshipTextsById.get(id);
     }
 
-    protected getWarshipByText(text: Text): WarShip | undefined {
+    protected getWarshipByText(text: Text): AbstractId | undefined {
         return this.warshipsByText.get(text);
     }
 }

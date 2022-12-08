@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { Fleet } from '../model/fleet';
 import { FleetDistributionPerUser } from '../model/fleetDistributionPerUser';
+import { FleetMarker } from '../model/fleetMarker';
 import { FleetMerge } from '../model/fleetMerge';
 import { FleetMove } from '../model/fleetMove';
 import { FleetMovement } from '../model/fleetMovement';
@@ -148,6 +149,48 @@ export class FleetApiService {
     }
 
     /**
+     * Get the fleet.
+     * 
+     * @param idFleet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFleet(idFleet: number, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
+    public getFleet(idFleet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
+    public getFleet(idFleet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
+    public getFleet(idFleet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idFleet === null || idFleet === undefined) {
+            throw new Error('Required parameter idFleet was null or undefined when calling getFleet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Fleet>('get',`${this.basePath}/api/private/fleet/${encodeURIComponent(String(idFleet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all the star systems which are holding fleets with the fleet&#x27;s owner.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -233,9 +276,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFleetsBySystem(idStarSystem: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
-    public getFleetsBySystem(idStarSystem: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
-    public getFleetsBySystem(idStarSystem: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public getFleetsBySystem(idStarSystem: number, observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMarker>>;
+    public getFleetsBySystem(idStarSystem: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMarker>>>;
+    public getFleetsBySystem(idStarSystem: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMarker>>>;
     public getFleetsBySystem(idStarSystem: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idStarSystem === null || idStarSystem === undefined) {
@@ -258,7 +301,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/inSystem/${encodeURIComponent(String(idStarSystem))}`,
+        return this.httpClient.request<Array<FleetMarker>>('get',`${this.basePath}/api/private/fleet/inSystem/${encodeURIComponent(String(idStarSystem))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -358,9 +401,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getInterstellarMovingFleets(observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
-    public getInterstellarMovingFleets(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
-    public getInterstellarMovingFleets(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public getInterstellarMovingFleets(observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMarker>>;
+    public getInterstellarMovingFleets(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMarker>>>;
+    public getInterstellarMovingFleets(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMarker>>>;
     public getInterstellarMovingFleets(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -379,7 +422,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/interstellarMovement`,
+        return this.httpClient.request<Array<FleetMarker>>('get',`${this.basePath}/api/private/fleet/interstellarMovement`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {CapabilityValue, EHullType, Fleet, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
+import {AbstractId, CapabilityValue, EHullType, Fleet, FleetMarker, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
 import {CombatArenaData} from "../combat-arena/combat-arena.component";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
@@ -36,10 +36,10 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
     private activeRoundInputDefinition: string = "activeRound";
 
     @Input()
-    hoveredWarship?: WarShip;
+    hoveredWarship?: AbstractId;
 
     @Input()
-    clickedFleet?: Fleet;
+    clickedFleet?: FleetMarker;
 
     private hullTypes: Map<string, EHullType> = new Map<string, EHullType>();
     warShips: WarShip[] = [];
@@ -273,7 +273,7 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
     }
 
     isWarshipHovered(warShip: WarShip) {
-        return !!this.hoveredWarship && this.hoveredWarship.idWarship === warShip.idWarship;
+        return !!this.hoveredWarship && this.hoveredWarship.id === warShip.idWarship;
     }
 
     hoveredWarshipClass(warShip: WarShip) {
@@ -285,7 +285,7 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
     }
 
     isFleetClicked() {
-        return !!this.clickedFleet && !!this.fleet && this.clickedFleet.idFleet === this.fleet.idFleet;
+        return !!this.clickedFleet && !!this.fleet && this.clickedFleet.fleet.id === this.fleet.idFleet;
     }
 
     clickedFleetClass() {

@@ -24,6 +24,10 @@ export interface FleetMarker {
      */
     name: string;
     owner: AbstractId;
+    /**
+     * The fleet's individual war ships.
+     */
+    ships: Array<AbstractId>;
     orbit?: FleetOrbit;
     move?: Move;
     /**

@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 import {SVG} from "@svgdotjs/svg.js";
-import {Fleet, FleetApiService, FleetMerge, FleetMove, FleetOrbit, Move, Orbit, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
+import {FleetApiService, FleetMarker, FleetMerge, FleetMove, FleetOrbit, Move, Orbit, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
 import {FleetMergeEditComponent} from "../../../display-elements/fleet-merge-edit/fleet-merge-edit.component";
@@ -66,19 +66,19 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
             sub = this.fleetApi.getFleetsBySystem(this.starSystemSelectionInput.idStarSystem)
                 .subscribe(resp => {
                     // every fleet in an orbit must have an orbit defined, logical
-                    let fleets: Fleet[] = resp;
+                    let fleets: FleetMarker[] = resp;
                     if (!this.canvas) {
                         this.createCanvas()
                     }
 
-                    let fleetsInOrbit: Map<FleetOrbit, Fleet> = new Map<FleetOrbit, Fleet>();
+                    let fleetsInOrbit: Map<FleetOrbit, FleetMarker> = new Map<FleetOrbit, FleetMarker>();
                     fleets.filter(fleet => !!fleet.orbit && !!fleet.orbit.orbit).map((fleet) => fleetsInOrbit.set(fleet.orbit!, fleet));
                     this.setFleetsInOrbits(this.canvas!,
                         fleetsInOrbit,
                         this.dblClickForFleet,
                         this.dragEndForFleet);
 
-                    let fleetsInMotion: Map<Move, Fleet[]> = new Map<Move, Fleet[]>();
+                    let fleetsInMotion: Map<Move, FleetMarker[]> = new Map<Move, FleetMarker[]>();
                     fleets.filter(fleet => !!fleet.move).map((fleet) => {
                         if (!fleet.move) {
                             throw new Error("This fleet is in motion and should know this.");
@@ -127,7 +127,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
      * @param targetFleet the destination if it is another fleet
      * @param orbit the destination if it is an orbit
      */
-    private dragEndForFleet = (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => {
+    private dragEndForFleet = (draggedFleet?: FleetMarker, targetFleet?: FleetMarker, orbit?: Orbit) => {
         if (!draggedFleet) {
             return;
         }
@@ -160,7 +160,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
      * @param orbit the designated target
      * @private
      */
-    private createAndOpenFleetMoveDialog(dialogConfig: MatDialogConfig, draggedFleet: Fleet, orbit: Orbit) {
+    private createAndOpenFleetMoveDialog(dialogConfig: MatDialogConfig, draggedFleet: FleetMarker, orbit: Orbit) {
         let planets = this.planets.filter(p => p.orbit === orbit);
         if (!planets || planets.length != 1) {
             throw new Error("No orbit should have more than one planet.");
@@ -184,7 +184,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                     return;
                 }
                 let move: FleetMove = {
-                    idFleetToMove: draggedFleet.idFleet,
+                    idFleetToMove: draggedFleet.fleet.id,
                     destinationOrbit: planets[0].orbit,
                     idDestinationSystem: planets[0].idStarSystem
                 }
@@ -206,7 +206,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
      * @param targetFleet the fleet which is the target of the movement
      * @private
      */
-    private createAndOpenFleetMergeDialog(dialogConfig: MatDialogConfig, draggedFleet: Fleet, targetFleet: Fleet) {
+    private createAndOpenFleetMergeDialog(dialogConfig: MatDialogConfig, draggedFleet: FleetMarker, targetFleet: FleetMarker) {
 
         let dialogData = new DialogData("merge fleets");
 
@@ -223,8 +223,8 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                     return;
                 }
                 let merge: FleetMerge = {
-                    idFleetToMerge: targetFleet.idFleet,
-                    idFleetMergeTarget: draggedFleet.idFleet
+                    idFleetToMerge: targetFleet.fleet.id,
+                    idFleetMergeTarget: draggedFleet.fleet.id
                 }
                 let sub = this.fleetApi.mergeFleets(merge, userID).subscribe(resp => {
                     if (resp) {
@@ -256,7 +256,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
      * opens the fleet info dialog
      * @param fleet
      */
-    openFleetInfoDialog(fleet: Fleet | undefined) {
+    openFleetInfoDialog(fleet: FleetMarker | undefined) {
         if (!!fleet) {
             // todo if open dont open again
             const dialogConfig = DialogConfigHelper.createDialog();
@@ -266,14 +266,14 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                 ['fleetInput'],
                 [fleet]);
             dialogData.addDialogDataPerTemplate(SpacecraftCapabilitiesDisplayComponent,
-                ['baseFleetCapabilities', 'currentFleetCapabilities'],
-                [fleet.baseSpacecraftCapabilities, fleet.spacecraftCapabilities]);
+                ['fleetMarker'],
+                [fleet]);
             dialogData.addDialogDataPerTemplate(ManualTransportComponent,
                 ['fleet'],
                 [fleet]);
             if (!!fleet.move) {
                 let userID = this.tokenStorage.getUserID();
-                if (fleet.owner.idUser == userID) {
+                if (fleet.owner.id == userID) {
                     dialogData.addDialogDataPerTemplate(FleetMoveEditComponent,
                         ['fleetInput', 'targetOrbit', 'callback'],
                         [fleet, fleet.move.targetOrbit, this.callbackFleetMove]);

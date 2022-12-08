@@ -1,9 +1,10 @@
 import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Svg, Text} from "@svgdotjs/svg.js";
 import {
+    AbstractId,
     BattleReport,
     CounterMissileHit,
     Distance,
-    Fleet,
+    FleetMarker,
     FleetOrbit,
     HitLog,
     Launcher,
@@ -14,8 +15,7 @@ import {
     Planet,
     ReleasedVolley,
     ShipKillerHit,
-    StarSystem,
-    WarShip
+    StarSystem
 } from "../../services/swagger";
 import {TokenStorage} from "../../services/authentication/token-storage.service";
 import {CelestialAreaDefinition} from "../star-map/payload/celestial-area-definition";
@@ -310,7 +310,6 @@ export class BattleViewHelper extends BasicViewHelper {
      */
     private setReleasedVolleys(canvas: Svg, volleys: ReleasedVolley[]) {
         this.setCanvas(canvas);
-        const baseOrbit = this.createBaseOrbit();
 
         volleys.forEach((volley) => {
             let damageDealerId = volley.damageDealer;
@@ -325,7 +324,6 @@ export class BattleViewHelper extends BasicViewHelper {
                 return;
             }
 
-            let amountOfShots = volley.amountOfShots;
             let weaponType = volley.weaponType;
             if (weaponType === WeaponTypeEnum.MISSILE) {
 
@@ -352,7 +350,8 @@ export class BattleViewHelper extends BasicViewHelper {
                               fleetsInMotion: MovementAction[],
                               activeRound: number,
                               hitLogsByRound: Map<number, HitLog[]>,
-                              clickForFleet: (event: PointerEvent) => void, mouseoverForWarship: (event: PointerEvent) => void) {
+                              clickForFleet: (event: PointerEvent) => void,
+                              mouseoverForWarship: (event: PointerEvent) => void) {
         this.setCanvas(canvas);
         const baseOrbit = this.createBaseOrbit();
 
@@ -374,13 +373,13 @@ export class BattleViewHelper extends BasicViewHelper {
                 this.canvas!.path(arr).fill(color).opacity(0.2);
             }
 
-            const fightingWarships: WarShip[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
+            const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit);
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints, clickForFleet, mouseoverForWarship);
         });
     }
 
-    private getFightingWarships(fleet: Fleet, activeRound: number, hitLogsByRound: Map<number, HitLog[]>) {
+    private getFightingWarships(fleet: FleetMarker, activeRound: number, hitLogsByRound: Map<number, HitLog[]>) {
         let hitLogs: HitLog[] = [];
         for (let i = 1; i <= activeRound; i++) {
             const logsPerRound = hitLogsByRound.get(i);
@@ -390,11 +389,11 @@ export class BattleViewHelper extends BasicViewHelper {
         }
         let warShips = fleet.ships;
         let destroyedWarships = warShips.filter(warShip => !!hitLogs.find(value => {
-            let isSameShip = warShip.idWarship == value.warShip.id;
+            let isSameShip = warShip.id == value.warShip.id;
             let canFight = value.isFightingCapable && value.isAlive;
             return !canFight && isSameShip;
         }));
-        const warshipsToDisplay: WarShip[] = [];
+        const warshipsToDisplay: AbstractId[] = [];
         warShips.forEach(warShip => {
             if (destroyedWarships.indexOf(warShip) == -1) {
                 warshipsToDisplay.push(warShip);
@@ -403,9 +402,9 @@ export class BattleViewHelper extends BasicViewHelper {
         return warshipsToDisplay;
     }
 
-    private createMove(fleet: Fleet, startOrbit: Orbit, targetOrbit: Orbit) {
+    private createMove(fleet: FleetMarker, startOrbit: Orbit, targetOrbit: Orbit) {
         const m: Move = {
-            idFleetInMotion: fleet.idFleet,
+            idFleetInMotion: fleet.fleet.id,
             moveDoneAtZero: 1,
             originalDuration: 1,
             startOrbit: {
@@ -506,8 +505,8 @@ export class BattleViewHelper extends BasicViewHelper {
     /**
      * creates a fleet shark, a text and groups them in the svg
      */
-    private createHullOutlinesAndPrint(fleet: Fleet,
-                                       warships: Array<WarShip>,
+    private createHullOutlinesAndPrint(fleet: FleetMarker,
+                                       warships: AbstractId[],
                                        warshipHullPoints: Array<Array<ArrayXY[]>>,
                                        clickForFleet: (event: PointerEvent) => void,
                                        mouseoverForWarship: (event: PointerEvent) => void) {
@@ -526,11 +525,11 @@ export class BattleViewHelper extends BasicViewHelper {
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
-        if (fleet.owner.idUser == userID) {
+        if (fleet.owner.id == userID) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
         // sort by is to display the names in a non-permuting way
-        warships = warships.sort((a, b) => a.idWarship > b.idWarship ? 1 : -1);
+        warships = warships.sort((a, b) => a.id > b.id ? 1 : -1);
         for (let i = 0; i < warshipHullPoints.length; i++) {
             let warshipHullPoint = warshipHullPoints[i];
             let warship = warships[i];
@@ -545,7 +544,7 @@ export class BattleViewHelper extends BasicViewHelper {
             let xText = sortedPointsX[sortedPointsX.length - 1];
             let yText = sortedPointsY[0];
 
-            let text: Text = group!.text(warship.name)
+            let text: Text = group!.text(warship.name!)
                 .x(xText[0])
                 .y(yText[1])
                 .addClass("warship-text")
@@ -583,7 +582,7 @@ export class BattleViewHelper extends BasicViewHelper {
      * @param centerOrbit the center of the local coordinate system
      * @private
      */
-    private defineWarshipHullPoints(warShips: WarShip[], orbit: Orbit, centerOrbit: Orbit): Array<Array<ArrayXY[]>> {
+    private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, centerOrbit: Orbit): Array<Array<ArrayXY[]>> {
         // 500 pixel radius from the orbits coordinate cross
 
         const yShift = 15 / 2;
@@ -790,7 +789,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
 
                 let arr: PathArrayAlias = [p1, p2];
-                // todo remember the path?
+                // todo why remember the path?
                 this.canvas!.path(arr)
                     .fill("none")
                     .stroke({color: this.COLONIZABLE_SYSTEM_MARKER_COLOR, width: 1})

@@ -1,5 +1,5 @@
 import {ArrayXY, StrokeData, Svg, Text} from "@svgdotjs/svg.js";
-import {Distance, Fleet, FleetOrbit, Move, Orbit, Planet, StarSystem} from "../../../services/swagger";
+import {Distance, FleetMarker, FleetOrbit, Move, Orbit, Planet, StarSystem} from "../../../services/swagger";
 import {AreaDefinition} from "../area-definition";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {OrbitDefinition} from "./orbit-definition";
@@ -23,9 +23,9 @@ export class SystemViewHelper extends BasicViewHelper {
      * @param dragEndForFleet the drag end callback
      */
     setFleetsInMotion(canvas: Svg,
-                      fleetsInMotion: Map<Move, Fleet[]>,
+                      fleetsInMotion: Map<Move, FleetMarker[]>,
                       dblClickForFleet: (event: PointerEvent) => void,
-                      dragEndForFleet: (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => void) {
+                      dragEndForFleet: (draggedFleet?: FleetMarker, targetFleet?: FleetMarker, orbit?: Orbit) => void) {
 
         fleetsInMotion.forEach((fleets, move) => {
             if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
@@ -70,9 +70,9 @@ export class SystemViewHelper extends BasicViewHelper {
      * @param dragEndForFleet
      */
     setFleetsInOrbits(canvas: Svg,
-                      fleetOrbits: Map<FleetOrbit, Fleet>,
+                      fleetOrbits: Map<FleetOrbit, FleetMarker>,
                       dblClickForFleet: (event: PointerEvent) => void,
-                      dragEndForFleet: (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => void) {
+                      dragEndForFleet: (draggedFleet?: FleetMarker, targetFleet?: FleetMarker, orbit?: Orbit) => void) {
         this.setCanvas(canvas);
 
         fleetOrbits.forEach((fleet, fleetOrbit) => {
@@ -100,10 +100,10 @@ export class SystemViewHelper extends BasicViewHelper {
      * @private
      */
     private createFleetSharkAndPrint(fleetSharkID: string,
-                                     dragEndForFleet: (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => void,
+                                     dragEndForFleet: (draggedFleet?: FleetMarker, targetFleet?: FleetMarker, orbit?: Orbit) => void,
                                      fleetSharkPoints: ArrayXY[],
                                      dblClickForFleet: (event: PointerEvent) => void,
-                                     fleet: Fleet) {
+                                     fleet: FleetMarker) {
         let sd: StrokeData = {
             color: "black",
             width: 1
@@ -113,7 +113,7 @@ export class SystemViewHelper extends BasicViewHelper {
             .id(fleetSharkID + "-group");
 
         let userID = this.tokenStorage.getUserID();
-        if (!fleet.move && fleet.owner.idUser == userID && fleet.state.isActive) {
+        if (!fleet.move && fleet.owner.id == userID && fleet.state.isActive) {
             // make fleet group draggable if it is not in motion
             group!.draggable(true).on('dragend', this.dragEndFleetGroup(dragEndForFleet));
         }
@@ -122,7 +122,7 @@ export class SystemViewHelper extends BasicViewHelper {
         this.areaDefinitions.push(new AreaDefinition(group!));
 
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
-        if (fleet.owner.idUser == userID) {
+        if (fleet.owner.id == userID) {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
 
@@ -168,7 +168,7 @@ export class SystemViewHelper extends BasicViewHelper {
         let xText = sortedPointsX[sortedPointsX.length - 1];
         let yText = sortedPointsY[0];
 
-        let text: Text = group!.text(fleet.name + " of " + fleet.owner.username)
+        let text: Text = group!.text(fleet.name + " of " + fleet.owner.name)
             .x(xText[0])
             .y(yText[1])
             .addClass("fleet-text")
@@ -185,7 +185,7 @@ export class SystemViewHelper extends BasicViewHelper {
      * @param dragEndForFleet
      * @private
      */
-    private dragEndFleetGroup(dragEndForFleet: (draggedFleet?: Fleet, targetFleet?: Fleet, orbit?: Orbit) => void) {
+    private dragEndFleetGroup(dragEndForFleet: (draggedFleet?: FleetMarker, targetFleet?: FleetMarker, orbit?: Orbit) => void) {
         return (e: any) => {
             const target = <SVGGElement>e.target;
             const id: string = target.id;
@@ -203,7 +203,7 @@ export class SystemViewHelper extends BasicViewHelper {
             if (!!areaDefinitions && areaDefinitions.length > 0) {
                 let detectedMergeTarget = areaDefinitions[0];
                 let targetFleet = this.getFleetByGroupID(detectedMergeTarget.referenceGroup.id());
-                if (!!targetFleet && draggedFleet.owner.idUser == userID && targetFleet.owner.idUser == userID) {
+                if (!!targetFleet && draggedFleet.owner.id == userID && targetFleet.owner.id == userID) {
                     // only if the logged-in user is the owner of both fleets
                     dragEndForFleet(draggedFleet, targetFleet, undefined);
                     return;

@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { CombatRoundKey } from './combatRoundKey';
-import { Fleet } from './fleet';
+import { FleetMarker } from './fleetMarker';
 import { Orbit } from './orbit';
 
 /**
@@ -18,7 +18,7 @@ import { Orbit } from './orbit';
  */
 export interface MovementAction { 
     combatRoundKey: CombatRoundKey;
-    actor: Fleet;
+    actor: FleetMarker;
     /**
      * The selected movement option for this action.
      */

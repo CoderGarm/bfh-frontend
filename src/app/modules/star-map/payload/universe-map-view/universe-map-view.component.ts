@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Output, ViewEncapsulation} from '@angular/core';
-import {Fleet, FleetApiService, FleetDistributionPerUser, FleetMove, Move, Orbit, StarMapApiService, StarSystem, UserJson} from "../../../../services/swagger";
+import {Fleet, FleetApiService, FleetDistributionPerUser, FleetMarker, FleetMove, Move, Orbit, StarMapApiService, StarSystem, UserJson} from "../../../../services/swagger";
 import {SVG} from "@svgdotjs/svg.js";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
@@ -76,7 +76,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             });
             this.subscriptions.push(sub);
             sub = this.fleetApi.getInterstellarMovingFleets().subscribe(resp => {
-                let fleetsInMotion: Map<Move, Fleet[]> = new Map<Move, Fleet[]>();
+                let fleetsInMotion: Map<Move, FleetMarker[]> = new Map<Move, FleetMarker[]>();
                 resp.filter(fleet => !!fleet.move).map((fleet) => {
                     if (!fleet.move) {
                         throw new Error("This fleet is in motion and should know this.");
@@ -117,7 +117,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.openFleetInfoDialogForFleetInMotion(fleet);
     }
 
-    openFleetInfoDialogForFleetInMotion(fleet?: Fleet) {
+    openFleetInfoDialogForFleetInMotion(fleet?: FleetMarker) {
         if (!fleet || !fleet.move || !fleet.move.targetOrbit.system) {
             return;
         }

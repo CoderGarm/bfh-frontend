@@ -366,7 +366,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
                 let actorReport = dataByFleet.get(hit.actor.id);
                 let lossRole = hit.lossesByHit[hitLog.combatRoundKey.id];
                 if (!!lossRole) {
-                    let lossRep = dataByFleet.get(lossRole.fleet.idFleet);
+                    let lossRep = dataByFleet.get(lossRole.fleet.id);
                     lossRep!.losses++;
                     actorReport!.kills++;
                 }
