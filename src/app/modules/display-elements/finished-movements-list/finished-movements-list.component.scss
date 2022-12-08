@@ -1,5 +1,12 @@
+@import "src/styles/variables";
+
 .mar-ri {
   margin-right: 25px;
+}
+
+.foreign-fleet {
+  color: $warning-color;
+  margin: 0 15px;
 }
 
 .icon {

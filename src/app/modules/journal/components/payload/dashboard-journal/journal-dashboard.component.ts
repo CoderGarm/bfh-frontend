@@ -3,11 +3,11 @@ import {ColonizationApiService, FinishedColonization, FleetApiService, FleetMove
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
-    selector: 'app-dashboard-journal',
-    templateUrl: './dashboard-journal.component.html',
-    styleUrls: ['./dashboard-journal.component.scss']
+    selector: 'app-journal-dashboard',
+    templateUrl: './journal-dashboard.component.html',
+    styleUrls: ['./journal-dashboard.component.scss']
 })
-export class DashboardJournalComponent extends SubscriptionManager implements OnInit {
+export class JournalDashboardComponent extends SubscriptionManager implements OnInit {
 
     finishedJobs: Job[] = [];
 

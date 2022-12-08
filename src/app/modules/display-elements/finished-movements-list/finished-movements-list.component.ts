@@ -33,6 +33,9 @@ export class FinishedMovementsListComponent implements AfterViewInit, OnChanges 
             const arr: TreeNode[] = [];
 
             const map: Map<string, FleetMovement[]> = new Map<string, FleetMovement[]>();
+
+            this.finishedMovements = this.finishedMovements.sort((a, b) => this.sortByAlertness(a, b));
+
             this.finishedMovements.forEach(m => {
                 const key = this.getKey(m);
                 let arr = map.get(key);
@@ -62,8 +65,31 @@ export class FinishedMovementsListComponent implements AfterViewInit, OnChanges 
         }
     }
 
+    private sortByAlertness(a: FleetMovement, b: FleetMovement) {
+        if (a.isForeignFleet && !b.isForeignFleet) {
+            return -1;
+        }
+        if (!a.isForeignFleet && b.isForeignFleet) {
+            return 1;
+        }
+
+        return a.isForeignFleet && b.isForeignFleet ? -1 : 1;
+    }
+
     private getKey(m: FleetMovement) {
-        return m.toPlanet + ', ' + m.toSystem;
+        let key: string = '';
+        if (!m.destinationPlanet) {
+            key += m.destinationSystem + ', Hyperlimit';
+        } else {
+            key += m.destinationPlanet + ', ' + m.destinationSystem;
+        }
+        if (!!m.destinationPlanetOwner) {
+            key += ', ' + m.destinationPlanetOwner;
+        } else {
+            key += ', uncolonized';
+        }
+
+        return key;
     }
 
     getLink(): string {

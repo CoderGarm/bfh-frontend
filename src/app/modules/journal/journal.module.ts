@@ -8,7 +8,7 @@ import {CombatArenaComponent} from './components/payload/combat-arena/combat-are
 import {JobJournalComponent} from './components/payload/job-journal/job-journal.component';
 import {FleetMovementJournalComponent} from './components/payload/fleet-movement-journal/fleet-movement-journal.component';
 import {FleetRoundStateComponent} from './components/payload/fleet-round-state/fleet-round-state.component';
-import {DashboardJournalComponent} from './components/payload/dashboard-journal/dashboard-journal.component';
+import {JournalDashboardComponent} from './components/payload/dashboard-journal/journal-dashboard.component';
 
 
 @NgModule({
@@ -20,7 +20,7 @@ import {DashboardJournalComponent} from './components/payload/dashboard-journal/
         JobJournalComponent,
         FleetMovementJournalComponent,
         FleetRoundStateComponent,
-        DashboardJournalComponent
+        JournalDashboardComponent
     ],
     imports: [
         SharedModuleModule,

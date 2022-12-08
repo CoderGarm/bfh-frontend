@@ -15,27 +15,39 @@
  */
 export interface FleetMovement { 
     /**
-     * The transferred resources.
+     * The fleets name.
      */
     fleetName: string;
     /**
+     * The fleet owners name.
+     */
+    fleetOwnerName: string;
+    /**
      * The origin planet's name.
      */
-    fromPlanet: string;
+    originPlanet?: string;
     /**
      * The origin systems's name.
      */
-    fromSystem: string;
+    originSystem: string;
     /**
      * The designation planet's name.
      */
-    toPlanet: string;
+    destinationPlanet?: string;
+    /**
+     * The designation planet owners name.
+     */
+    destinationPlanetOwner?: string;
     /**
      * The designation system's name.
      */
-    toSystem: string;
+    destinationSystem: string;
     /**
      * The duration of the journey.
      */
     duration: number;
+    /**
+     * If the incoming fleet is from a foreign empire.
+     */
+    isForeignFleet: boolean;
 }

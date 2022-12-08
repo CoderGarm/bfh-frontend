@@ -14,14 +14,18 @@
                     </mat-icon>
                 </button>
                 <mat-list>
-                    <div mat-line>Destination: {{node.name}}</div>
+                    <div mat-line>
+                        Destination: {{node.name}}
+                        <mat-icon mat-list-icon [inline]="true" class="foreign-fleet" *ngIf="node.finishedMovement.isForeignFleet">dangerous</mat-icon>
+                    </div>
                 </mat-list>
             </div>
             <div [class.transportation-tree-invisible]="!treeControl.isExpanded(node)" role="group">
                 <div *ngIf="node.children.length > 0">
                     <div mat-subheader *ngFor="let childNode of node.children">
-                        <img class="icon" src="{{getLink()}}">
-                        {{childNode.finishedMovement.fleetName}} from {{childNode.finishedMovement.fromPlanet}}, {{childNode.finishedMovement.fromSystem}}
+                        <img class="icon" src="{{getLink()}}" alt="fleet-icon">
+                        <mat-icon mat-list-icon [inline]="true" class="foreign-fleet" *ngIf="childNode.finishedMovement.isForeignFleet">dangerous</mat-icon>
+                        {{childNode.finishedMovement.fleetName}} of {{childNode.finishedMovement.fleetOwnerName}}
                     </div>
                 </div>
             </div>
