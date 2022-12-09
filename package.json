@@ -1,6 +1,6 @@
 {
   "name": "bfh-fe",
-  "version": "0.0.7",
+  "version": "0.0.7-hotfix",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

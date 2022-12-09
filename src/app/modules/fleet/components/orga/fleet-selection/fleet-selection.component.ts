@@ -1,16 +1,14 @@
 import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
-import {Subscription} from "rxjs";
 import {Fleet, FleetApiService} from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
+import {FleetChangeService} from "../../../../../services/fleet-change.service";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-fleet-selection',
     templateUrl: './fleet-selection.component.html',
     styleUrls: ['./fleet-selection.component.scss']
 })
-export class FleetSelectionComponent implements AfterViewInit {
-
-    private subscriptions: Subscription[] = [];
+export class FleetSelectionComponent extends SubscriptionManager implements AfterViewInit {
 
     /**
      * all the fleets which are controlled by the logged in user
@@ -23,7 +21,17 @@ export class FleetSelectionComponent implements AfterViewInit {
     @Output()
     selectedFleetOutput: EventEmitter<Fleet> = new EventEmitter<Fleet>();
 
-    constructor(private fleetApi: FleetApiService, private tokenStorage: TokenStorage) {
+    constructor(private fleetApi: FleetApiService,
+                private fleetChangeService: FleetChangeService) {
+        super();
+
+        const sub = this.fleetChangeService.nameChange.subscribe(resp => {
+            const filter = this.fleets.filter(f => f.idFleet === resp.idFleet);
+            if (filter.length == 1) {
+                filter[0].name = resp.name;
+            }
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {
@@ -34,9 +42,4 @@ export class FleetSelectionComponent implements AfterViewInit {
     selectFleet(fleet?: Fleet) {
         this.selectedFleetOutput.emit(fleet);
     }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    }
-
 }

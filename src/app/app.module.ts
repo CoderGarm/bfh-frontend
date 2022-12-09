@@ -45,6 +45,7 @@ import {MarkdownModule, MarkdownService} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {TransportationModule} from "./modules/transportation/transportation.module";
 import {BackgroundService} from "./services/background.service";
+import {FleetChangeService} from "./services/fleet-change.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -113,6 +114,7 @@ export let AppInjector: Injector;
         {provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true},
         SnackbarNotificationService,
         SpinnerService,
+        FleetChangeService,
         TypeService,
         BackgroundService,
         DatePipe,

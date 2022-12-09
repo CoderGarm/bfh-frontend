@@ -1,8 +1,19 @@
 <mat-card *ngIf="!!fleetInput">
     <mat-card-header>
         <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="construction">
-        <mat-card-title>
-            {{fleetInput.name}}
+        <mat-card-title class="title-block">
+            <form [formGroup]="formGroup">
+                <mat-form-field appearance="fill"
+                                class="name-input"
+                                (dblclick)="enable()">
+                    <input matInput autocomplete="off"
+                           class="name-input"
+                           type='text'
+                           formControlName='fleetName'
+                           (dblclick)="enable()">
+                    <mat-icon matSuffix (click)="save()" class="name-input disabled">save_alt</mat-icon>
+                </mat-form-field>
+            </form>
         </mat-card-title>
         <mat-card-subtitle>
             idFleet: {{fleetInput.idFleet}}
