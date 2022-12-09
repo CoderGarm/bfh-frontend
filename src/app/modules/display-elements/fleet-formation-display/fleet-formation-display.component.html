@@ -10,6 +10,7 @@
         <mat-list class="inner-list">
             <div mat-subheader>{{ 'fleet.composition.warShip-names' | translate }}</div>
             <mat-list-item *ngFor="let warShip of entry.value" class="height-fit-content">
+                <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state" [isWarship]="true"></app-spacecraft-state-block-display>
                 <div mat-subheader class="item height-fit-content">{{warShip.name}} -
                     {{warShip.shipClass.name}}
                     {{ 'fleet.composition.class.title' | translate }}</div>

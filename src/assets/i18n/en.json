@@ -259,6 +259,20 @@
     },
     "hull-capacities": "Construction capacities"
   },
+  "spacecraft": {
+    "state": {
+      "msg": {
+        "needs-ammunition": "Ammunition needed",
+        "needs-repair": "Repair needed",
+        "not-active": "Inactive",
+        "not-operational": "Inoperational"
+      },
+      "title": {
+        "fleet": "Fleet",
+        "warShip": "Warship"
+      }
+    }
+  },
   "star-map": {
     "universe-map": {
       "loading-spinner-message": "Gather information for star map..."

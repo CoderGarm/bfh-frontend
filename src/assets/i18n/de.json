@@ -259,6 +259,20 @@
     },
     "hull-capacities": "Rumpfkapazität"
   },
+  "spacecraft": {
+    "state": {
+      "msg": {
+        "needs-ammunition": "Munition benötigt",
+        "needs-repair": "Reparatur benötigt",
+        "not-active": "Inaktiv",
+        "not-operational": "Nicht betriebsbereit"
+      },
+      "title": {
+        "fleet": "Flotte",
+        "warShip": "Kriegsschiff"
+      }
+    }
+  },
   "star-map": {
     "universe-map": {
       "loading-spinner-message": "Lade Sternenkarte..."
