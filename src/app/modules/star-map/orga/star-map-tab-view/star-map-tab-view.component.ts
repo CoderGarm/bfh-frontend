@@ -1,13 +1,15 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {StarSystem} from "../../../../services/swagger";
 import {MatTabGroup} from "@angular/material/tabs";
+import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {StarMapCommunicationService} from "../../../../star-map-communication.service";
 
 @Component({
     selector: 'app-star-map-tab-view',
     templateUrl: './star-map-tab-view.component.html',
     styleUrls: ['./star-map-tab-view.component.scss']
 })
-export class StarMapTabViewComponent implements OnInit, OnChanges {
+export class StarMapTabViewComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     static path: string = 'star-map';
 
@@ -20,7 +22,10 @@ export class StarMapTabViewComponent implements OnInit, OnChanges {
 
     index?: number;
 
-    constructor() {
+    constructor(private starMapCommService: StarMapCommunicationService) {
+        super();
+
+        this.starMapCommService.starSystemSelectionOutput.subscribe(resp => this.run(resp))
     }
 
     ngOnInit(): void {
@@ -34,8 +39,8 @@ export class StarMapTabViewComponent implements OnInit, OnChanges {
         }
     }
 
-    run($event: StarSystem) {
-        this.starSystemSelectionInput = $event;
+    run(event: StarSystem) {
+        this.starSystemSelectionInput = event;
         this.index = 1;
     }
 

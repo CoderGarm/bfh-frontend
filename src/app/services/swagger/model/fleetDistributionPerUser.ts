@@ -19,10 +19,6 @@ import { UserJson } from './userJson';
 export interface FleetDistributionPerUser { 
     starSystem: StarSystem;
     /**
-     * The owner of the fleets in the system.
-     */
-    users: Array<UserJson>;
-    /**
      * The fleets by owner.
      */
     fleetMarker: Array<FleetMarker>;

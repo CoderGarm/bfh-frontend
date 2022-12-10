@@ -369,7 +369,7 @@ export class BattleViewHelper extends BasicViewHelper {
             if (false && move.movementType !== MovementTypeEnum.HOLDDISTANCE) {
                 // todo course plot needed for what?
                 const m = this.createMove(fleet, startOrbit, targetOrbit);
-                let {color, arr} = this.createCoursePlot(m);
+                let {color, arr} = this.createStellarCoursePlot(m);
                 this.canvas!.path(arr).fill(color).opacity(0.2);
             }
 
@@ -454,7 +454,7 @@ export class BattleViewHelper extends BasicViewHelper {
      * @param move the movement
      * @private
      */
-    protected createCoursePlot(move: Move) {
+    protected createStellarCoursePlot(move: Move) {
         if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
             throw new Error("The move should have a origin and a destination.");
         }

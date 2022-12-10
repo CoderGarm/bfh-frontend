@@ -1,12 +1,14 @@
 import {SubscriptionManager} from "./SubscriptionManager";
-import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Move, Orbit, StarSystem, UserJson, WarShip} from "./services/swagger";
-import {ArrayXY, Circle, CurveCommand, G, LineCommand, PathArrayAlias, Polygon, Rect, Shape, Svg, Text} from "@svgdotjs/svg.js";
+import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, FleetOrbit, MissileMovement, Move, Orbit, Planet, StarSystem, WarShip} from "./services/swagger";
+import {ArrayXY, Circle, CurveCommand, G, LineCommand, PathArrayAlias, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
 import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
 import {CelestialAreaDefinition} from "./modules/star-map/payload/celestial-area-definition";
 import {AreaDefinition} from "./modules/star-map/area-definition";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
 import {Component, HostListener} from "@angular/core";
+import {StarMapCommunicationService} from "./star-map-communication.service";
+import {AppInjector} from "./app.module";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 
@@ -14,6 +16,8 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
     template: ''
 })
 export class BasicViewHelper extends SubscriptionManager {
+
+    starMapCommService = AppInjector.get(StarMapCommunicationService);
 
     public static readonly PAN_ZOOM_OPTIONS = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
@@ -43,6 +47,8 @@ export class BasicViewHelper extends SubscriptionManager {
     protected static readonly PLANET_RADIUS = 5;
     protected static readonly STAR_RADIUS = 15;
 
+    knownStarSystemsByOrbit: Map<Orbit, StarSystem> = new Map<Orbit, StarSystem>();
+
     protected orbits?: Orbit[];
 
     protected smallestXOrbit?: Orbit;
@@ -67,6 +73,7 @@ export class BasicViewHelper extends SubscriptionManager {
      */
     protected hyperLimit?: number;
 
+    protected celestialObjectById: Map<String, Planet | StarSystem> = new Map<String, Planet | StarSystem>();
     protected celestialBodyById: Map<String, Circle> = new Map<String, Circle>();
     protected celestialOrbitById: Map<String, Orbit> = new Map<String, Orbit>();
     protected orbitsById: Map<String, Orbit> = new Map<String, Orbit>();
@@ -75,9 +82,10 @@ export class BasicViewHelper extends SubscriptionManager {
     protected fleetsById: Map<String, FleetMarker> = new Map<String, FleetMarker>();
     protected fleetsByText: Map<Text, FleetMarker> = new Map<Text, FleetMarker>();
     protected fleetTextsById: Map<String, Text> = new Map<String, Text>();
-    protected fleetOwnersById: Map<String, UserJson> = new Map<String, UserJson>();
-    protected fleetOwnerByText: Map<Text, UserJson> = new Map<Text, UserJson>();
+    protected fleetOwnersById: Map<String, AbstractId> = new Map<String, AbstractId>();
+    protected fleetOwnerByText: Map<Text, AbstractId> = new Map<Text, AbstractId>();
     protected markerTextsById: Map<String, Text> = new Map<String, Text>();
+    protected fleetPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
 
     protected warshipsById: Map<String, AbstractId> = new Map<String, AbstractId>();
     protected warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
@@ -93,6 +101,9 @@ export class BasicViewHelper extends SubscriptionManager {
 
     protected aspectRatio: number = 1;
 
+
+    selectedStarSystem?: StarSystem;
+    selectedFleetMarker: FleetMarker[] = [];
 
     // noinspection JSUnusedLocalSymbols
     @HostListener('window:resize', ['$event'])
@@ -112,9 +123,6 @@ export class BasicViewHelper extends SubscriptionManager {
         this.aspectRatio = screenWidth / screenHeight;
     }
 
-    /**
-     * clears the canvas to set new elements on a fresh screen
-     */
     clearCanvas() {
         if (!!this.canvas) {
             // remove all elements from canvas a little bit more performant
@@ -140,12 +148,6 @@ export class BasicViewHelper extends SubscriptionManager {
         }
     }
 
-    /**
-     * checks if the canvas exists and tries to set them
-     *
-     * @param canvas the canvas to set
-     * @private
-     */
     protected setCanvas(canvas: Svg) {
         if (!canvas) {
             throw new Error("The canvas isn't initialized.");
@@ -158,9 +160,7 @@ export class BasicViewHelper extends SubscriptionManager {
         return NavigationCalculator.convertDistanceToMetric(distance, this.standardDistanceMetric);
     }
 
-    protected drawCelestial(orbitDefinition: OrbitDefinition,
-                            callbackFunctionForClick: Function | null,
-                            mouseoverForInfo?: (event: PointerEvent) => (StarSystem | undefined)) {
+    protected drawCelestial(orbitDefinition: OrbitDefinition) {
         const orbit: Orbit = orbitDefinition.orbit;
         let orbitID = this.getOrbitID(orbit);
         let celestialBodyID = this.getCelestialBodyID(orbit);
@@ -199,11 +199,13 @@ export class BasicViewHelper extends SubscriptionManager {
             .radius(BasicViewHelper.PLANET_RADIUS)
             .id(celestialBodyID)
             .fill(color)
-            .click(callbackFunctionForClick)
-            .mouseover((e: PointerEvent) => this.mouseoverForCelestial(e, mouseoverForInfo))
+            .click(this.clickEventForCelestial)
+            .mouseover(this.mouseoverForCelestial)
             .mouseleave(this.mouseleaveForCelestial);
 
         this.celestialBodyById.set(celestialBodyID, circle);
+        this.celestialObjectById.set(orbitID, orbitDefinition.celestial);
+        this.celestialObjectById.set(celestialBodyID, orbitDefinition.celestial);
 
         let text: Text = new Text()
             .text(orbitDefinition.name)
@@ -221,76 +223,88 @@ export class BasicViewHelper extends SubscriptionManager {
         this.celestialOrbitById.set(celestialBodyID, orbit);
     }
 
-    private mouseoverForCelestial = (event: PointerEvent, mouseoverForInfo?: Function) => {
+    private mouseoverForCelestial = (event: PointerEvent) => {
         const orbitText = this.getOrbitTextByEvent(event);
         if (!!orbitText) {
-            // fixme replace this.canvas?.add(orbitText)
+            this.canvas?.add(orbitText)
+        }
+    }
+
+    private mouseleaveForCelestial = (event: PointerEvent) => {
+        const orbitText = this.getOrbitTextByEvent(event);
+        if (!!orbitText) {
+            this.canvas?.removeElement(orbitText)
+        }
+        // fixme display as long as no click somewhere
+        let id = this.getIdFromEvent(event);
+        let elements = this.canvas!.children().filter(value => value.id() === id + "-circle-cycle");
+        if (elements.length > 0) {
+            //this.canvas!.removeElement(elements[0]);
+        }
+    }
+
+    private clickEventForCelestial = (event: PointerEvent) => {
+        if (!this.selectedStarSystem && this.selectedFleetMarker.length == 0) {
+            let orbitByID = this.getOrbitOfCelestialByEvent(event);
+            if (!!orbitByID) {
+                let system = this.knownStarSystemsByOrbit.get(orbitByID);
+                this.starMapCommService.starSystemSelectionOutput.emit(system);
+                return;
+            }
+        }
+        if (!!this.selectedStarSystem) {
+            return;
         }
 
         const celestial = this.getCelestialByEvent(event);
         if (!!celestial) {
             let id = this.getIdFromEvent(event);
             let elements = this.canvas!.children().filter(value => value.id() === id + "-circle-cycle");
-            if (elements.length > 0) {
-                const indexOf = this.canvas!.children().indexOf(elements[0]);
-                if (indexOf == -1) {
-                    this.canvas!.removeElement(celestial);
-//fixme idee: select subject und object und notch unten zeigt aktionen an
-                    let x = celestial.cx();
-                    let y = celestial.cy();
-                    const circle = new Circle().x(x).y(y).radius(BasicViewHelper.PLANET_RADIUS * 3).addClass("circle-cycle").id(celestial.id() + "-circle-cycle");
+            if (elements.length == 0) {
+                let x = celestial.cx();
+                let y = celestial.cy();
+                const circle = new Circle().x(x).y(y).radius(BasicViewHelper.PLANET_RADIUS * 3).addClass("circle-cycle").id(celestial.id() + "-circle-cycle");
 
-                    this.canvas!.add(circle)
-                    this.canvas!.add(celestial)
+                this.canvas!.add(circle);
 
-                    if (!!mouseoverForInfo) {
-                        const starSystem: StarSystem = mouseoverForInfo(event);
-                        if (!starSystem) {
-                            return;
-                        }
-                        const group = new G().x(x).y(y).addClass("info-group").id(celestial.id() + "-info-group");
-
-                        const rect = new Rect().x(x).y(y).addClass("info-block").id(celestial.id() + "-info-block");
-                        group.add(rect);
-
-                        x += 10;
-                        y += 10;
-                        let text = new Text().cx(x).cy(y).text(starSystem.name);
-                        group.add(text);
-
-                        y += 15;
-                        text = new Text().cx(x).cy(y).text(starSystem.starClassType.spectralClass);
-                        group.add(text);
-
-                        this.canvas!.add(group);
-                    }
-                }
+                this.selectedStarSystem = this.getStarSystemByEvent(event);
             }
         }
-    }
+    };
 
-    /**
-     * call back function for hovering over a celestial
-     *
-     * @param event
-     */
-    private mouseleaveForCelestial = (event: PointerEvent) => {
-        const orbitText = this.getOrbitTextByEvent(event);
-        if (!!orbitText) {
-            // fixme remove if info is shown this.canvas?.removeElement(orbitText)
+    private clickEventForFleetGroup = (event: PointerEvent) => {
+        let fleet = this.getFleetByEvent(event);
+        if (!fleet) {
+            const text = this.getFleetTextByEvent(event);
+            if (!!text) {
+                fleet = this.getFleetByText(text);
+            }
         }
-        /* fixme display as long as no other info is shown
-        */
-        let id = this.getIdFromEvent(event);
-        let elements = this.canvas!.children().filter(value => value.id() === id + "-circle-cycle");
-        if (elements.length > 0) {
-            //this.canvas!.removeElement(elements[0]);
+        if (!!fleet) {
+            let id = this.getIdFromEvent(event);
+            let fleetShark: Polygon | G | undefined = this.getFleetSharkByID(id);
+            if (!fleetShark) {
+                fleetShark = this.groupsByID.get(id);
+            }
+            let elements = this.canvas!.children().filter(value => value.id() === id + "-circle-cycle");
+            if (!!fleetShark && elements.length == 0) {
+                let x = fleetShark.cx();
+                let y = fleetShark.cy();
+                const circle = new Circle().x(x).y(y).radius(BasicViewHelper.PLANET_RADIUS * 3).addClass("circle-cycle").id(fleetShark.id() + "-circle-cycle");
+                this.canvas!.add(circle);
+
+                this.selectedFleetMarker.push(fleet!);
+            }
         }
-        elements = this.canvas!.children().filter(value => value.id() === id + "-info-group");
-        if (elements.length > 0) {
-            //this.canvas!.removeElement(elements[0]);
+    };
+
+    private getStarSystemByEvent = (event: PointerEvent): StarSystem | undefined => {
+        let orbitByID = this.getOrbitOfCelestialByEvent(event);
+        if (!!orbitByID) {
+            return this.knownStarSystemsByOrbit.get(orbitByID);
         }
-    }
+        return undefined;
+    };
 
     mouseoverForMarker = (event: PointerEvent) => {
         const orbitText = this.getMarkerTextByEvent(event);
@@ -306,13 +320,6 @@ export class BasicViewHelper extends SubscriptionManager {
         }
     }
 
-    /**
-     * calculates the distance between two points
-     *
-     * @param firstCoordinate the first coordinate
-     * @param secondCoordinate the second coordinate
-     * @private
-     */
     public static calculateDistance(firstCoordinate: number, secondCoordinate: number): number {
         return Math.sqrt(Math.pow(firstCoordinate, 2) + Math.pow(secondCoordinate, 2));
     }
@@ -331,30 +338,6 @@ export class BasicViewHelper extends SubscriptionManager {
         this.radiusOfCoordinateCross *= 1.1;
 
         this.createLocalPolarCoordinateSystem(0, 0, this.radiusOfCoordinateCross, undefined);
-
-        /*let steps = 6;
-        const radiusSteps = this.radiusOfCoordinateCross / steps;
-        for (let i = 0; i < steps; i++) {
-            this.canvas!
-                .circle()
-                .x(0)
-                .y(0)
-                .fill("none")
-                .id("coordCross" + i)
-                .addClass("coordCross")
-                .radius(radiusSteps * i);
-        }
-        const degree = 12;
-        for (let j = 1; j <= 30; j++) {
-            const angle = j * degree;
-            const x = this.radiusOfCoordinateCross * Math.cos(angle * Math.PI / 180);
-            const y = this.radiusOfCoordinateCross * Math.sin(angle * Math.PI / 180);
-            const points: ArrayXY[] = [[0, 0], [x, y]];
-            this.canvas!
-                .line(points)
-                .addClass("coordCross")
-        }
-                */
     }
 
     protected createLocalPolarCoordinateSystem(xBase: number, yBase: number, radius: number, idPrefix?: string) {
@@ -621,31 +604,82 @@ export class BasicViewHelper extends SubscriptionManager {
         return points;
     }
 
-    /**
-     * creates an unique orbit identifier
-     *
-     * @param orbit the orbit to identify
-     * @private
-     */
+    protected createFleetGroup(fleetMarker: FleetMarker,
+                               userIsOwner: boolean,
+                               fleetSharkPoints: ArrayXY[],
+                               dblClickForFleet: (event: PointerEvent, fleetOrbit: FleetOrbit | undefined) => void,
+                               fleetOrbit: FleetOrbit | undefined,
+                               fleetSharkText: string) {
+        let fleetSharkID = this.getFleetSharkID(fleetMarker);
+        this.fleetsById.set(fleetSharkID, fleetMarker);
+        this.fleetOwnersById.set(fleetSharkID, fleetMarker.owner);
+
+        let group = this.canvas?.group().id(fleetSharkID + "-group");
+        this.groupsByID.set(fleetSharkID + "-group", group!);
+
+        let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
+        if (userIsOwner) {
+            fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
+        }
+
+        const fleetShark = group!
+            .polygon(fleetSharkPoints)
+            .fill(fleetSharkColor)
+            .addClass("stroke-outline")
+            .id(fleetSharkID)
+            .click(this.clickEventForFleetGroup)
+            .dblclick((event: PointerEvent) => {
+                dblClickForFleet(event, fleetOrbit);
+            });
+        this.fleetPolygonsById.set(fleetSharkID, fleetShark);
+
+        let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
+        let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
+
+        this.displayFleetStates(fleetMarker, sortedPointsX, sortedPointsY, group, fleetSharkID);
+
+        let xText = sortedPointsX[sortedPointsX.length - 1];
+        let yText = sortedPointsY[0];
+
+        let text: Text = group!.text(fleetSharkText)
+            .x(xText[0])
+            .y(yText[1])
+            .addClass("fleet-text")
+            .id(fleetSharkID + "-txt")
+            .click(this.clickEventForFleetGroup)
+            .dblclick((event: PointerEvent) => {
+                dblClickForFleet(event, fleetOrbit);
+            });
+
+        this.canvas?.add(group!);
+        this.fleetTextsById.set(fleetSharkID + "-txt", text);
+        this.fleetsByText.set(text, fleetMarker);
+        this.fleetOwnerByText.set(text, fleetMarker.owner);
+        return group;
+    }
+
     protected getOrbitID(orbit: Orbit): string {
         return this.ORBIT_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate.coordinate + "-" + orbit.yCoordinate.coordinate;
     }
 
-    /**
-     * prints the course path for a fleet movement
-     *
-     * @param move the movement
-     * @private
-     */
-    protected createCoursePlot(move: Move) {
+    protected createStellarCoursePlot(move: Move) {
         if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
             throw new Error("The move should have a origin and a destination.");
         }
-        let startX: number = this.convertToStandardMetric(move.startOrbit.orbit.xCoordinate);
-        let startY: number = this.convertToStandardMetric(move.startOrbit.orbit.yCoordinate);
+        const xOrigin = move.startOrbit.orbit.xCoordinate;
+        const yOrigin = move.startOrbit.orbit.yCoordinate;
+        const xDestination = move.targetOrbit.orbit.xCoordinate;
+        const yDestination = move.targetOrbit.orbit.yCoordinate;
 
-        let endX: number = this.convertToStandardMetric(move.targetOrbit.orbit.xCoordinate);
-        let endY: number = this.convertToStandardMetric(move.targetOrbit.orbit.yCoordinate);
+        return this.createCoursePlot(xOrigin, yOrigin, xDestination, yDestination);
+    }
+
+    protected createCoursePlot(xOrigin: Distance, yOrigin: Distance, xDestination: Distance, yDestination: Distance) {
+        let startX: number = this.convertToStandardMetric(xOrigin);
+        let startY: number = this.convertToStandardMetric(yOrigin);
+
+        let endX: number = this.convertToStandardMetric(xDestination);
+        let endY: number = this.convertToStandardMetric(yDestination);
 
         let relativeTargetX: number = endX - startX;
         let relativeTargetY: number = endY - startY;
@@ -679,12 +713,6 @@ export class BasicViewHelper extends SubscriptionManager {
         return {color, arr};
     }
 
-    /**
-     * states that two orbits have the same coordinates
-     *
-     * @param first
-     * @param second
-     */
     protected isSameOrbit(first: Orbit, second: Orbit): boolean {
         let isEqual = true;
         if (first.xCoordinate.coordinate != second.xCoordinate.coordinate) {
@@ -696,10 +724,6 @@ export class BasicViewHelper extends SubscriptionManager {
         return isEqual;
     }
 
-    /**
-     * calculates the hyper limit
-     * @param system
-     */
     protected calculateHyperLimit(system: StarSystem) {
         const lightMinutesToHyperLimit = system.starClassType.lightMinutesToHyperLimit;
         const hyperRadius: Distance = {
@@ -707,6 +731,38 @@ export class BasicViewHelper extends SubscriptionManager {
             distanceMetric: DistanceMetricEnum.LM
         }
         return this.convertToStandardMetric(hyperRadius);
+    }
+
+    protected displayFleetStates(fleetMarker: FleetMarker, sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[], group: G | undefined, fleetSharkID: string) {
+        const state = fleetMarker.state;
+        if (!state.isActive) {
+            let xMarker = sortedPointsX[0];
+            let yMarker = sortedPointsY[sortedPointsY.length - 1];
+
+            const cssActivityMarker = state.needsRepair ? 'under-construction' : '';
+            const cssOperationalMarker = !state.isOperational ? 'inoperational' : '';
+
+            group!
+                .circle(5)
+                .addClass("stroke-outline")
+                .x(xMarker[0] - 2.5)
+                .y(yMarker[1] - 2.5)
+                .addClass(cssActivityMarker)
+                .addClass(cssOperationalMarker)
+                .mouseover(this.mouseoverForMarker)
+                .mouseleave(this.mouseleaveForMarker);
+
+            let txt = state.needsRepair ? 'Fleet is in dock' : '';
+            txt = !state.isOperational ? 'Fleet is inoperational' : txt;
+
+            let text: Text = new Text().text(txt)
+                .x(xMarker[0] - 2.5)
+                .y(yMarker[1] - 2.5)
+                .addClass("marker-text")
+                .id(fleetSharkID + "-txt");
+
+            this.markerTextsById.set(fleetSharkID + "-txt", text);
+        }
     }
 
     protected getFleetSharkID(fleet: Fleet | AbstractId | FleetMarker): string {
@@ -778,6 +834,14 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.celestialBodyById.get(id);
     }
 
+    protected getCelestialObjectByID(id: string): Planet | StarSystem | undefined {
+        return this.celestialObjectById.get(id);
+    }
+
+    protected getFleetSharkByID(id: string): Polygon | undefined {
+        return this.fleetPolygonsById.get(id);
+    }
+
     protected getOrbitOfCelestialByEvent(event: PointerEvent | MouseEvent): Orbit | undefined {
         let id = this.getIdFromEvent(event);
         return this.getOrbitOfCelestialByID(id);
@@ -802,20 +866,16 @@ export class BasicViewHelper extends SubscriptionManager {
         return this.markerTextsById.get(id);
     }
 
-    protected getOwnerByID(id: string): UserJson | undefined {
+    protected getOwnerByID(id: string): AbstractId | undefined {
         return this.fleetOwnersById.get(id);
     }
 
-    protected getFleetOwnerByGroupID(id: string): UserJson | undefined {
+    protected getFleetOwnerByGroupID(id: string): AbstractId | undefined {
         let reducedId = id.replace("-group", "");
         return this.getOwnerByID(reducedId);
     }
 
-    protected getFleetSharkIdByFleetMarker(fleetMarker: FleetMarker): string {
-        return this.USER_SELECTOR_ID_PREFIX + "-" + fleetMarker.owner.id + "-" + fleetMarker.fleet.id;
-    }
-
-    protected getFleetOwnerByText(text: Text): UserJson | undefined {
+    protected getFleetOwnerByText(text: Text): AbstractId | undefined {
         return this.fleetOwnerByText.get(text);
     }
 
@@ -834,7 +894,7 @@ export class BasicViewHelper extends SubscriptionManager {
         return id;
     }
 
-    protected getFleetOwnerForOwnerByEvent(event: PointerEvent | MouseEvent): UserJson | undefined {
+    protected getFleetOwnerForOwnerByEvent(event: PointerEvent | MouseEvent): AbstractId | undefined {
         let id = this.getIdFromEvent(event);
         return this.getOwnerByID(id);
     }

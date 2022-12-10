@@ -632,21 +632,16 @@ export class FleetApiService {
      * Plan a movement of a fleet to another celestial.
      * 
      * @param body default response
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public planMovement(body: FleetMove, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Move>;
-    public planMovement(body: FleetMove, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Move>>;
-    public planMovement(body: FleetMove, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Move>>;
-    public planMovement(body: FleetMove, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public planMovement(body: FleetMove, observe?: 'body', reportProgress?: boolean): Observable<Move>;
+    public planMovement(body: FleetMove, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Move>>;
+    public planMovement(body: FleetMove, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Move>>;
+    public planMovement(body: FleetMove, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling planMovement.');
-        }
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling planMovement.');
         }
 
         let headers = this.defaultHeaders;
@@ -670,7 +665,7 @@ export class FleetApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Move>('post',`${this.basePath}/api/private/fleet/planMove/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Move>('post',`${this.basePath}/api/private/fleet/planMove`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -685,21 +680,16 @@ export class FleetApiService {
      * Plan a movement of a fleet to another celestial.
      * 
      * @param body default response
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public planMovements(body: Array<FleetMove>, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Move>>;
-    public planMovements(body: Array<FleetMove>, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Move>>>;
-    public planMovements(body: Array<FleetMove>, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Move>>>;
-    public planMovements(body: Array<FleetMove>, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public planMovements(body: Array<FleetMove>, observe?: 'body', reportProgress?: boolean): Observable<Array<Move>>;
+    public planMovements(body: Array<FleetMove>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Move>>>;
+    public planMovements(body: Array<FleetMove>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Move>>>;
+    public planMovements(body: Array<FleetMove>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling planMovements.');
-        }
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling planMovements.');
         }
 
         let headers = this.defaultHeaders;
@@ -723,7 +713,7 @@ export class FleetApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Array<Move>>('post',`${this.basePath}/api/private/fleet/planMoves/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Move>>('post',`${this.basePath}/api/private/fleet/planMoves`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMove, FleetOrbit, Move, Planet, PlanetApiService} from "../../../services/swagger";
+import {Fleet, FleetApiService, FleetMarker, FleetMove, FleetOrbit, Move, Planet, PlanetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 
@@ -13,7 +13,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     /**
      * the fleet which will take all the other war ships
      */
-    @Input()
+    @Input() // please note that the missing type-safetyness of javascript allows it to use a FleetMarker here
     fleetInput?: Fleet;
     fleetInputDefinition: string = "fleetInput";
 
@@ -36,28 +36,47 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
      */
     plannedMovement?: Move;
 
-    constructor(@Optional() @Inject('fleetInput') fleetSubject: Fleet | undefined,
+    constructor(@Optional() @Inject('fleetInput') fleetInput: Fleet | FleetMarker | undefined,
                 @Optional() @Inject('targetOrbit') targetOrbit: FleetOrbit | undefined,
                 @Optional() @Inject('callback') cb: Function | null,
                 private tokenStorage: TokenStorage,
-                private fleetApi: FleetApiService,
-                private planetApi: PlanetApiService) {
+                private fleetService: FleetApiService,
+                private planetService: PlanetApiService) {
         super();
         this.callback = cb;
-        this.fleetInput = fleetSubject;
+        this.fetchFleet(fleetInput);
         this.targetOrbit = targetOrbit;
         this.fetchDestination();
     }
 
+    private fetchFleet(fleetSubject: Fleet | FleetMarker | undefined) {
+        if (!fleetSubject) {
+            return;
+        }
+        if ('idFleet' in fleetSubject) {
+            this.fleetInput = fleetSubject;
+            this.fetchPossibleMovement();
+            this.fetchDestination();
+            return;
+        }
+        if ('fleet' in fleetSubject) {
+            const sub = this.fleetService.getFleet(fleetSubject.fleet.id).subscribe(resp => {
+                this.fleetInput = resp;
+                this.fetchPossibleMovement();
+                this.fetchDestination();
+            });
+            this.subscriptions.push(sub);
+        }
+    }
+
     ngAfterViewInit(): void {
-        this.fetchPossibleMovement();
     }
 
     private fetchDestination() {
         if (!!this.targetOrbit && !!this.targetOrbit.system && !!this.targetOrbit.orbit) {
             let idStarSystem = this.targetOrbit.system.idStarSystem;
             let orbit = this.targetOrbit.orbit;
-            let sub = this.planetApi.getPlanetByCoordinates(orbit, idStarSystem)
+            let sub = this.planetService.getPlanetByCoordinates(orbit, idStarSystem)
                 .subscribe(resp => {
                     this.destination = resp;
                     this.createDestinationRepresentation();
@@ -74,13 +93,12 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
      * @private
      */
     private fetchPossibleMovement() {
-        let userID = this.tokenStorage.getUserID();
-        if (!!userID && !!this.fleetInput && !this.fleetInput.move && !!this.targetOrbit) {
+        if (!!this.fleetInput && !this.fleetInput.move && !!this.targetOrbit) {
             const fm: FleetMove = {
                 idFleetToMove: this.fleetInput.idFleet,
                 destinationOrbit: this.targetOrbit.orbit
             }
-            let sub = this.fleetApi.planMovement(fm, userID).subscribe(resp => {
+            let sub = this.fleetService.planMovement(fm).subscribe(resp => {
                 this.plannedMovement = resp;
             });
             this.subscriptions.push(sub);
@@ -88,6 +106,9 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        if (changes['fleetInput']) {
+            this.fetchFleet(changes['fleetInput'].currentValue);
+        }
         this.fetchPossibleMovement();
         this.fetchDestination();
     }

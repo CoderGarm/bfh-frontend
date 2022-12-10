@@ -59,7 +59,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                     if (!this.canvas) {
                         this.createCanvas()
                     }
-                    this.setOrbits(this.canvas!, system, this.clickEventForPlanet);
+                    this.setOrbits(this.canvas!, system);
                 });
             this.subscriptions.push(sub);
 
@@ -109,15 +109,6 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
         } else {
             this.clearCanvas();
         }
-    }
-
-    /**
-     * call back function for using a click at an element
-     *
-     * @param event
-     */
-    private clickEventForPlanet = (event: PointerEvent) => {
-        let orbitOfCelestialByEvent: Orbit | undefined = this.getOrbitOfCelestialByEvent(event);
     }
 
     /**
@@ -236,12 +227,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
         });
     }
 
-    /**
-     * call back function for using a click at an element
-     *
-     * @param event
-     */
-    private dblClickForFleet = (event: PointerEvent) => {
+    private dblClickForFleet = (event: PointerEvent, fleetOrbit: FleetOrbit | undefined) => {
         let fleet = this.getFleetByEvent(event);
         if (!fleet) {
             let text = this.getFleetTextByEvent(event);

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, HostListener, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService} from "../../../services/swagger";
+import {Fleet, FleetApiService, FleetMarker} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {FormControl, FormGroup} from "@angular/forms";
 import {FleetChangeService} from "../../../services/fleet-change.service";
@@ -19,14 +19,14 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     /**
      * the fleet to display
      */
-    @Input()
+    @Input() // please note that the missing type-safetyness of javascript allows it to use a FleetMarker here
     fleetInput?: Fleet;
 
     isOpen: boolean = false;
 
     formGroup: FormGroup;
 
-    constructor(@Optional() @Inject('fleetInput') fleet: Fleet | undefined,
+    constructor(@Optional() @Inject('fleetInput') fleet: Fleet | FleetMarker | undefined,
                 private fleetService: FleetApiService,
                 private fleetChangeService: FleetChangeService) {
         super();
@@ -35,8 +35,25 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
             fleetName: new FormControl({value: '', disabled: true})
         });
 
-        this.fleetInput = fleet;
-        this.detectName();
+        this.fetchFleet(fleet);
+    }
+
+    private fetchFleet(fleetSubject: Fleet | FleetMarker | undefined) {
+        if (!fleetSubject) {
+            return;
+        }
+        if ('idFleet' in fleetSubject) {
+            this.fleetInput = fleetSubject;
+            this.detectName();
+            return;
+        }
+        if ('fleet' in fleetSubject) {
+            const sub = this.fleetService.getFleet(fleetSubject.fleet.id).subscribe(resp => {
+                this.fleetInput = resp;
+                this.detectName();
+            });
+            this.subscriptions.push(sub);
+        }
     }
 
     ngAfterViewInit(): void {
@@ -44,7 +61,7 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['fleetInput']) {
-            this.detectName();
+            this.fetchFleet(changes['fleetInput'].currentValue);
         }
     }
 

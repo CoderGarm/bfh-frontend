@@ -1,5 +1,17 @@
-import {AfterViewInit, Component, EventEmitter, Output, ViewEncapsulation} from '@angular/core';
-import {Fleet, FleetApiService, FleetDistributionPerUser, FleetMarker, FleetMove, Move, Orbit, StarMapApiService, StarSystem, UserJson} from "../../../../services/swagger";
+import {AfterViewInit, Component, ViewEncapsulation} from '@angular/core';
+import {
+    AbstractId,
+    Fleet,
+    FleetApiService,
+    FleetDistributionPerUser,
+    FleetMarker,
+    FleetMove,
+    FleetOrbit,
+    Move,
+    Orbit,
+    StarMapApiService,
+    StarSystem
+} from "../../../../services/swagger";
 import {SVG} from "@svgdotjs/svg.js";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
@@ -25,15 +37,7 @@ import {DialogConfigHelper} from "../../../../DialogConfigHelper";
 })
 export class UniverseMapViewComponent extends InterstellarViewHelper implements AfterViewInit {
 
-    /**
-     * all known star systems
-     */
     knownStarSystems: StarSystem[] = [];
-
-    private knownStarSystemsByOrbit: Map<Orbit, StarSystem> = new Map<Orbit, StarSystem>();
-
-    @Output()
-    starSystemSelectionOutput: EventEmitter<StarSystem> = new EventEmitter<StarSystem>();
 
     fleetDistributionPerUsers: FleetDistributionPerUser[] = [];
 
@@ -69,7 +73,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             this.clearCanvas();
             this.knownStarSystems.forEach((system) => this.knownStarSystemsByOrbit.set(system.orbit, system));
             let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), this.knownStarSystems);
-            this.setOrbits(this.canvas!, orbitDefinitions, this.clickEventForStarSystem, this.mouseoverForInfo);
+            this.setOrbits(this.canvas!, orbitDefinitions);
             let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
                 this.fleetDistributionPerUsers = resp;
                 this.setFleetsAtSystem(this.canvas!, resp, this.dblClickForFleet, this.dragEndForFleet);
@@ -137,12 +141,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.userFleetInfoDialog = dialogRef;
     }
 
-    /**
-     * call back function for using a click at an element
-     * @param event
-     * @param system
-     */
-    private dblClickForFleet = (event: PointerEvent, system: StarSystem) => {
+    private dblClickForFleet = (event: PointerEvent, fleetOrbit: FleetOrbit | undefined) => {
         let owner = this.getFleetOwnerForOwnerByEvent(event);
         if (!owner) {
             let text = this.getFleetTextByEvent(event);
@@ -150,24 +149,19 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 owner = this.getFleetOwnerByText(text);
             }
         }
-        this.openFleetInfoDialog(owner, system)
+        this.openFleetInfoDialog(owner, fleetOrbit?.system)
     }
 
-    /**
-     * opens the owner fleet info dialog
-     * @param owner
-     * @param system
-     */
-    openFleetInfoDialog(owner?: UserJson, system?: StarSystem) {
+    openFleetInfoDialog(owner?: AbstractId, system?: StarSystem) {
         if (!owner || !system) {
             return;
         }
         // todo if open dont open again
         const dialogConfig = DialogConfigHelper.createDialog();
 
-        let dialogData = new DialogData('Fleets of ' + owner.username + ' in ' + system.name);
+        let dialogData = new DialogData('Fleets of ' + owner.name + ' in ' + system.name);
         let dialogRef: MatDialogRef<any> | undefined;
-        this.fleetApi.getFleetsBySystemAndOwner(system.idStarSystem, owner.idUser)
+        this.fleetApi.getFleetsBySystemAndOwner(system.idStarSystem, owner.id)
             .subscribe((resp: Fleet[]) => {
                 dialogData.addDialogDataPerTemplate(InterstellarFleetDisplayComponent,
                     ['fleets'],
@@ -183,15 +177,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         }
     }
 
-    /**
-     * drag end callback for a dragged fleet to another fleet or an orbit
-     *
-     * @param draggedFleetSharkForUser the moved fleet
-     * @param fromSystem the system where the move comes from
-     * @param targetOrbit the destination orbit
-     */
-    private dragEndForFleet = (draggedFleetSharkForUser?: UserJson, fromSystem?: StarSystem, targetOrbit?: Orbit) => {
-        if (!draggedFleetSharkForUser || !fromSystem || !targetOrbit) {
+    private dragEndForFleet = (fleetOwner?: AbstractId, fromSystem?: StarSystem, targetOrbit?: Orbit) => {
+        if (!fleetOwner || !fromSystem || !targetOrbit) {
             return;
         }
         // todo if open dont open again
@@ -199,21 +186,21 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
         let sameOrbit = this.isSameOrbit(fromSystem.orbit, targetOrbit);
         if (!sameOrbit) {
-            this.createAndOpenFleetMoveDialog(dialogConfig, draggedFleetSharkForUser, fromSystem, targetOrbit);
+            this.createAndOpenFleetMoveDialog(dialogConfig, fleetOwner, fromSystem, targetOrbit);
             return;
         }
     }
 
-    private createAndOpenFleetMoveDialog(dialogConfig: MatDialogConfig, draggedFleetSharkForUser: UserJson, fromSystem: StarSystem, targetOrbit: Orbit) {
+    private createAndOpenFleetMoveDialog(dialogConfig: MatDialogConfig, fleetOwner: AbstractId, fromSystem: StarSystem, targetOrbit: Orbit) {
         let starSystems = this.knownStarSystems.filter(p => p.orbit === targetOrbit);
         if (!starSystems || starSystems.length != 1) {
             throw new Error("No orbit should have more than one planet.");
         }
 
-        let dialogData = new DialogData('Fleets of ' + draggedFleetSharkForUser.username + ' in ' + fromSystem.name);
+        let dialogData = new DialogData('Fleets of ' + fleetOwner.name + ' in ' + fromSystem.name);
         let dialogRef: MatDialogRef<any> | undefined;
 
-        this.fleetApi.getFleetsBySystemAndOwner(fromSystem.idStarSystem, draggedFleetSharkForUser.idUser)
+        this.fleetApi.getFleetsBySystemAndOwner(fromSystem.idStarSystem, fleetOwner.id)
             .subscribe((resp: Fleet[]) => {
                 resp = resp.filter(fleet => fleet.isFTLCapable);
                 dialogData.addDialogDataPerTemplate(InterstellarFleetMovementEditComponent,
@@ -260,20 +247,4 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             return move;
         });
     }
-
-    private clickEventForStarSystem = (event: PointerEvent) => {
-        let orbitByID = this.getOrbitOfCelestialByEvent(event);
-        if (!!orbitByID) {
-            let system = this.knownStarSystemsByOrbit.get(orbitByID);
-            this.starSystemSelectionOutput.emit(system);
-        }
-    };
-
-    private mouseoverForInfo = (event: PointerEvent): StarSystem | undefined => {
-        let orbitByID = this.getOrbitOfCelestialByEvent(event);
-        if (!!orbitByID) {
-            return this.knownStarSystemsByOrbit.get(orbitByID);
-        }
-        return undefined;
-    };
 }

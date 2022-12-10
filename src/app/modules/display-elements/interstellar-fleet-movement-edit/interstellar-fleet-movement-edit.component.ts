@@ -124,8 +124,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         if (fleetMoves.length < 1) {
             return;
         }
-        let userID = this.tokenStorage.getUserID();
-        let sub = this.fleetApi.planMovements(fleetMoves, userID).subscribe(resp => {
+        let sub = this.fleetApi.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
         });
         this.subscriptions.push(sub);

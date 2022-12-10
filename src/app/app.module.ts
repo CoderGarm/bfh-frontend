@@ -46,6 +46,7 @@ import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {TransportationModule} from "./modules/transportation/transportation.module";
 import {BackgroundService} from "./services/background.service";
 import {FleetChangeService} from "./services/fleet-change.service";
+import {StarMapCommunicationService} from "./star-map-communication.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -121,6 +122,7 @@ export let AppInjector: Injector;
         NumberShortPipe,
         NumberThousandSeparatorPipe,
         MarkdownService,
+        StarMapCommunicationService,
     ],
     exports: [
         MarkdownModule,
