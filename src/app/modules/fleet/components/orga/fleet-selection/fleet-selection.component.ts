@@ -35,8 +35,17 @@ export class FleetSelectionComponent extends SubscriptionManager implements Afte
     }
 
     ngAfterViewInit(): void {
-        let sub = this.fleetApi.getFleetsForUser().subscribe(resp => this.fleets = resp);
+        let sub = this.fleetApi.getFleetsForUser().subscribe(resp => {
+            this.fleets = resp;
+            this.selectFirst();
+        });
         this.subscriptions.push(sub);
+    }
+
+    private selectFirst() {
+        if (this.fleets.length > 0) {
+            this.selectFleet(this.fleets[0]);
+        }
     }
 
     selectFleet(fleet?: Fleet) {

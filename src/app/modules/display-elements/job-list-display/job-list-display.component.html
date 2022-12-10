@@ -52,7 +52,7 @@
                         <mat-icon>cancel</mat-icon>
                     </button>
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{job.fleet.name}}</div>
-                    <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{getHullAmount(job.fleet)}}</div>
+                    <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{getHullCount(job.fleet)}}</div>
                     <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{ 'shipyard.constructions.fleet-to-repair' | translate }}: {{job.fleet.name}}</div>
                     <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{ 'shipyard.constructions.fleet-state' | translate }}: {{getPercentage(job.fleet)}}</div>
                     <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>

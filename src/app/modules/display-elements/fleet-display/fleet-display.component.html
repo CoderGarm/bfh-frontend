@@ -1,10 +1,10 @@
 <mat-card *ngIf="!!fleetInput">
-    <mat-card-header>
-        <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="construction">
+    <mat-card-header class="rename-element">
+        <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="fleet-icon">
         <mat-card-title class="title-block">
             <form [formGroup]="formGroup">
                 <mat-form-field appearance="fill"
-                                class="name-input"
+                                class="name-input rename-element"
                                 (dblclick)="enable()">
                     <input matInput autocomplete="off"
                            class="name-input"

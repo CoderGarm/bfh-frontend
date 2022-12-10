@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, Inject, Input, OnChanges, Optional, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -12,8 +12,7 @@ export interface FleetName {
 @Component({
     selector: 'app-fleet-display',
     templateUrl: './fleet-display.component.html',
-    styleUrls: ['./fleet-display.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./fleet-display.component.scss']
 })
 export class FleetDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 

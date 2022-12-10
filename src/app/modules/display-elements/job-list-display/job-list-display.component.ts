@@ -114,7 +114,7 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
         return Math.round((current / max) * 100) + " %";
     }
 
-    getHullAmount(fleet: Fleet) {
+    getHullCount(fleet: Fleet) {
         let m: Map<EHullType, number> = new Map<EHullType, number>();
         fleet.ships.forEach(w => {
             const hullType = w.shipClass.hull!.hullType;

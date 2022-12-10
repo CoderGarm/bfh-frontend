@@ -1,21 +1,26 @@
 
-.mat-form-field-suffix {
+.name-input .mat-form-field-suffix {
   top: 8px;
   margin-left: 25px;
 }
 
-.mat-form-field, .mat-card-header-text {
+.rename-element .mat-form-field-underline {
+  bottom: 0;
+}
+
+.rename-element .mat-form-field,
+.rename-element .mat-card-header-text {
   width: 100%;
 }
 
-.mat-form-field-infix {
+.name-input .mat-form-field-infix {
   border-top: 0;
 }
 
-.mat-form-field-flex {
+.name-input .mat-form-field-flex {
   padding-top: 0 !important;
 }
 
-.mat-form-field-wrapper {
+.name-input .mat-form-field-wrapper {
   padding-bottom: 0;
 }
