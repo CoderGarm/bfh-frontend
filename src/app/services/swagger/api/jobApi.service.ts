@@ -57,44 +57,6 @@ export class JobApiService {
         return false;
     }
 
-
-    /**
-     * Get all jobs which finished today and wasn&#x27;t questioned before.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public areUnknownFinishedJobsPresent(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public areUnknownFinishedJobsPresent(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public areUnknownFinishedJobsPresent(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public areUnknownFinishedJobsPresent(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/job/unknownFinishedPresent`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
     /**
      * Cancels and refund a job.
      * 

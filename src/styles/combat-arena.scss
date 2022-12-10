@@ -38,6 +38,10 @@
   fill: yellowgreen;
 }
 
+.on-movement {
+  fill: purple;
+}
+
 .beamVolley {
   stroke: yellow;
   stroke-width: 1;
@@ -55,7 +59,7 @@
 
 .circle-cycle { // todo differentiate between object and subject by color
   animation: cycling-circle 5s infinite;
-  stroke: $metal-glace;
+  stroke: $metal-glance;
   stroke-dasharray: 15px;
   stroke-width: 3px;
   stroke-linecap: square;

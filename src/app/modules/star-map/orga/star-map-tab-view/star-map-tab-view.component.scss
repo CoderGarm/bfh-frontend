@@ -1,3 +1,5 @@
+@import "src/styles/variables";
+
 .info-div {
   position: absolute;
   left: 0;
@@ -22,11 +24,29 @@ svg {
 
 .star {
   opacity: 0.5;
+  fill: yellow;
   filter: alpha(opacity=50);
 }
 
 .roundCap {
   stroke-linecap: round;
+}
+
+.colonizable {
+  stroke: #306f91;
+  stroke-width: 1;
+}
+
+.colonized-by-others {
+  fill: #6f1585;
+}
+
+.colonized-by-user {
+  fill: darkolivegreen;
+}
+
+.not-colonized {
+  fill: darkgoldenrod;
 }
 
 .orbit {
@@ -42,4 +62,24 @@ svg {
 .celestial-text {
   font-size: 10px;
   fill: cadetblue;
+}
+
+.notch-container {
+  position: fixed;
+  bottom: 25px;
+  margin: 0 auto;
+  left: 180px; // width of nav bar
+  right: 0;
+  z-index: 1000;
+  text-align: center;
+  pointer-events: none;
+}
+
+.coursePlot {
+  fill: transparent;
+  stroke: #000;
+  stroke-width: 1px;
+  stroke-opacity: 0.2;
+  stroke-dasharray: 0 20 28.284;
+  animation: infinite;
 }

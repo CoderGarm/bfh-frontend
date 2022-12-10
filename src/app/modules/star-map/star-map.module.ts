@@ -4,13 +4,15 @@ import {StarMapTabViewComponent} from './orga/star-map-tab-view/star-map-tab-vie
 import {StarMapViewComponent} from './payload/star-map-view/star-map-view.component';
 import {UniverseMapViewComponent} from './payload/universe-map-view/universe-map-view.component';
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
+import {NotchComponent} from './payload/notch/notch.component';
 
 
 @NgModule({
     declarations: [
         StarMapTabViewComponent,
         StarMapViewComponent,
-        UniverseMapViewComponent
+        UniverseMapViewComponent,
+        NotchComponent
     ],
     imports: [
         SharedModuleModule,

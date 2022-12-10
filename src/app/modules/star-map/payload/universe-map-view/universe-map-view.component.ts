@@ -1,29 +1,14 @@
 import {AfterViewInit, Component, ViewEncapsulation} from '@angular/core';
-import {
-    AbstractId,
-    Fleet,
-    FleetApiService,
-    FleetDistributionPerUser,
-    FleetMarker,
-    FleetMove,
-    FleetOrbit,
-    Move,
-    Orbit,
-    StarMapApiService,
-    StarSystem
-} from "../../../../services/swagger";
-import {SVG} from "@svgdotjs/svg.js";
+import {AbstractId, Fleet, FleetApiService, FleetDistributionPerUser, FleetMarker, FleetMove, FleetOrbit, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
 import {InterstellarFleetDisplayComponent} from "../../../display-elements/interstellar-fleet-display/interstellar-fleet-display.component";
-import {InterstellarFleetMovementEditComponent} from "../../../display-elements/interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component";
 import {InterstellarViewHelper} from "../interstellar-view-helper";
-import {BasicViewHelper} from "../../../../basic-view-helper";
 import {SpinnerService} from "../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
 import {BackgroundService} from "../../../../services/background.service";
@@ -43,11 +28,6 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
     private userFleetInfoDialog?: MatDialogRef<any>;
 
-    /**
-     * the planned moves which was selected in the dialog
-     */
-    plannedMoves: FleetMove[] = [];
-
     constructor(private starMapApi: StarMapApiService,
                 private fleetApi: FleetApiService,
                 tokenStorage: TokenStorage,
@@ -56,17 +36,25 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 private backgroundService: BackgroundService,
                 private translate: TranslateService) {
         super(tokenStorage);
+
         // just make sure that the key exists
         this.translate.get('star-map.universe-map.loading-spinner-message');
+
+        let sub = this.starMapCommService.getInterstellarMoveEmitter().subscribe(resp => this.moveFleet(resp));
+        this.subscriptions.push(sub);
     }
 
+    zoomLevel: number = 1;
+
     ngAfterViewInit(): void {
-        this.canvas = SVG().id("universe-canvas").addTo('#universe').panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
+        this.createCanvas("universe-canvas", '#universe');
         this.createUniverseMap();
     }
 
     private createUniverseMap() {
         this.spinnerService.activateSpinner('star-map.universe-map.loading-spinner-message');
+        this.starMapCommService.clear();
+        this.starMapCommService.deselect();
         let outerSub = this.backgroundService.getStarSystems().subscribe(resp => {
             this.knownStarSystems = resp;
 
@@ -76,33 +64,11 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             this.setOrbits(this.canvas!, orbitDefinitions);
             let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
                 this.fleetDistributionPerUsers = resp;
-                this.setFleetsAtSystem(this.canvas!, resp, this.dblClickForFleet, this.dragEndForFleet);
+                this.setFleetsAtSystem(this.canvas!, resp, this.dblClickForFleet);
             });
             this.subscriptions.push(sub);
             sub = this.fleetApi.getInterstellarMovingFleets().subscribe(resp => {
-                let fleetsInMotion: Map<Move, FleetMarker[]> = new Map<Move, FleetMarker[]>();
-                resp.filter(fleet => !!fleet.move).map((fleet) => {
-                    if (!fleet.move) {
-                        throw new Error("This fleet is in motion and should know this.");
-                    }
-                    let move: Move = {
-                        idFleetInMotion: -1, // this is to ignore the id, but it must be present
-                        startOrbit: fleet.move.startOrbit,
-                        targetOrbit: fleet.move.targetOrbit,
-                        originalDuration: fleet.move.originalDuration,
-                        moveDoneAtZero: fleet.move.moveDoneAtZero
-                    };
-
-                    move.moveDoneAtZero = 0;
-                    let arr = fleetsInMotion.get(move);
-                    if (!arr) {
-                        arr = [fleet];
-                    } else if (!arr.includes(fleet)) {
-                        arr.push(fleet);
-                    }
-                    fleetsInMotion.set(move, arr)
-                });
-                this.setFleetsInInterstellarMotion(this.canvas!, fleetsInMotion, this.dblClickForMovingFleet);
+                this.setFleetsInInterstellarMotion(this.canvas!, resp, this.dblClickForMovingFleet);
             });
             this.subscriptions.push(sub);
             this.spinnerService.deactivateSpinner();
@@ -177,74 +143,12 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         }
     }
 
-    private dragEndForFleet = (fleetOwner?: AbstractId, fromSystem?: StarSystem, targetOrbit?: Orbit) => {
-        if (!fleetOwner || !fromSystem || !targetOrbit) {
-            return;
-        }
-        // todo if open dont open again
-        const dialogConfig = DialogConfigHelper.createDialog();
-
-        let sameOrbit = this.isSameOrbit(fromSystem.orbit, targetOrbit);
-        if (!sameOrbit) {
-            this.createAndOpenFleetMoveDialog(dialogConfig, fleetOwner, fromSystem, targetOrbit);
-            return;
-        }
-    }
-
-    private createAndOpenFleetMoveDialog(dialogConfig: MatDialogConfig, fleetOwner: AbstractId, fromSystem: StarSystem, targetOrbit: Orbit) {
-        let starSystems = this.knownStarSystems.filter(p => p.orbit === targetOrbit);
-        if (!starSystems || starSystems.length != 1) {
-            throw new Error("No orbit should have more than one planet.");
-        }
-
-        let dialogData = new DialogData('Fleets of ' + fleetOwner.name + ' in ' + fromSystem.name);
-        let dialogRef: MatDialogRef<any> | undefined;
-
-        this.fleetApi.getFleetsBySystemAndOwner(fromSystem.idStarSystem, fleetOwner.id)
-            .subscribe((resp: Fleet[]) => {
-                resp = resp.filter(fleet => fleet.isFTLCapable);
-                dialogData.addDialogDataPerTemplate(InterstellarFleetMovementEditComponent,
-                    ['fleets', 'destination', 'callback'],
-                    [resp, starSystems[0], this.callbackFleetMove]);
-                dialogConfig.data = dialogData;
-                dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-
-                if (!!dialogRef) {
-                    dialogRef.afterClosed().subscribe(result => {
-                        if (result && this.plannedMoves.length > 0) {
-                            let userID = this.tokenStorage.getUserID();
-                            let sub = this.fleetApi.moveFleets(this.plannedMoves, userID).subscribe(resp => {
-                                if (resp) {
-                                    this.createUniverseMap();
-                                }
-                            });
-                            this.subscriptions.push(sub);
-                        }
-                    });
-                }
-            });
-    }
-
-    private callbackFleetMove = (fleets: Fleet[], plannedMovements: Move[]) => {
-        let userID = this.tokenStorage.getUserID();
-        if (!userID) {
-            return;
-        }
-        const m: Map<number, Move> = new Map<number, Move>();
-        plannedMovements.forEach(move => {
-            m.set(move.idFleetInMotion, move);
-        })
-        this.plannedMoves = fleets.map(fleet => {
-            let plannedMove: Move | undefined = m.get(fleet.idFleet);
-            if (!plannedMove) {
-                throw new Error("There should be a movement already planned and validated.");
+    private moveFleet(plannedMoves: FleetMove[]) {
+        let sub = this.fleetApi.moveFleets(plannedMoves).subscribe(resp => {
+            if (resp) {
+                this.createUniverseMap();
             }
-            let move: FleetMove = {
-                idFleetToMove: fleet.idFleet,
-                idDestinationSystem: plannedMove.targetOrbit.system?.idStarSystem,
-                destinationOrbit: plannedMove.targetOrbit.orbit
-            }
-            return move;
         });
+        this.subscriptions.push(sub);
     }
 }

@@ -72,8 +72,12 @@
   "fleets": {
     "movement": {
       "no-ftl-present": "Kein Flotte mit Warshawski-Segel verfügbar.",
+      "select-for-cancel": {
+        "checkbox": "Wähle für den Rückflug",
+        "title": "Wähle Flotten für den Rückflug aus"
+      },
       "select-for-move": {
-        "checkbox": "Wähle Flotte für Flug",
+        "checkbox": "Wähle für Flug",
         "title": "Wähle Flotten für den Flug aus, Ziel:"
       }
     }
@@ -274,6 +278,14 @@
     }
   },
   "star-map": {
+    "notch": {
+      "action": {
+        "cancel-move": "Flug abbrechen",
+        "merge": "Flotten zusammenführen",
+        "move": "Flotten bewegen"
+      },
+      "deselect": "Auswahl aufheben"
+    },
     "universe-map": {
       "loading-spinner-message": "Lade Sternenkarte..."
     }

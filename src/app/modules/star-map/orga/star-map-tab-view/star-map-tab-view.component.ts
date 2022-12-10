@@ -25,7 +25,7 @@ export class StarMapTabViewComponent extends SubscriptionManager implements OnIn
     constructor(private starMapCommService: StarMapCommunicationService) {
         super();
 
-        this.starMapCommService.starSystemSelectionOutput.subscribe(resp => this.run(resp))
+        this.starMapCommService.getDisplaySystemEmitter().subscribe(resp => this.run(resp))
     }
 
     ngOnInit(): void {
@@ -48,5 +48,6 @@ export class StarMapTabViewComponent extends SubscriptionManager implements OnIn
         if (event != 1) {
             this.starSystemSelectionInput = undefined;
         }
+        this.starMapCommService.clear(event);
     }
 }

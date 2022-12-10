@@ -2,6 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Input, OnChanges, SimpleChanges}
 import {AlignedFitting, ShipClass} from "../../../../../services/swagger";
 import {ArrayXY, G, Polygon, Svg, SVG} from "@svgdotjs/svg.js";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {BasicViewHelper} from "../../../../../basic-view-helper";
 
 @Component({
     selector: 'app-ship-class-svg',
@@ -246,7 +247,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
             lines.push([500, 55]);
             lines.push([500, 20]);
             let stroke = {color: "red", width: 1};
-            this.upperBow = this.canvas!.polygon(lines).fill("none").stroke(stroke);
+            this.upperBow = this.canvas!.polygon(lines).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
             this.upperBowPoints = lines;
 
             lines = [];
@@ -257,7 +258,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
             lines.push([200, 20]);
             lines.push([350, 20]);
             this.upperBroadsideGroup = this.canvas?.group().id("upperBroadsideGroup").addClass("flex-broadside");
-            this.upperBroadside = this.upperBroadsideGroup!.polygon(lines).fill("none").stroke(stroke);
+            this.upperBroadside = this.upperBroadsideGroup!.polygon(lines).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
             this.upperBroadsidePoints = lines;
 
             lines = []; // upper stern
@@ -269,7 +270,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
             lines.push([200, 20]);
             lines.push([200, 55]);
             lines.push([50, 55]);
-            this.upperStern = this.canvas!.polygon(lines).fill("none").stroke(stroke);
+            this.upperStern = this.canvas!.polygon(lines).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
             this.upperSternPoints = lines;
 
             lines = []; // lower stern
@@ -281,7 +282,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
             lines.push([50, 85]);
             lines.push([50, 65]);
             lines.push([200, 65]);
-            this.lowerStern = this.canvas!.polygon(lines).fill("none").stroke(stroke);
+            this.lowerStern = this.canvas!.polygon(lines).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
             this.lowerSternPoints = lines;
 
             lines = [];
@@ -291,7 +292,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
             lines.push([200, 100]);
             lines.push([500, 100]);
             this.lowerBroadsideGroup = this.canvas?.group().id("lowerBroadsideGroup").addClass("flex-broadside");
-            this.lowerBroadside = this.lowerBroadsideGroup!.polygon(lines).fill("none").stroke(stroke);
+            this.lowerBroadside = this.lowerBroadsideGroup!.polygon(lines).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
             this.lowerBroadsidePoints = lines;
 
             lines = [];
@@ -302,7 +303,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
             lines.push([550, 90]);
             lines.push([500, 100]);
             lines.push([500, 65]);
-            this.lowerBow = this.canvas!.polygon(lines).fill("none").stroke(stroke);
+            this.lowerBow = this.canvas!.polygon(lines).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
             this.lowerBowPoints = lines;
 
             // y-axis

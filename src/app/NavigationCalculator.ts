@@ -1,4 +1,5 @@
 import {Acceleration, Distance} from "./services/swagger";
+import {ArrayXY} from "@svgdotjs/svg.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
 
@@ -72,5 +73,35 @@ export class NavigationCalculator {
             throw new Error("There must be both metrics present.");
         }
         return originalMetricValue! / targetMetricValue!;
+    }
+
+    static angle(x1: number, y1: number, x2: number, y2: number): number {
+        let dy = y2 - y1;
+        let dx = x2 - x1;
+        let theta = Math.atan2(dy, dx) * 180 / Math.PI; // rads to degs, range (-180, 180]
+        //if (theta < 0) theta = 360 + theta; // range [0, 360)
+        return theta;
+    }
+
+    static rotatePoint(center: ArrayXY, angle: number, toRotate: ArrayXY): ArrayXY {
+        let s = Math.sin(NavigationCalculator.toRad(angle));
+        let c = Math.cos(NavigationCalculator.toRad(angle));
+
+        // translate point back to origin:
+        toRotate[0] -= center[0];
+        toRotate[1] -= center[1];
+
+        // rotate point
+        let xnew = toRotate[0] * c - toRotate[1] * s;
+        let ynew = toRotate[0] * s + toRotate[1] * c;
+
+        // translate point back:
+        toRotate[0] = xnew + center[0];
+        toRotate[1] = ynew + center[1];
+        return toRotate;
+    }
+
+    private static toRad(degrees: number) {
+        return degrees * (Math.PI / 180);
     }
 }

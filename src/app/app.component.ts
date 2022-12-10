@@ -6,7 +6,7 @@ import {interval} from "rxjs";
 import {StarMapTabViewComponent} from "./modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 import {JournalTabViewComponent} from "./modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 import {ChatComponent} from "./modules/chat/components/chat/chat.component";
-import {ChatApiService, ForumApiService, JobApiService} from "./services/swagger";
+import {ChatApiService, ForumApiService} from "./services/swagger";
 import {SubscriptionManager} from "./SubscriptionManager";
 import {ForumsListComponent} from "./modules/forum/components/forums-list/forums-list.component";
 import {TranslateService} from "@ngx-translate/core";
@@ -34,7 +34,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     hasUnreadChat: boolean = false;
     hasUnreadForum: boolean = false;
-    hasFinishedJobs: boolean = false;
 
     activeRoute?: Route;
 
@@ -49,8 +48,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
                 private router: Router,
                 private authenticationService: AuthenticationService,
                 private chatApi: ChatApiService,
-                private forumApi: ForumApiService,
-                private jobApi: JobApiService) {
+                private forumApi: ForumApiService) {
         super();
 
         // this language will be used as a fallback when a translation isn't found in the current language
@@ -84,8 +82,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             this.subscriptions.push(sub);
             sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.hasUnreadForum = resp)
             this.subscriptions.push(sub);
-            sub = this.jobApi.areUnknownFinishedJobsPresent().subscribe(resp => this.hasFinishedJobs = resp);
-            this.subscriptions.push(sub);
         }
     }
 
@@ -105,8 +101,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             return this.hasUnreadChat;
         } else if (path === ForumsListComponent.path) {
             return this.hasUnreadForum;
-        } else if (path === JournalTabViewComponent.path) {
-            return this.hasFinishedJobs;
         }
         return false;
     }

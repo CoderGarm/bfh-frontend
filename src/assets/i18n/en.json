@@ -72,6 +72,10 @@
   "fleets": {
     "movement": {
       "no-ftl-present": "No fleets with Warshawski sail present.",
+      "select-for-cancel": {
+        "checkbox": "Select for flight back",
+        "title": "Select fleets for the flight back"
+      },
       "select-for-move": {
         "checkbox": "Select for flight",
         "title": "Select the fleet which should move to"
@@ -274,6 +278,14 @@
     }
   },
   "star-map": {
+    "notch": {
+      "action": {
+        "cancel-move": "Cancel movement",
+        "merge": "Merge fleets",
+        "move": "Move fleets"
+      },
+      "deselect": "Deselect"
+    },
     "universe-map": {
       "loading-spinner-message": "Gather information for star map..."
     }

@@ -1,9 +1,11 @@
-import {AfterViewInit, Component, Inject, Input, Optional, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, SimpleChanges} from '@angular/core';
 import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {NavigationCalculator} from "../../../NavigationCalculator";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
+import {BasicViewHelper} from "../../../basic-view-helper";
+import {StarMapCommunicationService} from "../../../star-map-communication.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 @Component({
@@ -29,21 +31,12 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     destination?: StarSystem;
     destinationDefinition: string = "destination";
 
-    @Input()
-    private readonly callback?: Function | null;
-
     plannedMovements: Move[] = [];
 
-    constructor(@Optional() @Inject('fleets') fleets: Fleet[] | undefined,
-                @Optional() @Inject('destination') destination: StarSystem | undefined,
-                @Optional() @Inject('callback') cb: Function | null,
-                private tokenStorage: TokenStorage,
-                private fleetApi: FleetApiService) {
+    constructor(private tokenStorage: TokenStorage,
+                private fleetService: FleetApiService,
+                private commService: StarMapCommunicationService) {
         super();
-        this.fleets = !!fleets ? fleets : [];
-        this.destination = destination;
-        this.callback = cb;
-
     }
 
     ngAfterViewInit(): void {
@@ -124,16 +117,30 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         if (fleetMoves.length < 1) {
             return;
         }
-        let sub = this.fleetApi.planMovements(fleetMoves).subscribe(resp => {
+        let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
         });
         this.subscriptions.push(sub);
     }
 
     sendPlannedFlights() {
-        if (!!this.callback && this.fleetsDesignatedForMotion.length > 0) {
-            this.callback(this.fleetsDesignatedForMotion, this.plannedMovements);
-        }
+        const m: Map<number, Move> = new Map<number, Move>();
+        this.plannedMovements.forEach(move => {
+            m.set(move.idFleetInMotion, move);
+        })
+        let plannedMoves: FleetMove[] = this.fleetsDesignatedForMotion.map(fleet => {
+            let plannedMove: Move | undefined = m.get(fleet.idFleet);
+            if (!plannedMove) {
+                throw new Error("There should be a movement already planned and validated.");
+            }
+            let move: FleetMove = {
+                idFleetToMove: fleet.idFleet,
+                idDestinationSystem: plannedMove.targetOrbit.system?.idStarSystem,
+                destinationOrbit: plannedMove.targetOrbit.orbit
+            }
+            return move;
+        });
+        this.commService.setPlannedInterstellarMovements(plannedMoves);
     }
 
     selectForFlight(checked: boolean, fleet: Fleet) {
@@ -146,11 +153,20 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         this.sendPlannedFlights();
     }
 
-    getTicksLeftForFleet(fleet: Fleet) {
+    getTicks(fleet: Fleet) {
         let moves = this.plannedMovements.filter(fl => fl.idFleetInMotion == fleet.idFleet);
         if (moves.length != 1) {
             return "";
         }
         return moves[0].moveDoneAtZero;
+    }
+
+    isSameOrbit(fleet: Fleet) {
+        const currentOrbit: Orbit | undefined = fleet.orbit?.system?.orbit;
+        const destinationOrbit: Orbit | undefined = this.destination?.orbit;
+        if (!currentOrbit || !destinationOrbit) {
+            return false;
+        }
+        return BasicViewHelper.isSameOrbit(currentOrbit, destinationOrbit);
     }
 }

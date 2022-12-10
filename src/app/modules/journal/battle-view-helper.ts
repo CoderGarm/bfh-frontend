@@ -23,7 +23,6 @@ import {OrbitDefinition} from "../star-map/payload/orbit-definition";
 import {BasicViewHelper} from "../../basic-view-helper";
 import {CombatArenaData} from "./components/payload/combat-arena/combat-arena.component";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
-import MovementTypeEnum = MovementAction.MovementTypeEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
 
@@ -44,7 +43,7 @@ export class BattleViewHelper extends BasicViewHelper {
     private viewBoxForOrbit: string = "0 0 0 0";
 
     constructor(protected tokenStorage: TokenStorage) {
-        super(BattleViewHelper.STANDARD_METRIC);
+        super(tokenStorage, BattleViewHelper.STANDARD_METRIC);
     }
 
     protected setCombatData(combatArenaData: CombatArenaData) {
@@ -223,9 +222,9 @@ export class BattleViewHelper extends BasicViewHelper {
                                               missileHullPoints: Array<ArrayXY[]>,
                                               fleetOwnerId: number) {
         let group = this.canvas?.group()
-            .id(missileSalvoId + "-group");
+            .id(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
 
-        this.groupsByID.set(missileSalvoId + "-group", group!);
+        this.groupsByID.set(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
@@ -235,7 +234,7 @@ export class BattleViewHelper extends BasicViewHelper {
         const stroke = {color: fleetSharkColor, width: 1};
         for (let i = 0; i < missileHullPoints.length; i++) {
             let missileHullPoint = missileHullPoints[i];
-            let icon = group!.polygon(missileHullPoint).id(missileSalvoId).fill("none").stroke(stroke);
+            let icon = group!.polygon(missileHullPoint).id(missileSalvoId).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
             let polygons = this.missileSalvoPolygonsById.get(missileSalvoId);
             if (!polygons) {
                 polygons = [];
@@ -314,11 +313,11 @@ export class BattleViewHelper extends BasicViewHelper {
         volleys.forEach((volley) => {
             let damageDealerId = volley.damageDealer;
             let shooter = volley.actor;
-            let shooterID = this.getFleetSharkID(shooter) + "-group";
+            let shooterID = this.getFleetSharkID(shooter) + BasicViewHelper.GROUP_SELECTOR_SUFFIX;
             let shooterG = this.groupsByID.get(shooterID);
 
             let target = volley.target;
-            let targetID = this.getFleetSharkID(target) + "-group";
+            let targetID = this.getFleetSharkID(target) + BasicViewHelper.GROUP_SELECTOR_SUFFIX;
             let targetG = this.groupsByID.get(targetID);
             if (!shooterG || !targetG) {
                 return;
@@ -364,14 +363,7 @@ export class BattleViewHelper extends BasicViewHelper {
             }
             // expanding the coordinates by the multiplier but center it at the combat orbit
             startOrbit = this.modifyOrbit(startOrbit, baseOrbit, this.POSITION_MULTIPLIER);
-            targetOrbit = this.modifyOrbit(targetOrbit, baseOrbit, this.POSITION_MULTIPLIER);
-
-            if (false && move.movementType !== MovementTypeEnum.HOLDDISTANCE) {
-                // todo course plot needed for what?
-                const m = this.createMove(fleet, startOrbit, targetOrbit);
-                let {color, arr} = this.createStellarCoursePlot(m);
-                this.canvas!.path(arr).fill(color).opacity(0.2);
-            }
+            // todo what to do? targetOrbit = this.modifyOrbit(targetOrbit, baseOrbit, this.POSITION_MULTIPLIER);
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit);
@@ -449,60 +441,6 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     /**
-     * prints the course path for a fleet movement
-     *
-     * @param move the movement
-     * @private
-     */
-    protected createStellarCoursePlot(move: Move) {
-        if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
-            throw new Error("The move should have a origin and a destination.");
-        }
-        let startX: number = this.convertToStandardMetric(move.startOrbit.orbit.xCoordinate);
-        let startY: number = this.convertToStandardMetric(move.startOrbit.orbit.yCoordinate);
-
-        let endX: number = this.convertToStandardMetric(move.targetOrbit.orbit.xCoordinate);
-        let endY: number = this.convertToStandardMetric(move.targetOrbit.orbit.yCoordinate);
-
-        let relativeTargetX: number = endX - startX;
-        let relativeTargetY: number = endY - startY;
-
-        let baseQx: number = 1;
-        let baseQy: number = 1;
-
-        let qXMultiplier: number = 1;
-        let qYMultiplier: number = 1;
-        if (relativeTargetY < 0) {
-            // cY is negative if the movement on y-axis is inbound
-            qYMultiplier = -1;
-        }
-
-        let color: string;
-        let userID = this.tokenStorage.getUserID();
-        if (move.idFleetInMotion == userID) {
-            // friendly color
-            color = this.COURSE_PLOT_COLOR_OUTBOUND;
-        } else {
-            // opponents color
-            color = this.COURSE_PLOT_COLOR_INBOUND;
-        }
-
-        if (BasicViewHelper.calculateDistance(startX, startY) <= BasicViewHelper.calculateDistance(endX, endY)) {
-            // outbound cX is negative
-            qXMultiplier = -1;
-        }
-
-        let cX: number = qXMultiplier * baseQx;
-        let cY: number = qYMultiplier * baseQy;
-
-        let p1: LineCommand = ["M", startX, startY];
-        let p2: CurveCommand = ["q", cX, cY, relativeTargetX, relativeTargetY];
-
-        let arr: PathArrayAlias = [p1, p2];
-        return {color, arr};
-    }
-
-    /**
      * creates a fleet shark, a text and groups them in the svg
      */
     private createHullOutlinesAndPrint(fleet: FleetMarker,
@@ -517,11 +455,11 @@ export class BattleViewHelper extends BasicViewHelper {
 
         let group = this.canvas?.group()
             .click(clickForFleet)
-            .id(fleetSharkID + "-group");
+            .id(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
 
         this.fleetsById.set(fleetSharkID, fleet);
 
-        this.groupsByID.set(fleetSharkID + "-group", group!);
+        this.groupsByID.set(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
@@ -700,7 +638,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 this.setViewBox(undefined, 0.7);
                 return;
             }
-            if (!!this.orbitForViewBox && this.isSameOrbit(this.orbitForViewBox, c)) {
+            if (!!this.orbitForViewBox && BattleViewHelper.isSameOrbit(this.orbitForViewBox, c)) {
                 // no change needed
                 return;
             }
@@ -736,15 +674,15 @@ export class BattleViewHelper extends BasicViewHelper {
         this.sortByOrbit();
         this.createPolarCoordinateSystem();
 
-        this.hyperLimit = this.calculateHyperLimit(system);
+        this.hyperLimitRadius = this.calculateHyperLimit(system);
         this.canvas!
             .circle()
             .x(0)
             .y(0)
             .id("hyper-limit-of-" + system.idStarSystem)
-            .fill("none")
-            .addClass("hyper-limit")
-            .radius(this.hyperLimit);
+            .fill(BasicViewHelper.NONE_FILL_COLOR)
+            .addClass(BasicViewHelper.HYPER_LIMIT_MARKER)
+            .radius(this.hyperLimitRadius);
 
         orbitDefinitions.forEach(orbitDefinition => {
             const orbit = orbitDefinition.orbit;
@@ -757,7 +695,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 .x(0)
                 .y(0)
                 .id(orbitID)
-                .fill("none")
+                .fill(BasicViewHelper.NONE_FILL_COLOR)
                 .addClass("orbit")
                 .radius(radius);
 
@@ -766,9 +704,9 @@ export class BattleViewHelper extends BasicViewHelper {
                 .x(0)
                 .y(0)
                 .id("star-of-" + system.idStarSystem)
-                .fill("yellow")
-                .addClass("star")
-                .radius(BasicViewHelper.STAR_RADIUS);
+                .addClass(BasicViewHelper.STAR_MARKER)
+                .addClass(BasicViewHelper.NO_RESIZE_MARKER)
+                .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);
 
             let multiplier = this.getScalingMultiplierForOrbit(orbit);
 
@@ -791,25 +729,25 @@ export class BattleViewHelper extends BasicViewHelper {
                 let arr: PathArrayAlias = [p1, p2];
                 // todo why remember the path?
                 this.canvas!.path(arr)
-                    .fill("none")
-                    .stroke({color: this.COLONIZABLE_SYSTEM_MARKER_COLOR, width: 1})
+                    .fill(BasicViewHelper.NONE_FILL_COLOR)
+                    .addClass(BasicViewHelper.COLONIZABLE_SYSTEM_MARKER_CSS_CLASS)
                     .addClass("roundCap");
             }
 
-            let color = this.NOT_COLONIZED_COLOR;
-            if (orbitDefinition.isColonizedByLoggedInUser) {
-                color = this.IS_COLONIZED_BY_USER_COLOR;
-            } else if (orbitDefinition.isColonizedByOtherUser) {
-                color = this.COLONIZED_BY_OTHERS_COLOR;
-            }
-
-            this.canvas!
+            const circle = this.canvas!
                 .circle()
                 .x(this.convertToStandardMetric(orbit.xCoordinate))
                 .y(this.convertToStandardMetric(orbit.yCoordinate))
                 .radius(5)
-                .id(celestialBodyID)
-                .fill(color);
+                .id(celestialBodyID);
+
+            if (orbitDefinition.isColonizedByLoggedInUser) {
+                circle.addClass(BasicViewHelper.IS_COLONIZED_BY_USER_COLOR_CSS_CLASS);
+            } else if (orbitDefinition.isColonizedByOtherUser) {
+                circle.addClass(BasicViewHelper.COLONIZED_BY_OTHERS_COLOR_CSS_CLASS);
+            } else {
+                circle.addClass(BasicViewHelper.NOT_COLONIZED_COLOR_CSS_CLASS);
+            }
 
             this.celestialOrbitById.set(celestialBodyID, orbit);
         });
@@ -824,7 +762,6 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     private isBattleOrbit(orbit: Orbit) {
-        return !!this.battleReport && this.isSameOrbit(this.battleReport.battleReportStatistics.orbit!.orbit!, orbit);
-
+        return !!this.battleReport && BattleViewHelper.isSameOrbit(this.battleReport.battleReportStatistics.orbit!.orbit!, orbit);
     }
 }

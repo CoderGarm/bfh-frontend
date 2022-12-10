@@ -1,7 +1,9 @@
-import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMarker, FleetMove, FleetOrbit, Move, Planet, PlanetApiService} from "../../../services/swagger";
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Fleet, FleetApiService, FleetMove, Move, Orbit, Planet, PlanetApiService, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
+import {StarMapCommunicationService} from "../../../star-map-communication.service";
+import {BasicViewHelper} from "../../../basic-view-helper";
 
 @Component({
     selector: 'app-fleet-move-edit',
@@ -13,79 +15,41 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     /**
      * the fleet which will take all the other war ships
      */
-    @Input() // please note that the missing type-safetyness of javascript allows it to use a FleetMarker here
-    fleetInput?: Fleet;
-    fleetInputDefinition: string = "fleetInput";
-
-    /**
-     * the fleet which will take all the other war ships
-     */
     @Input()
-    targetOrbit?: FleetOrbit;
-    targetOrbitDefinition: string = "targetOrbit";
+    fleets: Fleet[] = [];
+
+    fleetsForMove: Fleet[] = [];
+    fleetsForCancel: Fleet[] = [];
 
     @Input()
-    private readonly callback: Function | null;
-
     destination?: Planet;
+
+    @Input()
+    system?: StarSystem;
+
+    fleetsDesignatedForMotion: Fleet[] = [];
+    fleetsDesignatedForCancel: Fleet[] = [];
 
     destinationRepresentation: string = "";
 
-    /**
-     * the planned and possible movement
-     */
-    plannedMovement?: Move;
+    plannedMovements: Move[] = [];
 
-    constructor(@Optional() @Inject('fleetInput') fleetInput: Fleet | FleetMarker | undefined,
-                @Optional() @Inject('targetOrbit') targetOrbit: FleetOrbit | undefined,
-                @Optional() @Inject('callback') cb: Function | null,
-                private tokenStorage: TokenStorage,
+    constructor(private tokenStorage: TokenStorage,
                 private fleetService: FleetApiService,
-                private planetService: PlanetApiService) {
+                private planetService: PlanetApiService,
+                private commService: StarMapCommunicationService) {
         super();
-        this.callback = cb;
-        this.fetchFleet(fleetInput);
-        this.targetOrbit = targetOrbit;
-        this.fetchDestination();
-    }
-
-    private fetchFleet(fleetSubject: Fleet | FleetMarker | undefined) {
-        if (!fleetSubject) {
-            return;
-        }
-        if ('idFleet' in fleetSubject) {
-            this.fleetInput = fleetSubject;
-            this.fetchPossibleMovement();
-            this.fetchDestination();
-            return;
-        }
-        if ('fleet' in fleetSubject) {
-            const sub = this.fleetService.getFleet(fleetSubject.fleet.id).subscribe(resp => {
-                this.fleetInput = resp;
-                this.fetchPossibleMovement();
-                this.fetchDestination();
-            });
-            this.subscriptions.push(sub);
-        }
     }
 
     ngAfterViewInit(): void {
     }
 
-    private fetchDestination() {
-        if (!!this.targetOrbit && !!this.targetOrbit.system && !!this.targetOrbit.orbit) {
-            let idStarSystem = this.targetOrbit.system.idStarSystem;
-            let orbit = this.targetOrbit.orbit;
-            let sub = this.planetService.getPlanetByCoordinates(orbit, idStarSystem)
-                .subscribe(resp => {
-                    this.destination = resp;
-                    this.createDestinationRepresentation();
-                });
-            this.subscriptions.push(sub);
-        }
-        if (this.destinationRepresentation.length == 0) {
-            this.createDestinationRepresentation();
-        }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.fetchPossibleMovement();
+        this.createDestinationRepresentation();
+        this.fleetsForMove = this.fleets.filter(f => !f.move);
+        this.fleetsForCancel = this.fleets.filter(f => !!f.move);
     }
 
     /**
@@ -93,50 +57,103 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
      * @private
      */
     private fetchPossibleMovement() {
-        if (!!this.fleetInput && !this.fleetInput.move && !!this.targetOrbit) {
+        if (!this.destination || !this.destination) {
+            return;
+        }
+
+        let fleetMoves = this.fleets.filter(f => !f.move).map(fleet => {
             const fm: FleetMove = {
-                idFleetToMove: this.fleetInput.idFleet,
-                destinationOrbit: this.targetOrbit.orbit
+                idFleetToMove: fleet.idFleet,
+                idDestinationSystem: this.destination!.idStarSystem,
+                destinationOrbit: this.destination!.orbit
             }
-            let sub = this.fleetService.planMovement(fm).subscribe(resp => {
-                this.plannedMovement = resp;
-            });
-            this.subscriptions.push(sub);
+            return fm;
+        });
+        if (fleetMoves.length < 1) {
+            return;
         }
+        let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
+            this.plannedMovements = resp;
+        });
+        this.subscriptions.push(sub);
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['fleetInput']) {
-            this.fetchFleet(changes['fleetInput'].currentValue);
+    selectForFlight(checked: boolean, fleet: Fleet) {
+        if (checked) {
+            this.fleetsDesignatedForMotion.push(fleet);
+        } else {
+            let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
+            this.fleetsDesignatedForMotion.slice(indexOf);
         }
-        this.fetchPossibleMovement();
-        this.fetchDestination();
+        this.sendPlannedFlights();
     }
 
-
-    getTicksLeft() {
-        return this.fleetInput!.move!.originalDuration - this.fleetInput!.move!.moveDoneAtZero;
+    sendPlannedFlights() {
+        const m: Map<number, Move> = new Map<number, Move>();
+        this.plannedMovements.forEach(move => {
+            m.set(move.idFleetInMotion, move);
+        })
+        let plannedMoves: FleetMove[] = this.fleetsDesignatedForMotion.map(fleet => {
+            let plannedMove: Move | undefined = m.get(fleet.idFleet);
+            if (!plannedMove) {
+                throw new Error("There should be a movement already planned and validated.");
+            }
+            let move: FleetMove = {
+                idFleetToMove: fleet.idFleet,
+                idDestinationSystem: plannedMove.targetOrbit.system?.idStarSystem,
+                destinationOrbit: plannedMove.targetOrbit.orbit
+            }
+            return move;
+        });
+        this.commService.setPlannedStellarMovements(plannedMoves);
     }
 
-    cancelFlight() {
-        if (!!this.callback && !!this.fleetInput) {
-            this.callback(this.fleetInput)
+    selectForCancel(checked: boolean, fleet: Fleet) {
+        if (checked) {
+            this.fleetsDesignatedForCancel.push(fleet);
+        } else {
+            let indexOf = this.fleetsDesignatedForCancel.indexOf(fleet);
+            this.fleetsDesignatedForCancel.slice(indexOf);
         }
+        this.sendCancelFlights();
+    }
+
+    sendCancelFlights() {
+        console.log(this.fleetsDesignatedForCancel)
+        this.commService.setFleetToCancelMovement(this.fleetsDesignatedForCancel);
+    }
+
+    getTicks(fleet: Fleet) {
+        let moves = this.plannedMovements.filter(fl => fl.idFleetInMotion == fleet.idFleet);
+        if (moves.length != 1) {
+            return "";
+        }
+        return moves[0].moveDoneAtZero;
+    }
+
+    getTicksLeft(fleet: Fleet) {
+        return fleet.move!.originalDuration - fleet!.move!.moveDoneAtZero;
     }
 
     private createDestinationRepresentation() {
         let destination = "";
-        if (!!this.fleetInput) {
+        if (!!this.fleets) {
             if (!!this.destination) {
                 destination += this.destination.name;
-            } else if (!!this.targetOrbit && !!this.targetOrbit.orbit) {
-                let orbit = this.targetOrbit.orbit;
-                destination += orbit.xCoordinate.coordinate + ", " + orbit.yCoordinate.coordinate;
             }
-            if (!!this.targetOrbit && !!this.targetOrbit.system) {
-                destination += " in " + this.targetOrbit.system.name;
+            if (!!this.system) {
+                destination += " in " + this.system.name;
             }
         }
         this.destinationRepresentation = destination;
+    }
+
+    isSameOrbit(fleet: Fleet) {
+        const currentOrbit: Orbit | undefined = fleet.orbit?.system?.orbit;
+        const destinationOrbit: Orbit | undefined = this.destination?.orbit;
+        if (!currentOrbit || !destinationOrbit) {
+            return false;
+        }
+        return BasicViewHelper.isSameOrbit(currentOrbit, destinationOrbit);
     }
 }

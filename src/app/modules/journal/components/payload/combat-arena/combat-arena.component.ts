@@ -15,9 +15,7 @@ import {
     ShipKillerHit,
     StarSystem
 } from "../../../../../services/swagger";
-import {SVG} from "@svgdotjs/svg.js";
 import {BattleViewHelper} from "../../../battle-view-helper";
-import {BasicViewHelper} from "../../../../../basic-view-helper";
 
 @Component({
     selector: 'app-combat-arena',
@@ -70,7 +68,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         if (changes[this.activeRoundInputDefinition]) {
             if (!!this.starSystem) {
-                this.createCanvas();
+                this.createCanvas("combat-arena", '#arena')
                 this.setActiveRound(this.activeRound, this.starSystem, this.canvas!, this.clickForFleet, this.mouseoverForWarship);
                 let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
@@ -122,23 +120,14 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     private createStarMap() {
         if (!!this.starSystem) {
             if (!this.canvas) {
-                this.createCanvas()
+                //this.createCanvas()
+                this.createCanvas("combat-arena", '#arena')
             } else {
                 this.clearCanvas();
             }
             this.setOrbits(this.canvas!, this.starSystem);
         } else {
             this.clearCanvas();
-        }
-    }
-
-    /**
-     * necessary to create svg after template is rendered
-     * @private
-     */
-    private createCanvas() {
-        if (!this.canvas) {
-            this.canvas = SVG().id("combat-arena").addTo('#arena').panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
         }
     }
 
