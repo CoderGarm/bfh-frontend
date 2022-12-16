@@ -1,4 +1,4 @@
-import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Svg, Text} from "@svgdotjs/svg.js";
+import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Polygon, Svg} from "@svgdotjs/svg.js";
 import {
     AbstractId,
     BattleReport,
@@ -42,12 +42,12 @@ export class BattleViewHelper extends BasicViewHelper {
     private orbitForViewBox: Orbit | undefined;
     private viewBoxForOrbit: string = "0 0 0 0";
 
+    private warshipsById: Map<String, AbstractId> = new Map<String, AbstractId>();
+    private warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
+    private missileSalvoPolygonsById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
+
     constructor(protected tokenStorage: TokenStorage) {
         super(tokenStorage, BattleViewHelper.STANDARD_METRIC);
-    }
-
-    protected setCombatData(combatArenaData: CombatArenaData) {
-        this.combatArenaData = combatArenaData;
     }
 
     protected setBattleReport(report: BattleReport | undefined) {
@@ -477,25 +477,7 @@ export class BattleViewHelper extends BasicViewHelper {
             const mergedPoints: ArrayXY[] = [];
             warshipHullPoint.forEach(p => p.forEach(i => mergedPoints.push(i)));
 
-            let sortedPointsX = mergedPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
-            let sortedPointsY = mergedPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
-            let xText = sortedPointsX[sortedPointsX.length - 1];
-            let yText = sortedPointsY[0];
-
-            let text: Text = group!.text(warship.name!)
-                .x(xText[0])
-                .y(yText[1])
-                .addClass("warship-text")
-                .id(warshipID + "-txt")
-                .click(clickForFleet)
-                .mouseover(mouseoverForWarship);
-
-            this.warshipsByText.set(text, warship);
-            this.warshipTextsById.set(warshipID + "-txt", text);
-
             this.fleetsById.set(warshipID, fleet);
-            this.fleetTextsById.set(warshipID + "-txt", text);
-            this.fleetsByText.set(text, fleet);
 
             warshipHullPoint.forEach(hullElements => {
                 let polygon = group!.polygon(hullElements)
@@ -705,7 +687,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 .y(0)
                 .id("star-of-" + system.idStarSystem)
                 .addClass(BasicViewHelper.STAR_MARKER)
-                .addClass(BasicViewHelper.NO_RESIZE_MARKER)
+                .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
                 .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);
 
             let multiplier = this.getScalingMultiplierForOrbit(orbit);
@@ -727,7 +709,6 @@ export class BattleViewHelper extends BasicViewHelper {
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
 
                 let arr: PathArrayAlias = [p1, p2];
-                // todo why remember the path?
                 this.canvas!.path(arr)
                     .fill(BasicViewHelper.NONE_FILL_COLOR)
                     .addClass(BasicViewHelper.COLONIZABLE_SYSTEM_MARKER_CSS_CLASS)
@@ -763,5 +744,14 @@ export class BattleViewHelper extends BasicViewHelper {
 
     private isBattleOrbit(orbit: Orbit) {
         return !!this.battleReport && BattleViewHelper.isSameOrbit(this.battleReport.battleReportStatistics.orbit!.orbit!, orbit);
+    }
+
+    private getWarshipByID(id: string): AbstractId | undefined {
+        return this.warshipsById.get(id);
+    }
+
+    protected getWarshipByEvent(event: PointerEvent | MouseEvent | any): AbstractId | undefined {
+        let id = this.getIdFromEvent(event);
+        return this.getWarshipByID(id);
     }
 }

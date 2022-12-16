@@ -45,6 +45,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.fleetsInputDefinition]) {
+            this.fleets = this.fleets.filter(f => !f.move);
             this.fetchPossibleMovements();
         }
         if (changes[this.destinationDefinition]) {
@@ -106,7 +107,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         }
 
         let hyperLimitPosition = this.createRandomPointOnHyperLimit();
-        let fleetMoves = this.fleets.map(fleet => {
+        let fleetMoves = this.fleets.filter(f => !f.move).map(fleet => {
             const fm: FleetMove = {
                 idFleetToMove: fleet.idFleet,
                 idDestinationSystem: this.destination!.idStarSystem,

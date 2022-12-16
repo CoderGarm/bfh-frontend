@@ -47,6 +47,7 @@ import {TransportationModule} from "./modules/transportation/transportation.modu
 import {BackgroundService} from "./services/background.service";
 import {FleetChangeService} from "./services/fleet-change.service";
 import {StarMapCommunicationService} from "./star-map-communication.service";
+import {NumberRomanPipe} from "./services/pipes/number-roman.pipe";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -120,6 +121,7 @@ export let AppInjector: Injector;
         BackgroundService,
         DatePipe,
         NumberShortPipe,
+        NumberRomanPipe,
         NumberThousandSeparatorPipe,
         MarkdownService,
         StarMapCommunicationService,

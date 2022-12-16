@@ -17,6 +17,8 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private cancelMovementEmitter: EventEmitter<Fleet[]> = new EventEmitter<Fleet[]>();
 
+    private mergeFleetsEmitter: EventEmitter<Fleet[]> = new EventEmitter<Fleet[]>();
+
     private storage: Map<number, Fleet> = new Map<number, Fleet>();
 
     selectedStarSystem?: StarSystem;
@@ -86,6 +88,10 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     getCancelMovementEmitter() {
         return this.cancelMovementEmitter;
+    }
+
+    getMergeFleetsEmitter() {
+        return this.mergeFleetsEmitter;
     }
 
     displaySystem(system?: StarSystem) {
@@ -162,7 +168,6 @@ export class StarMapCommunicationService extends SubscriptionManager {
     removeSelectedFleetMarker(fleetMarker: FleetMarker) {
         this.selectedFleetMarker = this.selectedFleetMarker.filter(fm => fm.fleet.id != fleetMarker.fleet.id);
         this.selectedFleets = this.selectedFleets.filter(f => f.idFleet != fleetMarker.fleet.id);
-        console.log(this.selectedFleets)
     }
 
     moveDisabled() {
@@ -200,7 +205,11 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return nope;
     }
 
-    cancelDisabled() {
+    infoDisabled() {
+        return this.selectedFleets.length == 0;
+    }
+
+    cancelMoveDisabled() {
         return this.selectedFleets.filter(f => !!f.move).length < 1;
     }
 

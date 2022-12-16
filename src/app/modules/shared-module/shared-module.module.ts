@@ -21,12 +21,14 @@ import {ResourceCounterComponent} from "./components/resource-counter/resource-c
 import {HumanResourceCounterComponent} from './components/human-resource-counter/human-resource-counter.component';
 import {NumericSliderCounterComponent} from "./components/numeric-slider-counter/numeric-slider-counter.component";
 import {AmountShifterComponent} from "../shared-modules/amount-shifter/amount-shifter.component";
+import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
 
 @NgModule({
     declarations: [
         NumericCounterComponent,
         NumberShortComponent,
         NumberShortPipe,
+        NumberRomanPipe,
         NumberThousandSeparatorPipe,
         ResourceCounterComponent,
         HumanResourceCounterComponent,
@@ -64,6 +66,7 @@ import {AmountShifterComponent} from "../shared-modules/amount-shifter/amount-sh
         AngularEditorModule,
         TranslateModule,
         NumberShortPipe,
+        NumberRomanPipe,
         NumberThousandSeparatorPipe,
         MarkdownModule,
         AngularMarkdownEditorModule,

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnInit, Optional, SimpleChanges} from '@angular/core';
 import {EHullType, Fleet, Hull, WarShip} from "../../../services/swagger";
 
 @Component({
@@ -19,7 +19,8 @@ export class FleetFormationDisplay implements OnInit, OnChanges {
     hullsByType: Map<string, Hull> = new Map<string, Hull>();
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
 
-    constructor() {
+    constructor(@Optional() @Inject('selectedFleetInput') fleet: Fleet | undefined) {
+        this.selectedFleetInput = fleet;
     }
 
     ngOnInit(): void {

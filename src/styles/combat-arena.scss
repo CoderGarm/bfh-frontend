@@ -14,22 +14,6 @@
   opacity: 1 !important;
 }
 
-// all the svg elements css
-.warship-text {
-  font-size: 10px;
-  fill: cadetblue;
-}
-
-.fleet-text {
-  font-size: 10px;
-  fill: cadetblue;
-}
-
-.marker-text {
-  font-size: 10px;
-  fill: cadetblue;
-}
-
 .under-construction {
   fill: blue;
 }
@@ -57,11 +41,8 @@
   }
 }
 
-.circle-cycle { // todo differentiate between object and subject by color
+.circle-cycle {
   animation: cycling-circle 5s infinite;
-  stroke: $metal-glance;
-  stroke-dasharray: 15px;
-  stroke-width: 3px;
   stroke-linecap: square;
   animation-timing-function: linear;
   transform-origin: center;
@@ -77,9 +58,4 @@
   100% {
     transform: rotate(360deg);
   }
-}
-
-.stroke-outline {
-  stroke: $black;
-  width: 1px;
 }

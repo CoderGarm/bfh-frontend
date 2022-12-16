@@ -59,8 +59,7 @@ svg {
   stroke-width: 1;
 }
 
-.celestial-text {
-  font-size: 10px;
+.svg-text {
   fill: cadetblue;
 }
 
@@ -82,4 +81,26 @@ svg {
   stroke-opacity: 0.2;
   stroke-dasharray: 0 20 28.284;
   animation: infinite;
+}
+
+.fleet-collection-rect {
+  fill: $primary-color;
+  width: 25px;
+  height: 15px;
+  stroke-width: 1px;
+}
+
+.fleet-collection-rect-textbox {
+  fill: none;
+  width: 10px;
+  height: 8px;
+  stroke: $metal-glance;
+  stroke-width: 1px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 4 12;
+}
+
+.fleet-collection-text {
+  font-size: 7px;
 }

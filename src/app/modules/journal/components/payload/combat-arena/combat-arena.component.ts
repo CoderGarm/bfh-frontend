@@ -81,15 +81,10 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
     }
 
-    /**
-     * call back function for using a click at an element
-     *
-     * @param event
-     */
     private clickForFleet = (event: PointerEvent) => {
         let fleetMarker = this.getFleetByEvent(event);
         if (!fleetMarker) {
-            let text = this.getFleetTextByEvent(event);
+            let text = this.getTextByEvent(event);
             if (!!text) {
                 fleetMarker = this.getFleetByText(text);
             }
@@ -97,20 +92,8 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         this.clickedFleet = fleetMarker;
     }
 
-    /**
-     * call back function for hovering over a fleet
-     *
-     * @param event
-     */
     private mouseoverForWarship = (event: PointerEvent) => {
-        let warship = this.getWarshipByEvent(event);
-        if (!warship) {
-            let text = this.getWarshipTextByEvent(event);
-            if (!!text) {
-                warship = this.getWarshipByText(text);
-            }
-        }
-        this.hoveredWarship = warship;
+        this.hoveredWarship = this.getWarshipByEvent(event);
     }
 
     /**

@@ -107,26 +107,28 @@
                 aria-label="units"></mat-slider>
 
     <div class="center">
-        <button type="button" mat-raised-button (click)="fastRewind()">
-            <mat-icon>fast_rewind</mat-icon>
-        </button>
-        <button type="button" mat-raised-button (click)="stop()">
-            <mat-icon>stop</mat-icon>
-        </button>
-        <button type="button" mat-raised-button (click)="pause()">
-            <mat-icon>pause</mat-icon>
-        </button>
-        <button type="button" mat-raised-button (click)="previous()">
-            <mat-icon>skip_previous</mat-icon>
-        </button>
-        <button type="button" mat-raised-button (click)="play()">
-            <mat-icon>play_arrow</mat-icon>
-        </button>
-        <button type="button" mat-raised-button (click)="next()">
-            <mat-icon>skip_next</mat-icon>
-        </button>
-        <button type="button" mat-raised-button (click)="fastForward()">
-            <mat-icon>fast_forward</mat-icon>
-        </button>
+        <mat-button-toggle-group>
+            <mat-button-toggle (click)="fastRewind()">
+                <mat-icon>fast_rewind</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="stop()">
+                <mat-icon>stop</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="pause()">
+                <mat-icon>pause</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="previous()">
+                <mat-icon>skip_previous</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="play()">
+                <mat-icon>play_arrow</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="next()">
+                <mat-icon>skip_next</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="fastForward()">
+                <mat-icon>fast_forward</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
     </div>
 </div>

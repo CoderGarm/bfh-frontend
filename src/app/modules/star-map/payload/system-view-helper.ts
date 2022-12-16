@@ -1,4 +1,4 @@
-import {ArrayXY, Svg} from "@svgdotjs/svg.js";
+import {Svg} from "@svgdotjs/svg.js";
 import {Distance, FleetMarker, FleetOrbit, Orbit, Planet, StarSystem} from "../../../services/swagger";
 import {AreaDefinition} from "../area-definition";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
@@ -14,9 +14,7 @@ export class SystemViewHelper extends BasicViewHelper {
         super(tokenStorage, SystemViewHelper.STANDARD_METRIC);
     }
 
-    setFleetsInMotion(canvas: Svg,
-                      fleetsInMotion: FleetMarker[],
-                      dblClickForFleet: (event: PointerEvent, fleetOrbit: FleetOrbit | undefined) => void) {
+    setFleetsInMotion(fleetsInMotion: FleetMarker[]) {
 
         fleetsInMotion.forEach(fleetMarker => {
             if (!fleetMarker.move!.startOrbit.orbit || !fleetMarker.move!.targetOrbit.orbit) {
@@ -25,7 +23,6 @@ export class SystemViewHelper extends BasicViewHelper {
             let {color, arr} = this.createStellarCoursePlot(fleetMarker.move!);
 
             let path = this.canvas!.path(arr).fill(BasicViewHelper.NONE_FILL_COLOR).stroke({color: color, width: 1});
-            const fleetOrbit = fleetMarker.orbit;
             if (!fleetMarker.move || !fleetMarker.move.startOrbit.orbit || !fleetMarker.move.targetOrbit.orbit) {
                 return;
             }
@@ -43,17 +40,11 @@ export class SystemViewHelper extends BasicViewHelper {
             let coveredTrackLength = distance * part;
 
             let pointAt = path.pointAt(coveredTrackLength);
-
-            let fleetSharkPoints: ArrayXY[] = this.defineFleetSharkPoints(pointAt.x, pointAt.y);
-
-            this.createFleetGroup(fleetMarker, fleetSharkPoints, dblClickForFleet, fleetOrbit);
+            this.createFleetGroup(fleetMarker, pointAt.x, pointAt.y, undefined);
         });
     }
 
-    setFleetsInOrbits(canvas: Svg,
-                      fleetOrbits: Map<FleetOrbit, FleetMarker>,
-                      dblClickForFleet: (event: PointerEvent, fleetOrbit: FleetOrbit | undefined) => void) {
-        this.setCanvas(canvas);
+    setFleetsInOrbits(fleetOrbits: Map<FleetOrbit, FleetMarker>) {
 
         fleetOrbits.forEach((fleetMarker, fleetOrbit) => {
 
@@ -63,9 +54,7 @@ export class SystemViewHelper extends BasicViewHelper {
             let orbit: Orbit = fleetOrbit.orbit!;
             let x: number = this.convertToStandardMetric(orbit.xCoordinate) + 25 + (Array.from(fleetOrbits.keys()).indexOf(fleetOrbit) % 2 == 0 ? 15 : 0);
             let y: number = this.convertToStandardMetric(orbit.yCoordinate) + 25;
-            let fleetSharkPoints: ArrayXY[] = this.createFleetSharkPoints(x, y, orbit);
-
-            let group = this.createFleetGroup(fleetMarker, fleetSharkPoints, dblClickForFleet, fleetOrbit);
+            let group = this.createFleetGroup(fleetMarker, x, y, orbit);
             this.areaDefinitions.push(new AreaDefinition(group!));
         });
     }
@@ -99,7 +88,7 @@ export class SystemViewHelper extends BasicViewHelper {
             .id("star-of-" + system.idStarSystem)
             .addClass(BasicViewHelper.STAR_MARKER)
             .addClass(BasicViewHelper.STAR_IN_SYSTEM_MARKER)
-            .addClass(BasicViewHelper.NO_RESIZE_MARKER)
+            .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
             .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);
 
         orbitDefinitions.forEach(orbitDefinition => {

@@ -26,6 +26,9 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
 
     formGroup: FormGroup;
 
+    @Input()
+    nameChangeAllowed: boolean = false;
+
     constructor(@Optional() @Inject('fleetInput') fleet: Fleet | FleetMarker | undefined,
                 private fleetService: FleetApiService,
                 private fleetChangeService: FleetChangeService) {

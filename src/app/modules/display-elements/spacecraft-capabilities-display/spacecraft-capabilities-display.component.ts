@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {CapabilityValue, Fleet, FleetApiService, FleetMarker, SpacecraftCapabilities} from "../../../services/swagger";
+import {CapabilityValue, Fleet, SpacecraftCapabilities} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 
 @Component({
@@ -21,26 +21,19 @@ export class SpacecraftCapabilitiesDisplayComponent extends SubscriptionManager 
     @Input()
     ngClass: string = "";
 
-    fleetMarker?: FleetMarker;
-
-    private fleet?: Fleet;
+    fleet?: Fleet;
 
     constructor(@Optional() @Inject('baseFleetCapabilities') base: SpacecraftCapabilities | undefined,
                 @Optional() @Inject('currentFleetCapabilities') current: SpacecraftCapabilities | undefined,
-                @Optional() @Inject('fleetMarker') fleetMarker: FleetMarker | undefined,
-                private fleetService: FleetApiService) {
+                @Optional() @Inject('fleet') fleet: Fleet | undefined) {
         super();
 
         this.baseFleetCapabilities = base;
         this.currentFleetCapabilities = current;
-        this.fleetMarker = fleetMarker;
-        if (!!this.fleetMarker) {
-            const sub = this.fleetService.getFleet(this.fleetMarker.fleet.id).subscribe(resp => {
-                this.fleet = resp;
-                this.baseFleetCapabilities = this.fleet.baseSpacecraftCapabilities;
-                this.currentFleetCapabilities = this.fleet.spacecraftCapabilities;
-            });
-            this.subscriptions.push(sub);
+        this.fleet = fleet;
+        if (!!this.fleet) {
+            this.baseFleetCapabilities = this.fleet.baseSpacecraftCapabilities;
+            this.currentFleetCapabilities = this.fleet.spacecraftCapabilities;
         }
     }
 

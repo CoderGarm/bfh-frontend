@@ -1,4 +1,12 @@
-<div id="notch-content" class="mat-elevation-z8 pointer-events" *ngIf="!moveDisabled() || !mergeDisabled() || !cancelDisabled()">
+<div id="notch-content" class="mat-elevation-z8 pointer-events" *ngIf="!infoDisabled() || !moveDisabled() || !mergeDisabled() || !cancelMoveDisabled()">
+
+    <mat-grid-list cols="6" rowHeight="100px">
+        <mat-grid-tile *ngFor="let fleet of commService.selectedFleets"
+                       [colspan]="getColSpan(fleet)"
+                       class="tile">
+            <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
+        </mat-grid-tile>
+    </mat-grid-list>
 
     <app-interstellar-fleet-movement-edit *ngIf="!stellarMode"
                                           [fleets]="commService.selectedFleets"
@@ -8,12 +16,14 @@
                          [fleets]="commService.selectedFleets"
                          [system]="commService.displayedStarSystem"
                          [destination]="commService.selectedPlanet"></app-fleet-move-edit>
+
 </div>
 
 <div id="notch-actions">
     <mat-button-toggle-group class="pointer-events">
+        <mat-button-toggle (click)="info()" [disabled]="infoDisabled()">{{ 'star-map.notch.action.info' | translate }}</mat-button-toggle>
         <mat-button-toggle (click)="move()" [disabled]="moveDisabled()">{{ 'star-map.notch.action.move' | translate }}</mat-button-toggle>
-        <mat-button-toggle (click)="cancel()" [disabled]="cancelDisabled()">{{ 'star-map.notch.action.cancel-move' | translate }}</mat-button-toggle>
+        <mat-button-toggle (click)="cancelMove()" [disabled]="cancelMoveDisabled()">{{ 'star-map.notch.action.cancel-move' | translate }}</mat-button-toggle>
         <mat-button-toggle (click)="merge()" [disabled]="mergeDisabled()">{{ 'star-map.notch.action.merge' | translate }}</mat-button-toggle>
     </mat-button-toggle-group>
 

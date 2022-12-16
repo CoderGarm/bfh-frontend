@@ -18,7 +18,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { Fleet } from '../model/fleet';
-import { FleetDistributionPerUser } from '../model/fleetDistributionPerUser';
 import { FleetMarker } from '../model/fleetMarker';
 import { FleetMerge } from '../model/fleetMerge';
 import { FleetMove } from '../model/fleetMove';
@@ -191,9 +190,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFleetDistribution(observe?: 'body', reportProgress?: boolean): Observable<Array<FleetDistributionPerUser>>;
-    public getFleetDistribution(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetDistributionPerUser>>>;
-    public getFleetDistribution(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetDistributionPerUser>>>;
+    public getFleetDistribution(observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMarker>>;
+    public getFleetDistribution(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMarker>>>;
+    public getFleetDistribution(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMarker>>>;
     public getFleetDistribution(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -212,7 +211,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<FleetDistributionPerUser>>('get',`${this.basePath}/api/private/fleet/fleetDistribution`,
+        return this.httpClient.request<Array<FleetMarker>>('get',`${this.basePath}/api/private/fleet/fleetDistribution`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -381,43 +380,6 @@ export class FleetApiService {
         ];
 
         return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/perUser`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all fleets inside of a star system.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getInterstellarMovingFleets(observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMarker>>;
-    public getInterstellarMovingFleets(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMarker>>>;
-    public getInterstellarMovingFleets(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMarker>>>;
-    public getInterstellarMovingFleets(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<FleetMarker>>('get',`${this.basePath}/api/private/fleet/interstellarMovement`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

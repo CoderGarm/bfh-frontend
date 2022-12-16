@@ -1,7 +1,7 @@
 <mat-tab-group animationDuration="0ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.fleet.dashboard' | translate }}">
         <div class="holder">
-            <app-fleet-display [fleetInput]="fleet">
+            <app-fleet-display [fleetInput]="fleet" [nameChangeAllowed]="true">
                 <app-spacecraft-capabilities-display body
                                                      [baseFleetCapabilities]="fleet?.baseSpacecraftCapabilities"
                                                      [currentFleetCapabilities]="fleet?.spacecraftCapabilities"></app-spacecraft-capabilities-display>

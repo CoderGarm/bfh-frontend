@@ -281,6 +281,7 @@
     "notch": {
       "action": {
         "cancel-move": "Cancel movement",
+        "info": "Info",
         "merge": "Merge fleets",
         "move": "Move fleets"
       },
