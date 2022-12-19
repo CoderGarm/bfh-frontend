@@ -48,6 +48,7 @@ import {BackgroundService} from "./services/background.service";
 import {FleetChangeService} from "./services/fleet-change.service";
 import {StarMapCommunicationService} from "./star-map-communication.service";
 import {NumberRomanPipe} from "./services/pipes/number-roman.pipe";
+import {BasicViewHelperData} from "./basic-view-helper-data";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -64,6 +65,7 @@ export let AppInjector: Injector;
     declarations: [
         AppComponent,
         SubscriptionManager,
+        BasicViewHelperData,
         BasicViewHelper,
         ErrorDialogComponent,
         NavComponent,

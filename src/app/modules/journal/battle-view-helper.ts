@@ -18,7 +18,6 @@ import {
     StarSystem
 } from "../../services/swagger";
 import {TokenStorage} from "../../services/authentication/token-storage.service";
-import {CelestialAreaDefinition} from "../star-map/payload/celestial-area-definition";
 import {OrbitDefinition} from "../star-map/payload/orbit-definition";
 import {BasicViewHelper} from "../../basic-view-helper";
 import {CombatArenaData} from "./components/payload/combat-arena/combat-arena.component";
@@ -59,8 +58,8 @@ export class BattleViewHelper extends BasicViewHelper {
                    canvas: Svg,
                    clickForFleet: (event: PointerEvent) => void,
                    mouseoverForWarship: (event: PointerEvent) => void) {
-        this.clearCanvas();
-        this.setOrbits(canvas, starSystem);
+        this.clearData();
+        this.drawOrbits(canvas, starSystem);
         if (!activeRound || !this.combatArenaData || !this.canvas) {
             console.log("no active round selected: ", activeRound);
             return;
@@ -224,7 +223,7 @@ export class BattleViewHelper extends BasicViewHelper {
         let group = this.canvas?.group()
             .id(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
 
-        this.groupsByID.set(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
+        this.setGroupById(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
@@ -314,11 +313,11 @@ export class BattleViewHelper extends BasicViewHelper {
             let damageDealerId = volley.damageDealer;
             let shooter = volley.actor;
             let shooterID = this.getFleetSharkID(shooter) + BasicViewHelper.GROUP_SELECTOR_SUFFIX;
-            let shooterG = this.groupsByID.get(shooterID);
+            let shooterG = this.getGroupById(shooterID);
 
             let target = volley.target;
             let targetID = this.getFleetSharkID(target) + BasicViewHelper.GROUP_SELECTOR_SUFFIX;
-            let targetG = this.groupsByID.get(targetID);
+            let targetG = this.getGroupById(targetID);
             if (!shooterG || !targetG) {
                 return;
             }
@@ -457,9 +456,8 @@ export class BattleViewHelper extends BasicViewHelper {
             .click(clickForFleet)
             .id(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
 
-        this.fleetsById.set(fleetSharkID, fleet);
-
-        this.groupsByID.set(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
+        this.setFleetById(fleetSharkID, fleet);
+        this.setGroupById(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
@@ -477,7 +475,7 @@ export class BattleViewHelper extends BasicViewHelper {
             const mergedPoints: ArrayXY[] = [];
             warshipHullPoint.forEach(p => p.forEach(i => mergedPoints.push(i)));
 
-            this.fleetsById.set(warshipID, fleet);
+            this.setFleetById(warshipID, fleet);
 
             warshipHullPoint.forEach(hullElements => {
                 let polygon = group!.polygon(hullElements)
@@ -639,20 +637,14 @@ export class BattleViewHelper extends BasicViewHelper {
         }
     }
 
-    /**
-     * starts the complete process of building the canvas and it's attachments
-     *
-     * @param canvas the canvas to draw at
-     * @param system the system to display
-     */
-    setOrbits(canvas: Svg, system: StarSystem) {
+    drawOrbits(canvas: Svg, system: StarSystem) {
         this.setCanvas(canvas);
 
         let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
         system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
         let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
 
-        this.orbits = orbitDefinitions.map(od => od.orbit);
+        this.setOrbits(orbitDefinitions);
         this.sortByOrbit();
         this.createPolarCoordinateSystem();
 
@@ -692,11 +684,10 @@ export class BattleViewHelper extends BasicViewHelper {
 
             let multiplier = this.getScalingMultiplierForOrbit(orbit);
 
-            //this.createCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50 * multiplier, orbitID);
             this.createLocalPolarCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), this.BATTLE_COORDINATE_SYSTEM_RADIUS, orbitID);
 
-            this.orbitsById.set(orbitID, orbit);
-            this.celestialAreas.push(new CelestialAreaDefinition(orbit, orbitID, 50));
+            this.setOrbitById(orbitID, orbit);
+            this.addCelestialArea(orbit, orbitID);
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
@@ -730,7 +721,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 circle.addClass(BasicViewHelper.NOT_COLONIZED_COLOR_CSS_CLASS);
             }
 
-            this.celestialOrbitById.set(celestialBodyID, orbit);
+            this.setCelestialOrbitById(celestialBodyID, orbit);
         });
     }
 

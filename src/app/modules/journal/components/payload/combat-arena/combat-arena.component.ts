@@ -76,7 +76,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         if (changes[this.combatArenaDataInputDefinition]) {
             if (!this.combatArenaData && !this.starSystem) {
-                this.clearCanvas();
+                this.clearData();
             }
         }
     }
@@ -106,11 +106,11 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
                 //this.createCanvas()
                 this.createCanvas("combat-arena", '#arena')
             } else {
-                this.clearCanvas();
+                this.clearData();
             }
-            this.setOrbits(this.canvas!, this.starSystem);
+            this.drawOrbits(this.canvas!, this.starSystem);
         } else {
-            this.clearCanvas();
+            this.clearData();
         }
     }
 

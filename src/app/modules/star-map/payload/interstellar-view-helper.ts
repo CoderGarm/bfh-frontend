@@ -83,10 +83,10 @@ export class InterstellarViewHelper extends BasicViewHelper {
         return this.createCoursePlot(xOrigin, yOrigin, xDestination, yDestination);
     }
 
-    setOrbits(canvas: Svg,
-              orbits: OrbitDefinition[]) {
+    drawOrbits(canvas: Svg,
+               orbits: OrbitDefinition[]) {
         this.setCanvas(canvas);
-        this.orbits = orbits.map(od => od.orbit);
+        this.setOrbits(orbits);
         this.sortByOrbit();
         this.createPolarCoordinateSystem();
         const homeDef = orbits.filter(od => od.isMain)[0];

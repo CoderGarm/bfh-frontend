@@ -1,6 +1,5 @@
 import {Svg} from "@svgdotjs/svg.js";
 import {Distance, FleetMarker, FleetOrbit, Orbit, Planet, StarSystem} from "../../../services/swagger";
-import {AreaDefinition} from "../area-definition";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {OrbitDefinition} from "./orbit-definition";
 import {BasicViewHelper} from "../../../basic-view-helper";
@@ -49,24 +48,24 @@ export class SystemViewHelper extends BasicViewHelper {
         fleetOrbits.forEach((fleetMarker, fleetOrbit) => {
 
             let fleetSharkID = this.getFleetSharkID(fleetMarker);
-            this.fleetsById.set(fleetSharkID, fleetMarker);
+            this.setFleetById(fleetSharkID, fleetMarker);
 
             let orbit: Orbit = fleetOrbit.orbit!;
             let x: number = this.convertToStandardMetric(orbit.xCoordinate) + 25 + (Array.from(fleetOrbits.keys()).indexOf(fleetOrbit) % 2 == 0 ? 15 : 0);
             let y: number = this.convertToStandardMetric(orbit.yCoordinate) + 25;
             let group = this.createFleetGroup(fleetMarker, x, y, orbit);
-            this.areaDefinitions.push(new AreaDefinition(group!));
+            this.addAreaDefinition(group);
         });
     }
 
-    setOrbits(canvas: Svg, system: StarSystem) {
+    drawOrbits(canvas: Svg, system: StarSystem) {
         this.setCanvas(canvas);
 
         let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
         system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
         let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
 
-        this.orbits = orbitDefinitions.map(od => od.orbit);
+        this.setOrbits(orbitDefinitions);
         this.sortByOrbit();
         this.createPolarCoordinateSystem();
         this.setViewBox(undefined, 0.7);

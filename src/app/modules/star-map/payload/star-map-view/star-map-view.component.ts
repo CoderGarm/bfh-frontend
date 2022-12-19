@@ -54,7 +54,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
         this.starMapCommService.clear(1);
         this.starMapCommService.deselect();
         if (!!this.starSystemSelectionInput) {
-            this.clearCanvas();
+            this.clearData();
             let sub = this.starMapApi.getStarSystem(this.starSystemSelectionInput.idStarSystem)
                 .subscribe(system => {
                     this.system = system;
@@ -62,8 +62,8 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                     if (!this.canvas) {
                         this.createCanvas("star-system-canvas", '#starsystem')
                     }
-                    system.planets.forEach(p => this.planetsByOrbit.set(p.orbit, p));
-                    this.setOrbits(this.canvas!, system);
+                    this.setPlanetsByOrbit(system);
+                    this.drawOrbits(this.canvas!, system);
                 });
             this.subscriptions.push(sub);
 
@@ -84,7 +84,7 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                 });
             this.subscriptions.push(sub);
         } else {
-            this.clearCanvas();
+            this.clearData();
         }
     }
 
