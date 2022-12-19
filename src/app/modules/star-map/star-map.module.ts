@@ -5,6 +5,7 @@ import {StarMapViewComponent} from './payload/star-map-view/star-map-view.compon
 import {UniverseMapViewComponent} from './payload/universe-map-view/universe-map-view.component';
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {NotchComponent} from './payload/notch/notch.component';
+import {FleetNotchDisplayComponent} from './payload/fleet-notch-display/fleet-notch-display.component';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import {NotchComponent} from './payload/notch/notch.component';
         StarMapTabViewComponent,
         StarMapViewComponent,
         UniverseMapViewComponent,
-        NotchComponent
+        NotchComponent,
+        FleetNotchDisplayComponent
     ],
     imports: [
         SharedModuleModule,

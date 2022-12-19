@@ -1,6 +1,5 @@
 import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem} from "./services/swagger";
 import {ArrayXY, Circle, CurveCommand, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
-import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
 import {Component, HostListener} from "@angular/core";
@@ -9,6 +8,7 @@ import {AppInjector} from "./app.module";
 import {TokenStorage} from "./services/authentication/token-storage.service";
 import {NumberRomanPipe} from "./services/pipes/number-roman.pipe";
 import {BasicViewHelperData} from "./basic-view-helper-data";
+import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 
@@ -37,7 +37,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.tokenStorage = tokenStorage;
         this.STANDARD_METRIC = standardDistanceMetric;
         const sub = this.starMapCommService.getDeselectEverythingEmitter().subscribe(() => {
-            const elements = this.canvas?.children().filter(elem => elem.id().endsWith(BasicViewHelper.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelper.MOVE_SUFFIX));
+            const elements = this.canvas?.children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
             if (!!elements && elements.length > 0) {
                 elements.forEach(elem => this.canvas?.removeElement(elem));
             }
@@ -53,14 +53,10 @@ export class BasicViewHelper extends BasicViewHelperData {
     protected static readonly ROUND_CAP_MARKER_Y_PIXEL_SHIFT: number = 8;
     protected static readonly STATE_DOT_RADIUS: number = 5;
 
-    protected static readonly CYCLING_CIRCLE_MARKER = "circle-cycle";
-
     protected readonly FLEET_SHARK_COLOR_HOSTILE = "red";
     protected readonly FLEET_SHARK_COLOR_OWN = "green";
     protected readonly FLEET_COLLECTION_COLOR_MIXED = "purple";
 
-    protected readonly COURSE_PLOT_COLOR_OUTBOUND: string = "green";
-    protected readonly COURSE_PLOT_COLOR_INBOUND: string = "red";
     public static readonly NONE_FILL_COLOR = "none";
 
     protected static readonly NOT_COLONIZED_COLOR_CSS_CLASS = "not-colonized";
@@ -69,7 +65,6 @@ export class BasicViewHelper extends BasicViewHelperData {
     protected static readonly COLONIZABLE_SYSTEM_MARKER_CSS_CLASS = "colonizable";
 
     protected static readonly PLANET_RADIUS = 5;
-    protected static readonly CYCLING_CIRCLE_RADIUS = BasicViewHelper.PLANET_RADIUS * 3;
     protected static readonly STAR_RADIUS = 5;
     protected static readonly STAR_RADIUS_IN_SYSTEM = 15;
 
@@ -129,6 +124,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.zoomLevel = ev.detail.level;
         this.zoomResizableContents();
         this.zoomFleetGroups();
+        this.zoomFleetCollections();
         this.setVisibilityOfFleetGroups();
         // must be zoomed after all others
         this.zoomCyclingCircles();
@@ -143,8 +139,8 @@ export class BasicViewHelper extends BasicViewHelperData {
 
         let texts = this.canvas!.children()
             // dont resize dot texts
-            .filter(c => c.classes().filter(css => css == BasicViewHelper.MOVABLE_STATE_DOT_MARKER).length == 0)
-            .filter(c => c.classes().filter(css => css == BasicViewHelper.TEXT_MARKER).length > 0);
+            .filter(c => c.classes().filter(css => css == BasicViewHelperData.MOVABLE_STATE_DOT_MARKER).length == 0)
+            .filter(c => c.classes().filter(css => css == BasicViewHelperData.TEXT_MARKER).length > 0);
         texts.forEach(text => this.resizeText(<Text>text));
     }
 
@@ -155,17 +151,17 @@ export class BasicViewHelper extends BasicViewHelperData {
 
         this.clearRestrictedAreas();
 
-        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelper.FLEET_SHARK_SELECTOR_ID_PREFIX) && c.id().endsWith(BasicViewHelper.GROUP_SELECTOR_SUFFIX));
+        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX) && c.id().endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX));
         const polygons: Element[] = [];
-        fleetGroups.forEach(g => g.children().filter(c => c.classes().filter(css => css == BasicViewHelper.FLEET_SHARK_POLYGON_MARKER).length > 0).forEach(polygon => polygons.push(polygon)));
+        fleetGroups.forEach(g => g.children().filter(c => c.classes().filter(css => css == BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER).length > 0).forEach(polygon => polygons.push(polygon)));
         polygons.forEach(elem => {
             const polygon = <Polygon>elem;
             let x;
             let y;
             let orbit;
-            const orbitClasses = polygon.classes().filter(css => css.startsWith(BasicViewHelper.ORBIT_ID_MARKER));
+            const orbitClasses = polygon.classes().filter(css => css.startsWith(BasicViewHelperData.ORBIT_ID_MARKER));
             if (orbitClasses.length > 0) {
-                const orbitId = orbitClasses[0].replace(BasicViewHelper.ORBIT_ID_MARKER, '');
+                const orbitId = orbitClasses[0].replace(BasicViewHelperData.ORBIT_ID_MARKER, '');
                 orbit = this.getOrbitOfCelestialByID(orbitId)!;
                 if (!orbit) {
                     const fleet = this.getFleetByID(polygon.id());
@@ -198,24 +194,36 @@ export class BasicViewHelper extends BasicViewHelperData {
         });
     }
 
+    private zoomFleetCollections() {
+        // todo zoom it
+        const fleetCollectionGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX));
+        const fleetSharkIDs: string[] = [];
+        fleetCollectionGroups.map(fleetCollectionGroup => fleetCollectionGroup.id())
+            .map(id => this.getFleetSharkIDsFromCollectionID(id)
+                .forEach(id => fleetSharkIDs.push(id)));
+
+        const fleetGroups: G[] = [];
+        fleetSharkIDs.map(id => this.getGroupById(id)).forEach(g => fleetGroups.push(g!));
+    }
+
     private zoomStateDots() {
         if (this.zoomLevel <= 1) {
             return;
         }
 
-        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelper.FLEET_SHARK_SELECTOR_ID_PREFIX));
+        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX));
         const stateDots: Circle[] = [];
         fleetGroups.forEach(g => {
             g.children().forEach(c => {
-                const isStateDot = c.classes().filter(css => css.startsWith(BasicViewHelper.MOVABLE_STATE_DOT_MARKER)).length > 0;
+                const isStateDot = c.classes().filter(css => css.startsWith(BasicViewHelperData.MOVABLE_STATE_DOT_MARKER)).length > 0;
                 if (isStateDot && c instanceof Circle) {
                     stateDots.push(c);
                 }
             });
         });
         stateDots.forEach(dot => {
-            const cssClass = dot.classes().filter(css => css.startsWith(BasicViewHelper.ICON_ID_MARKER));
-            const fleetSharkId = cssClass![0].replace(BasicViewHelper.ICON_ID_MARKER, '');
+            const cssClass = dot.classes().filter(css => css.startsWith(BasicViewHelperData.ICON_ID_MARKER));
+            const fleetSharkId = cssClass![0].replace(BasicViewHelperData.ICON_ID_MARKER, '');
             const fleetShark: Polygon | undefined = this.getFleetSharkByID(fleetSharkId);
             if (!!fleetShark) {
                 const {sortedPointsX, sortedPointsY} = this.sortPoints(fleetShark.array());
@@ -235,21 +243,19 @@ export class BasicViewHelper extends BasicViewHelperData {
             return;
         }
 
-        const circles: Element[] = this.canvas!.children().filter(elem => elem.id().endsWith(BasicViewHelper.CYCLING_CIRCLE_SUFFIX));
+        const circles: Element[] = this.canvas!.children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX));
         circles.forEach(dot => {
             if (dot instanceof Circle) {
-                const cssClass = dot.classes().filter(css => css.startsWith(BasicViewHelper.ICON_ID_MARKER));
-                const id = cssClass![0].replace(BasicViewHelper.ICON_ID_MARKER, '');
-                let x: number;
-                let y: number;
-                const fleetShark: Polygon | undefined = this.getFleetSharkByID(id);
+                // todo zoom circles on groups
+                const cssClass = dot.classes().filter(css => css.startsWith(BasicViewHelperData.ICON_ID_MARKER));
+                const id = cssClass![0].replace(BasicViewHelperData.ICON_ID_MARKER, '');
+                const isInvisible = dot.classes().filter(css => css === BasicViewHelper.INVISIBLE_CLASS).length > 0;
+                const fleet: G | undefined = this.getGroupById(id);
                 const celestial: Circle | undefined = this.getCelestialByID(id);
-                let element: Element | undefined = !!fleetShark ? fleetShark : !!celestial ? celestial : undefined;
+                let element: Element | undefined = !!fleet ? fleet : !!celestial ? celestial : undefined;
                 if (!!element) {
-                    x = element.cx();
-                    y = element.cy();
                     this.canvas?.removeElement(dot)
-                    this.drawCyclingCircle(x, y, id);
+                    this.drawCyclingCircle(element.cx(), element.cy(), id, isInvisible);
                 }
             }
         });
@@ -267,32 +273,56 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     private setVisibilityOfFleetGroups() {
-        const fleetCollectionGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelper.FLEET_COLLECTION_SELECTOR_ID_PREFIX));
+        const fleetCollectionGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX));
         const fleetSharkIDs: string[] = [];
         fleetCollectionGroups.map(fleetCollectionGroup => fleetCollectionGroup.id())
             .map(id => this.getFleetSharkIDsFromCollectionID(id)
                 .forEach(id => fleetSharkIDs.push(id)));
 
-        const fleetGroups: G[] = [];
-        fleetSharkIDs.map(id => this.getGroupById(id)).forEach(g => fleetGroups.push(g!));
+        const fleetGroups: G[] = fleetSharkIDs.map(id => this.getGroupById(id)!);
 
-        if (this.zoomLevel == 4) {
+        const cyclingCircles = this.canvas!.children().filter(c => c.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX));
+        const fleetCircles: Circle[] = [];
+        fleetGroups.map(g => this.getCyclingCircleId(g.id()))
+            .forEach(id => cyclingCircles.filter(cc => cc.id() == id).map(cc => <Circle>cc)
+                .forEach(cc => fleetCircles.push(cc)));
+
+        const fleetCollectionCircles: Circle[] = [];
+        fleetCollectionGroups.map(g => g.id())
+            .forEach(id => {
+                const elements = cyclingCircles.filter(c => c.id() === this.getCyclingCircleId(id));
+                elements.map(e => <Circle>e).forEach(e => fleetCollectionCircles.push(e));
+            });
+
+        if (this.displayFleetCollections()) {
             fleetGroups.forEach(g => g.removeClass(BasicViewHelper.INVISIBLE_CLASS));
-            fleetCollectionGroups.filter(g => g.classes().filter(c => c == BasicViewHelper.INVISIBLE_CLASS).length == 0).forEach(g => g.addClass(BasicViewHelper.INVISIBLE_CLASS));
+            fleetCircles.forEach(g => g.removeClass(BasicViewHelper.INVISIBLE_CLASS));
+            fleetCollectionGroups.filter(g => g.classes().filter(c => c == BasicViewHelper.INVISIBLE_CLASS).length == 0)
+                .forEach(g => g.addClass(BasicViewHelper.INVISIBLE_CLASS));
+            fleetCollectionCircles.filter(g => g.classes().filter(c => c == BasicViewHelper.INVISIBLE_CLASS).length == 0)
+                .forEach(g => g.addClass(BasicViewHelper.INVISIBLE_CLASS));
         } else {
-            fleetGroups.filter(g => g.classes().filter(c => c == BasicViewHelper.INVISIBLE_CLASS).length == 0).forEach(g => g.addClass(BasicViewHelper.INVISIBLE_CLASS));
+            fleetGroups.filter(g => g.classes().filter(c => c == BasicViewHelper.INVISIBLE_CLASS).length == 0)
+                .forEach(g => g.addClass(BasicViewHelper.INVISIBLE_CLASS));
+            fleetCircles.filter(g => g.classes().filter(c => c == BasicViewHelper.INVISIBLE_CLASS).length == 0)
+                .forEach(g => g.addClass(BasicViewHelper.INVISIBLE_CLASS));
             fleetCollectionGroups.forEach(g => g.removeClass(BasicViewHelper.INVISIBLE_CLASS));
+            fleetCollectionCircles.forEach(g => g.removeClass(BasicViewHelper.INVISIBLE_CLASS));
         }
+    }
+
+    private displayFleetCollections() {
+        return this.zoomLevel == 4;
     }
 
     private zoomResizableContents() {
         const elements = this.canvas?.children()
-            .filter(c => c.classes().filter(c => c == BasicViewHelper.RESIZE_ON_ZOOM_MARKER).length != 0);
+            .filter(c => c.classes().filter(c => c == BasicViewHelperData.RESIZE_ON_ZOOM_MARKER).length != 0);
         elements!.forEach(c => {
             if ('radius' in c) {
                 this.resizeCelestial(c);
             }
-            if (c.classes().filter(c => c == BasicViewHelper.ROUND_CAP_MARKER).length != 0) {
+            if (c.classes().filter(c => c == BasicViewHelperData.ROUND_CAP_MARKER).length != 0) {
                 this.repositioningRoundCapMarker(c);
             }
         });
@@ -317,11 +347,11 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private resizeCelestial(c: Element) {
         let baseRadius = BasicViewHelper.PLANET_RADIUS;
-        const isStar = c.classes().filter(c => c == BasicViewHelper.STAR_MARKER).length != 0;
+        const isStar = c.classes().filter(c => c == BasicViewHelperData.STAR_MARKER).length != 0;
         if (isStar) {
             baseRadius = BasicViewHelper.STAR_RADIUS;
         }
-        const isStarInSystem = c.classes().filter(c => c == BasicViewHelper.STAR_IN_SYSTEM_MARKER).length != 0;
+        const isStarInSystem = c.classes().filter(c => c == BasicViewHelperData.STAR_IN_SYSTEM_MARKER).length != 0;
         if (isStarInSystem) {
             baseRadius = BasicViewHelper.STAR_RADIUS_IN_SYSTEM;
         }
@@ -343,13 +373,12 @@ export class BasicViewHelper extends BasicViewHelperData {
         let orbitID = this.getOrbitID(orbit);
         let celestialBodyID = this.getCelestialBodyID(orbit);
         this.setOrbitById(orbitID, orbit);
-        this.addCelestialArea(orbit, orbitID);
 
         const x = this.convertToStandardMetric(orbit.xCoordinate);
         const y = this.convertToStandardMetric(orbit.yCoordinate);
         if (orbitDefinition.isColonizable) {
             // to rotate around the center just flip the + and -
-            this.createRoundCapMarkerNorth(x, y);
+            this.createRoundCapMarkerNorth(celestialBodyID, x, y);
         }
 
         const circle = this.canvas!
@@ -357,13 +386,13 @@ export class BasicViewHelper extends BasicViewHelperData {
             .x(x)
             .y(y)
             .id(celestialBodyID)
-            .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER);
+            .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER);
 
         if ('idPlanet' in orbitDefinition.celestial) {
             circle.addClass("planet");
             circle.radius(BasicViewHelper.PLANET_RADIUS);
         } else {
-            circle.addClass(BasicViewHelper.STAR_MARKER);
+            circle.addClass(BasicViewHelperData.STAR_MARKER);
             circle.radius(BasicViewHelper.STAR_RADIUS);
         }
 
@@ -379,8 +408,8 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.setCelestialObjectById(celestialBodyID, orbitDefinition.celestial);
 
         let text: Text = new Text()
-            .addClass(BasicViewHelper.TEXT_MARKER)
-            .addClass(BasicViewHelper.ICON_ID_MARKER + celestialBodyID)
+            .addClass(BasicViewHelperData.TEXT_MARKER)
+            .addClass(BasicViewHelperData.ICON_ID_MARKER + celestialBodyID)
             .text(orbitDefinition.name)
             .x(circle.cx() + 10)
             .y(circle.cy() - 20);
@@ -397,23 +426,23 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.setCelestialOrbitById(celestialBodyID, orbit);
     }
 
-    createRoundCapMarkerNorth(x: number, y: number, xShifter?: number, yShifter?: number) {
+    createRoundCapMarkerNorth(id: string, x: number, y: number, xShifter?: number, yShifter?: number) {
         let arr = this.createRoundCapMarkerNorthPoints(x, y, xShifter, yShifter);
         this.canvas!.path(arr)
             .fill(BasicViewHelper.NONE_FILL_COLOR)
+            .id(id + BasicViewHelperData.ROUND_CAP_SUFFIX)
             .addClass(BasicViewHelper.COLONIZABLE_SYSTEM_MARKER_CSS_CLASS)
-            .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
-            .addClass(BasicViewHelper.ROUND_CAP_MARKER)
-            .addClass(this.getCenterMarker(x, y))
-            .addClass("roundCap");
+            .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER)
+            .addClass(BasicViewHelperData.ROUND_CAP_MARKER)
+            .addClass(this.getCenterMarker(x, y));
     }
 
     private getCenterMarker(x: number, y: number) {
-        return BasicViewHelper.CENTER_COORDINATES_MARKER + x + BasicViewHelper.CENTER_COORDINATES_SEPARATOR + y;
+        return BasicViewHelperData.CENTER_COORDINATES_MARKER + x + BasicViewHelperData.CENTER_COORDINATES_SEPARATOR + y;
     }
 
     private getCoordsFromCenterMarker(element: Element): ArrayXY | undefined {
-        const markers = element.classes().filter(c => c.startsWith(BasicViewHelper.CENTER_COORDINATES_MARKER));
+        const markers = element.classes().filter(c => c.startsWith(BasicViewHelperData.CENTER_COORDINATES_MARKER));
         if (!!markers && markers.length == 1) {
             const center = this.getCenterCoordinatesFromMarker(markers[0]);
             if (!!center) {
@@ -445,7 +474,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     getCenterCoordinatesFromMarker(cssClass: string): ArrayXY | undefined {
-        const split = cssClass.replace(BasicViewHelper.CENTER_COORDINATES_MARKER, '').split(BasicViewHelper.CENTER_COORDINATES_SEPARATOR);
+        const split = cssClass.replace(BasicViewHelperData.CENTER_COORDINATES_MARKER, '').split(BasicViewHelperData.CENTER_COORDINATES_SEPARATOR);
         if (!split) {
             return undefined;
         }
@@ -455,7 +484,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     private clickEventForCelestial = (event: PointerEvent) => {
-        if (!this.starMapCommService.isStarSystemDisplayed() && !this.starMapCommService.isSelectedStarSystem() && !this.starMapCommService.isSelectedFleetMarker()) {
+        if (!this.starMapCommService.isStarSystemDisplayed() && !this.starMapCommService.isSelectedFleetMarker()) {
             let orbitByID = this.getOrbitOfCelestialByEvent(event);
             if (!!orbitByID) {
                 let system = this.getKnownStarSystemByOrbit(orbitByID);
@@ -476,143 +505,226 @@ export class BasicViewHelper extends BasicViewHelperData {
         let id = this.getIdFromEvent(event);
         const celestial = this.getCelestialObjectByID(id);
         if (!celestial) {
-            console.log("No celestial found for '" + id + "'");
             return;
         }
-        let elements = this.canvas!.children().filter(value => value.id() === this.getCyclingCircleId(id));
-        if ('idStarSystem' in celestial) {
-            this.handleClickedStarSystem(celestial, elements, x, y, id, event);
-        } else if ('idPlanet' in celestial) {
-            this.handleClickedPlanet(celestial, elements, x, y, id, event);
+        if ('idPlanet' in celestial && 'idStarSystem' in celestial) {
+            this.handleClickedPlanet(celestial, x, y, id);
+        }
+        if ('idStarSystem' in celestial && !('idPlanet' in celestial)) {
+            this.handleClickedStarSystem(<StarSystem>celestial, x, y, id);
         }
     };
 
-    private handleClickedStarSystem(celestial: Planet | StarSystem, elements: Element[], x: number, y: number, id: string, event: PointerEvent) {
-        if (this.starMapCommService.isSelectedStarSystem(celestial.idStarSystem)) {
-            if (elements.length > 0) {
-                // remove selected system
-                const cycleCircle = elements[0];
-                this.canvas!.removeElement(cycleCircle);
-                this.starMapCommService.removeSelectedStarSystem();
-            }
+    private handleClickedStarSystem(celestial: StarSystem, x: number, y: number, id: string) {
+        const isSelected = this.starMapCommService.isSelectedStarSystem();
+        const selectionAlreadySelected = this.starMapCommService.isSelectedStarSystem(celestial.idStarSystem);
+        if (selectionAlreadySelected) {
+            this.removeCyclingCircle(id);
+            this.starMapCommService.removeSelectedStarSystem();
             return;
         }
-        if (this.starMapCommService.isSelectedStarSystem()) {
-            return;
+        if (isSelected && !selectionAlreadySelected) {
+            const celestial = this.starMapCommService.selectedStarSystem;
+            const celestialBodyID = this.getCelestialBodyID(celestial!.orbit!);
+            this.removeCyclingCircle(celestialBodyID);
+            this.starMapCommService.removeSelectedStarSystem();
         }
-        if (elements.length == 0) {
-            // add selected system
-            this.drawCyclingCircle(x, y, id);
-
-            this.starMapCommService.setSelectedStarSystem(this.getStarSystemByEvent(event)!);
-        }
+        // add selected system
+        this.drawCyclingCircle(x, y, id, false);
+        this.starMapCommService.setSelectedStarSystem(celestial);
     }
 
-    private handleClickedPlanet(celestial: Planet, elements: Element[], x: number, y: number, id: string, event: PointerEvent) {
-        if (this.starMapCommService.isSelectedPlanet(celestial.idPlanet)) {
-            if (elements.length > 0) {
-                // remove selected system
-                elements.forEach(e => this.canvas!.removeElement(e));
-                this.starMapCommService.removeSelectedPlanet();
-            }
+    private handleClickedPlanet(celestial: Planet, x: number, y: number, id: string) {
+        const isSelected = this.starMapCommService.isSelectedPlanet();
+        const selectionAlreadySelected = this.starMapCommService.isSelectedPlanet(celestial.idPlanet);
+        if (selectionAlreadySelected) {
+            this.removeCyclingCircle(id);
+            this.starMapCommService.removeSelectedPlanet();
             return;
         }
-        if (this.starMapCommService.isSelectedPlanet()) {
-            return;
+        if (isSelected && !selectionAlreadySelected) {
+            const celestial = this.starMapCommService.selectedPlanet;
+            const celestialBodyID = this.getCelestialBodyID(celestial!.orbit!);
+            this.removeCyclingCircle(celestialBodyID);
+            this.starMapCommService.removeSelectedPlanet();
         }
-        if (elements.length == 0) {
-            // add selected system
-            this.drawCyclingCircle(x, y, id);
-
-            this.starMapCommService.setSelectedPlanet(this.getPlanetByEvent(event)!);
-        }
+        // add selected system
+        this.drawCyclingCircle(x, y, id, false);
+        this.starMapCommService.setSelectedPlanet(celestial);
     }
 
     private getCyclingCircleId(id: string) {
-        return id + BasicViewHelper.CYCLING_CIRCLE_SUFFIX;
+        return id + BasicViewHelperData.CYCLING_CIRCLE_SUFFIX;
     }
 
     private clickEventForFleetGroup = (event: PointerEvent) => {
-        this.handleClickFleet(event);
-        this.handleClickedFleetCollection(event);
+        const clickedFleet = this.handleClickedFleet(event);
+        const clickedFleetCollection = this.handleClickedFleetCollection(event);
+        this.drawCyclingCirclesForFleetsOnClick(clickedFleet, clickedFleetCollection);
+        this.drawMovePathOnClick();
     };
 
-    private handleClickedFleetCollection(event: PointerEvent) {
+    private drawCyclingCirclesForFleetsOnClick(clickedFleet: FleetMarker | undefined, clickedFleetCollection: G | undefined) {
+        // add
+        if (!!clickedFleet) {
+            const fleetSharkID = this.getFleetSharkID(clickedFleet);
+            let fleetShark: G = this.getGroupById(fleetSharkID)!;
+            const id = fleetShark.id();
+            const cyclingCircleId = this.getCyclingCircleId(id);
+            let cyclingCircles = this.canvas!.children().filter(value => value.id() === cyclingCircleId);
+            if (cyclingCircles.length == 0) {
+                const isInvisible = fleetShark.classes().filter(css => css == BasicViewHelper.INVISIBLE_CLASS).length > 0;
+                this.drawCyclingCircle(fleetShark.cx(), fleetShark.cy(), id, isInvisible);
+            } else {
+                this.removeCyclingCircle(id);
+            }
+        }
+
+        if (!!clickedFleetCollection) {
+            const id = clickedFleetCollection.id();
+            let fleetMarkers = this.getFleetSharkIDsFromCollectionID(id).map(fleetSharkId => this.getFleetByID(fleetSharkId)!);
+            const cyclingCircleId = this.getCyclingCircleId(id);
+            let cyclingCircles = this.canvas!.children().filter(value => value.id() === cyclingCircleId);
+            if (cyclingCircles.length == 0) {
+                const isInvisible = clickedFleetCollection.classes().filter(css => css == BasicViewHelper.INVISIBLE_CLASS).length > 0;
+                this.drawCyclingCircle(clickedFleetCollection.cx(), clickedFleetCollection.cy(), id, isInvisible);
+
+                fleetMarkers.forEach(fm => {
+                    const fleetSharkID = this.getFleetSharkID(fm);
+                    const group = this.getGroupById(fleetSharkID)!;
+                    const cyclingCircleId = this.getCyclingCircleId(group.id());
+                    let cyclingCircles = this.canvas!.children().filter(value => value.id() === cyclingCircleId);
+                    if (cyclingCircles.length == 0) {
+                        // select the ones which are not clicked
+                        this.drawCyclingCirclesForFleetsOnClick(fm, undefined);
+                    }
+                });
+            } else {
+                this.removeCyclingCircle(id);
+
+                fleetMarkers.forEach(fm => {
+                    const fleetSharkID = this.getFleetSharkID(fm);
+                    const group = this.getGroupById(fleetSharkID)!;
+                    const cyclingCircleId = this.getCyclingCircleId(group.id());
+                    let cyclingCircles = this.canvas!.children().filter(value => value.id() === cyclingCircleId);
+                    if (cyclingCircles.length > 0) {
+                        // select the ones which are not clicked
+                        this.drawCyclingCirclesForFleetsOnClick(fm, undefined);
+                    }
+                });
+            }
+        }
+    }
+
+    private getRadius(element: Element, zoomFactor: number) {
+        const box = element.bbox();
+        let diameter = Math.ceil(Math.sqrt(Math.pow(Math.ceil(box.width), 2) + Math.pow(Math.ceil(box.height), 2)));
+
+        const linkedElements = this.canvas!.children()
+            .filter(c => c.id().startsWith(element.id()))
+            .filter(c => !c.id().endsWith(BasicViewHelperData.ORBIT_SUFFIX)); // todo better naming model needed
+        linkedElements.forEach(inner => {
+            const iBox = inner.bbox();
+            const dia = Math.ceil(Math.sqrt(Math.pow(Math.ceil(iBox.width), 2) + Math.pow(Math.ceil(iBox.height), 2)));
+            if (dia > diameter) {
+                diameter = dia;
+            }
+        });
+        // todo bbox is broken and returns incorrect value https://github.com/svgdotjs/svgdom/issues/89
+        const zoomedRadius = (diameter / 2);// / zoomFactor; todo zoom needed
+        return Math.ceil(zoomedRadius);
+    }
+
+    private drawMovePathOnClick() {
+        const selectedFleetMarker = this.starMapCommService.getSelectedFleetMarker();
+        // add
+        this.starMapCommService.getMovingFleetMarker().forEach(fm => {
+            const fleetSharkID = this.getFleetSharkID(fm);
+            const movePaths = this.canvas!.children().filter(c => c.id() === fleetSharkID + BasicViewHelperData.MOVE_SUFFIX);
+            if (movePaths.length == 0) {
+                this.displayMovePath(fm);
+            }
+        });
+        // remove
+        const movePaths = this.canvas!.children().filter(c => c.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
+        movePaths.forEach(mp => {
+            const sanitizedID = mp.id().replace(BasicViewHelperData.MOVE_SUFFIX, '');
+            const withDisplayedMove = this.getFleetByID(sanitizedID);
+            if (!!withDisplayedMove && selectedFleetMarker.filter(fm => fm.fleet.id == withDisplayedMove.fleet.id).length == 0) {
+                this.canvas!.removeElement(mp);
+            }
+        });
+    }
+
+    private handleClickedFleetCollection(event: PointerEvent): G | undefined {
         let id = this.getIdFromEvent(event);
+        if (!this.isFleetCollectionId(id)) {
+            return undefined;
+        }
         let fleetCollection = this.getGroupById(id);
         if (!!fleetCollection) {
-            const isInvisible = fleetCollection.classes().filter(css => css == BasicViewHelper.INVISIBLE_CLASS).length > 0;
-            if (isInvisible) {
-                return;
-            }
+            const fleetMarkers: FleetMarker[] = this.getFleetSharkIDsFromCollectionID(fleetCollection.id()).map(fleetSharkId => this.getFleetByID(fleetSharkId)!);
+            fleetMarkers.forEach(fm => this.doFleetMarkerSelection(fm));
+        }
+        return fleetCollection;
+    }
 
-            const fleetSharkIDs: string[] = [];
-            const id = fleetCollection.id();
-            let elements = this.canvas!.children().filter(value => value.id() === this.getCyclingCircleId(id));
+    private handleClickedFleet(event: PointerEvent): FleetMarker | undefined {
+        let fleetMarker = this.getFleetByEvent(event);
+        this.doFleetMarkerSelection(fleetMarker);
+        return fleetMarker;
+    }
 
-            this.getFleetSharkIDsFromCollectionID(id).forEach(id => fleetSharkIDs.push(id));
-            const fleetMarkers = fleetSharkIDs.map(fleetSharkId => this.getFleetByID(fleetSharkId));
-            if (elements.length == 0) {
-                const x = Number.parseFloat(fleetCollection.cx() + '');
-                const y = Number.parseFloat(fleetCollection.cy() + '');
-                this.drawCyclingCircle(x, y, id);
-                fleetMarkers.filter(f => !!f).forEach(fleetMarker => this.starMapCommService.addFleetMarker(fleetMarker!));
+    private doFleetMarkerSelection(fleetMarker: FleetMarker | undefined) {
+        if (!!fleetMarker) {
+            if (this.starMapCommService.isSelectedFleetMarker(fleetMarker.fleet.id)) {
+                this.starMapCommService.removeSelectedFleetMarker(fleetMarker);
             } else {
-                this.canvas!.removeElement(elements[0]);
-                fleetMarkers.filter(f => !!f).forEach(fleetMarker => this.starMapCommService.removeSelectedFleetMarker(fleetMarker!));
+                this.starMapCommService.addFleetMarker(fleetMarker);
             }
         }
     }
 
-    private handleClickFleet(event: PointerEvent) {
-        let fleet = this.getFleetByEvent(event);
-        const userID = this.tokenStorage.getUserID();
-        if (!!fleet && fleet.owner.id === userID) {
-            let id = this.getIdFromEvent(event);
-            let fleetShark: Polygon | G | undefined = this.getFleetSharkByID(id);
-            if (!fleetShark) {
-                fleetShark = this.getGroupById(id);
+    private drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
+        const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
+
+        let element: Element | undefined;
+        const group = this.getGroupById(id);
+        if (!group) {
+            const elements = this.canvas!.children().filter(value => value.id() == id);
+            if (elements.length == 1) {
+                element = elements[0];
             }
-            if (!!fleetShark) {
-                const isInvisible = fleetShark.classes().filter(css => css == BasicViewHelper.INVISIBLE_CLASS).length > 0;
-                if (isInvisible) {
-                    return;
-                }
-                let elements = this.canvas!.children().filter(value => value.id() === this.getCyclingCircleId(id));
-                if (elements.length == 0) {
-                    // add fleet marker to selection
-                    let x = fleetShark.cx();
-                    let y = fleetShark.cy();
-                    this.drawCyclingCircle(x, y, id);
-                    this.displayMovePath(fleet);
-                    this.starMapCommService.addFleetMarker(fleet!);
-                    return;
-                }
-                if (elements.length > 0) {
-                    this.canvas!.removeElement(elements[0]);
-                    const movePath = this.canvas!.children().filter(c => c.id() == id + BasicViewHelper.MOVE_SUFFIX)[0];
-                    this.canvas!.removeElement(movePath);
-                    this.starMapCommService.removeSelectedFleetMarker(fleet!);
-                }
+        } else {
+            element = group;
+        }
+        if (!!element) {
+            const radius = this.getRadius(element, zoomFactor);
+            const circle = new Circle().x(x).y(y)
+                .radius(radius)
+                .stroke(this.zoomStroke(BasicViewHelper.STROKE_CYCLING_CIRCLE))
+                .addClass(BasicViewHelper.CYCLING_CIRCLE_MARKER)
+                .addClass(BasicViewHelperData.ICON_ID_MARKER + id)
+                .id(this.getCyclingCircleId(id));
+
+            if (isInvisible) {
+                circle.addClass(BasicViewHelper.INVISIBLE_CLASS);
             }
+
+            this.canvas!.removeElement(element);
+            this.canvas!.add(circle);
+            this.canvas!.add(element);
         }
     }
 
-    private drawCyclingCircle(x: number, y: number, id: string) {
-        const radius = BasicViewHelper.CYCLING_CIRCLE_RADIUS / this.zoomLevel;
-        const circle = new Circle().x(x).y(y)
-            .radius(radius)
-            .stroke(this.zoomStroke(BasicViewHelper.STROKE_CYCLING_CIRCLE))
-            .addClass(BasicViewHelper.CYCLING_CIRCLE_MARKER)
-            .addClass(BasicViewHelper.ICON_ID_MARKER + id)
-            .id(this.getCyclingCircleId(id));
-        // starts-with because its mainly about the groups which contains the elements
-        const element = this.canvas!.children().filter(value => value.id().startsWith(id));
-        if (element.length > 0) {
-            element.forEach(elm => this.canvas!.removeElement(elm));
+    private removeCyclingCircle(id: string) {
+        if (!id.endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX)) {
+            id = this.getCyclingCircleId(id);
         }
-        this.canvas!.add(circle);
-        this.canvas!.add(element[0]);
+        let cyclingCircles = this.canvas!.children().filter(value => value.id() === id);
+        if (cyclingCircles.length > 0) {
+            cyclingCircles.forEach(cc => this.canvas!.removeElement(cc));
+        }
     }
 
     private getStarSystemByEvent = (event: PointerEvent): StarSystem | undefined => {
@@ -640,9 +752,9 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     private resizeText(text: Text) { // todo text positioned false the first time - why?
-        const idMarker = text.classes().filter(css => css.startsWith(BasicViewHelper.ICON_ID_MARKER));
+        const idMarker = text.classes().filter(css => css.startsWith(BasicViewHelperData.ICON_ID_MARKER));
         if (idMarker.length > 0) {
-            const id = idMarker[0].replace(BasicViewHelper.ICON_ID_MARKER, '');
+            const id = idMarker[0].replace(BasicViewHelperData.ICON_ID_MARKER, '');
             const fleetShark: Polygon | undefined = this.getFleetSharkByID(id);
             const celestial: Circle | undefined = this.getCelestialByID(id);
             let x = undefined;
@@ -681,7 +793,12 @@ export class BasicViewHelper extends BasicViewHelperData {
         return Math.sqrt(Math.pow(firstCoordinate, 2) + Math.pow(secondCoordinate, 2));
     }
 
-    protected createPolarCoordinateSystem() {
+    protected setOrbits(orbits: OrbitDefinition[]) {
+        super.setOrbits(orbits);
+        this.createPolarCoordinateSystem();
+    }
+
+    private createPolarCoordinateSystem() {
         let {x, y} = this.getWidestExpanse();
         this.radiusOfCoordinateCross = BasicViewHelper.calculateDistance(x, y);
         this.radiusOfCoordinateCross *= 1.1;
@@ -852,37 +969,10 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.canvas!.viewbox(viewBoxDef);
     }
 
-    /**
-     * calculates the distance between two points
-     *
-     * @param firstCoordinate the first coordinate
-     * @param secondCoordinate the second coordinate
-     * @private
-     */
-    public static calculateDistanceOfPoints(firstCoordinate: ArrayXY, secondCoordinate: ArrayXY): number {
-        return Math.sqrt(Math.pow(firstCoordinate[0] - secondCoordinate[0], 2) + Math.pow(firstCoordinate[1] - secondCoordinate[1], 2));
-    }
-
-    /**
-     * calculates the distance between two points
-     *
-     * @param firstOrbit the first coordinate
-     * @param secondOrbit the second coordinate
-     * @private
-     */
-    public calculateDistanceOfOrbits(firstOrbit: Orbit, secondOrbit: Orbit): number {
-        const originX = NavigationCalculator.convertDistanceToMetric(firstOrbit.xCoordinate, this.standardDistanceMetric);
-        const originY = NavigationCalculator.convertDistanceToMetric(firstOrbit.yCoordinate, this.standardDistanceMetric);
-        const destinationX = NavigationCalculator.convertDistanceToMetric(secondOrbit.xCoordinate, this.standardDistanceMetric);
-        const destinationY = NavigationCalculator.convertDistanceToMetric(secondOrbit.yCoordinate, this.standardDistanceMetric);
-
-        return BasicViewHelper.calculateDistanceOfPoints([originX, originY], [destinationX, destinationY]);
-    }
 
     protected defineFleetSharkPoints(x: number, y: number, zoomFactor?: number) {
-        if (!zoomFactor) {
-            zoomFactor = 1;
-        }
+        zoomFactor = this.getOrDefaultZoomFactor(zoomFactor);
+        x += (10 / zoomFactor);
         let points: ArrayXY[] = [];
         points.push([x, y]);
         points.push([x + (20 / zoomFactor), y - (7.5 / zoomFactor)]);
@@ -893,9 +983,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     protected createFleetSharkPoints(x: number, y: number, orbit: Orbit, zoomFactor?: number): ArrayXY[] {
-        if (!zoomFactor) {
-            zoomFactor = 1;
-        }
+        zoomFactor = this.getOrDefaultZoomFactor(zoomFactor);
         let points = this.defineFleetSharkPoints(x, y, zoomFactor);
 
         let restrictedFleetArea = new RestrictedFleetArea(points);
@@ -917,22 +1005,38 @@ export class BasicViewHelper extends BasicViewHelperData {
         return points;
     }
 
-    protected createFleetCollectionIcon(x: number, y: number, fleetCollectionID: string, amountOwnFleets: number, amountOtherFleets: number, colorForOutline: string): G {
+    calculateDistanceOfOrbits(firstOrbit: Orbit, secondOrbit: Orbit): number {
+        return NavigationCalculator.calculateDistanceOfOrbits(firstOrbit, secondOrbit, this.standardDistanceMetric);
+    }
 
-        let group = this.canvas!.group().id(fleetCollectionID + "-" + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
-        this.setGroupById(fleetCollectionID + "-" + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
+    protected createFleetCollectionIcon(x: number, y: number,
+                                        fleetCollectionID: string,
+                                        amountOwnFleets: number,
+                                        amountOtherFleets: number,
+                                        colorForOutline: string,
+                                        zoomFactor?: number): G {
 
-        x += 10;
+        zoomFactor = this.getOrDefaultZoomFactor(zoomFactor);
+
+        let group = this.canvas!.group().id(fleetCollectionID + "-" + BasicViewHelperData.GROUP_SELECTOR_SUFFIX);
+        this.setGroupById(fleetCollectionID + "-" + BasicViewHelperData.GROUP_SELECTOR_SUFFIX, group!);
+
+        x += 10; // fixme set pos after checking that there is nothing hidden
         y -= 5;
-        group.rect()
-            .x(x).y(y)
-            .addClass("fleet-collection-rect")
-            .stroke({color: colorForOutline});
 
         group.rect()
             .x(x).y(y)
+            .width(25 / zoomFactor)
+            .height(15 / zoomFactor)
+            .addClass("fleet-collection-rect")
+            .stroke(this.zoomStroke({width: 1, color: colorForOutline}));
+
+        group.rect()
+            .x(x).y(y)
+            .width(10 / zoomFactor)
+            .height(8 / zoomFactor)
             .addClass("fleet-collection-rect-textbox")
-            .stroke({color: colorForOutline});
+            .stroke(this.zoomStroke({width: 1}));
 
         const amountOfFleets = amountOwnFleets + amountOtherFleets;
         const amountInRoman = this.romanPipe.transform(amountOfFleets);
@@ -948,19 +1052,22 @@ export class BasicViewHelper extends BasicViewHelperData {
         return group;
     }
 
-    protected createFleetGroup(fleetMarker: FleetMarker, x: number, y: number, orbit?: Orbit): G {
-        let fleetSharkPoints: ArrayXY[];
-        if (!orbit) {
-            fleetSharkPoints = this.defineFleetSharkPoints(x, y);
-        } else {
-            fleetSharkPoints = this.createFleetSharkPoints(x, y, orbit);
+    private getOrDefaultZoomFactor(zoomFactor?: number) {
+        if (!zoomFactor) {
+            zoomFactor = 1;
         }
+        return zoomFactor;
+    }
+
+    protected createFleetGroup(fleetMarker: FleetMarker, x: number, y: number, orbit: Orbit): G {
+
+        let fleetSharkPoints: ArrayXY[] = this.createFleetSharkPoints(x, y, orbit);
         const userIsOwner = fleetMarker.owner.id == this.tokenStorage.getUserID();
         let fleetSharkID = this.getFleetSharkID(fleetMarker);
         this.setFleetById(fleetSharkID, fleetMarker);
 
-        let group = this.canvas!.group().id(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
-        this.setGroupById(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group);
+        let group = this.canvas!.group().id(fleetSharkID + BasicViewHelperData.GROUP_SELECTOR_SUFFIX);
+        this.setGroupById(fleetSharkID + BasicViewHelperData.GROUP_SELECTOR_SUFFIX, group);
 
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
         if (userIsOwner) {
@@ -971,12 +1078,12 @@ export class BasicViewHelper extends BasicViewHelperData {
             .polygon(fleetSharkPoints)
             .fill(fleetSharkColor)
             .stroke(BasicViewHelper.STROKE_BLACK)
-            .addClass(BasicViewHelper.FLEET_SHARK_POLYGON_MARKER)
+            .addClass(BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER)
             .id(fleetSharkID);
 
         if (!!orbit) {
             const orbitID = this.getOrbitID(orbit);
-            fleetShark.addClass(BasicViewHelper.ORBIT_ID_MARKER + orbitID);
+            fleetShark.addClass(BasicViewHelperData.ORBIT_ID_MARKER + orbitID);
         }
         fleetShark.addClass(this.getCenterMarker(x, y));
 
@@ -994,8 +1101,8 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
 
         let text: Text = new Text()
-            .addClass(BasicViewHelper.TEXT_MARKER)
-            .addClass(BasicViewHelper.ICON_ID_MARKER + fleetSharkID)
+            .addClass(BasicViewHelperData.TEXT_MARKER)
+            .addClass(BasicViewHelperData.ICON_ID_MARKER + fleetSharkID)
             .text(fleetSharkText)
             .x(xText[0])
             .y(yText[1]);
@@ -1006,18 +1113,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.setTextById(fleetSharkID, text);
         this.setFleetTextByMarker(text, fleetMarker);
         return group;
-    }
-
-    protected sortPoints(fleetSharkPoints: ArrayXY[]) {
-        let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
-        let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
-        return {sortedPointsX, sortedPointsY};
-    }
-
-    protected getUpperRightCornerPosition(sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[]) {
-        let xText = sortedPointsX[sortedPointsX.length - 1];
-        let yText = sortedPointsY[0];
-        return {xText, yText};
     }
 
     protected createFleetCollection(fleetMarkers: FleetMarker[]) {
@@ -1033,24 +1128,41 @@ export class BasicViewHelper extends BasicViewHelperData {
             fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
         }
 
-        const system = fleetMarkers[0].orbit!.system!;
 
-        const orbit = system!.orbit;
+        let orbit: Orbit | undefined;
+        if (this.STANDARD_METRIC === DistanceMetricEnum.LY) {
+            const system = fleetMarkers[0].orbit!.system!;
+            orbit = system!.orbit!;
+        } else {
+            orbit = fleetMarkers[0].orbit!.orbit!;
+        }
+
         let fleetCollectionID = this.getFleetCollectionID(fleetMarkers);
-        this.createFleetCollectionIcon(orbit.xCoordinate.coordinate, orbit.yCoordinate.coordinate, fleetCollectionID, ownFleets.length, otherFleets.length, fleetSharkColor);
+        this.createFleetCollectionIcon(orbit!.xCoordinate.coordinate, orbit!.yCoordinate.coordinate, fleetCollectionID, ownFleets.length, otherFleets.length, fleetSharkColor);
 
         fleetMarkers.forEach(fleetMarker => {
-            const fleetGroup = this.createFleetGroup(fleetMarker, orbit.xCoordinate.coordinate, orbit.yCoordinate.coordinate, orbit);
+            const fleetGroup = this.createFleetGroup(fleetMarker, orbit!.xCoordinate.coordinate, orbit!.yCoordinate.coordinate, orbit!);
             fleetGroup.addClass(BasicViewHelper.INVISIBLE_CLASS);
         })
-
     }
 
-    protected getOrbitID(orbit: Orbit): string {
-        return BasicViewHelper.ORBIT_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate.coordinate + "-" + orbit.yCoordinate.coordinate;
+    protected enrichWithVirtualOrbit(pointAt: { x: number; y: number }, fleetMarker: FleetMarker) {
+        let orbit: Orbit = {
+            xCoordinate: {
+                coordinate: pointAt.x,
+                distanceMetric: this.STANDARD_METRIC
+            },
+            yCoordinate: {
+                coordinate: pointAt.y,
+                distanceMetric: this.STANDARD_METRIC
+            }
+        }
+        fleetMarker.orbit = {
+            orbit: orbit
+        }
     }
 
-    protected createStellarCoursePlot(move: Move) {
+    protected createStellarCoursePlot(move: Move): LineCommand[] {
         if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
             throw new Error("The move should have a origin and a destination.");
         }
@@ -1062,25 +1174,42 @@ export class BasicViewHelper extends BasicViewHelperData {
         return this.createCoursePlot(xOrigin, yOrigin, xDestination, yDestination);
     }
 
-    protected createCoursePlot(xOrigin: Distance, yOrigin: Distance, xDestination: Distance, yDestination: Distance) {
+    protected createInterstellarCoursePlot(move: Move): LineCommand[] {
+        if (!move.startOrbit.orbit || !move.startOrbit.system || !move.targetOrbit.orbit || !move.targetOrbit.system) {
+            throw new Error("The move should have a origin and a destination.");
+        }
+
+        const xOrigin = move.startOrbit.system.orbit.xCoordinate;
+        const yOrigin = move.startOrbit.system.orbit.yCoordinate;
+        const xDestination = move.targetOrbit.system.orbit.xCoordinate;
+        const yDestination = move.targetOrbit.system.orbit.yCoordinate;
+
+        return this.createCoursePlot(xOrigin, yOrigin, xDestination, yDestination);
+    }
+
+    protected createCoursePlot(xOrigin: Distance, yOrigin: Distance, xDestination: Distance, yDestination: Distance): LineCommand[] {
         let startX: number = this.convertToStandardMetric(xOrigin);
         let startY: number = this.convertToStandardMetric(yOrigin);
 
         let endX: number = this.convertToStandardMetric(xDestination);
         let endY: number = this.convertToStandardMetric(yDestination);
 
-        let color: string;
-        if (BasicViewHelper.calculateDistance(startX, startY) <= BasicViewHelper.calculateDistance(endX, endY)) {
-            color = this.COURSE_PLOT_COLOR_OUTBOUND;
-        } else {
-            color = this.COURSE_PLOT_COLOR_INBOUND;
-        }
-
         let p1: LineCommand = ["M", startX, startY];
         let p2: LineCommand = ["L", endX, endY];
 
-        let arr: LineCommand[] = [p1, p2];
-        return {color, arr};
+        return [p1, p2];
+    }
+
+    protected calculatePositionOnTrack(startOrbit: Orbit, targetOrbit: Orbit, fleetMarker: FleetMarker, arr: LineCommand[]) {
+        let distance = this.calculateDistanceOfOrbits(startOrbit, targetOrbit);
+        let part = (fleetMarker.move!.originalDuration - fleetMarker.move!.moveDoneAtZero) / fleetMarker.move!.originalDuration;
+        if (part < 0.1) {
+            part = 0.1;
+        } else if (part > 0.9) {
+            part = 0.9;
+        }
+        let coveredTrackLength = distance * part;
+        return new Path().plot(arr).pointAt(coveredTrackLength);
     }
 
     protected displayMovePath(fleetMarker: FleetMarker) {
@@ -1088,27 +1217,58 @@ export class BasicViewHelper extends BasicViewHelperData {
             return;
         }
 
+        let fleetSharkId = this.getFleetSharkID(fleetMarker);
         let startOrbit = fleetMarker.move!.startOrbit.system!.orbit;
         let targetOrbit = fleetMarker.move!.targetOrbit.system!.orbit;
-        const xStart = startOrbit.xCoordinate.coordinate;
-        const yStart = startOrbit.yCoordinate.coordinate;
-        const xEnd = targetOrbit.xCoordinate.coordinate;
-        const yEnd = targetOrbit.yCoordinate.coordinate;
+        const isSameSystem = fleetMarker.move!.startOrbit.system!.idStarSystem === fleetMarker.move!.targetOrbit.system!.idStarSystem;
+        if (isSameSystem) {
+            startOrbit = fleetMarker.move!.startOrbit.orbit!;
+            targetOrbit = fleetMarker.move!.targetOrbit.orbit!;
+        }
+        const xStart = this.convertToStandardMetric(startOrbit.xCoordinate);
+        const yStart = this.convertToStandardMetric(startOrbit.yCoordinate);
+        const xEnd = this.convertToStandardMetric(targetOrbit.xCoordinate);
+        const yEnd = this.convertToStandardMetric(targetOrbit.yCoordinate);
 
-        let angle = NavigationCalculator.angle(xStart, yStart, xEnd, yEnd);
-        let p1: ArrayXY = [xStart, yStart + 10];
-        let p2: ArrayXY = [xStart + 20, yStart + 10];
-        let p3: ArrayXY = [xStart + 10, yStart];
+        const distance = NavigationCalculator.calculateDistanceOfPoints([xStart, yStart], [xEnd, yEnd]);
 
-        p2 = NavigationCalculator.rotatePoint(p1, angle + 90, p2);
-        p3 = NavigationCalculator.rotatePoint(p1, angle + 90, p3);
+        let angle = NavigationCalculator.getRestrictedAngle(xStart, yStart, xEnd, yEnd);
 
-        let fleetSharkId = this.getFleetSharkID(fleetMarker);
+        const runner: G = new G()
+            .group()
+            .addClass('coursePlot')
+            .id(fleetSharkId + BasicViewHelperData.MOVE_SUFFIX);
 
-        this.canvas!
+        const pitch = Math.tan(NavigationCalculator.toRad(angle));
+        for (let i = 0; i < Math.ceil(distance / 200); i++) {
+            const xOffset = i * 10;
+            const yOffset = pitch * xOffset;
+            let p1: ArrayXY = [xOffset + xStart, yOffset + yStart + 10];
+            let p2: ArrayXY = [xOffset + xStart + 20, yOffset + yStart + 10];
+            let p3: ArrayXY = [xOffset + xStart + 10, yOffset + yStart];
+
+            p2 = NavigationCalculator.rotatePoint(p1, angle + 90, p2);
+            p3 = NavigationCalculator.rotatePoint(p1, angle + 90, p3);
+            runner.polygon([p1, p2, p3])
+        }
+
+        runner.animate({
+            duration: 2000 * (distance / 100),
+            delay: 1000,
+            when: 'now',
+            swing: false,
+            times: 50000,
+            wait: 200
+        }).transform({
+            positionX: xEnd,
+            positionY: yEnd
+        });
+        this.canvas!.add(runner);
+
+        /*this.canvas!
             .polygon([p1, p2, p3])
             .addClass('coursePlot')
-            .id(fleetSharkId + BasicViewHelper.MOVE_SUFFIX)
+            .id(fleetSharkId + BasicViewHelperData.MOVE_SUFFIX)
             .animate({
                 duration: 2000,
                 delay: 1000,
@@ -1120,27 +1280,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             .transform({
                 positionX: xEnd,
                 positionY: yEnd
-            });
-    }
-
-    public static isSameOrbit(first: Orbit, second: Orbit): boolean {
-        let isEqual = true;
-        if (first.xCoordinate.coordinate != second.xCoordinate.coordinate) {
-            isEqual = false;
-        }
-        if (first.yCoordinate.coordinate != second.yCoordinate.coordinate) {
-            isEqual = false;
-        }
-        return isEqual;
-    }
-
-    protected calculateHyperLimit(system: StarSystem) {
-        const lightMinutesToHyperLimit = system.starClassType.lightMinutesToHyperLimit;
-        const hyperRadius: Distance = {
-            coordinate: lightMinutesToHyperLimit,
-            distanceMetric: DistanceMetricEnum.LM
-        }
-        return this.convertToStandardMetric(hyperRadius);
+            });*/
     }
 
     protected displayFleetStates(fleetMarker: FleetMarker, sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[], group: G | undefined, fleetSharkID: string) {
@@ -1171,26 +1311,26 @@ export class BasicViewHelper extends BasicViewHelperData {
             group!
                 .circle(BasicViewHelper.STATE_DOT_RADIUS)
                 .stroke(BasicViewHelper.STROKE_BLACK)
-                .addClass(BasicViewHelper.MOVABLE_STATE_DOT_MARKER)
-                .addClass(BasicViewHelper.ICON_ID_MARKER + fleetSharkID)
+                .addClass(BasicViewHelperData.MOVABLE_STATE_DOT_MARKER)
+                .addClass(BasicViewHelperData.ICON_ID_MARKER + fleetSharkID)
                 .x(xMarker[0] - 2.5)
                 .y(yMarker[1] - 2.5)
-                .id(fleetSharkID + BasicViewHelper.MOVABLE_STATE_DOT_MARKER);
+                .id(fleetSharkID + BasicViewHelperData.MOVABLE_STATE_DOT_MARKER);
 
             cssClasses.forEach(c => group!.addClass(c));
 
             let text: Text = new Text()
-                .addClass(BasicViewHelper.TEXT_MARKER)
-                .addClass(BasicViewHelper.MOVABLE_STATE_DOT_MARKER)
-                .addClass(BasicViewHelper.ICON_ID_MARKER + fleetSharkID)
+                .addClass(BasicViewHelperData.TEXT_MARKER)
+                .addClass(BasicViewHelperData.MOVABLE_STATE_DOT_MARKER)
+                .addClass(BasicViewHelperData.ICON_ID_MARKER + fleetSharkID)
                 .text(txt)
                 .x(xMarker[0] - 2.5)
                 .y(yMarker[1] - 2.5)
-                .id(fleetSharkID + BasicViewHelper.MOVABLE_STATE_DOT_MARKER + BasicViewHelper.TEXT_MARKER);
+                .id(fleetSharkID + BasicViewHelperData.MOVABLE_STATE_DOT_MARKER + BasicViewHelperData.TEXT_MARKER);
 
             this.setTextOptions(text);
 
-            this.setTextById(fleetSharkID + BasicViewHelper.MOVABLE_STATE_DOT_MARKER, text);
+            this.setTextById(fleetSharkID + BasicViewHelperData.MOVABLE_STATE_DOT_MARKER, text);
         }
     }
 }

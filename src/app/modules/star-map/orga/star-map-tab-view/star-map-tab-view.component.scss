@@ -85,20 +85,14 @@ svg {
 
 .fleet-collection-rect {
   fill: $primary-color;
-  width: 25px;
-  height: 15px;
-  stroke-width: 1px;
 }
 
 .fleet-collection-rect-textbox {
   fill: none;
-  width: 10px;
-  height: 8px;
   stroke: $metal-glance;
-  stroke-width: 1px;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 4 12;
+  stroke-dasharray: 4 12; // fixme to by zoom level
 }
 
 .fleet-collection-text {

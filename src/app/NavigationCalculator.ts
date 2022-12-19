@@ -1,7 +1,14 @@
-import {Acceleration, Distance} from "./services/swagger";
+import {Acceleration, Distance, Orbit} from "./services/swagger";
 import {ArrayXY} from "@svgdotjs/svg.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
+
+export enum Direction {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+}
 
 export class NavigationCalculator {
 
@@ -75,12 +82,24 @@ export class NavigationCalculator {
         return originalMetricValue! / targetMetricValue!;
     }
 
-    static angle(x1: number, y1: number, x2: number, y2: number): number {
+    static getRestrictedAngle(x1: number, y1: number, x2: number, y2: number): number {
         let dy = y2 - y1;
         let dx = x2 - x1;
-        let theta = Math.atan2(dy, dx) * 180 / Math.PI; // rads to degs, range (-180, 180]
-        //if (theta < 0) theta = 360 + theta; // range [0, 360)
+        // rads to degs, range (-180, 180]
+        return Math.atan2(dy, dx) * 180 / Math.PI;
+    }
+
+    static getAngle(x1: number, y1: number, x2: number, y2: number): number {
+        let theta = NavigationCalculator.getRestrictedAngle(x1, y1, x2, y2);
+        if (theta < 0) theta = 360 + theta; // range [0, 360)
         return theta;
+    }
+
+    /**
+     * Flips the y coordinate to represent the screen-is-upside-down-topic.
+     */
+    static getAngleFlippedY(x1: number, y1: number, x2: number, y2: number): number {
+        return NavigationCalculator.getAngle(x1, -y1, x2, -y2);
     }
 
     static rotatePoint(center: ArrayXY, angle: number, toRotate: ArrayXY): ArrayXY {
@@ -101,7 +120,73 @@ export class NavigationCalculator {
         return toRotate;
     }
 
-    private static toRad(degrees: number) {
+    static toRad(degrees: number) {
         return degrees * (Math.PI / 180);
+    }
+
+    static calculateDistanceOfPoints(first: ArrayXY, second: ArrayXY): number {
+        return Math.sqrt(Math.pow(first[0] - second[0], 2) + Math.pow(first[1] - second[1], 2));
+    }
+
+    static calculateDistanceOfOrbits(first: Orbit, second: Orbit, distanceMetric: DistanceMetricEnum): number {
+        const originX = NavigationCalculator.convertDistanceToMetric(first.xCoordinate, distanceMetric);
+        const originY = NavigationCalculator.convertDistanceToMetric(first.yCoordinate, distanceMetric);
+        const destinationX = NavigationCalculator.convertDistanceToMetric(second.xCoordinate, distanceMetric);
+        const destinationY = NavigationCalculator.convertDistanceToMetric(second.yCoordinate, distanceMetric);
+
+        return NavigationCalculator.calculateDistanceOfPoints([originX, originY], [destinationX, destinationY]);
+    }
+
+    static getDirection(angle: number): Direction[] {
+        angle = Math.round(angle);
+        if (angle == 45) {
+            return [Direction.EAST, Direction.NORTH];
+        }
+        if (angle == 135) {
+            return [Direction.WEST, Direction.NORTH];
+        }
+        if (angle == 315) {
+            return [Direction.SOUTH, Direction.EAST];
+        }
+        if (angle == 215) {
+            return [Direction.WEST, Direction.SOUTH];
+        }
+        if (angle > 45 && angle < 135) {
+            return [Direction.NORTH];
+        }
+        if (angle < 45 || angle > 315) {
+            return [Direction.EAST];
+        }
+        if (angle < 315 && angle > 215) {
+            return [Direction.SOUTH];
+        }
+        if (angle < 215 && angle > 135) {
+            return [Direction.WEST];
+        }
+        throw new Error("Of my gosh, the angle '" + angle + "' is missing!");
+    }
+
+    static getDirectionAsString(direction: Direction) {
+        switch (direction) {
+            case Direction.NORTH:
+                return 'NORTH';
+            case Direction.EAST:
+                return 'EAST';
+            case Direction.SOUTH:
+                return 'SOUTH';
+            case Direction.WEST:
+                return 'WEST';
+        }
+    }
+
+    public static isSameOrbit(first: Orbit, second: Orbit): boolean {
+        let isEqual = true;
+        if (first.xCoordinate.coordinate != second.xCoordinate.coordinate) {
+            isEqual = false;
+        }
+        if (first.yCoordinate.coordinate != second.yCoordinate.coordinate) {
+            isEqual = false;
+        }
+        return isEqual;
     }
 }

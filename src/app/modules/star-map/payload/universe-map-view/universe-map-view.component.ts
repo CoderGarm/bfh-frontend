@@ -8,6 +8,7 @@ import {InterstellarViewHelper} from "../interstellar-view-helper";
 import {SpinnerService} from "../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
 import {BackgroundService} from "../../../../services/background.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -19,7 +20,9 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
     knownStarSystems: StarSystem[] = [];
 
-    constructor(private starMapApi: StarMapApiService,
+    private bloodyHackButDoNotSubscribeMeTwice: Subscription[] = [];
+
+    constructor(private starMapService: StarMapApiService,
                 private fleetApi: FleetApiService,
                 tokenStorage: TokenStorage,
                 private spinnerService: SpinnerService,
@@ -39,23 +42,26 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.createUniverseMap();
     }
 
+
     private createUniverseMap() {
         this.spinnerService.activateSpinner('star-map.universe-map.loading-spinner-message');
         this.starMapCommService.clear();
         this.starMapCommService.deselect();
+        this.clearData();
+        this.bloodyHackButDoNotSubscribeMeTwice.forEach(sub => sub.unsubscribe())
+
         let outerSub = this.backgroundService.getStarSystems().subscribe(resp => {
             this.knownStarSystems = resp;
-
-            this.clearData();
             this.knownStarSystems.forEach((system) => this.setKnownStarSystemByOrbit(system));
             let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), this.knownStarSystems);
-            this.drawOrbits(this.canvas!, orbitDefinitions);
+            this.drawOrbits(orbitDefinitions);
             let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
                 this.setFleets(resp);
             });
             this.subscriptions.push(sub);
             this.spinnerService.deactivateSpinner();
         });
+        this.bloodyHackButDoNotSubscribeMeTwice.push(outerSub)
         this.subscriptions.push(outerSub);
     }
 

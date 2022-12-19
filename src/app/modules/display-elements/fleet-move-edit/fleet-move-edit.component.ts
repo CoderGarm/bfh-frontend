@@ -3,7 +3,7 @@ import {Fleet, FleetApiService, FleetMove, Move, Orbit, Planet, PlanetApiService
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {StarMapCommunicationService} from "../../../star-map-communication.service";
-import {BasicViewHelper} from "../../../basic-view-helper";
+import {NavigationCalculator} from "../../../NavigationCalculator";
 
 @Component({
     selector: 'app-fleet-move-edit',
@@ -12,9 +12,9 @@ import {BasicViewHelper} from "../../../basic-view-helper";
 })
 export class FleetMoveEditComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
-    /**
-     * the fleet which will take all the other war ships
-     */
+    @Input()
+    deselectAllMovements: number = 0;
+
     @Input()
     fleets: Fleet[] = [];
 
@@ -50,6 +50,10 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         this.createDestinationRepresentation();
         this.fleetsForMove = this.fleets.filter(f => !f.move);
         this.fleetsForCancel = this.fleets.filter(f => !!f.move);
+        if (changes['deselectAllMovements']) {
+            this.fleetsForMove.forEach(f => this.selectForFlight(false, f));
+            this.fleetsForCancel.forEach(f => this.selectForCancel(false, f));
+        }
     }
 
     /**
@@ -83,7 +87,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
             this.fleetsDesignatedForMotion.push(fleet);
         } else {
             let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
-            this.fleetsDesignatedForMotion.slice(indexOf);
+            this.fleetsDesignatedForMotion.splice(indexOf);
         }
         this.sendPlannedFlights();
     }
@@ -113,13 +117,12 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
             this.fleetsDesignatedForCancel.push(fleet);
         } else {
             let indexOf = this.fleetsDesignatedForCancel.indexOf(fleet);
-            this.fleetsDesignatedForCancel.slice(indexOf);
+            this.fleetsDesignatedForCancel.splice(indexOf);
         }
         this.sendCancelFlights();
     }
 
     sendCancelFlights() {
-        console.log(this.fleetsDesignatedForCancel)
         this.commService.setFleetToCancelMovement(this.fleetsDesignatedForCancel);
     }
 
@@ -154,6 +157,6 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         if (!currentOrbit || !destinationOrbit) {
             return false;
         }
-        return BasicViewHelper.isSameOrbit(currentOrbit, destinationOrbit);
+        return NavigationCalculator.isSameOrbit(currentOrbit, destinationOrbit);
     }
 }

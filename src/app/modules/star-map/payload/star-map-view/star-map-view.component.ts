@@ -1,12 +1,10 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMarker, FleetMerge, FleetMove, FleetOrbit, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
+import {Fleet, FleetApiService, FleetMerge, FleetMove, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
-import {FleetMergeEditComponent} from "../../../display-elements/fleet-merge-edit/fleet-merge-edit.component";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
-import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {SystemViewHelper} from "../system-view-helper";
-import {DialogConfigHelper} from "../../../../DialogConfigHelper";
+import {StellarMovement} from "../../../../star-map-communication.service";
+import {timer} from "rxjs";
 
 @Component({
     selector: 'app-star-map-view',
@@ -29,15 +27,59 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
                 private dialog: MatDialog) {
         super(tokenStorage);
 
-        let sub = this.starMapCommService.getStellarMoveEmitter().subscribe(resp => this.moveFleet(resp));
+        let sub = this.starMapCommService.getStellarMoveEmitter().subscribe(resp => this.executeStellarMovement(resp));
         this.subscriptions.push(sub);
-        sub = this.starMapCommService.getCancelMovementEmitter().subscribe(resp => this.cancelMovement(resp))
-        this.subscriptions.push(sub);
-        sub = this.starMapCommService.getMergeFleetsEmitter().subscribe(resp => this.createAndOpenFleetMergeDialog(resp))
+        sub = this.starMapCommService.getMergeFleetsEmitter().subscribe(resp => this.executeMergeFleets(resp))
         this.subscriptions.push(sub);
     }
 
+    private executeMergeFleets(fm: FleetMerge) {
+        let sub = this.fleetService.mergeFleets(fm).subscribe(resp => {
+            if (resp) {
+                this.createStarMap();
+            }
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private executeStellarMovement(m: StellarMovement) {
+        const plannedMoves: FleetMove[] = m.plannedMoves;
+        const toCancel: Fleet[] = m.toCancel;
+
+        let moveDone = plannedMoves.length == 0;
+        let cancelDone = toCancel.length == 0;
+        if (plannedMoves.length > 0) {
+            let sub = this.fleetService.moveFleets(plannedMoves).subscribe(resp => {
+                if (resp) {
+                    moveDone = true;
+                }
+            });
+            this.subscriptions.push(sub);
+        }
+
+        if (toCancel.length > 0) {
+            const ids = toCancel.map(f => f.idFleet);
+            let sub = this.fleetService.cancelMovement(ids).subscribe(resp => {
+                if (resp) {
+                    cancelDone = true;
+                }
+            });
+            this.subscriptions.push(sub);
+        }
+
+        let numberObservable = timer(0, 100);
+        let sub = numberObservable.subscribe(() => {
+            if (moveDone && cancelDone) {
+                this.createStarMap();
+                sub.unsubscribe();
+            }
+        });
+        this.subscriptions.push(sub);
+
+    }
+
     ngAfterViewInit(): void {
+        this.createCanvas("star-system-canvas", '#starsystem');
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -46,97 +88,27 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
         }
     }
 
-    /**
-     * main method of this fuckin' shit - creates everything by the current data
-     * @private
-     */
     private createStarMap() {
         this.starMapCommService.clear(1);
         this.starMapCommService.deselect();
+        this.clearData();
         if (!!this.starSystemSelectionInput) {
-            this.clearData();
             let sub = this.starMapApi.getStarSystem(this.starSystemSelectionInput.idStarSystem)
                 .subscribe(system => {
+                    this.createCanvas("star-system-canvas", '#starsystem');
                     this.system = system;
                     this.planets = system.planets;
-                    if (!this.canvas) {
-                        this.createCanvas("star-system-canvas", '#starsystem')
-                    }
                     this.setPlanetsByOrbit(system);
-                    this.drawOrbits(this.canvas!, system);
+                    this.drawOrbits(system);
                 });
             this.subscriptions.push(sub);
 
             sub = this.fleetService.getFleetsBySystem(this.starSystemSelectionInput.idStarSystem)
                 .subscribe(resp => {
-                    // every fleet in an orbit must have an orbit defined, logical
-                    let fleets: FleetMarker[] = resp;
-                    if (!this.canvas) {
-                        this.createCanvas("star-system-canvas", '#starsystem')
-                    }
-
-                    let fleetsInOrbit: Map<FleetOrbit, FleetMarker> = new Map<FleetOrbit, FleetMarker>();
-                    fleets.filter(fleet => !!fleet.orbit && !!fleet.orbit.orbit).map((fleet) => fleetsInOrbit.set(fleet.orbit!, fleet));
-                    this.setFleetsInOrbits(fleetsInOrbit);
-
-                    let fleetsInMotion: FleetMarker[] = fleets.filter(fleet => !!fleet.move);
-                    this.setFleetsInMotion(fleetsInMotion)
+                    this.createCanvas("star-system-canvas", '#starsystem');
+                    this.setFleets(resp);
                 });
             this.subscriptions.push(sub);
-        } else {
-            this.clearData();
         }
-    }
-
-    private createAndOpenFleetMergeDialog(fleets: Fleet[]) {
-
-        const dialogConfig = DialogConfigHelper.createDialog();
-        let dialogData = new DialogData("merge fleets");
-
-        const first = fleets[0];
-        const second = fleets[1];
-        dialogData.addDialogDataPerTemplate(FleetMergeEditComponent,
-            ['fleetSubject', 'fleetObject'],
-            [first, second]);
-        dialogConfig.data = dialogData;
-
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                let userID = this.tokenStorage.getUserID();
-                if (!userID) {
-                    return;
-                }
-                let merge: FleetMerge = {
-                    idFleetToMerge: first.idFleet,
-                    idFleetMergeTarget: second.idFleet
-                }
-                let sub = this.fleetService.mergeFleets(merge, userID).subscribe(resp => {
-                    if (resp) {
-                        this.createStarMap();
-                    }
-                });
-                this.subscriptions.push(sub);
-            }
-        });
-    }
-
-    private moveFleet(plannedMoves: FleetMove[]) {
-        let sub = this.fleetService.moveFleets(plannedMoves).subscribe(resp => {
-            if (resp) {
-                this.createStarMap();
-            }
-        });
-        this.subscriptions.push(sub);
-    }
-
-    private cancelMovement(fleets: Fleet[]) {
-        const ids = fleets.map(f => f.idFleet);
-        let sub = this.fleetService.cancelMovement(ids).subscribe(resp => {
-            if (resp) {
-                this.createStarMap();
-            }
-        });
-        this.subscriptions.push(sub);
     }
 }

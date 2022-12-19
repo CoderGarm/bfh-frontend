@@ -1,17 +1,8 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {StarMapCommunicationService} from "../../../../star-map-communication.service";
 import {Fleet, FleetApiService} from "../../../../services/swagger";
-import {InterstellarFleetDisplayComponent} from "../../../display-elements/interstellar-fleet-display/interstellar-fleet-display.component";
-import {DialogConfigHelper} from 'src/app/DialogConfigHelper';
-import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
-import {FleetDisplayComponent} from "../../../display-elements/fleet-display/fleet-display.component";
-import {SpacecraftCapabilitiesDisplayComponent} from "../../../display-elements/spacecraft-capabilities-display/spacecraft-capabilities-display.component";
-import {ManualTransportComponent} from "../../../display-elements/manual-transport/manual-transport.component";
-import {FleetMoveDisplayComponent} from "../../../display-elements/fleet-move-display/fleet-move-display.component";
 import {TokenStorage} from "../../../../services/authentication/token-storage.service";
-import {FleetFormationDisplay} from "../../../display-elements/fleet-formation-display/fleet-formation-display.component";
 
 
 @Component({
@@ -24,7 +15,13 @@ export class NotchComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
     stellarMode: boolean = false;
 
+    deselectAllMovements: number = 0;
+    resetMergeChanges: number = 0
+
     commService: StarMapCommunicationService;
+    displayMove: boolean = false;
+    displayInfo: boolean = false;
+    displayMerge: boolean = false;
 
     constructor(private dialog: MatDialog,
                 private tokenStorage: TokenStorage,
@@ -41,9 +38,18 @@ export class NotchComponent implements OnInit, OnChanges, OnDestroy {
 
     deselect() {
         this.commService.deselect();
+        this.displayInfo = false;
+        this.displayMove = false;
+        this.displayMerge = false;
     }
 
-    move() {
+    toggleShowMove() {
+        if (!this.showMoveDisabled()) {
+            this.displayMove = !this.displayMove;
+        }
+    }
+
+    executeMove() {
         if (this.stellarMode) {
             this.commService.stellarMove();
         } else {
@@ -51,85 +57,62 @@ export class NotchComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    merge() {
-        this.commService.merge();
+    deselectMovements() {
+        this.deselectAllMovements++;
     }
 
-    infoDisabled() {
+    toggleShowMerge() {
+        if (!this.showMergeDisabled()) {
+            this.displayMerge = !this.displayMerge;
+        }
+    }
+
+    executeMerge() {
+        this.commService.executeMerge();
+    }
+
+    executeMergeDisabled() {
+        return this.commService.mergeDisabled()
+    }
+
+
+    resetMerge() {
+        this.commService.resetMerge();
+        this.resetMergeChanges++;
+    }
+
+    showInfoDisabled() {
         return this.commService.infoDisabled();
     }
 
-    moveDisabled() {
-        return this.commService.moveDisabled();
+    showMoveDisabled() {
+        return this.commService.showMoveDisabled() && this.cancelMoveDisabled();
     }
 
-    mergeDisabled() {
-        return !this.stellarMode || this.commService.mergeDisabled();
+    executeMoveDisabled() {
+        return this.commService.executeMoveDisabled() && this.commService.executeCancelDisabled();
+    }
+
+    showMergeDisabled() {
+        return this.commService.showMergeDisabled();
     }
 
     deselectDisabled() {
-        return !this.commService.isSelectedFleetMarker();
+        return this.commService.deselectDisabled();
     }
 
     cancelMoveDisabled() {
-        return !this.stellarMode || this.commService.cancelMoveDisabled();
+        return !this.stellarMode || this.commService.showCancelMoveDisabled();
     }
 
     ngOnDestroy(): void {
         this.commService.clear();
     }
 
-    cancelMove() {
-        this.commService.cancel();
-    }
-
-    info() {
-        if (this.stellarMode) {
-            this.commService.selectedFleets.forEach(fleet => this.openFleetInfoDialog(fleet));
-        } else {
-            this.openInterstellarDialog();
+    toggleShowInfo() {
+        if (!this.showInfoDisabled()) {
+            this.displayInfo = !this.displayInfo;
         }
-    }
-
-    openFleetInfoDialog(fleet: Fleet | undefined) {
-        if (!!fleet) {
-            // fixme change to info vs transport dialog
-            const dialogConfig = DialogConfigHelper.createDialog();
-
-            let dialogData = new DialogData(fleet.name);
-            dialogData.addDialogDataPerTemplate(FleetDisplayComponent,
-                ['fleetInput'],
-                [fleet]);
-            dialogData.addDialogDataPerTemplate(SpacecraftCapabilitiesDisplayComponent,
-                ['fleet'],
-                [fleet]);
-            dialogData.addDialogDataPerTemplate(ManualTransportComponent,
-                ['fleet'],
-                [fleet]);
-            dialogData.addDialogDataPerTemplate(FleetFormationDisplay,
-                ['selectedFleetInput'],
-                [fleet]); // fixme display in dialog area body?
-            if (!!fleet.move) {
-                let userID = this.tokenStorage.getUserID();
-                if (fleet.owner.idUser != userID) {
-                    dialogData.addDialogDataPerTemplate(FleetMoveDisplayComponent,
-                        ['fleetInput'],
-                        [fleet]);
-                }
-            }
-            dialogConfig.data = dialogData;
-            this.dialog.open(ConfirmDialogComponent, dialogConfig);
-        }
-    }
-
-    openInterstellarDialog() {
-        const dialogConfig = DialogConfigHelper.createDialog();
-        let dialogData = new DialogData('Fleets of  owner.name  in  system.name'); // fixme display moving and staying fleets
-        dialogData.addDialogDataPerTemplate(InterstellarFleetDisplayComponent,
-            ['fleets'],
-            [this.commService.selectedFleets]);
-        dialogConfig.data = dialogData;
-        this.dialog.open(ConfirmDialogComponent, dialogConfig);
     }
 
     getColSpan(fleet: Fleet) {

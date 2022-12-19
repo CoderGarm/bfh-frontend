@@ -74,7 +74,7 @@
       "no-ftl-present": "No fleets with Warshawski sail present.",
       "select-for-cancel": {
         "checkbox": "Select for flight back",
-        "title": "Select fleets for the flight back"
+        "title": "Cancel flight"
       },
       "select-for-move": {
         "checkbox": "Select for flight",
@@ -280,10 +280,9 @@
   "star-map": {
     "notch": {
       "action": {
-        "cancel-move": "Cancel movement",
-        "info": "Info",
-        "merge": "Merge fleets",
-        "move": "Move fleets"
+        "show-info": "Show Info",
+        "show-merge": "Show merge fleets",
+        "show-move": "Show move fleets"
       },
       "deselect": "Deselect"
     },

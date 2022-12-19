@@ -15,11 +15,7 @@
  */
 export interface FleetMerge { 
     /**
-     * The fleet which must be merged.
+     * The first fleet composition. Warship IDs to Fleet ID.
      */
-    idFleetToMerge: number;
-    /**
-     * The fleet which is the target of the merge.
-     */
-    idFleetMergeTarget: number;
+    fleetConstellations: { [key: string]: Array<number>; };
 }

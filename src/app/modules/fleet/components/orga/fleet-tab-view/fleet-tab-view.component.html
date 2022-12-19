@@ -6,12 +6,16 @@
                                                      [baseFleetCapabilities]="fleet?.baseSpacecraftCapabilities"
                                                      [currentFleetCapabilities]="fleet?.spacecraftCapabilities"></app-spacecraft-capabilities-display>
                 <app-construction-capacity-display body [capacities]="fleet?.spacecraftCapacityAreas"></app-construction-capacity-display>
+
                 <div mat-subheader body>{{ 'fleet.display.population.title' | translate }}</div>
                 <app-population-development body
                                             [militaryOnly]="true"
                                             [utilization]="utilization"></app-population-development>
                 <app-manual-transport body
                                       [fleet]="fleet"></app-manual-transport>
+
+                <app-fleet-formation-display body [selectedFleetInput]="fleet"></app-fleet-formation-display>
+
                 <div mat-subheader body>{{ 'fleet.display.move.title' | translate }}</div>
                 <app-fleet-move-display body
                                         [fleet]="fleet"></app-fleet-move-display>

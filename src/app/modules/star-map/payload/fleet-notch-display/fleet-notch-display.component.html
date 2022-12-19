@@ -1,0 +1,13 @@
+<mat-card *ngIf="!!fleet">
+    <mat-card-header class="rename-element">
+        <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="fleet-icon">
+        <mat-card-title>
+            {{fleet.name}}
+        </mat-card-title>
+        <mat-card-subtitle>
+            <div mat-subheader *ngIf="!!destinationRepresentation">{{destinationRepresentation}}</div>
+            <div mat-subheader *ngIf="!!orbitRepresentation">{{orbitRepresentation}}</div>
+        </mat-card-subtitle>
+        <app-spacecraft-state-block-display [stateBlock]="fleet.state" [isFleet]="true"></app-spacecraft-state-block-display>
+    </mat-card-header>
+</mat-card>

@@ -21,6 +21,7 @@ import {TokenStorage} from "../../services/authentication/token-storage.service"
 import {OrbitDefinition} from "../star-map/payload/orbit-definition";
 import {BasicViewHelper} from "../../basic-view-helper";
 import {CombatArenaData} from "./components/payload/combat-arena/combat-arena.component";
+import {NavigationCalculator} from "../../NavigationCalculator";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
@@ -618,7 +619,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 this.setViewBox(undefined, 0.7);
                 return;
             }
-            if (!!this.orbitForViewBox && BattleViewHelper.isSameOrbit(this.orbitForViewBox, c)) {
+            if (!!this.orbitForViewBox && NavigationCalculator.isSameOrbit(this.orbitForViewBox, c)) {
                 // no change needed
                 return;
             }
@@ -645,8 +646,6 @@ export class BattleViewHelper extends BasicViewHelper {
         let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
 
         this.setOrbits(orbitDefinitions);
-        this.sortByOrbit();
-        this.createPolarCoordinateSystem();
 
         this.hyperLimitRadius = this.calculateHyperLimit(system);
         this.canvas!
@@ -687,7 +686,6 @@ export class BattleViewHelper extends BasicViewHelper {
             this.createLocalPolarCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), this.BATTLE_COORDINATE_SYSTEM_RADIUS, orbitID);
 
             this.setOrbitById(orbitID, orbit);
-            this.addCelestialArea(orbit, orbitID);
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
@@ -734,7 +732,7 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     private isBattleOrbit(orbit: Orbit) {
-        return !!this.battleReport && BattleViewHelper.isSameOrbit(this.battleReport.battleReportStatistics.orbit!.orbit!, orbit);
+        return !!this.battleReport && NavigationCalculator.isSameOrbit(this.battleReport.battleReportStatistics.orbit!.orbit!, orbit);
     }
 
     private getWarshipByID(id: string): AbstractId | undefined {

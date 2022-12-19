@@ -430,21 +430,16 @@ export class FleetApiService {
      * Merge two fleets of an owner.
      * 
      * @param body default response
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public mergeFleets(body: FleetMerge, idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Fleet>;
-    public mergeFleets(body: FleetMerge, idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Fleet>>;
-    public mergeFleets(body: FleetMerge, idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Fleet>>;
-    public mergeFleets(body: FleetMerge, idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public mergeFleets(body: FleetMerge, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public mergeFleets(body: FleetMerge, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public mergeFleets(body: FleetMerge, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public mergeFleets(body: FleetMerge, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling mergeFleets.');
-        }
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling mergeFleets.');
         }
 
         let headers = this.defaultHeaders;
@@ -468,7 +463,7 @@ export class FleetApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Fleet>('post',`${this.basePath}/api/private/fleet/merge/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/fleet/merge`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

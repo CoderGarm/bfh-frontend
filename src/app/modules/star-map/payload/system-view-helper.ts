@@ -1,4 +1,3 @@
-import {Svg} from "@svgdotjs/svg.js";
 import {Distance, FleetMarker, FleetOrbit, Orbit, Planet, StarSystem} from "../../../services/swagger";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {OrbitDefinition} from "./orbit-definition";
@@ -13,33 +12,46 @@ export class SystemViewHelper extends BasicViewHelper {
         super(tokenStorage, SystemViewHelper.STANDARD_METRIC);
     }
 
+    setFleets(fleetMarkers: FleetMarker[]) {
+        const moving = fleetMarkers.filter(f => !!f.move);
+        this.setFleetsInMotion(moving); // fixme fleet group and collection are overlapping and ugly
+
+        const fleetsAtSameOrbit = new Map<string, FleetMarker[]>();
+        const immobile = fleetMarkers.filter(f => !f.move);
+        immobile.forEach(fleetMarker => {
+            const orbit = fleetMarker.orbit!.orbit!;
+            const orbitID = this.getOrbitID(orbit)!;
+            let markers = fleetsAtSameOrbit.get(orbitID);
+            if (!markers) {
+                markers = [];
+            }
+            markers.push(fleetMarker);
+            fleetsAtSameOrbit.set(orbitID, markers);
+        });
+
+        for (let atSameOrbit of fleetsAtSameOrbit.values()) {
+            if (atSameOrbit.length > 1) {
+                this.createFleetCollection(atSameOrbit);
+            } else {
+                const fleetMarker = atSameOrbit[0];
+                const orbit = fleetMarker.orbit!.orbit!;
+                this.createFleetGroup(fleetMarker, orbit.xCoordinate.coordinate, orbit.yCoordinate.coordinate, orbit);
+            }
+        }
+    }
+
     setFleetsInMotion(fleetsInMotion: FleetMarker[]) {
 
         fleetsInMotion.forEach(fleetMarker => {
-            if (!fleetMarker.move!.startOrbit.orbit || !fleetMarker.move!.targetOrbit.orbit) {
-                return;
-            }
-            let {color, arr} = this.createStellarCoursePlot(fleetMarker.move!);
-
-            let path = this.canvas!.path(arr).fill(BasicViewHelper.NONE_FILL_COLOR).stroke({color: color, width: 1});
             if (!fleetMarker.move || !fleetMarker.move.startOrbit.orbit || !fleetMarker.move.targetOrbit.orbit) {
                 return;
             }
-
+            let arr = this.createStellarCoursePlot(fleetMarker.move!);
             let startOrbit = fleetMarker.move.startOrbit.orbit;
             let targetOrbit = fleetMarker.move.targetOrbit.orbit;
-            let distance = this.calculateDistanceOfOrbits(startOrbit, targetOrbit);
-
-            let part = (fleetMarker.move!.originalDuration - fleetMarker.move!.moveDoneAtZero) / fleetMarker.move!.originalDuration;
-            if (part < 0.1) {
-                part = 0.1;
-            } else if (part > 0.9) {
-                part = 0.9;
-            }
-            let coveredTrackLength = distance * part;
-
-            let pointAt = path.pointAt(coveredTrackLength);
-            this.createFleetGroup(fleetMarker, pointAt.x, pointAt.y, undefined);
+            let pointAt = this.calculatePositionOnTrack(startOrbit, targetOrbit, fleetMarker, arr);
+            this.enrichWithVirtualOrbit(pointAt, fleetMarker);
+            this.createFleetGroup(fleetMarker, pointAt.x, pointAt.y, fleetMarker.orbit!.orbit!);
         });
     }
 
@@ -53,21 +65,16 @@ export class SystemViewHelper extends BasicViewHelper {
             let orbit: Orbit = fleetOrbit.orbit!;
             let x: number = this.convertToStandardMetric(orbit.xCoordinate) + 25 + (Array.from(fleetOrbits.keys()).indexOf(fleetOrbit) % 2 == 0 ? 15 : 0);
             let y: number = this.convertToStandardMetric(orbit.yCoordinate) + 25;
-            let group = this.createFleetGroup(fleetMarker, x, y, orbit);
-            this.addAreaDefinition(group);
+            this.createFleetGroup(fleetMarker, x, y, orbit);
         });
     }
 
-    drawOrbits(canvas: Svg, system: StarSystem) {
-        this.setCanvas(canvas);
-
+    drawOrbits(system: StarSystem) {
         let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
         system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
         let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
 
         this.setOrbits(orbitDefinitions);
-        this.sortByOrbit();
-        this.createPolarCoordinateSystem();
         this.setViewBox(undefined, 0.7);
 
         this.hyperLimitRadius = this.calculateHyperLimit(system);
@@ -99,7 +106,7 @@ export class SystemViewHelper extends BasicViewHelper {
                 .circle()
                 .x(0)
                 .y(0)
-                .id(orbitID)
+                .id(orbitID + BasicViewHelper.ORBIT_SUFFIX)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
                 .addClass(BasicViewHelper.ORBIT_MARKER)
                 .radius(radius);

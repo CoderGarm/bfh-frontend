@@ -1,54 +1,58 @@
-import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, FleetOrbit, Planet, PlanetApiService} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Fleet, FleetOrbit, Planet, PlanetApiService} from "../../../../services/swagger";
+import {SubscriptionManager} from "../../../../SubscriptionManager";
 
 @Component({
-    selector: 'app-fleet-move-display',
-    templateUrl: './fleet-move-display.component.html',
-    styleUrls: ['./fleet-move-display.component.scss']
+    selector: 'app-fleet-notch-display',
+    templateUrl: './fleet-notch-display.component.html',
+    styleUrls: ['./fleet-notch-display.component.scss']
 })
-export class FleetMoveDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class FleetNotchDisplayComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     @Input()
     fleet?: Fleet;
-    fleetInputDefinition: string = "fleet";
+
+    @Input()
+    nameChangeAllowed: boolean = false;
 
     destination?: Planet;
     position?: Planet;
 
-    destinationRepresentation: string = "";
+    destinationRepresentation?: string;
     orbitRepresentation?: string;
 
-    constructor(@Optional() @Inject('fleet') fleet: Fleet | undefined,
-                private planetApi: PlanetApiService) {
+    constructor(private planetService: PlanetApiService) {
         super();
-        this.fleet = fleet;
-        this.fetchDestination();
-        this.fetchPosition();
     }
 
-    ngAfterViewInit(): void {
+    ngOnInit(): void {
+    }
+
+    /**
+     * constructs and returns the url to the icon
+     */
+    getLink(): string {
+        //todo amend fleet size icon
+        return "assets/icons/fleets/png64x/small_fleet_c.png";
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.fleetInputDefinition]) {
-            this.fetchDestination();
-            this.fetchPosition();
-        }
+        this.fetchDestination();
+        this.fetchPosition();
     }
 
     private fetchDestination() {
         if (!!this.fleet && !!this.fleet.move && !!this.fleet.move.targetOrbit.system) {
             let idStarSystem = this.fleet.move.targetOrbit.system.idStarSystem;
             let orbit = this.fleet.move.targetOrbit.orbit;
-            let sub = this.planetApi.getPlanetByCoordinates(orbit!, idStarSystem)
+            let sub = this.planetService.getPlanetByCoordinates(orbit!, idStarSystem)
                 .subscribe(resp => {
                     this.destination = resp;
                     this.createDestinationRepresentation();
                 });
             this.subscriptions.push(sub);
         }
-        if (this.destinationRepresentation.length == 0) {
+        if (!this.destinationRepresentation) {
             this.createDestinationRepresentation();
         }
     }
@@ -59,7 +63,7 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
             if (!!fleetOrbit && !!fleetOrbit.orbit && !!fleetOrbit.system) {
                 let idStarSystem = fleetOrbit.system.idStarSystem;
                 let orbit = fleetOrbit.orbit;
-                let sub = this.planetApi.getPlanetByCoordinates(orbit!, idStarSystem)
+                let sub = this.planetService.getPlanetByCoordinates(orbit!, idStarSystem)
                     .subscribe(resp => {
                         this.position = resp;
                         this.createOrbitRepresentation();
@@ -72,10 +76,6 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
         }
     }
 
-    getTicksLeft() {
-        return this.fleet!.move!.originalDuration - this.fleet!.move!.moveDoneAtZero;
-    }
-
     private createDestinationRepresentation() {
         let destination = "";
         if (!!this.fleet && !!this.fleet.move) {
@@ -85,16 +85,36 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
                 destination += 'hyperlimit';
             }
             if (!!this.fleet.move.targetOrbit.system) {
-                destination += " in " + this.fleet.move.targetOrbit.system.name;
+                if (destination.length > 0) {
+                    destination += ", ";
+                }
+                destination += this.fleet.move.targetOrbit.system.name;
+            }
+            if (!!this.fleet.move) {
+                destination += ', ' + this.fleet.move.moveDoneAtZero + ' ticks';
             }
         }
         this.destinationRepresentation = destination;
     }
 
     createOrbitRepresentation() {
-        if (!!this.fleet && !!this.fleet.orbit && !!this.position) {
+        if (!!this.fleet && !!this.fleet.orbit) {
+            let destination = "";
+            if (!!this.position) {
+                destination += this.position.name;
+            } else {
+                destination += 'hyperlimit';
+            }
+
             const orbit: FleetOrbit = this.fleet.orbit;
-            this.orbitRepresentation = this.position.name + " in " + orbit.system!.name;
+            if (!!orbit) {
+                if (destination.length > 0) {
+                    destination += ", ";
+                }
+                destination += orbit.system!.name;
+            }
+
+            this.orbitRepresentation = destination;
         } else {
             this.orbitRepresentation = undefined;
         }

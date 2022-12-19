@@ -36,7 +36,7 @@ export class BackgroundService extends SubscriptionManager {
                 let sub = this.mapService.getStarSystems()
                     .subscribe(resp => {
                         this.starSystems = resp;
-                        this.tokenStorage.setSystems(resp); // fixme remove
+                        this.tokenStorage.rememberSystems(resp);
                     });
                 this.subscriptions.push(sub);
             } else {

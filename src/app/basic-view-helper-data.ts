@@ -1,12 +1,10 @@
 import {SubscriptionManager} from "./SubscriptionManager";
 import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, WarShip} from "./services/swagger";
-import {Circle, G, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
-import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
-import {CelestialAreaDefinition} from "./modules/star-map/payload/celestial-area-definition";
-import {AreaDefinition} from "./modules/star-map/area-definition";
+import {ArrayXY, Circle, G, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
 import {Component} from "@angular/core";
+import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 
@@ -15,24 +13,26 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
 })
 export class BasicViewHelperData extends SubscriptionManager {
 
-
     protected static readonly ORBIT_ID_MARKER = "orbitId-";
     protected static readonly GROUP_SELECTOR_SUFFIX: string = "-group";
     protected static readonly CYCLING_CIRCLE_SUFFIX = "-circle-cycle";
     protected static readonly MOVE_SUFFIX = "-move";
+    protected static readonly ORBIT_SUFFIX = "-orbit";
 
     protected static readonly CELESTIAL_BODY_SELECTOR_ID_PREFIX: string = "-orbit";
     protected static readonly ORBIT_SELECTOR_ID_PREFIX: string = "-orbit";
-    protected static readonly FLEET_SHARK_SELECTOR_ID_PREFIX: string = "-fleet-shark";
-    protected static readonly FLEET_COLLECTION_SELECTOR_ID_PREFIX: string = "-fleet-shark-collection";
+    protected static readonly FLEET_SHARK_SELECTOR_ID_PREFIX: string = "fleet-shark-icon";
+    protected static readonly FLEET_COLLECTION_SELECTOR_ID_PREFIX: string = "fleet-shark-collection-icon";
     protected static readonly WARSHIP_SELECTOR_ID_PREFIX: string = "-warship";
     protected static readonly MISSILE_SALVO_SELECTOR_ID_PREFIX: string = "-missile-salvo";
 
+    protected static readonly CYCLING_CIRCLE_MARKER = "circle-cycle";
     protected static readonly ICON_ID_MARKER: string = "iconId-";
     protected static readonly MOVABLE_STATE_DOT_MARKER: string = "movableStateDot";
     protected static readonly TEXT_MARKER: string = "svg-text";
     protected static readonly FLEET_SHARK_POLYGON_MARKER = "fleetSharkIcon";
-    protected static readonly ROUND_CAP_MARKER = "colonizableMarker";
+    protected static readonly ROUND_CAP_MARKER = "roundCap";
+    protected static readonly ROUND_CAP_SUFFIX = "-roundCapSuffix";
     protected static readonly RESIZE_ON_ZOOM_MARKER = "no-resize";
     protected static readonly STAR_MARKER = "star";
     protected static readonly STAR_IN_SYSTEM_MARKER = "star-in-system";
@@ -40,9 +40,6 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly ORBIT_MARKER = "orbit";
     protected static readonly CENTER_COORDINATES_MARKER = "center-";
     protected static readonly CENTER_COORDINATES_SEPARATOR = "|";
-
-    private knownStarSystemByOrbit: Map<Orbit, StarSystem> = new Map<Orbit, StarSystem>();
-    private planetByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
 
     protected canvas?: Svg;
 
@@ -56,8 +53,9 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected radiusOfCoordinateCross?: number;
     protected hyperLimitRadius?: number;
 
+    private knownStarSystemByOrbit: Map<Orbit, StarSystem> = new Map<Orbit, StarSystem>();
+    private planetByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
     private textById: Map<String, Text> = new Map<String, Text>();
-
     private celestialObjectById: Map<String, Planet | StarSystem> = new Map<String, Planet | StarSystem>();
     private celestialBodyById: Map<String, Circle> = new Map<String, Circle>();
     private celestialOrbitById: Map<String, Orbit> = new Map<String, Orbit>();
@@ -70,35 +68,30 @@ export class BasicViewHelperData extends SubscriptionManager {
     private restrictedAreasByOrbitId: Map<String, RestrictedFleetArea[]> = new Map<String, RestrictedFleetArea[]>();
     private groupsByID: Map<String, G> = new Map<String, G>();
 
-    private areaDefinitions: AreaDefinition[] = [];
-    private celestialAreas: CelestialAreaDefinition[] = [];
-
-
     constructor(protected standardDistanceMetric: DistanceMetricEnum) {
         super();
     }
 
     protected clearData() {
+        this.knownStarSystemByOrbit.clear();
+        this.planetByOrbit.clear();
+        this.textById.clear();
+        this.celestialObjectById.clear();
         this.celestialBodyById.clear();
         this.celestialOrbitById.clear();
         this.orbitsById.clear();
         this.fleetsById.clear();
+        this.fleetsByText.clear();
+        this.fleetPolygonsById.clear();
         this.restrictedAreasByOrbitId.clear();
         this.groupsByID.clear();
-        this.fleetsByText.clear();
-        this.areaDefinitions = [];
-        this.celestialAreas = [];
     }
 
     protected clearRestrictedAreas() {
         this.restrictedAreasByOrbitId.clear();
     }
 
-    /**
-     * sorts the systems by their orbit's radius
-     * @private
-     */
-    protected sortByOrbit() {
+    private sortByOrbit() {
         if (!this.orbits) {
             throw new Error("The orbits must be present to calculate the map view.");
         }
@@ -118,6 +111,15 @@ export class BasicViewHelperData extends SubscriptionManager {
         return NavigationCalculator.convertDistanceToMetric(distance, this.standardDistanceMetric);
     }
 
+    protected calculateHyperLimit(system: StarSystem) {
+        const lightMinutesToHyperLimit = system.starClassType.lightMinutesToHyperLimit;
+        const hyperRadius: Distance = {
+            coordinate: lightMinutesToHyperLimit,
+            distanceMetric: DistanceMetricEnum.LM
+        }
+        return this.convertToStandardMetric(hyperRadius);
+    }
+
     protected getWidestExpanse(): { x: number, y: number } {
         let x = 100;
         let y = 100;
@@ -131,6 +133,22 @@ export class BasicViewHelperData extends SubscriptionManager {
             y = Math.max(minYCoord, maxYCoord);
         }
         return {x, y};
+    }
+
+    protected sortPoints(fleetSharkPoints: ArrayXY[]) {
+        let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
+        let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
+        return {sortedPointsX, sortedPointsY};
+    }
+
+    protected getUpperRightCornerPosition(sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[]) {
+        let xText = sortedPointsX[sortedPointsX.length - 1];
+        let yText = sortedPointsY[0];
+        return {xText, yText};
+    }
+
+    protected getOrbitID(orbit: Orbit): string {
+        return BasicViewHelperData.ORBIT_SELECTOR_ID_PREFIX + "-" + orbit.xCoordinate.coordinate + "-" + orbit.yCoordinate.coordinate;
     }
 
     protected getOrbitOfCelestialByID(id: string): Orbit | undefined {
@@ -194,6 +212,13 @@ export class BasicViewHelperData extends SubscriptionManager {
         return id;
     }
 
+    protected isFleetCollectionId(id: string): boolean {
+        return id.startsWith(BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX);
+    }
+
+    protected isFleetSharkId(id: string): boolean {
+        return id.startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX);
+    }
 
     protected getFleetCollectionID(fleetMarkers: FleetMarker[]): string {
         let prefix: string = BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX;
@@ -219,6 +244,15 @@ export class BasicViewHelperData extends SubscriptionManager {
         const fleetSharkIDs: string[] = [];
         fleetIDs.forEach(id => fleetSharkIDs.push(this.getFleetSharkID({id: Number.parseFloat(id)})));
         return fleetSharkIDs;
+    }
+
+    protected getFleetIDsFromCollectionID(collectionID: string): number[] {
+        let prefix: string = BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX;
+        if (!collectionID.startsWith(prefix)) {
+            return [];
+        }
+        const payload = collectionID.replace(prefix, '').split("-")[1];
+        return payload.split(BasicViewHelperData.CENTER_COORDINATES_SEPARATOR).map(string => Number.parseFloat(string));
     }
 
     protected getFleetSharkID(fleet: Fleet | AbstractId | FleetMarker): string {
@@ -315,20 +349,13 @@ export class BasicViewHelperData extends SubscriptionManager {
         this.celestialOrbitById.set(celestialBodyID, orbit);
     }
 
-    protected addCelestialArea(orbit: Orbit, orbitID: string) {
-        this.celestialAreas.push(new CelestialAreaDefinition(orbit, orbitID, 50));
-    }
-
     protected setOrbitById(orbitID: string, orbit: Orbit) {
         this.orbitsById.set(orbitID, orbit);
     }
 
     protected setOrbits(orbits: OrbitDefinition[]) {
         this.orbits = orbits.map(od => od.orbit);
-    }
-
-    protected addAreaDefinition(group: G) {
-        this.areaDefinitions.push(new AreaDefinition(group));
+        this.sortByOrbit();
     }
 
     protected setPlanetsByOrbit(system: StarSystem) {

@@ -145,7 +145,6 @@ export class TokenStorage {
     }
 
     getSystems(): StarSystem[] | undefined {
-        // fixme remove
         const json = localStorage.getItem('systems');
         if (!!json) {
             return JSON.parse(json);
@@ -153,7 +152,10 @@ export class TokenStorage {
         return undefined;
     }
 
-    setSystems(systems: StarSystem[]) {
+    /**
+     * Just an idea to store the star map locally in a browsers tab storage
+     */
+    rememberSystems(systems: StarSystem[]) {
         localStorage.setItem('systems', JSON.stringify(systems));
     }
 }

@@ -16,9 +16,6 @@ export interface FleetName {
 })
 export class FleetDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
-    /**
-     * the fleet to display
-     */
     @Input() // please note that the missing type-safetyness of javascript allows it to use a FleetMarker here
     fleetInput?: Fleet;
 

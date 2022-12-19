@@ -1,6 +1,8 @@
-import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {SubscriptionManager} from "../../../SubscriptionManager";
-import {Fleet, FleetApiService, FleetMarker} from "../../../services/swagger";
+import {Fleet, FleetMerge, WarShip} from "../../../services/swagger";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {StarMapCommunicationService} from "../../../star-map-communication.service";
 
 @Component({
     selector: 'app-fleet-merge-edit',
@@ -9,66 +11,58 @@ import {Fleet, FleetApiService, FleetMarker} from "../../../services/swagger";
 })
 export class FleetMergeEditComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
-    /**
-     * the fleet which will take all the other war ships
-     */
     @Input()
-    fleetSubject?: Fleet; // please note that the missing type-safetyness of javascript allows it to use a FleetMarker here
-    fleetSubjectDefinition: string = "fleetSubject";
+    fleetSubject?: Fleet;
+    fleetSubjectShips?: WarShip[];
 
-    /**
-     * the fleet which will lose all war ships to the subject's fleet and will be disbanded
-     */
     @Input()
-    fleetObject?: Fleet; // please note that the missing type-safetyness of javascript allows it to use a FleetMarker here
-    fleetObjectDefinition: string = "fleetObject";
+    fleetObject?: Fleet;
+    fleetObjectShips?: WarShip[];
 
-    constructor(@Optional() @Inject('fleetSubject') fleetSubject: Fleet | FleetMarker | undefined,
-                @Optional() @Inject('fleetObject') fleetObject: Fleet | FleetMarker | undefined,
-                private fleetService: FleetApiService) {
+    @Input()
+    resetChanges: number = 0;
+
+    constructor(private commService: StarMapCommunicationService) {
         super();
-
-        this.fetchSubject(fleetSubject);
-        this.fetchObject(fleetObject);
     }
 
     ngAfterViewInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.fleetSubjectDefinition]) {
-            this.fetchSubject(changes[this.fleetSubjectDefinition].currentValue);
+        if (changes['fleetSubject']) {
+            this.fleetSubjectShips = this.fleetSubject?.ships.map(s => s);
         }
-        if (changes[this.fleetObjectDefinition]) {
-            this.fetchObject(changes[this.fleetObjectDefinition].currentValue);
+        if (changes['fleetObject']) {
+            this.fleetObjectShips = this.fleetObject?.ships.map(s => s);
+
+        }
+        if (changes['resetChanges']) {
+            if (!!this.fleetSubject && !!this.fleetSubjectShips) {
+                this.fleetSubject.ships = this.fleetSubjectShips.map(s => s);
+            }
+            if (!!this.fleetObject && !!this.fleetObjectShips) {
+                this.fleetObject.ships = this.fleetObjectShips.map(s => s);
+            }
         }
     }
 
-    private fetchSubject(fleetSubject: Fleet | FleetMarker | undefined) {
-        if (!fleetSubject) {
-            return;
+    drop(event: CdkDragDrop<WarShip[]>) {
+        if (event.previousContainer === event.container) {
+            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        } else {
+            transferArrayItem(
+                event.previousContainer.data,
+                event.container.data,
+                event.previousIndex,
+                event.currentIndex,
+            );
         }
-        if ('idFleet' in fleetSubject) {
-            this.fleetSubject = fleetSubject;
-            return;
+        let fm: FleetMerge = {
+            fleetConstellations: {}
         }
-        if ('fleet' in fleetSubject) {
-            const sub = this.fleetService.getFleet(fleetSubject.fleet.id).subscribe(resp => this.fleetSubject = resp);
-            this.subscriptions.push(sub);
-        }
-    }
-
-    private fetchObject(fleetObject: Fleet | FleetMarker | undefined) {
-        if (!fleetObject) {
-            return;
-        }
-        if ('idFleet' in fleetObject) {
-            this.fleetObject = fleetObject;
-            return;
-        }
-        if ('fleet' in fleetObject) {
-            const sub = this.fleetService.getFleet(fleetObject.fleet.id).subscribe(resp => this.fleetObject = resp);
-            this.subscriptions.push(sub);
-        }
+        fm.fleetConstellations[this.fleetSubject!.idFleet!] = this.fleetSubject!.ships.map(s => s.idWarship);
+        fm.fleetConstellations[this.fleetObject!.idFleet!] = this.fleetObject!.ships.map(s => s.idWarship);
+        this.commService.setFleetConstellationForMerge(fm);
     }
 }

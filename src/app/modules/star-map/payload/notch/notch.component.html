@@ -1,30 +1,78 @@
-<div id="notch-content" class="mat-elevation-z8 pointer-events" *ngIf="!infoDisabled() || !moveDisabled() || !mergeDisabled() || !cancelMoveDisabled()">
+<div id="notch-content" class="mat-elevation-z8 pointer-events" *ngIf="!showInfoDisabled() || !showMoveDisabled() || !showMergeDisabled()">
 
     <mat-grid-list cols="6" rowHeight="100px">
         <mat-grid-tile *ngFor="let fleet of commService.selectedFleets"
                        [colspan]="getColSpan(fleet)"
                        class="tile">
-            <app-fleet-display [fleetInput]="fleet"></app-fleet-display>
+            <app-fleet-notch-display [fleet]="fleet"></app-fleet-notch-display>
         </mat-grid-tile>
     </mat-grid-list>
 
-    <app-interstellar-fleet-movement-edit *ngIf="!stellarMode"
-                                          [fleets]="commService.selectedFleets"
-                                          [destination]="commService.selectedStarSystem"></app-interstellar-fleet-movement-edit>
+    <mat-card *ngIf="displayInfo">
+        <mat-card-title>Fleet information</mat-card-title>
+        <mat-card-content>
+            <div *ngFor="let fleet of commService.selectedFleets">
+                <app-fleet-display [fleetInput]="fleet">
+                    <app-spacecraft-capabilities-display body
+                                                         [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
+                                                         [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
+                    <app-construction-capacity-display body [capacities]="fleet.spacecraftCapacityAreas"></app-construction-capacity-display>
+                    <div mat-subheader body>{{ 'fleet.display.population.title' | translate }}</div>
+                    <app-population-development body
+                                                [militaryOnly]="true"
+                                                [utilization]="commService.getUtilizedPersonal(fleet)"></app-population-development>
+                    <app-manual-transport body
+                                          [fleet]="fleet"></app-manual-transport>
+                    <app-fleet-formation-display body [selectedFleetInput]="fleet"></app-fleet-formation-display>
+                </app-fleet-display>
+            </div>
+        </mat-card-content>
+    </mat-card>
 
-    <app-fleet-move-edit *ngIf="stellarMode"
-                         [fleets]="commService.selectedFleets"
-                         [system]="commService.displayedStarSystem"
-                         [destination]="commService.selectedPlanet"></app-fleet-move-edit>
+    <mat-card *ngIf="displayMove">
+        <mat-card-title>Fleet movements</mat-card-title>
+        <mat-card-content>
+            <app-interstellar-fleet-movement-edit *ngIf="!stellarMode"
+                                                  [deselectAllMovements]="deselectAllMovements"
+                                                  [fleets]="commService.selectedFleets"
+                                                  [destination]="commService.selectedStarSystem"></app-interstellar-fleet-movement-edit>
+
+            <app-fleet-move-edit *ngIf="stellarMode"
+                                 [deselectAllMovements]="deselectAllMovements"
+                                 [fleets]="commService.selectedFleets"
+                                 [system]="commService.displayedStarSystem"
+                                 [destination]="commService.selectedPlanet"></app-fleet-move-edit>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button (click)="executeMove()" [disabled]="executeMoveDisabled()">Execute</button>
+            <button mat-button (click)="deselectMovements()">Deselect</button>
+        </mat-card-actions>
+    </mat-card>
+
+    <mat-card *ngIf="displayMerge">
+        <mat-card-title>Transfer ships between fleets</mat-card-title>
+        <mat-card-content>
+            <app-fleet-merge-edit [resetChanges]="resetMergeChanges"
+                                  [fleetSubject]="commService.selectedFleets[0]"
+                                  [fleetObject]="commService.selectedFleets[1]"></app-fleet-merge-edit>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button (click)="executeMerge()" [disabled]="executeMergeDisabled()">Execute</button>
+            <button mat-button (click)="resetMerge()">Reset</button>
+        </mat-card-actions>
+    </mat-card>
+
 
 </div>
 
 <div id="notch-actions">
     <mat-button-toggle-group class="pointer-events">
-        <mat-button-toggle (click)="info()" [disabled]="infoDisabled()">{{ 'star-map.notch.action.info' | translate }}</mat-button-toggle>
-        <mat-button-toggle (click)="move()" [disabled]="moveDisabled()">{{ 'star-map.notch.action.move' | translate }}</mat-button-toggle>
-        <mat-button-toggle (click)="cancelMove()" [disabled]="cancelMoveDisabled()">{{ 'star-map.notch.action.cancel-move' | translate }}</mat-button-toggle>
-        <mat-button-toggle (click)="merge()" [disabled]="mergeDisabled()">{{ 'star-map.notch.action.merge' | translate }}</mat-button-toggle>
+        <mat-button-toggle (click)="toggleShowInfo()" [disabled]="showInfoDisabled()"
+                           [checked]="displayInfo">{{ 'star-map.notch.action.show-info' | translate }}</mat-button-toggle>
+        <mat-button-toggle (click)="toggleShowMove()" [disabled]="showMoveDisabled()"
+                           [checked]="displayMove">{{ 'star-map.notch.action.show-move' | translate }}</mat-button-toggle>
+        <mat-button-toggle (click)="toggleShowMerge()" [disabled]="showMergeDisabled()"
+                           [checked]="displayMerge">{{ 'star-map.notch.action.show-merge' | translate }}</mat-button-toggle>
     </mat-button-toggle-group>
 
     <button mat-icon-button

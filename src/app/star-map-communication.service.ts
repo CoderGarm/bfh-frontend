@@ -1,8 +1,27 @@
 import {SubscriptionManager} from "./SubscriptionManager";
 import {EventEmitter, Injectable} from "@angular/core";
-import {Distance, Fleet, FleetApiService, FleetMarker, FleetMove, FleetOrbit, Orbit, Planet, StarSystem} from "./services/swagger";
+import {
+    Distance,
+    EnumValueDto,
+    Fleet,
+    FleetApiService,
+    FleetMarker,
+    FleetMerge,
+    FleetMove,
+    FleetOrbit,
+    Orbit,
+    Planet,
+    ResourceDeposit,
+    ResourcesApiService,
+    StarSystem
+} from "./services/swagger";
 import {NavigationCalculator} from "./NavigationCalculator";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
+
+export interface StellarMovement {
+    plannedMoves: FleetMove[],
+    toCancel: Fleet[]
+}
 
 @Injectable()
 export class StarMapCommunicationService extends SubscriptionManager {
@@ -11,15 +30,14 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private deselectEverythingEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    private stellarMoveEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
-
     private interstellarMoveEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
 
-    private cancelMovementEmitter: EventEmitter<Fleet[]> = new EventEmitter<Fleet[]>();
+    private stellarMoveEmitter: EventEmitter<StellarMovement> = new EventEmitter<StellarMovement>();
 
-    private mergeFleetsEmitter: EventEmitter<Fleet[]> = new EventEmitter<Fleet[]>();
+    private mergeFleetsEmitter: EventEmitter<FleetMerge> = new EventEmitter<FleetMerge>();
 
     private storage: Map<number, Fleet> = new Map<number, Fleet>();
+    private storageUsedPersonal: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
     selectedStarSystem?: StarSystem;
 
@@ -33,13 +51,14 @@ export class StarMapCommunicationService extends SubscriptionManager {
     private plannedStellarMoves: FleetMove[] = [];
     private plannedInterstellarMoves: FleetMove[] = [];
     private fleetsToCancelMovement: Fleet[] = [];
+    private fleetMerge?: FleetMerge;
 
-    constructor(private fleetService: FleetApiService) {
+    constructor(private fleetService: FleetApiService,
+                private resourceService: ResourcesApiService) {
         super();
     }
 
     clear(tabIndex?: number) {
-        // fixme deselect stuff on action or redraw
         this.selectedStarSystem = undefined;
         this.selectedFleets = [];
         this.fleetOrbit = undefined;
@@ -86,12 +105,16 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return this.interstellarMoveEmitter;
     }
 
-    getCancelMovementEmitter() {
-        return this.cancelMovementEmitter;
-    }
-
     getMergeFleetsEmitter() {
         return this.mergeFleetsEmitter;
+    }
+
+    getSelectedFleetMarker() {
+        return this.selectedFleetMarker;
+    }
+
+    getMovingFleetMarker() {
+        return this.selectedFleetMarker.filter(fm => !!fm.move);
     }
 
     displaySystem(system?: StarSystem) {
@@ -120,8 +143,11 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return idPlanet === this.selectedPlanet?.idPlanet;
     }
 
-    isSelectedFleetMarker() {
-        return this.selectedFleetMarker.length > 0;
+    isSelectedFleetMarker(idFleet?: number) {
+        if (!idFleet) {
+            return this.selectedFleetMarker.length > 0;
+        }
+        return this.selectedFleetMarker.filter(fm => fm.fleet.id === idFleet).length > 0;
     }
 
     setSelectedStarSystem(system: StarSystem) {
@@ -145,17 +171,26 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     private fetchFleet(fleetMarker: FleetMarker) {
-        const fleet = this.storage.get(fleetMarker.fleet.id);
+        const idFleet = fleetMarker.fleet.id;
+        const fleet = this.storage.get(idFleet);
         if (!!fleet) {
             this.pushSelectedFleets(fleet);
-            return;
+        } else {
+            const sub = this.fleetService.getFleet(idFleet).subscribe(resp => {
+                this.pushSelectedFleets(resp);
+                this.storage.set(resp.idFleet, resp);
+            });
+            this.subscriptions.push(sub);
         }
 
-        const sub = this.fleetService.getFleet(fleetMarker.fleet.id).subscribe(resp => {
-            this.pushSelectedFleets(resp);
-            this.storage.set(resp.idFleet, resp);
-        });
-        this.subscriptions.push(sub);
+        const deposit = this.storageUsedPersonal.get(idFleet);
+        if (!deposit) {
+            const sub = this.resourceService.getCostsForFleet(idFleet).subscribe(resp => {
+                resp.subType.typeName = EnumValueDto.EDepositTypeEnum.UTILIZATION
+                this.storageUsedPersonal.set(idFleet, resp);
+            });
+            this.subscriptions.push(sub);
+        }
     }
 
     private pushSelectedFleets(fleet: Fleet) {
@@ -170,12 +205,36 @@ export class StarMapCommunicationService extends SubscriptionManager {
         this.selectedFleets = this.selectedFleets.filter(f => f.idFleet != fleetMarker.fleet.id);
     }
 
-    moveDisabled() {
-        const fleetsPresent = this.selectedFleets.filter(f => !f.move).length > 0;
-        return !(fleetsPresent && (this.isSelectedStarSystem() || this.isSelectedPlanet()));
+    executeMoveDisabled() {
+        const fleetsInterstellarSelected = this.plannedInterstellarMoves.length > 0;
+        const fleetsStellarSelected = this.plannedStellarMoves.length > 0;
+        const a = this.isSelectedStarSystem();
+        const b = this.isSelectedPlanet();
+        const result = (fleetsInterstellarSelected || fleetsStellarSelected) && (a || b);
+        return !result;
     }
 
-    mergeDisabled() {
+    executeCancelDisabled() {
+        const fleetsSelected = this.fleetsToCancelMovement.length > 0;
+        return !fleetsSelected;
+    }
+
+    showMoveDisabled() {
+        const fleetsWithoutMovementPresent = this.selectedFleets.filter(f => !f.move).length > 0;
+        const movableFleetsPresent = fleetsWithoutMovementPresent && (this.isSelectedStarSystem() || this.isSelectedPlanet());
+        return !movableFleetsPresent;
+    }
+
+    showCancelMoveDisabled() {
+        const fleetsWithCancelableMovementPresent = this.selectedFleets
+            .filter(f => !!f.move)
+            .filter(f => !!f.move!.startOrbit.system)
+            .filter(f => !!f.move!.targetOrbit.system)
+            .filter(f => f.move!.startOrbit.system!.idStarSystem == f.move!.targetOrbit.system!.idStarSystem).length > 0;
+        return !fleetsWithCancelableMovementPresent;
+    }
+
+    showMergeDisabled() {
         let nope = this.selectedFleets.length < 2 || this.isStarSystemDisplayed();
         if (!nope) {
             const orbits: Orbit[] = [];
@@ -205,28 +264,31 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return nope;
     }
 
+    deselectDisabled() {
+        return this.selectedFleets.length == 0 && !this.selectedPlanet && !this.selectedStarSystem;
+    }
+
     infoDisabled() {
         return this.selectedFleets.length == 0;
     }
 
-    cancelMoveDisabled() {
-        return this.selectedFleets.filter(f => !!f.move).length < 1;
-    }
-
     stellarMove() {
-        this.stellarMoveEmitter.emit(this.plannedStellarMoves);
+        this.stellarMoveEmitter.emit({
+            plannedMoves: this.plannedStellarMoves,
+            toCancel: this.fleetsToCancelMovement
+        });
     }
 
     interstellarMove() {
         this.interstellarMoveEmitter.emit(this.plannedInterstellarMoves);
     }
 
-    cancel() {
-        this.cancelMovementEmitter.emit(this.fleetsToCancelMovement);
+    executeMerge() {
+        this.mergeFleetsEmitter.emit(this.fleetMerge);
     }
 
-    merge() {
-        console.log("merge")
+    resetMerge() {
+        this.fleetMerge = undefined;
     }
 
     setPlannedInterstellarMovements(plannedMoves: FleetMove[]) {
@@ -239,5 +301,17 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     setFleetToCancelMovement(fleetsToStopMoving: Fleet[]) {
         this.fleetsToCancelMovement = fleetsToStopMoving;
+    }
+
+    getUtilizedPersonal(fleet: Fleet) {
+        return this.storageUsedPersonal.get(fleet.idFleet);
+    }
+
+    setFleetConstellationForMerge(fm: FleetMerge) {
+        this.fleetMerge = fm;
+    }
+
+    mergeDisabled() {
+        return !this.fleetMerge;
     }
 }

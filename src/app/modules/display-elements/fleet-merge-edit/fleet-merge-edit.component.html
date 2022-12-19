@@ -1,19 +1,19 @@
-<mat-card *ngIf="!!fleetObject">
-    <mat-card-header>
-        <mat-card-title>Merge fleet</mat-card-title>
-        <mat-card-subtitle>{{fleetObject!.name}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <app-fleet-formation-display [selectedFleetInput]="fleetObject"></app-fleet-formation-display>
-    </mat-card-content>
-</mat-card>
+<div cdkDropListGroup *ngIf="!!fleetSubject && !!fleetObject" class="clearfix">
+    <div class="example-container the-left">
+        <div cdkDropList
+             [cdkDropListData]="fleetSubject.ships"
+             class="example-list"
+             (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let warship of fleetSubject.ships" cdkDrag>{{warship.name}}</div>
+        </div>
+    </div>
 
-<mat-card *ngIf="!!fleetSubject">
-    <mat-card-header>
-        <mat-card-title>into</mat-card-title>
-        <mat-card-subtitle>{{fleetSubject!.name}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <app-fleet-formation-display [selectedFleetInput]="fleetSubject"></app-fleet-formation-display>
-    </mat-card-content>
-</mat-card>
+    <div class="example-container the-right">
+        <div cdkDropList
+             [cdkDropListData]="fleetObject.ships"
+             class="example-list"
+             (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let warship of fleetObject.ships" cdkDrag>{{warship.name}}</div>
+        </div>
+    </div>
+</div>

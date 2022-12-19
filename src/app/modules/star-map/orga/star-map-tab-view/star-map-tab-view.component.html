@@ -1,8 +1,12 @@
 <mat-tab-group #tabGroup [(selectedIndex)]="index" (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.star-map.universe-map' | translate }}">
-        <app-universe-map-view></app-universe-map-view>
+        <ng-template matTabContent>
+            <app-universe-map-view></app-universe-map-view>
+        </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.star-map.star-map' | translate }}" [disabled]="!starSystemSelectionInput">
-        <app-star-map-view [starSystemSelectionInput]="starSystemSelectionInput"></app-star-map-view>
+        <ng-template matTabContent>
+            <app-star-map-view [starSystemSelectionInput]="starSystemSelectionInput"></app-star-map-view>
+        </ng-template>
     </mat-tab>
 </mat-tab-group>

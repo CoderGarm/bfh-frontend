@@ -1,10 +1,9 @@
-import {AfterViewInit, Component, Input, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {NavigationCalculator} from "../../../NavigationCalculator";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
-import {BasicViewHelper} from "../../../basic-view-helper";
 import {StarMapCommunicationService} from "../../../star-map-communication.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
@@ -13,11 +12,11 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
     templateUrl: './interstellar-fleet-movement-edit.component.html',
     styleUrls: ['./interstellar-fleet-movement-edit.component.scss']
 })
-export class InterstellarFleetMovementEditComponent extends SubscriptionManager implements AfterViewInit {
+export class InterstellarFleetMovementEditComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
-    /**
-     * the fleets to display
-     */
+    @Input()
+    deselectAllMovements: number = 0;
+
     @Input()
     fleets: Fleet[] = [];
     fleetsInputDefinition: string = "fleets";
@@ -50,6 +49,9 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         }
         if (changes[this.destinationDefinition]) {
             this.fetchPossibleMovements();
+        }
+        if (changes['deselectAllMovements']) {
+            this.fleets.forEach(f => this.selectForFlight(false, f));
         }
     }
 
@@ -149,7 +151,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
             this.fleetsDesignatedForMotion.push(fleet);
         } else {
             let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
-            this.fleetsDesignatedForMotion.slice(indexOf);
+            this.fleetsDesignatedForMotion.splice(indexOf);
         }
         this.sendPlannedFlights();
     }
@@ -168,6 +170,6 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         if (!currentOrbit || !destinationOrbit) {
             return false;
         }
-        return BasicViewHelper.isSameOrbit(currentOrbit, destinationOrbit);
+        return NavigationCalculator.isSameOrbit(currentOrbit, destinationOrbit);
     }
 }

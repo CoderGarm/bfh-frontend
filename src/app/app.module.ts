@@ -131,6 +131,7 @@ export let AppInjector: Injector;
     exports: [
         MarkdownModule,
         AngularMarkdownEditorModule,
+        ConfirmDialogComponent,
     ],
     bootstrap: [AppComponent]
 })
