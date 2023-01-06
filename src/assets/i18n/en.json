@@ -67,6 +67,11 @@
     "finished-movement": {
       "nothing": "No finished movements",
       "title": "Finished movements"
+    },
+    "modules": {
+      "ammunition-roster": {
+        "title": "Missile ammunition"
+      }
     }
   },
   "fleets": {

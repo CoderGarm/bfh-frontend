@@ -14,6 +14,7 @@ import { AmmunitionFitting } from './ammunitionFitting';
 import { Armor } from './armor';
 import { ElectronicWarfare } from './electronicWarfare';
 import { Hull } from './hull';
+import { MissileAmmunitionState } from './missileAmmunitionState';
 import { Propulsion } from './propulsion';
 import { Sidewall } from './sidewall';
 import { SpacecraftCapabilities } from './spacecraftCapabilities';
@@ -65,4 +66,5 @@ export interface ShipClass {
     mark: number;
     shipClassCapabilities: SpacecraftCapabilities;
     spacecraftCapacityAreas: SpacecraftCapacityAreas;
+    ammunitionState: MissileAmmunitionState;
 }

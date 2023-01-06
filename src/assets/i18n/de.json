@@ -67,6 +67,11 @@
     "finished-movement": {
       "nothing": "Keine Flottenbewegungen",
       "title": "Beendete Flottenbewegungen"
+    },
+    "modules": {
+      "ammunition-roster": {
+        "title": "Raketenmunition"
+      }
     }
   },
   "fleets": {

@@ -1,0 +1,8 @@
+<mat-list *ngIf="ammo.length > 0">
+    <div mat-subheader>{{ 'fleet.modules.ammunition-roster.title' | translate }}</div>
+    <mat-list-item *ngFor="let a of ammo">
+        <div mat-line>
+            {{a.missile.typeName}}: {{a.amount}} / {{a.capacity}}
+        </div>
+    </mat-list-item>
+</mat-list>

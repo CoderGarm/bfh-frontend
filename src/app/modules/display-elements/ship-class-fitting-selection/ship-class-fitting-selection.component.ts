@@ -570,6 +570,9 @@ export class ShipClassFittingSelectionComponent implements AfterViewInit, OnChan
             },
             spacecraftCapacityAreas: {
                 capacityValues: []
+            },
+            ammunitionState: {
+                shotsPerMissile: []
             }
         };
         if (!!this.designedShipClassInputEmitter) {

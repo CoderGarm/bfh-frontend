@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, HostListener, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMarker} from "../../../services/swagger";
+import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Fleet, FleetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {FormControl, FormGroup} from "@angular/forms";
 import {FleetChangeService} from "../../../services/fleet-change.service";
@@ -16,7 +16,7 @@ export interface FleetName {
 })
 export class FleetDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
-    @Input() // please note that the missing type-safetyness of javascript allows it to use a FleetMarker here
+    @Input()
     fleetInput?: Fleet;
 
     isOpen: boolean = false;
@@ -26,43 +26,20 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     @Input()
     nameChangeAllowed: boolean = false;
 
-    constructor(@Optional() @Inject('fleetInput') fleet: Fleet | FleetMarker | undefined,
-                private fleetService: FleetApiService,
+    constructor(private fleetService: FleetApiService,
                 private fleetChangeService: FleetChangeService) {
         super();
 
         this.formGroup = new FormGroup({
             fleetName: new FormControl({value: '', disabled: true})
         });
-
-        this.fetchFleet(fleet);
-    }
-
-    private fetchFleet(fleetSubject: Fleet | FleetMarker | undefined) {
-        if (!fleetSubject) {
-            return;
-        }
-        if ('idFleet' in fleetSubject) {
-            this.fleetInput = fleetSubject;
-            this.detectName();
-            return;
-        }
-        if ('fleet' in fleetSubject) {
-            const sub = this.fleetService.getFleet(fleetSubject.fleet.id).subscribe(resp => {
-                this.fleetInput = resp;
-                this.detectName();
-            });
-            this.subscriptions.push(sub);
-        }
     }
 
     ngAfterViewInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['fleetInput']) {
-            this.fetchFleet(changes['fleetInput'].currentValue);
-        }
+        this.detectName();
     }
 
     @HostListener('window:click', ['$event'])

@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { MissileAmmunitionState } from './missileAmmunitionState';
 import { SpacecraftCapabilities } from './spacecraftCapabilities';
 import { StateBlock } from './stateBlock';
 
@@ -17,5 +18,6 @@ import { StateBlock } from './stateBlock';
  */
 export interface WarshipHealthState { 
     spacecraftCapabilities: SpacecraftCapabilities;
+    ammunitionState: MissileAmmunitionState;
     state: StateBlock;
 }
