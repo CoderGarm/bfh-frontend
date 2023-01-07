@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {
     BattleReport,
     BattleReportApiService,
@@ -97,8 +96,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
         this.activeRound = this.combatRounds[this.activeRoundIndex];
     }
 
-    constructor(private tokenStorage: TokenStorage,
-                private reportApi: BattleReportApiService,
+    constructor(private reportApi: BattleReportApiService,
                 private planetApi: PlanetApiService,
                 private spinnerService: SpinnerService) {
         super();

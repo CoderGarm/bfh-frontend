@@ -6,7 +6,6 @@ import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
 import {AngularEditorConfig} from "@kolkov/angular-editor";
-import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 
 
 @Component({
@@ -51,8 +50,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         sanitize: true
     };
 
-    constructor(private tokenStorage: TokenStorage,
-                private forumApi: ForumApiService,
+    constructor(private forumApi: ForumApiService,
                 private forumsNotificationService: ForumsNotificationService) {
         super();
     }

@@ -1,5 +1,4 @@
 import {AfterContentInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {
     EHullType,
     Planet,
@@ -89,8 +88,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
 
     translations: Map<string, string> = new Map<string, string>();
 
-    constructor(private tokenStorage: TokenStorage,
-                private shipyardApi: ShipyardApiService,
+    constructor(private shipyardApi: ShipyardApiService,
                 private typeService: TypeService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,

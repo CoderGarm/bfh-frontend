@@ -1,4 +1,4 @@
-<mat-card *ngIf="!!fleetInput">
+<mat-card *ngIf="!!fleet">
     <mat-card-header class="rename-element">
         <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="fleet-icon">
         <mat-card-title class="title-block" *ngIf="nameChangeAllowed">
@@ -16,12 +16,12 @@
             </form>
         </mat-card-title>
         <mat-card-title *ngIf="!nameChangeAllowed">
-            {{fleetInput.name}}
+            {{fleet.name}}
         </mat-card-title>
         <mat-card-subtitle>
-            idFleet: {{fleetInput.idFleet}}
+            idFleet: {{fleet.idFleet}}
         </mat-card-subtitle>
-        <app-spacecraft-state-block-display [stateBlock]="fleetInput.state" [isFleet]="true"></app-spacecraft-state-block-display>
+        <app-spacecraft-state-block-display [stateBlock]="fleet.state" [isFleet]="true" *ngIf="isOwnFleet(fleet)"></app-spacecraft-state-block-display>
     </mat-card-header>
     <mat-card-content class="flex-items-container">
         <ng-content select="[body]"></ng-content>

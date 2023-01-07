@@ -1,14 +1,14 @@
-<div *ngIf="!!fleet">
-    <mat-card *ngIf="!!fleet.move">
-        <mat-card-header>
-            <mat-card-title>Move {{fleet.name}} to {{destinationRepresentation}}</mat-card-title>
-            <mat-card-subtitle>{{getTicksLeft()}} of {{fleet.move!.originalDuration}} ticks</mat-card-subtitle>
-        </mat-card-header>
-    </mat-card>
-
-    <mat-card *ngIf="!!fleet.orbit">
-        <mat-card-header>
-            <mat-card-title>{{fleet.name}} in orbit of {{orbitRepresentation}}</mat-card-title>
-        </mat-card-header>
-    </mat-card>
+<div *ngIf="!!fleet && showTitle">
+    <div mat-subheader *ngIf="!!fleet.move">
+        {{ 'fleet.display.move.movement.title' | translate }} to {{destinationRepresentation}}, {{getTicksLeft()}} of {{fleet.move!.originalDuration}} ticks
+    </div>
+    <div mat-subheader *ngIf="!!fleet.orbit">
+        {{ 'fleet.display.move.orbit.title' | translate }}: {{orbitRepresentation}}
+    </div>
 </div>
+
+<div *ngIf="!!fleet && !showTitle">
+    <div mat-subheader *ngIf="!!fleet.move">to {{destinationRepresentation}}, {{getTicksLeft()}} of {{fleet.move!.originalDuration}} ticks</div>
+    <div mat-subheader *ngIf="!!fleet.orbit">{{orbitRepresentation}}</div>
+</div>
+

@@ -1,5 +1,4 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {ResearchApiService, ResearchLevel} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
@@ -17,7 +16,7 @@ export class CompletedResearchesComponent extends SubscriptionManager implements
      */
     currentlyOpenedItemIndex?: ResearchLevel;
 
-    constructor(private tokenStorage: TokenStorage, private researchApi: ResearchApiService) {
+    constructor(private researchApi: ResearchApiService) {
         super();
     }
 

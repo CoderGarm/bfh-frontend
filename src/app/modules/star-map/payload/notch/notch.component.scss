@@ -17,7 +17,7 @@
   pointer-events: auto;
 }
 
-.tile {
+.fleet-notch-group, .tile {
   background-color: $secondary-background-color;
 }
 
@@ -29,3 +29,4 @@ mat-card {
   max-height: 500px;
   overflow-y: scroll;
 }
+

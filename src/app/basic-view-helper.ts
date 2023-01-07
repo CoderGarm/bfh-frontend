@@ -5,7 +5,6 @@ import {NavigationCalculator} from "./NavigationCalculator";
 import {Component, HostListener} from "@angular/core";
 import {StarMapCommunicationService} from "./star-map-communication.service";
 import {AppInjector} from "./app.module";
-import {TokenStorage} from "./services/authentication/token-storage.service";
 import {NumberRomanPipe} from "./services/pipes/number-roman.pipe";
 import {BasicViewHelperData} from "./basic-view-helper-data";
 import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
@@ -28,13 +27,9 @@ export class BasicViewHelper extends BasicViewHelperData {
     };
     public readonly STANDARD_METRIC;
 
-    protected tokenStorage: TokenStorage;
-
-    constructor(tokenStorage: TokenStorage,
-                standardDistanceMetric: DistanceMetricEnum) {
+    constructor(standardDistanceMetric: DistanceMetricEnum) {
         super(standardDistanceMetric);
 
-        this.tokenStorage = tokenStorage;
         this.STANDARD_METRIC = standardDistanceMetric;
         const sub = this.starMapCommService.getDeselectEverythingEmitter().subscribe(() => {
             const elements = this.canvas?.children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));

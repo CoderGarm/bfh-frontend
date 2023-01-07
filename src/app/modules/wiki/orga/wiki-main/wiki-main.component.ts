@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Article, ArticleCreate, ArticleEdit, ArticlePlainContent, UserApiService, UserJson, WikiApiService} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
-import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 
 @Component({
     selector: 'app-wiki-main',
@@ -25,11 +24,10 @@ export class WikiMainComponent extends SubscriptionManager implements OnInit {
 
     isLoggedIn: boolean = false;
 
-    constructor(private tokenStorage: TokenStorage,
-                private wikiService: WikiApiService,
+    constructor(private wikiService: WikiApiService,
                 private userService: UserApiService) {
         super();
-        this.isLoggedIn = !!tokenStorage.getUserID();
+        this.isLoggedIn = !!this.tokenStorage.getUserID();
     }
 
     ngOnInit(): void {

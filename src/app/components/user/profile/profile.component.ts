@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 
 @Component({
@@ -13,7 +12,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit {
 
     role?: string;
 
-    constructor(private tokenStorage: TokenStorage) {
+    constructor() {
         super();
 
     }

@@ -1,6 +1,5 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
 import {ChatApiService, ChatHistory, ChatMessage, UserJson} from "../../../../services/swagger";
-import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {interval, Subscription} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
@@ -57,7 +56,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         sanitize: true
     };
 
-    constructor(private chatApi: ChatApiService, private tokenStorage: TokenStorage) {
+    constructor(private chatApi: ChatApiService) {
         super();
     }
 

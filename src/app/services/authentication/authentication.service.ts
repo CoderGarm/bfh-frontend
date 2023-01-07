@@ -5,7 +5,6 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {AuthService} from 'ngx-auth';
 import {Observable, of, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {TokenStorage} from './token-storage.service';
 import {Router} from '@angular/router';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../SubscriptionManager";
@@ -20,7 +19,6 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
     unauthorizedCounter: number = 0;
 
     constructor(private router: Router,
-                private tokenStorage: TokenStorage,
                 private authService: AuthApiService,
                 private permissionsService: NgxPermissionsService) {
         super();

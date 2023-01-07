@@ -1,6 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {JobApiService, ResearchApiService, ResearchLevel} from "../../../../../services/swagger";
+import {ResearchApiService, ResearchLevel} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -22,9 +21,7 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
      */
     researchPossible: boolean = false;
 
-    constructor(private tokenStorage: TokenStorage,
-                private researchApi: ResearchApiService,
-                private jobApi: JobApiService) {
+    constructor(private researchApi: ResearchApiService) {
         super();
     }
 

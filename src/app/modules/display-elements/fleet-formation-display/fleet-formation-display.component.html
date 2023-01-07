@@ -1,20 +1,31 @@
-<mat-list>
+<div *ngIf="!!fleet && isOwnFleet(fleet)">
     <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
-    <mat-list-item *ngFor="let entry of warShipsByType  | keyvalue">
-        <img mat-list-avatar src="{{getLink(entry.key)}}">
-        <div>
-            <div mat-subheader class="left height-fit-content">{{entry.key}}</div>
-            <div mat-subheader class="left height-fit-content">{{getDescription(entry.key)}}</div>
-        </div>
 
-        <mat-list class="inner-list">
-            <div mat-subheader>{{ 'fleet.composition.warShip-names' | translate }}</div>
-            <mat-list-item *ngFor="let warShip of entry.value" class="height-fit-content">
-                <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state" [isWarship]="true"></app-spacecraft-state-block-display>
-                <div mat-subheader class="item height-fit-content">{{warShip.name}} -
-                    {{warShip.shipClass.name}}
-                    {{ 'fleet.composition.class.title' | translate }}</div>
-            </mat-list-item>
-        </mat-list>
-    </mat-list-item>
-</mat-list>
+    <div class="flex-container">
+        <div *ngFor="let entry of warShipsByType  | keyvalue" class="flex-container">
+            <mat-list class="ship-list">
+                <div mat-subheader>
+                    <img mat-list-avatar
+                         class="icon"
+                         src="{{getLink(entry.value[0].shipClass.hull.hullType.typeName)}}"
+                         [matTooltip]="getHullDescription(entry.value[0].shipClass.hull.hullType.typeName)"
+                         alt="hull-icon">
+                    {{entry.value[0].shipClass.name}} {{ 'fleet.composition.class.title' | translate }}
+                </div>
+
+                <mat-list-item *ngFor="let warShip of entry.value">
+                    <div class="clearfix">
+                        <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
+                                                            [isWarship]="true"></app-spacecraft-state-block-display>
+                        <div mat-line class="item">{{warShip.name}}</div>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!!fleet && !isOwnFleet(fleet)">
+    <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
+    <div mat-subheader>{{fleet.ships.length}} Ships</div> <!-- todo make it better -->
+</div>

@@ -17,7 +17,6 @@ import {
     ShipKillerHit,
     StarSystem
 } from "../../services/swagger";
-import {TokenStorage} from "../../services/authentication/token-storage.service";
 import {OrbitDefinition} from "../star-map/payload/orbit-definition";
 import {BasicViewHelper} from "../../basic-view-helper";
 import {CombatArenaData} from "./components/payload/combat-arena/combat-arena.component";
@@ -46,8 +45,8 @@ export class BattleViewHelper extends BasicViewHelper {
     private warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
     private missileSalvoPolygonsById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
 
-    constructor(protected tokenStorage: TokenStorage) {
-        super(tokenStorage, BattleViewHelper.STANDARD_METRIC);
+    constructor() {
+        super(BattleViewHelper.STANDARD_METRIC);
     }
 
     protected setBattleReport(report: BattleReport | undefined) {

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Alliance, AllianceApiService, JWT} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({
@@ -16,8 +15,7 @@ export class AllianceTabViewComponent extends SubscriptionManager implements OnI
     alliance?: Alliance;
     isAdmin: boolean = false;
 
-    constructor(private allianceApi: AllianceApiService,
-                private tokenStorage: TokenStorage) {
+    constructor(private allianceApi: AllianceApiService) {
         super();
     }
 

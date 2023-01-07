@@ -1,6 +1,5 @@
 import {Distance, FleetMarker} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
-import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {BasicViewHelper} from "../../../basic-view-helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
@@ -8,8 +7,8 @@ export class InterstellarViewHelper extends BasicViewHelper {
 
     public static readonly STANDARD_METRIC = DistanceMetricEnum.LY;
 
-    constructor(tokenStorage: TokenStorage) {
-        super(tokenStorage, InterstellarViewHelper.STANDARD_METRIC);
+    constructor() {
+        super(InterstellarViewHelper.STANDARD_METRIC);
     }
 
     setFleetsInInterstellarMotion(fleetsInMotion: FleetMarker[]) {

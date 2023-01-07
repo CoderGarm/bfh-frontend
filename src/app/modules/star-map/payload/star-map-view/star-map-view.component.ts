@@ -1,7 +1,5 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService, FleetMerge, FleetMove, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
-import {MatDialog} from "@angular/material/dialog";
-import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {SystemViewHelper} from "../system-view-helper";
 import {StellarMovement} from "../../../../star-map-communication.service";
 import {timer} from "rxjs";
@@ -22,10 +20,8 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
 
 
     constructor(private starMapApi: StarMapApiService,
-                private fleetService: FleetApiService,
-                tokenStorage: TokenStorage,
-                private dialog: MatDialog) {
-        super(tokenStorage);
+                private fleetService: FleetApiService) {
+        super();
 
         let sub = this.starMapCommService.getStellarMoveEmitter().subscribe(resp => this.executeStellarMovement(resp));
         this.subscriptions.push(sub);

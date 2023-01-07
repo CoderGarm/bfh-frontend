@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {
     AbstractId,
     BattleReport,
@@ -51,8 +50,8 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     hoveredWarship?: AbstractId;
     clickedFleet?: FleetMarker;
 
-    constructor(tokenStorage: TokenStorage) {
-        super(tokenStorage)
+    constructor() {
+        super()
     }
 
     ngAfterViewInit(): void {

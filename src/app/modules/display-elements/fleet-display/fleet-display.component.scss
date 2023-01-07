@@ -1,4 +1,8 @@
 
+.name-input {
+  cursor: text;
+}
+
 .name-input .mat-form-field-suffix {
   top: 8px;
   margin-left: 25px;
@@ -10,7 +14,7 @@
 
 .rename-element .mat-form-field,
 .rename-element .mat-card-header-text {
-  width: 100%;
+  width: 350px;
 }
 
 .name-input .mat-form-field-infix {

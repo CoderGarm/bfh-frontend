@@ -16,5 +16,4 @@ export class ConstructionCapacityDisplayComponent implements OnInit {
 
     ngOnInit(): void {
     }
-
 }

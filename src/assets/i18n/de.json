@@ -58,7 +58,12 @@
     },
     "display": {
       "move": {
-        "title": "Flottenbewegung"
+        "movement": {
+          "title": "Flottenbewegung"
+        },
+        "orbit": {
+          "title": "Ankerplatz"
+        }
       },
       "population": {
         "title": "Crew"
@@ -256,6 +261,9 @@
         "start-building": "Baue die Flotte",
         "too-expensive": "Auftrag zu teuer"
       },
+      "capacity": {
+        "title": "Konstruktionskapazität"
+      },
       "fleet-state": "Flottenstatus",
       "fleet-to-repair": "Flotte im Dock",
       "title": "Schiffsbau"
@@ -286,8 +294,9 @@
     "notch": {
       "action": {
         "show-info": "Zeige Infos",
-        "show-merge": "Zeige Flotten zusammenführen",
-        "show-move": "Zeige Flotten bewegen"
+        "show-merge": "Zeige transferiere Schiffe",
+        "show-move": "Zeige Flotten bewegen",
+        "show-transport": "Zeige Transporte"
       },
       "deselect": "Auswahl aufheben"
     },
@@ -313,8 +322,7 @@
       "view": "Expansion anzeigen"
     },
     "fleet": {
-      "dashboard": "Übersicht",
-      "movements": "Flottenbewegungen"
+      "dashboard": "Übersicht"
     },
     "journal": {
       "battles": "Kampfberichte",

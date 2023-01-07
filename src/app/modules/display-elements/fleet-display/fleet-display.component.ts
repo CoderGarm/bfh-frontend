@@ -17,7 +17,7 @@ export interface FleetName {
 export class FleetDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @Input()
-    fleetInput?: Fleet;
+    fleet?: Fleet;
 
     isOpen: boolean = false;
 
@@ -58,8 +58,8 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     }
 
     private detectName() {
-        if (!!this.fleetInput) {
-            this.formGroup.controls.fleetName.setValue(this.fleetInput.name);
+        if (!!this.fleet) {
+            this.formGroup.controls.fleetName.setValue(this.fleet.name);
         } else {
             this.formGroup.controls.fleetName.setValue('');
         }
@@ -91,14 +91,14 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     save() {
         const name: string = this.formGroup.controls.fleetName.value;
         const disabled = this.formGroup.controls.fleetName.disabled;
-        if (disabled || !this.fleetInput || name.length == 0) {
+        if (disabled || !this.fleet || name.length == 0) {
             return;
         }
-        const sub = this.fleetService.renameFleet(this.fleetInput.idFleet, name)
+        const sub = this.fleetService.renameFleet(this.fleet.idFleet, name)
             .subscribe(resp => {
                 if (resp) {
                     this.fleetChangeService.nameChange.emit({
-                        idFleet: this.fleetInput!.idFleet,
+                        idFleet: this.fleet!.idFleet,
                         name: name
                     })
                 }

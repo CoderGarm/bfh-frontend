@@ -1,1 +1,13 @@
+.inner-list {
+  margin-left: 25px;
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.inner-list > * {
+  flex: 1 1 100px;
+}
+
+.mar-to {
+  margin-top: 15px;
+}

@@ -12,13 +12,12 @@ import {StarMapCommunicationService} from "../../../star-map-communication.servi
 export class FleetMergeEditComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @Input()
-    fleetSubject?: Fleet;
-    fleetSubjectShips?: WarShip[];
+    fleets: Fleet[] = [];
+    fleetsStorage: Map<number, WarShip[]> = new Map<number, WarShip[]>();
 
-    @Input()
-    fleetObject?: Fleet;
-    fleetObjectShips?: WarShip[];
-
+    /**
+     * Just a number which can trigger the change detection.
+     */
     @Input()
     resetChanges: number = 0;
 
@@ -30,20 +29,19 @@ export class FleetMergeEditComponent extends SubscriptionManager implements Afte
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['fleetSubject']) {
-            this.fleetSubjectShips = this.fleetSubject?.ships.map(s => s);
-        }
-        if (changes['fleetObject']) {
-            this.fleetObjectShips = this.fleetObject?.ships.map(s => s);
-
+        if (changes['fleets']) {
+            this.fleets = this.fleets.filter(f => f.owner.idUser === this.userId).sort((a, b) => b.ships.length - a.ships.length);
+            this.fleets.forEach(fleet => {
+                this.fleetsStorage.set(fleet.idFleet, fleet.ships.map(s => s));
+            });
         }
         if (changes['resetChanges']) {
-            if (!!this.fleetSubject && !!this.fleetSubjectShips) {
-                this.fleetSubject.ships = this.fleetSubjectShips.map(s => s);
-            }
-            if (!!this.fleetObject && !!this.fleetObjectShips) {
-                this.fleetObject.ships = this.fleetObjectShips.map(s => s);
-            }
+            this.fleets.forEach(fleet => {
+                const warShips = this.fleetsStorage.get(fleet.idFleet);
+                if (!!warShips) {
+                    fleet.ships = warShips.map(s => s);
+                }
+            });
         }
     }
 
@@ -61,8 +59,9 @@ export class FleetMergeEditComponent extends SubscriptionManager implements Afte
         let fm: FleetMerge = {
             fleetConstellations: {}
         }
-        fm.fleetConstellations[this.fleetSubject!.idFleet!] = this.fleetSubject!.ships.map(s => s.idWarship);
-        fm.fleetConstellations[this.fleetObject!.idFleet!] = this.fleetObject!.ships.map(s => s.idWarship);
+        this.fleets.forEach(fleet => {
+            fm.fleetConstellations[fleet.idFleet] = fleet.ships.map(s => s.idWarship);
+        });
         this.commService.setFleetConstellationForMerge(fm);
     }
 }

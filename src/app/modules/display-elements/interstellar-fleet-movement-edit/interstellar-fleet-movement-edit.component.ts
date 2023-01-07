@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
-import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {NavigationCalculator} from "../../../NavigationCalculator";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
 import {StarMapCommunicationService} from "../../../star-map-communication.service";
@@ -32,8 +31,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
 
     plannedMovements: Move[] = [];
 
-    constructor(private tokenStorage: TokenStorage,
-                private fleetService: FleetApiService,
+    constructor(private fleetService: FleetApiService,
                 private commService: StarMapCommunicationService) {
         super();
     }

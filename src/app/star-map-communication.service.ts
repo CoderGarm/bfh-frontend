@@ -220,13 +220,14 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     showMoveDisabled() {
-        const fleetsWithoutMovementPresent = this.selectedFleets.filter(f => !f.move).length > 0;
+        const fleetsWithoutMovementPresent = this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => !f.move).length > 0;
         const movableFleetsPresent = fleetsWithoutMovementPresent && (this.isSelectedStarSystem() || this.isSelectedPlanet());
         return !movableFleetsPresent;
     }
 
     showCancelMoveDisabled() {
         const fleetsWithCancelableMovementPresent = this.selectedFleets
+            .filter(f => f.owner.idUser == this.userId)
             .filter(f => !!f.move)
             .filter(f => !!f.move!.startOrbit.system)
             .filter(f => !!f.move!.targetOrbit.system)
@@ -235,11 +236,11 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     showMergeDisabled() {
-        let nope = this.selectedFleets.length < 2 || this.isStarSystemDisplayed();
+        let nope = this.selectedFleets.filter(f => f.owner.idUser == this.userId).length < 2 || this.isStarSystemDisplayed();
         if (!nope) {
             const orbits: Orbit[] = [];
             this.selectedFleets.filter(f => !!f.orbit && !!f.orbit.orbit).forEach(f => orbits.push(f.orbit!.orbit!));
-            let doubledOrbitPresent: boolean = false;
+            let mergeCandidates: number = 0;
             for (let i = 0; i < orbits.length; i++) {
                 const first = orbits[i];
                 for (let j = 0; j < orbits.length; j++) {
@@ -250,18 +251,18 @@ export class StarMapCommunicationService extends SubscriptionManager {
                         const y1 = NavigationCalculator.convertDistanceToMetric(first.yCoordinate, DistanceMetricEnum.LS);
                         const y2 = NavigationCalculator.convertDistanceToMetric(second.yCoordinate, DistanceMetricEnum.LS);
                         if (x1 == x2 && y1 == y2) {
-                            doubledOrbitPresent = true;
-                            break;
+                            mergeCandidates++;
                         }
                     }
                 }
-                if (doubledOrbitPresent) {
-                    break;
-                }
             }
-            nope = !doubledOrbitPresent;
+            nope = mergeCandidates === 2;
         }
         return nope;
+    }
+
+    showTransportDisabled() {
+        return this.selectedFleets.filter(f => f.owner.idUser == this.userId).length < 1 || this.isStarSystemDisplayed();
     }
 
     deselectDisabled() {
@@ -269,7 +270,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     infoDisabled() {
-        return this.selectedFleets.length == 0;
+        return this.selectedFleets.filter(f => f.owner.idUser == this.userId).length == 0;
     }
 
     stellarMove() {

@@ -1,0 +1,28 @@
+@import "src/styles/variables";
+
+svg {
+  height: 20px;
+}
+
+svg polygon {
+  fill: none;
+  stroke-width: 1px;
+  stroke: $metal-glance;
+}
+
+.BOW .bow polygon, .STERN .stern polygon, .BROADSIDE .broadside polygon, .OVERALL polygon {
+  fill: $warning-color;
+}
+
+.MODULE polygon {
+  fill: none;
+}
+
+.cc-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cc-list > * {
+  flex: 1 1 80px;
+}

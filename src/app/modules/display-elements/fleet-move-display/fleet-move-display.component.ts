@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetOrbit, Planet, PlanetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 
@@ -13,18 +13,17 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
     fleet?: Fleet;
     fleetInputDefinition: string = "fleet";
 
+    @Input()
+    showTitle: boolean = true;
+
     destination?: Planet;
     position?: Planet;
 
     destinationRepresentation: string = "";
     orbitRepresentation?: string;
 
-    constructor(@Optional() @Inject('fleet') fleet: Fleet | undefined,
-                private planetApi: PlanetApiService) {
+    constructor(private planetApi: PlanetApiService) {
         super();
-        this.fleet = fleet;
-        this.fetchDestination();
-        this.fetchPosition();
     }
 
     ngAfterViewInit(): void {
@@ -78,23 +77,43 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
 
     private createDestinationRepresentation() {
         let destination = "";
-        if (!!this.fleet && !!this.fleet.move) {
+        if (!!this.fleet && !!this.fleet.move && this.isOwnFleet(this.fleet)) {
             if (!!this.destination) {
                 destination += this.destination.name;
             } else if (!!this.fleet.move.targetOrbit.orbit) {
                 destination += 'hyperlimit';
             }
             if (!!this.fleet.move.targetOrbit.system) {
-                destination += " in " + this.fleet.move.targetOrbit.system.name;
+                if (destination.length > 0) {
+                    destination += ", ";
+                }
+                destination += this.fleet.move.targetOrbit.system.name;
+            }
+            if (!!this.fleet.move) {
+                destination += ', ' + this.fleet.move.moveDoneAtZero + ' ticks';
             }
         }
         this.destinationRepresentation = destination;
     }
 
-    createOrbitRepresentation() {
-        if (!!this.fleet && !!this.fleet.orbit && !!this.position) {
+    private createOrbitRepresentation() {
+        if (!!this.fleet && !!this.fleet.orbit) {
+            let destination = "";
+            if (!!this.position) {
+                destination += this.position.name;
+            } else {
+                destination += 'hyperlimit';
+            }
+
             const orbit: FleetOrbit = this.fleet.orbit;
-            this.orbitRepresentation = this.position.name + " in " + orbit.system!.name;
+            if (!!orbit) {
+                if (destination.length > 0) {
+                    destination += ", ";
+                }
+                destination += orbit.system!.name;
+            }
+
+            this.orbitRepresentation = destination;
         } else {
             this.orbitRepresentation = undefined;
         }

@@ -14,13 +14,13 @@
                 </div>
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <app-fleet-display [fleetInput]="fleet">
+        <app-fleet-display [fleet]="fleet">
             <app-spacecraft-capabilities-display body
                                                  [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
                                                  [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
-            <app-construction-capacity-display body [capacities]="fleet.spacecraftCapacityAreas"></app-construction-capacity-display>
-            <app-manual-transport body
-                                  [planet]="planet" [fleet]="fleet"></app-manual-transport>
+
+            <app-manual-transport body [planet]="planet" [fleet]="fleet"></app-manual-transport>
+
             <div actions [matTooltip]="getRepairJobButtonText(fleet)" class="tooltip-container">
                 <button mat-raised-button color="secondary"
                         (click)="repair(fleet)"

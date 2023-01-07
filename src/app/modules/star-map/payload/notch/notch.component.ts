@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {StarMapCommunicationService} from "../../../../star-map-communication.service";
 import {Fleet, FleetApiService} from "../../../../services/swagger";
 import {MatDialog} from "@angular/material/dialog";
-import {TokenStorage} from "../../../../services/authentication/token-storage.service";
+import {SubscriptionManager} from "../../../../SubscriptionManager";
 
 
 @Component({
@@ -10,7 +10,7 @@ import {TokenStorage} from "../../../../services/authentication/token-storage.se
     templateUrl: './notch.component.html',
     styleUrls: ['./notch.component.scss']
 })
-export class NotchComponent implements OnInit, OnChanges, OnDestroy {
+export class NotchComponent extends SubscriptionManager implements OnInit, OnChanges, OnDestroy {
 
     @Input()
     stellarMode: boolean = false;
@@ -22,11 +22,12 @@ export class NotchComponent implements OnInit, OnChanges, OnDestroy {
     displayMove: boolean = false;
     displayInfo: boolean = false;
     displayMerge: boolean = false;
+    displayTransport: boolean = false;
 
     constructor(private dialog: MatDialog,
-                private tokenStorage: TokenStorage,
                 private fleetService: FleetApiService,
                 commService: StarMapCommunicationService) {
+        super();
         this.commService = commService;
     }
 
@@ -36,11 +37,17 @@ export class NotchComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
     }
 
+
+    displayActive() {
+        return !this.displayInfo && !this.displayMove && !this.displayMerge && !this.displayTransport;
+    }
+
     deselect() {
         this.commService.deselect();
         this.displayInfo = false;
         this.displayMove = false;
         this.displayMerge = false;
+        this.displayTransport = false;
     }
 
     toggleShowMove() {
@@ -64,6 +71,12 @@ export class NotchComponent implements OnInit, OnChanges, OnDestroy {
     toggleShowMerge() {
         if (!this.showMergeDisabled()) {
             this.displayMerge = !this.displayMerge;
+        }
+    }
+
+    toggleShowTransport() {
+        if (!this.showTransportDisabled()) {
+            this.displayTransport = !this.displayTransport;
         }
     }
 
@@ -94,7 +107,11 @@ export class NotchComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     showMergeDisabled() {
-        return this.commService.showMergeDisabled();
+        return !this.stellarMode || this.commService.showMergeDisabled();
+    }
+
+    showTransportDisabled() {
+        return !this.stellarMode || this.commService.showTransportDisabled();
     }
 
     deselectDisabled() {

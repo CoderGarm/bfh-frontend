@@ -26,12 +26,11 @@ export class AmmunitionRosterComponent implements AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        this.ammo = [];
         if (!!this.fleet) {
             this.fleet.ships.forEach(warship => {
                 this.addMissilesToRoster(warship);
             });
-        } else {
-            this.ammo = [];
         }
     }
 

@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService, FleetMove, Move, Orbit, Planet, PlanetApiService, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
-import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {StarMapCommunicationService} from "../../../star-map-communication.service";
 import {NavigationCalculator} from "../../../NavigationCalculator";
 
@@ -34,8 +33,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
 
     plannedMovements: Move[] = [];
 
-    constructor(private tokenStorage: TokenStorage,
-                private fleetService: FleetApiService,
+    constructor(private fleetService: FleetApiService,
                 private planetService: PlanetApiService,
                 private commService: StarMapCommunicationService) {
         super();

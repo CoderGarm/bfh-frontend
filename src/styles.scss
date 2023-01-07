@@ -1,7 +1,5 @@
 @import "styles/variables";
-
-/** placed here because of css encapsulation in angular **/
-
+@import "styles/purple-green";
 @import "src/app/modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 @import "src/app/modules/display-elements/fleet-display/fleet-display.component";
 @import "src/styles/combat-arena";
@@ -34,6 +32,10 @@ html[xmlns] .clearfix {
 html,
 body {
   height: 100%;
+}
+
+div .mat-subheader {
+  font-weight: 500;
 }
 
 .bottom-spacer {
@@ -152,9 +154,24 @@ body {
   visibility: hidden;
 }
 
-.height-fit-content {
+.height-fit-content-forced {
   height: -moz-fit-content !important;
   height: fit-content !important;
+}
+
+.height-fit-content {
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.width-fit-content {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.width-fit-content-forced {
+  width: -moz-fit-content !important;
+  width: fit-content !important;
 }
 
 [mat-dialog-title] {

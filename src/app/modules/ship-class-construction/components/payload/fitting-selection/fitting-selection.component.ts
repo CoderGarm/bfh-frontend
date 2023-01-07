@@ -8,7 +8,6 @@ import {
     SpacecraftCapabilities,
     SpacecraftCapacityAreas
 } from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
 import {ShipClassComparator} from "../ShipClassComparator";
@@ -99,7 +98,6 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
     capacities?: SpacecraftCapacityAreas;
 
     constructor(private shipYardApi: ShipyardApiService,
-                private tokenStorage: TokenStorage,
                 private resourceApi: ResourcesApiService) {
         super();
     }

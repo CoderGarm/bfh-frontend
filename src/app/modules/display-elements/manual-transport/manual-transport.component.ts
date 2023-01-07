@@ -34,6 +34,9 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
     static CAPACITY_TO_RESOURCE_UNIT_CONVERSION_FACTOR = 1000;
 
     @Input()
+    floatingStyle: boolean = true;
+
+    @Input()
     fleet?: Fleet;
 
     left?: ResourceDeposit;
@@ -68,16 +71,22 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
         this.educationTypes = this.typeService.militaryEducationTypes;
     }
 
+    isOwnFleet() {
+        return !this.fleet || this.fleet.owner.idUser == this.userId;
+    }
+
     ngAfterViewInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes['planet']) {
-            this.fetchPlanet();
-        }
+        if (this.isOwnFleet()) {
+            if (changes['planet']) {
+                this.fetchPlanet();
+            }
 
-        if (changes['fleet']) {
-            this.fetchFleet();
+            if (changes['fleet']) {
+                this.fetchFleet();
+            }
         }
     }
 

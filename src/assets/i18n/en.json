@@ -58,7 +58,12 @@
     },
     "display": {
       "move": {
-        "title": "Fleet movement"
+        "movement": {
+          "title": "Fleet movement"
+        },
+        "orbit": {
+          "title": "Fleet anchorage"
+        }
       },
       "population": {
         "title": "Crew"
@@ -256,6 +261,9 @@
         "start-building": "Start construction of warships",
         "too-expensive": "Job is too expensive"
       },
+      "capacity": {
+        "title": "Construction capacity"
+      },
       "fleet-state": "Fleet state",
       "fleet-to-repair": "Fleet in dock",
       "title": "Shipyard constructions"
@@ -286,8 +294,9 @@
     "notch": {
       "action": {
         "show-info": "Show Info",
-        "show-merge": "Show merge fleets",
-        "show-move": "Show move fleets"
+        "show-merge": "Show transfer ships",
+        "show-move": "Show move fleets",
+        "show-transport": "Show transport"
       },
       "deselect": "Deselect"
     },
@@ -313,8 +322,7 @@
       "view": "View expansion"
     },
     "fleet": {
-      "dashboard": "Dashboard",
-      "movements": "Movements"
+      "dashboard": "Dashboard"
     },
     "journal": {
       "battles": "Battle reports",

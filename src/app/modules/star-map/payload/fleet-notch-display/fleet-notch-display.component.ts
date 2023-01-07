@@ -28,6 +28,17 @@ export class FleetNotchDisplayComponent extends SubscriptionManager implements O
     ngOnInit(): void {
     }
 
+    getCssMarker() {
+        if (this.isOwnFleet()) {
+            return '';
+        }
+        return 'foreign';
+    }
+
+    isOwnFleet() {
+        return !this.fleet || this.fleet.owner.idUser == this.userId;
+    }
+
     /**
      * constructs and returns the url to the icon
      */
@@ -97,7 +108,7 @@ export class FleetNotchDisplayComponent extends SubscriptionManager implements O
         this.destinationRepresentation = destination;
     }
 
-    createOrbitRepresentation() {
+    private createOrbitRepresentation() {
         if (!!this.fleet && !!this.fleet.orbit) {
             let destination = "";
             if (!!this.position) {

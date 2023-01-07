@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {AdminApiService, JWT} from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {Router} from "@angular/router";
 import {LoginComponent} from "../../../../../components/user/login/login.component";
@@ -21,8 +20,7 @@ export class AdminTabViewComponent extends SubscriptionManager implements OnInit
 
     constructor(private router: Router,
                 private adminApi: AdminApiService,
-                private authenticationService: AuthenticationService,
-                private tokenStorage: TokenStorage) {
+                private authenticationService: AuthenticationService) {
         super();
     }
 

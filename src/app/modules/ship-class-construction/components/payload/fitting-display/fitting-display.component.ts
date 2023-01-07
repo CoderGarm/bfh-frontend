@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 import {ShipClassComparator} from "../ShipClassComparator";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 
@@ -48,8 +47,7 @@ export class FittingDisplayComponent extends ResourceDisplayManager implements A
 
     compareClass?: ShipClass;
 
-    constructor(private resourceApi: ResourcesApiService,
-                private tokenStorage: TokenStorage) {
+    constructor(private resourceApi: ResourcesApiService) {
         super();
     }
 

@@ -1,19 +1,13 @@
-<div cdkDropListGroup *ngIf="!!fleetSubject && !!fleetObject" class="clearfix">
-    <div class="example-container the-left">
-        <div cdkDropList
-             [cdkDropListData]="fleetSubject.ships"
-             class="example-list"
-             (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let warship of fleetSubject.ships" cdkDrag>{{warship.name}}</div>
-        </div>
-    </div>
-
-    <div class="example-container the-right">
-        <div cdkDropList
-             [cdkDropListData]="fleetObject.ships"
-             class="example-list"
-             (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let warship of fleetObject.ships" cdkDrag>{{warship.name}}</div>
+<div cdkDropListGroup *ngIf="fleets.length >= 2" class="clearfix inner-list">
+    <div *ngFor="let fleet of fleets" class="fleet-container">
+        <div>
+            <div mat-subheader class="fleet-name" [matTooltip]="fleet.name">{{fleet.name}}</div>
+            <div cdkDropList
+                 [cdkDropListData]="fleet.ships"
+                 class="warship-list"
+                 (cdkDropListDropped)="drop($event)">
+                <div class="warship-box" *ngFor="let warship of fleet.ships" cdkDrag>{{warship.name}}</div>
+            </div>
         </div>
     </div>
 </div>

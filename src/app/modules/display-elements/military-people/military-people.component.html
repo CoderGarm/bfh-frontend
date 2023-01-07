@@ -1,0 +1,9 @@
+<div *ngIf="isDisplayingPossible()">
+    <div mat-subheader>{{ 'fleet.display.population.title' | translate }}</div>
+    <mat-list>
+        <mat-list-item *ngFor="let resource of getDisplayableResources()!">
+            <img mat-list-avatar class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
+            <app-number-short [input]="getHumans(resource.resourceType, utilization)"></app-number-short>
+        </mat-list-item>
+    </mat-list>
+</div>

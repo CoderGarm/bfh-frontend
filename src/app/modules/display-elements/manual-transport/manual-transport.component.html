@@ -24,7 +24,7 @@
     </mat-chip-list>
 
     <div class="clearfix payload" *ngIf="!!left && !!right">
-        <div class="the-left">
+        <div [ngClass]="{'the-left': floatingStyle}">
             <div *ngFor="let resource of resourceTypes">
                 <app-single-resource-transfer
                         [resourceType]="resource"
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div class="the-right">
+        <div [ngClass]="{'the-right': floatingStyle}">
             <div *ngFor="let resource of educationTypes">
                 <app-single-resource-transfer
                         [resourceType]="resource"
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="the-right spacer">
+        <div class="the-right spacer" *ngIf="floatingStyle">
         </div>
     </div>
     <div actions matTooltip="{{ 'transport.manual.transfer-btn.tooltip' | translate }}" class="tooltip-container">

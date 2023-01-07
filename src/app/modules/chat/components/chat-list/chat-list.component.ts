@@ -1,7 +1,6 @@
 import {ChatApiService, ChatHistory, UserApiService, UserJson} from '../../../../services/swagger';
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {interval, Subscription} from "rxjs";
-import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
@@ -52,8 +51,7 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
     private myUserID?: number;
 
     constructor(private userApi: UserApiService,
-                private chatApi: ChatApiService,
-                private tokenStorage: TokenStorage) {
+                private chatApi: ChatApiService) {
         super();
     }
 

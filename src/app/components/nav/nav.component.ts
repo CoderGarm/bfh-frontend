@@ -1,7 +1,6 @@
 import {AuthenticationService} from '../../services/authentication';
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
-import {TokenStorage} from "../../services/authentication/token-storage.service";
 import {AdminApiService, ApplicationInfo, JWT, Tick, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../SubscriptionManager";
 import {NavigationCreationService} from "../../services/navigation-creation.service";
@@ -29,7 +28,6 @@ export class NavComponent extends SubscriptionManager implements OnInit {
 
     constructor(private router: Router,
                 private authenticationService: AuthenticationService,
-                private tokenStorage: TokenStorage,
                 private tickApi: TickApiService,
                 private adminApi: AdminApiService) {
         super();

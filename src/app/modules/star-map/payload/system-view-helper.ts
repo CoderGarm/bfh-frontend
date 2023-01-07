@@ -1,5 +1,4 @@
 import {Distance, FleetMarker, FleetOrbit, Orbit, Planet, StarSystem} from "../../../services/swagger";
-import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {OrbitDefinition} from "./orbit-definition";
 import {BasicViewHelper} from "../../../basic-view-helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
@@ -8,8 +7,8 @@ export class SystemViewHelper extends BasicViewHelper {
 
     static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
-    constructor(protected tokenStorage: TokenStorage) {
-        super(tokenStorage, SystemViewHelper.STANDARD_METRIC);
+    constructor() {
+        super(SystemViewHelper.STANDARD_METRIC);
     }
 
     setFleets(fleetMarkers: FleetMarker[]) {
@@ -20,6 +19,10 @@ export class SystemViewHelper extends BasicViewHelper {
         const immobile = fleetMarkers.filter(f => !f.move);
         immobile.forEach(fleetMarker => {
             const orbit = fleetMarker.orbit!.orbit!;
+            orbit.xCoordinate.coordinate = this.convertToStandardMetric(orbit.xCoordinate);
+            orbit.xCoordinate.distanceMetric = this.STANDARD_METRIC;
+            orbit.yCoordinate.coordinate = this.convertToStandardMetric(orbit.yCoordinate);
+            orbit.yCoordinate.distanceMetric = this.STANDARD_METRIC;
             const orbitID = this.getOrbitID(orbit)!;
             let markers = fleetsAtSameOrbit.get(orbitID);
             if (!markers) {

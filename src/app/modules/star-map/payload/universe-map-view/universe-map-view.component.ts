@@ -3,7 +3,6 @@ import {FleetApiService, FleetMove, StarMapApiService, StarSystem} from "../../.
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
-import {TokenStorage} from "../../../../services/authentication/token-storage.service";
 import {InterstellarViewHelper} from "../interstellar-view-helper";
 import {SpinnerService} from "../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
@@ -24,11 +23,10 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
     constructor(private starMapService: StarMapApiService,
                 private fleetApi: FleetApiService,
-                tokenStorage: TokenStorage,
                 private spinnerService: SpinnerService,
                 private backgroundService: BackgroundService,
                 private translate: TranslateService) {
-        super(tokenStorage);
+        super();
 
         // just make sure that the key exists
         this.translate.get('star-map.universe-map.loading-spinner-message');

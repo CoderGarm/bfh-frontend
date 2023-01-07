@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {Alliance, AllianceApiService} from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
 
 @Component({
     selector: 'app-alliance-list',
@@ -14,8 +13,7 @@ export class AllianceListComponent extends SubscriptionManager implements OnInit
     alliances: Alliance[] = [];
     applicationOpenAt?: Alliance;
 
-    constructor(private allianceApi: AllianceApiService,
-                private tokenStorage: TokenStorage) {
+    constructor(private allianceApi: AllianceApiService) {
         super();
     }
 
