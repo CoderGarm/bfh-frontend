@@ -54,6 +54,8 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     public static readonly NONE_FILL_COLOR = "none";
 
+    private static readonly COORD_CROSS = "coordCross";
+
     protected static readonly NOT_COLONIZED_COLOR_CSS_CLASS = "not-colonized";
     protected static readonly IS_COLONIZED_BY_USER_COLOR_CSS_CLASS = "colonized-by-user";
     protected static readonly COLONIZED_BY_OTHERS_COLOR_CSS_CLASS = "colonized-by-others";
@@ -798,20 +800,20 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.radiusOfCoordinateCross = BasicViewHelper.calculateDistance(x, y);
         this.radiusOfCoordinateCross *= 1.1;
 
-        this.createLocalPolarCoordinateSystem(0, 0, this.radiusOfCoordinateCross, undefined);
+        this.createLocalPolarCoordinateSystem(0, 0, this.radiusOfCoordinateCross, 'main');
     }
 
-    protected createLocalPolarCoordinateSystem(xBase: number, yBase: number, radius: number, idPrefix?: string) {
+    protected createLocalPolarCoordinateSystem(xBase: number, yBase: number, radius: number, idPrefix: string) {
+        const group = this.canvas!.group().id(idPrefix + "-" + BasicViewHelper.COORD_CROSS);
         let steps = 6;
         const radiusSteps = radius / steps;
         for (let i = 0; i < steps; i++) {
-            this.canvas!
-                .circle()
+            group.circle()
                 .x(xBase)
                 .y(yBase)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
-                .id(idPrefix + "-coordCross" + i)
-                .addClass("coordCross")
+                .id(idPrefix + "-" + BasicViewHelper.COORD_CROSS + i)
+                .addClass(BasicViewHelper.COORD_CROSS)
                 .radius(radiusSteps * i);
         }
         const degree = 12;
@@ -820,10 +822,9 @@ export class BasicViewHelper extends BasicViewHelperData {
             const x = radius * Math.cos(angle * Math.PI / 180);
             const y = radius * Math.sin(angle * Math.PI / 180);
             const points: ArrayXY[] = [[xBase, yBase], [xBase + x, yBase + y]];
-            this.canvas!
-                .line(points)
-                .id(idPrefix + "-coordCross-line" + j)
-                .addClass("coordCross")
+            group.line(points)
+                .id(idPrefix + "-" + BasicViewHelper.COORD_CROSS + "-line" + j)
+                .addClass(BasicViewHelper.COORD_CROSS)
         }
     }
 
