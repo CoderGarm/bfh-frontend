@@ -28,12 +28,12 @@ export interface CapacityValue {
     capacity: number;
 }
 export namespace CapacityValue {
-    export type CapacityAreaEnum = 'OVERALL' | 'BOW' | 'STERN' | 'BROADSIDE' | 'MODULE';
+    export type CapacityAreaEnum = 'OVERALL' | 'STERN' | 'BROADSIDE' | 'BOW' | 'MODULE';
     export const CapacityAreaEnum = {
         OVERALL: 'OVERALL' as CapacityAreaEnum,
-        BOW: 'BOW' as CapacityAreaEnum,
         STERN: 'STERN' as CapacityAreaEnum,
         BROADSIDE: 'BROADSIDE' as CapacityAreaEnum,
+        BOW: 'BOW' as CapacityAreaEnum,
         MODULE: 'MODULE' as CapacityAreaEnum
     };
 }

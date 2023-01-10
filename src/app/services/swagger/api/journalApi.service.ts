@@ -17,8 +17,11 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { FinishedColonization } from '../model/finishedColonization';
+import { FleetMovement } from '../model/fleetMovement';
 import { FrontendError } from '../model/frontendError';
 import { Job } from '../model/job';
+import { TransportJob } from '../model/transportJob';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -26,7 +29,7 @@ import {environment} from '../../../../environments/environment';
 
 
 @Injectable()
-export class JobApiService {
+export class JournalApiService {
 
     protected basePath = environment.backendServer;
     public defaultHeaders = new HttpHeaders();
@@ -58,20 +61,15 @@ export class JobApiService {
 
 
     /**
-     * Cancels and refund a job.
+     * Get all finished colonizations.
      * 
-     * @param idJob 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public cancelJob(idJob: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public cancelJob(idJob: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public cancelJob(idJob: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public cancelJob(idJob: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idJob === null || idJob === undefined) {
-            throw new Error('Required parameter idJob was null or undefined when calling cancelJob.');
-        }
+    public getFinishedColonizations(observe?: 'body', reportProgress?: boolean): Observable<Array<FinishedColonization>>;
+    public getFinishedColonizations(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FinishedColonization>>>;
+    public getFinishedColonizations(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FinishedColonization>>>;
+    public getFinishedColonizations(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -89,7 +87,7 @@ export class JobApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/job/cancel/${encodeURIComponent(String(idJob))}`,
+        return this.httpClient.request<Array<FinishedColonization>>('get',`${this.basePath}/api/private/journal/finishedColonizations`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -100,15 +98,15 @@ export class JobApiService {
     }
 
     /**
-     * Get all jobs which are running for the questioning user.
+     * Get all jobs which finished today.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getJobsForEmpire(observe?: 'body', reportProgress?: boolean): Observable<Array<Job>>;
-    public getJobsForEmpire(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Job>>>;
-    public getJobsForEmpire(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Job>>>;
-    public getJobsForEmpire(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getFinishedJobs(observe?: 'body', reportProgress?: boolean): Observable<Array<Job>>;
+    public getFinishedJobs(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Job>>>;
+    public getFinishedJobs(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Job>>>;
+    public getFinishedJobs(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -126,7 +124,44 @@ export class JobApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Job>>('get',`${this.basePath}/api/private/job/runningAt`,
+        return this.httpClient.request<Array<Job>>('get',`${this.basePath}/api/private/journal/finished`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all finished movements of fleets of an owner.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFinishedMovements(observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMovement>>;
+    public getFinishedMovements(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMovement>>>;
+    public getFinishedMovements(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMovement>>>;
+    public getFinishedMovements(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<FleetMovement>>('get',`${this.basePath}/api/private/journal/finishedMovement`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -139,18 +174,13 @@ export class JobApiService {
     /**
      * Get all jobs which are running on this planet.
      * 
-     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getJobsOnPlanet(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Job>>;
-    public getJobsOnPlanet(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Job>>>;
-    public getJobsOnPlanet(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Job>>>;
-    public getJobsOnPlanet(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idPlanet === null || idPlanet === undefined) {
-            throw new Error('Required parameter idPlanet was null or undefined when calling getJobsOnPlanet.');
-        }
+    public getTransportJobs(observe?: 'body', reportProgress?: boolean): Observable<Array<TransportJob>>;
+    public getTransportJobs(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TransportJob>>>;
+    public getTransportJobs(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TransportJob>>>;
+    public getTransportJobs(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -168,49 +198,7 @@ export class JobApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Job>>('get',`${this.basePath}/api/private/job/runningAt/${encodeURIComponent(String(idPlanet))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all jobs which are running for the questioning user.
-     * 
-     * @param idFleet 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public jobRunningForFleet(idFleet: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public jobRunningForFleet(idFleet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public jobRunningForFleet(idFleet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public jobRunningForFleet(idFleet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idFleet === null || idFleet === undefined) {
-            throw new Error('Required parameter idFleet was null or undefined when calling jobRunningForFleet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/job/runningForFleet/${encodeURIComponent(String(idFleet))}`,
+        return this.httpClient.request<Array<TransportJob>>('get',`${this.basePath}/api/private/journal/transports`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

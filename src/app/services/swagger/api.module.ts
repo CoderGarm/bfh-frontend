@@ -15,6 +15,7 @@ import { FakeApiService } from './api/fakeApi.service';
 import { FleetApiService } from './api/fleetApi.service';
 import { ForumApiService } from './api/forumApi.service';
 import { JobApiService } from './api/jobApi.service';
+import { JournalApiService } from './api/journalApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
 import { ResearchApiService } from './api/researchApi.service';
@@ -42,6 +43,7 @@ import { WikiApiService } from './api/wikiApi.service';
     FleetApiService,
     ForumApiService,
     JobApiService,
+    JournalApiService,
     ModuleApiService,
     PlanetApiService,
     ResearchApiService,

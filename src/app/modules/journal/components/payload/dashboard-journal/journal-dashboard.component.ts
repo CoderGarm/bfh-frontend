@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ColonizationApiService, FinishedColonization, FleetApiService, FleetMovement, Job, JobApiService, TransportJob} from "../../../../../services/swagger";
+import {FinishedColonization, FleetMovement, Job, JournalApiService, TransportJob} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -16,23 +16,21 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     finishedMovements: FleetMovement[] = [];
     finishedColonizations: FinishedColonization[] = [];
 
-    constructor(private jobService: JobApiService,
-                private fleetService: FleetApiService,
-                private colonizationService: ColonizationApiService) {
+    constructor(private journalService: JournalApiService) {
         super();
     }
 
     ngOnInit(): void {
-        let sub = this.jobService.getFinishedJobs().subscribe(resp => this.finishedJobs = resp);
+        let sub = this.journalService.getFinishedJobs().subscribe(resp => this.finishedJobs = resp);
         this.subscriptions.push(sub);
 
-        sub = this.jobService.getTransportJobs().subscribe(resp => this.transportJobs = resp);
+        sub = this.journalService.getTransportJobs().subscribe(resp => this.transportJobs = resp);
         this.subscriptions.push(sub);
 
-        sub = this.fleetService.getFinishedMovements().subscribe(resp => this.finishedMovements = resp);
+        sub = this.journalService.getFinishedMovements().subscribe(resp => this.finishedMovements = resp);
         this.subscriptions.push(sub);
 
-        sub = this.colonizationService.getFinishedColonizations().subscribe(resp => this.finishedColonizations = resp);
+        sub = this.journalService.getFinishedColonizations().subscribe(resp => this.finishedColonizations = resp);
         this.subscriptions.push(sub);
     }
 }

@@ -21,7 +21,6 @@ import { Fleet } from '../model/fleet';
 import { FleetMarker } from '../model/fleetMarker';
 import { FleetMerge } from '../model/fleetMerge';
 import { FleetMove } from '../model/fleetMove';
-import { FleetMovement } from '../model/fleetMovement';
 import { FrontendError } from '../model/frontendError';
 import { Move } from '../model/move';
 
@@ -96,43 +95,6 @@ export class FleetApiService {
         ];
 
         return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/cancelMoves/${encodeURIComponent(String(fleetIds))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all finished movements of fleets of an owner.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getFinishedMovements(observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMovement>>;
-    public getFinishedMovements(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMovement>>>;
-    public getFinishedMovements(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMovement>>>;
-    public getFinishedMovements(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<FleetMovement>>('get',`${this.basePath}/api/private/fleet/finishedMovement`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

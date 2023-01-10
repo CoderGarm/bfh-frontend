@@ -161,12 +161,12 @@ export namespace EnumValueDto {
         WELCOMEMESSAGE: 'WELCOME_MESSAGE' as EWikiCategoriesEnum,
         GAMEMECHANICS: 'GAME_MECHANICS' as EWikiCategoriesEnum
     };
-    export type ECapacityAreaTypesEnum = 'OVERALL' | 'BOW' | 'STERN' | 'BROADSIDE' | 'MODULE';
+    export type ECapacityAreaTypesEnum = 'OVERALL' | 'STERN' | 'BROADSIDE' | 'BOW' | 'MODULE';
     export const ECapacityAreaTypesEnum = {
         OVERALL: 'OVERALL' as ECapacityAreaTypesEnum,
-        BOW: 'BOW' as ECapacityAreaTypesEnum,
         STERN: 'STERN' as ECapacityAreaTypesEnum,
         BROADSIDE: 'BROADSIDE' as ECapacityAreaTypesEnum,
+        BOW: 'BOW' as ECapacityAreaTypesEnum,
         MODULE: 'MODULE' as ECapacityAreaTypesEnum
     };
 }
