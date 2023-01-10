@@ -46,8 +46,8 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     ngOnChanges(changes: SimpleChanges): void {
         this.fetchPossibleMovement();
         this.createDestinationRepresentation();
-        this.fleetsForMove = this.fleets.filter(f => !f.move);
-        this.fleetsForCancel = this.fleets.filter(f => !!f.move);
+        this.fleetsForMove = this.fleets.filter(f => f.owner.idUser === this.userId).filter(f => !f.move);
+        this.fleetsForCancel = this.fleets.filter(f => f.owner.idUser === this.userId).filter(f => !!f.move);
         if (changes['deselectAllMovements']) {
             this.fleetsForMove.forEach(f => this.selectForFlight(false, f));
             this.fleetsForCancel.forEach(f => this.selectForCancel(false, f));
