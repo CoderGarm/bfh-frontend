@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FinishedColonization, FleetMovement, Job, JournalApiService, TransportJob} from "../../../../../services/swagger";
+import {Commissioning, FinishedColonization, FleetMovement, Job, JournalApiService, TransportJob} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
@@ -9,28 +9,30 @@ import {SubscriptionManager} from "../../../../../SubscriptionManager";
 })
 export class JournalDashboardComponent extends SubscriptionManager implements OnInit {
 
-    finishedJobs: Job[] = [];
-
+    jobs: Job[] = [];
     transportJobs: TransportJob[] = [];
-
-    finishedMovements: FleetMovement[] = [];
-    finishedColonizations: FinishedColonization[] = [];
+    movements: FleetMovement[] = [];
+    colonizations: FinishedColonization[] = [];
+    operationals: Commissioning[] = [];
 
     constructor(private journalService: JournalApiService) {
         super();
     }
 
     ngOnInit(): void {
-        let sub = this.journalService.getFinishedJobs().subscribe(resp => this.finishedJobs = resp);
+        let sub = this.journalService.getFinishedJobs().subscribe(resp => this.jobs = resp);
         this.subscriptions.push(sub);
 
         sub = this.journalService.getTransportJobs().subscribe(resp => this.transportJobs = resp);
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getFinishedMovements().subscribe(resp => this.finishedMovements = resp);
+        sub = this.journalService.getFinishedMovements().subscribe(resp => this.movements = resp);
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getFinishedColonizations().subscribe(resp => this.finishedColonizations = resp);
+        sub = this.journalService.getFinishedColonizations().subscribe(resp => this.colonizations = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.journalService.getNewlyActiveOperationals().subscribe(resp => this.operationals = resp);
         this.subscriptions.push(sub);
     }
 }

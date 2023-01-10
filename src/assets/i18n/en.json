@@ -119,6 +119,18 @@
       "title": "Transportation"
     }
   },
+  "journal": {
+    "commissioned-operationals": {
+      "finished": {
+        "nothing": "No activated operationals",
+        "title": "Activated operationals"
+      },
+      "title": {
+        "constructions": "Activated constructions",
+        "warships": "Activated warships"
+      }
+    }
+  },
   "mining-factor": {
     "tooltip": {
       "construction": "Describes the difficulties of building construction, e.g. the strength of the soil.",

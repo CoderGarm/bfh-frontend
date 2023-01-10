@@ -51,6 +51,7 @@ import {FinishedColonizationsListComponent} from "./finished-colonizations-list/
 import {SpacecraftStateBlockDisplayComponent} from './spacecraft-state-block-display/spacecraft-state-block-display.component';
 import {AmmunitionRosterComponent} from './ammunition-roster/ammunition-roster.component';
 import {MilitaryPeopleComponent} from './military-people/military-people.component';
+import {CommissionedOperationalsComponent} from './commissioned-operationals/commissioned-operationals.component';
 
 @NgModule({
     declarations: [
@@ -104,6 +105,7 @@ import {MilitaryPeopleComponent} from './military-people/military-people.compone
         SpacecraftStateBlockDisplayComponent,
         AmmunitionRosterComponent,
         MilitaryPeopleComponent,
+        CommissionedOperationalsComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -161,6 +163,7 @@ import {MilitaryPeopleComponent} from './military-people/military-people.compone
         SpacecraftStateBlockDisplayComponent,
         AmmunitionRosterComponent,
         MilitaryPeopleComponent,
+        CommissionedOperationalsComponent,
     ]
 })
 export class DisplayElementsModule {

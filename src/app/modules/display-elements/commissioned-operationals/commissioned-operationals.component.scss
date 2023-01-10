@@ -1,0 +1,31 @@
+
+.commission-tree {
+  margin: 15px;
+  padding: 15px;
+}
+
+.commission-tree-invisible {
+  display: none;
+}
+
+.commission-tree ul,
+.commission-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.commission-tree .mat-nested-tree-node div[role=group] {
+  padding-left: 40px;
+}
+
+.commission-tree div[role=group] > .mat-tree-node {
+  padding-left: 40px;
+}
+
+.left-side {
+  float: left;
+}
+
+.right-side {
+  float: right;
+}

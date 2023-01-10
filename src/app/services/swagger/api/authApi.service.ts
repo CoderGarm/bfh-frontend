@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { AuthRequest } from '../model/authRequest';
+import { ChangePassword } from '../model/changePassword';
 import { FrontendError } from '../model/frontendError';
 import { JWT } from '../model/jWT';
 import { UserJson } from '../model/userJson';
@@ -59,6 +60,51 @@ export class AuthApiService {
         return false;
     }
 
+
+    /**
+     * Triggers a password change.
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changePassword(body?: ChangePassword, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public changePassword(body?: ChangePassword, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public changePassword(body?: ChangePassword, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public changePassword(body?: ChangePassword, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            '*/*'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/public/auth/changePassword`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * Checks if a eMail already exists.

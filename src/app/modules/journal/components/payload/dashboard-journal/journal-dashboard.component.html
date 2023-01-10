@@ -1,11 +1,13 @@
 <div class="holder content-area">
     <app-job-list-display
             [title_key]="'jobs.finished-title'"
-            [runningJobs]="finishedJobs"></app-job-list-display>
+            [runningJobs]="jobs"></app-job-list-display>
 
     <app-transportation-list-display [transportJobs]="transportJobs"></app-transportation-list-display>
 
-    <app-finished-movements-list [finishedMovements]="finishedMovements"></app-finished-movements-list>
+    <app-finished-movements-list [finishedMovements]="movements"></app-finished-movements-list>
 
-    <app-finished-colonizations-list [finishedColonizations]="finishedColonizations"></app-finished-colonizations-list>
+    <app-finished-colonizations-list [finishedColonizations]="colonizations"></app-finished-colonizations-list>
+
+    <app-commissioned-operationals [commissionedOperationals]="operationals"></app-commissioned-operationals>
 </div>

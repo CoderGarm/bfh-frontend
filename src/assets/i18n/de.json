@@ -119,6 +119,18 @@
       "title": "Transporte"
     }
   },
+  "journal": {
+    "commissioned-operationals": {
+      "finished": {
+        "nothing": "Keine Inbetriebnahmen",
+        "title": "Inbetriebnahmen"
+      },
+      "title": {
+        "constructions": "in Betrieb genommene Gebäude",
+        "warships": "aktivierte Kriegsschiffe"
+      }
+    }
+  },
   "mining-factor": {
     "tooltip": {
       "construction": "Beschreibt die Schwierigkeiten des Gebäudebaus, z.B. die Festigkeit des Bodens.",
