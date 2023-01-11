@@ -1,4 +1,5 @@
-<div id="notch-content" class="mat-elevation-z8 pointer-events" *ngIf="!showInfoDisabled() || !showMoveDisabled() || !showMergeDisabled() || !showTransportDisabled()">
+<div id="notch-content" class="mat-elevation-z8 pointer-events"
+     *ngIf="foreignSelected() || !showInfoDisabled() || !showMoveDisabled() || !showMergeDisabled() || !showTransportDisabled()">
 
     <mat-grid-list cols="6" rowHeight="100px" *ngIf="displayActive()" class="fleet-notch-group">
         <mat-grid-tile *ngFor="let fleet of commService.selectedFleets"
@@ -12,7 +13,6 @@
         <mat-card-title>Fleet information</mat-card-title>
         <mat-card-content>
             <div *ngFor="let fleet of commService.selectedFleets">
-
                 <app-fleet-display [fleet]="fleet" *ngIf="!isOwnFleet(fleet)">
                     <app-fleet-formation-display body [fleet]="fleet"></app-fleet-formation-display>
                 </app-fleet-display>
@@ -64,7 +64,7 @@
         <mat-card-title>Manual transfer</mat-card-title>
         <mat-card-content>
             <div *ngFor="let fleet of commService.selectedFleets">
-                <app-fleet-display [fleet]="fleet" *ngIf="isOwnFleet(fleet)"> <!-- fixme check if in planetary orbit -->
+                <app-fleet-display [fleet]="fleet" *ngIf="isOwnFleet(fleet)">
                     <app-manual-transport body [fleet]="fleet" [floatingStyle]="false"></app-manual-transport>
                 </app-fleet-display>
             </div>

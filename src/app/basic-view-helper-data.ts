@@ -1,5 +1,5 @@
 import {SubscriptionManager} from "./SubscriptionManager";
-import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, WarShip} from "./services/swagger";
+import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, StateBlock, WarShip} from "./services/swagger";
 import {ArrayXY, Circle, G, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
@@ -13,6 +13,15 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
 })
 export class BasicViewHelperData extends SubscriptionManager {
 
+    protected static readonly DEFAULT_STATE_BLOCK: StateBlock = {
+        isDeleted: false,
+        isOperational: true,
+        isActive: true,
+        isFightingCapable: true,
+        needsRepair: false,
+        needsAmmunition: false
+    }
+
     protected static readonly ORBIT_ID_MARKER = "orbitId-";
     protected static readonly GROUP_SELECTOR_SUFFIX: string = "-group";
     protected static readonly CYCLING_CIRCLE_SUFFIX = "-circle-cycle";
@@ -21,11 +30,13 @@ export class BasicViewHelperData extends SubscriptionManager {
 
     protected static readonly CELESTIAL_BODY_SELECTOR_ID_PREFIX: string = "-orbit";
     protected static readonly ORBIT_SELECTOR_ID_PREFIX: string = "-orbit";
-    protected static readonly FLEET_SHARK_SELECTOR_ID_PREFIX: string = "fleet-shark-icon";
-    protected static readonly FLEET_COLLECTION_SELECTOR_ID_PREFIX: string = "fleet-shark-collection-icon";
+    protected static readonly FLEET_SHARK_MARKER: string = "fleet-shark";
+    protected static readonly FLEET_SHARK_SELECTOR_ID_PREFIX: string = BasicViewHelperData.FLEET_SHARK_MARKER + "-icon";
+    protected static readonly FLEET_COLLECTION_SELECTOR_ID_PREFIX: string = BasicViewHelperData.FLEET_SHARK_MARKER + "-collection-icon";
     protected static readonly WARSHIP_SELECTOR_ID_PREFIX: string = "-warship";
     protected static readonly MISSILE_SALVO_SELECTOR_ID_PREFIX: string = "-missile-salvo";
 
+    protected static readonly FLEET_COLLECTION_RECTANGLE_MARKER = "fleet-collection-rect";
     protected static readonly CYCLING_CIRCLE_MARKER = "circle-cycle";
     protected static readonly ICON_ID_MARKER: string = "iconId-";
     protected static readonly MOVABLE_STATE_DOT_MARKER: string = "movableStateDot";
@@ -135,9 +146,9 @@ export class BasicViewHelperData extends SubscriptionManager {
         return {x, y};
     }
 
-    protected sortPoints(fleetSharkPoints: ArrayXY[]) {
-        let sortedPointsX = fleetSharkPoints.sort((a, b) => a[0] > b[0] ? 1 : -1);
-        let sortedPointsY = fleetSharkPoints.sort((a, b) => a[1] < b[1] ? 1 : -1);
+    protected sortPoints(points: ArrayXY[]) {
+        let sortedPointsX = points.sort((a, b) => a[0] > b[0] ? 1 : -1);
+        let sortedPointsY = points.sort((a, b) => a[1] < b[1] ? 1 : -1);
         return {sortedPointsX, sortedPointsY};
     }
 
@@ -364,5 +375,14 @@ export class BasicViewHelperData extends SubscriptionManager {
 
     protected setKnownStarSystemByOrbit(system: StarSystem) {
         this.knownStarSystemByOrbit.set(system.orbit, system);
+    }
+
+    protected getFleetGroups() {
+        return Array.from(this.groupsByID.values()).filter(g => g.id().startsWith(BasicViewHelperData.FLEET_SHARK_MARKER) && g.id().endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX));
+    }
+
+    protected clearFleetGroups() {
+        const groups = this.getFleetGroups();
+        groups.forEach(g => this.groupsByID.delete(g.id()));
     }
 }

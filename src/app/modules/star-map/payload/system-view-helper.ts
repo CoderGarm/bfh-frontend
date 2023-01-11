@@ -1,4 +1,4 @@
-import {Distance, FleetMarker, FleetOrbit, Orbit, Planet, StarSystem} from "../../../services/swagger";
+import {Distance, FleetMarker, Orbit, Planet, StarSystem} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
 import {BasicViewHelper} from "../../../basic-view-helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
@@ -11,39 +11,7 @@ export class SystemViewHelper extends BasicViewHelper {
         super(SystemViewHelper.STANDARD_METRIC);
     }
 
-    setFleets(fleetMarkers: FleetMarker[]) {
-        const moving = fleetMarkers.filter(f => !!f.move);
-        this.setFleetsInMotion(moving); // fixme fleet group and collection are overlapping and ugly
-
-        const fleetsAtSameOrbit = new Map<string, FleetMarker[]>();
-        const immobile = fleetMarkers.filter(f => !f.move);
-        immobile.forEach(fleetMarker => {
-            const orbit = fleetMarker.orbit!.orbit!;
-            orbit.xCoordinate.coordinate = this.convertToStandardMetric(orbit.xCoordinate);
-            orbit.xCoordinate.distanceMetric = this.STANDARD_METRIC;
-            orbit.yCoordinate.coordinate = this.convertToStandardMetric(orbit.yCoordinate);
-            orbit.yCoordinate.distanceMetric = this.STANDARD_METRIC;
-            const orbitID = this.getOrbitID(orbit)!;
-            let markers = fleetsAtSameOrbit.get(orbitID);
-            if (!markers) {
-                markers = [];
-            }
-            markers.push(fleetMarker);
-            fleetsAtSameOrbit.set(orbitID, markers);
-        });
-
-        for (let atSameOrbit of fleetsAtSameOrbit.values()) {
-            if (atSameOrbit.length > 1) {
-                this.createFleetCollection(atSameOrbit);
-            } else {
-                const fleetMarker = atSameOrbit[0];
-                const orbit = fleetMarker.orbit!.orbit!;
-                this.createFleetGroup(fleetMarker, orbit.xCoordinate.coordinate, orbit.yCoordinate.coordinate, orbit);
-            }
-        }
-    }
-
-    setFleetsInMotion(fleetsInMotion: FleetMarker[]) {
+    enrichFleetsInStellarMotion(fleetsInMotion: FleetMarker[]) {
 
         fleetsInMotion.forEach(fleetMarker => {
             if (!fleetMarker.move || !fleetMarker.move.startOrbit.orbit || !fleetMarker.move.targetOrbit.orbit) {
@@ -54,22 +22,14 @@ export class SystemViewHelper extends BasicViewHelper {
             let targetOrbit = fleetMarker.move.targetOrbit.orbit;
             let pointAt = this.calculatePositionOnTrack(startOrbit, targetOrbit, fleetMarker, arr);
             this.enrichWithVirtualOrbit(pointAt, fleetMarker);
-            this.createFleetGroup(fleetMarker, pointAt.x, pointAt.y, fleetMarker.orbit!.orbit!);
         });
     }
 
-    setFleetsInOrbits(fleetOrbits: Map<FleetOrbit, FleetMarker>) {
+    setFleets(fleetMarkers: FleetMarker[]) {
+        const moving = fleetMarkers.filter(f => !!f.move);
+        this.enrichFleetsInStellarMotion(moving);
 
-        fleetOrbits.forEach((fleetMarker, fleetOrbit) => {
-
-            let fleetSharkID = this.getFleetSharkID(fleetMarker);
-            this.setFleetById(fleetSharkID, fleetMarker);
-
-            let orbit: Orbit = fleetOrbit.orbit!;
-            let x: number = this.convertToStandardMetric(orbit.xCoordinate) + 25 + (Array.from(fleetOrbits.keys()).indexOf(fleetOrbit) % 2 == 0 ? 15 : 0);
-            let y: number = this.convertToStandardMetric(orbit.yCoordinate) + 25;
-            this.createFleetGroup(fleetMarker, x, y, orbit);
-        });
+        this.drawFleets(fleetMarkers);
     }
 
     drawOrbits(system: StarSystem) {

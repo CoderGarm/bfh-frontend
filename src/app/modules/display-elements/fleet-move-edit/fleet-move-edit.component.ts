@@ -85,7 +85,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
             this.fleetsDesignatedForMotion.push(fleet);
         } else {
             let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
-            this.fleetsDesignatedForMotion.splice(indexOf);
+            this.fleetsDesignatedForMotion.splice(indexOf, 1);
         }
         this.sendPlannedFlights();
     }
@@ -115,7 +115,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
             this.fleetsDesignatedForCancel.push(fleet);
         } else {
             let indexOf = this.fleetsDesignatedForCancel.indexOf(fleet);
-            this.fleetsDesignatedForCancel.splice(indexOf);
+            this.fleetsDesignatedForCancel.splice(indexOf, 1);
         }
         this.sendCancelFlights();
     }

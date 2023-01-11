@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ViewEncapsulation} from '@angular/core';
-import {FleetApiService, FleetMove, StarMapApiService, StarSystem} from "../../../../services/swagger";
+import {FleetApiService, FleetMarker, FleetMove, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
@@ -20,6 +20,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     knownStarSystems: StarSystem[] = [];
 
     private bloodyHackButDoNotSubscribeMeTwice: Subscription[] = [];
+    private distribution: FleetMarker[] = [];
 
     constructor(private starMapService: StarMapApiService,
                 private fleetApi: FleetApiService,
@@ -36,10 +37,10 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     }
 
     ngAfterViewInit(): void {
+        // unfortunately necessary in this constellation - ng destroy is called by ng template in tab view on tab switch
         this.createCanvas("universe-canvas", '#universe');
         this.createUniverseMap();
     }
-
 
     private createUniverseMap() {
         this.spinnerService.activateSpinner('star-map.universe-map.loading-spinner-message');
@@ -51,10 +52,11 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         let outerSub = this.backgroundService.getStarSystems().subscribe(resp => {
             this.knownStarSystems = resp;
             this.knownStarSystems.forEach((system) => this.setKnownStarSystemByOrbit(system));
-            let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.tokenStorage.getUserID(), this.knownStarSystems);
+            let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.userId, this.knownStarSystems);
             this.drawOrbits(orbitDefinitions);
             let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
-                this.setFleets(resp);
+                this.distribution = resp;
+                this.setFleets(this.distribution);
             });
             this.subscriptions.push(sub);
             this.spinnerService.deactivateSpinner();
@@ -65,9 +67,14 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
     private moveFleet(plannedMoves: FleetMove[]) {
         let sub = this.fleetApi.moveFleets(plannedMoves).subscribe(resp => {
-            if (resp) {
-                this.createUniverseMap();
-            }
+            resp.forEach(marker => {
+                const toRemove = this.distribution.filter(fm => fm.fleet.id === marker.fleet.id)[0];
+                const indexToRemove = this.distribution.indexOf(toRemove);
+                if (indexToRemove != -1) {
+                    this.distribution.splice(indexToRemove, 1, marker);
+                }
+            })
+            this.setFleets(this.distribution);
         });
         this.subscriptions.push(sub);
     }

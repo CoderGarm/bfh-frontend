@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {
     EEducationType,
     EResourceType,
@@ -57,16 +57,11 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
 
     result: ResourceTransfer[] = [];
 
-    constructor(@Optional() @Inject('fleet') fleet: Fleet | undefined,
-                private typeService: TypeService,
+    constructor(private typeService: TypeService,
                 private resourceService: ResourcesApiService,
                 private planetService: PlanetApiService) {
         super();
 
-        this.fleet = fleet;
-        if (!!fleet) {
-            this.fetchFleet();
-        }
         this.resourceTypes = this.typeService.collectableResourceTypes;
         this.educationTypes = this.typeService.militaryEducationTypes;
     }

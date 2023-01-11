@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { Fleet } from '../model/fleet';
 import { FleetMarker } from '../model/fleetMarker';
 import { FleetMerge } from '../model/fleetMerge';
+import { FleetMergeResult } from '../model/fleetMergeResult';
 import { FleetMove } from '../model/fleetMove';
 import { FrontendError } from '../model/frontendError';
 import { Move } from '../model/move';
@@ -68,13 +69,13 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public cancelMovement(fleetIds: Array<number>, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public cancelMovement(fleetIds: Array<number>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public cancelMovement(fleetIds: Array<number>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public cancelMovement(fleetIds: Array<number>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public cancelMovements(fleetIds: Array<number>, observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMarker>>;
+    public cancelMovements(fleetIds: Array<number>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMarker>>>;
+    public cancelMovements(fleetIds: Array<number>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMarker>>>;
+    public cancelMovements(fleetIds: Array<number>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (fleetIds === null || fleetIds === undefined) {
-            throw new Error('Required parameter fleetIds was null or undefined when calling cancelMovement.');
+            throw new Error('Required parameter fleetIds was null or undefined when calling cancelMovements.');
         }
 
         let headers = this.defaultHeaders;
@@ -94,7 +95,7 @@ export class FleetApiService {
             'application/json'
         ];
 
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/cancelMoves/${encodeURIComponent(String(fleetIds))}`,
+        return this.httpClient.request<Array<FleetMarker>>('put',`${this.basePath}/api/private/fleet/cancelMoves/${encodeURIComponent(String(fleetIds))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -395,9 +396,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public mergeFleets(body: FleetMerge, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public mergeFleets(body: FleetMerge, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public mergeFleets(body: FleetMerge, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public mergeFleets(body: FleetMerge, observe?: 'body', reportProgress?: boolean): Observable<FleetMergeResult>;
+    public mergeFleets(body: FleetMerge, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FleetMergeResult>>;
+    public mergeFleets(body: FleetMerge, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FleetMergeResult>>;
     public mergeFleets(body: FleetMerge, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -425,7 +426,7 @@ export class FleetApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/fleet/merge`,
+        return this.httpClient.request<FleetMergeResult>('post',`${this.basePath}/api/private/fleet/merge`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -443,9 +444,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public moveFleets(body: Array<FleetMove>, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
-    public moveFleets(body: Array<FleetMove>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
-    public moveFleets(body: Array<FleetMove>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public moveFleets(body: Array<FleetMove>, observe?: 'body', reportProgress?: boolean): Observable<Array<FleetMarker>>;
+    public moveFleets(body: Array<FleetMove>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FleetMarker>>>;
+    public moveFleets(body: Array<FleetMove>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FleetMarker>>>;
     public moveFleets(body: Array<FleetMove>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -473,7 +474,7 @@ export class FleetApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Array<Fleet>>('post',`${this.basePath}/api/private/fleet/moveFleets`,
+        return this.httpClient.request<Array<FleetMarker>>('post',`${this.basePath}/api/private/fleet/moveFleets`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

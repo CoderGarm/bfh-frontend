@@ -11,7 +11,8 @@ export class InterstellarViewHelper extends BasicViewHelper {
         super(InterstellarViewHelper.STANDARD_METRIC);
     }
 
-    setFleetsInInterstellarMotion(fleetsInMotion: FleetMarker[]) {
+    enrichFleetsInInterstellarMotion(fleetsInMotion: FleetMarker[]) {
+
         fleetsInMotion.forEach(fleetMarker => {
             if (!fleetMarker.move || !fleetMarker.move.startOrbit.orbit || !fleetMarker.move.targetOrbit.orbit
                 || !fleetMarker.move.startOrbit.system || !fleetMarker.move.targetOrbit.system) {
@@ -22,36 +23,15 @@ export class InterstellarViewHelper extends BasicViewHelper {
             let targetOrbit = fleetMarker.move.targetOrbit.system.orbit;
             let pointAt = this.calculatePositionOnTrack(startOrbit, targetOrbit, fleetMarker, arr);
             this.enrichWithVirtualOrbit(pointAt, fleetMarker);
-            this.createFleetGroup(fleetMarker, pointAt.x, pointAt.y, fleetMarker.orbit!.orbit!);
         });
     }
 
     setFleets(fleetMarkers: FleetMarker[]) {
+
         const moving = fleetMarkers.filter(f => !!f.move);
-        this.setFleetsInInterstellarMotion(moving); // fixme fleet group and collection are overlapping and ugly
+        this.enrichFleetsInInterstellarMotion(moving);
 
-        const fleetsInSameSystem = new Map<number, FleetMarker[]>();
-        const immobile = fleetMarkers.filter(f => !f.move);
-        immobile.forEach(fleetMarker => {
-            const system = fleetMarker.orbit!.system;
-            let markers = fleetsInSameSystem.get(system!.idStarSystem!);
-            if (!markers) {
-                markers = [];
-            }
-            markers.push(fleetMarker);
-            fleetsInSameSystem.set(system!.idStarSystem!, markers);
-        });
-
-        for (let inSameSystem of fleetsInSameSystem.values()) {
-            if (inSameSystem.length > 1) {
-                this.createFleetCollection(inSameSystem);
-            } else {
-                const fleetMarker = inSameSystem[0];
-                const system = fleetMarker.orbit?.system;
-                const orbit = system!.orbit;
-                this.createFleetGroup(fleetMarker, orbit.xCoordinate.coordinate, orbit.yCoordinate.coordinate, orbit);
-            }
-        }
+        this.drawFleets(fleetMarkers);
     }
 
     drawOrbits(orbits: OrbitDefinition[]) {

@@ -30,7 +30,7 @@ export class FleetNotchDisplayComponent extends SubscriptionManager implements O
 
     getCssMarker() {
         if (this.isOwnFleet()) {
-            return '';
+            return 'own';
         }
         return 'foreign';
     }

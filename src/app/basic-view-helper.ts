@@ -1,4 +1,4 @@
-import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem} from "./services/swagger";
+import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem, StateBlock} from "./services/swagger";
 import {ArrayXY, Circle, CurveCommand, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
@@ -95,6 +95,16 @@ export class BasicViewHelper extends BasicViewHelperData {
             this.canvas.node.innerHTML = '';
             super.clearData();
         }
+    }
+
+    protected clearFleets() {
+
+        const groups: G[] = this.getFleetGroups();
+        groups.forEach(g => {
+            const knownElements = this.canvas!.children().filter(c => c.id() === g.id());
+            knownElements.forEach(elem => this.canvas!.removeElement(elem));
+        });
+        this.clearFleetGroups();
     }
 
     protected setCanvas(canvas: Svg) {
@@ -208,7 +218,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             return;
         }
 
-        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX));
+        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_MARKER));
         const stateDots: Circle[] = [];
         fleetGroups.forEach(g => {
             g.children().forEach(c => {
@@ -220,17 +230,32 @@ export class BasicViewHelper extends BasicViewHelperData {
         });
         stateDots.forEach(dot => {
             const cssClass = dot.classes().filter(css => css.startsWith(BasicViewHelperData.ICON_ID_MARKER));
-            const fleetSharkId = cssClass![0].replace(BasicViewHelperData.ICON_ID_MARKER, '');
-            const fleetShark: Polygon | undefined = this.getFleetSharkByID(fleetSharkId);
-            if (!!fleetShark) {
+            const id = cssClass![0].replace(BasicViewHelperData.ICON_ID_MARKER, '');
+            let x: number | undefined;
+            let y: number | undefined;
+            if (this.isFleetSharkId(id)) {
+                const fleetShark: Polygon | undefined = this.getFleetSharkByID(id)!;
                 const {sortedPointsX, sortedPointsY} = this.sortPoints(fleetShark.array());
-                let xMarker = sortedPointsX[0];
-                let yMarker = sortedPointsY[sortedPointsY.length - 1];
+                x = sortedPointsX[0][0];
+                y = sortedPointsY[sortedPointsY.length - 1][1];
+            }
 
-                dot.radius(BasicViewHelper.STATE_DOT_RADIUS / (this.zoomLevel * 1.6))
-                    .x(xMarker[0] - (2.5 / this.zoomLevel))
-                    .y(yMarker[1] - (2.5 / this.zoomLevel));
-                dot.stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK));
+            if (this.isFleetCollectionId(id)) {
+                /* fixme is zoom for collection icon itself
+                const fleetSharkIDs = this.getFleetSharkIDsFromCollectionID(id);
+                const fleetMarkers: FleetMarker[] = fleetSharkIDs.map(fleetSharkId => this.getFleetByID(fleetSharkId)!);
+                const strokeColor = this.getFleetCollectionStrokeColor(fleetMarkers);
+                */
+                const collectionGroup = this.getGroupById(id)!;
+                const rect = collectionGroup.children().filter(c => c.classes().filter(css => css === BasicViewHelperData.FLEET_COLLECTION_RECTANGLE_MARKER).length > 0)[0];
+                x = <number>rect.x() + <number>rect.width();
+                y = <number>rect.y();
+            }
+            if (!!x && !!y) {
+                const radius = BasicViewHelper.STATE_DOT_RADIUS / (this.zoomLevel * 1.6);
+                x -= radius;
+                y -= radius;
+                dot.radius(radius).x(x).y(y).stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK));
             }
         });
     }
@@ -1005,26 +1030,34 @@ export class BasicViewHelper extends BasicViewHelperData {
         return NavigationCalculator.calculateDistanceOfOrbits(firstOrbit, secondOrbit, this.standardDistanceMetric);
     }
 
-    protected createFleetCollectionIcon(x: number, y: number,
-                                        fleetCollectionID: string,
-                                        amountOwnFleets: number,
-                                        amountOtherFleets: number,
-                                        colorForOutline: string,
+    protected createFleetCollectionIcon(fleetMarkers: FleetMarker[],
                                         zoomFactor?: number): G {
+
+        let fleetCollectionID = this.getFleetCollectionID(fleetMarkers);
 
         zoomFactor = this.getOrDefaultZoomFactor(zoomFactor);
 
-        let group = this.canvas!.group().id(fleetCollectionID + "-" + BasicViewHelperData.GROUP_SELECTOR_SUFFIX);
-        this.setGroupById(fleetCollectionID + "-" + BasicViewHelperData.GROUP_SELECTOR_SUFFIX, group!);
+        const amountOwnFleets: number = fleetMarkers.filter(f => f.owner.id == this.tokenStorage.getUserID()).length;
+        const amountOtherFleets: number = fleetMarkers.filter(f => f.owner.id != this.tokenStorage.getUserID()).length;
 
-        x += 10; // fixme set pos after checking that there is nothing hidden
+        let colorForOutline = this.getFleetCollectionStrokeColor(fleetMarkers);
+
+        let orbit = this.getOrbitFromFleetMarker(fleetMarkers[0]);
+        let x = orbit!.xCoordinate.coordinate;
+        let y = orbit!.yCoordinate.coordinate;
+
+        const groupId = fleetCollectionID + BasicViewHelperData.GROUP_SELECTOR_SUFFIX;
+        let group = this.canvas!.group().id(groupId);
+        this.setGroupById(groupId, group!);
+
+        x += 10;
         y -= 5;
 
-        group.rect()
+        const rect = group.rect()
             .x(x).y(y)
             .width(25 / zoomFactor)
             .height(15 / zoomFactor)
-            .addClass("fleet-collection-rect")
+            .addClass(BasicViewHelperData.FLEET_COLLECTION_RECTANGLE_MARKER)
             .stroke(this.zoomStroke({width: 1, color: colorForOutline}));
 
         group.rect()
@@ -1044,8 +1077,26 @@ export class BasicViewHelper extends BasicViewHelperData {
             .id(fleetCollectionID + "-txt");
 
         group.add(text);
-        // fixme add 'fleet dots' to display the friend-foe distribution
+
+        const x1 = <number>rect.x();
+        const y1 = <number>rect.y();
+        const w = <number>rect.width();
+        let {sortedPointsX, sortedPointsY} = this.sortPoints([[x1 + w, y1]]);
+        this.displayFleetStates(!!fleetMarkers[0].move, BasicViewHelper.DEFAULT_STATE_BLOCK, sortedPointsX, sortedPointsY, group, fleetCollectionID);
         return group;
+    }
+
+    private getFleetCollectionStrokeColor(fleetMarkers: FleetMarker[]) {
+        const amountOwnFleets: number = fleetMarkers.filter(f => f.owner.id == this.tokenStorage.getUserID()).length;
+        const amountOtherFleets: number = fleetMarkers.filter(f => f.owner.id != this.tokenStorage.getUserID()).length;
+        let colorForOutline = this.FLEET_COLLECTION_COLOR_MIXED;
+        if (amountOtherFleets == 0 && amountOwnFleets > 0) {
+            colorForOutline = this.FLEET_SHARK_COLOR_OWN;
+        }
+        if (amountOtherFleets > 0 && amountOwnFleets == 0) {
+            colorForOutline = this.FLEET_SHARK_COLOR_HOSTILE;
+        }
+        return colorForOutline;
     }
 
     private getOrDefaultZoomFactor(zoomFactor?: number) {
@@ -1060,6 +1111,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         let fleetSharkPoints: ArrayXY[] = this.createFleetSharkPoints(x, y, orbit);
         const userIsOwner = fleetMarker.owner.id == this.tokenStorage.getUserID();
         let fleetSharkID = this.getFleetSharkID(fleetMarker);
+
         this.setFleetById(fleetSharkID, fleetMarker);
 
         let group = this.canvas!.group().id(fleetSharkID + BasicViewHelperData.GROUP_SELECTOR_SUFFIX);
@@ -1087,7 +1139,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
         let {sortedPointsX, sortedPointsY} = this.sortPoints(fleetSharkPoints);
 
-        this.displayFleetStates(fleetMarker, sortedPointsX, sortedPointsY, group, fleetSharkID);
+        this.displayFleetStates(!!fleetMarker.move, fleetMarker.state, sortedPointsX, sortedPointsY, group, fleetSharkID);
 
         let {xText, yText} = this.getUpperRightCornerPosition(sortedPointsX, sortedPointsY);
 
@@ -1113,37 +1165,17 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected createFleetCollection(fleetMarkers: FleetMarker[]) {
 
-        const ownFleets = fleetMarkers.filter(f => f.owner.id == this.tokenStorage.getUserID());
-        const otherFleets = fleetMarkers.filter(f => f.owner.id != this.tokenStorage.getUserID());
-
-        let fleetSharkColor = this.FLEET_COLLECTION_COLOR_MIXED;
-        if (otherFleets.length == 0 && ownFleets.length > 0) {
-            fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
-        }
-        if (otherFleets.length > 0 && ownFleets.length == 0) {
-            fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
-        }
-
-
-        let orbit: Orbit | undefined;
-        if (this.STANDARD_METRIC === DistanceMetricEnum.LY) {
-            const system = fleetMarkers[0].orbit!.system!;
-            orbit = system!.orbit!;
-        } else {
-            orbit = fleetMarkers[0].orbit!.orbit!;
-        }
-
-        let fleetCollectionID = this.getFleetCollectionID(fleetMarkers);
-        this.createFleetCollectionIcon(orbit!.xCoordinate.coordinate, orbit!.yCoordinate.coordinate, fleetCollectionID, ownFleets.length, otherFleets.length, fleetSharkColor);
+        let orbit = this.getOrbitFromFleetMarker(fleetMarkers[0]);
+        this.createFleetCollectionIcon(fleetMarkers);
 
         fleetMarkers.forEach(fleetMarker => {
             const fleetGroup = this.createFleetGroup(fleetMarker, orbit!.xCoordinate.coordinate, orbit!.yCoordinate.coordinate, orbit!);
             fleetGroup.addClass(BasicViewHelper.INVISIBLE_CLASS);
-        })
+        });
     }
 
     protected enrichWithVirtualOrbit(pointAt: { x: number; y: number }, fleetMarker: FleetMarker) {
-        let orbit: Orbit = {
+        const orbit: Orbit = {
             xCoordinate: {
                 coordinate: pointAt.x,
                 distanceMetric: this.STANDARD_METRIC
@@ -1153,8 +1185,52 @@ export class BasicViewHelper extends BasicViewHelperData {
                 distanceMetric: this.STANDARD_METRIC
             }
         }
-        fleetMarker.orbit = {
-            orbit: orbit
+        if (!fleetMarker.orbit) {
+            fleetMarker.orbit = {};
+        }
+        fleetMarker.orbit.orbit = orbit;
+    }
+
+    protected drawFleets(fleetMarkers: FleetMarker[]) {
+
+        this.clearFleets();
+        const fleetsAtSameOrbit = new Map<string, FleetMarker[]>();
+        fleetMarkers.forEach(fleetMarker => {
+
+            let orbit = this.getOrbitFromFleetMarker(fleetMarker);
+            orbit.xCoordinate.coordinate = this.convertToStandardMetric(orbit.xCoordinate);
+            orbit.xCoordinate.distanceMetric = this.STANDARD_METRIC;
+            orbit.yCoordinate.coordinate = this.convertToStandardMetric(orbit.yCoordinate);
+            orbit.yCoordinate.distanceMetric = this.STANDARD_METRIC;
+            const orbitID = this.getOrbitID(orbit)!;
+            let markers = fleetsAtSameOrbit.get(orbitID);
+            if (!markers) {
+                markers = [];
+            }
+            markers.push(fleetMarker);
+            fleetsAtSameOrbit.set(orbitID, markers);
+        });
+
+        for (let atSameOrbit of fleetsAtSameOrbit.values()) {
+            if (atSameOrbit.length > 1) {
+                this.createFleetCollection(atSameOrbit);
+            } else {
+                const fleetMarker = atSameOrbit[0];
+                const orbit = fleetMarker.orbit!.orbit!;
+                this.createFleetGroup(fleetMarker, orbit.xCoordinate.coordinate, orbit.yCoordinate.coordinate, orbit);
+            }
+        }
+    }
+
+    private getOrbitFromFleetMarker(fleetMarker: FleetMarker): Orbit {
+        if (!!fleetMarker.move) {
+            return fleetMarker.orbit!.orbit!;
+        } else {
+            if (this.STANDARD_METRIC === DistanceMetricEnum.LY) {
+                return fleetMarker.orbit!.system!.orbit!;
+            } else {
+                return fleetMarker.orbit!.orbit!;
+            }
         }
     }
 
@@ -1260,35 +1336,16 @@ export class BasicViewHelper extends BasicViewHelperData {
             positionY: yEnd
         });
         this.canvas!.add(runner);
-
-        /*this.canvas!
-            .polygon([p1, p2, p3])
-            .addClass('coursePlot')
-            .id(fleetSharkId + BasicViewHelperData.MOVE_SUFFIX)
-            .animate({
-                duration: 2000,
-                delay: 1000,
-                when: 'now',
-                swing: false,
-                times: 50000,
-                wait: 200
-            })
-            .transform({
-                positionX: xEnd,
-                positionY: yEnd
-            });*/
     }
 
-    protected displayFleetStates(fleetMarker: FleetMarker, sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[], group: G | undefined, fleetSharkID: string) {
+    protected displayFleetStates(onMove: boolean, state: StateBlock, sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[], group: G | undefined, fleetSharkID: string) {
 
         let txt;
         const cssClasses: string[] = [];
-        const move = fleetMarker.move;
-        if (!!move) {
+        if (onMove) {
             cssClasses.push('on-movement')
             txt = 'Fleet in at move';
         }
-        const state = fleetMarker.state;
         if (!state.isActive) {
             if (state.needsRepair) {
                 cssClasses.push('under-construction');
@@ -1301,16 +1358,16 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
 
         if (!!txt) {
+            const halfRadius = BasicViewHelper.STATE_DOT_RADIUS / 2;
             let xMarker = sortedPointsX[0];
             let yMarker = sortedPointsY[sortedPointsY.length - 1];
 
-            group!
-                .circle(BasicViewHelper.STATE_DOT_RADIUS)
+            group!.circle(BasicViewHelper.STATE_DOT_RADIUS)
                 .stroke(BasicViewHelper.STROKE_BLACK)
                 .addClass(BasicViewHelperData.MOVABLE_STATE_DOT_MARKER)
                 .addClass(BasicViewHelperData.ICON_ID_MARKER + fleetSharkID)
-                .x(xMarker[0] - 2.5)
-                .y(yMarker[1] - 2.5)
+                .x(xMarker[0] - halfRadius)
+                .y(yMarker[1] - halfRadius)
                 .id(fleetSharkID + BasicViewHelperData.MOVABLE_STATE_DOT_MARKER);
 
             cssClasses.forEach(c => group!.addClass(c));
@@ -1320,8 +1377,8 @@ export class BasicViewHelper extends BasicViewHelperData {
                 .addClass(BasicViewHelperData.MOVABLE_STATE_DOT_MARKER)
                 .addClass(BasicViewHelperData.ICON_ID_MARKER + fleetSharkID)
                 .text(txt)
-                .x(xMarker[0] - 2.5)
-                .y(yMarker[1] - 2.5)
+                .x(xMarker[0] - halfRadius)
+                .y(yMarker[1] - halfRadius)
                 .id(fleetSharkID + BasicViewHelperData.MOVABLE_STATE_DOT_MARKER + BasicViewHelperData.TEXT_MARKER);
 
             this.setTextOptions(text);

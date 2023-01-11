@@ -149,7 +149,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
             this.fleetsDesignatedForMotion.push(fleet);
         } else {
             let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
-            this.fleetsDesignatedForMotion.splice(indexOf);
+            this.fleetsDesignatedForMotion.splice(indexOf, 1);
         }
         this.sendPlannedFlights();
     }

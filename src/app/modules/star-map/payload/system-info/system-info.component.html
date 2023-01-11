@@ -19,8 +19,8 @@
         <input matInput disabled value="{{starSystem.planets.length}}">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Occupied planet</mat-label>
+    <mat-form-field appearance="fill" *ngIf="getColonized().length > 0">
+        <mat-label>Occupied planets</mat-label>
         <input matInput disabled *ngFor="let planet of getColonized()" value="{{planet.name}} - {{planet.owner!.username}}">
     </mat-form-field>
 

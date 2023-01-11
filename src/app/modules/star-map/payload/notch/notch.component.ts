@@ -38,7 +38,7 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
     }
 
 
-    displayActive() {
+    displayActive(): boolean {
         return !this.displayInfo && !this.displayMove && !this.displayMerge && !this.displayTransport;
     }
 
@@ -112,6 +112,10 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
 
     showTransportDisabled() {
         return !this.stellarMode || this.commService.showTransportDisabled();
+    }
+
+    foreignSelected() {
+        return this.commService.selectedFleets.filter(f => f.owner.idUser !== this.userId).length > 0;
     }
 
     deselectDisabled() {

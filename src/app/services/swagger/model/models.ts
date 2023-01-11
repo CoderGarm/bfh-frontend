@@ -46,6 +46,7 @@ export * from './finishedColonization';
 export * from './fleet';
 export * from './fleetMarker';
 export * from './fleetMerge';
+export * from './fleetMergeResult';
 export * from './fleetMove';
 export * from './fleetMovement';
 export * from './fleetOrbit';

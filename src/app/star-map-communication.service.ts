@@ -220,9 +220,31 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     showMoveDisabled() {
-        const fleetsWithoutMovementPresent = this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => !f.move).length > 0;
+        const fleetsWithoutMovement = this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => !f.move);
+        const fleetsWithoutMovementPresent = fleetsWithoutMovement.length > 0;
         const movableFleetsPresent = fleetsWithoutMovementPresent && (this.isSelectedStarSystem() || this.isSelectedPlanet());
-        return !movableFleetsPresent;
+        const fleetsWithDifferentOrbits: Fleet[] = [];
+        if (movableFleetsPresent) {
+            if (this.isSelectedPlanet()) {
+                const planet = this.selectedPlanet!;
+                const orbit: Orbit = planet.orbit;
+                fleetsWithoutMovement.filter(fleet => {
+                    const isSamePlanetaryOrbit = NavigationCalculator.isSameOrbit(fleet.orbit!.orbit!, orbit);
+                    if (!isSamePlanetaryOrbit) {
+                        fleetsWithDifferentOrbits.push(fleet);
+                    }
+                });
+            }
+            if (this.isSelectedStarSystem()) {
+                const system = this.selectedStarSystem!;
+                fleetsWithoutMovement.filter(fleet => {
+                    if (fleet.orbit?.system?.idStarSystem != system.idStarSystem) {
+                        fleetsWithDifferentOrbits.push(fleet);
+                    }
+                });
+            }
+        }
+        return !movableFleetsPresent || !(fleetsWithDifferentOrbits.length != 0);
     }
 
     showCancelMoveDisabled() {
@@ -236,10 +258,11 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     showMergeDisabled() {
-        let nope = this.selectedFleets.filter(f => f.owner.idUser == this.userId).length < 2 || this.isStarSystemDisplayed();
+        const ownFleets = this.selectedFleets.filter(f => f.owner.idUser == this.userId);
+        let nope = ownFleets.length < 2 || this.isStarSystemDisplayed();
         if (!nope) {
             const orbits: Orbit[] = [];
-            this.selectedFleets.filter(f => !!f.orbit && !!f.orbit.orbit).forEach(f => orbits.push(f.orbit!.orbit!));
+            ownFleets.filter(f => !!f.orbit && !!f.orbit.orbit).forEach(f => orbits.push(f.orbit!.orbit!));
             let mergeCandidates: number = 0;
             for (let i = 0; i < orbits.length; i++) {
                 const first = orbits[i];
@@ -256,7 +279,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
                     }
                 }
             }
-            nope = mergeCandidates === 2;
+            nope = mergeCandidates < 2;
         }
         return nope;
     }
@@ -278,14 +301,17 @@ export class StarMapCommunicationService extends SubscriptionManager {
             plannedMoves: this.plannedStellarMoves,
             toCancel: this.fleetsToCancelMovement
         });
+        this.deselect();
     }
 
     interstellarMove() {
         this.interstellarMoveEmitter.emit(this.plannedInterstellarMoves);
+        this.deselect();
     }
 
     executeMerge() {
         this.mergeFleetsEmitter.emit(this.fleetMerge);
+        this.deselect();
     }
 
     resetMerge() {
