@@ -6,6 +6,7 @@ import {UniverseMapViewComponent} from './payload/universe-map-view/universe-map
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {NotchComponent} from './payload/notch/notch.component';
 import {FleetNotchDisplayComponent} from './payload/fleet-notch-display/fleet-notch-display.component';
+import {SystemInfoComponent} from './payload/system-info/system-info.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {FleetNotchDisplayComponent} from './payload/fleet-notch-display/fleet-no
         StarMapViewComponent,
         UniverseMapViewComponent,
         NotchComponent,
-        FleetNotchDisplayComponent
+        FleetNotchDisplayComponent,
+        SystemInfoComponent
     ],
     imports: [
         SharedModuleModule,

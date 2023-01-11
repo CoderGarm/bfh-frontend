@@ -1,24 +1,4 @@
-<div class="info-div" *ngIf="!!starSystemSelectionInput">
-    <mat-form-field appearance="fill">
-        <mat-label>System</mat-label>
-        <input matInput disabled value="{{starSystemSelectionInput!.name}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>X-Coordinate</mat-label>
-        <input matInput disabled value="{{starSystemSelectionInput!.orbit.xCoordinate.coordinate}} {{starSystemSelectionInput!.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Y-Coordinate</mat-label>
-        <input matInput disabled value="{{starSystemSelectionInput!.orbit.yCoordinate.coordinate}} {{starSystemSelectionInput!.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Planet count</mat-label>
-        <input matInput disabled value="{{planets.length}}">
-    </mat-form-field>
-</div>
+<app-system-info class="info-div" [starSystem]="starSystem"></app-system-info>
 
 <div id="starsystem">
     <!-- svg elements will be created programmatically -->

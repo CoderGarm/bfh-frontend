@@ -25,7 +25,8 @@ export class StarMapTabViewComponent extends SubscriptionManager implements OnIn
     constructor(private starMapCommService: StarMapCommunicationService) {
         super();
 
-        this.starMapCommService.getDisplaySystemEmitter().subscribe(resp => this.run(resp))
+        let sub = this.starMapCommService.getDisplaySystemEmitter().subscribe(resp => this.run(resp));
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {

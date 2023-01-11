@@ -4,29 +4,7 @@
         <input matInput disabled value="{{knownStarSystems.length}}">
     </mat-form-field>
 </div>
-<div class="info-div" *ngIf="!!starMapCommService.selectedStarSystem">
-    <mat-form-field appearance="fill">
-        <mat-label>System</mat-label>
-        <input matInput disabled value="{{starMapCommService.selectedStarSystem.name}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>X-Coordinate</mat-label>
-        <input matInput disabled
-               value="{{starMapCommService.selectedStarSystem.orbit.xCoordinate.coordinate}} {{starMapCommService.selectedStarSystem.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Y-Coordinate</mat-label>
-        <input matInput disabled
-               value="{{starMapCommService.selectedStarSystem.orbit.yCoordinate.coordinate}} {{starMapCommService.selectedStarSystem.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Planet count</mat-label>
-        <input matInput disabled value="{{starMapCommService.selectedStarSystem.planets.length}}">
-    </mat-form-field>
-</div>
+<app-system-info class="info-div" [starSystem]="starMapCommService.selectedStarSystem"></app-system-info>
 
 <div id="universe">
     <!-- svg elements will be created programmatically -->

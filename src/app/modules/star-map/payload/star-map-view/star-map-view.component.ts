@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMerge, FleetMove, Planet, StarMapApiService, StarSystem} from "../../../../services/swagger";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Fleet, FleetApiService, FleetMerge, FleetMove, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import {SystemViewHelper} from "../system-view-helper";
 import {StellarMovement} from "../../../../star-map-communication.service";
 import {timer} from "rxjs";
@@ -9,15 +9,10 @@ import {timer} from "rxjs";
     templateUrl: './star-map-view.component.html',
     styleUrls: ['./star-map-view.component.scss']
 })
-export class StarMapViewComponent extends SystemViewHelper implements AfterViewInit, OnChanges {
+export class StarMapViewComponent extends SystemViewHelper implements OnInit, OnChanges {
 
     @Input()
-    starSystemSelectionInput?: StarSystem;
-    private starSystemSelectionInputDefinition: string = "starSystemSelectionInput";
-
-    planets: Planet[] = [];
-    private system?: StarSystem;
-
+    starSystem?: StarSystem;
 
     constructor(private starMapApi: StarMapApiService,
                 private fleetService: FleetApiService) {
@@ -45,21 +40,13 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
         let moveDone = plannedMoves.length == 0;
         let cancelDone = toCancel.length == 0;
         if (plannedMoves.length > 0) {
-            let sub = this.fleetService.moveFleets(plannedMoves).subscribe(resp => {
-                if (resp) {
-                    moveDone = true;
-                }
-            });
+            let sub = this.fleetService.moveFleets(plannedMoves).subscribe(resp => moveDone = !!resp);
             this.subscriptions.push(sub);
         }
 
         if (toCancel.length > 0) {
             const ids = toCancel.map(f => f.idFleet);
-            let sub = this.fleetService.cancelMovement(ids).subscribe(resp => {
-                if (resp) {
-                    cancelDone = true;
-                }
-            });
+            let sub = this.fleetService.cancelMovement(ids).subscribe(resp => cancelDone = resp);
             this.subscriptions.push(sub);
         }
 
@@ -74,36 +61,24 @@ export class StarMapViewComponent extends SystemViewHelper implements AfterViewI
 
     }
 
-    ngAfterViewInit(): void {
-        this.createCanvas("star-system-canvas", '#starsystem');
+    ngOnInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes[this.starSystemSelectionInputDefinition]) {
-            this.createStarMap();
-        }
+        this.createStarMap();
     }
 
     private createStarMap() {
         this.starMapCommService.clear(1);
         this.starMapCommService.deselect();
         this.clearData();
-        if (!!this.starSystemSelectionInput) {
-            let sub = this.starMapApi.getStarSystem(this.starSystemSelectionInput.idStarSystem)
-                .subscribe(system => {
-                    this.createCanvas("star-system-canvas", '#starsystem');
-                    this.system = system;
-                    this.planets = system.planets;
-                    this.setPlanetsByOrbit(system);
-                    this.drawOrbits(system);
-                });
-            this.subscriptions.push(sub);
+        if (!!this.starSystem) {
+            this.createCanvas("star-system-canvas", '#starsystem');
+            this.setPlanetsByOrbit(this.starSystem);
+            this.drawOrbits(this.starSystem);
 
-            sub = this.fleetService.getFleetsBySystem(this.starSystemSelectionInput.idStarSystem)
-                .subscribe(resp => {
-                    this.createCanvas("star-system-canvas", '#starsystem');
-                    this.setFleets(resp);
-                });
+            const sub = this.fleetService.getFleetsBySystem(this.starSystem.idStarSystem)
+                .subscribe(resp => this.setFleets(resp));
             this.subscriptions.push(sub);
         }
     }
