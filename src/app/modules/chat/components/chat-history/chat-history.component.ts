@@ -1,10 +1,11 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
 import {ChatApiService, ChatHistory, ChatMessage, UserJson} from "../../../../services/swagger";
 import {interval, Subscription} from "rxjs";
-import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {take} from "rxjs/operators";
-import {AngularEditorConfig} from "@kolkov/angular-editor";
+import {EditorInstance} from "angular-markdown-editor";
+import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
+import {MarkdownService} from "ngx-markdown";
 
 @Component({
     selector: 'app-chat-history',
@@ -12,8 +13,6 @@ import {AngularEditorConfig} from "@kolkov/angular-editor";
     styleUrls: ['./chat-history.component.scss']
 })
 export class ChatHistoryComponent extends SubscriptionManager implements OnInit, OnChanges {
-
-    myUserID: number = -1;
 
     private readonly intervalPeriod = 30;
 
@@ -24,10 +23,6 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     isNewChat: boolean = false;
 
     messages: ChatMessage[] = [];
-
-    chatFG: FormGroup = new FormGroup({
-        messageFC: new FormControl('')
-    });
 
     /**
      * The user which was selected by the logged in user in order to chat with.
@@ -47,21 +42,28 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     private msgStartIndexTo = 4;
     private msgIndexFrom = -1;
     private msgIndexTo = -1;
-    private readonly writeYourMessage = 'Write your message...';
-    editorConfig: AngularEditorConfig = {
-        editable: false,
-        placeholder: this.writeYourMessage,
-        showToolbar: false,
-        enableToolbar: false,
-        sanitize: true
-    };
 
-    constructor(private chatApi: ChatApiService) {
+    markdownText: string = '';
+
+    bsEditorInstance?: EditorInstance;
+    editorOptions?: EditorOption;
+
+    constructor(private markdownService: MarkdownService, private chatApi: ChatApiService) {
         super();
     }
 
     ngOnInit(): void {
-        this.myUserID = this.tokenStorage.getUserID();
+        this.editorOptions = {
+            iconlibrary: 'fa',
+            fullscreen: {
+                enable: false,
+                icons: {}
+            },
+            parser: (val) => this.markdownService.compile(val.trim()),
+            onChange: () => {
+            },
+            onShow: (e) => this.bsEditorInstance = e
+        };
     }
 
     @HostListener('window:wheel', ['$event'])
@@ -80,16 +82,10 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                     .subscribe(resp => {
                         this.setChatHistory(resp);
                         this.displayInitialMessages();
-                        this.editorConfig.editable = !!this.chatHistory;
-                        this.editorConfig.placeholder = this.getPlaceholder();
                     });
                 this.subscriptions.push(subscription);
             }
         }
-    }
-
-    private getPlaceholder() {
-        return this.writeYourMessage + ' to ' + this.selectedUserChatHistoryInput?.username;
     }
 
     private displayInitialMessages() {
@@ -211,7 +207,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
 
         const chatMessage: ChatMessage = {
             idUserMessage: this.chatHistory?.idChatHistory,
-            message: this.chatFG.controls.messageFC.value,
+            message: this.markdownText,
             sender: {
                 idUser: this.tokenStorage.getUserID(),
                 username: this.tokenStorage.getLogin(),
@@ -244,7 +240,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 });
             this.subscriptions.push(sub);
         }
-        this.chatFG.controls.messageFC.setValue('');
+        this.markdownText = ''
     }
 
     private setChatHistory(resp: ChatHistory | undefined) {
@@ -258,7 +254,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
             this.isNewChat = true;
             this.chatHistory = {
                 userOne: {
-                    idUser: this.myUserID,
+                    idUser: this.userId,
                     username: this.tokenStorage.getLogin()
                 },
                 userTwo: this.selectedUserChatHistoryInput,

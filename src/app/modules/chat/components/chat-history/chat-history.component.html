@@ -8,12 +8,12 @@
                 <div mat-card-avatar class="avatar-image"></div>
                 <mat-card-title>
                     {{message.sender.username}}
-                    <mat-icon *ngIf="!message.receivedAt && message.sender.idUser != myUserID">mark_email_unread</mat-icon>
+                    <mat-icon *ngIf="!message.receivedAt && message.sender.idUser != userId">mark_email_unread</mat-icon>
                 </mat-card-title>
                 <mat-card-subtitle>{{message.sentAt  | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <div class="message" [innerHTML]="message.message"></div>
+                <markdown [data]="message.message"></markdown>
             </mat-card-content>
             <mat-card-footer class="completely-hidden" [lang]="message.idUserMessage">If you see that, you are a hacker.</mat-card-footer>
         </mat-card>
@@ -23,17 +23,19 @@
     </div>
 </div>
 
-<mat-card class="chat-card set-right write-card message-field-in-flow">
+<mat-card class="chat-card set-right write-card message-field-in-flow" *ngIf="!!chatHistory">
     <mat-card-content>
         <mat-icon *ngIf="isNewChat">new_releases</mat-icon>
-        <form [formGroup]=chatFG>
-            <angular-editor
-                    id="chat-message-form-field"
-                    formControlName="messageFC"
-                    [config]="editorConfig"></angular-editor>
-        </form>
+        <angular-markdown-editor
+                textareaId="chat-message-form-field"
+                [rows]="8"
+                name="markdownText"
+                [(ngModel)]="markdownText"
+                [options]="editorOptions"
+                class="angular-markdown-editor-minimalistic">
+        </angular-markdown-editor>
         <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
-                [disabled]="!this.chatFG.controls.messageFC.value" id="send-chat-message-button">Submit
+                [disabled]="!this.markdownText" id="send-chat-message-button">Submit
         </button>
     </mat-card-content>
 </mat-card>

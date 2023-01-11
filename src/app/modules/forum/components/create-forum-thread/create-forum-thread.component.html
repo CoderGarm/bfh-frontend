@@ -8,9 +8,12 @@
             <mat-label>New thread's description</mat-label>
             <input matInput formControlName=newThreadsDescription placeholder="New thread's description" autocomplete="off">
         </mat-form-field>
-        <angular-editor
-                id="message-text"
+        <angular-markdown-editor
+                textareaId="message-text"
+                [rows]="10"
                 formControlName="firstMessage"
-                [config]="editorConfig"></angular-editor>
+                [options]="editorOptions"
+                class="angular-markdown-editor-minimalistic">
+        </angular-markdown-editor>
     </form>
 </div>

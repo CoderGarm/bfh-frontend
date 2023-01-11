@@ -2,7 +2,6 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {AdminApiService, Translation} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {FormControl, FormGroup} from "@angular/forms";
-import {AngularEditorConfig} from "@kolkov/angular-editor";
 
 
 @Component({
@@ -36,20 +35,6 @@ export class TranslationEditorComponent extends SubscriptionManager implements O
         selectedLanguageCode: new FormControl(''),
         translationFC: new FormControl('')
     });
-
-    displayConfig: AngularEditorConfig = {
-        editable: false,
-        showToolbar: false,
-        enableToolbar: false,
-        sanitize: true
-    };
-
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        showToolbar: false,
-        enableToolbar: false,
-        sanitize: true
-    };
 
     constructor(private adminApi: AdminApiService) {
         super();

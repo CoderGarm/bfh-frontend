@@ -10,21 +10,19 @@
                 <mat-label>{{ 'translation.reference.language' | translate }}</mat-label>
                 <input matInput autocomplete="off" placeholder="{{ 'translation.designated.language' | translate }}" [disabled]="true" [value]="referenceTranslation.languageCode">
             </mat-form-field>
-            <angular-editor
+            <textarea
                     matTooltip="{{ 'translation.no-change-reference-translation' | translate }}"
                     placeholder="{{ 'translation.text.title' | translate }}"
-                    [ngModel]="referenceTranslation.translation"
-                    [config]="displayConfig"></angular-editor>
+                    [ngModel]="referenceTranslation.translation"></textarea>
         </div>
         <div *ngFor="let translation of translations" class="input-translation">
             <mat-form-field appearance="fill">
                 <mat-label>{{ 'translation.reference.language' | translate }}</mat-label>
                 <input matInput autocomplete="off" placeholder="{{ 'translation.designated.language' | translate }}" [disabled]="true" [value]="translation.languageCode">
             </mat-form-field>
-            <angular-editor
+            <textarea
                     placeholder="{{ 'translation.text.title' | translate }}"
-                    [(ngModel)]="translation.translation"
-                    [config]="editorConfig"></angular-editor>
+                    [(ngModel)]="translation.translation"></textarea>
         </div>
         <div class="input-translation" *ngIf="getReducedLanguageCodes().length > 0">
             <form [formGroup]=newTranslationFG>
@@ -36,10 +34,9 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <angular-editor
+                <textarea
                         placeholder="{{ 'translation.text.title' | translate }}"
-                        formControlName="translationFC"
-                        [config]="editorConfig"></angular-editor>
+                        formControlName="translationFC"></textarea>
             </form>
         </div>
     </mat-card-content>

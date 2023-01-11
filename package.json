@@ -1,6 +1,6 @@
 {
   "name": "bfh-fe",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -26,7 +26,6 @@
     "@angular/platform-browser": "~13.2.4",
     "@angular/platform-browser-dynamic": "~13.2.4",
     "@angular/router": "~13.2.4",
-    "@kolkov/angular-editor": "^3.0.0-beta.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@svgdotjs/svg.draggable.js": "^3.0.2",

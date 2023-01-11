@@ -10,7 +10,6 @@ import {AuthenticationModule} from "../../services/authentication";
 import {ApiModule} from "../../services/swagger";
 import {NumericCounterComponent} from './components/numeric-counter/numeric-counter.component';
 import {OverlayModule} from "@angular/cdk/overlay";
-import {AngularEditorModule} from "@kolkov/angular-editor";
 import {TranslateModule} from "@ngx-translate/core";
 import {NumberShortPipe} from "../../services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "../../services/pipes/number-thousand-separator.pipe";
@@ -47,7 +46,6 @@ import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
         ApiModule,
         MaterialComponentsModule,
         OverlayModule,
-        AngularEditorModule,
         MarkdownModule.forChild(),
         AngularMarkdownEditorModule,
         TranslateModule,
@@ -63,7 +61,6 @@ import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
         AuthenticationModule,
         ApiModule,
         OverlayModule,
-        AngularEditorModule,
         TranslateModule,
         NumberShortPipe,
         NumberRomanPipe,

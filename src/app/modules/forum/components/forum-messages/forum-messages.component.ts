@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CreateForumThreadMessage, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
-import {FormControl, FormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
-import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
-import {AngularEditorConfig} from "@kolkov/angular-editor";
+import {MarkdownService} from "ngx-markdown";
+import {EditorInstance} from "angular-markdown-editor";
+import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 
 
 @Component({
@@ -15,11 +15,6 @@ import {AngularEditorConfig} from "@kolkov/angular-editor";
 })
 export class ForumMessagesComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
-    /**
-     * the logged-in user
-     */
-    userID?: number;
-
     private isEditMode?: ForumMessage;
 
     @Input()
@@ -27,10 +22,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     selectedForumThreadDefinition: string = 'selectedForumThread';
 
     messagesInThread?: ForumMessage[];
-
-    messageFG: FormGroup = new FormGroup({
-        messageFC: new FormControl('')
-    });
 
     @ViewChild('paginatorTop', {static: true})
     paginatorTop?: MatPaginator;
@@ -41,17 +32,14 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     pageIndex: number = 0;
     pageSize: number = 15;
     messageAmountInThread: number = 0;
-    private readonly writeYourMessage = 'Write your message...';
-    editorConfig: AngularEditorConfig = {
-        editable: false,
-        placeholder: this.writeYourMessage,
-        showToolbar: false,
-        enableToolbar: false,
-        sanitize: true
-    };
 
-    constructor(private forumApi: ForumApiService,
-                private forumsNotificationService: ForumsNotificationService) {
+    bsEditorInstance?: EditorInstance;
+    editorOptions?: EditorOption;
+
+    markdownText: string = '';
+
+    constructor(private markdownService: MarkdownService,
+                private forumApi: ForumApiService) {
         super();
     }
 
@@ -62,7 +50,19 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     ngAfterViewInit(): void {
-        this.userID = this.tokenStorage.getUserID();
+
+        this.editorOptions = {
+            iconlibrary: 'fa',
+            fullscreen: {
+                enable: false,
+                icons: {}
+            },
+            parser: (val) => this.markdownService.compile(val.trim()),
+            onChange: () => {
+            },
+            onShow: (e) => this.bsEditorInstance = e
+        };
+
         if (!!this.paginatorTop && !!this.paginatorBottom) {
             this.paginatorTop.page.pipe(
                 tap(() => {
@@ -91,8 +91,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             this.selectedForumThread = undefined;
             this.messagesInThread = undefined;
             this.messageAmountInThread = 0;
-            this.editorConfig.editable = false;
-            this.editorConfig.placeholder = this.writeYourMessage;
             return;
         }
         this.selectedForumThread = thread;
@@ -103,35 +101,29 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         this.subscriptions.push(sub);
         sub = this.forumApi.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
         this.subscriptions.push(sub);
-        this.editorConfig.editable = true;
-        this.editorConfig.placeholder = this.getPlaceholder(thread);
-    }
-
-    private getPlaceholder(thread: ForumThread) {
-        return this.writeYourMessage + ' to ' + thread.title;
     }
 
     submitMessage() {
         if (!!this.selectedForumThread) {
             if (this.isEditMode) {
                 let message: ForumMessage = this.isEditMode;
-                this.isEditMode.message = this.messageFG.controls.messageFC.value;
+                this.isEditMode.message = this.markdownText;
                 let sub = this.forumApi.editThreadMessage(message).subscribe(resp => {
                     if (resp) {
                         this.selectThread(this.selectedForumThread);
-                        this.messageFG.controls.messageFC.setValue('');
+                        this.markdownText = '';
                     }
                 });
                 this.subscriptions.push(sub);
             } else {
                 let message: CreateForumThreadMessage = {
-                    message: this.messageFG.controls.messageFC.value,
+                    message: this.markdownText,
                     idForumThread: this.selectedForumThread.idForumThread
                 }
                 let sub = this.forumApi.createThreadMessage(message).subscribe(resp => {
                     if (resp) {
                         this.selectThread(this.selectedForumThread);
-                        this.messageFG.controls.messageFC.setValue('');
+                        this.markdownText = '';
                     }
                 });
                 this.subscriptions.push(sub);
@@ -152,6 +144,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
 
     edit(message: ForumMessage) {
         this.isEditMode = message;
-        this.messageFG.controls.messageFC.setValue(message.message);
+        this.markdownText = message.message;
     }
 }

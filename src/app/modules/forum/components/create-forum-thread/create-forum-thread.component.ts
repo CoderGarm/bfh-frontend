@@ -3,7 +3,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {CreateForumThread, Forum} from "../../../../services/swagger";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
-import {AngularEditorConfig} from "@kolkov/angular-editor";
+import {EditorInstance} from "angular-markdown-editor";
+import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
+import {MarkdownService} from "ngx-markdown";
 
 @Component({
     selector: 'app-create-forum-thread',
@@ -20,22 +22,30 @@ export class CreateForumThreadComponent extends SubscriptionManager implements O
         newThreadsDescription: new FormControl(''),
         firstMessage: new FormControl(''),
     });
-
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        placeholder: 'The first message...',
-        showToolbar: false,
-        enableToolbar: false,
-        sanitize: true
-    };
+    bsEditorInstance?: EditorInstance;
+    editorOptions?: EditorOption;
 
     constructor(@Optional() @Inject('selectedForum') selectedForum: Forum | undefined,
+                private markdownService: MarkdownService,
                 private forumsNotificationService: ForumsNotificationService) {
         super();
         this.selectedForum = selectedForum;
     }
 
     ngOnInit(): void {
+
+        this.editorOptions = {
+            iconlibrary: 'fa',
+            fullscreen: {
+                enable: false,
+                icons: {}
+            },
+            parser: (val) => this.markdownService.compile(val.trim()),
+            onChange: () => {
+            },
+            onShow: (e) => this.bsEditorInstance = e
+        };
+
         this.newThreadFG.valueChanges.subscribe(value => {
             this.forumsNotificationService.pushCreatedThread(this.createThread());
         });
