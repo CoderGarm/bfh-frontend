@@ -1,6 +1,7 @@
 import {ArrayXY} from "@svgdotjs/svg.js";
 
 export class RestrictedFleetArea {
+
     private minX: number = Number.MAX_VALUE
     private maxX: number = -1 * Number.MAX_VALUE;
     private minY: number = Number.MAX_VALUE;
@@ -24,6 +25,14 @@ export class RestrictedFleetArea {
                 this.maxY = polyY;
             }
         });
+    }
+
+    getWidth() {
+        return Math.max(this.minX, this.maxX) - Math.min(this.minX, this.maxX);
+    }
+
+    getHeight() {
+        return Math.max(this.minY, this.maxY) - Math.min(this.minY, this.maxY);
     }
 
     /**

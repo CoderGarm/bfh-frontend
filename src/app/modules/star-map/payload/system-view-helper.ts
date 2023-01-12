@@ -40,9 +40,10 @@ export class SystemViewHelper extends BasicViewHelper {
         this.setOrbits(orbitDefinitions);
         this.setViewBox(undefined, 0.7);
 
+        let mainGroup = this.getOrCreateMainCelestialGroup();
+
         this.hyperLimitRadius = this.calculateHyperLimit(system);
-        this.canvas!
-            .circle()
+        mainGroup.circle()
             .x(0)
             .y(0)
             .id("hyper-limit-of-" + system.idStarSystem)
@@ -50,8 +51,7 @@ export class SystemViewHelper extends BasicViewHelper {
             .addClass(BasicViewHelper.HYPER_LIMIT_MARKER)
             .radius(this.hyperLimitRadius);
 
-        this.canvas!
-            .circle()
+        mainGroup.circle()
             .x(0)
             .y(0)
             .id("star-of-" + system.idStarSystem)
@@ -65,8 +65,7 @@ export class SystemViewHelper extends BasicViewHelper {
             let orbitID = this.getOrbitID(orbit);
             let radius: number = BasicViewHelper.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
 
-            this.canvas!
-                .circle()
+            mainGroup.circle()
                 .x(0)
                 .y(0)
                 .id(orbitID + BasicViewHelper.ORBIT_SUFFIX)

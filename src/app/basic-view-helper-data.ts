@@ -1,5 +1,5 @@
 import {SubscriptionManager} from "./SubscriptionManager";
-import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, StateBlock, WarShip} from "./services/swagger";
+import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, WarShip} from "./services/swagger";
 import {ArrayXY, Circle, G, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
@@ -13,14 +13,7 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
 })
 export class BasicViewHelperData extends SubscriptionManager {
 
-    protected static readonly DEFAULT_STATE_BLOCK: StateBlock = {
-        isDeleted: false,
-        isOperational: true,
-        isActive: true,
-        isFightingCapable: true,
-        needsRepair: false,
-        needsAmmunition: false
-    }
+    protected static readonly CELESTIAL_MAIN_GROUP = 'celestial-main-group';
 
     protected static readonly ORBIT_ID_MARKER = "orbitId-";
     protected static readonly GROUP_SELECTOR_SUFFIX: string = "-group";
@@ -32,11 +25,9 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly ORBIT_SELECTOR_ID_PREFIX: string = "-orbit";
     protected static readonly FLEET_SHARK_MARKER: string = "fleet-shark";
     protected static readonly FLEET_SHARK_SELECTOR_ID_PREFIX: string = BasicViewHelperData.FLEET_SHARK_MARKER + "-icon";
-    protected static readonly FLEET_COLLECTION_SELECTOR_ID_PREFIX: string = BasicViewHelperData.FLEET_SHARK_MARKER + "-collection-icon";
     protected static readonly WARSHIP_SELECTOR_ID_PREFIX: string = "-warship";
     protected static readonly MISSILE_SALVO_SELECTOR_ID_PREFIX: string = "-missile-salvo";
 
-    protected static readonly FLEET_COLLECTION_RECTANGLE_MARKER = "fleet-collection-rect";
     protected static readonly CYCLING_CIRCLE_MARKER = "circle-cycle";
     protected static readonly ICON_ID_MARKER: string = "iconId-";
     protected static readonly MOVABLE_STATE_DOT_MARKER: string = "movableStateDot";
@@ -52,7 +43,7 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly CENTER_COORDINATES_MARKER = "center-";
     protected static readonly CENTER_COORDINATES_SEPARATOR = "|";
 
-    protected canvas?: Svg;
+    protected canvas?: Svg; // fixme make private after refactoring combat arena
 
     private orbits?: Orbit[];
 
@@ -146,6 +137,56 @@ export class BasicViewHelperData extends SubscriptionManager {
         return {x, y};
     }
 
+    protected getOrDefaultZoomFactor(zoomFactor?: number) {
+        if (!zoomFactor) {
+            zoomFactor = 1;
+        }
+        return zoomFactor;
+    }
+
+    protected defineFleetSharkPoints(x: number, y: number, zoomFactor?: number) {
+        zoomFactor = this.getOrDefaultZoomFactor(zoomFactor);
+        x += (10 / zoomFactor);
+        let points: ArrayXY[] = [];
+        points.push([x, y]);
+        points.push([x + (20 / zoomFactor), y - (7.5 / zoomFactor)]);
+        points.push([x + (15 / zoomFactor), y]);
+        points.push([x + (20 / zoomFactor), y + (5 / zoomFactor)]);
+        points.push([x, y]);
+        return points;
+    }
+
+    protected createFleetSharkPoints(x: number, y: number, orbit: Orbit, zoomFactor?: number): ArrayXY[] {
+        zoomFactor = this.getOrDefaultZoomFactor(zoomFactor);
+        const xModifier = 20 / zoomFactor;
+        const yModifier = 35 / zoomFactor;
+
+        let points = this.defineFleetSharkPoints(x, y, zoomFactor);
+
+        let restrictedArea = new RestrictedFleetArea(points);
+        let orbitID = this.getOrbitID(orbit);
+        if (!this.isOrbitIdInRestrictedAreas(orbitID)) {
+            let areas = [];
+            areas.push(restrictedArea);
+            this.setRestrictedArea(orbitID, areas);
+        } else {
+            let areas = this.getRestrictedArea(orbitID)!;
+            let restrictedAreas: RestrictedFleetArea[] = areas.filter(area => area.collides(points));
+            const length = restrictedAreas.length;
+            if (length != 0) {
+                if (length % 2 === 0) {
+                    x += xModifier * length;
+                } else {
+                    x += xModifier * (length - 1);
+                    y += yModifier;
+                }
+                points = this.defineFleetSharkPoints(x, y, zoomFactor);
+            }
+            areas.push(restrictedArea);
+        }
+        return points;
+    }
+
     protected sortPoints(points: ArrayXY[]) {
         let sortedPointsX = points.sort((a, b) => a[0] > b[0] ? 1 : -1);
         let sortedPointsY = points.sort((a, b) => a[1] < b[1] ? 1 : -1);
@@ -223,47 +264,16 @@ export class BasicViewHelperData extends SubscriptionManager {
         return id;
     }
 
-    protected isFleetCollectionId(id: string): boolean {
-        return id.startsWith(BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX);
+    protected isCelestialId(id: string): boolean {
+        return id.startsWith(BasicViewHelperData.CELESTIAL_BODY_SELECTOR_ID_PREFIX);
     }
 
     protected isFleetSharkId(id: string): boolean {
         return id.startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX);
     }
 
-    protected getFleetCollectionID(fleetMarkers: FleetMarker[]): string {
-        let prefix: string = BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX;
-        let sortedFleetIDs = fleetMarkers.map(f => f.fleet.id).sort((a, b) => a - b);
-        let id = '';
-        for (let i = 0; i < sortedFleetIDs.length; i++) {
-            const fleetID = sortedFleetIDs[i];
-            if (i > 0) {
-                id += BasicViewHelperData.CENTER_COORDINATES_SEPARATOR;
-            }
-            id += fleetID;
-        }
-        return prefix + "-" + id;
-    }
-
-    protected getFleetSharkIDsFromCollectionID(collectionID: string): string[] {
-        let prefix: string = BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX;
-        if (!collectionID.startsWith(prefix)) {
-            return [];
-        }
-        const payload = collectionID.replace(prefix, '').split("-")[1];
-        const fleetIDs = payload.split(BasicViewHelperData.CENTER_COORDINATES_SEPARATOR);
-        const fleetSharkIDs: string[] = [];
-        fleetIDs.forEach(id => fleetSharkIDs.push(this.getFleetSharkID({id: Number.parseFloat(id)})));
-        return fleetSharkIDs;
-    }
-
-    protected getFleetIDsFromCollectionID(collectionID: string): number[] {
-        let prefix: string = BasicViewHelperData.FLEET_COLLECTION_SELECTOR_ID_PREFIX;
-        if (!collectionID.startsWith(prefix)) {
-            return [];
-        }
-        const payload = collectionID.replace(prefix, '').split("-")[1];
-        return payload.split(BasicViewHelperData.CENTER_COORDINATES_SEPARATOR).map(string => Number.parseFloat(string));
+    protected getCyclingCircleId(id: string) {
+        return id + BasicViewHelperData.CYCLING_CIRCLE_SUFFIX;
     }
 
     protected getFleetSharkID(fleet: Fleet | AbstractId | FleetMarker): string {
@@ -321,10 +331,6 @@ export class BasicViewHelperData extends SubscriptionManager {
         this.groupsByID.set(id, group);
     }
 
-    protected getRestrictedArea(orbitID: string): RestrictedFleetArea[] | undefined {
-        return this.restrictedAreasByOrbitId.get(orbitID);
-    }
-
     protected getGroupById(id: string): G | undefined {
         if (!id.endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX)) {
             id += BasicViewHelperData.GROUP_SELECTOR_SUFFIX;
@@ -342,6 +348,15 @@ export class BasicViewHelperData extends SubscriptionManager {
 
     protected setRestrictedArea(orbitID: string, areas: any[]) {
         this.restrictedAreasByOrbitId.set(orbitID, areas);
+    }
+
+    protected getRestrictedArea(orbitID: string): RestrictedFleetArea[] {
+        let areas = this.restrictedAreasByOrbitId.get(orbitID);
+        if (!areas) {
+            areas = [];
+            this.setRestrictedArea(orbitID, areas);
+        }
+        return areas;
     }
 
     protected isOrbitIdInRestrictedAreas(orbitID: string) {

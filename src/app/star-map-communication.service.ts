@@ -220,7 +220,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     showMoveDisabled() {
-        const fleetsWithoutMovement = this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => !f.move);
+        const fleetsWithoutMovement = this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => !f.move).filter(f => f.state.isOperational);
         const fleetsWithoutMovementPresent = fleetsWithoutMovement.length > 0;
         const movableFleetsPresent = fleetsWithoutMovementPresent && (this.isSelectedStarSystem() || this.isSelectedPlanet());
         const fleetsWithDifferentOrbits: Fleet[] = [];
@@ -285,7 +285,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     showTransportDisabled() {
-        return this.selectedFleets.filter(f => f.owner.idUser == this.userId).length < 1 || this.isStarSystemDisplayed();
+        return this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => f.state.isOperational).length < 1 || this.isStarSystemDisplayed();
     }
 
     deselectDisabled() {

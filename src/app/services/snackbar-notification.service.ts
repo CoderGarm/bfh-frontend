@@ -14,7 +14,7 @@ export class SnackbarNotificationService {
         this.zone.run(() => {
             this.snackBar.open(message, action, {
                 panelClass: "notification-snackbar",
-                duration: 50000,
+                duration: 5000,
                 horizontalPosition: "center",
                 verticalPosition: "top",
             });

@@ -82,19 +82,3 @@ svg {
   stroke-dasharray: 0 20 28.284;
   animation: infinite;
 }
-
-.fleet-collection-rect {
-  fill: $primary-color;
-}
-
-.fleet-collection-rect-textbox {
-  fill: none;
-  stroke: $metal-glance;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 4 12; // fixme to by zoom level
-}
-
-.fleet-collection-text {
-  font-size: 7px;
-}
