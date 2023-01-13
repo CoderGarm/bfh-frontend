@@ -3,6 +3,8 @@
     <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit">
         <mat-expansion-panel-header [matTooltip]="getPercentageString(fleet)">
             <mat-panel-title class="align-center">
+                <mat-icon *ngIf="!isInoperational(fleet) && !isInRepair(fleet)" matTooltip="{{ 'combat-arena.tooltip.warship-state.active' | translate }}">military_tech</mat-icon>
+                <mat-icon *ngIf="isInoperational(fleet)" matTooltip="{{ 'spacecraft.state.msg.not-operational' | translate }}">radar</mat-icon>
                 <mat-icon *ngIf="isInRepair(fleet)" [matTooltip]="getRepairJobButtonText(fleet)">construction</mat-icon>
                 {{fleet.name}}
             </mat-panel-title>

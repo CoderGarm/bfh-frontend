@@ -84,17 +84,16 @@
         </mat-expansion-panel>
     </mat-accordion>
 </div>
-<div>
-    <app-combat-arena
-            [starSystem]="starSystem"
-            [battleReport]="currentlyOpenedItem"
-            [combatArenaData]="combatArenaData"
-            [activeRound]="activeRound"></app-combat-arena>
-</div>
+
+<app-combat-arena
+        [starSystem]="starSystem"
+        [battleReport]="currentlyOpenedItem"
+        [combatArenaData]="combatArenaData"
+        [activeRound]="activeRound"></app-combat-arena>
+
 <div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && combatRounds.length > 0">
 
     <mat-slider id="battle-round-stepper"
-                #slider
                 thumbLabel
                 [displayWith]="formatLabel"
                 tickInterval="1"

@@ -25,7 +25,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
 
     @Input()
     starSystem?: StarSystem;
-    private starSystemSelectionInputDefinition: string = "starSystemSelection";
+    private starSystemSelectionInputDefinition: string = "starSystem";
 
     @Input()
     battleReport?: BattleReport;
@@ -55,6 +55,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     }
 
     ngAfterViewInit(): void {
+        this.createCanvas("combat-arena", '#arena');
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -67,8 +68,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         if (changes[this.activeRoundInputDefinition]) {
             if (!!this.starSystem) {
-                this.createCanvas("combat-arena", '#arena')
-                this.setActiveRound(this.activeRound, this.starSystem, this.canvas!, this.clickForFleet, this.mouseoverForWarship);
+                this.setActiveRound(this.activeRound, this.starSystem, this.clickForFleet, this.mouseoverForWarship);
                 let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
             }
@@ -101,13 +101,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
      */
     private createStarMap() {
         if (!!this.starSystem) {
-            if (!this.canvas) {
-                //this.createCanvas()
-                this.createCanvas("combat-arena", '#arena')
-            } else {
-                this.clearData();
-            }
-            this.drawOrbits(this.canvas!, this.starSystem);
+            this.drawOrbits(this.starSystem);
         } else {
             this.clearData();
         }

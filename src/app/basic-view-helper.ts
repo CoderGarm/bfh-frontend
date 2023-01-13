@@ -1,5 +1,5 @@
 import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem, StateBlock} from "./services/swagger";
-import {ArrayXY, Circle, CurveCommand, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
+import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
 import {Component, HostListener} from "@angular/core";
@@ -13,6 +13,8 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
     template: ''
 })
 export class BasicViewHelper extends BasicViewHelperData {
+
+    protected canvas?: Svg;
 
     starMapCommService = AppInjector.get(StarMapCommunicationService);
 
@@ -171,6 +173,8 @@ export class BasicViewHelper extends BasicViewHelperData {
                         orbit = fleet.orbit.orbit!;
                     }
                 }
+                //x = this.convertToStandardMetric(orbit.xCoordinate);
+                //y = this.convertToStandardMetric(orbit.yCoordinate);
                 x = orbit.xCoordinate.coordinate;
                 y = orbit.yCoordinate.coordinate;
             } else {
@@ -260,8 +264,8 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     private zoomResizableContents() {
-        const mainGroup = this.getCelestialMainGroup();
-        const elements = mainGroup.children().filter(c => c.classes().filter(c => c == BasicViewHelperData.RESIZE_ON_ZOOM_MARKER).length != 0);
+        const drawingGroup = this.getOrCreateMainCelestialGroup();
+        const elements = drawingGroup.children().filter(c => c.classes().filter(c => c == BasicViewHelperData.RESIZE_ON_ZOOM_MARKER).length != 0);
         elements!.forEach(c => {
             if ('radius' in c) {
                 this.resizeCelestial(c);
@@ -272,8 +276,13 @@ export class BasicViewHelper extends BasicViewHelperData {
         });
     }
 
-    private getCelestialMainGroup() {
-        return this.canvas!.children().filter(c => c.id() === BasicViewHelper.CELESTIAL_MAIN_GROUP)[0];
+    protected getOrCreateMainCelestialGroup() {
+        const mainGroups = this.canvas!.children().filter(c => c.id() === BasicViewHelperData.CELESTIAL_MAIN_GROUP);
+        if (mainGroups.length > 0) {
+            return <G>mainGroups[0]!;
+        } else {
+            return this.canvas!.group().id(BasicViewHelperData.CELESTIAL_MAIN_GROUP);
+        }
     }
 
     private repositioningRoundCapMarker(c: Element) {
@@ -353,6 +362,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             circle.addClass(BasicViewHelper.NOT_COLONIZED_COLOR_CSS_CLASS);
         }
         this.setCelestialCircleById(celestialBodyID, circle);
+        this.setCelestialOrbitById(celestialBodyID, orbit);
         this.setCelestialObjectById(orbitID, orbitDefinition.celestial);
         this.setCelestialObjectById(celestialBodyID, orbitDefinition.celestial);
 
@@ -371,16 +381,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         } else {
             // display constantly
             mainGroup.add(text);
-        }
-        this.setCelestialOrbitById(celestialBodyID, orbit);
-    }
-
-    protected getOrCreateMainCelestialGroup() {
-        const mainGroups = this.canvas!.children().filter(c => c.id() === BasicViewHelperData.CELESTIAL_MAIN_GROUP);
-        if (mainGroups.length > 0) {
-            return <G>mainGroups[0]!;
-        } else {
-            return this.canvas!.group().id(BasicViewHelperData.CELESTIAL_MAIN_GROUP);
         }
     }
 
@@ -523,6 +523,12 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.drawMovePathOnClick();
     };
 
+    private handleClickedFleet(event: PointerEvent): FleetMarker | undefined {
+        let fleetMarker = this.getFleetByEvent(event);
+        this.doFleetMarkerSelection(fleetMarker);
+        return fleetMarker;
+    }
+
     private drawCyclingCirclesForFleetsOnClick(clickedFleet: FleetMarker | undefined) {
         if (!!clickedFleet) {
             const fleetSharkID = this.getFleetSharkID(clickedFleet);
@@ -546,7 +552,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
         const linkedElements = this.canvas!.children()
             .filter(c => c.id().startsWith(element.id()))
-            .filter(c => !c.id().endsWith(BasicViewHelperData.ORBIT_SUFFIX)); // todo better naming model needed
+            .filter(c => !c.id().endsWith(BasicViewHelperData.ORBIT_SUFFIX));
         linkedElements.forEach(inner => {
             const iBox = inner.bbox();
             const dia = Math.ceil(Math.sqrt(Math.pow(Math.ceil(iBox.width), 2) + Math.pow(Math.ceil(iBox.height), 2)));
@@ -580,12 +586,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         });
     }
 
-    private handleClickedFleet(event: PointerEvent): FleetMarker | undefined {
-        let fleetMarker = this.getFleetByEvent(event);
-        this.doFleetMarkerSelection(fleetMarker);
-        return fleetMarker;
-    }
-
     private doFleetMarkerSelection(fleetMarker: FleetMarker | undefined) {
         if (!!fleetMarker) {
             if (this.starMapCommService.isSelectedFleetMarker(fleetMarker.fleet.id)) {
@@ -599,12 +599,20 @@ export class BasicViewHelper extends BasicViewHelperData {
     private drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
         const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
 
+        let parent: Dom = this.canvas!;
         let element: Element | undefined;
         const group = this.getGroupById(id);
         if (!group) {
-            const elements = this.canvas!.children().filter(value => value.id() == id);
+            const drawingGroup = this.getOrCreateMainCelestialGroup();
+            let elements = drawingGroup.children().filter(value => value.id() == id);
             if (elements.length == 1) {
                 element = elements[0];
+                parent = drawingGroup;
+            } else {
+                elements = this.canvas!.children().filter(value => value.id() == id);
+                if (elements.length == 1) {
+                    element = elements[0];
+                }
             }
         } else {
             element = group;
@@ -622,9 +630,9 @@ export class BasicViewHelper extends BasicViewHelperData {
                 circle.addClass(BasicViewHelper.INVISIBLE_CLASS);
             }
 
-            this.canvas!.removeElement(element);
-            this.canvas!.add(circle);
-            this.canvas!.add(element);
+            parent.removeElement(element);
+            parent.add(circle);
+            parent.add(element);
         }
     }
 

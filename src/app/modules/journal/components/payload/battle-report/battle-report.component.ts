@@ -67,8 +67,6 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
 
     isExpanded: boolean = false;
 
-    //** accordion paginator block **\\
-
     starSystem?: StarSystem;
 
     combatRounds: Int8Array = new Int8Array();

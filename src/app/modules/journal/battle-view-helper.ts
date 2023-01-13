@@ -1,4 +1,4 @@
-import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Polygon, Svg} from "@svgdotjs/svg.js";
+import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Polygon} from "@svgdotjs/svg.js";
 import {
     AbstractId,
     BattleReport,
@@ -9,7 +9,6 @@ import {
     HitLog,
     Launcher,
     MissileMovement,
-    Move,
     MovementAction,
     Orbit,
     Planet,
@@ -55,47 +54,38 @@ export class BattleViewHelper extends BasicViewHelper {
 
     setActiveRound(activeRound: number | undefined,
                    starSystem: StarSystem,
-                   canvas: Svg,
                    clickForFleet: (event: PointerEvent) => void,
                    mouseoverForWarship: (event: PointerEvent) => void) {
         this.clearData();
-        this.drawOrbits(canvas, starSystem);
-        if (!activeRound || !this.combatArenaData || !this.canvas) {
+        this.drawOrbits(starSystem);
+        if (!activeRound || !this.combatArenaData) {
             console.log("no active round selected: ", activeRound);
             return;
         }
 
         const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound);
         if (!!movementByFleet) {
-            this.setFleetsInBattle(this.canvas, movementByFleet, activeRound, this.combatArenaData.hitLogsByRound, clickForFleet, mouseoverForWarship);
+            this.setFleetsInBattle(movementByFleet, activeRound, this.combatArenaData.hitLogsByRound, clickForFleet, mouseoverForWarship);
         }
         let missileMovements = this.combatArenaData.missileMovementsByRound.get(activeRound);
         if (!!missileMovements) {
-            this.setMissileMovements(this.canvas, missileMovements);
+            this.setMissileMovements(missileMovements);
         }
         let volleys = this.combatArenaData.volleysByRound.get(activeRound);
         if (!!volleys) {
-            this.setReleasedVolleys(this.canvas, volleys);
+            this.setReleasedVolleys(volleys);
         }
         let shipKillerHits = this.combatArenaData.shipKillerHitsByRound.get(activeRound);
         if (!!shipKillerHits) {
-            this.setShipKillerHits(this.canvas, shipKillerHits);
+            this.setShipKillerHits(shipKillerHits);
         }
         let counterMissileHits = this.combatArenaData.counterMissileHitsByRound.get(activeRound);
         if (!!counterMissileHits) {
-            this.setCounterMissileHits(this.canvas, counterMissileHits);
+            this.setCounterMissileHits(counterMissileHits);
         }
     }
 
-    /**
-     * prints all running ship killer hits in the current combat round to the canvas
-     *
-     * @param canvas
-     * @param shipKillerHits
-     */
-    private setCounterMissileHits(canvas: Svg, shipKillerHits: CounterMissileHit[]) {
-        this.setCanvas(canvas);
-
+    private setCounterMissileHits(shipKillerHits: CounterMissileHit[]) {
         shipKillerHits.forEach((hit) => {
             let attackedMissileSalvo = this.getMissileSalvoIDByHit(hit);
             let destroyedMissiles = hit.destroyedMissiles;
@@ -119,15 +109,7 @@ export class BattleViewHelper extends BasicViewHelper {
         });
     }
 
-    /**
-     * prints all running ship killer hits in the current combat round to the canvas
-     *
-     * @param canvas
-     * @param shipKillerHits
-     */
-    private setShipKillerHits(canvas: Svg, shipKillerHits: ShipKillerHit[]) {
-        this.setCanvas(canvas);
-
+    private setShipKillerHits(shipKillerHits: ShipKillerHit[]) {
         shipKillerHits.forEach((hit) => {
 
             let result = hit.result;
@@ -192,14 +174,7 @@ export class BattleViewHelper extends BasicViewHelper {
         return result;
     }
 
-    /**
-     * prints all running volleys in the current combat round to the canvas
-     *
-     * @param canvas
-     * @param volleys
-     */
-    private setMissileMovements(canvas: Svg, volleys: MissileMovement[]) {
-        this.setCanvas(canvas);
+    private setMissileMovements(volleys: MissileMovement[]) {
         const baseOrbit = this.createBaseOrbit();
 
         volleys.forEach((volley) => {
@@ -209,14 +184,6 @@ export class BattleViewHelper extends BasicViewHelper {
         });
     }
 
-    /**
-     * creates a fleet shark, a text and groups them in the svg
-     *
-     * @param missileSalvoId the id
-     * @param missileHullPoints the polygon points itself
-     * @param fleetOwnerId the fleet owner
-     * @private
-     */
     private createMissileHullOutlinesAndPrint(missileSalvoId: string,
                                               missileHullPoints: Array<ArrayXY[]>,
                                               fleetOwnerId: number) {
@@ -299,16 +266,7 @@ export class BattleViewHelper extends BasicViewHelper {
         return points;
     }
 
-
-    /**
-     * prints all running volleys in the current combat round to the canvas
-     *
-     * @param canvas
-     * @param volleys
-     */
-    private setReleasedVolleys(canvas: Svg, volleys: ReleasedVolley[]) {
-        this.setCanvas(canvas);
-
+    private setReleasedVolleys(volleys: ReleasedVolley[]) {
         volleys.forEach((volley) => {
             let damageDealerId = volley.damageDealer;
             let shooter = volley.actor;
@@ -341,16 +299,11 @@ export class BattleViewHelper extends BasicViewHelper {
         });
     }
 
-    /**
-     * prints a fleet in the current combat round to the canvas and also the course plot
-     */
-    private setFleetsInBattle(canvas: Svg,
-                              fleetsInMotion: MovementAction[],
+    private setFleetsInBattle(fleetsInMotion: MovementAction[],
                               activeRound: number,
                               hitLogsByRound: Map<number, HitLog[]>,
                               clickForFleet: (event: PointerEvent) => void,
                               mouseoverForWarship: (event: PointerEvent) => void) {
-        this.setCanvas(canvas);
         const baseOrbit = this.createBaseOrbit();
 
         fleetsInMotion.forEach((move) => {
@@ -391,21 +344,6 @@ export class BattleViewHelper extends BasicViewHelper {
             }
         });
         return warshipsToDisplay;
-    }
-
-    private createMove(fleet: FleetMarker, startOrbit: Orbit, targetOrbit: Orbit) {
-        const m: Move = {
-            idFleetInMotion: fleet.fleet.id,
-            moveDoneAtZero: 1,
-            originalDuration: 1,
-            startOrbit: {
-                orbit: startOrbit
-            },
-            targetOrbit: {
-                orbit: targetOrbit
-            }
-        }
-        return m;
     }
 
     /**
@@ -518,7 +456,6 @@ export class BattleViewHelper extends BasicViewHelper {
         let baseX = x - modifiedX;
         let baseY = y + (modifiedY * upDownY);
         for (let i = 0; i < warShips.length; i++) {
-            let warship = warShips[i];
             let x: number = baseX + verticalLift;
             let y: number = baseY + horizontalLift;
             let hullOutlines = this.createHullOutlines(x, y);
@@ -637,9 +574,7 @@ export class BattleViewHelper extends BasicViewHelper {
         }
     }
 
-    drawOrbits(canvas: Svg, system: StarSystem) {
-        this.setCanvas(canvas);
-
+    drawOrbits(system: StarSystem) {
         let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
         system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
         let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
@@ -647,8 +582,10 @@ export class BattleViewHelper extends BasicViewHelper {
         this.setOrbits(orbitDefinitions);
 
         this.hyperLimitRadius = this.calculateHyperLimit(system);
-        this.canvas!
-            .circle()
+
+        const celestialGroup = this.getOrCreateMainCelestialGroup();
+
+        celestialGroup.circle()
             .x(0)
             .y(0)
             .id("hyper-limit-of-" + system.idStarSystem)
@@ -662,8 +599,7 @@ export class BattleViewHelper extends BasicViewHelper {
             let orbitID = this.getOrbitID(orbit);
             let radius: number = BasicViewHelper.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
 
-            this.canvas!
-                .circle()
+            celestialGroup.circle()
                 .x(0)
                 .y(0)
                 .id(orbitID)
@@ -671,8 +607,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 .addClass("orbit")
                 .radius(radius);
 
-            this.canvas!
-                .circle()
+            celestialGroup.circle()
                 .x(0)
                 .y(0)
                 .id("star-of-" + system.idStarSystem)
@@ -697,14 +632,13 @@ export class BattleViewHelper extends BasicViewHelper {
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
 
                 let arr: PathArrayAlias = [p1, p2];
-                this.canvas!.path(arr)
+                celestialGroup.path(arr)
                     .fill(BasicViewHelper.NONE_FILL_COLOR)
                     .addClass(BasicViewHelper.COLONIZABLE_SYSTEM_MARKER_CSS_CLASS)
                     .addClass("roundCap");
             }
 
-            const circle = this.canvas!
-                .circle()
+            const circle = celestialGroup.circle()
                 .x(this.convertToStandardMetric(orbit.xCoordinate))
                 .y(this.convertToStandardMetric(orbit.yCoordinate))
                 .radius(5)

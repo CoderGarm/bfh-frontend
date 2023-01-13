@@ -1,6 +1,6 @@
 import {SubscriptionManager} from "./SubscriptionManager";
 import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, WarShip} from "./services/swagger";
-import {ArrayXY, Circle, G, Polygon, Shape, Svg, Text} from "@svgdotjs/svg.js";
+import {ArrayXY, Circle, G, Polygon, Shape, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "./NavigationCalculator";
 import {Component} from "@angular/core";
@@ -21,8 +21,8 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly MOVE_SUFFIX = "-move";
     protected static readonly ORBIT_SUFFIX = "-orbit";
 
-    protected static readonly CELESTIAL_BODY_SELECTOR_ID_PREFIX: string = "-orbit";
-    protected static readonly ORBIT_SELECTOR_ID_PREFIX: string = "-orbit";
+    protected static readonly CELESTIAL_BODY_SELECTOR_ID_PREFIX: string = "-orbit"; // todo strange things happen - needs to be unraveled
+    protected static readonly ORBIT_SELECTOR_ID_PREFIX: string = "-orbit"; // todo strange things happen - needs to be unraveled
     protected static readonly FLEET_SHARK_MARKER: string = "fleet-shark";
     protected static readonly FLEET_SHARK_SELECTOR_ID_PREFIX: string = BasicViewHelperData.FLEET_SHARK_MARKER + "-icon";
     protected static readonly WARSHIP_SELECTOR_ID_PREFIX: string = "-warship";
@@ -42,8 +42,6 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly ORBIT_MARKER = "orbit";
     protected static readonly CENTER_COORDINATES_MARKER = "center-";
     protected static readonly CENTER_COORDINATES_SEPARATOR = "|";
-
-    protected canvas?: Svg; // fixme make private after refactoring combat arena
 
     private orbits?: Orbit[];
 
@@ -292,19 +290,16 @@ export class BasicViewHelperData extends SubscriptionManager {
     }
 
     protected getWarshipID(warShip: WarShip | AbstractId): string {
-        let prefix: string = BasicViewHelperData.WARSHIP_SELECTOR_ID_PREFIX;
         let id = 'id' in warShip ? warShip.id : warShip.idWarship
-        return prefix + "-" + id;
+        return BasicViewHelperData.WARSHIP_SELECTOR_ID_PREFIX + "-" + id;
     }
 
     protected getMissileSalvoID(missileMovement: MissileMovement): string {
-        let id: string = BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX;
-        return id + "-" + missileMovement.movingMissileSalvo + "-" + missileMovement.combatRoundKey.combatRound.no;
+        return BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX + "-" + missileMovement.movingMissileSalvo + "-" + missileMovement.combatRoundKey.combatRound.no;
     }
 
     protected getMissileSalvoIDByHit(hit: CounterMissileHit): string {
-        let id: string = BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX;
-        return id + "-" + hit.attackedMissileSalvo + "-" + hit.combatRoundKey.combatRound.no;
+        return BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX + "-" + hit.attackedMissileSalvo + "-" + hit.combatRoundKey.combatRound.no;
     }
 
     protected getCelestialBodyID(orbit: Orbit): string {

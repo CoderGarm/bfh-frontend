@@ -152,4 +152,8 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
         }
         return this.translations.get('planetary.fleets-in-orbit.repair-btn.start-job')!;
     }
+
+    isInoperational(fleet: Fleet) {
+        return !fleet.state.isOperational;
+    }
 }
