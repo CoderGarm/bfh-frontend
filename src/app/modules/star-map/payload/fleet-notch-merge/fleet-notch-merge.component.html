@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-title>Transfer ships</mat-card-title>
+    <mat-card-content>
+        <app-fleet-merge-edit [resetChanges]="resetMergeChanges"
+                              [fleets]="commService.selectedFleets"></app-fleet-merge-edit>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="executeMerge()" [disabled]="executeMergeDisabled()">Execute</button>
+        <button mat-button (click)="resetMerge()">Reset</button>
+    </mat-card-actions>
+</mat-card>

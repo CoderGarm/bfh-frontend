@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-title>Fleet movements</mat-card-title>
+    <mat-card-content>
+        <app-interstellar-fleet-movement-edit *ngIf="!stellarMode"
+                                              [deselectAllMovements]="deselectAllMovements"
+                                              [fleets]="commService.selectedFleets"
+                                              [destination]="commService.selectedStarSystem"></app-interstellar-fleet-movement-edit>
+
+        <app-fleet-move-edit *ngIf="stellarMode"
+                             [deselectAllMovements]="deselectAllMovements"
+                             [fleets]="commService.selectedFleets"
+                             [system]="commService.displayedStarSystem"
+                             [destination]="commService.selectedPlanet"></app-fleet-move-edit>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="executeMove()" [disabled]="executeMoveDisabled()">Execute</button>
+        <button mat-button (click)="deselectMovements()">Deselect</button>
+    </mat-card-actions>
+</mat-card>

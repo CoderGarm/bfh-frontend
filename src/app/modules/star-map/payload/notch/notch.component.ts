@@ -1,7 +1,6 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {StarMapCommunicationService} from "../../../../star-map-communication.service";
-import {Fleet, FleetApiService} from "../../../../services/swagger";
-import {MatDialog} from "@angular/material/dialog";
+import {FleetApiService} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 
 
@@ -15,17 +14,13 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
     @Input()
     stellarMode: boolean = false;
 
-    deselectAllMovements: number = 0;
-    resetMergeChanges: number = 0
-
     commService: StarMapCommunicationService;
     displayMove: boolean = false;
     displayInfo: boolean = false;
     displayMerge: boolean = false;
     displayTransport: boolean = false;
 
-    constructor(private dialog: MatDialog,
-                private fleetService: FleetApiService,
+    constructor(private fleetService: FleetApiService,
                 commService: StarMapCommunicationService) {
         super();
         this.commService = commService;
@@ -36,7 +31,6 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
 
     ngOnChanges(changes: SimpleChanges): void {
     }
-
 
     displayActive(): boolean {
         return !this.displayInfo && !this.displayMove && !this.displayMerge && !this.displayTransport;
@@ -56,18 +50,6 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
         }
     }
 
-    executeMove() {
-        if (this.stellarMode) {
-            this.commService.stellarMove();
-        } else {
-            this.commService.interstellarMove();
-        }
-    }
-
-    deselectMovements() {
-        this.deselectAllMovements++;
-    }
-
     toggleShowMerge() {
         if (!this.showMergeDisabled()) {
             this.displayMerge = !this.displayMerge;
@@ -80,20 +62,6 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
         }
     }
 
-    executeMerge() {
-        this.commService.executeMerge();
-    }
-
-    executeMergeDisabled() {
-        return this.commService.mergeDisabled()
-    }
-
-
-    resetMerge() {
-        this.commService.resetMerge();
-        this.resetMergeChanges++;
-    }
-
     showInfoDisabled() {
         return this.commService.infoDisabled();
     }
@@ -102,9 +70,6 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
         return this.commService.showMoveDisabled() && this.cancelMoveDisabled();
     }
 
-    executeMoveDisabled() {
-        return this.commService.executeMoveDisabled() && this.commService.executeCancelDisabled();
-    }
 
     showMergeDisabled() {
         return !this.stellarMode || this.commService.showMergeDisabled();
@@ -134,22 +99,5 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
         if (!this.showInfoDisabled()) {
             this.displayInfo = !this.displayInfo;
         }
-    }
-
-    getColSpan(fleet: Fleet) {
-        let result: number = 3;
-        const length = this.commService.selectedFleets.length;
-        const indexOf = this.commService.selectedFleets.indexOf(fleet) + 1;
-
-        const currentRow = Math.ceil(indexOf / 3);
-
-        const diff = length - (currentRow * 3);
-        const elementsInLastRow = 3 - -diff;
-        if (diff < 0) {
-            result = 6 / elementsInLastRow;
-        } else {
-            result = 2;
-        }
-        return result;
     }
 }

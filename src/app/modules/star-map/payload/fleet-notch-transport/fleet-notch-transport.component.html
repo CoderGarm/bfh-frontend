@@ -1,0 +1,10 @@
+<mat-card>
+    <mat-card-title>Manual transfer</mat-card-title>
+    <mat-card-content>
+        <div *ngFor="let fleet of commService.selectedFleets">
+            <app-fleet-display [fleet]="fleet" *ngIf="isOwnFleet(fleet)">
+                <app-manual-transport body [fleet]="fleet" [floatingStyle]="false"></app-manual-transport>
+            </app-fleet-display>
+        </div>
+    </mat-card-content>
+</mat-card>

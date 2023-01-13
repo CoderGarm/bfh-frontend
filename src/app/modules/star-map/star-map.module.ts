@@ -7,6 +7,11 @@ import {DisplayElementsModule} from "../display-elements/display-elements.module
 import {NotchComponent} from './payload/notch/notch.component';
 import {FleetNotchDisplayComponent} from './payload/fleet-notch-display/fleet-notch-display.component';
 import {SystemInfoComponent} from './payload/system-info/system-info.component';
+import {FleetNotchDisplayListComponent} from './payload/fleet-notch-display-list/fleet-notch-display-list.component';
+import {FleetNotchInfoComponent} from './payload/fleet-notch-info/fleet-notch-info.component';
+import {FleetNotchMoveComponent} from './payload/fleet-notch-move/fleet-notch-move.component';
+import {FleetNotchMergeComponent} from './payload/fleet-notch-merge/fleet-notch-merge.component';
+import {FleetNotchTransportComponent} from './payload/fleet-notch-transport/fleet-notch-transport.component';
 
 
 @NgModule({
@@ -16,7 +21,12 @@ import {SystemInfoComponent} from './payload/system-info/system-info.component';
         UniverseMapViewComponent,
         NotchComponent,
         FleetNotchDisplayComponent,
-        SystemInfoComponent
+        SystemInfoComponent,
+        FleetNotchDisplayListComponent,
+        FleetNotchInfoComponent,
+        FleetNotchMoveComponent,
+        FleetNotchMergeComponent,
+        FleetNotchTransportComponent
     ],
     imports: [
         SharedModuleModule,

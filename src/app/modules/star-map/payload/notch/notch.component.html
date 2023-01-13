@@ -1,75 +1,15 @@
 <div id="notch-content" class="mat-elevation-z8 pointer-events"
      *ngIf="foreignSelected() || !showInfoDisabled() || !showMoveDisabled() || !showMergeDisabled() || !showTransportDisabled()">
 
-    <mat-grid-list cols="6" rowHeight="100px" *ngIf="displayActive()" class="fleet-notch-group">
-        <mat-grid-tile *ngFor="let fleet of commService.selectedFleets"
-                       [colspan]="getColSpan(fleet)"
-                       class="tile">
-            <app-fleet-notch-display [fleet]="fleet"></app-fleet-notch-display>
-        </mat-grid-tile>
-    </mat-grid-list>
+    <app-fleet-notch-display-list *ngIf="displayActive()"></app-fleet-notch-display-list>
 
-    <mat-card *ngIf="displayInfo">
-        <mat-card-title>Fleet information</mat-card-title>
-        <mat-card-content>
-            <div *ngFor="let fleet of commService.selectedFleets">
-                <app-fleet-display [fleet]="fleet" *ngIf="!isOwnFleet(fleet)">
-                    <app-fleet-formation-display body [fleet]="fleet"></app-fleet-formation-display>
-                </app-fleet-display>
+    <app-fleet-notch-info *ngIf="displayInfo"></app-fleet-notch-info>
 
-                <app-fleet-display [fleet]="fleet" *ngIf="isOwnFleet(fleet)">
-                    <app-spacecraft-capabilities-display body [fleet]="fleet"></app-spacecraft-capabilities-display>
+    <app-fleet-notch-move [stellarMode]="stellarMode" *ngIf="displayMove"></app-fleet-notch-move>
 
-                    <app-ammunition-roster body [fleet]="fleet"></app-ammunition-roster>
+    <app-fleet-notch-merge *ngIf="displayMerge"></app-fleet-notch-merge>
 
-                    <app-fleet-formation-display body [fleet]="fleet"></app-fleet-formation-display>
-                </app-fleet-display>
-            </div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngIf="displayMove">
-        <mat-card-title>Fleet movements</mat-card-title>
-        <mat-card-content>
-            <app-interstellar-fleet-movement-edit *ngIf="!stellarMode"
-                                                  [deselectAllMovements]="deselectAllMovements"
-                                                  [fleets]="commService.selectedFleets"
-                                                  [destination]="commService.selectedStarSystem"></app-interstellar-fleet-movement-edit>
-
-            <app-fleet-move-edit *ngIf="stellarMode"
-                                 [deselectAllMovements]="deselectAllMovements"
-                                 [fleets]="commService.selectedFleets"
-                                 [system]="commService.displayedStarSystem"
-                                 [destination]="commService.selectedPlanet"></app-fleet-move-edit>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-button (click)="executeMove()" [disabled]="executeMoveDisabled()">Execute</button>
-            <button mat-button (click)="deselectMovements()">Deselect</button>
-        </mat-card-actions>
-    </mat-card>
-
-    <mat-card *ngIf="displayMerge">
-        <mat-card-title>Transfer ships</mat-card-title>
-        <mat-card-content>
-            <app-fleet-merge-edit [resetChanges]="resetMergeChanges"
-                                  [fleets]="commService.selectedFleets"></app-fleet-merge-edit>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-button (click)="executeMerge()" [disabled]="executeMergeDisabled()">Execute</button>
-            <button mat-button (click)="resetMerge()">Reset</button>
-        </mat-card-actions>
-    </mat-card>
-
-    <mat-card *ngIf="displayTransport">
-        <mat-card-title>Manual transfer</mat-card-title>
-        <mat-card-content>
-            <div *ngFor="let fleet of commService.selectedFleets">
-                <app-fleet-display [fleet]="fleet" *ngIf="isOwnFleet(fleet)">
-                    <app-manual-transport body [fleet]="fleet" [floatingStyle]="false"></app-manual-transport>
-                </app-fleet-display>
-            </div>
-        </mat-card-content>
-    </mat-card>
+    <app-fleet-notch-transport *ngIf="displayTransport"></app-fleet-notch-transport>
 </div>
 
 <div id="notch-actions">
