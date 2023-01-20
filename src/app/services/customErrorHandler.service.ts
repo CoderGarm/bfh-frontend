@@ -1,4 +1,10 @@
-import {MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import {
+    MatLegacySnackBar as MatSnackBar,
+    MatLegacySnackBarConfig as MatSnackBarConfig,
+    MatLegacySnackBarHorizontalPosition as MatSnackBarHorizontalPosition,
+    MatLegacySnackBarRef as MatSnackBarRef,
+    MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition
+} from '@angular/material/legacy-snack-bar';
 import {FrontendError} from './swagger';
 
 import {ErrorHandler, Injectable, NgZone} from '@angular/core';

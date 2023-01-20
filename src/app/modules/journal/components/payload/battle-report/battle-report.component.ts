@@ -19,12 +19,12 @@ import {
 } from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {MatSort} from "@angular/material/sort";
-import {MatTable, MatTableDataSource} from "@angular/material/table";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {MatLegacyTable as MatTable, MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
+import {LegacyPageEvent as PageEvent, MatLegacyPaginator as MatPaginator} from "@angular/material/legacy-paginator";
 import {CombatReport} from "../../../combat-report";
 import {CombatStatistics} from "../../../combat.statistics";
 import {CombatArenaData} from "../combat-arena/combat-arena.component";
-import {MatSlider, MatSliderChange} from "@angular/material/slider";
+import {MatLegacySlider as MatSlider, MatLegacySliderChange as MatSliderChange} from "@angular/material/legacy-slider";
 import {Subscription, timer} from "rxjs";
 import {SpinnerService} from "../../../../../services/spinner.service";
 

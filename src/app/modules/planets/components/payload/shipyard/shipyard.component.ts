@@ -11,7 +11,7 @@ import {
     ShipyardConstructionSelection
 } from "../../../../../services/swagger";
 import {UntypedFormControl} from "@angular/forms";
-import {MatChip, MatChipList} from "@angular/material/chips";
+import {MatLegacyChip as MatChip, MatLegacyChipList as MatChipList} from "@angular/material/legacy-chips";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";

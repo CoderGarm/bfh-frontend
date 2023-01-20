@@ -15,7 +15,7 @@ import {
     ResourceDeposit,
     ResourcesApiService
 } from "../../../../../services/swagger";
-import {MatChip, MatChipList} from "@angular/material/chips";
+import {MatLegacyChip as MatChip, MatLegacyChipList as MatChipList} from "@angular/material/legacy-chips";
 import {UntypedFormControl} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";

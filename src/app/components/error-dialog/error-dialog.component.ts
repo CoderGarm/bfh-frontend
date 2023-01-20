@@ -1,4 +1,4 @@
-import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
+import {MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA, MatLegacySnackBarRef as MatSnackBarRef} from '@angular/material/legacy-snack-bar';
 import {FrontendError} from '../../services/swagger';
 import {Component, Inject, OnInit} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs'

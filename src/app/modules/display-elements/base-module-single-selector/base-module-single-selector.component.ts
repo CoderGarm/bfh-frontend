@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {BaseModule} from "../../../services/swagger";
-import {MatRadioButton} from "@angular/material/radio";
+import {MatLegacyRadioButton as MatRadioButton} from "@angular/material/legacy-radio";
 
 @Component({
     selector: 'app-base-module-single-selector',

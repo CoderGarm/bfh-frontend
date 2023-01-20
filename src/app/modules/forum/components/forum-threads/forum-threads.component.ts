@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {CreateForumThread, Forum, ForumApiService, ForumThread} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {LegacyPageEvent as PageEvent, MatLegacyPaginator as MatPaginator} from "@angular/material/legacy-paginator";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
 import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
 import {CreateForumThreadComponent} from "../create-forum-thread/create-forum-thread.component";
 import {DialogConfigHelper} from "../../../../DialogConfigHelper";
 
