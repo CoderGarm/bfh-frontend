@@ -16,7 +16,7 @@ import {
     ResourcesApiService
 } from "../../../../../services/swagger";
 import {MatChip, MatChipList} from "@angular/material/chips";
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {TranslateService} from "@ngx-translate/core";
@@ -105,9 +105,9 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
     /**
      * some needed form controls to use the mat chip list
      */
-    eResourceTypeFC: FormControl = new FormControl({});
-    eProductionCategoryFC: FormControl = new FormControl({});
-    eRefinementSequenceFC: FormControl = new FormControl({});
+    eResourceTypeFC: UntypedFormControl = new UntypedFormControl({});
+    eProductionCategoryFC: UntypedFormControl = new UntypedFormControl({});
+    eRefinementSequenceFC: UntypedFormControl = new UntypedFormControl({});
 
     /**
      * if these planets support a new construction

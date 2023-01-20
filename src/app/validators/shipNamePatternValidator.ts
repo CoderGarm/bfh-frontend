@@ -1,5 +1,5 @@
 import {Directive} from '@angular/core';
-import {FormGroup, NG_VALIDATORS, ValidationErrors, Validator} from '@angular/forms';
+import {NG_VALIDATORS, UntypedFormGroup, ValidationErrors, Validator} from '@angular/forms';
 import {ShipyardApiService} from "../services/swagger";
 import {TokenStorage} from "../services/authentication/token-storage.service";
 import {Subscription} from "rxjs";
@@ -26,7 +26,7 @@ export class ShipClassNamePatternValidatorDirective implements Validator {
     constructor(private shipYardApi: ShipyardApiService, private tokenStorage: TokenStorage) {
     }
 
-    validate(control: FormGroup): ValidationErrors {
+    validate(control: UntypedFormGroup): ValidationErrors {
         const passControl = control.get('scName');
         let validationResult: ValidationErrors = passPattern(control);
         if (!!passControl && passControl.dirty && !passControl?.getError('passPattern')) {
@@ -48,7 +48,7 @@ export class ShipClassNamePatternValidatorDirective implements Validator {
     }
 }
 
-export function passPattern(control: FormGroup): ValidationErrors {
+export function passPattern(control: UntypedFormGroup): ValidationErrors {
 
     const passControl = control.get('scName');
     const regex: RegExp = new RegExp(/((.).{2,31})/);

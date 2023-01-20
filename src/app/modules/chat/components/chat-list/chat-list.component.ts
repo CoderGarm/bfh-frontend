@@ -2,7 +2,7 @@ import {ChatApiService, ChatHistory, UserApiService, UserJson} from '../../../..
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {interval, Subscription} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {AppComponent} from "../../../../app.component";
 
@@ -30,8 +30,8 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
     activeChats: ChatHistory[] = []
     activeChatsWithUnread: ChatHistory[] = []
 
-    userSearchFromGroup: FormGroup = new FormGroup({
-        searchUserNameFC: new FormControl('')
+    userSearchFromGroup: UntypedFormGroup = new UntypedFormGroup({
+        searchUserNameFC: new UntypedFormControl('')
     })
 
     /**

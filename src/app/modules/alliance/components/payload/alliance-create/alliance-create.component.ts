@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AllianceApiService} from "../../../../../services/swagger";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 
@@ -11,9 +11,9 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
 })
 export class AllianceCreateComponent extends SubscriptionManager implements OnInit {
 
-    allianceG: FormGroup = new FormGroup({
-        allianceNameFC: new FormControl(''),
-        allianceCodeFC: new FormControl('')
+    allianceG: UntypedFormGroup = new UntypedFormGroup({
+        allianceNameFC: new UntypedFormControl(''),
+        allianceCodeFC: new UntypedFormControl('')
     })
 
     constructor(private allianceApi: AllianceApiService, private snackbarService: SnackbarNotificationService) {

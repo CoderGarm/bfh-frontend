@@ -1,6 +1,6 @@
 import {AuthApiService, UserApiService, UserReq} from '../../../services/swagger';
 import {PasswordErrorMessages} from '../../../validators/passwordValidator';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {UserErrorMessages} from "../../../validators/userNameValidator";
 import {SubscriptionManager} from "../../../SubscriptionManager";
@@ -20,7 +20,7 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
 
     passErrors = PasswordErrorMessages;
     userErrors = UserErrorMessages;
-    registerForm: FormGroup;
+    registerForm: UntypedFormGroup;
 
     inProgress: boolean = false;
 
@@ -32,11 +32,11 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
                 public translate: TranslateService) {
         super();
         let utcDate = new Date().getMilliseconds();
-        this.registerForm = new FormGroup({
-            login: new FormControl('', Validators.required),
-            pass: new FormControl('', [Validators.required]),
-            passRepeat: new FormControl('', Validators.required),
-            email: new FormControl('', Validators.email)
+        this.registerForm = new UntypedFormGroup({
+            login: new UntypedFormControl('', Validators.required),
+            pass: new UntypedFormControl('', [Validators.required]),
+            passRepeat: new UntypedFormControl('', Validators.required),
+            email: new UntypedFormControl('', Validators.email)
         });
         if (this.tokenService.isLocalhost()) {
             this.registerForm.controls.login.setValue(utcDate);

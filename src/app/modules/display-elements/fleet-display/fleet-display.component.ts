@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {FleetChangeService} from "../../../services/fleet-change.service";
 
 export interface FleetName {
@@ -21,7 +21,7 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
 
     isOpen: boolean = false;
 
-    formGroup: FormGroup;
+    formGroup: UntypedFormGroup;
 
     @Input()
     nameChangeAllowed: boolean = false;
@@ -30,8 +30,8 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
                 private fleetChangeService: FleetChangeService) {
         super();
 
-        this.formGroup = new FormGroup({
-            fleetName: new FormControl({value: '', disabled: true})
+        this.formGroup = new UntypedFormGroup({
+            fleetName: new UntypedFormControl({value: '', disabled: true})
         });
     }
 

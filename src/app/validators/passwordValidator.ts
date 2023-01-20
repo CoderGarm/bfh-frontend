@@ -1,5 +1,5 @@
 import {Directive} from '@angular/core';
-import {FormGroup, NG_VALIDATORS, ValidationErrors, Validator} from '@angular/forms';
+import {NG_VALIDATORS, UntypedFormGroup, ValidationErrors, Validator} from '@angular/forms';
 
 
 export const PasswordErrorMessages: { [key: string]: string } = {
@@ -12,12 +12,12 @@ export const PasswordErrorMessages: { [key: string]: string } = {
     providers: [{provide: NG_VALIDATORS, useExisting: PasswordEqualityValidatorDirective, multi: true}]
 })
 export class PasswordEqualityValidatorDirective implements Validator {
-    validate(control: FormGroup): ValidationErrors {
+    validate(control: UntypedFormGroup): ValidationErrors {
         return passEqual(control);
     }
 }
 
-export function passEqual(control: FormGroup): ValidationErrors {
+export function passEqual(control: UntypedFormGroup): ValidationErrors {
 
     const passControl = control.get('pass');
     const repeatControl = control.get('passRepeat');
@@ -40,12 +40,12 @@ export function passEqual(control: FormGroup): ValidationErrors {
     providers: [{provide: NG_VALIDATORS, useExisting: PasswordPatternValidatorDirective, multi: true}]
 })
 export class PasswordPatternValidatorDirective implements Validator {
-    validate(control: FormGroup): ValidationErrors {
+    validate(control: UntypedFormGroup): ValidationErrors {
         return passPattern(control);
     }
 }
 
-export function passPattern(control: FormGroup): ValidationErrors {
+export function passPattern(control: UntypedFormGroup): ValidationErrors {
 
     const passControl = control.get('pass');
     const regex: RegExp = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})/);

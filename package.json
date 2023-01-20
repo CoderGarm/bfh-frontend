@@ -16,16 +16,16 @@
     "autoprefixer": "10.4.5"
   },
   "dependencies": {
-    "@angular/animations": "~13.2.4",
+    "@angular/animations": "^14.2.12",
     "@angular/cdk": "^12.2.0",
-    "@angular/common": "~13.2.4",
-    "@angular/compiler": "~13.2.4",
-    "@angular/core": "~13.2.4",
-    "@angular/forms": "~13.2.4",
+    "@angular/common": "^14.2.12",
+    "@angular/compiler": "^14.2.12",
+    "@angular/core": "^14.2.12",
+    "@angular/forms": "^14.2.12",
     "@angular/material": "^12.2.13",
-    "@angular/platform-browser": "~13.2.4",
-    "@angular/platform-browser-dynamic": "~13.2.4",
-    "@angular/router": "~13.2.4",
+    "@angular/platform-browser": "^14.2.12",
+    "@angular/platform-browser-dynamic": "^14.2.12",
+    "@angular/router": "^14.2.12",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@svgdotjs/svg.draggable.js": "^3.0.2",
@@ -47,9 +47,9 @@
     "zone.js": "^0.11.8"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^13.3.9",
-    "@angular/cli": "~13.2.5",
-    "@angular/compiler-cli": "~13.2.4",
+    "@angular-devkit/build-angular": "^14.2.10",
+    "@angular/cli": "^14.2.10",
+    "@angular/compiler-cli": "^14.2.12",
     "@bartholomej/ngx-translate-extract": "^8.0.2",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.20.55",
@@ -59,6 +59,6 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "typescript": "~4.5.5"
+    "typescript": "~4.8.4"
   }
 }

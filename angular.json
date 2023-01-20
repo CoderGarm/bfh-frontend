@@ -153,6 +153,5 @@
     "@schematics/angular:component": {
       "skipTests": true
     }
-  },
-  "defaultProject": "bfh-fe"
+  }
 }

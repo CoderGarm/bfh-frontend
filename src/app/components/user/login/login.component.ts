@@ -2,7 +2,7 @@ import {AuthRequest} from '../../../services/swagger';
 import {AuthenticationService} from '../../../services/authentication';
 
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
@@ -16,7 +16,7 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
 
     static path: string = 'login';
 
-    loginForm: FormGroup;
+    loginForm: UntypedFormGroup;
     isAuthenticated: boolean = false;
 
     constructor(protected authService: AuthenticationService,
@@ -24,9 +24,9 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
                 private permissionsService: NgxPermissionsService) {
         super();
 
-        this.loginForm = new FormGroup({
-            login: new FormControl(''),
-            pass: new FormControl('')
+        this.loginForm = new UntypedFormGroup({
+            login: new UntypedFormControl(''),
+            pass: new UntypedFormControl('')
         });
         if (this.tokenService.isLocalhost()) {
             this.loginForm.controls.login.setValue('flashkid');

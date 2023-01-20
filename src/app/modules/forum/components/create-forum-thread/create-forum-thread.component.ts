@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {CreateForumThread, Forum} from "../../../../services/swagger";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
@@ -17,10 +17,10 @@ export class CreateForumThreadComponent extends SubscriptionManager implements O
     @Input()
     selectedForum?: Forum;
 
-    newThreadFG: FormGroup = new FormGroup({
-        newThreadsTitle: new FormControl(''),
-        newThreadsDescription: new FormControl(''),
-        firstMessage: new FormControl(''),
+    newThreadFG: UntypedFormGroup = new UntypedFormGroup({
+        newThreadsTitle: new UntypedFormControl(''),
+        newThreadsDescription: new UntypedFormControl(''),
+        firstMessage: new UntypedFormControl(''),
     });
     bsEditorInstance?: EditorInstance;
     editorOptions?: EditorOption;

@@ -1,5 +1,5 @@
 import {Directive} from '@angular/core';
-import {FormGroup, NG_VALIDATORS, ValidationErrors, Validator} from '@angular/forms';
+import {NG_VALIDATORS, UntypedFormGroup, ValidationErrors, Validator} from '@angular/forms';
 import {AuthApiService} from "../services/swagger";
 import {Subscription} from "rxjs";
 
@@ -24,7 +24,7 @@ export class UserNameValidatorDirective implements Validator {
     constructor(private authAPi: AuthApiService) {
     }
 
-    validate(control: FormGroup): ValidationErrors {
+    validate(control: UntypedFormGroup): ValidationErrors {
         const loginControl = control.get('login');
         if (!!loginControl) {
             let username: string = loginControl.value;
@@ -57,7 +57,7 @@ export class EMailValidatorDirective implements Validator {
     constructor(private authAPi: AuthApiService) {
     }
 
-    validate(control: FormGroup): ValidationErrors {
+    validate(control: UntypedFormGroup): ValidationErrors {
         const eMailControl = control.get('email');
         if (!!eMailControl) {
             let eMailAddress: string = eMailControl.value;

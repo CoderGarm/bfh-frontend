@@ -10,7 +10,7 @@ import {
     ShipyardConstructionOrder,
     ShipyardConstructionSelection
 } from "../../../../../services/swagger";
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 import {MatChip, MatChipList} from "@angular/material/chips";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
@@ -60,7 +60,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
     /**
      * some needed form controls to use the mat chip list
      */
-    eHullTypeFC: FormControl = new FormControl({});
+    eHullTypeFC: UntypedFormControl = new UntypedFormControl({});
 
     /**
      * the EResourceType mat chip list

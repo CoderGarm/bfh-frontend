@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AdminApiService, Translation} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 
 
 @Component({
@@ -31,9 +31,9 @@ export class TranslationEditorComponent extends SubscriptionManager implements O
      */
     referenceTranslation?: Translation;
 
-    newTranslationFG: FormGroup = new FormGroup({
-        selectedLanguageCode: new FormControl(''),
-        translationFC: new FormControl('')
+    newTranslationFG: UntypedFormGroup = new UntypedFormGroup({
+        selectedLanguageCode: new UntypedFormControl(''),
+        translationFC: new UntypedFormControl('')
     });
 
     constructor(private adminApi: AdminApiService) {

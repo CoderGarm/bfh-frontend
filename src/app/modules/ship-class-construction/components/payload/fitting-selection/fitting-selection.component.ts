@@ -8,7 +8,7 @@ import {
     SpacecraftCapabilities,
     SpacecraftCapacityAreas
 } from "../../../../../services/swagger";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
 import {ShipClassComparator} from "../ShipClassComparator";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
@@ -87,8 +87,8 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
     /**
      * the form group which defines the name field
      */
-    form: FormGroup = new FormGroup({
-        scName: new FormControl({value: '', disabled: !!this.shipClass})
+    form: UntypedFormGroup = new UntypedFormGroup({
+        scName: new UntypedFormControl({value: '', disabled: !!this.shipClass})
     });
 
     costs?: ResourceDeposit;
