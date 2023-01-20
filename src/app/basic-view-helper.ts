@@ -129,6 +129,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.zoomLevel = ev.detail.level;
         this.zoomResizableContents();
         this.zoomFleetGroups();
+        this.zoomWarshipPolygons();
         // must be zoomed after all others
         this.zoomCyclingCircles();
         this.zoomStateDots();
@@ -145,6 +146,15 @@ export class BasicViewHelper extends BasicViewHelperData {
             .filter(c => c.classes().filter(css => css == BasicViewHelperData.MOVABLE_STATE_DOT_MARKER).length == 0)
             .filter(c => c.classes().filter(css => css == BasicViewHelperData.TEXT_MARKER).length > 0);
         texts.forEach(text => this.resizeText(<Text>text));
+    }
+
+    private zoomWarshipPolygons() {
+        if (this.zoomLevel <= 1) {
+            return;
+        }
+
+        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX) && c.id().endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX));
+        // fixme zoom it
     }
 
     private zoomFleetGroups() {
@@ -252,7 +262,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         });
     }
 
-    private zoomStroke(strokeData: StrokeData) {
+    protected zoomStroke(strokeData: StrokeData) {
         const stroke = strokeData;
         const width = stroke.width! / this.zoomLevel;
         stroke.width = width < 0.3 ? 0.3 : width;

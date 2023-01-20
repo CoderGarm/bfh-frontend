@@ -41,8 +41,11 @@ export class BattleViewHelper extends BasicViewHelper {
     private viewBoxForOrbit: string = "0 0 0 0";
 
     private warshipsById: Map<String, AbstractId> = new Map<String, AbstractId>();
-    private warshipPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
+    private warshipPolygonById: Map<String, Polygon> = new Map<String, Polygon>();
     private missileSalvoPolygonsById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
+
+    hoveredWarship?: AbstractId;
+    clickedFleet?: FleetMarker;
 
     constructor() {
         super(BattleViewHelper.STANDARD_METRIC);
@@ -52,10 +55,22 @@ export class BattleViewHelper extends BasicViewHelper {
         this.battleReport = report;
     }
 
-    setActiveRound(activeRound: number | undefined,
-                   starSystem: StarSystem,
-                   clickForFleet: (event: PointerEvent) => void,
-                   mouseoverForWarship: (event: PointerEvent) => void) {
+    protected clickForFleet = (event: PointerEvent) => {
+        let fleetMarker = this.getFleetByEvent(event);
+        if (!fleetMarker) {
+            let text = this.getTextByEvent(event);
+            if (!!text) {
+                fleetMarker = this.getFleetByText(text);
+            }
+        }
+        this.clickedFleet = fleetMarker;
+    }
+
+    protected mouseoverForWarship = (event: PointerEvent) => {
+        this.hoveredWarship = this.getWarshipByEvent(event);
+    }
+
+    setActiveRound(activeRound: number | undefined, starSystem: StarSystem) {
         this.clearData();
         this.drawOrbits(starSystem);
         if (!activeRound || !this.combatArenaData) {
@@ -65,7 +80,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
         const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound);
         if (!!movementByFleet) {
-            this.setFleetsInBattle(movementByFleet, activeRound, this.combatArenaData.hitLogsByRound, clickForFleet, mouseoverForWarship);
+            this.setFleetsInBattle(movementByFleet, activeRound, this.combatArenaData.hitLogsByRound);
         }
         let missileMovements = this.combatArenaData.missileMovementsByRound.get(activeRound);
         if (!!missileMovements) {
@@ -120,7 +135,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
             hit.hitLogs.forEach(hitLog => {
                 let warshipID = this.getWarshipID(hitLog.warShip);
-                let icon = this.warshipPolygonsById.get(warshipID);
+                let icon = this.getWarshipPolygons(warshipID);
                 if (!icon) {
                     return;
                 }
@@ -299,14 +314,12 @@ export class BattleViewHelper extends BasicViewHelper {
         });
     }
 
-    private setFleetsInBattle(fleetsInMotion: MovementAction[],
+    private setFleetsInBattle(movementActions: MovementAction[],
                               activeRound: number,
-                              hitLogsByRound: Map<number, HitLog[]>,
-                              clickForFleet: (event: PointerEvent) => void,
-                              mouseoverForWarship: (event: PointerEvent) => void) {
+                              hitLogsByRound: Map<number, HitLog[]>) {
         const baseOrbit = this.createBaseOrbit();
 
-        fleetsInMotion.forEach((move) => {
+        movementActions.forEach((move) => {
             let fleet = move.actor;
             let startOrbit = move.origin;
             let targetOrbit = move.destination;
@@ -315,11 +328,10 @@ export class BattleViewHelper extends BasicViewHelper {
             }
             // expanding the coordinates by the multiplier but center it at the combat orbit
             startOrbit = this.modifyOrbit(startOrbit, baseOrbit, this.POSITION_MULTIPLIER);
-            // todo what to do? targetOrbit = this.modifyOrbit(targetOrbit, baseOrbit, this.POSITION_MULTIPLIER);
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit);
-            this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints, clickForFleet, mouseoverForWarship);
+            this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
         });
     }
 
@@ -382,20 +394,15 @@ export class BattleViewHelper extends BasicViewHelper {
      */
     private createHullOutlinesAndPrint(fleet: FleetMarker,
                                        warships: AbstractId[],
-                                       warshipHullPoints: Array<Array<ArrayXY[]>>,
-                                       clickForFleet: (event: PointerEvent) => void,
-                                       mouseoverForWarship: (event: PointerEvent) => void) {
+                                       warshipHullPoints: Array<Array<ArrayXY[]>>) {
         let fleetSharkID = this.getFleetSharkID(fleet);
 
-        // set events to canvas to reset effect
-        this.canvas?.click(clickForFleet).mouseover(mouseoverForWarship);
-
-        let group = this.canvas?.group()
-            .click(clickForFleet)
+        let group = this.canvas!.group()
+            .click(this.clickForFleet)
             .id(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
 
         this.setFleetById(fleetSharkID, fleet);
-        this.setGroupById(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
+        this.setGroupById(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group);
 
         let userID = this.tokenStorage.getUserID();
         let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
@@ -410,34 +417,30 @@ export class BattleViewHelper extends BasicViewHelper {
             let warshipID = this.getWarshipID(warship);
             this.warshipsById.set(warshipID, warship);
 
-            const mergedPoints: ArrayXY[] = [];
-            warshipHullPoint.forEach(p => p.forEach(i => mergedPoints.push(i)));
-
             this.setFleetById(warshipID, fleet);
 
-            warshipHullPoint.forEach(hullElements => {
-                let polygon = group!.polygon(hullElements)
+            warshipHullPoint.forEach(hullElements => { // fixme create warship as single group and
+                let polygon = group.polygon(hullElements)
                     .id(warshipID)
                     .fill(fleetSharkColor)
-                    .click(clickForFleet)
-                    .mouseover(mouseoverForWarship);
-                this.warshipPolygonsById.set(warshipID, polygon);
+                    .stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK))
+                    .click(this.clickForFleet)
+                    .mouseover(this.mouseoverForWarship);
+                this.setWarshipPolygonById(warshipID, polygon);
 
             });
         }
-        this.canvas?.add(group!);
+        this.canvas?.add(group);
     }
 
-    /**
-     * Returns an array per ship with an array of point groups inside.<br>
-     * The outer array is a ship - the next inner array are for the different hull elements,<br>
-     * the array of points is the outline coordinates itself.
-     *
-     * @param warShips
-     * @param orbit
-     * @param centerOrbit the center of the local coordinate system
-     * @private
-     */
+    private setWarshipPolygonById(id: string, polygon: Polygon) {
+        this.warshipPolygonById.set(id, polygon);
+    }
+
+    private getWarshipPolygons(id: string): Polygon | undefined {
+        return this.warshipPolygonById.get(id);
+    }
+
     private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, centerOrbit: Orbit): Array<Array<ArrayXY[]>> {
         // 500 pixel radius from the orbits coordinate cross
 

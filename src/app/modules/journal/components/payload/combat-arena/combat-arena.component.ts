@@ -1,10 +1,8 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {
-    AbstractId,
     BattleReport,
     CounterMissileHit,
     Fleet,
-    FleetMarker,
     HitLog,
     MissileMovement,
     MovementAction,
@@ -47,15 +45,13 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     activeRound?: number;
     private activeRoundInputDefinition: string = "activeRound";
 
-    hoveredWarship?: AbstractId;
-    clickedFleet?: FleetMarker;
-
     constructor() {
         super()
     }
 
     ngAfterViewInit(): void {
         this.createCanvas("combat-arena", '#arena');
+        this.canvas!.click(this.clickForFleet).mouseover(this.mouseoverForWarship);
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -68,7 +64,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         if (changes[this.activeRoundInputDefinition]) {
             if (!!this.starSystem) {
-                this.setActiveRound(this.activeRound, this.starSystem, this.clickForFleet, this.mouseoverForWarship);
+                this.setActiveRound(this.activeRound, this.starSystem);
                 let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
             }
@@ -80,20 +76,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
     }
 
-    private clickForFleet = (event: PointerEvent) => {
-        let fleetMarker = this.getFleetByEvent(event);
-        if (!fleetMarker) {
-            let text = this.getTextByEvent(event);
-            if (!!text) {
-                fleetMarker = this.getFleetByText(text);
-            }
-        }
-        this.clickedFleet = fleetMarker;
-    }
 
-    private mouseoverForWarship = (event: PointerEvent) => {
-        this.hoveredWarship = this.getWarshipByEvent(event);
-    }
 
     /**
      * main method of this fuckin' shit - creates everything by the current data
