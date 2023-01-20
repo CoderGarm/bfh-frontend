@@ -59,7 +59,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 enable: false,
                 icons: {}
             },
-            parser: (val) => this.markdownService.compile(val.trim()),
+            parser: (val) => this.markdownService.parse(val.trim()),
             onChange: () => {
             },
             onShow: (e) => this.bsEditorInstance = e

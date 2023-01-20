@@ -153,5 +153,8 @@
     "@schematics/angular:component": {
       "skipTests": true
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

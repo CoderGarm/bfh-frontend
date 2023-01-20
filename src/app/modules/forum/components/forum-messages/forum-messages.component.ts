@@ -57,7 +57,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
                 enable: false,
                 icons: {}
             },
-            parser: (val) => this.markdownService.compile(val.trim()),
+            parser: (val) => this.markdownService.parse(val.trim()),
             onChange: () => {
             },
             onShow: (e) => this.bsEditorInstance = e
