@@ -41,8 +41,9 @@ export class BattleViewHelper extends BasicViewHelper {
     private viewBoxForOrbit: string = "0 0 0 0";
 
     private warshipsById: Map<String, AbstractId> = new Map<String, AbstractId>();
-    private warshipPolygonById: Map<String, Polygon> = new Map<String, Polygon>();
-    private missileSalvoPolygonsById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
+    private latestWarshipPositionById: Map<String, ArrayXY> = new Map<String, ArrayXY>();
+    private warshipPolygonById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
+    private missileSalvoPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
 
     hoveredWarship?: AbstractId;
     clickedFleet?: FleetMarker;
@@ -91,9 +92,8 @@ export class BattleViewHelper extends BasicViewHelper {
             this.setReleasedVolleys(volleys);
         }
         let shipKillerHits = this.combatArenaData.shipKillerHitsByRound.get(activeRound);
-        if (!!shipKillerHits) {
-            this.setShipKillerHits(shipKillerHits);
-        }
+        this.setShipKillerHits(shipKillerHits);
+
         let counterMissileHits = this.combatArenaData.counterMissileHitsByRound.get(activeRound);
         if (!!counterMissileHits) {
             this.setCounterMissileHits(counterMissileHits);
@@ -106,25 +106,21 @@ export class BattleViewHelper extends BasicViewHelper {
             let destroyedMissiles = hit.destroyedMissiles;
             let color = "orange";
 
-            let polygons = this.missileSalvoPolygonsById.get(attackedMissileSalvo);
-            if (!polygons) {
+            let icon = this.missileSalvoPolygonsById.get(attackedMissileSalvo); // fixme set amount
+            if (!icon) {
                 return;
             }
-            for (let i = 0; i < destroyedMissiles; i++) {
-                // if this is an index out of bound, the backend had failed
-                let icon = polygons[i];
-                if (!icon) {
-                    continue;
-                }
-                const x = icon.x();
-                const y = icon.y();
-                let explosionOutlines = this.createExplosionOutlines(x, y, 20);
-                this.canvas!.polygon(explosionOutlines).addClass("explosion").fill(color);
-            }
+            const x = icon.x();
+            const y = icon.y();
+            let explosionOutlines = this.createExplosionOutlines(x, y, 20);
+            this.canvas!.polygon(explosionOutlines).addClass("explosion").fill(color);
         });
     }
 
-    private setShipKillerHits(shipKillerHits: ShipKillerHit[]) {
+    private setShipKillerHits(shipKillerHits?: ShipKillerHit[]) {
+        if (!shipKillerHits) {
+            return;
+        }
         shipKillerHits.forEach((hit) => {
 
             let result = hit.result;
@@ -135,28 +131,19 @@ export class BattleViewHelper extends BasicViewHelper {
 
             hit.hitLogs.forEach(hitLog => {
                 let warshipID = this.getWarshipID(hitLog.warShip);
-                let icon = this.getWarshipPolygons(warshipID);
-                if (!icon) {
+                const pos = this.latestWarshipPositionById.get(warshipID);
+                if (!pos) {
                     return;
                 }
-                const x = icon.x();
-                const y = icon.y();
+                const x = pos[0];
+                const y = pos[1];
                 let explosionOutlines = this.createExplosionOutlines(x, y, 10);
                 this.canvas!.polygon(explosionOutlines).addClass("explosion").fill(color);
             });
         });
     }
 
-    /**
-     * Returns an array to represent an explosion icon.
-     *
-     * @private
-     * @param x
-     * @param y
-     * @param scale
-     */
     private createExplosionOutlines(x: number, y: number, scale: number): ArrayXY[] {
-        // 500 pixel radius from the orbits coordinate cross
         let points: ArrayXY[] = [];
         points.push([-5, 30]);
         points.push([12, 70]);
@@ -193,90 +180,69 @@ export class BattleViewHelper extends BasicViewHelper {
         const baseOrbit = this.createBaseOrbit();
 
         volleys.forEach((volley) => {
-            let missileOutlines: Array<ArrayXY[]> = this.defineMissileHullPoints(volley, baseOrbit);
+            let missileOutlines: ArrayXY[] = this.defineMissileHullPoints(volley, baseOrbit);
             let missileSalvoID = this.getMissileSalvoID(volley);
-            this.createMissileHullOutlinesAndPrint(missileSalvoID, missileOutlines, volley.actorOwner.id);
+            this.createMissileHullOutlinesAndPrint(missileSalvoID, missileOutlines, volley);
         });
     }
 
     private createMissileHullOutlinesAndPrint(missileSalvoId: string,
-                                              missileHullPoints: Array<ArrayXY[]>,
-                                              fleetOwnerId: number) {
-        let group = this.canvas?.group()
+                                              missileHullPoints: ArrayXY[],
+                                              volley: MissileMovement) {
+        const missileAmount = volley.missileAmount;
+        const fleetOwnerId = volley.actorOwner.id;
+        let group = this.canvas!.group()
             .id(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
 
-        this.setGroupById(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group!);
+        this.setGroupById(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group);
 
         let userID = this.tokenStorage.getUserID();
-        let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
+        let iconColor = this.FLEET_SHARK_COLOR_HOSTILE;
         if (fleetOwnerId == userID) {
-            fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
+            iconColor = this.FLEET_SHARK_COLOR_OWN;
         }
-        const stroke = {color: fleetSharkColor, width: 1};
-        for (let i = 0; i < missileHullPoints.length; i++) {
-            let missileHullPoint = missileHullPoints[i];
-            let icon = group!.polygon(missileHullPoint).id(missileSalvoId).fill(BasicViewHelper.NONE_FILL_COLOR).stroke(stroke);
-            let polygons = this.missileSalvoPolygonsById.get(missileSalvoId);
-            if (!polygons) {
-                polygons = [];
-            }
-            polygons.push(icon);
-            this.missileSalvoPolygonsById.set(missileSalvoId, polygons);
-        }
-        this.canvas?.add(group!);
+        const stroke = {color: iconColor, width: 1};
+        let icon = group.polygon(missileHullPoints)
+            .id(missileSalvoId)
+            .fill(BasicViewHelper.NONE_FILL_COLOR)
+            .stroke(stroke);
+        this.missileSalvoPolygonsById.set(missileSalvoId, icon);
+
+        let flipX: boolean = volley.lastPosition.xCoordinate.coordinate < volley.position.xCoordinate.coordinate;
+        const xShift: number = icon.width() * (flipX ? -1 : 1);
+
+        group.text(missileAmount + '')
+            .fill(iconColor)
+            .addClass("missile-salvo-text")
+            .cx(icon.cx() + xShift)
+            .cy(icon.cy())
+
+        this.canvas!.add(group);
     }
 
-    /**
-     * Returns an array per ship with an array of point groups inside.<br>
-     * The outer array is a missile - the inner array are for the outline coordinates of the missile itself.
-     *
-     * @param missileMovement
-     * @param centerOrbit the center of the local coordinate system
-     * @private
-     */
-    private defineMissileHullPoints(missileMovement: MissileMovement, centerOrbit: Orbit): Array<ArrayXY[]> {
-        // 500 pixel radius from the orbits coordinate cross
+    private defineMissileHullPoints(missileMovement: MissileMovement, centerOrbit: Orbit): ArrayXY[] {
+        const missileAmount = missileMovement.missileAmount;
 
         let lastPosition = missileMovement.lastPosition;
         let position = missileMovement.position;
 
-        // determine direction of missile icons
-        let flip: boolean = lastPosition.xCoordinate.coordinate < position.xCoordinate.coordinate;
-
+        let direction: boolean = lastPosition.xCoordinate.coordinate < position.xCoordinate.coordinate;
         position = this.modifyOrbit(position, centerOrbit, this.POSITION_MULTIPLIER);
-        const yShift = 1.5;
-        const xShift = 7.5;
-
-
-        const result: Array<ArrayXY[]> = [];
-        let horizontalLift = 0;
-        let verticalLift = 0;
 
         let x = this.convertToStandardMetric(position.xCoordinate);
         let y = this.convertToStandardMetric(position.yCoordinate);
-        let modifiedX = (missileMovement.missileAmount / 2 * xShift);
-        let modifiedY = (missileMovement.missileAmount / 2 * yShift) + yShift;
-        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate) ? -1 : 0;
-        let baseX = x - modifiedX;
-        let baseY = y + (modifiedY * upDownY);
-        for (let i = 1; i <= missileMovement.missileAmount; i++) {
-            let x: number = baseX + verticalLift;
-            let y: number = baseY + horizontalLift;
-            let hullOutlines = this.createMissileOutlines(x, y, flip);
-            result.push(hullOutlines);
-            horizontalLift += yShift;
-            verticalLift += xShift;
-        }
-        return result;
+
+        return this.createMissileOutlines(x, y, direction, missileAmount);
     }
 
-    private createMissileOutlines(x: number, y: number, flip: boolean): ArrayXY[] {
+    private createMissileOutlines(x: number, y: number, flip: boolean, missileAmount: number): ArrayXY[] {
+        const amountModifier = missileAmount < 5 ? missileAmount : 6;
         const direction = flip ? -1 : 1;
         let points: ArrayXY[] = [];
         points.push([x, y]);
-        points.push([x + 2 * direction, y - .75]);
-        points.push([x + 1.5 * direction, y]);
-        points.push([x + 2 * direction, y + .5]);
+        points.push([x + (2 * direction * amountModifier), y - (.75 * amountModifier)]);
+        points.push([x + (1.5 * direction * amountModifier), y]);
+        points.push([x + (2 * direction * amountModifier), y + (.5 * amountModifier)]);
         points.push([x, y]);
         return points;
     }
@@ -398,8 +364,8 @@ export class BattleViewHelper extends BasicViewHelper {
         let fleetSharkID = this.getFleetSharkID(fleet);
 
         let group = this.canvas!.group()
-            .click(this.clickForFleet)
-            .id(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
+            .id(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX)
+            .click(this.clickForFleet);
 
         this.setFleetById(fleetSharkID, fleet);
         this.setGroupById(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group);
@@ -412,40 +378,57 @@ export class BattleViewHelper extends BasicViewHelper {
         // sort by is to display the names in a non-permuting way
         warships = warships.sort((a, b) => a.id > b.id ? 1 : -1);
         for (let i = 0; i < warshipHullPoints.length; i++) {
-            let warshipHullPoint = warshipHullPoints[i];
+            let warshipHullPoint: ArrayXY[][] = warshipHullPoints[i];
             let warship = warships[i];
             let warshipID = this.getWarshipID(warship);
             this.warshipsById.set(warshipID, warship);
 
+            const points: ArrayXY[] = [];
+            warshipHullPoint.forEach(p => p.forEach(f => points.push([f[0], f[1]])));
+            const sortPoints = this.sortPoints(points);
+            const x = sortPoints.sortedPointsX[Math.ceil(sortPoints.sortedPointsX.length / 2)];
+            const y = sortPoints.sortedPointsY[Math.ceil(sortPoints.sortedPointsY.length / 2)];
+            this.latestWarshipPositionById.set(warshipID, [x[0], y[1]]);
+
             this.setFleetById(warshipID, fleet);
 
-            warshipHullPoint.forEach(hullElements => { // fixme create warship as single group and
-                let polygon = group.polygon(hullElements)
+            const warshipGroupId = warshipID + BattleViewHelper.GROUP_SELECTOR_SUFFIX;
+            const warShipGroup = group.group()
+                .id(warshipGroupId)
+                .click(this.clickForFleet)
+                .mouseover(this.mouseoverForWarship);
+
+            this.setGroupById(warshipGroupId, warShipGroup);
+
+            warshipHullPoint.forEach(hullElements => {
+                let polygon = warShipGroup.polygon(hullElements)
                     .id(warshipID)
                     .fill(fleetSharkColor)
-                    .stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK))
+                    //fixme work with zoom .stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK))
                     .click(this.clickForFleet)
                     .mouseover(this.mouseoverForWarship);
                 this.setWarshipPolygonById(warshipID, polygon);
-
             });
         }
         this.canvas?.add(group);
     }
 
     private setWarshipPolygonById(id: string, polygon: Polygon) {
-        this.warshipPolygonById.set(id, polygon);
+        let arr = this.getWarshipPolygons(id);
+        if (!arr) {
+            arr = [];
+        }
+        arr.push(polygon);
+        this.warshipPolygonById.set(id, arr);
     }
 
-    private getWarshipPolygons(id: string): Polygon | undefined {
+    private getWarshipPolygons(id: string): Polygon[] | undefined {
         return this.warshipPolygonById.get(id);
     }
 
     private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, centerOrbit: Orbit): Array<Array<ArrayXY[]>> {
-        // 500 pixel radius from the orbits coordinate cross
-
-        const yShift = 15 / 2;
-        const xShift = 75 / 2;
+        const yShift = 7.5;
+        const xShift = 37.5;
 
         const result: Array<Array<ArrayXY[]>> = [];
         let horizontalLift = 0;
@@ -456,6 +439,9 @@ export class BattleViewHelper extends BasicViewHelper {
         let modifiedX = (warShips.length / 2 * xShift);
         let modifiedY = (warShips.length / 2 * yShift) + yShift;
         let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate) ? -1 : 0;
+        // todo build groups of three ships (one is a dot, two is a line) and form a triangle
+        //  build groups of triangles and place them in a triangle by permuting top and bottom (one or two items in the top)
+
         let baseX = x - modifiedX;
         let baseY = y + (modifiedY * upDownY);
         for (let i = 0; i < warShips.length; i++) {

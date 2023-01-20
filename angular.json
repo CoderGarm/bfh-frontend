@@ -49,6 +49,9 @@
               "node_modules/bootstrap-markdown/js/bootstrap-markdown.js",
               "node_modules/prismjs/components/prism-javascript.min.js",
               "node_modules/prismjs/components/prism-typescript.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "dompurify"
             ]
           },
           "configurations": {

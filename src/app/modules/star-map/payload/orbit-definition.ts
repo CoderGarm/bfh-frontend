@@ -45,7 +45,7 @@ export class OrbitDefinition {
                     if (planet.owner.idUser == userId) {
                         isColonizedByLoggedInUser = true;
                         if (planet.isMain) {
-                            isMain = true
+                            isMain = true;
                         }
                     } else {
                         isColonizedByOtherUser = true;

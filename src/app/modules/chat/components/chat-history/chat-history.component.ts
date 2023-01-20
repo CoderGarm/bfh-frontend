@@ -6,6 +6,7 @@ import {take} from "rxjs/operators";
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 import {MarkdownService} from "ngx-markdown";
+import * as DOMPurify from 'dompurify';
 
 @Component({
     selector: 'app-chat-history',
@@ -59,8 +60,12 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 enable: false,
                 icons: {}
             },
-            parser: (val) => this.markdownService.parse(val.trim()),
-            onChange: () => {
+            parser: (val) => {
+                const sanitizedText = DOMPurify.sanitize(val.trim());
+                this.markdownService.parse(sanitizedText);
+            }
+            ,
+            onChange: (val) => {
             },
             onShow: (e) => this.bsEditorInstance = e
         };
@@ -240,7 +245,8 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 });
             this.subscriptions.push(sub);
         }
-        this.markdownText = ''
+        this.markdownText = '';
+        this.bsEditorInstance!.setContent('');
     }
 
     private setChatHistory(resp: ChatHistory | undefined) {

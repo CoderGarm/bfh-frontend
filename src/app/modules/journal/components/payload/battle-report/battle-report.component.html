@@ -107,25 +107,22 @@
 
     <div class="center">
         <mat-button-toggle-group>
-            <mat-button-toggle (click)="fastRewind()">
+            <mat-button-toggle (click)="stop()" matTooltip="jump to start">
                 <mat-icon>fast_rewind</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle (click)="stop()">
-                <mat-icon>stop</mat-icon>
+            <mat-button-toggle (click)="previous()" matTooltip="previous combat round">
+                <mat-icon>navigate_before</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle (click)="pause()">
+            <mat-button-toggle (click)="pause()" matTooltip="pause">
                 <mat-icon>pause</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle (click)="previous()">
-                <mat-icon>skip_previous</mat-icon>
-            </mat-button-toggle>
-            <mat-button-toggle (click)="play()">
+            <mat-button-toggle (click)="play()" matTooltip="play">
                 <mat-icon>play_arrow</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle (click)="next()">
-                <mat-icon>skip_next</mat-icon>
+            <mat-button-toggle (click)="next()" matTooltip="next combat round">
+                <mat-icon>navigate_next</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle (click)="fastForward()">
+            <mat-button-toggle (click)="fastForward()" matTooltip="jump to end">
                 <mat-icon>fast_forward</mat-icon>
             </mat-button-toggle>
         </mat-button-toggle-group>

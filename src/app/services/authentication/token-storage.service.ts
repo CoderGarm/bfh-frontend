@@ -15,6 +15,7 @@ export class TokenStorage {
     private readonly allianceID = 'allianceID';
     private readonly refreshToken = 'refreshToken';
     private readonly interruptedURL = 'interruptedURL';
+    private readonly systems = 'systems';
 
     protected basePath = environment.backendServer;
 
@@ -142,6 +143,7 @@ export class TokenStorage {
         localStorage.removeItem(this.userID);
         localStorage.removeItem(this.allianceID);
         localStorage.removeItem(this.interruptedURL);
+        localStorage.removeItem(this.systems);
     }
 
     getSystems(): StarSystem[] | undefined {
@@ -156,6 +158,6 @@ export class TokenStorage {
      * Just an idea to store the star map locally in a browsers tab storage
      */
     rememberSystems(systems: StarSystem[]) {
-        localStorage.setItem('systems', JSON.stringify(systems));
+        localStorage.setItem(this.systems, JSON.stringify(systems));
     }
 }
