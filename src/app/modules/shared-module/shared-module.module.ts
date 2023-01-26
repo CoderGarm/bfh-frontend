@@ -19,8 +19,9 @@ import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {ResourceCounterComponent} from "./components/resource-counter/resource-counter.component";
 import {HumanResourceCounterComponent} from './components/human-resource-counter/human-resource-counter.component';
 import {NumericSliderCounterComponent} from "./components/numeric-slider-counter/numeric-slider-counter.component";
-import {AmountShifterComponent} from "../shared-modules/amount-shifter/amount-shifter.component";
+import {AmountShifterComponent} from "./components/amount-shifter/amount-shifter.component";
 import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
+import {MarkdownEditorComponent} from './components/markdown-editor/markdown-editor.component';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
         HumanResourceCounterComponent,
         NumericSliderCounterComponent,
         AmountShifterComponent,
+        MarkdownEditorComponent,
     ],
     imports: [
         CommonModule,
@@ -74,6 +76,7 @@ import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
         HumanResourceCounterComponent,
         NumericSliderCounterComponent,
         AmountShifterComponent,
+        MarkdownEditorComponent,
     ]
 })
 export class SharedModuleModule {

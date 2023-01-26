@@ -1,0 +1,19 @@
+.send-message-button {
+  margin-top: 15px;
+  float: right;
+}
+
+.angular-markdown-editor-minimalistic {
+  // See here: https://css-tricks.com/almanac/selectors/a/attribute/
+  ::ng-deep [data-handler$="cmdPreview"] {
+    display: none;
+  }
+
+  ::ng-deep [data-handler$="cmdImage"] {
+    display: none;
+  }
+
+  ::ng-deep [data-handler$="cmdUrl"] {
+    display: none;
+  }
+}

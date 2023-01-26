@@ -1,0 +1,13 @@
+<div>
+    <angular-markdown-editor
+            textareaId="chat-message-form-field"
+            [rows]="8"
+            name="markdownText"
+            [(ngModel)]="markdownText"
+            [options]="editorOptions"
+            class="angular-markdown-editor-minimalistic">
+    </angular-markdown-editor>
+    <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
+            [disabled]="!this.markdownText" class="send-message-button">Submit
+    </button>
+</div>

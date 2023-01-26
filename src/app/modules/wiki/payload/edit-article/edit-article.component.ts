@@ -4,6 +4,7 @@ import {Article, ArticleEdit, ArticlePlainContent} from "../../../../services/sw
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 import {MarkdownService} from "ngx-markdown";
+import * as DOMPurify from "dompurify";
 
 @Component({
     selector: 'app-edit-article',
@@ -39,7 +40,10 @@ export class EditArticleComponent extends SubscriptionManager implements OnInit,
                 enable: false,
                 icons: {}
             },
-            parser: (val) => this.markdownService.parse(val.trim()),
+            parser: (val) => {
+                const sanitizedText = DOMPurify.sanitize(val.trim());
+                this.markdownService.parse(sanitizedText);
+            },
             onChange: (e) => this.parse(e.getContent()),
             onShow: (e) => this.bsEditorInstance = e
         };

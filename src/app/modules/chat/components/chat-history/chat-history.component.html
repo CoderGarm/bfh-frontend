@@ -26,17 +26,9 @@
 <mat-card class="chat-card set-right write-card message-field-in-flow" *ngIf="!!chatHistory">
     <mat-card-content>
         <mat-icon *ngIf="isNewChat">new_releases</mat-icon>
-        <angular-markdown-editor
-                textareaId="chat-message-form-field"
-                [rows]="8"
-                name="markdownText"
-                [(ngModel)]="markdownText"
-                [options]="editorOptions"
-                class="angular-markdown-editor-minimalistic">
-        </angular-markdown-editor>
-        <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
-                [disabled]="!this.markdownText" id="send-chat-message-button">Submit
-        </button>
+        <app-markdown-editor textareaId="chat-message-form-field"
+                             [rows]="8"
+                             (play)="submitMessage($event)"></app-markdown-editor>
     </mat-card-content>
 </mat-card>
 

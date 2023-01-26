@@ -14,7 +14,7 @@
             <markdown [data]="message.message"></markdown>
         </mat-card-content>
         <mat-card-actions *ngIf="message.idAuthor == userId">
-            <button mat-button (click)="edit(message)">EDIT</button>
+            <button mat-button (click)="msgToEdit = message">EDIT</button>
         </mat-card-actions>
     </mat-card>
     <mat-paginator #paginatorBottom
@@ -29,17 +29,10 @@
 
 <mat-card class="forum-message-card" *ngIf="!!messagesInThread">
     <mat-card-content>
-        <angular-markdown-editor
-                textareaId="forum-message-form-field"
-                [rows]="10"
-                name="markdownText"
-                [(ngModel)]="markdownText"
-                [options]="editorOptions"
-                class="angular-markdown-editor-minimalistic">
-        </angular-markdown-editor>
-        <button mat-raised-button color="secondary" type="submit" (click)="submitMessage()"
-                [disabled]="!this.markdownText" id="send-forum-message-button">Submit
-        </button>
+        <app-markdown-editor textareaId="chat-message-form-field"
+                             [rows]="10"
+                             [editableText]="msgToEdit?.message"
+                             (play)="submitMessage($event)"></app-markdown-editor>
     </mat-card-content>
 </mat-card>
 

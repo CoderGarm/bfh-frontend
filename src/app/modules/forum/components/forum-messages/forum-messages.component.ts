@@ -4,8 +4,6 @@ import {CreateForumThreadMessage, ForumApiService, ForumMessage, ForumThread} fr
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {tap} from "rxjs/operators";
 import {MarkdownService} from "ngx-markdown";
-import {EditorInstance} from "angular-markdown-editor";
-import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 
 
 @Component({
@@ -15,7 +13,7 @@ import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/
 })
 export class ForumMessagesComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
-    private isEditMode?: ForumMessage;
+    msgToEdit?: ForumMessage;
 
     @Input()
     selectedForumThread?: ForumThread;
@@ -33,11 +31,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     pageSize: number = 15;
     messageAmountInThread: number = 0;
 
-    bsEditorInstance?: EditorInstance;
-    editorOptions?: EditorOption;
-
-    markdownText: string = '';
-
     constructor(private markdownService: MarkdownService,
                 private forumApi: ForumApiService) {
         super();
@@ -50,19 +43,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     ngAfterViewInit(): void {
-
-        this.editorOptions = {
-            iconlibrary: 'fa',
-            fullscreen: {
-                enable: false,
-                icons: {}
-            },
-            parser: (val) => this.markdownService.parse(val.trim()),
-            onChange: () => {
-            },
-            onShow: (e) => this.bsEditorInstance = e
-        };
-
         if (!!this.paginatorTop && !!this.paginatorBottom) {
             this.paginatorTop.page.pipe(
                 tap(() => {
@@ -103,32 +83,22 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         this.subscriptions.push(sub);
     }
 
-    submitMessage() {
+    submitMessage(txt: string) {
         if (!!this.selectedForumThread) {
-            if (this.isEditMode) {
-                let message: ForumMessage = this.isEditMode;
-                this.isEditMode.message = this.markdownText;
-                let sub = this.forumApi.editThreadMessage(message).subscribe(resp => {
-                    if (resp) {
-                        this.selectThread(this.selectedForumThread);
-                        this.markdownText = '';
-                    }
-                });
+            if (!!this.msgToEdit) {
+                let message: ForumMessage = this.msgToEdit;
+                this.msgToEdit.message = txt;
+                let sub = this.forumApi.editThreadMessage(message).subscribe(() => this.selectThread(this.selectedForumThread));
                 this.subscriptions.push(sub);
             } else {
                 let message: CreateForumThreadMessage = {
-                    message: this.markdownText,
+                    message: txt,
                     idForumThread: this.selectedForumThread.idForumThread
                 }
-                let sub = this.forumApi.createThreadMessage(message).subscribe(resp => {
-                    if (resp) {
-                        this.selectThread(this.selectedForumThread);
-                        this.markdownText = '';
-                    }
-                });
+                let sub = this.forumApi.createThreadMessage(message).subscribe(() => this.selectThread(this.selectedForumThread));
                 this.subscriptions.push(sub);
             }
-            this.isEditMode = undefined;
+            this.msgToEdit = undefined;
         }
     }
 
@@ -140,10 +110,5 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             this.forumApi.markForumMessageRead(msg.idForum, msg.idForumThread, msg.idForumMessage).subscribe(() => {
             })
         );
-    }
-
-    edit(message: ForumMessage) {
-        this.isEditMode = message;
-        this.markdownText = message.message;
     }
 }

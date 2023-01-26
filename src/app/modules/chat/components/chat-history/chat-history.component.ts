@@ -3,10 +3,6 @@ import {ChatApiService, ChatHistory, ChatMessage, UserJson} from "../../../../se
 import {interval, Subscription} from "rxjs";
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {take} from "rxjs/operators";
-import {EditorInstance} from "angular-markdown-editor";
-import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
-import {MarkdownService} from "ngx-markdown";
-import * as DOMPurify from 'dompurify';
 
 @Component({
     selector: 'app-chat-history',
@@ -44,31 +40,12 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     private msgIndexFrom = -1;
     private msgIndexTo = -1;
 
-    markdownText: string = '';
-
-    bsEditorInstance?: EditorInstance;
-    editorOptions?: EditorOption;
-
-    constructor(private markdownService: MarkdownService, private chatApi: ChatApiService) {
+    constructor(private chatApi: ChatApiService) {
         super();
     }
 
     ngOnInit(): void {
-        this.editorOptions = {
-            iconlibrary: 'fa',
-            fullscreen: {
-                enable: false,
-                icons: {}
-            },
-            parser: (val) => {
-                const sanitizedText = DOMPurify.sanitize(val.trim());
-                this.markdownService.parse(sanitizedText);
-            }
-            ,
-            onChange: (val) => {
-            },
-            onShow: (e) => this.bsEditorInstance = e
-        };
+
     }
 
     @HostListener('window:wheel', ['$event'])
@@ -203,7 +180,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         return "chat-card set-left " + message.idUserMessage;
     }
 
-    submitMessage() {
+    submitMessage(txt: string) {
         if (!this.selectedUserChatHistoryInput) {
             return;
         }
@@ -212,7 +189,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
 
         const chatMessage: ChatMessage = {
             idUserMessage: this.chatHistory?.idChatHistory,
-            message: this.markdownText,
+            message: txt,
             sender: {
                 idUser: this.tokenStorage.getUserID(),
                 username: this.tokenStorage.getLogin(),
@@ -245,8 +222,6 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 });
             this.subscriptions.push(sub);
         }
-        this.markdownText = '';
-        this.bsEditorInstance!.setContent('');
     }
 
     private setChatHistory(resp: ChatHistory | undefined) {

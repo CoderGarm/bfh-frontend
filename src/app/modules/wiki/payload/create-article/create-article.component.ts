@@ -5,6 +5,7 @@ import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/
 import {MarkdownService} from "ngx-markdown";
 import {ArticleCreate, WikiApiService} from "../../../../services/swagger";
 import {TranslationEditorComponent} from "../../../admin/components/payload/translation-editor/translation-editor.component";
+import * as DOMPurify from "dompurify";
 
 @Component({
     selector: 'app-create-article',
@@ -53,7 +54,10 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
                 enable: false,
                 icons: {}
             },
-            parser: (val) => this.markdownService.parse(val.trim()),
+            parser: (val) => {
+                const sanitizedText = DOMPurify.sanitize(val.trim());
+                this.markdownService.parse(sanitizedText);
+            },
             onChange: (e) => this.parse(e.getContent()),
             onShow: (e) => this.bsEditorInstance = e
         };
