@@ -14,14 +14,14 @@
         </div>
     </div>
 
-    <mat-chip-list class="capacity-holder">
-        <mat-chip color="primary" selected>
+    <mat-chip-listbox class="capacity-holder">
+        <mat-chip-option color="primary" selected>
             Fleet loading capacity indicator:
             <app-number-short class="mar-both" [input]="usedCapacity"></app-number-short>
             /
             <app-number-short class="mar-both" [input]="initialFreeCapacity"></app-number-short>
-        </mat-chip>
-    </mat-chip-list>
+        </mat-chip-option>
+    </mat-chip-listbox>
 
     <div class="clearfix payload" *ngIf="!!left && !!right">
         <div [ngClass]="{'the-left': floatingStyle}">

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
-import {MatLegacyTabChangeEvent as MatTabChangeEvent} from "@angular/material/legacy-tabs";
+import {MatTabChangeEvent} from "@angular/material/tabs";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
 

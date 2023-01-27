@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Alliance, AllianceApiService, UserJson} from "../../../../../services/swagger";
-import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
-import {MatLegacyPaginator as MatPaginator} from "@angular/material/legacy-paginator";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 

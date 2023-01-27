@@ -12,14 +12,14 @@ import {
 } from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {MatSort} from "@angular/material/sort";
-import {MatLegacyTable as MatTable, MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
-import {LegacyPageEvent as PageEvent, MatLegacyPaginator as MatPaginator} from "@angular/material/legacy-paginator";
+import {MatTable, MatTableDataSource} from "@angular/material/table";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CombatReport} from "../../../combat-report";
 import {CombatStatistics} from "../../../combat-statistics";
-import {MatLegacySlider as MatSlider, MatLegacySliderChange as MatSliderChange} from "@angular/material/legacy-slider";
 import {Subscription, timer} from "rxjs";
 import {SpinnerService} from "../../../../../services/spinner.service";
 import {CombatArenaData} from "../../../combat-arena-data";
+import {MatSlider} from "@angular/material/slider";
 
 @Component({
     selector: 'app-battle-report',
@@ -363,10 +363,6 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     slide(val: number | null) {
         this.activeRoundIndex = !!val ? val : 0;
         this.setActiveRound();
-    }
-
-    slideSlides($event: MatSliderChange) {
-        this.slide($event.value);
     }
 
     getLosses(reportStat: BattleReportStatistics): LossRole[] {

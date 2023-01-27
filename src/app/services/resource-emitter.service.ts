@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {HumanResourceAmount, ResourceAmount, ResourceDeposit} from "./swagger";
 import {SubscriptionManager} from "../SubscriptionManager";
-import {MatLegacyDialogRef as MatDialogRef} from "@angular/material/legacy-dialog";
+import {MatDialogRef} from "@angular/material/dialog";
 import {ResourceDisplayDialogComponent} from "../modules/display-elements/modules/resource-display/components/resource-display-dialog/resource-display-dialog.component";
 import {Point} from "@angular/cdk/drag-drop";
 

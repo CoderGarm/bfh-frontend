@@ -3,28 +3,28 @@
   cursor: text;
 }
 
-.name-input .mat-form-field-suffix {
+.name-input .mat-mdc-form-field-suffix {
   top: 8px;
   margin-left: 25px;
 }
 
-.rename-element .mat-form-field-underline {
+.rename-element .mat-mdc-form-field-underline {
   bottom: 0;
 }
 
-.rename-element .mat-form-field,
-.rename-element .mat-card-header-text {
+.rename-element .mat-mdc-form-field,
+.rename-element .mat-mdc-card-header-text {
   width: 350px;
 }
 
-.name-input .mat-form-field-infix {
+.name-input .mat-mdc-form-field-infix {
   border-top: 0;
 }
 
-.name-input .mat-form-field-flex {
+.name-input .mat-mdc-form-field-flex {
   padding-top: 0 !important;
 }
 
-.name-input .mat-form-field-wrapper {
+.name-input .mat-mdc-form-field-wrapper {
   padding-bottom: 0;
 }

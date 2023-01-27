@@ -12,7 +12,7 @@
                    showFirstLastButtons
                    (page)="displayByPagination($event)">
     </mat-paginator>
-    <mat-card class="forum-card" *ngFor="let thread of displayedThreads">
+    <mat-card appearance="outlined" class="forum-card" *ngFor="let thread of displayedThreads">
         <mat-card-title (click)="selectThread(thread)">
             {{thread.title}}
             <mat-icon *ngIf="hasThreadUnread(thread)">mark_email_unread</mat-icon>

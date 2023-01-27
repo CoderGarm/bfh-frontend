@@ -7,7 +7,7 @@
                    showFirstLastButtons
                    (page)="fetchByPagination($event)">
     </mat-paginator>
-    <mat-card class="forum-card" *ngFor="let message of messagesInThread">
+    <mat-card appearance="outlined" class="forum-card" *ngFor="let message of messagesInThread">
         <mat-card-title>Author: {{message.author}}</mat-card-title>
         <mat-card-subtitle>{{message.sentAt | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
         <mat-card-content class="message">
@@ -27,7 +27,7 @@
     </mat-paginator>
 </div>
 
-<mat-card class="forum-message-card" *ngIf="!!messagesInThread">
+<mat-card appearance="outlined" class="forum-message-card" *ngIf="!!messagesInThread">
     <mat-card-content>
         <app-markdown-editor textareaId="chat-message-form-field"
                              [rows]="10"

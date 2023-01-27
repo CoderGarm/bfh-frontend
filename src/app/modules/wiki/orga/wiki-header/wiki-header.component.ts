@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SubscriptionManager} from "../../../../SubscriptionManager";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 import {Article, WikiApiService} from "../../../../services/swagger";
-import {MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent} from "@angular/material/legacy-autocomplete";
+import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
 @Component({
     selector: 'app-wiki-header',

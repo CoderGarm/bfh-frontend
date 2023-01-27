@@ -305,10 +305,10 @@
   "star-map": {
     "notch": {
       "action": {
-        "show-info": "Show Info",
-        "show-merge": "Show transfer ships",
-        "show-move": "Show move fleets",
-        "show-transport": "Show transport"
+        "show-info": "Info",
+        "show-merge": "Transfer ships",
+        "show-move": "Move fleets",
+        "show-transport": "Transport"
       },
       "deselect": "Deselect"
     },

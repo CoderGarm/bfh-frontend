@@ -20,7 +20,7 @@
 
         <ng-container matColumnDef="star-system-filter">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-form-field appearance="standard">
+                <mat-form-field>
                     <mat-label>Filter</mat-label>
                     <input matInput [(ngModel)]="filterString" (keyup)="applyFilter()" placeholder="Star system" autocomplete="off">
                 </mat-form-field>
@@ -66,7 +66,7 @@
                     </div>
                     <mat-list *ngIf="checkIfKnown(colo.starSystem)" class="lister">
                         <mat-list-item *ngFor="let planet of colo.starSystem.planets">
-                            <mat-card class="planet-card">
+                            <mat-card appearance="outlined" class="planet-card">
                                 <mat-card-header>
                                     <div [hidden]="!checkIfPlanetIsAlreadyColonized(planet)">
                                         {{planet.name}} is already colonized

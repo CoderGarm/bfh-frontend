@@ -93,17 +93,16 @@
 
 <div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && !!combatArenaData && combatArenaData.combatRounds.length > 0">
 
+    <!-- TODO: The 'tickInterval' property no longer exists -->
     <mat-slider id="battle-round-stepper"
-                thumbLabel
+                discrete
                 [displayWith]="formatLabel"
-                tickInterval="1"
                 step="1"
                 min="1"
-                [value]="activeRound"
                 [max]="getLastRound()"
-                (valueChange)="slide($event)"
-                (input)="slideSlides($event)"
-                aria-label="units"></mat-slider>
+                aria-label="units"><input matSliderThumb/>
+        <input matSliderThumb (valueChange)="slide($event)" [value]="activeRound">
+    </mat-slider>
 
     <div class="center">
         <mat-button-toggle-group>

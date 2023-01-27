@@ -50,7 +50,7 @@ div .mat-subheader {
   clear: both;
 }
 
-.mat-tab-body-wrapper {
+.mat-mdc-tab-body-wrapper {
   // make sure that the tab body grows to the full height
   flex-grow: 1;
 }
@@ -126,7 +126,7 @@ body {
 }
 
 // removes the ripple effect - it's needed in order to keep position in mat-expansion-panel
-.mat-radio-ripple {
+.mat-mdc-radio-ripple {
   display: none;
 }
 
@@ -135,11 +135,11 @@ body {
   width: 90%;
 }
 
-.mat-cell {
+.mat-mdc-cell {
   text-align: center;
 }
 
-.mat-header-cell {
+.mat-mdc-header-cell {
   text-align: center;
 }
 
@@ -174,12 +174,10 @@ body {
 }
 
 [mat-dialog-title] {
-  margin: -24px -24px 0px -24px !important;
-  padding: 10px 24px;
   background: $primary-color;
 }
 
-.resource-mat-dialog-panel .mat-dialog-container {
+.resource-mat-dialog-panel .mat-mdc-dialog-container {
   background: linear-gradient(45deg, $secondary-background-color 20px, $background-color 20px);
   border-radius: 5px 5px 5px 0;
 }
@@ -192,7 +190,7 @@ body {
   justify-content: flex-end;
 }
 
-.confirm-mat-dialog-panel .mat-dialog-container {
+.confirm-mat-dialog-panel .mat-mdc-dialog-container {
   // todo resize: both;
 }
 
@@ -200,6 +198,15 @@ body {
   font-size: 7px;
 }
 
-.mat-tab-label-content > .mat-icon {
+.mat-mdc-tab-label-content > .mat-mdc-icon {
   margin-left: 5px;
+}
+
+
+.no-checkmark > span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic {
+  width: 6px;
+}
+
+.no-checkmark > span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic .mdc-evolution-chip__checkmark {
+  display: none;
 }

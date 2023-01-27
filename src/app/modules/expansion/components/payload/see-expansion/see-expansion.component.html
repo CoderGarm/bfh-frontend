@@ -17,7 +17,7 @@
 
         <ng-container matColumnDef="star-system-filter">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-form-field appearance="standard">
+                <mat-form-field>
                     <mat-label>Filter</mat-label>
                     <input matInput [(ngModel)]="filterString" (keyup)="applyFilter()" placeholder="Star system" autocomplete="off">
                 </mat-form-field>
@@ -58,7 +58,7 @@
                 <div class="expandable-element-detail" [@detailExpand]="colo == expandedElement ? 'expanded' : 'collapsed'">
                     <mat-list class="lister">
                         <mat-list-item *ngFor="let planet of getPendingColonizations(colo)">
-                            <mat-card class="planet-card">
+                            <mat-card appearance="outlined" class="planet-card">
                                 <mat-card-header>
                                     <div class="bordered">
                                         {{planet.name}} has a colonization in progress - Ticks left: {{getTicksLeft(colo, planet)}}

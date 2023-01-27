@@ -15,7 +15,7 @@ import {
     ResourceDeposit,
     ResourcesApiService
 } from "../../../../../services/swagger";
-import {MatLegacyChip as MatChip, MatLegacyChipList as MatChipList} from "@angular/material/legacy-chips";
+import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {UntypedFormControl} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
@@ -88,19 +88,19 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
      * the EResourceType mat chip list
      */
     @ViewChild('resourceTypeChipList')
-    resourceTypeChipList!: MatChipList;
+    resourceTypeChipList!: MatChipListbox;
 
     /**
      * the EProductionCategory mat chip list
      */
     @ViewChild('productCategoryChipList')
-    productCategoryChipList!: MatChipList;
+    productCategoryChipList!: MatChipListbox;
 
     /**
      * the ERefinementSequence mat chip list
      */
     @ViewChild('refinementSequenceChipList')
-    refinementSequenceChipList!: MatChipList;
+    refinementSequenceChipList!: MatChipListbox;
 
     /**
      * some needed form controls to use the mat chip list
@@ -212,45 +212,13 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
                 });
             this.subscriptions.push(sub);
         }
-    }
-
-    /**
-     * this selects or deselects the clicked chip in the given list and starts the filtering
-     *
-     * @param chipValue the value of the mat chip
-     * @param chipList the chip list which is mused
-     */
-    clickAChip(chipValue: string, chipList: MatChipList) {
-        const selectedChips: MatChip[] | MatChip = chipList.selected;
-
-        const matChips: MatChip[] = chipList.chips.filter(chip => chip.value === chipValue);
-        if (matChips.length != 1) {
-            throw new Error("There should be only one selectable chip.");
-        } else {
-            let newlySelected: boolean = true;
-            const clickedChip = matChips[0];
-            if (selectedChips instanceof Array) {
-                if (selectedChips.includes(clickedChip)) {
-                    newlySelected = false;
-                }
-            } else if (selectedChips === clickedChip) {
-                newlySelected = false;
-            }
-
-            if (newlySelected) {
-                clickedChip.select();
-            } else {
-                clickedChip.deselect();
-            }
-            this.filterDisplayedConstructions();
-        }
-    }
+    } // fixme make https://material.angular.io/components/chips/examples#chips-avatar for all and remove selection-tickmarkk
 
     /**
      * this filters the displayed constructions by the selected filters
      * @private
      */
-    private filterDisplayedConstructions() {
+    filterDisplayedConstructions() {
         const selectedResourceTypes: string[] = this.getStringArrayFromMatChips(this.resourceTypeChipList!.selected);
         const selectedProductCategories: string[] = this.getStringArrayFromMatChips(this.productCategoryChipList!.selected);
         const selectedRefinementSequence: string[] = this.getStringArrayFromMatChips(this.refinementSequenceChipList!.selected);
@@ -269,15 +237,15 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
 
     /**
      * just fetches every string from the given mat chip list
-     * @param matChipList the chip list
+     * @param MatChipListbox the chip list
      * @private
      */
-    private getStringArrayFromMatChips(matChipList: MatChip[] | MatChip): string[] {
+    private getStringArrayFromMatChips(MatChipListbox: MatChip[] | MatChip): string[] {
         const selectedResourceTypes: string[] = [];
-        if (matChipList instanceof Array) {
-            matChipList.forEach(chip => selectedResourceTypes.push(chip.value));
+        if (MatChipListbox instanceof Array) {
+            MatChipListbox.forEach(chip => selectedResourceTypes.push(chip.value));
         } else {
-            selectedResourceTypes.push(matChipList.value);
+            selectedResourceTypes.push(MatChipListbox.value);
         }
         return selectedResourceTypes;
     }
@@ -391,7 +359,7 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
      * toggles all chips depending on the current selected chips
      */
     toggle(event: string) {
-        let chipList: MatChipList | undefined;
+        let chipList: MatChipListbox | undefined;
         if (event == 'resourceTypeChipList') {
             chipList = this.resourceTypeChipList;
         }
@@ -402,12 +370,12 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
             chipList = this.refinementSequenceChipList;
         }
         if (!!chipList) {
-            let selected = chipList.chips.filter(chip => chip.selected);
-            let unselected = chipList.chips.filter(chip => !chip.selected);
+            let selected = chipList._chips.filter(chip => chip.selected);
+            let unselected = chipList._chips.filter(chip => !chip.selected);
             if (selected.length > unselected.length) {
-                chipList.chips.forEach(chip => chip.deselect());
+                chipList._chips.forEach(chip => chip.deselect());
             } else {
-                chipList.chips.forEach(chip => chip.select());
+                chipList._chips.forEach(chip => chip.select());
             }
             this.filterDisplayedConstructions();
         }
@@ -420,6 +388,12 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
         let folder = construction.building.productionTarget.folder;
         let iconName = construction.building.productionTarget.iconName;
         return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+    }
+
+    getLinkR(resourceType: EResourceType | EEducationType): string { // fixme unify with above
+        let folder = resourceType.folder;
+        let iconName = resourceType.iconName;
+        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
     getInvisibility(construction: Construction) {

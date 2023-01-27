@@ -3,7 +3,7 @@
         <mat-icon *ngIf="displayPreviousMessageArrow()" (click)="maxUp()">keyboard_double_arrow_up</mat-icon>
     </div>
     <div id="message-container">
-        <mat-card #chatCardList *ngFor="let message of messages" [className]="chooseStyleFromSender(message)">
+        <mat-card appearance="outlined" #chatCardList *ngFor="let message of messages" [className]="chooseStyleFromSender(message)">
             <mat-card-header>
                 <div mat-card-avatar class="avatar-image"></div>
                 <mat-card-title>
@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<mat-card class="chat-card set-right write-card message-field-in-flow" *ngIf="!!chatHistory">
+<mat-card appearance="outlined" class="chat-card set-right write-card message-field-in-flow" *ngIf="!!chatHistory">
     <mat-card-content>
         <mat-icon *ngIf="isNewChat">new_releases</mat-icon>
         <app-markdown-editor textareaId="chat-message-form-field"

@@ -5,14 +5,14 @@
 <div>
     <mat-form-field appearance="outline" class="filter" (click)="toggle()">
         <mat-label>Hull types</mat-label>
-        <mat-chip-list #hullTypeChipList multiple [formControl]="eHullTypeFC">
-            <mat-chip
+        <mat-chip-listbox #hullTypeChipList multiple [formControl]="eHullTypeFC">
+            <mat-chip-option
                     *ngFor="let eHullType of eHullTypes"
                     [value]="eHullType.typeName"
-                    (click)="clickAChip(eHullType.typeName, hullTypeChipList)">
+                    (selectionChange)="filterDisplayedShipClasses()">
                 {{eHullType.typeName}}
-            </mat-chip>
-        </mat-chip-list>
+            </mat-chip-option>
+        </mat-chip-listbox>
     </mat-form-field>
 </div>
 

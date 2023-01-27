@@ -4,13 +4,13 @@
     </button>
     <mat-slider
             [disabled]="disabled"
-            [thumbLabel]="thumbLabel"
+            [discrete]="!thumbLabel"
             [min]="leftAvailableValue"
             [max]="rightAvailableValue"
             step="1"
             [(ngModel)]="amount"
-            (mouseup)="mouseup()"
-            (input)="input($event.value)">
+            (mouseup)="mouseup()"><input matSliderThumb/>
+        <input matSliderThumb (valueChange)="input($event)">
     </mat-slider>
     <button mat-icon-button (click)="setRight()" [disabled]="disabled || disabledRight">
         <mat-icon mat-list-icon class="margin-l-r" [inline]="true">keyboard_double_arrow_right</mat-icon>

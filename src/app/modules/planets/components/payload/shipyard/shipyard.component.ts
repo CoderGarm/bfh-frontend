@@ -11,7 +11,7 @@ import {
     ShipyardConstructionSelection
 } from "../../../../../services/swagger";
 import {UntypedFormControl} from "@angular/forms";
-import {MatLegacyChip as MatChip, MatLegacyChipList as MatChipList} from "@angular/material/legacy-chips";
+import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsNotificationService} from "../../../planets-notification.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";
@@ -66,7 +66,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
      * the EResourceType mat chip list
      */
     @ViewChild('hullTypeChipList')
-    hullTypeChipList!: MatChipList;
+    hullTypeChipList!: MatChipListbox;
 
     buildShipClass?: ShipyardConstructionSelection;
     private buildShipClassDefinition: string = "buildShipClass";
@@ -195,42 +195,10 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
     }
 
     /**
-     * this selects or deselects the clicked chip in the given list and starts the filtering
-     *
-     * @param chipValue the value of the mat chip
-     * @param chipList the chip list which is mused
-     */
-    clickAChip(chipValue: string, chipList: MatChipList) {
-        const selectedChips: MatChip[] | MatChip = chipList.selected;
-
-        const matChips: MatChip[] = chipList.chips.filter(chip => chip.value === chipValue);
-        if (matChips.length != 1) {
-            throw new Error("There should be only one selectable chip.");
-        } else {
-            let newlySelected: boolean = true;
-            const clickedChip = matChips[0];
-            if (selectedChips instanceof Array) {
-                if (selectedChips.includes(clickedChip)) {
-                    newlySelected = false;
-                }
-            } else if (selectedChips === clickedChip) {
-                newlySelected = false;
-            }
-
-            if (newlySelected) {
-                clickedChip.select();
-            } else {
-                clickedChip.deselect();
-            }
-            this.filterDisplayedShipClasses();
-        }
-    }
-
-    /**
      * this filters the displayed ship classes by the selected filters
      * @private
      */
-    private filterDisplayedShipClasses() {
+    filterDisplayedShipClasses() {
         if (!this.hullTypeChipList) {
             return;
         }
@@ -243,15 +211,15 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
 
     /**
      * just fetches every string from the given mat chip list
-     * @param matChipList the chip list
+     * @param MatChipListbox the chip list
      * @private
      */
-    private getStringArrayFromMatChips(matChipList: MatChip[] | MatChip): string[] {
+    private getStringArrayFromMatChips(MatChipListbox: MatChip[] | MatChip): string[] {
         const selectedResourceTypes: string[] = [];
-        if (matChipList instanceof Array) {
-            matChipList.forEach(chip => selectedResourceTypes.push(chip.value));
+        if (MatChipListbox instanceof Array) {
+            MatChipListbox.forEach(chip => selectedResourceTypes.push(chip.value));
         } else {
-            selectedResourceTypes.push(matChipList.value);
+            selectedResourceTypes.push(MatChipListbox.value);
         }
         return selectedResourceTypes;
     }
@@ -371,12 +339,12 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
      */
     toggle() {
         if (!!this.hullTypeChipList) {
-            let selected = this.hullTypeChipList.chips.filter(chip => chip.selected);
-            let unselected = this.hullTypeChipList.chips.filter(chip => !chip.selected);
+            let selected = this.hullTypeChipList._chips.filter(chip => chip.selected);
+            let unselected = this.hullTypeChipList._chips.filter(chip => !chip.selected);
             if (selected.length > unselected.length) {
-                this.hullTypeChipList.chips.forEach(chip => chip.deselect());
+                this.hullTypeChipList._chips.forEach(chip => chip.deselect());
             } else {
-                this.hullTypeChipList.chips.forEach(chip => chip.select());
+                this.hullTypeChipList._chips.forEach(chip => chip.select());
             }
             this.filterDisplayedShipClasses();
         }

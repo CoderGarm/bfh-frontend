@@ -6,45 +6,48 @@
                       [levelImprovementHumanResources]="levelImprovementHumanResources"></app-resource-service>
 
 <div>
-    <mat-form-field appearance="outline" class="filter" (click)="toggle('productCategoryChipList')">
-        <mat-label>Product category</mat-label>
-        <mat-chip-list #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
-            <mat-chip
-                    *ngFor="let category of eProductionCategories as string"
-                    [value]="category"
-                    (click)="clickAChip(category, productCategoryChipList)">
-                {{category}}
-            </mat-chip>
-        </mat-chip-list>
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance="outline" class="filter" (click)="toggle('refinementSequenceChipList')">
-        <mat-label>Refinement sequence</mat-label>
-        <mat-chip-list #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
-            <mat-chip
-                    *ngFor="let sequence of eRefinementSequences"
-                    [value]="sequence.typeName"
-                    (click)="clickAChip(sequence.typeName, refinementSequenceChipList)">
-                {{sequence.typeName}}
-            </mat-chip>
-        </mat-chip-list>
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance="outline" class="filter" (click)="toggle('resourceTypeChipList')">
-        <mat-label>Resource types</mat-label>
-        <mat-chip-list #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
-            <mat-chip
-                    *ngFor="let eResourceType of eResourceTypes"
-                    [value]="eResourceType.typeName"
-                    (click)="clickAChip(eResourceType.typeName, resourceTypeChipList)">
-                {{eResourceType.typeName}}
-            </mat-chip>
-        </mat-chip-list>
-    </mat-form-field>
+    <!--<mat-form-field appearance="outline" class="filter" (click)="toggle('productCategoryChipList')"> todo add toggle functionality -->
+    <mat-label>Product category</mat-label>
+    <mat-chip-listbox #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
+        <mat-chip-option
+                class="no-checkmark"
+                *ngFor="let category of eProductionCategories as string"
+                [value]="category"
+                (selectionChange)="filterDisplayedConstructions()">
+            <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="category" fontIcon="precision_manufacturing"></mat-icon>
+            {{category}}
+        </mat-chip-option>
+    </mat-chip-listbox>
+
+    <!--<mat-form-field appearance="outline" class="filter" (click)="toggle('refinementSequenceChipList')">-->
+    <mat-label>Refinement sequence</mat-label>
+    <mat-chip-listbox #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
+        <mat-chip-option
+                class="no-checkmark"
+                *ngFor="let sequence of eRefinementSequences"
+                [value]="sequence.typeName"
+                (selectionChange)="filterDisplayedConstructions()">
+            <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="sequence.typeName" fontIcon="precision_manufacturing"></mat-icon>
+            {{sequence.typeName}}
+        </mat-chip-option>
+    </mat-chip-listbox>
+
+    <!--<mat-form-field appearance="outline" class="filter" (click)="toggle('resourceTypeChipList')">-->
+    <mat-label>Resource types</mat-label>
+    <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
+        <mat-chip-option
+                class="no-checkmark"
+                *ngFor="let eResourceType of eResourceTypes"
+                [value]="eResourceType.typeName"
+                (selectionChange)="filterDisplayedConstructions()">
+            <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="eResourceType.typeName" fontIcon="precision_manufacturing"></mat-icon>
+            {{eResourceType.typeName}}
+        </mat-chip-option>
+    </mat-chip-listbox>
 </div>
 
-{{ 'planetary.constructions.title' | translate }}
 
+{{ 'planetary.constructions.title' | translate }}
 <mat-accordion>
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"
                          (opened)="setOpened(construction)"

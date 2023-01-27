@@ -305,10 +305,10 @@
   "star-map": {
     "notch": {
       "action": {
-        "show-info": "Zeige Infos",
-        "show-merge": "Zeige transferiere Schiffe",
-        "show-move": "Zeige Flotten bewegen",
-        "show-transport": "Zeige Transporte"
+        "show-info": "Info",
+        "show-merge": "Transferiere Schiffe",
+        "show-move": "Flotten bewegen",
+        "show-transport": "Transport"
       },
       "deselect": "Auswahl aufheben"
     },

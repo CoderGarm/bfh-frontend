@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {MatLegacyPaginator as MatPaginator} from "@angular/material/legacy-paginator";
+import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {ColonizationApiService, MiningFactors, Orbit, Planet, ResourcesApiService, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
-import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
+import {MatTableDataSource} from "@angular/material/table";
 import {OrganizeExpansionComponent} from "../organize-expansion/organize-expansion.component";
-import {MatLegacyCheckboxChange as MatCheckboxChange} from "@angular/material/legacy-checkbox";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({

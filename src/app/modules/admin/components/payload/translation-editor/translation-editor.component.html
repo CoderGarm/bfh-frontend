@@ -1,4 +1,4 @@
-<mat-card *ngIf="!!referenceTranslation">
+<mat-card appearance="outlined" *ngIf="!!referenceTranslation">
     <mat-card-subtitle>For translatable<br>
         {{ 'translation.idTranslatable' | translate }}:  {{referenceTranslation.idTranslatable}}<br>
         {{ 'translation.type' | translate }}:  {{referenceTranslation.translationTarget}}<br>

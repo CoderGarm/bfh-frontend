@@ -1,5 +1,5 @@
 <div *ngIf="!!destination && fleets.length > 0">
-    <mat-card>
+    <mat-card appearance="outlined">
         <div mat-subheader>{{ 'fleets.movement.select-for-move.title' | translate }} {{destination!.name}}</div>
         <div *ngFor="let fleet of fleets">
             <mat-card-header>

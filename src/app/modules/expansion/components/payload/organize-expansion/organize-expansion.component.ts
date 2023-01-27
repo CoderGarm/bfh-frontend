@@ -12,9 +12,9 @@ import {
     StarSystem,
     StarSystemColonization
 } from "../../../../../services/swagger";
-import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
-import {MatLegacyCheckbox as MatCheckbox, MatLegacyCheckboxChange as MatCheckboxChange} from "@angular/material/legacy-checkbox";
-import {MatLegacyPaginator as MatPaginator} from "@angular/material/legacy-paginator";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
+import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ResourceHelper} from "../../../../../ResourceHelper";

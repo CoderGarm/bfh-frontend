@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../../../../services/swagger";
 import {ResourceEmitterService} from "../../../../../../services/resource-emitter.service";
 import {SubscriptionManager} from "../../../../../../SubscriptionManager";
-import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {ResourceDisplayDialogComponent} from "../resource-display-dialog/resource-display-dialog.component";
 
 @Component({

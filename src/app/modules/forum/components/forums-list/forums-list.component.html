@@ -1,29 +1,29 @@
 <div id="forums-content">
     <!-- breadcrumbs -->
-    <mat-chip-list>
-        <mat-chip color="primary"
-                  [selected]="!selectedForum"
-                  [disabled]="isAllianceForum"
-                  (click)="selectForum(undefined)">
+    <mat-chip-listbox>
+        <mat-chip-option color="primary"
+                         [selected]="!selectedForum"
+                         [disabled]="isAllianceForum"
+                         (click)="selectForum(undefined)">
             Forums
-        </mat-chip>
-        <mat-chip color="primary"
-                  [selected]="!!selectedForum && !selectedForumThread"
-                  *ngIf="!!selectedForum"
-                  (click)="selectThread(undefined)">
+        </mat-chip-option>
+        <mat-chip-option color="primary"
+                         [selected]="!!selectedForum && !selectedForumThread"
+                         *ngIf="!!selectedForum"
+                         (click)="selectThread(undefined)">
             {{selectedForum.title}}
-        </mat-chip>
-        <mat-chip color="primary"
-                  [selected]="!!selectedForumThread"
-                  *ngIf="!!selectedForumThread"
-                  (click)="selectThread(selectedForumThread)">
+        </mat-chip-option>
+        <mat-chip-option color="primary"
+                         [selected]="!!selectedForumThread"
+                         *ngIf="!!selectedForumThread"
+                         (click)="selectThread(selectedForumThread)">
             {{selectedForumThread.title}}
-        </mat-chip>
-    </mat-chip-list>
+        </mat-chip-option>
+    </mat-chip-listbox>
 
     <!-- forums -->
     <div id="forum-list" *ngIf="!selectedForum">
-        <mat-card class="forum-card" *ngFor="let forum of forums">
+        <mat-card appearance="outlined" class="forum-card" *ngFor="let forum of forums">
             <mat-card-title (click)="selectForum(forum)">
                 {{forum.title}}
                 <mat-icon *ngIf="hasForumUnread(forum)">mark_email_unread</mat-icon>

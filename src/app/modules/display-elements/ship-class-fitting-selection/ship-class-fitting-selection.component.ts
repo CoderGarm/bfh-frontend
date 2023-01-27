@@ -18,7 +18,7 @@ import {
 import {Subscription} from "rxjs";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
-import {MatLegacyRadioButton as MatRadioButton} from "@angular/material/legacy-radio";
+import {MatRadioButton} from "@angular/material/radio";
 import {WeaponHelper} from "../../../WeaponHelper";
 
 @Component({

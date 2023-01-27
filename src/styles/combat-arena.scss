@@ -1,16 +1,16 @@
 @import "src/styles/variables";
 @import "src/styles/combat-states";
 
-#battle-round-stepper .mat-slider-thumb-label {
+#battle-round-stepper .mat-mdc-slider-thumb-label {
   transform: rotate(45deg) !important;
   border-radius: 50% 50% 0 !important;
 }
 
-#battle-round-stepper .mat-slider-thumb {
+#battle-round-stepper .mat-mdc-slider-thumb {
   transform: scale(0) !important;
 }
 
-#battle-round-stepper .mat-slider-thumb-label-text {
+#battle-round-stepper .mat-mdc-slider-thumb-label-text {
   opacity: 1 !important;
 }
 
