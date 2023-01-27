@@ -18,8 +18,8 @@ import {
 } from "../../services/swagger";
 import {OrbitDefinition} from "../star-map/payload/orbit-definition";
 import {BasicViewHelper} from "../../basic-view-helper";
-import {CombatArenaData} from "./components/payload/combat-arena/combat-arena.component";
 import {NavigationCalculator} from "../../NavigationCalculator";
+import {CombatArenaData} from "./combat-arena-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;

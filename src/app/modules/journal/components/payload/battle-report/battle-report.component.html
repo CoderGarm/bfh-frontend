@@ -91,7 +91,7 @@
         [combatArenaData]="combatArenaData"
         [activeRound]="activeRound"></app-combat-arena>
 
-<div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && combatRounds.length > 0">
+<div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && !!combatArenaData && combatArenaData.combatRounds.length > 0">
 
     <mat-slider id="battle-round-stepper"
                 thumbLabel

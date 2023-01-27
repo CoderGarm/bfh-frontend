@@ -1,18 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {
-    BattleReport,
-    CounterMissileHit,
-    Fleet,
-    HitLog,
-    MissileMovement,
-    MovementAction,
-    Planet,
-    ReleasedVolley,
-    ShipClass,
-    ShipKillerHit,
-    StarSystem
-} from "../../../../../services/swagger";
+import {BattleReport, Fleet, Planet, StarSystem} from "../../../../../services/swagger";
 import {BattleViewHelper} from "../../../battle-view-helper";
+import {CombatArenaData} from "../../../combat-arena-data";
 
 @Component({
     selector: 'app-combat-arena',
@@ -76,12 +65,6 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
     }
 
-
-
-    /**
-     * main method of this fuckin' shit - creates everything by the current data
-     * @private
-     */
     private createStarMap() {
         if (!!this.starSystem) {
             this.drawOrbits(this.starSystem);
@@ -90,9 +73,6 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
     }
 
-    /**
-     * sets up the combat
-     */
     private setUpCombat() {
         const green: Fleet[] = [];
         const red: Fleet[] = [];
@@ -109,42 +89,5 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         this.green = green;
         this.red = red;
-    }
-}
-
-export class CombatArenaData {
-
-    combatRounds: Int8Array;
-
-    movementsByRound: Map<number, MovementAction[]>;
-
-    missileMovementsByRound: Map<number, MissileMovement[]>;
-
-    volleysByRound: Map<number, ReleasedVolley[]>;
-
-    shipKillerHitsByRound: Map<number, ShipKillerHit[]>;
-
-    counterMissileHitsByRound: Map<number, CounterMissileHit[]>;
-
-    hitLogsByRound: Map<number, HitLog[]>;
-
-    shipClasses: ShipClass[];
-
-    constructor(combatRounds: Int8Array,
-                movementsByRound: Map<number, MovementAction[]>,
-                volleysByRound: Map<number, ReleasedVolley[]>,
-                missileMovementsByRound: Map<number, MissileMovement[]>,
-                shipKillerHitsByRound: Map<number, ShipKillerHit[]>,
-                counterMissileHitsByRound: Map<number, CounterMissileHit[]>,
-                hitLogsByRound: Map<number, HitLog[]>,
-                shipClasses: ShipClass[]) {
-        this.combatRounds = combatRounds;
-        this.movementsByRound = movementsByRound;
-        this.volleysByRound = volleysByRound;
-        this.missileMovementsByRound = missileMovementsByRound;
-        this.shipKillerHitsByRound = shipKillerHitsByRound;
-        this.counterMissileHitsByRound = counterMissileHitsByRound;
-        this.hitLogsByRound = hitLogsByRound;
-        this.shipClasses = shipClasses;
     }
 }
