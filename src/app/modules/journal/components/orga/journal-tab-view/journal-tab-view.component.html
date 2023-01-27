@@ -4,7 +4,11 @@
             <app-journal-dashboard></app-journal-dashboard>
         </ng-template>
     </mat-tab>
-    <mat-tab label="{{ 'tab.journal.battles' | translate }}">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            {{ 'tab.journal.battles' | translate }}
+            <mat-icon *ngIf="hasNewReports" [inline]="true">mark_email_unread</mat-icon>
+        </ng-template>
         <ng-template matTabContent>
             <app-battle-report></app-battle-report>
         </ng-template>
