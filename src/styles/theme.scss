@@ -1,0 +1,105 @@
+@use 'sass:map';
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+@import "variables";
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$bfh-primary: mat.define-palette($bfh-palette);
+$bfh-accent: mat.define-palette($bfh-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$bfh-warn: mat.define-palette(mat.$red-palette);
+
+/*
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$bfh-theme: mat.define-dark-theme((
+        color: (
+                primary: $bfh-primary,
+                accent: $bfh-accent,
+                warn: $bfh-warn,
+        )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($bfh-theme);
+*/
+
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+// custom background and foreground palettes
+$my-dark-theme-background: (
+        status-bar: black,
+        app-bar: map.get(mat.$grey-palette, 900),
+        background: $background-color,
+        hover: rgba(white, 0.04),
+        card: map.get(mat.$grey-palette, 800),
+        dialog: map.get(mat.$grey-palette, 800),
+        disabled-button: rgba(white, 0.12),
+        raised-button: map.get(mat.$grey-palette, 800),
+        focused-button: $light-focused,
+        selected-button: map.get(mat.$grey-palette, 900),
+        selected-disabled-button: map.get(mat.$grey-palette, 800),
+        disabled-button-toggle: black,
+        unselected-chip: map.get(mat.$grey-palette, 700),
+        disabled-list-option: rgba(white, 0.12),
+        tooltip: map.get(mat.$grey-palette, 700),
+);
+
+$my-dark-theme-foreground: (
+        base: white,
+        divider: $light-dividers,
+        dividers: $light-dividers,
+        disabled: $light-disabled-text,
+        disabled-button: rgba(white, 0.3),
+        disabled-text: $light-disabled-text,
+        elevation: black,
+        hint-text: $light-disabled-text,
+        secondary-text: $light-secondary-text,
+        icon: white,
+        icons: white,
+        text: white,
+        slider-min: white,
+        slider-off: rgba(white, 0.3),
+        slider-off-active: rgba(white, 0.3),
+);
+
+// instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
+@function create-wonky-theme($primary, $accent, $warn: $bfh-warn) {
+  @return (
+          primary: $primary,
+          accent: $accent,
+          warn: $warn,
+          is-dark: false,
+          foreground: $my-dark-theme-foreground,
+          background: $my-dark-theme-background,
+  );
+}
+
+$custom-theme: create-wonky-theme($bfh-primary, $bfh-accent, $bfh-warn);
+
+@include mat.all-component-themes($custom-theme);
+

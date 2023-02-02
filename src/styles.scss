@@ -203,10 +203,12 @@ body {
 }
 
 
-.no-checkmark > span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic {
-  width: 6px;
-}
+.no-checkmark {
+  & span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic {
+    width: 6px;
+  }
 
-.no-checkmark > span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic .mdc-evolution-chip__checkmark {
-  display: none;
+  & span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic .mdc-evolution-chip__checkmark {
+    display: none;
+  }
 }
