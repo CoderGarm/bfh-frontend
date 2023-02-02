@@ -147,7 +147,6 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles/purple-green.scss",
               "src/styles.scss"
             ],
             "scripts": []

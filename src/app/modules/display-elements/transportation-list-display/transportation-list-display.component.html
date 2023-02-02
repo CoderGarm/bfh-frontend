@@ -15,7 +15,7 @@
             <div [class.transportation-tree-invisible]="!treeControl.isExpanded(node)" role="group" class="clearfix">
                 <div class="left-side" *ngIf="node.parent.resources.length > 0">
                     <div mat-subheader>
-                        <mat-icon mat-list-icon class="mar-ri" [inline]="true">local_shipping</mat-icon>
+                        <mat-icon matListItemIcon class="mar-ri" [inline]="true">local_shipping</mat-icon>
                         {{ 'jobs.transports.resources.title' | translate }}
                     </div>
                     <ul>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="right-side" *ngIf="node.parent.humanResources.length > 0">
                     <div mat-subheader>
-                        <mat-icon mat-list-icon class="mar-ri" [inline]="true">local_airport</mat-icon>
+                        <mat-icon matListItemIcon class="mar-ri" [inline]="true">local_airport</mat-icon>
                         {{ 'jobs.transports.human-resources.title' | translate }}
                     </div>
                     <ul>

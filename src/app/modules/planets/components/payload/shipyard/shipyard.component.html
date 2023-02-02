@@ -3,54 +3,36 @@
                       [income]="income"></app-resource-service>
 
 <div>
-    <mat-form-field appearance="outline" class="filter" (click)="toggle()">
-        <mat-label>Hull types</mat-label>
+    <app-outlined title="Hull types" class="filter" (click)="toggle()">
         <mat-chip-listbox #hullTypeChipList multiple [formControl]="eHullTypeFC">
             <mat-chip-option
                     *ngFor="let eHullType of eHullTypes"
                     [value]="eHullType.typeName"
-                    (selectionChange)="filterDisplayedShipClasses()">
+                    (click)="filterDisplayedShipClasses(); $event.stopPropagation();">
                 {{eHullType.typeName}}
             </mat-chip-option>
         </mat-chip-listbox>
-    </mat-form-field>
+    </app-outlined>
 </div>
 
-<div>
+<div>{{ 'shipyard.constructions.title' | translate }}</div>
 
-    {{ 'shipyard.constructions.title' | translate }}
-</div>
 <div [matTooltip]="getJobButtonText()" class="tooltip-container">
     <button mat-raised-button color="secondary"
             (click)="buildConstruction()"
             [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected()">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
 </div>
-<mat-accordion>
-    <mat-expansion-panel *ngFor="let shipClass of filteredShipClasses"
-                         (opened)="setOpened(shipClass)"
-                         (closed)="setClosed(shipClass)">
-        <mat-expansion-panel-header>
-            <mat-form-field appearance="outline" class="numeric-input">
-                <mat-label>Amount</mat-label>
-                <mat-icon matPrefix (click)="sub(shipClass); $event.stopPropagation();">remove</mat-icon>
-                <div style="text-align:center;">
-                    <input matInput
-                           type="number"
-                           step="1" min="0"
-                           (click)="$event.stopPropagation();"
-                           autocomplete="off"
-                           [value]=getAmountString(shipClass)
-                           (change)="getAmount(shipClass)">
-                </div>
-                <mat-icon matSuffix (click)="add(shipClass); $event.stopPropagation();">add</mat-icon>
-            </mat-form-field>
-            <mat-panel-title>
-                <div *ngIf="showHeader(shipClass)">{{shipClass.name}}</div>
-            </mat-panel-title>
-            <mat-panel-description *ngIf="showHeader(shipClass)">
-                {{shipClass.hull.description}} - Class code '{{shipClass.hull.hullType.typeName}}
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <app-ship-class-build [shipClassInput]="shipClass"></app-ship-class-build>
-    </mat-expansion-panel>
-</mat-accordion>
+
+<mat-card *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
+    <mat-card-header>
+        <div>
+            <mat-card-title>{{shipClass.name}}</mat-card-title>
+            <mat-card-subtitle>{{shipClass.hull.description}} - Class code '{{shipClass.hull.hullType.typeName}}'</mat-card-subtitle>
+        </div>
+        <div class="right-block">
+            <app-numeric-counter [inputDisabled]="false"
+                                 caption="Amount"
+                                 (amount)="getAmount(shipClass)"></app-numeric-counter>
+        </div>
+    </mat-card-header>
+</mat-card>

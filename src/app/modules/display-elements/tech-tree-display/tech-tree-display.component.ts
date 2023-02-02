@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Research, ResearchApiService, ResearchLevel, ResearchTree, ResearchTreeElement} from "../../../services/swagger";
+import {EResourceType, Research, ResearchApiService, ResearchLevel, ResearchTree, ResearchTreeElement} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
+import {TypeService} from "../../../services/type.service";
 
 @Component({
     selector: 'app-tech-tree-display',
@@ -21,8 +22,15 @@ export class TechTreeDisplayComponent extends SubscriptionManager implements OnI
 
     completedResearches: ResearchLevel[] = [];
 
-    constructor(private researchApi: ResearchApiService) {
+    private readonly researchType: EResourceType;
+    private readonly fallback: string;
+
+    constructor(private researchApi: ResearchApiService,
+                private typeService: TypeService) {
         super();
+
+        this.researchType = this.typeService.eResourceTypes.filter(type => type.typeName == 'RESEARCH')[0];
+        this.fallback = "assets/" + this.researchType.folder + "/png16x/" + this.researchType.iconName + "_c.png";
     }
 
     ngOnInit(): void {
@@ -105,7 +113,7 @@ export class TechTreeDisplayComponent extends SubscriptionManager implements OnI
         return counter;
     }
 
-    getResearch(idResearch: number) {
+    getResearch(idResearch: number): Research | undefined {
         return this.researchesById.get(idResearch);
     }
 
@@ -114,23 +122,20 @@ export class TechTreeDisplayComponent extends SubscriptionManager implements OnI
      * constructs and returns the url to the icon
      */
     getLink(idResearch: number): string {
-        let research = this.getResearch(idResearch)
+        let research = this.getResearch(idResearch);
         if (!research) {
-            return '';
+            return this.fallback;
         }
         let hasIcon = research.hasIcon;
         if (!hasIcon) {
-            return '';
+            return this.fallback;
         }
         let folder = hasIcon.folder;
         let iconName = hasIcon.iconName;
         return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
-    getCssClass(idResearch: number) {
-        if (this.completedResearches.filter(r => r.research.idResearch === idResearch).length > 0) {
-            return "completed-research";
-        }
-        return "";
+    isCompleted(idResearch: number) {
+        return this.completedResearches.filter(r => r.research.idResearch === idResearch).length > 0;
     }
 }

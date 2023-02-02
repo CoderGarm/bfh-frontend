@@ -1,6 +1,6 @@
 <div *ngIf="!!planet" class="clearfix">
     <div class="the-left">
-        <div *ngFor="let resource of collectables">
+        <div *ngFor="let resource of collectables" class="counter-element">
             <app-resource-counter
                     [resourceType]="resource"
                     [startAt]="getStartAt(resource)"

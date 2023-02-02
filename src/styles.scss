@@ -61,18 +61,16 @@ body {
   background-color: $background-color;
 }
 
-.error-snackbar {
-  background-color: $background-color;
-}
+.mat-mdc-snack-bar-container {
+  //--mat-mdc-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-container-color: #{$background-color};
+  --mdc-snackbar-supporting-text-color: #{$secondary-text-color};
 
-.notification-snackbar {
-  background-color: $background-color;
-  color: $secondary-text-color;
-}
+  &.error-snackbar {
+  }
 
-.notification-snackbar {
-  background-color: $background-color;
-  color: $secondary-text-color;
+  &.notification-snackbar {
+  }
 }
 
 .no-scrolling {
@@ -87,6 +85,10 @@ body {
 .drawer-list {
   padding: 15px;
   width: 180px;
+}
+
+.mat-expansion-panel-header:not([aria-disabled=true]) {
+  height: 64px;
 }
 
 .side-nav-open-change-area {
@@ -202,13 +204,55 @@ body {
   margin-left: 5px;
 }
 
-
 .no-checkmark {
   & span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic {
     width: 6px;
   }
 
+  & .mdc-list-item__end {
+    display: none;
+  }
+
   & span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__graphic.mat-mdc-chip-graphic .mdc-evolution-chip__checkmark {
     display: none;
+  }
+}
+
+.mat-expansion-panel {
+  margin-bottom: 15px !important;
+  width: $page-width;
+}
+
+app-outlined {
+  margin: 15px;
+}
+
+app-tech-tree-display {
+  width: fit-content;
+  width: -moz-fit-content;
+  display: block;
+}
+
+.research-chip > span.mdc-evolution-chip__cell.mdc-evolution-chip__cell--primary > button > span.mdc-evolution-chip__text-label {
+  white-space: normal;
+}
+
+app-numeric-counter > mat-form-field > div.mat-mdc-form-field-subscript-wrapper {
+  height: 0;
+}
+
+app-numeric-counter > mat-form-field > div.mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--outlined > div > div.mat-mdc-form-field-infix {
+  min-height: 0;
+  height: 48px;
+}
+
+app-shipyard > .ship-class-card > mat-card-header {
+  padding-bottom: 16px;
+}
+
+.sidenav-item {
+
+  & .mdc-list-item__primary-text {
+    white-space: pre-wrap;
   }
 }

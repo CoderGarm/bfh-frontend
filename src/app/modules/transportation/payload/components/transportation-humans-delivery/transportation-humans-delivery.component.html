@@ -1,6 +1,6 @@
 <div *ngIf="!!planet" class="clearfix">
     <div class="the-left">
-        <div *ngFor="let resource of militaries">
+        <div *ngFor="let resource of militaries" class="counter-element">
             <app-human-resource-counter
                     [resourceType]="resource"
                     [startAt]="getStartAt(resource)"

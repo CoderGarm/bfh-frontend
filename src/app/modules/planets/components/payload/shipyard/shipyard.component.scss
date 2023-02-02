@@ -1,38 +1,24 @@
 @import "src/styles/variables";
 
-.mat-expansion-panel {
+.mdc-card {
   width: $page-width;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-.mat-expansion-panel-header {
-  height: 5vw;
-}
-
-.numeric-input {
-  margin-right: 15px;
-  width: 100px;
-  height: 45px;
-  font-size: 10px;
-  cursor: pointer;
-}
-
 .filter {
+  display: block;
   width: $page-width;
 }
 
 .tooltip-container {
   margin: 10px 0 10px 0;
   width: fit-content;
+}
+
+.right-block {
+  position: absolute;
+  right: 15px;
+}
+
+.ship-class-card {
+  margin-bottom: 15px;
 }

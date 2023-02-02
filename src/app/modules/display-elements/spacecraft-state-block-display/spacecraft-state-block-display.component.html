@@ -1,11 +1,11 @@
-<div *ngIf="!!stateBlock">
-    <div style="display: none">
+<div *ngIf="!!stateBlock" class="state-icon-block">
+    <div class="just-present">
         {{ 'spacecraft.state.title.warShip' | translate }}
         {{ 'spacecraft.state.title.fleet' | translate }}
     </div>
-    <mat-icon
-            *ngIf="!stateBlock.isActive"
-            matTooltip="{{ getSubject() | translate }}: {{ 'spacecraft.state.msg.not-active' | translate }}">report_problem
+    <mat-icon class="state-icon"
+              *ngIf="!stateBlock.isActive"
+              matTooltip="{{ getSubject() | translate }}: {{ 'spacecraft.state.msg.not-active' | translate }}">report_problem
     </mat-icon>
     <mat-icon
             *ngIf="!stateBlock.isOperational"

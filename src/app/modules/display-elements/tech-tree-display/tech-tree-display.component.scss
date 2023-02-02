@@ -1,12 +1,11 @@
 @import "src/styles/variables";
 
 .research-chip {
-  width: 250px;
-  height: auto !important;
+  height: 50px;
 }
 
-.completed-research {
-  background-color: $success;
+mat-grid-list {
+  width: 2500px;
 }
 
 .icon {

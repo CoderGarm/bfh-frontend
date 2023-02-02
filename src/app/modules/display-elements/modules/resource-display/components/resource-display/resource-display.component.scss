@@ -25,12 +25,11 @@
 
 .res-wrapper {
   height: 38px;
-  max-width: 35px; // todo strange flex if width is too small or too wide per element
+  max-width: 35px;
 }
 
 .amount-present {
-  font-size: 14px;
-  line-height: 18px;
+  //noop
 }
 
 .diffAmount {

@@ -17,6 +17,8 @@ export class PlanetSelectionComponent extends SubscriptionManager implements Aft
     @Output()
     selectedPlanetOutput: EventEmitter<Planet> = new EventEmitter<Planet>();
 
+    mainPlanet?: Planet;
+
     constructor(private planetApi: PlanetApiService) {
         super();
     }
@@ -30,8 +32,8 @@ export class PlanetSelectionComponent extends SubscriptionManager implements Aft
     }
 
     private selectFirst() {
-        let sortedPlanets = this.planets.sort((a, b) => a.idPlanet - b.idPlanet);
-        this.chosePlanet(sortedPlanets[0]);
+        this.mainPlanet = this.planets.filter(planet => planet.isMain)[0];
+        this.chosePlanet(this.mainPlanet);
     }
 
     chosePlanet(planet: Planet) {

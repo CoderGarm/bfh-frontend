@@ -1,19 +1,19 @@
 <div id="forums-content">
     <!-- breadcrumbs -->
     <mat-chip-listbox>
-        <mat-chip-option color="primary"
+        <mat-chip-option class="no-checkmark"
                          [selected]="!selectedForum"
                          [disabled]="isAllianceForum"
                          (click)="selectForum(undefined)">
             Forums
         </mat-chip-option>
-        <mat-chip-option color="primary"
+        <mat-chip-option class="no-checkmark"
                          [selected]="!!selectedForum && !selectedForumThread"
                          *ngIf="!!selectedForum"
                          (click)="selectThread(undefined)">
             {{selectedForum.title}}
         </mat-chip-option>
-        <mat-chip-option color="primary"
+        <mat-chip-option class="no-checkmark"
                          [selected]="!!selectedForumThread"
                          *ngIf="!!selectedForumThread"
                          (click)="selectThread(selectedForumThread)">
@@ -23,7 +23,7 @@
 
     <!-- forums -->
     <div id="forum-list" *ngIf="!selectedForum">
-        <mat-card appearance="outlined" class="forum-card" *ngFor="let forum of forums">
+        <mat-card appearance="outlined" class="forum-card forum-main-card" *ngFor="let forum of forums">
             <mat-card-title (click)="selectForum(forum)">
                 {{forum.title}}
                 <mat-icon *ngIf="hasForumUnread(forum)">mark_email_unread</mat-icon>

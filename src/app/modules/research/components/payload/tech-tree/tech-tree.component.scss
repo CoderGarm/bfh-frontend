@@ -1,5 +1,7 @@
 @import "src/styles/variables";
 
-.mat-expansion-panel {
-  width: $page-width;
+#tech-tree-display {
+  cursor: move;
+  overflow: hidden;
+  height: 800px;
 }

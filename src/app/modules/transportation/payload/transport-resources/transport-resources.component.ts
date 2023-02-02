@@ -33,13 +33,13 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
 
     setDemand(event: PlanetaryResourceTransportation) {
         let r: ResourceDeposit = ResourceHelper.transformResourceTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(resp => this.snackbar.open('Yeah, demand is placed'));
+        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.snackbar.open('Yeah, demand is placed'));
         this.subscriptions.push(sub);
     }
 
     setDelivery(event: PlanetaryResourceTransportation) {
         let r: ResourceDeposit = ResourceHelper.transformResourceTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(resp => this.snackbar.open('Yeah, delivery is placed'));
+        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.snackbar.open('Yeah, delivery is placed'));
         this.subscriptions.push(sub);
     }
 }

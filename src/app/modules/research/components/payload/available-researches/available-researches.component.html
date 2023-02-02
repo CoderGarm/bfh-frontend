@@ -1,23 +1,26 @@
 <div class="side-nav-open-change-area-fixed"></div>
 
-<mat-accordion>
-    <mat-expansion-panel *ngFor="let research of availableResearches"
-                         (opened)="setOpened(research)"
-                         (closed)="setClosed(research)">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                <img mat-card-avatar class="avatar-image icon"
-                     src="{{getLink(research)}}"
-                     [ngClass]="getInvisibility(research)">
-                {{research.research.name}}
-            </mat-panel-title>
-            <mat-panel-description *ngIf="showDescription(research)">
-                {{research.research.description}}
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <app-research-display [research]="research.research"></app-research-display>
-        <button mat-button [disabled]="!isResearchPossible(research)" (click)="runResearch(research)">Start research</button>
-    </mat-expansion-panel>
-</mat-accordion>
-
 <label *ngIf="availableResearches.length == 0">{{ 'research.no-available' | translate }}</label>
+
+<div class="bottom-spacer" *ngIf="availableResearches.length != 0">
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let research of availableResearches"
+                             (opened)="setOpened(research)"
+                             (closed)="setClosed(research)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <img mat-card-avatar class="avatar-image icon"
+                         src="{{getLink(research)}}"
+                         [ngClass]="getInvisibility(research)">
+                    {{research.research.name}}
+                </mat-panel-title>
+                <mat-panel-description *ngIf="showDescription(research)">
+                    {{research.research.description}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-research-display [research]="research.research"></app-research-display>
+            <button mat-button [disabled]="!isResearchPossible(research)" (click)="runResearch(research)">Start research</button>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+

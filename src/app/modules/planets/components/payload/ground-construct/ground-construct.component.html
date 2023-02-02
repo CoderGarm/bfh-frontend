@@ -6,44 +6,44 @@
                       [levelImprovementHumanResources]="levelImprovementHumanResources"></app-resource-service>
 
 <div>
-    <!--<mat-form-field appearance="outline" class="filter" (click)="toggle('productCategoryChipList')"> todo add toggle functionality -->
-    <mat-label>Product category</mat-label>
-    <mat-chip-listbox #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
-        <mat-chip-option
-                class="no-checkmark"
-                *ngFor="let category of eProductionCategories as string"
-                [value]="category"
-                (selectionChange)="filterDisplayedConstructions()">
-            <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="category" fontIcon="precision_manufacturing"></mat-icon>
-            {{category}}
-        </mat-chip-option>
-    </mat-chip-listbox>
+    <app-outlined title="Product category" class="filter" (click)="toggle('productCategoryChipList')">
+        <mat-chip-listbox #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
+            <mat-chip-option
+                    class="no-checkmark"
+                    *ngFor="let category of eProductionCategories as string"
+                    [value]="category"
+                    (click)="filterDisplayedConstructions(); $event.stopPropagation();">
+                <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="category" fontIcon="precision_manufacturing"></mat-icon>
+                {{category}}
+            </mat-chip-option>
+        </mat-chip-listbox>
+    </app-outlined>
 
-    <!--<mat-form-field appearance="outline" class="filter" (click)="toggle('refinementSequenceChipList')">-->
-    <mat-label>Refinement sequence</mat-label>
-    <mat-chip-listbox #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
-        <mat-chip-option
-                class="no-checkmark"
-                *ngFor="let sequence of eRefinementSequences"
-                [value]="sequence.typeName"
-                (selectionChange)="filterDisplayedConstructions()">
-            <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="sequence.typeName" fontIcon="precision_manufacturing"></mat-icon>
-            {{sequence.typeName}}
-        </mat-chip-option>
-    </mat-chip-listbox>
+    <app-outlined title="Refinement sequence" class="filter" (click)="toggle('refinementSequenceChipList')">
+        <mat-chip-listbox #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
+            <mat-chip-option
+                    class="no-checkmark"
+                    *ngFor="let sequence of eRefinementSequences"
+                    [value]="sequence.typeName"
+                    (click)="filterDisplayedConstructions(); $event.stopPropagation();">
+                <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="sequence.typeName" fontIcon="precision_manufacturing"></mat-icon>
+                {{sequence.typeName}}
+            </mat-chip-option>
+        </mat-chip-listbox>
+    </app-outlined>
 
-    <!--<mat-form-field appearance="outline" class="filter" (click)="toggle('resourceTypeChipList')">-->
-    <mat-label>Resource types</mat-label>
-    <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
-        <mat-chip-option
-                class="no-checkmark"
-                *ngFor="let eResourceType of eResourceTypes"
-                [value]="eResourceType.typeName"
-                (selectionChange)="filterDisplayedConstructions()">
-            <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="eResourceType.typeName" fontIcon="precision_manufacturing"></mat-icon>
-            {{eResourceType.typeName}}
-        </mat-chip-option>
-    </mat-chip-listbox>
+    <app-outlined title="Resource types" class="filter" (click)="toggle('resourceTypeChipList')">
+        <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
+            <mat-chip-option
+                    class="no-checkmark"
+                    *ngFor="let eResourceType of eResourceTypes"
+                    [value]="eResourceType.typeName"
+                    (click)="filterDisplayedConstructions(); $event.stopPropagation();">
+                <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="eResourceType.typeName" fontIcon="precision_manufacturing"></mat-icon>
+                {{eResourceType.typeName}}
+            </mat-chip-option>
+        </mat-chip-listbox>
+    </app-outlined>
 </div>
 
 
@@ -60,10 +60,12 @@
                      src="{{getLink(construction)}}"
                      [ngClass]="getInvisibility(construction)"
                      alt="construction">
-                {{getTitle(construction)}}
+                {{construction.building.name}}
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(construction)">
-                {{construction.building.description}}
+                <div matBadge="{{construction.operationalLevel}}" matBadgePosition="above after">
+                    {{construction.building.description}}
+                </div>
             </mat-panel-description>
         </mat-expansion-panel-header>
         <app-construction-display

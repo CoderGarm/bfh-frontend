@@ -21,6 +21,8 @@ import {TransportTabViewComponent} from "../modules/transportation/orga/transpor
 
 export class NavigationCreationService {
 
+    public static AFTER_LOGIN_ROUTE: string = JournalTabViewComponent.path;
+
     static getLoginRoute(): Route {
         return {path: LoginComponent.path, component: LoginComponent};
     }

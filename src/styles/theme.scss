@@ -1,29 +1,16 @@
 @use 'sass:map';
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
+@use 'palette-helper';
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
+@use "variables" as variables;
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-@import "variables";
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$bfh-primary: mat.define-palette($bfh-palette);
-$bfh-accent: mat.define-palette($bfh-palette, A200, A100, A400);
+$bfh-primary: mat.define-palette(variables.$bfh-palette);
+$bfh-accent: mat.define-palette(variables.$bfh-palette, A200, A100, A400);
 
-// The warn palette is optional (defaults to red).
 $bfh-warn: mat.define-palette(mat.$red-palette);
 
-/*
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
 $bfh-theme: mat.define-dark-theme((
         color: (
                 primary: $bfh-primary,
@@ -32,13 +19,11 @@ $bfh-theme: mat.define-dark-theme((
         )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
+$bfh-theme: palette-helper.modify-background($bfh-theme, variables.$background-color);
+
 @include mat.all-component-themes($bfh-theme);
-*/
 
-
+/* other way with some drawbacks
 $dark-primary-text: rgba(black, 0.87);
 $dark-secondary-text: rgba(black, 0.54);
 $dark-disabled-text: rgba(black, 0.38);
@@ -102,4 +87,4 @@ $my-dark-theme-foreground: (
 $custom-theme: create-wonky-theme($bfh-primary, $bfh-accent, $bfh-warn);
 
 @include mat.all-component-themes($custom-theme);
-
+*/

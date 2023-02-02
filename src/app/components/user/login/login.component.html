@@ -1,18 +1,17 @@
 <form [formGroup]="loginForm">
-
-    <mat-grid-list cols="1" rowHeight="68px">
+    <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
             <h2>Login</h2>
         </mat-grid-tile>
         <mat-grid-tile>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>Login</mat-label>
                 <input matInput type='text' formControlName='login' required autocomplete="off">
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
                 <input matInput placeholder="Passwort" type="password" formControlName="pass" min="0" required autocomplete="off">
             </mat-form-field>

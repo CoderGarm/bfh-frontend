@@ -3,14 +3,14 @@
 
     <div mat-subheader>{{title_key | translate }}</div>
     <mat-list-item *ngFor="let pJob of jobs" class="height-fit-content-forced">
-        <img mat-list-avatar src="assets/icons/planets/png24x/planet_c.png">
+        <img matListItemAvatar src="assets/icons/planets/png24x/planet_c.png">
         <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
 
         <div class="job-items-container">
             <mat-list *ngIf="pJob.researches!.length > 0">
                 <div mat-subheader>{{ 'research.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.researches" class="height-fit-content-forced">
-                    <img mat-list-avatar src="{{getLink(job)}}">
+                    <img matListItemAvatar src="{{getLink(job)}}">
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
@@ -27,7 +27,7 @@
             <mat-list *ngIf="pJob.constructions!.length > 0">
                 <div mat-subheader>{{ 'planetary.constructions.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.constructions" class="height-fit-content-forced">
-                    <img mat-list-avatar src="{{getLink(job)}}">
+                    <img matListItemAvatar src="{{getLink(job)}}">
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
@@ -44,7 +44,7 @@
             <mat-list *ngIf="pJob.shipyard!.length > 0">
                 <div mat-subheader>{{ 'shipyard.constructions.title' | translate }}</div>
                 <mat-list-item *ngFor="let job of pJob.shipyard" class="height-fit-content-forced">
-                    <img mat-list-avatar src="{{getLink(job)}}">
+                    <img matListItemAvatar src="{{getLink(job)}}">
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"

@@ -109,6 +109,8 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
     eProductionCategoryFC: UntypedFormControl = new UntypedFormControl({});
     eRefinementSequenceFC: UntypedFormControl = new UntypedFormControl({});
 
+    formControl: UntypedFormControl = new UntypedFormControl({});
+
     /**
      * if these planets support a new construction
      */
@@ -212,7 +214,7 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
                 });
             this.subscriptions.push(sub);
         }
-    } // fixme make https://material.angular.io/components/chips/examples#chips-avatar for all and remove selection-tickmarkk
+    }
 
     /**
      * this filters the displayed constructions by the selected filters
@@ -398,17 +400,5 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
 
     getInvisibility(construction: Construction) {
         return this.currentlyOpenedItemIndex === construction ? 'invisible' : '';
-    }
-
-    getTitle(construction: Construction) {
-        let levelComplement = '';
-        if (construction.level > 0) {
-            let tr = this.translations.get(this.hasConstruction);
-            levelComplement = tr + ' ' + construction.operationalLevel + '/' + construction.level;
-        } else {
-            let tr = this.translations.get(this.newConstruction);
-            levelComplement = tr!;
-        }
-        return construction.building.name + ', ' + levelComplement;
     }
 }

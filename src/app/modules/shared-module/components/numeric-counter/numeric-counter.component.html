@@ -3,17 +3,16 @@
     <mat-label *ngIf="caption == ''">Amount</mat-label>
     <mat-icon *ngIf="disabled" matPrefix (click)="$event.stopPropagation();" class="disabled">remove</mat-icon>
     <mat-icon *ngIf="!disabled" matPrefix (click)="sub(); $event.stopPropagation();">remove</mat-icon>
-    <div class="direct-input">
-        <input matInput
-               [disabled]="inputDisabled"
-               type="number"
-               step="1"
-               min="0"
-               (click)="$event.stopPropagation();"
-               autocomplete="off"
-               [(ngModel)]="internalAmount"
-               (ngModelChange)="change()">
-    </div>
+    <input matInput
+           class="direct-input"
+           [disabled]="inputDisabled"
+           type="number"
+           step="1"
+           min="0"
+           (click)="$event.stopPropagation();"
+           autocomplete="off"
+           [(ngModel)]="internalAmount"
+           (ngModelChange)="change()">
     <mat-icon *ngIf="disabled" matSuffix (click)="$event.stopPropagation();" class="disabled">add</mat-icon>
     <mat-icon *ngIf="!disabled" matSuffix (click)="add(); $event.stopPropagation();">add</mat-icon>
 </mat-form-field>

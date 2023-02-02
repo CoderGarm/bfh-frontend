@@ -1,1 +1,7 @@
-<app-tech-tree-display [techTree]="tree"></app-tech-tree-display>
+<div id="tech-tree-display" #element
+     (mousedown)="startDragging($event, element)"
+     (mouseup)="stopDragging($event)"
+     (mouseleave)="stopDragging($event)"
+     (mousemove)="moveEvent($event, element)">
+    <app-tech-tree-display [techTree]="tree"></app-tech-tree-display>
+</div>

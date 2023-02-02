@@ -2,19 +2,19 @@
   flex-flow: unset !important;
 }
 
-.fleet-round-state-title-container {
+.fleet-round-state-list-item {
+  height: 76px !important;
 }
 
-.fleet-round-state-title-container-below {
+.fleet-round-state-title {
+  position: sticky;
+  top: 0;
+  opacity: 0.5;
 }
 
 .fleet-round-state-list {
   width: 300px;
-}
-
-.fleet-round-state-icon {
-  float: left;
-  padding: 16px 0 16px 0;
+  direction: ltr;
 }
 
 .highlight {

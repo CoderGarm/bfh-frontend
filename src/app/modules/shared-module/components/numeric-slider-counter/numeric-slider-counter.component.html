@@ -1,6 +1,6 @@
 <div>
     <button mat-icon-button (click)="setLeft()" [disabled]="disabled || disabledLeft">
-        <mat-icon mat-list-icon class="margin-l-r" [inline]="true">keyboard_double_arrow_left</mat-icon>
+        <mat-icon matListItemIcon class="margin-l-r" [inline]="true">keyboard_double_arrow_left</mat-icon>
     </button>
     <mat-slider
             [disabled]="disabled"
@@ -13,6 +13,6 @@
         <input matSliderThumb (valueChange)="input($event)">
     </mat-slider>
     <button mat-icon-button (click)="setRight()" [disabled]="disabled || disabledRight">
-        <mat-icon mat-list-icon class="margin-l-r" [inline]="true">keyboard_double_arrow_right</mat-icon>
+        <mat-icon matListItemIcon class="margin-l-r" [inline]="true">keyboard_double_arrow_right</mat-icon>
     </button>
 </div>

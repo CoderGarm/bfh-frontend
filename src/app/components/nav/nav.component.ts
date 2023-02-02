@@ -4,7 +4,6 @@ import {Route, Router, Routes} from '@angular/router';
 import {AdminApiService, ApplicationInfo, JWT, Tick, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../SubscriptionManager";
 import {NavigationCreationService} from "../../services/navigation-creation.service";
-import {JournalTabViewComponent} from "../../modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 import RoleEnum = JWT.RoleEnum;
 
 
@@ -38,8 +37,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
             this.isLoggedIn = !!jwt;
             if (this.isLoggedIn && !this.tokenStorage.getInterruptedURL()) {
                 this.isAdmin = jwt.role === RoleEnum.ADMIN;
-                const url = JournalTabViewComponent.path;
-                this.router.navigateByUrl(url).then(() => {
+                this.router.navigateByUrl(NavigationCreationService.AFTER_LOGIN_ROUTE).then(() => {
                 });
             }
         });

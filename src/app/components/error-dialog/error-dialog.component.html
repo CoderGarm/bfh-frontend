@@ -22,7 +22,12 @@
 <div *ngIf="!errorData.validationResults || errorData.validationResults.length == 0">
     <mat-form-field appearance="fill" id="mainMessageTextArea">
         <mat-label>Message</mat-label>
-        <textarea matInput disabled [value]="errorData.message" id="errorTextArea"></textarea>
+        <textarea matInput
+                  disabled
+                  [value]="errorData.message"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
     </mat-form-field>
 </div>
 <button mat-raised-button color="secondary" (click)="close()">Close</button>

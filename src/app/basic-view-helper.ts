@@ -353,8 +353,11 @@ export class BasicViewHelper extends BasicViewHelperData {
         const circle = mainGroup.circle()
             .x(x)
             .y(y)
-            .id(celestialBodyID)
-            .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER);
+            .id(celestialBodyID);
+
+        if (this.isInterstellarViewHelper()) {
+            circle.addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER);
+        }
 
         if ('idPlanet' in orbitDefinition.celestial) {
             circle.addClass("planet");
@@ -993,12 +996,16 @@ export class BasicViewHelper extends BasicViewHelperData {
         if (!!fleetMarker.move) {
             return fleetMarker.orbit!.orbit!;
         } else {
-            if (this.STANDARD_METRIC === DistanceMetricEnum.LY) {
+            if (this.isInterstellarViewHelper()) {
                 return fleetMarker.orbit!.system!.orbit!;
             } else {
                 return fleetMarker.orbit!.orbit!;
             }
         }
+    }
+
+    protected isInterstellarViewHelper() {
+        return this.STANDARD_METRIC === DistanceMetricEnum.LY;
     }
 
     protected createStellarCoursePlot(move: Move): LineCommand[] {

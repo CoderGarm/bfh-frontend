@@ -22,6 +22,7 @@ import {NumericSliderCounterComponent} from "./components/numeric-slider-counter
 import {AmountShifterComponent} from "./components/amount-shifter/amount-shifter.component";
 import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
 import {MarkdownEditorComponent} from './components/markdown-editor/markdown-editor.component';
+import {OutlinedComponent} from './components/outlined/outlined.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import {MarkdownEditorComponent} from './components/markdown-editor/markdown-edi
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,
+        OutlinedComponent,
     ],
     imports: [
         CommonModule,
@@ -77,6 +79,7 @@ import {MarkdownEditorComponent} from './components/markdown-editor/markdown-edi
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,
+        OutlinedComponent,
     ]
 })
 export class SharedModuleModule {

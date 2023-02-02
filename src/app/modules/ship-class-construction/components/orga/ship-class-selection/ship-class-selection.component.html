@@ -1,6 +1,8 @@
-<mat-selection-list [multiple]="false">
-    <mat-list-option (click)="selectClass(undefined)">{{ 'shipyard.create-new-class' | translate }}</mat-list-option>
-    <mat-list-option *ngFor="let shipClass of shipClasses" (click)="selectClass(shipClass)">
+<mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
+    <mat-list-option (click)="selectClass(undefined)" class="sidenav-item">{{ 'shipyard.create-new-class' | translate }}</mat-list-option>
+    <mat-list-option *ngFor="let shipClass of shipClasses"
+                     (click)="selectClass(shipClass)"
+                     class="sidenav-item">
         {{shipClass.name}} Mk. {{shipClass.mark}}
     </mat-list-option>
 </mat-selection-list>

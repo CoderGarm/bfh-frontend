@@ -29,6 +29,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     static CHECK_MESSAGES_INTERVAL_IN_SECONDS: number = 60 * 1000;
 
     routes: Routes = NavigationCreationService.createNavDrawerRoutes();
+    afterLoginPath: string = NavigationCreationService.AFTER_LOGIN_ROUTE;
 
     isLoggedIn: boolean = false;
 
@@ -43,6 +44,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         JournalTabViewComponent.path,
         ChatComponent.path
     ];
+
 
     constructor(private translate: TranslateService,
                 private router: Router,

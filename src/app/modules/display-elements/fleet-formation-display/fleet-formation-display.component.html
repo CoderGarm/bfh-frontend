@@ -5,7 +5,7 @@
         <div *ngFor="let entry of warShipsByType  | keyvalue" class="flex-container">
             <mat-list class="ship-list">
                 <div mat-subheader>
-                    <img mat-list-avatar
+                    <img matListItemAvatar
                          class="icon"
                          src="{{getLink(entry.value[0].shipClass.hull.hullType.typeName)}}"
                          [matTooltip]="getHullDescription(entry.value[0].shipClass.hull.hullType.typeName)"

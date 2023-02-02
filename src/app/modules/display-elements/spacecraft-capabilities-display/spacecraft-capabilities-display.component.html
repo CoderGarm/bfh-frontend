@@ -1,5 +1,5 @@
 <div class="flex-items-container container" *ngIf="!fleet || (!!fleet && isOwnFleet(fleet))">
-    <mat-list-item *ngFor="let cap of baseFleetCapabilities?.capabilities">
+    <app-outlined *ngFor="let cap of baseFleetCapabilities?.capabilities" [title]="cap.moduleType.typeName">
         <img class="icon" src="{{getLink(cap)}}" alt="{{cap.moduleType}}" matTooltip="{{cap.moduleType.typeName}}">
         <div>
             <div *ngIf="!ngClass">{{getCapValueInShort(cap)}}</div>
@@ -8,5 +8,5 @@
                     [value]="getPercentage(cap)"
                     [matTooltip]="getCapValue(cap)"></mat-progress-bar>
         </div>
-    </mat-list-item>
+    </app-outlined>
 </div>

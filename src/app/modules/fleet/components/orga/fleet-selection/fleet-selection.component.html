@@ -1,5 +1,8 @@
-<mat-selection-list [multiple]="false">
-    <mat-list-option *ngFor="let fleet of fleets" (click)="selectFleet(fleet)">
+<mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
+    <mat-list-option *ngFor="let fleet of fleets"
+                     (click)="selectFleet(fleet)"
+                     [selected]="!!selectedFleet && fleets.length > 0 && selectedFleet.idFleet === fleets[0].idFleet"
+                     class="sidenav-item">
         {{fleet.name}}
     </mat-list-option>
 </mat-selection-list>

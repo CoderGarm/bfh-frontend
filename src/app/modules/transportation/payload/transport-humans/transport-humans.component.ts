@@ -28,13 +28,13 @@ export class TransportHumansComponent extends SubscriptionManager implements OnI
 
     setDemand(event: PlanetaryHumanTransportation) {
         let r: ResourceDeposit = ResourceHelper.transformHumanTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(resp => this.snackbar.open('Yeah, demand is placed'));
+        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.snackbar.open('Yeah, demand is placed'));
         this.subscriptions.push(sub);
     }
 
     setDelivery(event: PlanetaryHumanTransportation) {
         let r: ResourceDeposit = ResourceHelper.transformHumanTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(resp => this.snackbar.open('Yeah, delivery is placed'));
+        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.snackbar.open('Yeah, delivery is placed'));
         this.subscriptions.push(sub);
     }
 }

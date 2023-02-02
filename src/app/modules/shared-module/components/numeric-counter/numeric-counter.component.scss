@@ -10,22 +10,11 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.mat-expansion-panel-header {
-  height: 5vw;
-}
-
 .small {
-  width: 100px;
-}
-
-.big {
-  //width: 100px;
+  width: 150px;
 }
 
 .numeric-input {
-  margin-right: 15px;
-  height: 45px;
-  font-size: 10px;
   cursor: pointer;
 }
 
@@ -35,4 +24,8 @@ input[type=number] {
 
 .direct-input {
   text-align: center;
+}
+
+mat-icon {
+  transform: scale(0.7);
 }

@@ -21,6 +21,8 @@ export class FleetSelectionComponent extends SubscriptionManager implements Afte
     @Output()
     selectedFleetOutput: EventEmitter<Fleet> = new EventEmitter<Fleet>();
 
+    selectedFleet?: Fleet;
+
     constructor(private fleetApi: FleetApiService,
                 private fleetChangeService: FleetChangeService) {
         super();
@@ -50,5 +52,6 @@ export class FleetSelectionComponent extends SubscriptionManager implements Afte
 
     selectFleet(fleet?: Fleet) {
         this.selectedFleetOutput.emit(fleet);
+        this.selectedFleet = fleet;
     }
 }

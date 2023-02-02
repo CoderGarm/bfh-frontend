@@ -10,11 +10,11 @@ export class SnackbarNotificationService {
     constructor(public snackBar: MatSnackBar, private zone: NgZone) {
     }
 
-    public open(message: string, action = 'copy that') {
+    public open(message: string, action: string = 'copy that', duration: number = 5000) {
         this.zone.run(() => {
             this.snackBar.open(message, action, {
                 panelClass: "notification-snackbar",
-                duration: 5000,
+                duration: duration,
                 horizontalPosition: "center",
                 verticalPosition: "top",
             });

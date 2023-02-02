@@ -20,4 +20,37 @@ export class TechTreeComponent extends SubscriptionManager implements OnInit {
         this.subscriptions.push(sub);
     }
 
+    mouseDown = false;
+
+    startX: any;
+    startY: any;
+
+    scrollLeft: any;
+    scrollTop: any;
+
+    startDragging(e: MouseEvent, el: HTMLElement) {
+        this.mouseDown = true;
+        this.startX = e.pageX - el.offsetLeft;
+        this.startY = e.pageY - el.offsetTop;
+        this.scrollLeft = el.scrollLeft;
+        this.scrollTop = el.scrollTop;
+    }
+
+    stopDragging(e: MouseEvent) {
+        this.mouseDown = false;
+    }
+
+    moveEvent(e: MouseEvent, el: HTMLElement) {
+        e.preventDefault();
+        if (!this.mouseDown) {
+            return;
+        }
+        const x = e.pageX - el.offsetLeft;
+        const scrollX = x - this.startX;
+        el.scrollLeft = this.scrollLeft - scrollX;
+
+        const y = e.pageY - el.offsetTop;
+        const scrollY = y - this.startY;
+        el.scrollTop = this.scrollTop - scrollY;
+    }
 }

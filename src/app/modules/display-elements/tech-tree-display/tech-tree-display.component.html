@@ -1,18 +1,19 @@
-<mat-chip-listbox>
-    <!-- only for using css - don't want to figuring out why its needed here -->
-</mat-chip-listbox>
-
-<mat-grid-list cols="{{maxDepth}}" rowHeight="40px">
+<mat-grid-list cols="{{maxDepth}}" rowHeight="64px">
     <div class="inner" *ngFor="let idResearches of idResearchesByDepth; let i = index; ">
         <mat-grid-tile *ngFor="let idResearch of idResearches">
-            <mat-chip-option *ngIf="!!getResearch(idResearch)"
-                             class="research-chip"
-                             [ngClass]="getCssClass(idResearch)"
-                             [matTooltip]="getResearch(idResearch)!.description">
-                <img mat-card-avatar class="avatar-image icon"
-                     src="{{getLink(idResearch)}}">
-                {{getResearch(idResearch)!.name}}
-            </mat-chip-option>
+            <div *ngIf="!!getResearch(idResearch)">
+                <mat-chip-option class="research-chip no-checkmark"
+                                 selectable="false"
+                                 [selected]="isCompleted(idResearch)"
+                                 [matTooltip]="getResearch(idResearch)!.description">
+                    <img matChipTrailingIcon class="avatar-image icon" src="{{getLink(idResearch)}}" alt="{{getResearch(idResearch)!.name}}">
+                    {{getResearch(idResearch)!.name}}
+                </mat-chip-option>
+                <!-- todo find usage for beautiful amendments
+                <mat-grid-tile-header>header test</mat-grid-tile-header>
+                <mat-grid-tile-footer>footer test</mat-grid-tile-footer>
+                -->
+            </div>
         </mat-grid-tile>
     </div>
 </mat-grid-list>

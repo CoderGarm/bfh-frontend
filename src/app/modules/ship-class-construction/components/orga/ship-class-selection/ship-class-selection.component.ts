@@ -1,16 +1,14 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {ShipClass, ShipyardApiService} from "../../../../../services/swagger";
-import {Subscription} from "rxjs";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
+import {SubscriptionManager} from "../../../../../SubscriptionManager";
 
 @Component({
     selector: 'app-ship-class-selection',
     templateUrl: './ship-class-selection.component.html',
     styleUrls: ['./ship-class-selection.component.scss']
 })
-export class ShipClassSelectionComponent implements AfterViewInit, OnChanges {
-
-    private subscriptions: Subscription[] = [];
+export class ShipClassSelectionComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     shipClasses: ShipClass[] = [];
 
@@ -29,6 +27,7 @@ export class ShipClassSelectionComponent implements AfterViewInit, OnChanges {
 
     constructor(private tokenService: TokenStorage,
                 private shipyardApi: ShipyardApiService) {
+        super();
     }
 
     ngAfterViewInit(): void {
@@ -40,8 +39,8 @@ export class ShipClassSelectionComponent implements AfterViewInit, OnChanges {
      * @private
      */
     private fetchShipClasses() {
-            let sub = this.shipyardApi.getShipClassesByUser().subscribe(resp => this.shipClasses = resp);
-            this.subscriptions.push(sub);
+        let sub = this.shipyardApi.getShipClassesByUser().subscribe(resp => this.shipClasses = resp);
+        this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -55,9 +54,5 @@ export class ShipClassSelectionComponent implements AfterViewInit, OnChanges {
 
     selectClass(shipClass?: ShipClass) {
         this.selectedShipClassOutput.emit(shipClass);
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 }
