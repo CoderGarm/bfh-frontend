@@ -1,13 +1,13 @@
-<app-resource-service [deposit]="resourceDeposit"
-                      [costs]="costs"></app-resource-service>
-
 <div class="fitting">
-    <mat-form-field appearance="fill" class="centered">
+    <mat-form-field appearance="outline" class="name-box">
         <mat-label>Ship class</mat-label>
         <input matInput disabled value="{{shipClassName}}" autocomplete="off">
     </mat-form-field>
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
                         [selectedShipClassInput]="shipClass"></app-ship-class-svg>
+
+    <app-resource-display [deposit]="resourceDeposit"
+                          [costs]="costs"></app-resource-display>
 
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="shipClass?.shipClassCapabilities"></app-spacecraft-capabilities-display>

@@ -1,16 +1,12 @@
+
+#ship-class-fitting-display, #ship-class-fitting-selection {
+  border: 1px green solid;
+  margin-bottom: 25px;
+}
+
 .fitting {
   margin-top: 25px;
   width: 90%;
-}
-
-#ship-class-fitting-display {
-  border: 1px green solid;
-  margin-bottom: 25px;
-}
-
-#ship-class-fitting-selection {
-  border: 1px green solid;
-  margin-bottom: 25px;
 }
 
 .flex-broadside {
@@ -19,21 +15,15 @@
   justify-content: space-around;
 }
 
-.centered {
-  width: 50%;
-  left: 25%;
-}
-
 .ship-action-button {
   height: 50px;
 }
-
 
 mat-error {
   width: max-content;
 }
 
-.flex-items-container, .centered {
+.flex-items-container {
   margin-bottom: 15px;
 }
 

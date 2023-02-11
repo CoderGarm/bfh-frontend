@@ -283,7 +283,29 @@
     "create-new-class": "Neue Klasse erzeugen",
     "fitting": {
       "ammunition": {
-        "remember": "Wähle Munition für die Werfer aus."
+        "remember": "Wähle Munition für die Werfer aus.",
+        "title": "Munition"
+      },
+      "armor": {
+        "title": "Panzerung"
+      },
+      "electronic-warfare": {
+        "title": "Elektronische Kampfführung"
+      },
+      "hull": {
+        "title": "Rumpf"
+      },
+      "offensive": {
+        "title": "Waffensysteme"
+      },
+      "propulsion": {
+        "title": "Antrieb"
+      },
+      "sidewall": {
+        "title": "Seitenschild"
+      },
+      "support": {
+        "title": "Unterstützungsmodule"
       }
     },
     "hull-capacities": "Rumpfkapazität"

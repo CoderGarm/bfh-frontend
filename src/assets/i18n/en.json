@@ -283,7 +283,29 @@
     "create-new-class": "Create new class",
     "fitting": {
       "ammunition": {
-        "remember": "Set up ammunition for launchers."
+        "remember": "Set up ammunition for launchers.",
+        "title": "Ammunition loadout"
+      },
+      "armor": {
+        "title": "Armor"
+      },
+      "electronic-warfare": {
+        "title": "Electronic warfare"
+      },
+      "hull": {
+        "title": "Hull"
+      },
+      "offensive": {
+        "title": "Offensive loadout"
+      },
+      "propulsion": {
+        "title": "Propulsion"
+      },
+      "sidewall": {
+        "title": "Sidewall"
+      },
+      "support": {
+        "title": "Support loadout"
       }
     },
     "hull-capacities": "Construction capacities"

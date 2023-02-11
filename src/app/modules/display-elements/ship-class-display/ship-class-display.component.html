@@ -1,63 +1,77 @@
-<mat-accordion>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>Hull</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="!!shipClassInput.hull">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.hull.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-hull-display [hullInput]="shipClassInput.hull"></app-hull-display>
-    </mat-expansion-panel>
+    </mat-card-content>
+</mat-card>
 
-    <mat-expansion-panel [disabled]="shipClassInput.fittings.length == 0">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Offensive weapon systems</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="shipClassInput.fittings.length != 0">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.offensive.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-aligned-fitting-module-display *ngFor="let fitting of shipClassInput.fittings"
                                             [fittingInput]="fitting"></app-aligned-fitting-module-display>
-    </mat-expansion-panel>
+    </mat-card-content>
+</mat-card>
 
-    <mat-expansion-panel [disabled]="shipClassInput.ammunitionFittings.length == 0">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Ammunition loadout</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="shipClassInput.ammunitionFittings.length != 0">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.ammunition.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-ammunition-fitting-module-display *ngFor="let fitting of shipClassInput.ammunitionFittings"
                                                [fittingInput]="fitting"></app-ammunition-fitting-module-display>
-    </mat-expansion-panel>
+    </mat-card-content>
+</mat-card>
 
-    <mat-expansion-panel [disabled]="!shipClassInput.armor">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Armor</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="!!shipClassInput.armor">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.armor.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-armor-module-display *ngIf="!!shipClassInput.armor" [moduleInput]="shipClassInput.armor"></app-armor-module-display>
-    </mat-expansion-panel>
+    </mat-card-content>
+</mat-card>
 
-    <mat-expansion-panel [disabled]="!shipClassInput.sidewall">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Sidewall</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="!!shipClassInput.sidewall">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.sidewall.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-sidewall-module-display *ngIf="!!shipClassInput.sidewall"
                                      [moduleInput]="shipClassInput.sidewall"></app-sidewall-module-display>
-    </mat-expansion-panel>
+    </mat-card-content>
+</mat-card>
 
-    <mat-expansion-panel [disabled]="!shipClassInput.propulsion">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Propulsion</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="!!shipClassInput.propulsion">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.propulsion.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-propulsion-module-display *ngIf="!!shipClassInput.propulsion"
                                        [moduleInput]="shipClassInput.propulsion"></app-propulsion-module-display>
-    </mat-expansion-panel>
+    </mat-card-content>
+</mat-card>
 
-    <mat-expansion-panel [disabled]="!shipClassInput.electronicWarfare">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Electronic warfare</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="!!shipClassInput.electronicWarfare">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.electronic-warfare.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-eloka-module-display *ngIf="!!shipClassInput.electronicWarfare"
                                   [moduleInput]="shipClassInput.electronicWarfare"></app-eloka-module-display>
-    </mat-expansion-panel>
+    </mat-card-content>
+</mat-card>
 
-    <mat-expansion-panel [disabled]="shipClassInput.supportFittings.length == 0">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Support loadout</mat-panel-title>
-        </mat-expansion-panel-header>
+<mat-card *ngIf="shipClassInput.supportFittings.length != 0">
+    <mat-card-header>
+        <mat-card-title>{{ 'shipyard.fitting.support.title' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
         <app-support-fitting-module-display *ngFor="let fitting of shipClassInput.supportFittings"
                                             [fittingInput]="fitting"></app-support-fitting-module-display>
-    </mat-expansion-panel>
-</mat-accordion>
+    </mat-card-content>
+</mat-card>

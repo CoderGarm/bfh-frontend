@@ -26,7 +26,6 @@ import {AmmunitionModuleCounterComponent} from './ammunition-module-counter/ammu
 import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/base-module-single-selector.component';
 import {FleetDisplayComponent} from './fleet-display/fleet-display.component';
 import {ConstructionDisplayComponent} from "./construction-display/construction-display.component";
-import {ShipClassBuildComponent} from "./ship-class-build/ship-class-build.component";
 import {FleetFormationDisplay} from './fleet-formation-display/fleet-formation-display.component';
 import {SpacecraftCapabilitiesDisplayComponent} from './spacecraft-capabilities-display/spacecraft-capabilities-display.component';
 import {FleetMergeEditComponent} from './fleet-merge-edit/fleet-merge-edit.component';
@@ -81,7 +80,6 @@ import {CommissionedOperationalsComponent} from './commissioned-operationals/com
         AmmunitionModuleCounterComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
-        ShipClassBuildComponent,
         FleetFormationDisplay,
         SpacecraftCapabilitiesDisplayComponent,
         SpacecraftCapabilityDisplaySmallComponent,
@@ -138,7 +136,6 @@ import {CommissionedOperationalsComponent} from './commissioned-operationals/com
         AmmunitionModuleCounterComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
-        ShipClassBuildComponent,
         FleetFormationDisplay,
         SpacecraftCapabilitiesDisplayComponent,
         SpacecraftCapabilityDisplaySmallComponent,
