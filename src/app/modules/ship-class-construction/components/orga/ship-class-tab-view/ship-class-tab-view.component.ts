@@ -1,21 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
 import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
+import {ShipyardEventService} from "../../../shipyard-event.service";
 
 @Component({
     selector: 'app-ship-class-tab-view',
     templateUrl: './ship-class-tab-view.component.html',
     styleUrls: ['./ship-class-tab-view.component.scss']
 })
-export class ShipClassTabViewComponent extends SubscriptionManager implements OnInit {
+export class ShipClassTabViewComponent extends SubscriptionManager implements AfterViewInit {
 
-    /**
-     * The user selected ShipClass.
-     */
-    @Input()
-    selectedShipClassInput?: ShipClass;
+    static path: string = 'ship-classes';
+
+    selectedShipClass?: ShipClass;
 
     /**
      * emits the index of the selected tab
@@ -23,21 +22,20 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements On
     @Output()
     selectionEmitter: EventEmitter<number> = new EventEmitter<number>();
 
-    /**
-     * the event emitter that communicates the successful modification of a ship class
-     */
-    @Output()
-    modifiedShipClassOutput: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
-
     resourceDeposit?: ResourceDeposit;
 
     constructor(private resourceApi: ResourcesApiService,
+                private shipyardService: ShipyardEventService,
                 private resourceEmitter: ResourceEmitterService) {
         super();
+
     }
 
-    ngOnInit() {
-        const sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
+    ngAfterViewInit() {
+        let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => this.selectedShipClass = shipClass);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
         this.subscriptions.push(sub);
     }
 
@@ -46,7 +44,7 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements On
     }
 
     passOutput(event: ShipClass) {
-        this.modifiedShipClassOutput.emit(event);
+        this.shipyardService.modifyShipClass(event);
     }
 
     indexChanged(event: number) {

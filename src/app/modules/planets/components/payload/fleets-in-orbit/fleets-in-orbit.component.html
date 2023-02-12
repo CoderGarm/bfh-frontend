@@ -1,6 +1,6 @@
 <p>{{ 'planetary.fleets-in-orbit.title' | translate }}</p>
 <mat-accordion>
-    <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit">
+    <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit" class="margin-bottom">
         <mat-expansion-panel-header [matTooltip]="getPercentageString(fleet)">
             <mat-panel-title class="align-center">
                 <mat-icon *ngIf="!isInoperational(fleet) && !isInRepair(fleet)" matTooltip="{{ 'combat-arena.tooltip.warship-state.active' | translate }}">military_tech</mat-icon>

@@ -87,8 +87,29 @@ body {
   width: 180px;
 }
 
+#main-content-area {
+  padding-left: 50px;
+}
+
 .mat-expansion-panel-header:not([aria-disabled=true]) {
   height: 64px;
+}
+
+.sidenav-expansion-panel {
+
+  max-width: 250px;
+
+  & .mat-expansion-panel {
+    width: auto;
+  }
+
+  & .mat-expansion-panel-header {
+    padding: 0 16px 0 16px;
+  }
+
+  & .mat-expansion-panel-header:not([aria-disabled=true]) {
+    height: 48px;
+  }
 }
 
 .side-nav-open-change-area {
@@ -218,8 +239,11 @@ body {
   }
 }
 
-.mat-expansion-panel {
+.margin-bottom {
   margin-bottom: 15px !important;
+}
+
+.mat-expansion-panel {
   width: $page-width;
 }
 

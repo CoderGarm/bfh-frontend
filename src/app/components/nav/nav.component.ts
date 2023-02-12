@@ -3,7 +3,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
 import {AdminApiService, ApplicationInfo, JWT, Tick, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../SubscriptionManager";
-import {NavigationCreationService} from "../../services/navigation-creation.service";
+import {NavigationCreationService} from "../../services/navigation/navigation-creation.service";
 import RoleEnum = JWT.RoleEnum;
 
 

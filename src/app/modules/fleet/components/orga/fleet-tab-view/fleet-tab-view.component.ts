@@ -1,34 +1,33 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {EnumValueDto, Fleet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {FleetEventService} from "../../../../../services/fleet-event.service";
 
 @Component({
     selector: 'app-fleet-tab-view',
     templateUrl: './fleet-tab-view.component.html',
     styleUrls: ['./fleet-tab-view.component.scss']
 })
-export class FleetTabViewComponent extends SubscriptionManager implements OnInit, OnChanges {
+export class FleetTabViewComponent extends SubscriptionManager implements AfterViewInit {
 
-    /**
-     * the user selected fleet
-     */
-    @Input()
+    static path: string = 'fleet';
+
     fleet?: Fleet;
 
     utilization?: ResourceDeposit;
 
-    constructor(private resourceApi: ResourcesApiService) {
+    constructor(private resourceApi: ResourcesApiService,
+                private fleetEventService: FleetEventService) {
         super();
     }
 
-    ngOnInit(): void {
+    ngAfterViewInit() {
+        let sub = this.fleetEventService.getSelectedFleetEmitter().subscribe(fleet => this.fetchCosts(fleet));
+        this.subscriptions.push(sub);
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        this.fetchCosts();
-    }
-
-    fetchCosts() {
+    fetchCosts(fleet?: Fleet) {
+        this.fleet = fleet;
         if (!this.fleet) {
             this.utilization = undefined;
             return;

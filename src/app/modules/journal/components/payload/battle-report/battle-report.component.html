@@ -1,9 +1,10 @@
 <div class="battle-report-info-div">
     <mat-accordion>
-        <mat-expansion-panel class="transparent-backdrop">
+        <mat-expansion-panel class="margin-bottom transparent-backdrop">
             <mat-expansion-panel-header>Battle register</mat-expansion-panel-header>
             <mat-accordion>
-                <mat-expansion-panel *ngFor="let reportStat of battleReports"
+                <mat-expansion-panel class="margin-bottom"
+                                     *ngFor="let reportStat of battleReports"
                                      (opened)="setOpened(reportStat)"
                                      (closed)="setClosed(reportStat)"
                                      (afterExpand)="setExpanded(true)"

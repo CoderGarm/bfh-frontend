@@ -18,7 +18,7 @@ import {
 import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {UntypedFormControl} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
-import {PlanetsNotificationService} from "../../../planets-notification.service";
+import {PlanetsEventService} from "../../../planets-event.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";
@@ -127,11 +127,11 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
                 private resourceApi: ResourcesApiService,
                 private typeService: TypeService,
                 private notificationService: SnackbarNotificationService,
-                private planetsNotificationService: PlanetsNotificationService,
+                private planetsNotificationService: PlanetsEventService,
                 public translate: TranslateService) {
         super();
 
-        let subscription = planetsNotificationService.ask().subscribe(() => this.fetchPlanet());
+        let subscription = planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.fetchPlanet());
         this.subscriptions.push(subscription);
 
         this.translations.set(this.newConstruction, this.newConstruction);
@@ -288,7 +288,7 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
                     this.notificationService.open("Construction of " + construction.building.name + " started.");
                     this.constructionPossible = false;
                     this.fetchPlanet();
-                    this.planetsNotificationService.push();
+                    this.planetsNotificationService.pushStartedConstruction();
                 } else {
                     this.notificationService.open("This was not possible.");
                 }

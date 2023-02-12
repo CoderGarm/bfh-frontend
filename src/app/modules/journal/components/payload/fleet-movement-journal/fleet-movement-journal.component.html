@@ -1,5 +1,5 @@
 <mat-accordion>
-    <mat-expansion-panel *ngFor="let fleet of movingFleets" class="item">
+    <mat-expansion-panel *ngFor="let fleet of movingFleets" class="margin-bottom item">
         <mat-expansion-panel-header>{{fleet.name}}</mat-expansion-panel-header>
         <app-fleet-display [fleet]="fleet">
             <app-spacecraft-capabilities-display body

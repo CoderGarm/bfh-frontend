@@ -5,6 +5,7 @@
 <div class="bottom-spacer" *ngIf="availableResearches.length != 0">
     <mat-accordion>
         <mat-expansion-panel *ngFor="let research of availableResearches"
+                             class="margin-bottom"
                              (opened)="setOpened(research)"
                              (closed)="setClosed(research)">
             <mat-expansion-panel-header>

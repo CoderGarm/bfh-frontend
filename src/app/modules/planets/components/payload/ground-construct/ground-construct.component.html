@@ -50,6 +50,7 @@
 {{ 'planetary.constructions.title' | translate }}
 <mat-accordion>
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"
+                         class="margin-bottom"
                          (opened)="setOpened(construction)"
                          (closed)="setClosed(construction)"
                          (mouseover)="showCosts(construction)"

@@ -1,14 +1,12 @@
 <app-nav></app-nav>
-<mat-drawer-container id="main-drawer">
+<mat-drawer-container id="main-drawer" autosize>
     <mat-drawer mode="side" #drawer [opened]="isLoggedIn" id="nav-drawer">
-        <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-            <mat-list-option *ngFor="let route of routes" (click)="navigate(route)" [selected]="route.path == afterLoginPath">
-                {{ 'path.menu.' + route.path | translate }}
-                <mat-icon *ngIf="hasUnread(route.path!)">mark_email_unread</mat-icon>
-            </mat-list-option>
-        </mat-selection-list>
+        <app-nested-sidenav [routes]="routes"
+                            [hasUnread]="hasUnread"
+                            [isLoggedIn]="isLoggedIn"
+                            [afterLoginPath]="afterLoginPath"></app-nested-sidenav>
     </mat-drawer>
-    <mat-drawer-content [ngClass]="{'no-scrolling' : !!isNoScroll}">
+    <mat-drawer-content [ngClass]="{'no-scrolling' : !!isNoScroll}" id="main-content-area">
         <app-global-spinner></app-global-spinner>
         <router-outlet></router-outlet>
         <app-home *ngIf="displayWelcome()"></app-home>

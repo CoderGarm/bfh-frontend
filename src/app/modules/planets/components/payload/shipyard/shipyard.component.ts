@@ -13,7 +13,7 @@ import {
 import {UntypedFormControl} from "@angular/forms";
 import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
-import {PlanetsNotificationService} from "../../../planets-notification.service";
+import {PlanetsEventService} from "../../../planets-event.service";
 import {ResourceHelper} from "../../../../../ResourceHelper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
@@ -93,7 +93,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
-                private planetsNotificationService: PlanetsNotificationService,
+                private planetsNotificationService: PlanetsEventService,
                 private translate: TranslateService) {
         super();
 
@@ -115,7 +115,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
     ngAfterContentInit(): void {
         this.setHullTypeFormControlData();
         this.filterDisplayedShipClasses();
-        const sub = this.planetsNotificationService.ask().subscribe(() => this.updateDepositsAndIncome());
+        const sub = this.planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.updateDepositsAndIncome());
         this.subscriptions.push(sub);
     }
 
@@ -185,7 +185,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
                 if (resp) {
                     this.notificationService.open("Construction started.")
                     this.shipyardJobPossible = !resp
-                    this.planetsNotificationService.push();
+                    this.planetsNotificationService.pushStartedConstruction();
                 } else {
                     this.notificationService.open("This was not possible.")
                 }

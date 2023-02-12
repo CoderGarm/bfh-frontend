@@ -45,10 +45,13 @@ import {MarkdownModule, MarkdownService} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {TransportationModule} from "./modules/transportation/transportation.module";
 import {BackgroundService} from "./services/background.service";
-import {FleetChangeService} from "./services/fleet-change.service";
+import {FleetEventService} from "./services/fleet-event.service";
 import {StarMapCommunicationService} from "./star-map-communication.service";
 import {NumberRomanPipe} from "./services/pipes/number-roman.pipe";
 import {BasicViewHelperData} from "./basic-view-helper-data";
+import {NestedSidenavComponent} from './components/nested-sidenav/nested-sidenav.component';
+import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
+import {SidenavSelectionManager} from "./sidenav-selection-manager";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -65,6 +68,7 @@ export let AppInjector: Injector;
     declarations: [
         AppComponent,
         SubscriptionManager,
+        SidenavSelectionManager,
         BasicViewHelperData,
         BasicViewHelper,
         ErrorDialogComponent,
@@ -79,6 +83,7 @@ export let AppInjector: Injector;
         EMailValidatorDirective,
         ConfirmDialogComponent,
         GlobalSpinnerComponent,
+        NestedSidenavComponent,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),
@@ -116,9 +121,10 @@ export let AppInjector: Injector;
         NgxPermissionsModule,
         {provide: ErrorHandler, useClass: CustomErrorHandler},
         {provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true},
+        NavigationCommunicationService,
         SnackbarNotificationService,
         SpinnerService,
-        FleetChangeService,
+        FleetEventService,
         TypeService,
         BackgroundService,
         DatePipe,

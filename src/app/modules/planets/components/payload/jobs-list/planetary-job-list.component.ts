@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Job, JobApiService, Planet} from "../../../../../services/swagger";
-import {PlanetsNotificationService} from "../../../planets-notification.service";
+import {PlanetsEventService} from "../../../planets-event.service";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 
 @Component({
@@ -24,9 +24,9 @@ export class PlanetaryJobListComponent extends ResourceDisplayManager implements
     runningJobs: Job[] = [];
 
     constructor(private jobApi: JobApiService,
-                private notificationService: PlanetsNotificationService) {
+                private notificationService: PlanetsEventService) {
         super();
-        let subscription = notificationService.ask().subscribe(() => this.loadData());
+        let subscription = notificationService.getConstructionStartsEmitter().subscribe(() => this.loadData());
         this.subscriptions.push(subscription);
     }
 

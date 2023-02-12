@@ -2,7 +2,7 @@ import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges}
 import {Fleet, FleetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../SubscriptionManager";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {FleetChangeService} from "../../../services/fleet-change.service";
+import {FleetEventService} from "../../../services/fleet-event.service";
 
 export interface FleetName {
     idFleet: number;
@@ -27,7 +27,7 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     nameChangeAllowed: boolean = false;
 
     constructor(private fleetService: FleetApiService,
-                private fleetChangeService: FleetChangeService) {
+                private fleetChangeService: FleetEventService) {
         super();
 
         this.formGroup = new UntypedFormGroup({

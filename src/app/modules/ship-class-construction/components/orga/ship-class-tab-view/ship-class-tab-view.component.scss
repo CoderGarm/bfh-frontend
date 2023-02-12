@@ -1,0 +1,34 @@
+/* fitting page css */
+#ship-class-fitting-display, #ship-class-fitting-selection {
+  border: 1px green solid;
+  margin-bottom: 25px;
+}
+
+.fitting {
+  margin-top: 25px;
+  width: 90%;
+}
+
+.flex-broadside {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.ship-action-button {
+  height: 50px;
+}
+
+mat-error {
+  width: max-content;
+}
+
+.flex-items-container {
+  margin-bottom: 15px;
+}
+
+.middle {
+  margin: 15px 0 15px 0;
+}
+
+/* fitting page css */

@@ -1,7 +1,7 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
     <mat-list-option *ngFor="let planet of planets"
                      (click)="chosePlanet(planet)"
-                     [selected]="!!mainPlanet && mainPlanet.idPlanet == planet.idPlanet"
+                     [selected]="isSelected(planet.idPlanet)"
                      matTooltip="{{planet.name}}"
                      class="sidenav-item">
         {{planet.name}}

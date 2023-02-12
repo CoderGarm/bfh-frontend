@@ -1,33 +1,23 @@
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {Fleet, FleetApiService} from "../../../../../services/swagger";
-import {FleetChangeService} from "../../../../../services/fleet-change.service";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {FleetEventService} from "../../../../../services/fleet-event.service";
+import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
+import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
 
 @Component({
     selector: 'app-fleet-selection',
     templateUrl: './fleet-selection.component.html',
     styleUrls: ['./fleet-selection.component.scss']
 })
-export class FleetSelectionComponent extends SubscriptionManager implements AfterViewInit {
+export class FleetSelectionComponent extends SidenavSelectionManager implements AfterViewInit {
 
-    /**
-     * all the fleets which are controlled by the logged in user
-     */
     fleets: Fleet[] = [];
 
-    /**
-     * the user selected fleet
-     */
-    @Output()
-    selectedFleetOutput: EventEmitter<Fleet> = new EventEmitter<Fleet>();
-
-    selectedFleet?: Fleet;
-
     constructor(private fleetApi: FleetApiService,
-                private fleetChangeService: FleetChangeService) {
-        super();
+                private fleetEventService: FleetEventService) {
+        super(NavigationCreationService.getPlanetRoute());
 
-        const sub = this.fleetChangeService.nameChange.subscribe(resp => {
+        const sub = this.fleetEventService.nameChange.subscribe(resp => {
             const filter = this.fleets.filter(f => f.idFleet === resp.idFleet);
             if (filter.length == 1) {
                 filter[0].name = resp.name;
@@ -37,21 +27,15 @@ export class FleetSelectionComponent extends SubscriptionManager implements Afte
     }
 
     ngAfterViewInit(): void {
-        let sub = this.fleetApi.getFleetsForUser().subscribe(resp => {
-            this.fleets = resp;
-            this.selectFirst();
-        });
+        let sub = this.fleetApi.getFleetsForUser().subscribe(resp => this.fleets = resp);
         this.subscriptions.push(sub);
     }
 
-    private selectFirst() {
-        if (this.fleets.length > 0) {
-            this.selectFleet(this.fleets[0]);
-        }
-    }
-
-    selectFleet(fleet?: Fleet) {
-        this.selectedFleetOutput.emit(fleet);
-        this.selectedFleet = fleet;
+    selectFleet(fleet: Fleet) {
+        this.navService.navigate(NavigationCreationService.getFleetRoute());
+        this.fleetEventService.selectFleet(fleet);
+        this.selectedItem = {
+            id: fleet.idFleet
+        };
     }
 }

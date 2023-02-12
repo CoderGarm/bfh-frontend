@@ -1,33 +1,33 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {ShipClass, ShipyardApiService} from "../../../../../services/swagger";
 import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
+import {ShipyardEventService} from "../../../shipyard-event.service";
+import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
 
 @Component({
     selector: 'app-ship-class-selection',
     templateUrl: './ship-class-selection.component.html',
     styleUrls: ['./ship-class-selection.component.scss']
 })
-export class ShipClassSelectionComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class ShipClassSelectionComponent extends SidenavSelectionManager implements AfterViewInit {
 
     shipClasses: ShipClass[] = [];
 
-    /**
-     * The user selected ShipClass.
-     */
-    @Output()
-    selectedShipClassOutput: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
-
-    /**
-     * detects the successful modification of a ship class
-     */
-    @Input()
-    modifiedShipClassInput?: ShipClass;
-    modifiedShipClassOutputDefinition: string = "modifiedShipClassInput";
+    selectedClass?: ShipClass;
 
     constructor(private tokenService: TokenStorage,
+                private shipyardService: ShipyardEventService,
                 private shipyardApi: ShipyardApiService) {
-        super();
+        super(NavigationCreationService.getShipYardRoute());
+
+        let sub = this.shipyardService.getModifiedShipClassEmitter().subscribe(shipClass => {
+            this.fetchShipClasses();
+            setTimeout(() => {
+                this.selectClass(shipClass);
+            }, 200);
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {
@@ -43,16 +43,15 @@ export class ShipClassSelectionComponent extends SubscriptionManager implements 
         this.subscriptions.push(sub);
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.modifiedShipClassOutputDefinition]) {
-            this.fetchShipClasses();
-            setTimeout(() => {
-                this.selectClass(this.modifiedShipClassInput);
-            }, 200);
-        }
-    }
-
     selectClass(shipClass?: ShipClass) {
-        this.selectedShipClassOutput.emit(shipClass);
+        this.navService.navigate(NavigationCreationService.getShipYardRoute());
+        this.shipyardService.selectShipClass(shipClass);
+        if (!!shipClass) {
+            this.selectedItem = {
+                id: shipClass.idShipClass!
+            };
+        } else {
+            this.selectedClass = undefined;
+        }
     }
 }

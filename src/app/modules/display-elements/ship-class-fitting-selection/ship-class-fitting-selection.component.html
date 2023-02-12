@@ -1,10 +1,10 @@
 <mat-accordion>
-    <mat-expansion-panel>
+    <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
             <mat-panel-title>Hulls</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-accordion>
-            <mat-expansion-panel *ngFor="let hull of hulls">
+            <mat-expansion-panel *ngFor="let hull of hulls" class="margin-bottom">
                 <mat-expansion-panel-header>
                     <mat-panel-title>{{hull.name}}</mat-panel-title>
                     <mat-radio-button name="hullGroup" id="{{hull.idHull}}" [disabled]="!!shipClassInput"
@@ -15,7 +15,7 @@
         </mat-accordion>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
             <mat-panel-title>Offensive weapon systems</mat-panel-title>
         </mat-expansion-panel-header>
@@ -25,7 +25,7 @@
                               [startAt]="getWeaponSelection(launcher)"></app-launcher-counter>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
             <mat-panel-title>Armor</mat-panel-title>
         </mat-expansion-panel-header>
@@ -34,7 +34,7 @@
                                    [moduleInput]="armor"></app-armor-module-selector>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
             <mat-panel-title>Sidewall</mat-panel-title>
         </mat-expansion-panel-header>
@@ -43,7 +43,7 @@
                                       [moduleInput]="sidewall"></app-sidewall-module-selector>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
             <mat-panel-title>Propulsion</mat-panel-title>
         </mat-expansion-panel-header>
@@ -52,7 +52,7 @@
                                         [moduleInput]="propulsion"></app-propulsion-module-selector>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
             <mat-panel-title>Electronic warfare</mat-panel-title>
         </mat-expansion-panel-header>
@@ -61,7 +61,7 @@
                                    [moduleInput]="electronicWarfare"></app-eloka-module-selector>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
             <mat-panel-title>Support loadout</mat-panel-title>
         </mat-expansion-panel-header>

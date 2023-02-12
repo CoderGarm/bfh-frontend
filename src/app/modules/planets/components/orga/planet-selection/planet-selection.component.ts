@@ -1,42 +1,33 @@
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {PlanetsEventService} from "../../../planets-event.service";
+import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
+import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
 
 @Component({
     selector: 'app-planet-selection',
     templateUrl: './planet-selection.component.html',
     styleUrls: ['./planet-selection.component.scss']
 })
-export class PlanetSelectionComponent extends SubscriptionManager implements AfterViewInit {
+export class PlanetSelectionComponent extends SidenavSelectionManager implements AfterViewInit {
 
     planets: Planet[] = [];
 
-    /**
-     * The user selected planet.
-     */
-    @Output()
-    selectedPlanetOutput: EventEmitter<Planet> = new EventEmitter<Planet>();
-
-    mainPlanet?: Planet;
-
-    constructor(private planetApi: PlanetApiService) {
-        super();
+    constructor(private planetApi: PlanetApiService,
+                private planetsNotificationService: PlanetsEventService) {
+        super(NavigationCreationService.getPlanetRoute());
     }
 
     ngAfterViewInit(): void {
-        let subscription = this.planetApi.getPlanetByUsers().subscribe(resp => {
-            this.planets = resp
-            this.selectFirst();
-        });
-        this.subscriptions.push(subscription);
-    }
-
-    private selectFirst() {
-        this.mainPlanet = this.planets.filter(planet => planet.isMain)[0];
-        this.chosePlanet(this.mainPlanet);
+        let sub = this.planetApi.getPlanetByUsers().subscribe(resp => this.planets = resp);
+        this.subscriptions.push(sub);
     }
 
     chosePlanet(planet: Planet) {
-        this.selectedPlanetOutput.emit(planet);
+        this.navService.navigate(NavigationCreationService.getPlanetRoute());
+        this.planetsNotificationService.selectPlanet(planet);
+        this.selectedItem = {
+            id: planet.idPlanet
+        };
     }
 }

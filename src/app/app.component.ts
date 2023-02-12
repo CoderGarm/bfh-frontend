@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
 import {AuthenticationService} from './services/authentication';
-import {NavigationCreationService} from './services/navigation-creation.service';
+import {NavigationCreationService} from './services/navigation/navigation-creation.service';
 import {interval} from "rxjs";
 import {StarMapTabViewComponent} from "./modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 import {JournalTabViewComponent} from "./modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
@@ -15,6 +15,7 @@ import {LoginComponent} from "./components/user/login/login.component";
 import {HomeComponent} from "./components/home/home.component";
 import {WikiMainComponent} from "./modules/wiki/orga/wiki-main/wiki-main.component";
 import {RegisterComponent} from "./components/user/register/register.component";
+import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
 
 
 @Component({
@@ -28,15 +29,12 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     static CHECK_MESSAGES_INTERVAL_IN_SECONDS: number = 60 * 1000;
 
-    routes: Routes = NavigationCreationService.createNavDrawerRoutes();
+    routes: Routes = NavigationCreationService.createSidenavRoutes();
     afterLoginPath: string = NavigationCreationService.AFTER_LOGIN_ROUTE;
 
     isLoggedIn: boolean = false;
 
-    hasUnreadChat: boolean = false;
-    hasUnreadForum: boolean = false;
-
-    activeRoute?: Route;
+    hasUnread: string[] = [];
 
     isNoScroll: Boolean = false;
     private noScrollingPaths: string[] = [
@@ -49,6 +47,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     constructor(private translate: TranslateService,
                 private router: Router,
                 private authenticationService: AuthenticationService,
+                private navService: NavigationCommunicationService,
                 private chatApi: ChatApiService,
                 private forumApi: ForumApiService) {
         super();
@@ -61,6 +60,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         if (!!browserLang) {
             translate.use(browserLang);
         }
+
+        this.navService.getNavigationEmitter().subscribe(route => this.navigate(route));
     }
 
     ngOnInit(): void {
@@ -80,31 +81,33 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     private detectUnreadMessages() {
         if (this.isLoggedIn) {
-            let sub = this.chatApi.hasUserUnread().subscribe(resp => this.hasUnreadChat = resp)
+            let sub = this.chatApi.hasUserUnread().subscribe(resp => this.setUnread(resp, ChatComponent.path));
             this.subscriptions.push(sub);
-            sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.hasUnreadForum = resp)
+            sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.setUnread(resp, ForumsListComponent.path));
             this.subscriptions.push(sub);
         }
     }
 
-    navigate(route?: Route) {
+    private navigate(route?: Route) {
         if (!route) {
             route = NavigationCreationService.getLoginRoute();
         }
-        this.activeRoute = route;
+        this.navService.activeRoute = route;
         this.router.navigateByUrl("/" + route.path).then(() => {
         });
-        const path = this.activeRoute.path;
+        const path = this.navService.activeRoute.path;
         this.isNoScroll = this.noScrollingPaths.includes(path!, 0);
     }
 
-    hasUnread(path: string) {
-        if (path === ChatComponent.path) {
-            return this.hasUnreadChat;
-        } else if (path === ForumsListComponent.path) {
-            return this.hasUnreadForum;
+    setUnread(hasUnread: boolean, path: string) {
+        if (hasUnread) {
+            this.hasUnread.push(path);
+        } else {
+            const indexOf = this.hasUnread.indexOf(path);
+            if (indexOf != -1) {
+                this.hasUnread.splice(indexOf, 1);
+            }
         }
-        return false;
     }
 
     displayWelcome() {
