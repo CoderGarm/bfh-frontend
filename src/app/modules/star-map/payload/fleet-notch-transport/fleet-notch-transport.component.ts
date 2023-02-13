@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {SubscriptionManager} from "../../../../SubscriptionManager";
-import {StarMapCommunicationService} from "../../../../star-map-communication.service";
+import {SubscriptionManager} from "../../../../subscription.manager";
+import {StarMapCommunicationService} from "../../../../services/star-map-communication.service";
 
 @Component({
-  selector: 'app-fleet-notch-transport',
-  templateUrl: './fleet-notch-transport.component.html',
-  styleUrls: ['./fleet-notch-transport.component.scss']
+    selector: 'app-fleet-notch-transport',
+    templateUrl: './fleet-notch-transport.component.html',
+    styleUrls: ['./fleet-notch-transport.component.scss']
 })
 export class FleetNotchTransportComponent extends SubscriptionManager implements OnInit {
 
-  commService: StarMapCommunicationService;
+    commService: StarMapCommunicationService;
 
   constructor(commService: StarMapCommunicationService) {
     super();

@@ -3,13 +3,14 @@
                       [income]="income"></app-resource-service>
 
 <div>
-    <app-outlined title="Hull types" class="filter" (click)="toggle()">
+    <app-outlined titleValue="Hull types" class="filter" (click)="toggle()">
         <mat-chip-listbox #hullTypeChipList multiple [formControl]="eHullTypeFC">
             <mat-chip-option
                     *ngFor="let eHullType of eHullTypes"
                     [value]="eHullType.typeName"
+                    matTooltip="{{ 'shipyard.hull.type.' + eHullType.typeName | translate }}"
                     (click)="filterDisplayedShipClasses(); $event.stopPropagation();">
-                {{eHullType.typeName}}
+                {{eHullType.type}} <!-- todo hull icons -->
             </mat-chip-option>
         </mat-chip-listbox>
     </app-outlined>

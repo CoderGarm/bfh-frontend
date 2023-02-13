@@ -1,0 +1,40 @@
+<div class="fitting">
+    <div class="flex-items-container">
+        <button mat-button
+                [disabled]="disabled"
+                (click)="deleteClass()"
+                class="ship-action-button">
+            Delete ship class
+        </button>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Ship class</mat-label>
+            <input matInput disabled
+                   [value]="shipClass?.name"
+                   matTooltip="The class name should contain of between 3 and 30 characters.">
+        </mat-form-field>
+
+        <button mat-button
+                [disabled]="disabled"
+                (click)="storeClass()"
+                class="ship-action-button"
+                matTooltip="At least the name, a hull and a propulsion module is needed.">
+            Store ship class
+        </button>
+    </div>
+    <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
+                        [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"
+                        [selectedShipClassInput]="shipClass"></app-ship-class-svg>
+
+    <app-resource-display [deposit]="resourceDeposit"
+                          [costs]="costs"></app-resource-display>
+
+    <div class="middle">
+        <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
+        <app-construction-capacity-display [capacities]="capacities"></app-construction-capacity-display>
+    </div>
+
+    <app-ship-class-fitting-modify [shipClassInput]="shipClass"
+                                   [designedShipClassInputEmitter]="designedShipClassOutputEmitter"
+                                   (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-modify>
+</div>

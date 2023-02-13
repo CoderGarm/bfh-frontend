@@ -8,5 +8,5 @@ import {Component, Input} from '@angular/core';
 export class OutlinedComponent {
 
     @Input()
-    title: string = '';
+    titleValue: string = '';
 }

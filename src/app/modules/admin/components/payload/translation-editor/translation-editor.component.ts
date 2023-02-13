@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AdminApiService, Translation} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 
 

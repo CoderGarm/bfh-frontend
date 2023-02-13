@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TypeService} from "../../../services/type.service";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {EEducationType, EResourceType, HumanResourceAmount, ResourceDeposit} from "../../../services/swagger";
-import {StaticResourcesService} from "../../../StaticResourcesService";
+import {StaticResourcesService} from "../../../services/static-resources.service";
 
 @Component({
     selector: 'app-population-development',

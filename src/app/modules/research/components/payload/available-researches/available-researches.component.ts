@@ -1,6 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {ResearchApiService, ResearchLevel} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
     selector: 'app-available-researches',

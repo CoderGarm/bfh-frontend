@@ -1,10 +1,10 @@
-import {SubscriptionManager} from "./SubscriptionManager";
-import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, WarShip} from "./services/swagger";
+import {SubscriptionManager} from "../../subscription.manager";
+import {AbstractId, CounterMissileHit, Distance, Fleet, FleetMarker, MissileMovement, Orbit, Planet, StarSystem, WarShip} from "../swagger";
 import {ArrayXY, Circle, G, Polygon, Shape, Text} from "@svgdotjs/svg.js";
-import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
-import {NavigationCalculator} from "./NavigationCalculator";
+import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
+import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component} from "@angular/core";
-import {RestrictedFleetArea} from "./modules/star-map/payload/restricted-fleet-area";
+import {RestrictedFleetArea} from "../../modules/star-map/payload/restricted-fleet-area";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AdminApiService, Translation, WikiApiService} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
     selector: 'app-translation',

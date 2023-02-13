@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AbstractId, CapabilityValue, EHullType, Fleet, FleetMarker, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {CombatArenaData} from "../../../combat-arena-data";
 
 export interface StateByRound {

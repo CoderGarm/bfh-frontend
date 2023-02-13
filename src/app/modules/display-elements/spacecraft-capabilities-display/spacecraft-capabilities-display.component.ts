@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {CapabilityValue, Fleet, SpacecraftCapabilities} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {NumberShortPipe} from "../../../services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "../../../services/pipes/number-thousand-separator.pipe";
 

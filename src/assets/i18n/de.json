@@ -295,6 +295,19 @@
       "hull": {
         "title": "Rumpf"
       },
+      "not-selected": {
+        "mandatory": {
+          "hull": "Wähle einen Rumpf.",
+          "propulsion": "Wähle einen Antrieb."
+        },
+        "warship-needs": {
+          "armor": "Vergiss nicht die Panzerung für ein Kriegsschiff.",
+          "eloka": "Vergiss nicht die Eloka für ein Kriegsschiff.",
+          "sidewall": "Vergiss nicht die Seitenschilde für ein Kriegsschiff.",
+          "support": "Vergiss nicht die Unterstützungsmodule für ein Kriegsschiff.",
+          "weapons": "Vergiss nicht die Waffensysteme für ein Kriegsschiff."
+        }
+      },
       "offensive": {
         "title": "Waffensysteme"
       },
@@ -308,7 +321,28 @@
         "title": "Unterstützungsmodule"
       }
     },
-    "hull-capacities": "Rumpfkapazität"
+    "hull-capacities": "Rumpfkapazität",
+    "hull": {
+      "type": {
+        "AE": "Munitionsschiff",
+        "AR": "Werkstattschiff",
+        "BB": "Schlachtschiff",
+        "BC": "Schlachtkreuzer",
+        "BCP": "Schlachtkreuzer (Gondelleger)",
+        "CA": "Schwerer Kreuzer",
+        "CL": "Leichter Kreuzer",
+        "CLAC": "LAC Träger",
+        "DD": "Zerstörer",
+        "DN": "Dreadnought",
+        "FAT": "Schneller Angriffstransporter",
+        "FG": "Fregatte",
+        "FR": "Frachter",
+        "LAC": "Leichtes Angriffsboot",
+        "SD": "Super Dreadnought",
+        "SDP": "Super Dreadnought (Gondelleger)",
+        "VT": "Korvette"
+      }
+    }
   },
   "spacecraft": {
     "state": {

@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService, FleetMove, Move, Orbit, Planet, PlanetApiService, StarSystem} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
-import {StarMapCommunicationService} from "../../../star-map-communication.service";
-import {NavigationCalculator} from "../../../NavigationCalculator";
+import {SubscriptionManager} from "../../../subscription.manager";
+import {StarMapCommunicationService} from "../../../services/star-map-communication.service";
+import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
 
 @Component({
     selector: 'app-fleet-move-edit',

@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
 import {EDepositType, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 import {ResourceEmitterService} from "../../../../../../services/resource-emitter.service";
 import {TypeService} from "../../../../../../services/type.service";
-import {StaticResourcesService} from "../../../../../../StaticResourcesService";
+import {StaticResourcesService} from "../../../../../../services/static-resources.service";
 import CollectableTypeEnum = EResourceType.CollectableTypeEnum;
 
 @Component({

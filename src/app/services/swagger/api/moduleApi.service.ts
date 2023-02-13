@@ -68,18 +68,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked ammunition modules for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAmmunitionModulesByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AmmunitionModule>>;
-    public getAmmunitionModulesByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AmmunitionModule>>>;
-    public getAmmunitionModulesByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AmmunitionModule>>>;
-    public getAmmunitionModulesByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getAmmunitionModulesByUser.');
-        }
+    public getAmmunitionModulesByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<AmmunitionModule>>;
+    public getAmmunitionModulesByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AmmunitionModule>>>;
+    public getAmmunitionModulesByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AmmunitionModule>>>;
+    public getAmmunitionModulesByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -97,7 +92,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<AmmunitionModule>>('get',`${this.basePath}/api/private/modules/ammunition/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<AmmunitionModule>>('get',`${this.basePath}/api/private/modules/ammunition`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -110,18 +105,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked armors for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getArmorsByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Armor>>;
-    public getArmorsByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Armor>>>;
-    public getArmorsByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Armor>>>;
-    public getArmorsByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getArmorsByUser.');
-        }
+    public getArmorsByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Armor>>;
+    public getArmorsByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Armor>>>;
+    public getArmorsByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Armor>>>;
+    public getArmorsByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -139,7 +129,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Armor>>('get',`${this.basePath}/api/private/modules/armor/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Armor>>('get',`${this.basePath}/api/private/modules/armor`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -152,18 +142,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked electronic warfare for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getElectronicWarfareByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ElectronicWarfare>>;
-    public getElectronicWarfareByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ElectronicWarfare>>>;
-    public getElectronicWarfareByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ElectronicWarfare>>>;
-    public getElectronicWarfareByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getElectronicWarfareByUser.');
-        }
+    public getElectronicWarfareByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<ElectronicWarfare>>;
+    public getElectronicWarfareByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ElectronicWarfare>>>;
+    public getElectronicWarfareByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ElectronicWarfare>>>;
+    public getElectronicWarfareByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -181,7 +166,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ElectronicWarfare>>('get',`${this.basePath}/api/private/modules/eloka/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<ElectronicWarfare>>('get',`${this.basePath}/api/private/modules/eloka`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -194,18 +179,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked hulls for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getHullsByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Hull>>;
-    public getHullsByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Hull>>>;
-    public getHullsByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Hull>>>;
-    public getHullsByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getHullsByUser.');
-        }
+    public getHullsByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Hull>>;
+    public getHullsByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Hull>>>;
+    public getHullsByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Hull>>>;
+    public getHullsByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -223,7 +203,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Hull>>('get',`${this.basePath}/api/private/modules/hull/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Hull>>('get',`${this.basePath}/api/private/modules/hull`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -236,18 +216,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked weapons for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLaunchersByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Launcher>>;
-    public getLaunchersByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Launcher>>>;
-    public getLaunchersByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Launcher>>>;
-    public getLaunchersByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getLaunchersByUser.');
-        }
+    public getLaunchersByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Launcher>>;
+    public getLaunchersByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Launcher>>>;
+    public getLaunchersByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Launcher>>>;
+    public getLaunchersByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -265,7 +240,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Launcher>>('get',`${this.basePath}/api/private/modules/launcher/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Launcher>>('get',`${this.basePath}/api/private/modules/launcher`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -278,18 +253,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked passive modules for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPassiveModulesByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PassiveModule>>;
-    public getPassiveModulesByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PassiveModule>>>;
-    public getPassiveModulesByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PassiveModule>>>;
-    public getPassiveModulesByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getPassiveModulesByUser.');
-        }
+    public getPassiveModulesByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<PassiveModule>>;
+    public getPassiveModulesByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PassiveModule>>>;
+    public getPassiveModulesByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PassiveModule>>>;
+    public getPassiveModulesByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -307,7 +277,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<PassiveModule>>('get',`${this.basePath}/api/private/modules/passive/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<PassiveModule>>('get',`${this.basePath}/api/private/modules/passive`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -320,18 +290,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked propulsions for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPropulsionsByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Propulsion>>;
-    public getPropulsionsByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Propulsion>>>;
-    public getPropulsionsByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Propulsion>>>;
-    public getPropulsionsByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getPropulsionsByUser.');
-        }
+    public getPropulsionsByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Propulsion>>;
+    public getPropulsionsByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Propulsion>>>;
+    public getPropulsionsByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Propulsion>>>;
+    public getPropulsionsByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -349,7 +314,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Propulsion>>('get',`${this.basePath}/api/private/modules/propulsion/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Propulsion>>('get',`${this.basePath}/api/private/modules/propulsion`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -362,18 +327,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked sidewalls for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSidewallsByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Sidewall>>;
-    public getSidewallsByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Sidewall>>>;
-    public getSidewallsByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Sidewall>>>;
-    public getSidewallsByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getSidewallsByUser.');
-        }
+    public getSidewallsByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Sidewall>>;
+    public getSidewallsByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Sidewall>>>;
+    public getSidewallsByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Sidewall>>>;
+    public getSidewallsByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -391,7 +351,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Sidewall>>('get',`${this.basePath}/api/private/modules/sidewall/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Sidewall>>('get',`${this.basePath}/api/private/modules/sidewall`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -404,18 +364,13 @@ export class ModuleApiService {
     /**
      * Get all unlocked weapons for the owner .
      * 
-     * @param idUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getWeaponsByUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Weapon>>;
-    public getWeaponsByUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Weapon>>>;
-    public getWeaponsByUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Weapon>>>;
-    public getWeaponsByUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idUser === null || idUser === undefined) {
-            throw new Error('Required parameter idUser was null or undefined when calling getWeaponsByUser.');
-        }
+    public getWeaponsByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Weapon>>;
+    public getWeaponsByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Weapon>>>;
+    public getWeaponsByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Weapon>>>;
+    public getWeaponsByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -433,7 +388,7 @@ export class ModuleApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Weapon>>('get',`${this.basePath}/api/private/modules/weapon/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Array<Weapon>>('get',`${this.basePath}/api/private/modules/weapon`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

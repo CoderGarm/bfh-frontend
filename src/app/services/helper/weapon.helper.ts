@@ -1,5 +1,5 @@
-import {Acceleration, Launcher, Missile, Weapon} from "./services/swagger";
-import {NavigationCalculator} from "./NavigationCalculator";
+import {Acceleration, Launcher, Missile, Weapon} from "../swagger";
+import {NavigationCalculator} from "./navigation-calculator.helper";
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
 
 export class WeaponHelper {

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {EEducationType, HumanResourceAmount, Planet, PlanetApiService} from "../../../../../services/swagger";
 import {TypeService} from "../../../../../services/type.service";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 export interface PlanetaryHumanTransportation {
     idPlanet: number;

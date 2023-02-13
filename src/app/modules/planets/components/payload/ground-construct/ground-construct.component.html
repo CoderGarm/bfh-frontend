@@ -6,7 +6,7 @@
                       [levelImprovementHumanResources]="levelImprovementHumanResources"></app-resource-service>
 
 <div>
-    <app-outlined title="Product category" class="filter" (click)="toggle('productCategoryChipList')">
+    <app-outlined titleValue="Product category" class="filter" (click)="toggle('productCategoryChipList')">
         <mat-chip-listbox #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
             <mat-chip-option
                     class="no-checkmark"
@@ -19,7 +19,7 @@
         </mat-chip-listbox>
     </app-outlined>
 
-    <app-outlined title="Refinement sequence" class="filter" (click)="toggle('refinementSequenceChipList')">
+    <app-outlined titleValue="Refinement sequence" class="filter" (click)="toggle('refinementSequenceChipList')">
         <mat-chip-listbox #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
             <mat-chip-option
                     class="no-checkmark"
@@ -32,7 +32,7 @@
         </mat-chip-listbox>
     </app-outlined>
 
-    <app-outlined title="Resource types" class="filter" (click)="toggle('resourceTypeChipList')">
+    <app-outlined titleValue="Resource types" class="filter" (click)="toggle('resourceTypeChipList')">
         <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
             <mat-chip-option
                     class="no-checkmark"

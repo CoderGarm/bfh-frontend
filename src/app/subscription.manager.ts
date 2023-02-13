@@ -1,5 +1,5 @@
 import {Subscription} from "rxjs";
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {AppInjector} from "./app.module";
 import {TokenStorage} from "./services/authentication/token-storage.service";
 import {Fleet} from "./services/swagger";
@@ -7,7 +7,7 @@ import {Fleet} from "./services/swagger";
 @Component({
     template: ''
 })
-export class SubscriptionManager {
+export class SubscriptionManager implements OnDestroy {
 
     subscriptions: Subscription[] = [];
 

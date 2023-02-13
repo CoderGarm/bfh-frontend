@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {Planet, StarSystem} from "../../../../services/swagger";
 
 @Component({

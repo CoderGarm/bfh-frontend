@@ -20,6 +20,7 @@ import {FleetSelectionComponent} from "../../modules/fleet/components/orga/fleet
 import {ShipClassTabViewComponent} from "../../modules/ship-class-construction/components/orga/ship-class-tab-view/ship-class-tab-view.component";
 import {PlanetTabViewComponent} from "../../modules/planets/components/orga/planet-tab-view/planet-tab-view.component";
 import {FleetTabViewComponent} from "../../modules/fleet/components/orga/fleet-tab-view/fleet-tab-view.component";
+import {FittingCreateComponent} from "../../modules/ship-class-construction/components/payload/fitting-create/fitting-create.component";
 
 
 export class NavigationCreationService {
@@ -73,6 +74,10 @@ export class NavigationCreationService {
         return {path: ShipClassTabViewComponent.path, component: ShipClassTabViewComponent, canActivate: [ProtectedGuard], data: {'sidenav': ShipClassSelectionComponent}};
     }
 
+    static getShipYardCreateRoute() {
+        return {path: FittingCreateComponent.path, component: FittingCreateComponent, canActivate: [ProtectedGuard]};
+    }
+
     static createBurgerMenuRoutes(): Routes {
         return [
             {path: WikiMainComponent.path, component: WikiMainComponent},
@@ -82,6 +87,7 @@ export class NavigationCreationService {
     static createAllRoutes(): Routes {
         const routes: Route[] = [];
         routes.push(NavigationCreationService.getLoginRoute());
+        routes.push(NavigationCreationService.getShipYardCreateRoute());
         routes.push(...NavigationCreationService.createBasicRoutes());
         routes.push(...NavigationCreationService.createAdminRoutes());
         routes.push(...NavigationCreationService.createSidenavRoutes());

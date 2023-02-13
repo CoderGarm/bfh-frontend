@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EHullType, Fleet, Job, JobApiService, Planet} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 
 export interface PlanetaryJobs {

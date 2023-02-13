@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {ResourceEmitterService} from "../../../../services/resource-emitter.service";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {AppInjector} from "../../../../app.module";
 
 @Component({

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {EEducationType, EResourceType, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../services/swagger";
-import {ResourceHelper} from "../../../../ResourceHelper";
+import {ResourceHelper} from "../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../services/type.service";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 
 @Component({
     selector: 'app-transport-tab-view',

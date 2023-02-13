@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EHullType, Fleet, Hull, WarShip} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 
 @Component({
     selector: 'app-fleet-formation-display',

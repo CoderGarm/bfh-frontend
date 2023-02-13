@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AlignedFitting, AmmunitionModule, Launcher, Weapon} from "../../../services/swagger";
-import {WeaponHelper} from "../../../WeaponHelper";
+import {WeaponHelper} from "../../../services/helper/weapon.helper";
 
 export interface WeaponsSelection {
     weapon: Weapon | Launcher,

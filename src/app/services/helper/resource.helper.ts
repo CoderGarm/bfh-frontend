@@ -1,6 +1,6 @@
-import {Construction, EEducationType, EnumValueDto, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "./services/swagger";
-import {PlanetaryResourceTransportation} from "./modules/transportation/payload/components/transportation-resource-demand/transportation-resource-demand.component";
-import {PlanetaryHumanTransportation} from "./modules/transportation/payload/components/transportation-humans-demand/transportation-humans-demand.component";
+import {Construction, EEducationType, EnumValueDto, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../swagger";
+import {PlanetaryResourceTransportation} from "../../modules/transportation/payload/components/transportation-resource-demand/transportation-resource-demand.component";
+import {PlanetaryHumanTransportation} from "../../modules/transportation/payload/components/transportation-humans-demand/transportation-humans-demand.component";
 import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
 
 export class ResourceHelper {

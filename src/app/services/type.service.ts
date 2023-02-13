@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SubscriptionManager} from "../SubscriptionManager";
+import {SubscriptionManager} from "../subscription.manager";
 import {BuildingApiService, EEducationType, EHullType, EModuleType, ERefinementSequence, EResourceType, ResourcesApiService, ShipyardApiService} from "./swagger";
 
 /**

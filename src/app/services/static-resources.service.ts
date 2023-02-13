@@ -1,4 +1,5 @@
-import {EDepositType, EEducationType, EnumValueDto} from "./services/swagger";
+import {EDepositType, EEducationType, EnumValueDto} from "./swagger";
+
 
 export class StaticResourcesService {
 
@@ -39,5 +40,11 @@ export class StaticResourcesService {
             default:
                 return false;
         }
+    }
+
+    static getHullLink(): string {
+        let folder = 'hulls';
+        let iconName = 'heavycruiser';
+        return "assets/icons/" + folder + "/png24x/" + iconName + "_c.png";
     }
 }

@@ -1,5 +1,5 @@
 <div class="flex-items-container container" *ngIf="!fleet || (!!fleet && isOwnFleet(fleet))">
-    <app-outlined *ngFor="let cap of baseFleetCapabilities?.capabilities" [title]="cap.moduleType.typeName">
+    <app-outlined *ngFor="let cap of baseFleetCapabilities?.capabilities" [titleValue]="cap.moduleType.typeName">
         <img class="icon" src="{{getLink(cap)}}" alt="{{cap.moduleType}}" matTooltip="{{cap.moduleType.typeName}}">
         <div>
             <div *ngIf="!ngClass">{{getCapValueInShort(cap)}}</div>

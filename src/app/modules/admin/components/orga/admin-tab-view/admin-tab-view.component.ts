@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AdminApiService, JWT} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {Router} from "@angular/router";
 import {LoginComponent} from "../../../../../components/user/login/login.component";
 import {AuthenticationService} from "../../../../../services/authentication";

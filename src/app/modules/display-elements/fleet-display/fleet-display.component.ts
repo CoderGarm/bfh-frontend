@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {FleetEventService} from "../../../services/fleet-event.service";
 

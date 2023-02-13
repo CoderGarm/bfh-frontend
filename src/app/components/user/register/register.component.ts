@@ -3,7 +3,7 @@ import {PasswordErrorMessages} from '../../../validators/passwordValidator';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {UserErrorMessages} from "../../../validators/userNameValidator";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {TranslateService} from "@ngx-translate/core";

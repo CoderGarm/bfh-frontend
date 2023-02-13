@@ -23,6 +23,7 @@ import {AmountShifterComponent} from "./components/amount-shifter/amount-shifter
 import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
 import {MarkdownEditorComponent} from './components/markdown-editor/markdown-editor.component';
 import {OutlinedComponent} from './components/outlined/outlined.component';
+import {ChipSelectorComponent} from "./components/chip-selector/chip-selector.component";
 
 @NgModule({
     declarations: [
@@ -31,12 +32,13 @@ import {OutlinedComponent} from './components/outlined/outlined.component';
         NumberShortPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
+        OutlinedComponent,
+        ChipSelectorComponent,
         ResourceCounterComponent,
         HumanResourceCounterComponent,
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,
-        OutlinedComponent,
     ],
     imports: [
         CommonModule,
@@ -69,6 +71,8 @@ import {OutlinedComponent} from './components/outlined/outlined.component';
         NumberShortPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
+        OutlinedComponent,
+        ChipSelectorComponent,
         MarkdownModule,
         AngularMarkdownEditorModule,
         MaterialComponentsModule,
@@ -79,7 +83,6 @@ import {OutlinedComponent} from './components/outlined/outlined.component';
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,
-        OutlinedComponent,
     ]
 })
 export class SharedModuleModule {

@@ -18,7 +18,7 @@ export class HullDisplayComponent implements OnInit, OnChanges {
      * the hull which should be displayed
      */
     @Input()
-    hullInput!: Hull;
+    hullInput?: Hull;
     private hullInputDefinition = "hullInput";
 
     constructor() {
@@ -28,9 +28,12 @@ export class HullDisplayComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.hullInputDefinition]) {
-            this.dataSource.setData([this.hullInput])
+
+        const data = [];
+        if (!!this.hullInput) {
+            data.push(this.hullInput);
         }
+        this.dataSource.setData(data)
     }
 
 }

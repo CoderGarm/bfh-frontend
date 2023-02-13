@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, Input, Optional} from '@angular/core';
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {EResourceType, MiningFactors, ResourceAmount} from "../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 

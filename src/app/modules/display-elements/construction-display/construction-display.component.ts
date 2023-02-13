@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {Construction, ResourceDeposit} from "../../../services/swagger";
-import {ResourceHelper} from "../../../ResourceHelper";
+import {ResourceHelper} from "../../../services/helper/resource.helper";
 
 @Component({
     selector: 'app-construction-display',

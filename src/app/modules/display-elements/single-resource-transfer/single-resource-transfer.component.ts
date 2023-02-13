@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../services/swagger";
-import {ResourceHelper} from "../../../ResourceHelper";
+import {ResourceHelper} from "../../../services/helper/resource.helper";
 
 @Component({
     selector: 'app-single-resource-transfer',

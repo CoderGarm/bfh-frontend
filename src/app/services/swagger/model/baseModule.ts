@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { EHullType } from './eHullType';
 
 /**
  * .
@@ -38,6 +39,7 @@ export interface BaseModule {
      * The level of this module.
      */
     techLevel: BaseModule.TechLevelEnum;
+    hullType: EHullType;
 }
 export namespace BaseModule {
     export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';

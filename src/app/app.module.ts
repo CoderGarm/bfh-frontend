@@ -1,6 +1,6 @@
 import {ChatModule} from './modules/chat/chat.module';
 import {ErrorDialogComponent} from './components/error-dialog/error-dialog.component';
-import {CustomErrorHandler} from './services/customErrorHandler.service';
+import {CustomErrorHandler} from './services/custom-error-handler.service';
 import {PasswordEqualityValidatorDirective, PasswordPatternValidatorDirective} from './validators/passwordValidator';
 import {AuthenticationModule} from './services/authentication';
 import {ErrorHandler, Injector, NgModule, SecurityContext} from '@angular/core';
@@ -17,12 +17,12 @@ import {StarMapModule} from "./modules/star-map/star-map.module";
 import {ResearchModule} from "./modules/research/research.module";
 import {ShipClassConstructionModule} from "./modules/ship-class-construction/ship-class-construction.module";
 import {FleetModule} from "./modules/fleet/fleet.module";
-import {SubscriptionManager} from "./SubscriptionManager";
+import {SubscriptionManager} from "./subscription.manager";
 import {ConfirmDialogComponent} from "./components/confirmation-dialog/confirm-dialog.component";
 import {DisplayElementsModule} from "./modules/display-elements/display-elements.module";
 import {ExpansionModule} from "./modules/expansion/expansion.module";
 import {JournalModule} from "./modules/journal/journal.module";
-import {BasicViewHelper} from "./basic-view-helper";
+import {BasicViewHelper} from "./services/svg-view-helper/basic-view-helper";
 import {SnackbarNotificationService} from "./services/snackbar-notification.service";
 import {AdminModule} from "./modules/admin/admin.module";
 import {ForumModule} from "./modules/forum/forum.module";
@@ -44,14 +44,15 @@ import {WikiModule} from "./modules/wiki/wiki.module";
 import {MarkdownModule, MarkdownService} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {TransportationModule} from "./modules/transportation/transportation.module";
-import {BackgroundService} from "./services/background.service";
+import {BackgroundService} from "./services/prefetch/background.service";
 import {FleetEventService} from "./services/fleet-event.service";
-import {StarMapCommunicationService} from "./star-map-communication.service";
+import {StarMapCommunicationService} from "./services/star-map-communication.service";
 import {NumberRomanPipe} from "./services/pipes/number-roman.pipe";
-import {BasicViewHelperData} from "./basic-view-helper-data";
+import {BasicViewHelperData} from "./services/svg-view-helper/basic-view-helper-data";
 import {NestedSidenavComponent} from './components/nested-sidenav/nested-sidenav.component';
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
 import {SidenavSelectionManager} from "./sidenav-selection-manager";
+import {ModuleService} from "./services/prefetch/module.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -126,6 +127,7 @@ export let AppInjector: Injector;
         SpinnerService,
         FleetEventService,
         TypeService,
+        ModuleService,
         BackgroundService,
         DatePipe,
         NumberShortPipe,

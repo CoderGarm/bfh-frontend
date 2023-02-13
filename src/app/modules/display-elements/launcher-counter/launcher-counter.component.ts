@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AlignedFitting, AmmunitionModule, Launcher, Missile} from "../../../services/swagger";
 import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
-import {WeaponHelper} from "../../../WeaponHelper";
+import {WeaponHelper} from "../../../services/helper/weapon.helper";
 
 @Component({
     selector: 'app-launcher-counter',

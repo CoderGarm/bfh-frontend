@@ -3,7 +3,7 @@ import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, Simple
 import {interval, Subscription} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {AppComponent} from "../../../../app.component";
 
 

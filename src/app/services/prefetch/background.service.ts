@@ -1,7 +1,8 @@
 import {EventEmitter, Injectable, NgZone} from '@angular/core';
-import {SubscriptionManager} from "../SubscriptionManager";
-import {ColonizationApiService, StarMapApiService, StarSystem, StarSystemColonization} from "./swagger";
+import {SubscriptionManager} from "../../subscription.manager";
+import {ColonizationApiService, StarMapApiService, StarSystem, StarSystemColonization} from "../swagger";
 import {interval} from "rxjs";
+import {ModuleService} from "./module.service";
 
 /**
  * Executed slow queries in the background and sends the data if the original request is finished.
@@ -17,7 +18,8 @@ export class BackgroundService extends SubscriptionManager {
 
     constructor(private zone: NgZone,
                 private colonizationService: ColonizationApiService,
-                private mapService: StarMapApiService) {
+                private mapService: StarMapApiService,
+                private moduleService: ModuleService) {
         super();
 
         this.zone.run(() => {

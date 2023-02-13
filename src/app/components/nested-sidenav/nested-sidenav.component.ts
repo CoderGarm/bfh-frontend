@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Route, Routes} from "@angular/router";
 import {NavigationCommunicationService} from "../../services/navigation/navigation-communication.service";
-import {SubscriptionManager} from "../../SubscriptionManager";
+import {SubscriptionManager} from "../../subscription.manager";
 
 @Component({
     selector: 'app-nested-sidenav',

@@ -44,14 +44,15 @@ export class ShipClassSelectionComponent extends SidenavSelectionManager impleme
     }
 
     selectClass(shipClass?: ShipClass) {
-        this.navService.navigate(NavigationCreationService.getShipYardRoute());
-        this.shipyardService.selectShipClass(shipClass);
         if (!!shipClass) {
+            this.navService.navigate(NavigationCreationService.getShipYardRoute());
+            this.shipyardService.selectShipClass(shipClass);
             this.selectedItem = {
                 id: shipClass.idShipClass!
             };
         } else {
             this.selectedClass = undefined;
+            this.navService.navigate(NavigationCreationService.getShipYardCreateRoute());
         }
     }
 }

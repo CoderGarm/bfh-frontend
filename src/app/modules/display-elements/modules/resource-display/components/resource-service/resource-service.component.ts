@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../../../../services/swagger";
 import {ResourceEmitterService} from "../../../../../../services/resource-emitter.service";
-import {SubscriptionManager} from "../../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../../subscription.manager";
 import {MatDialog} from "@angular/material/dialog";
 import {ResourceDisplayDialogComponent} from "../resource-display-dialog/resource-display-dialog.component";
 

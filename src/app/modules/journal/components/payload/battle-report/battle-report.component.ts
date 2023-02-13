@@ -10,7 +10,7 @@ import {
     ReleasedVolley,
     StarSystem
 } from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {MatSort} from "@angular/material/sort";
 import {MatTable, MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";

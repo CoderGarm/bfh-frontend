@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 import {Article, WikiApiService} from "../../../../services/swagger";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";

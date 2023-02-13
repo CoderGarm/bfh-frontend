@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetOrbit, Planet, PlanetApiService} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 
 @Component({
     selector: 'app-fleet-move-display',

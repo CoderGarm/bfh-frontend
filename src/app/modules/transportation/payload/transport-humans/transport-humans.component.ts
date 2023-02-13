@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Planet, PlanetApiService, ResourceDeposit} from "../../../../services/swagger";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
-import {ResourceHelper} from "../../../../ResourceHelper";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {ResourceHelper} from "../../../../services/helper/resource.helper";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {PlanetaryHumanTransportation} from "../components/transportation-humans-demand/transportation-humans-demand.component";
 
 @Component({

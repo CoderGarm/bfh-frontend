@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {EResourceType, Planet, PlanetApiService, ResourceAmount} from "../../../../../services/swagger";
 import {TypeService} from "../../../../../services/type.service";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 export interface PlanetaryResourceTransportation {
     idPlanet: number;

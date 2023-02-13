@@ -2,7 +2,7 @@ import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {CreateForumThread, Forum} from "../../../../services/swagger";
 import {ForumsNotificationService} from "../../forums-notification.service";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 import {MarkdownService} from "ngx-markdown";

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 import {MarkdownService} from "ngx-markdown";

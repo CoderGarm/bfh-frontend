@@ -1,6 +1,6 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
     <mat-accordion>
-        <div *ngFor="let route of routes">
+        <div *ngFor="let route of routes" class="nav-element">
             <mat-list-option *ngIf="!route.data"
                              (click)="navigate(route)"
                              [selected]="(!navService.activeRoute && afterLoginPath === route.path) || (!!navService.activeRoute && navService.activeRoute.path === route.path)">

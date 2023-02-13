@@ -6,7 +6,7 @@ import {OrbitDefinition} from "../orbit-definition";
 import {InterstellarViewHelper} from "../interstellar-view-helper";
 import {SpinnerService} from "../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
-import {BackgroundService} from "../../../../services/background.service";
+import {BackgroundService} from "../../../../services/prefetch/background.service";
 import {Subscription} from "rxjs";
 
 @Component({

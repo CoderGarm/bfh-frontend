@@ -17,8 +17,8 @@ import {
     StarSystem
 } from "../../services/swagger";
 import {OrbitDefinition} from "../star-map/payload/orbit-definition";
-import {BasicViewHelper} from "../../basic-view-helper";
-import {NavigationCalculator} from "../../NavigationCalculator";
+import {BasicViewHelper} from "../../services/svg-view-helper/basic-view-helper";
+import {NavigationCalculator} from "../../services/helper/navigation-calculator.helper";
 import {CombatArenaData} from "./combat-arena-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;

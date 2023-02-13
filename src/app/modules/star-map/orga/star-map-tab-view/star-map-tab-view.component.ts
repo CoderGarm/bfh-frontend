@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {StarSystem} from "../../../../services/swagger";
 import {MatTabGroup} from "@angular/material/tabs";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
-import {StarMapCommunicationService} from "../../../../star-map-communication.service";
+import {SubscriptionManager} from "../../../../subscription.manager";
+import {StarMapCommunicationService} from "../../../../services/star-map-communication.service";
 
 @Component({
     selector: 'app-star-map-tab-view',

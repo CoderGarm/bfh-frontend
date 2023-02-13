@@ -1,6 +1,6 @@
 import {Distance, FleetMarker, Orbit, Planet, StarSystem} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
-import {BasicViewHelper} from "../../../basic-view-helper";
+import {BasicViewHelper} from "../../../services/svg-view-helper/basic-view-helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export class SystemViewHelper extends BasicViewHelper {

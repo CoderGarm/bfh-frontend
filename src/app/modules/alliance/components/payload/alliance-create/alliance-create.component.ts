@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AllianceApiService} from "../../../../../services/swagger";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 
 @Component({

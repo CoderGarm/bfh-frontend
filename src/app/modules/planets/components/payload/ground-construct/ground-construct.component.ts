@@ -21,7 +21,7 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
 import {PlanetsEventService} from "../../../planets-event.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
-import {ResourceHelper} from "../../../../../ResourceHelper";
+import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
@@ -108,8 +108,6 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
     eResourceTypeFC: UntypedFormControl = new UntypedFormControl({});
     eProductionCategoryFC: UntypedFormControl = new UntypedFormControl({});
     eRefinementSequenceFC: UntypedFormControl = new UntypedFormControl({});
-
-    formControl: UntypedFormControl = new UntypedFormControl({});
 
     /**
      * if these planets support a new construction

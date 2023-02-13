@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SubscriptionManager} from "../../../../SubscriptionManager";
-import {StarMapCommunicationService} from "../../../../star-map-communication.service";
+import {SubscriptionManager} from "../../../../subscription.manager";
+import {StarMapCommunicationService} from "../../../../services/star-map-communication.service";
 
 @Component({
     selector: 'app-fleet-notch-move',

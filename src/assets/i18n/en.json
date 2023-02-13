@@ -295,6 +295,19 @@
       "hull": {
         "title": "Hull"
       },
+      "not-selected": {
+        "mandatory": {
+          "hull": "Select a hull.",
+          "propulsion": "Select a propulsion."
+        },
+        "warship-needs": {
+          "armor": "If you are creating a warship don't forget the armor.",
+          "eloka": "If you are creating a warship don't forget the electronic warfare.",
+          "sidewall": "If you are creating a warship don't forget the sidewall.",
+          "support": "If you are creating a warship don't forget support modules.",
+          "weapons": "If you are creating a warship don't forget weapons."
+        }
+      },
       "offensive": {
         "title": "Offensive loadout"
       },
@@ -308,7 +321,28 @@
         "title": "Support loadout"
       }
     },
-    "hull-capacities": "Construction capacities"
+    "hull-capacities": "Construction capacities",
+    "hull": {
+      "type": {
+        "AE": "Ammunition Ship",
+        "AR": "Repair Ship",
+        "BB": "Battleship",
+        "BC": "Battlecruiser",
+        "BCP": "Battlecruiser (Podlayer)",
+        "CA": "Heavy Cruiser",
+        "CL": "Light Cruiser",
+        "CLAC": "LAC Carrier",
+        "DD": "Destroyer",
+        "DN": "Dreadnought",
+        "FAT": "Fast attack Transport",
+        "FG": "Frigate",
+        "FR": "Freighter",
+        "LAC": "Light Attack Craft",
+        "SD": "Super Dreadnought",
+        "SDP": "Super Dreadnought (Podlayer)",
+        "VT": "Corvette"
+      }
+    }
   },
   "spacecraft": {
     "state": {

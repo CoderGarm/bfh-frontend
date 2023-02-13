@@ -14,10 +14,11 @@ import {UntypedFormControl} from "@angular/forms";
 import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {PlanetsEventService} from "../../../planets-event.service";
-import {ResourceHelper} from "../../../../../ResourceHelper";
+import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
+import {ChipSelectorValue} from "../../../../shared-module/components/chip-selector/chip-selector.component";
 
 @Component({
     selector: 'app-shipyard',
@@ -32,7 +33,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
     currentlyOpenedItemIndex?: ShipClass;
 
     /**
-     * the producable ship classes
+     * the producible ship classes
      */
     possibleShipClasses: ShipClass[] = [];
 
@@ -370,5 +371,14 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
             return this.translations.get('shipyard.constructions.build.nothing-to-do')!;
         }
         return this.translations.get('shipyard.constructions.build.start-building')!;
+    }
+
+    getT(): ChipSelectorValue[] {
+        const result: ChipSelectorValue[] = [];
+        this.eHullTypes.forEach(t =>
+            result.push({
+                value: t.typeName
+            }));
+        return result;
     }
 }

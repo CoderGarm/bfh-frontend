@@ -1,4 +1,4 @@
-import {Acceleration, Distance, Orbit} from "./services/swagger";
+import {Acceleration, Distance, Orbit} from "../swagger";
 import {ArrayXY} from "@svgdotjs/svg.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;

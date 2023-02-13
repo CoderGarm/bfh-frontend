@@ -17,12 +17,12 @@ import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {ResourceHelper} from "../../../../../ResourceHelper";
+import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {SpinnerService} from "../../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
-import {BackgroundService} from "../../../../../services/background.service";
+import {BackgroundService} from "../../../../../services/prefetch/background.service";
 
 @Component({
     selector: 'app-organize-expansion',

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {EnumValueDto, Fleet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {FleetEventService} from "../../../../../services/fleet-event.service";
 
 @Component({

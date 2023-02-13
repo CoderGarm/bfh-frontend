@@ -2,12 +2,10 @@ import {AuthRequest} from '../../../services/swagger';
 import {AuthenticationService} from '../../../services/authentication';
 
 import {Component, OnInit} from '@angular/core';
-import {FormControl, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
-import {MatChipInputEvent} from "@angular/material/chips";
-import {MatFormFieldControl} from "@angular/material/form-field";
 
 @Component({
     selector: 'app-login',
@@ -62,34 +60,5 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
         this.permissionsService.flushPermissions();
         this.loginForm.controls.login.setValue('');
         this.loginForm.controls.pass.setValue('');
-    }
-
-    keywords = ['angular', 'how-to', 'tutorial', 'accessibility'];
-    formControl = new FormControl(['angular']);
-    f: MatFormFieldControl<any> = new class extends MatFormFieldControl<any> {
-        onContainerClick(event: MouseEvent): void {
-        }
-
-        setDescribedByIds(ids: string[]): void {
-        }
-    }
-
-    removeKeyword(keyword: string) {
-        const index = this.keywords.indexOf(keyword);
-        if (index >= 0) {
-            this.keywords.splice(index, 1);
-        }
-    }
-
-    add(event: MatChipInputEvent): void {
-        const value = (event.value || '').trim();
-
-        // Add our keyword
-        if (value) {
-            this.keywords.push(value);
-        }
-
-        // Clear the input value
-        event.chipInput!.clear();
     }
 }

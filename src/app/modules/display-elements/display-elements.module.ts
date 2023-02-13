@@ -14,7 +14,7 @@ import {AlignedFittingModuleDisplayComponent} from './aligned-fitting-module-dis
 import {AmmunitionFittingModuleDisplayComponent} from './ammunition-fitting-module-display/ammunition-fitting-module-display.component';
 import {SupportFittingModuleDisplayComponent} from './support-fitting-module-display/support-fitting-module-display.component';
 import {ResearchDisplayComponent} from './research-display/research-display.component';
-import {ShipClassFittingSelectionComponent} from './ship-class-fitting-selection/ship-class-fitting-selection.component';
+import {ShipClassFittingCreateComponent} from './ship-class-fitting-create/ship-class-fitting-create.component';
 import {WeaponsCounterComponent} from './weapons-counter/weapons-counter.component';
 import {BaseModuleCounterComponent} from './base-module-counter/base-module-counter.component';
 import {SidewallModuleSelectorComponent} from './sidewall-module-selector/sidewall-module-selector.component';
@@ -51,6 +51,7 @@ import {SpacecraftStateBlockDisplayComponent} from './spacecraft-state-block-dis
 import {AmmunitionRosterComponent} from './ammunition-roster/ammunition-roster.component';
 import {MilitaryPeopleComponent} from './military-people/military-people.component';
 import {CommissionedOperationalsComponent} from './commissioned-operationals/commissioned-operationals.component';
+import {ShipClassFittingModifyComponent} from './ship-class-fitting-modify/ship-class-fitting-modify.component';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,7 @@ import {CommissionedOperationalsComponent} from './commissioned-operationals/com
         AmmunitionFittingModuleDisplayComponent,
         SupportFittingModuleDisplayComponent,
         ResearchDisplayComponent,
-        ShipClassFittingSelectionComponent,
+        ShipClassFittingCreateComponent,
         BaseModuleCounterComponent,
         WeaponsCounterComponent,
         ConstructionDisplayComponent,
@@ -104,6 +105,7 @@ import {CommissionedOperationalsComponent} from './commissioned-operationals/com
         AmmunitionRosterComponent,
         MilitaryPeopleComponent,
         CommissionedOperationalsComponent,
+        ShipClassFittingModifyComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -125,7 +127,7 @@ import {CommissionedOperationalsComponent} from './commissioned-operationals/com
         SupportFittingModuleDisplayComponent,
         ResearchDisplayComponent,
         ConstructionDisplayComponent,
-        ShipClassFittingSelectionComponent,
+        ShipClassFittingCreateComponent,
         BaseModuleCounterComponent,
         WeaponsCounterComponent,
         SidewallModuleSelectorComponent,
@@ -161,6 +163,7 @@ import {CommissionedOperationalsComponent} from './commissioned-operationals/com
         AmmunitionRosterComponent,
         MilitaryPeopleComponent,
         CommissionedOperationalsComponent,
+        ShipClassFittingModifyComponent,
     ]
 })
 export class DisplayElementsModule {

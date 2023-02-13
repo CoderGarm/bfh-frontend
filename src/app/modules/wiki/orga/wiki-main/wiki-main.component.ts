@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Article, ArticleCreate, ArticleEdit, ArticlePlainContent, UserApiService, UserJson, WikiApiService} from "../../../../services/swagger";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 
 @Component({
     selector: 'app-wiki-main',

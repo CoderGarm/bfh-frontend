@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {AlignedFitting, ShipClass} from "../../../../../services/swagger";
 import {ArrayXY, G, Polygon, Svg, SVG} from "@svgdotjs/svg.js";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
-import {BasicViewHelper} from "../../../../../basic-view-helper";
+import {SubscriptionManager} from "../../../../../subscription.manager";
+import {BasicViewHelper} from "../../../../../services/svg-view-helper/basic-view-helper";
 
 @Component({
     selector: 'app-ship-class-svg',

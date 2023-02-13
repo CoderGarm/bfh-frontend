@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {CreateForumThread, Forum, ForumApiService, ForumThread} from "../../../../services/swagger";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
@@ -8,7 +8,7 @@ import {DialogData} from "../../../../components/confirmation-dialog/DialogData"
 import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateForumThreadComponent} from "../create-forum-thread/create-forum-thread.component";
-import {DialogConfigHelper} from "../../../../DialogConfigHelper";
+import {DialogConfigHelper} from "../../../../services/helper/dialog-config.helper";
 
 @Component({
     selector: 'app-forum-threads',

@@ -1,15 +1,15 @@
 <div class="flex-items-container">
     <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
-        <input matInput disabled value="{{hullInput.name}}">
+        <input matInput disabled value="{{hullInput?.name}}">
     </mat-form-field>
     <mat-form-field appearance="fill" class="short-field">
         <mat-label>Code</mat-label>
-        <input matInput disabled value="{{hullInput.hullType.typeName}}">
+        <input matInput disabled value="{{hullInput?.hullType?.typeName}}">
     </mat-form-field>
     <mat-form-field appearance="fill" class="description-field">
         <mat-label>Description</mat-label>
-        <input matInput disabled value="{{hullInput.description}}">
+        <input matInput disabled value="{{hullInput?.description}}">
     </mat-form-field>
 </div>
 
@@ -43,4 +43,11 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell">-</td>
+        <td class="mat-cell">-</td>
+        <td class="mat-cell">-</td>
+        <td class="mat-cell">-</td>
+        <td class="mat-cell">-</td>
+    </tr>
 </table>

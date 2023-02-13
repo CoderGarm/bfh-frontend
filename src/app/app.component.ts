@@ -7,7 +7,7 @@ import {StarMapTabViewComponent} from "./modules/star-map/orga/star-map-tab-view
 import {JournalTabViewComponent} from "./modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 import {ChatComponent} from "./modules/chat/components/chat/chat.component";
 import {ChatApiService, ForumApiService} from "./services/swagger";
-import {SubscriptionManager} from "./SubscriptionManager";
+import {SubscriptionManager} from "./subscription.manager";
 import {ForumsListComponent} from "./modules/forum/components/forums-list/forums-list.component";
 import {TranslateService} from "@ngx-translate/core";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";

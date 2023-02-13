@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CreateForumThreadMessage, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {tap} from "rxjs/operators";
 import {MarkdownService} from "ngx-markdown";
 

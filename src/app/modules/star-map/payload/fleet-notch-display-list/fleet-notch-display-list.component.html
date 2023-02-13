@@ -2,6 +2,6 @@
     <mat-grid-tile *ngFor="let fleet of commService.selectedFleets"
                    [colspan]="getColSpan(fleet)"
                    class="tile">
-        <app-fleet-notch-display [fleet]="fleet"></app-fleet-notch-display>
+        <app-fleet-notch-display [fleet]="fleet" class="mat-elevation-z8"></app-fleet-notch-display>
     </mat-grid-tile>
 </mat-grid-list>

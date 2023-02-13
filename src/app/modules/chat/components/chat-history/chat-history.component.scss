@@ -31,7 +31,7 @@
   border-radius: 5px;
 }
 
-mat-mdc-card.chat-card.set-right > mat-mdc-card-header {
+.mat-mdc-card.chat-card.set-right > .mat-mdc-card-header {
   justify-content: right;
   padding-left: 15px;
   border: solid #3b3b3b;
@@ -40,7 +40,7 @@ mat-mdc-card.chat-card.set-right > mat-mdc-card-header {
   margin-left: 10px;
 }
 
-mat-mdc-card.chat-card.set-left > mat-mdc-card-header {
+.mat-mdc-card.chat-card.set-left > .mat-mdc-card-header {
   justify-content: left;
   padding-left: 15px;
   border: solid #3b3b3b;

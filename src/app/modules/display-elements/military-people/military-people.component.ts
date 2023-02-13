@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {EEducationType, HumanResourceAmount, ResourceDeposit} from "../../../services/swagger";
 import {TypeService} from "../../../services/type.service";
-import {StaticResourcesService} from "../../../StaticResourcesService";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {StaticResourcesService} from "../../../services/static-resources.service";
+import {SubscriptionManager} from "../../../subscription.manager";
 
 @Component({
     selector: 'app-military-people',

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {Article, EnumValueDto, WikiApiService} from "../../../../services/swagger";
 import EWikiCategoriesEnum = EnumValueDto.EWikiCategoriesEnum;
 

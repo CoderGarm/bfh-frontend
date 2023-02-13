@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ResourceEmitterService} from "../../../../../../services/resource-emitter.service";
-import {SubscriptionManager} from "../../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../../subscription.manager";
 import {CdkDragEnd, Point} from "@angular/cdk/drag-drop";
 
 @Component({

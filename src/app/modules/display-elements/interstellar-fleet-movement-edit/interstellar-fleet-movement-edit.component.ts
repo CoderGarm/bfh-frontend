@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
-import {NavigationCalculator} from "../../../NavigationCalculator";
+import {SubscriptionManager} from "../../../subscription.manager";
+import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
-import {StarMapCommunicationService} from "../../../star-map-communication.service";
+import {StarMapCommunicationService} from "../../../services/star-map-communication.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 @Component({

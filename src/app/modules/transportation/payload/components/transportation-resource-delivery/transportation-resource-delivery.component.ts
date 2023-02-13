@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {EResourceType, Planet, PlanetApiService, ResourceAmount} from "../../../../../services/swagger";
 import {TypeService} from "../../../../../services/type.service";
 import {PlanetaryResourceTransportation} from "../transportation-resource-demand/transportation-resource-demand.component";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
     selector: 'app-transportation-resource-delivery',

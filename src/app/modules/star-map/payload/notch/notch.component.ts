@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {StarMapCommunicationService} from "../../../../star-map-communication.service";
+import {StarMapCommunicationService} from "../../../../services/star-map-communication.service";
 import {FleetApiService} from "../../../../services/swagger";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 
 
 @Component({

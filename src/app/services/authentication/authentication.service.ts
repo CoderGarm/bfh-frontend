@@ -7,7 +7,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {NgxPermissionsService} from 'ngx-permissions';
-import {SubscriptionManager} from "../../SubscriptionManager";
+import {SubscriptionManager} from "../../subscription.manager";
 
 @Injectable()
 export class AuthenticationService extends SubscriptionManager implements AuthService {

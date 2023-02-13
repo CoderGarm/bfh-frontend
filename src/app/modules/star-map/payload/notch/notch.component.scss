@@ -1,8 +1,6 @@
 @import "src/styles/variables";
 
 #notch-content {
-  border: $metal-glance 1px solid;
-  border-radius: 5px;
   margin-bottom: 25px;
   width: 60%;
   margin-left: auto;
@@ -17,15 +15,11 @@
   pointer-events: auto;
 }
 
-.fleet-notch-group, .tile {
-  background-color: $secondary-background-color;
-}
-
 app-fleet-notch-display {
   height: 100px;
 }
 
-mat-mdc-card {
+.mat-mdc-card {
   max-height: 500px;
   overflow-y: scroll;
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Commissioning, FinishedColonization, FleetMovement, Job, JournalApiService, TransportJob} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
     selector: 'app-journal-dashboard',

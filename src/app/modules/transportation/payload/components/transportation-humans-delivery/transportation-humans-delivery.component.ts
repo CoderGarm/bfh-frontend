@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {EEducationType, HumanResourceAmount, Planet, PlanetApiService} from "../../../../../services/swagger";
 import {TypeService} from "../../../../../services/type.service";
 import {PlanetaryHumanTransportation} from "../transportation-humans-demand/transportation-humans-demand.component";

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {TypeService} from "../../../../../services/type.service";
-import {BackgroundService} from "../../../../../services/background.service";
+import {BackgroundService} from "../../../../../services/prefetch/background.service";
 import {BattleReportApiService} from "../../../../../services/swagger";
 
 @Component({

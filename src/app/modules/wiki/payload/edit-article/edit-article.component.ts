@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {Article, ArticleEdit, ArticlePlainContent} from "../../../../services/swagger";
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";

@@ -11,9 +11,9 @@ import {
     ResourcesApiService,
     ResourceTransfer
 } from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {TypeService} from "../../../services/type.service";
-import {ResourceHelper} from "../../../ResourceHelper";
+import {ResourceHelper} from "../../../services/helper/resource.helper";
 import TransportTypeEnum = ResourceTransfer.TransportTypeEnum;
 
 

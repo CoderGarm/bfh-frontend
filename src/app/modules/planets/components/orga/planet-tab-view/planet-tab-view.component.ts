@@ -1,6 +1,6 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
 import {PlanetsEventService} from "../../../planets-event.service";
 
@@ -20,13 +20,15 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
 
     constructor(private planetApi: PlanetApiService,
                 private planetsNotificationService: PlanetsEventService,
-                private resourceEmitter: ResourceEmitterService) {
+                private resourceEmitter: ResourceEmitterService,
+                private change: ChangeDetectorRef) {
         super();
     }
 
     ngAfterViewInit(): void {
         let sub = this.planetsNotificationService.getSelectedPlanetEmitter().subscribe(selected => this.fetchData(selected));
         this.subscriptions.push(sub);
+        this.change.detectChanges();
     }
 
     fetchData(planet: Planet) {

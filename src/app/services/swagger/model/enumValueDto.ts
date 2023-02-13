@@ -14,6 +14,7 @@
  * Only to transfer enum values to the frontend.
  */
 export interface EnumValueDto { 
+    eModuleTypes?: Array<EnumValueDto.EModuleTypesEnum>;
     eDepositType?: Array<EnumValueDto.EDepositTypeEnum>;
     eResourceType?: Array<EnumValueDto.EResourceTypeEnum>;
     eEducationType?: Array<EnumValueDto.EEducationTypeEnum>;
@@ -32,6 +33,15 @@ export interface EnumValueDto {
     eCapacityAreaTypes?: Array<EnumValueDto.ECapacityAreaTypesEnum>;
 }
 export namespace EnumValueDto {
+    export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
+    export const EModuleTypesEnum = {
+        WEAPON: 'WEAPON' as EModuleTypesEnum,
+        ARMOR: 'ARMOR' as EModuleTypesEnum,
+        SIDEWALL: 'SIDEWALL' as EModuleTypesEnum,
+        PROPULSION: 'PROPULSION' as EModuleTypesEnum,
+        FTLPROPULSION: 'FTLPROPULSION' as EModuleTypesEnum,
+        ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as EModuleTypesEnum
+    };
     export type EDepositTypeEnum = 'DEPOSITS' | 'DEMAND' | 'UTILIZATION' | 'COSTS' | 'INCOME' | 'CAPACITY' | 'TRANSPORTATION_DEMAND' | 'TRANSPORTATION_DELIVERY';
     export const EDepositTypeEnum = {
         DEPOSITS: 'DEPOSITS' as EDepositTypeEnum,

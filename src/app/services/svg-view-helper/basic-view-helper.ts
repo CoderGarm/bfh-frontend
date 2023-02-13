@@ -1,10 +1,10 @@
-import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem, StateBlock} from "./services/swagger";
+import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
 import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
-import {OrbitDefinition} from "./modules/star-map/payload/orbit-definition";
-import {NavigationCalculator} from "./NavigationCalculator";
+import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
+import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component, HostListener} from "@angular/core";
-import {StarMapCommunicationService} from "./star-map-communication.service";
-import {AppInjector} from "./app.module";
+import {StarMapCommunicationService} from "../star-map-communication.service";
+import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 

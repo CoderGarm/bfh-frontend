@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EResourceType, Research, ResearchApiService, ResearchLevel, ResearchTree, ResearchTreeElement} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 import {TypeService} from "../../../services/type.service";
 
 @Component({

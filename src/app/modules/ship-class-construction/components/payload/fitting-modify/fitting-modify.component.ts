@@ -8,17 +8,15 @@ import {
     SpacecraftCapabilities,
     SpacecraftCapacityAreas
 } from "../../../../../services/swagger";
-import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
 import {ShipClassComparator} from "../ShipClassComparator";
-import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
-    selector: 'app-fitting-selection',
-    templateUrl: './fitting-selection.component.html',
-    styleUrls: ['./fitting-selection.component.scss']
+    selector: 'app-fitting-modify',
+    templateUrl: './fitting-modify.component.html',
+    styleUrls: ['./fitting-modify.component.scss']
 })
-export class FittingSelectionComponent extends ResourceDisplayManager implements AfterViewInit, OnChanges {
+export class FittingModifyComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * The user selected ShipClass.
@@ -49,12 +47,6 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
     svgSelector: string = "ship-class-fitting-selection";
 
     /**
-     * the displayed ship class name
-     */
-    @Output()
-    shipClassNameOutput?: string;
-
-    /**
      * forwards the weapon alignments by amount to the svg component
      */
     @Output()
@@ -79,18 +71,6 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
     @Output()
     modifiedShipClassOutput: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
 
-    /**
-     * all possible errors to display
-     */
-    errors = ShipClassNamePatternErrorMessages;
-
-    /**
-     * the form group which defines the name field
-     */
-    form: UntypedFormGroup = new UntypedFormGroup({
-        scName: new UntypedFormControl({value: '', disabled: !!this.shipClass})
-    });
-
     costs?: ResourceDeposit;
 
     compareClass?: ShipClass;
@@ -103,14 +83,7 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
     }
 
     ngAfterViewInit(): void {
-        let sub = this.form.controls.scName.valueChanges.subscribe(value => {
-            if (this.shipClassNameOutput != value) {
-                this.shipClassNameOutput = value;
-            }
-        });
-        this.subscriptions.push(sub);
-
-        sub = this.designedShipClassOutputEmitter.subscribe(event => {
+        let sub = this.designedShipClassOutputEmitter.subscribe(event => {
             this.designedShipClassInput = event;
             this.setShipClass(this.designedShipClassInput)
         });
@@ -129,20 +102,6 @@ export class FittingSelectionComponent extends ResourceDisplayManager implements
             }
         }
         if (changes[this.selectedShipClassInputDefinition]) {
-            // detecting ship class name
-            if (!!this.shipClass) {
-                this.shipClassNameOutput = this.shipClass.name;
-            } else {
-                this.shipClassNameOutput = '';
-            }
-            // setting detected name
-            this.form.controls.scName.setValue(this.shipClassNameOutput);
-            // enable or disable input depending on if the name could be changed or is fixed
-            if (!!this.shipClass) {
-                this.form.controls.scName.disable();
-            } else {
-                this.form.controls.scName.enable();
-            }
             this.setShipClass(this.shipClass)
         }
     }

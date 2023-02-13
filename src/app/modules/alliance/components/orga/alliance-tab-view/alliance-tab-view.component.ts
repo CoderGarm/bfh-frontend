@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Alliance, AllianceApiService, JWT} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({

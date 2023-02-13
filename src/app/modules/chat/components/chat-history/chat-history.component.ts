@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
 import {ChatApiService, ChatHistory, ChatMessage, UserJson} from "../../../../services/swagger";
 import {interval, Subscription} from "rxjs";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {take} from "rxjs/operators";
 
 @Component({

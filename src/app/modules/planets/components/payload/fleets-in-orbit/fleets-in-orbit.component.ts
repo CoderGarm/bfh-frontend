@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Fleet, JobApiService, Planet, PlanetApiService} from "../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 
 @Component({

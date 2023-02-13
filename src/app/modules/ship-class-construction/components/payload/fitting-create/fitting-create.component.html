@@ -1,16 +1,7 @@
-<app-resource-service [deposit]="resourceDeposit"
-                      [costs]="costs"></app-resource-service>
-
 <div class="fitting">
     <div class="flex-items-container">
-        <button mat-button
-                [disabled]="disabled"
-                (click)="deleteClass()"
-                class="ship-action-button">
-            Delete ship class
-        </button>
         <div [formGroup]="form" shipClassNamePatternValidator>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>Ship class</mat-label>
                 <input matInput formControlName="scName" autocomplete="off"
                        matTooltip="The class name should contain of between 3 and 30 characters.">
@@ -30,13 +21,16 @@
                         [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"
                         [selectedShipClassInput]="shipClass"></app-ship-class-svg>
 
+    <app-resource-display [deposit]="resourceDeposit"
+                          [costs]="costs"></app-resource-display>
+
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
         <app-construction-capacity-display [capacities]="capacities"></app-construction-capacity-display>
     </div>
 
-    <app-ship-class-fitting-selection [shipClassInput]="shipClass"
-                                      [shipClassNameInput]="shipClassNameOutput"
-                                      [designedShipClassInputEmitter]="designedShipClassOutputEmitter"
-                                      (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-selection>
+    <app-ship-class-fitting-create [shipClassInput]="shipClass"
+                                   [shipClassNameInput]="shipClassNameOutput"
+                                   [designedShipClassInputEmitter]="designedShipClassOutputEmitter"
+                                   (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-create>
 </div>

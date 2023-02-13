@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Output} from '@angular/core';
 import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
 import {MatTabChangeEvent} from "@angular/material/tabs";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
 import {ShipyardEventService} from "../../../shipyard-event.service";
 
@@ -25,14 +25,17 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
     resourceDeposit?: ResourceDeposit;
 
     constructor(private resourceApi: ResourcesApiService,
+                private change: ChangeDetectorRef,
                 private shipyardService: ShipyardEventService,
                 private resourceEmitter: ResourceEmitterService) {
         super();
-
     }
 
     ngAfterViewInit() {
-        let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => this.selectedShipClass = shipClass);
+        let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => {
+            this.selectedShipClass = shipClass;
+            this.change.detectChanges();
+        });
         this.subscriptions.push(sub);
 
         sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);

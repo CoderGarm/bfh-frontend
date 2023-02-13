@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Launcher, Missile} from "../../../services/swagger";
-import {WeaponHelper} from "../../../WeaponHelper";
+import {WeaponHelper} from "../../../services/helper/weapon.helper";
 
 @Component({
     selector: 'app-launcher-module-display',

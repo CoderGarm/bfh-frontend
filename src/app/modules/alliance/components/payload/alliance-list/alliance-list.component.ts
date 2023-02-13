@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {Alliance, AllianceApiService} from "../../../../../services/swagger";
 
 @Component({

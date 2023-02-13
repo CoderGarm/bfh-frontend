@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Forum, ForumApiService, ForumThread} from "../../../../services/swagger";
 import {MatPaginator} from "@angular/material/paginator";
-import {SubscriptionManager} from "../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../subscription.manager";
 import {ForumsNotificationService} from "../../forums-notification.service";
 
 @Component({

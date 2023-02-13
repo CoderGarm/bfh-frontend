@@ -8,10 +8,10 @@
     </mat-tab>
     <mat-tab label="{{ 'tab.shipyard.fitting.modify' | translate }}">
         <ng-template matTabContent>
-            <app-fitting-selection [selectedIndexInput]="selectionEmitter"
-                                   [resourceDeposit]="resourceDeposit"
-                                   (modifiedShipClassOutput)="passOutput($event)"
-                                   [shipClass]="selectedShipClass"></app-fitting-selection>
+            <app-fitting-modify [selectedIndexInput]="selectionEmitter"
+                                [resourceDeposit]="resourceDeposit"
+                                (modifiedShipClassOutput)="passOutput($event)"
+                                [shipClass]="selectedShipClass"></app-fitting-modify>
         </ng-template>
     </mat-tab>
 </mat-tab-group>

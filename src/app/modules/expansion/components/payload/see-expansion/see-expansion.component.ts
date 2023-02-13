@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {ColonizationApiService, MiningFactors, Orbit, Planet, ResourcesApiService, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
-import {SubscriptionManager} from "../../../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import {MatTableDataSource} from "@angular/material/table";
 import {OrganizeExpansionComponent} from "../organize-expansion/organize-expansion.component";
 import {MatCheckboxChange} from "@angular/material/checkbox";

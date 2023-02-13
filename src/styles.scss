@@ -176,6 +176,10 @@ body {
   visibility: hidden;
 }
 
+.display-none {
+  display: none;
+}
+
 .height-fit-content-forced {
   height: -moz-fit-content !important;
   height: fit-content !important;
@@ -247,10 +251,6 @@ body {
   width: $page-width;
 }
 
-app-outlined {
-  margin: 15px;
-}
-
 app-tech-tree-display {
   width: fit-content;
   width: -moz-fit-content;
@@ -279,4 +279,8 @@ app-shipyard > .ship-class-card > mat-card-header {
   & .mdc-list-item__primary-text {
     white-space: pre-wrap;
   }
+}
+
+.mat-step-header .mat-step-icon {
+  background-color: $primary-color;
 }

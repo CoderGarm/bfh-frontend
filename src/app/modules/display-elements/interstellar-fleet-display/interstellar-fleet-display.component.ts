@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
 import {Fleet} from "../../../services/swagger";
-import {SubscriptionManager} from "../../../SubscriptionManager";
+import {SubscriptionManager} from "../../../subscription.manager";
 
 @Component({
     selector: 'app-interstellar-fleet-display',

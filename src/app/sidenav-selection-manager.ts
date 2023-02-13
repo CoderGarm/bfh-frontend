@@ -1,5 +1,5 @@
 import {Component, Inject} from "@angular/core";
-import {SubscriptionManager} from "./SubscriptionManager";
+import {SubscriptionManager} from "./subscription.manager";
 import {Route} from "@angular/router";
 import {AppInjector} from "./app.module";
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
