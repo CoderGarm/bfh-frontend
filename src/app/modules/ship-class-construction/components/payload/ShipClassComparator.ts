@@ -1,4 +1,4 @@
-import {Launcher, ShipClass, Weapon} from "../../../../services/swagger";
+import {Launcher, ShipClassMock, Weapon} from "../../../../services/swagger";
 
 export class ShipClassComparator {
 
@@ -7,11 +7,11 @@ export class ShipClassComparator {
      * @param o1
      * @param o2
      */
-    public static equals(o1: ShipClass, o2: ShipClass): boolean {
+    public static equals(o1: ShipClassMock, o2: ShipClassMock): boolean {
 
         if (o1 === o2) return true
 
-        if (o1.hull.idHull != o2.hull.idHull) return false;
+        if (o1.hull?.idHull != o2.hull?.idHull) return false;
         if (o1.propulsion != null && o2.propulsion != null ? o1.propulsion.baseModule.idModule != o2.propulsion.baseModule.idModule : o2.propulsion != null) return false;
         if (o1.armor != null && o2.armor != null ? o1.armor.baseModule.idModule != o2.armor.baseModule.idModule : o2.armor != null) return false;
         if (o1.sidewall != null && o2.sidewall != null ? o1.sidewall.baseModule.idModule != o2.sidewall.baseModule.idModule : o2.sidewall != null) return false;
@@ -33,7 +33,7 @@ export class ShipClassComparator {
      * @param o2
      * @private
      */
-    private static equalSupportFittings(o1: ShipClass, o2: ShipClass): boolean {
+    private static equalSupportFittings(o1: ShipClassMock, o2: ShipClassMock): boolean {
         const o1Fittings: Map<number, number> = this.getSupportFittings(o1);
         const o2Fittings: Map<number, number> = this.getSupportFittings(o2);
         let result: boolean = true;
@@ -57,7 +57,7 @@ export class ShipClassComparator {
      * @param shipClass
      * @private
      */
-    private static getSupportFittings(shipClass: ShipClass): Map<number, number> {
+    private static getSupportFittings(shipClass: ShipClassMock): Map<number, number> {
         const fittings: Map<number, number> = new Map<number, number>();
         shipClass.supportFittings.map(af => {
             let idModule = af.passiveModule.baseModule.idModule;
@@ -78,7 +78,7 @@ export class ShipClassComparator {
      * @param o2
      * @private
      */
-    private static equalAmmunitionFittings(o1: ShipClass, o2: ShipClass): boolean {
+    private static equalAmmunitionFittings(o1: ShipClassMock, o2: ShipClassMock): boolean {
         const o1Fittings: Map<number, number> = this.getAmmunitionFittings(o1);
         const o2Fittings: Map<number, number> = this.getAmmunitionFittings(o2);
         let result: boolean = true;
@@ -102,7 +102,7 @@ export class ShipClassComparator {
      * @param shipClass
      * @private
      */
-    private static getAmmunitionFittings(shipClass: ShipClass): Map<number, number> {
+    private static getAmmunitionFittings(shipClass: ShipClassMock): Map<number, number> {
         const fittings: Map<number, number> = new Map<number, number>();
         shipClass.ammunitionFittings.map(af => {
             let idModule = af.ammunitionModule.baseModule.idModule;
@@ -123,7 +123,7 @@ export class ShipClassComparator {
      * @param o2
      * @private
      */
-    private static equalFittings(o1: ShipClass, o2: ShipClass): boolean {
+    private static equalFittings(o1: ShipClassMock, o2: ShipClassMock): boolean {
         const o1Fittings: Map<number, number> = this.getFittings(o1);
         const o2Fittings: Map<number, number> = this.getFittings(o2);
         let result: boolean = true;
@@ -147,7 +147,7 @@ export class ShipClassComparator {
      * @param shipClass
      * @private
      */
-    private static getFittings(shipClass: ShipClass): Map<number, number> {
+    private static getFittings(shipClass: ShipClassMock): Map<number, number> {
         const fittings: Map<number, number> = new Map<number, number>();
         shipClass.fittings.map(af => {
             let weapon: Weapon | Launcher | undefined = af.weapon || af.launcher;

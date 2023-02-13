@@ -1,20 +1,22 @@
 <div mat-subheader>{{ 'shipyard.constructions.capacity.title' | translate }}</div>
-<mat-list *ngFor="let cap of capacities?.capacityValues" class="cc-list">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 120" [ngClass]="cap.capacityArea" matTooltip="{{cap.capacityArea}}">
-        <g class="bow">
-            <polygon points="500,20 550,30 550,15 590,15 650,35 650,55 500,55 500,20"></polygon>
-            <polygon points="650,65 650,85 590,105 550,105 550,90 500,100 500,65"></polygon>
-        </g>
+<div class="flex-items-container">
+    <div *ngFor="let cap of capacities?.capacityValues">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 120" [ngClass]="cap.capacityArea" matTooltip="{{cap.capacityArea}}">
+            <g class="bow">
+                <polygon points="500,20 550,30 550,15 590,15 650,35 650,55 500,55 500,20"></polygon>
+                <polygon points="650,65 650,85 590,105 550,105 550,90 500,100 500,65"></polygon>
+            </g>
 
-        <g class="broadside">
-            <polygon points="350,20 500,20 500,55 200,55 200,20 350,20"></polygon>
-            <polygon points="500,100 500,65 200,65 200,100 500,100"></polygon>
-        </g>
+            <g class="broadside">
+                <polygon points="350,20 500,20 500,55 200,55 200,20 350,20"></polygon>
+                <polygon points="500,100 500,65 200,65 200,100 500,100"></polygon>
+            </g>
 
-        <g class="stern">
-            <polygon points="50,55 50,35 110,15 150,15 150,30 200,20 200,55 50,55"></polygon>
-            <polygon points="200,65 200,100 150,90 150,105 110,105 50,85 50,65 200,65"></polygon>
-        </g>
-    </svg>
-    <div mat-line>{{cap.usedCapacity | numberThousandSeparator }} / {{cap.capacity | numberThousandSeparator }}</div>
-</mat-list>
+            <g class="stern">
+                <polygon points="50,55 50,35 110,15 150,15 150,30 200,20 200,55 50,55"></polygon>
+                <polygon points="200,65 200,100 150,90 150,105 110,105 50,85 50,65 200,65"></polygon>
+            </g>
+        </svg>
+        <div mat-line>{{cap.usedCapacity | numberThousandSeparator }} / {{cap.capacity | numberThousandSeparator }}</div>
+    </div>
+</div>

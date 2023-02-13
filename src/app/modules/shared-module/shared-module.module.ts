@@ -24,12 +24,16 @@ import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
 import {MarkdownEditorComponent} from './components/markdown-editor/markdown-editor.component';
 import {OutlinedComponent} from './components/outlined/outlined.component';
 import {ChipSelectorComponent} from "./components/chip-selector/chip-selector.component";
+import {DistancePipe} from "../../services/pipes/distance.pipe";
+import {TechLevelPipe} from "../../services/pipes/tech-level.pipe";
 
 @NgModule({
     declarations: [
         NumericCounterComponent,
         NumberShortComponent,
         NumberShortPipe,
+        DistancePipe,
+        TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
         OutlinedComponent,
@@ -69,6 +73,8 @@ import {ChipSelectorComponent} from "./components/chip-selector/chip-selector.co
         OverlayModule,
         TranslateModule,
         NumberShortPipe,
+        DistancePipe,
+        TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
         OutlinedComponent,

@@ -1,15 +1,17 @@
-import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Output} from '@angular/core';
 import {
     AlignedFitting,
     AmmunitionFitting,
     AmmunitionModule,
     Armor,
+    BaseModule,
     ElectronicWarfare,
+    EnumValueDto,
     Hull,
     Launcher,
     PassiveModule,
     Propulsion,
-    ShipClass,
+    ShipClassMock,
     Sidewall,
     SupportFitting,
     Weapon
@@ -20,38 +22,28 @@ import {ModuleService} from "../../../services/prefetch/module.service";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {ChipSelectorValue, ChipSelectorValueResult} from "../../shared-module/components/chip-selector/chip-selector.component";
 import {FittingHelper} from "../../../services/helper/fitting.helper";
+import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
+import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
+import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
 
 @Component({
     selector: 'app-ship-class-fitting-create',
     templateUrl: './ship-class-fitting-create.component.html',
     styleUrls: ['./ship-class-fitting-create.component.scss']
 })
-export class ShipClassFittingCreateComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
-
-    /**w
-     * the ship class which should be displayed
-     */
-    @Input()
-    shipClassInput?: ShipClass;
-    shipClassInputDefinition: string = "shipClassInput";
+export class ShipClassFittingCreateComponent extends SubscriptionManager implements AfterViewInit {
 
     /**
      * emits the least changes in the given ship class
      */
-    @Input()
-    designedShipClassInputEmitter?: EventEmitter<ShipClass>;
+    @Output()
+    shipClassMockEmitter: EventEmitter<ShipClassMock> = new EventEmitter<ShipClassMock>();
 
     /**
      * emits the least changes in the given ship class
      */
     @Output()
     weaponsAmountByAlignmentOutput: EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>> = new EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>>();
-
-    /**
-     * the displayed ship class name
-     */
-    @Input()
-    shipClassNameInput?: string;
 
     /**
      * the modules to select from
@@ -76,15 +68,24 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
      * the single selection items
      */
     hullSelection?: Hull;
+    hoveredPropulsion?: Propulsion;
     propulsionSelection?: Propulsion;
+    hoveredArmor?: Armor;
     armorSelection?: Armor;
-    sidewallsSelection?: Sidewall;
+    hoveredSidewall?: Sidewall;
+    sidewallSelection?: Sidewall;
+    hoveredPassiveModule?: PassiveModule;
+    passiveModuleSelection?: PassiveModule;
+    hoveredEloka?: ElectronicWarfare;
     elokaSelection?: ElectronicWarfare;
 
     filteredWeapons: Weapon[] = [];
     filteredLaunchers: Launcher[] = [];
-    filteredMunitions: AmmunitionModule[] = [];
     filteredPassiveModules: PassiveModule[] = [];
+    /**
+     * currently not needed - will be useful if fleet trains are implemented
+     */
+    filteredAmmunition: AmmunitionModule[] = [];
 
     filteredArmors: Armor[] = [];
     filteredSidewalls: Sidewall[] = [];
@@ -93,6 +94,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     filteredHulls: Hull[] = [];
     eHullTypeChipValues: ChipSelectorValue[] = [];
     hoveredHull?: Hull;
+    hoveredWeapon?: Weapon | Launcher;
+    selectedWeapon?: Weapon | Launcher
 
     /**
      * the 'should I redraw the weapon slots' validation map to hold the already known values
@@ -100,10 +103,17 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
      */
     private validatorMap: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
 
+    capAreas: EAlignmentTypeEnum[] = [EAlignmentTypeEnum.CHASEALIGNMENT, EAlignmentTypeEnum.BATTLEALIGNMENT];
+
+    weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE]
+    selectedWeaponType: EWeaponTypeEnum = EWeaponTypeEnum.MISSILE;
+    selectedArc: EAlignmentTypeEnum = EAlignmentTypeEnum.BATTLEALIGNMENT;
+
+    private chips: ChipSelectorValueResult[] = [];
+
     constructor(private moduleApi: ModuleService,
                 private change: ChangeDetectorRef) {
         super();
-
     }
 
     ngAfterViewInit(): void {
@@ -136,126 +146,23 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.change.detectChanges();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.shipClassInputDefinition]) {
-            this.setShipClass();
+    filterDisplayedItems(chips?: ChipSelectorValueResult[]) {
+        if (!chips) {
+            chips = this.chips;
+        } else {
+            this.chips = chips;
         }
-    }
-
-    filterDisplayedItems(chips: ChipSelectorValueResult[]) {
         const selectedTypeNames: string[] = chips.filter(c => c.selected).map(c => c.chipValue);
 
-        this.launchers.filter(module => {
-            const typeName = module.baseModule.hullType.typeName;
+        this.passiveModules.filter(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredPassiveModules, this.supportSelection));
+        this.munitions.filter(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredAmmunition, this.ammoSelection));
+        this.launchers.filter(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredLaunchers, this.weaponsSelection));
+        this.weapons.filter(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredWeapons, this.weaponsSelection));
 
-            let id = FittingHelper.getWeaponSystemMapKey(module);
-            let moduleSelected: boolean = false;
-            this.weaponsSelection.forEach((value, key) => {
-                if (value > 0 && key.startsWith(id)) {
-                    moduleSelected = true;
-                }
-            });
-
-            const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-            if (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected) {
-                if (this.filteredLaunchers.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
-                    this.filteredLaunchers.push(module);
-                }
-            } else {
-                const indexOf = this.filteredLaunchers.indexOf(module);
-                if (indexOf != -1) {
-                    this.filteredLaunchers.splice(indexOf, 1);
-                }
-            }
-        });
-
-        this.weapons.filter(module => {
-            const typeName = module.baseModule.hullType.typeName;
-
-            let id = FittingHelper.getWeaponSystemMapKey(module);
-            let moduleSelected: boolean = false;
-            this.weaponsSelection.forEach((value, key) => {
-                if (value > 0 && key.startsWith(id)) {
-                    moduleSelected = true;
-                }
-            });
-
-            const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-            if (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected) {
-                if (this.filteredWeapons.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
-                    this.filteredWeapons.push(module);
-                }
-            } else {
-                const indexOf = this.filteredWeapons.indexOf(module);
-                if (indexOf != -1) {
-                    this.filteredWeapons.splice(indexOf, 1);
-                }
-            }
-        });
-
-        this.armors.filter(module => {
-            const typeName = module.baseModule.hullType.typeName;
-            const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-            const moduleSelected = !!this.armorSelection && this.armorSelection.baseModule.idModule === module.baseModule.idModule;
-            if (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected) {
-                if (this.filteredArmors.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
-                    this.filteredArmors.push(module);
-                }
-            } else {
-                const indexOf = this.filteredArmors.indexOf(module);
-                if (indexOf != -1) {
-                    this.filteredArmors.splice(indexOf, 1);
-                }
-            }
-        });
-
-        this.sidewalls.filter(module => {
-            const typeName = module.baseModule.hullType.typeName;
-            const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-            const moduleSelected = !!this.sidewallsSelection && this.sidewallsSelection.baseModule.idModule === module.baseModule.idModule;
-            if (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected) {
-                if (this.filteredSidewalls.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
-                    this.filteredSidewalls.push(module);
-                }
-            } else {
-                const indexOf = this.filteredSidewalls.indexOf(module);
-                if (indexOf != -1) {
-                    this.filteredSidewalls.splice(indexOf, 1);
-                }
-            }
-        });
-
-        this.eloka.filter(module => {
-            const typeName = module.baseModule.hullType.typeName;
-            const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-            const moduleSelected = !!this.elokaSelection && this.elokaSelection.baseModule.idModule === module.baseModule.idModule;
-            if (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected) {
-                if (this.filteredEloka.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
-                    this.filteredEloka.push(module);
-                }
-            } else {
-                const indexOf = this.filteredEloka.indexOf(module);
-                if (indexOf != -1) {
-                    this.filteredEloka.splice(indexOf, 1);
-                }
-            }
-        });
-
-        this.propulsions.filter(module => {
-            const typeName = module.baseModule.hullType.typeName;
-            const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-            const moduleSelected = !!this.propulsionSelection && this.propulsionSelection.baseModule.idModule === module.baseModule.idModule;
-            if (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected) {
-                if (this.filteredPropulsions.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
-                    this.filteredPropulsions.push(module);
-                }
-            } else {
-                const indexOf = this.filteredPropulsions.indexOf(module);
-                if (indexOf != -1) {
-                    this.filteredPropulsions.splice(indexOf, 1);
-                }
-            }
-        });
+        this.armors.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredArmors, this.armorSelection));
+        this.sidewalls.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredSidewalls, this.sidewallSelection));
+        this.eloka.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredEloka, this.elokaSelection));
+        this.propulsions.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredPropulsions, this.propulsionSelection));
 
         this.hulls.filter(hull => {
             const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === hull.hullType.typeName;
@@ -264,114 +171,98 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
                     this.filteredHulls.push(hull);
                 }
             } else {
-                const indexOf = this.filteredHulls.indexOf(hull);
-                if (indexOf != -1) {
-                    this.filteredHulls.splice(indexOf, 1);
-                }
+                this.removeIfPresent(this.filteredHulls, hull);
             }
         });
-        console.log(this.filteredHulls)
+        this.change.detectChanges();
     }
 
-    /**
-     * sets the ship class from the input to the view
-     * @private
-     */
-    private setShipClass() {
-        let shipClass = this.shipClassInput;
-        // clear the selection
-        this.clearAllFittings();
-        if (!!shipClass) {
-            this.chooseHull(shipClass.hull);
-            this.chooseArmor(shipClass.armor);
-            this.chooseEloka(shipClass.electronicWarfare);
-            this.choosePropulsion(shipClass.propulsion);
-            this.chooseSidewall(shipClass.sidewall);
+    private addOrRemoveMultiSelectionModule<MODULE extends Weapon | Launcher | PassiveModule | AmmunitionModule>(selectedTypeNames: string[],
+                                                                                                                 module: MODULE,
+                                                                                                                 elements: MODULE[],
+                                                                                                                 selected: Map<String, number>) {
+        const typeName = module.baseModule.hullType.typeName;
 
-            // set ammunition fittings
-            let ammunitionFittings = shipClass.ammunitionFittings;
-            ammunitionFittings.forEach(ammo => this.setAmmunitionModule(ammo.ammunitionModule, ammo.amount));
-            // set fittings
-            if (!!shipClass.fittings) {
-                let fittings = shipClass.fittings;
-
-                let weaponSelectionMap: Map<String, WeaponsSelection> = new Map<String, WeaponsSelection>();
-                fittings.forEach(fitting => {
-                    let weapon: Weapon | Launcher | undefined = fitting.weapon || fitting.launcher;
-                    if (!weapon) {
-                        return;
-                    }
-                    let weaponKey = FittingHelper.getWeaponSystemMapKey(weapon, undefined);
-                    let selection: WeaponsSelection | undefined = weaponSelectionMap.get(weaponKey);
-                    if (!selection) {
-                        let amountByAlignmentMap = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
-                        selection = {
-                            weapon: weapon,
-                            weaponAmountPerAlignment: amountByAlignmentMap!
-                        }
-                        weaponSelectionMap.set(weaponKey, selection);
-                    }
-                    let alignment = fitting.weaponAlignment as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-                    selection.weaponAmountPerAlignment.set(alignment, fitting.amount);
-
-                    if (!!ammunitionFittings && WeaponHelper.isLauncher(weapon)) {
-                        // match ammunition with weapons
-                        let ammoFittingForWeapon: AmmunitionFitting[] = ammunitionFittings
-                            .filter(ammo => {
-                                if (!!(<Launcher>weapon).ammunitionModule) {
-                                    return ammo.ammunitionModule.baseModule.idModule === (<Launcher>weapon).ammunitionModule.baseModule.idModule
-                                }
-                                return false;
-                            });
-                        // currently there is only one ammunition type present per weapon
-                        ammoFittingForWeapon.forEach(ammo => {
-                            if (!!selection) {
-                                selection.ammo = ammo.ammunitionModule;
-                                selection.ammoAmount = (!!selection.ammoAmount ? selection.ammoAmount : 0) + ammo.amount;
-                            }
-                        });
-                    }
-                });
-                weaponSelectionMap.forEach((weaponSelection, key) => this.chooseWeapon(weaponSelection));
-                // old code end
+        let selectedByFilter: boolean = true;
+        let id: string;
+        if ('supportType' in module) {
+            id = FittingHelper.getPassiveMapKey(module);
+        } else if ('missile' in module) {
+            id = FittingHelper.getAmmunitionMapKey(module);
+        } else {
+            id = FittingHelper.getWeaponSystemMapKey(module);
+            const weapon = <Weapon | Launcher>module;
+            if (this.selectedWeaponType != weapon.weaponType) {
+                selectedByFilter = false;
             }
-            if (!!shipClass.supportFittings) {
-                shipClass.supportFittings.forEach(fitting => {
-                    let passiveModule = fitting.passiveModule;
-                    let amount = fitting.amount;
-                    this.choosePassiveModule(amount, passiveModule);
-                });
+            if (!!this.selectedArc) {
+                const alignmentTypes = weapon.alignmentTypes;
+                switch (this.selectedArc) {
+                    case "CHASE_ALIGNMENT":
+                        if (!alignmentTypes.includes(EWeaponAlignmentEnum.BOW) || !alignmentTypes.includes(EWeaponAlignmentEnum.STERN)) {
+                            selectedByFilter = false;
+                        }
+                        break;
+                    case "BATTLE_ALIGNMENT":
+                        if (!alignmentTypes.includes(EWeaponAlignmentEnum.BROADSIDE)) {
+                            selectedByFilter = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-        this.createAndEmitDesignedShipClass();
+
+        let moduleSelected: boolean = false;
+        selected.forEach((value, key) => {
+            if (value > 0 && key.startsWith(id)) {
+                moduleSelected = true;
+            }
+        });
+
+        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
+        if (selectedByFilter && (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected)) {
+            if (elements.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
+                elements.push(module);
+            }
+        } else {
+            this.removeIfPresent(elements, module);
+        }
     }
 
-    private clearAllFittings() {
-        this.chooseHull(undefined);
-        this.chooseArmor(undefined);
-        this.chooseEloka(undefined);
-        this.choosePropulsion(undefined);
-        this.chooseSidewall(undefined);
-        this.ammoSelection.clear();
-        this.weaponsSelection.clear();
-        this.supportSelection.clear();
+    private addOrRemoveSingleSelectModule<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], module: MODULE, elements: MODULE[], selection: MODULE | undefined) {
+        if (this.isPushCandidate(selectedTypeNames, module, selection)) {
+            if (elements.filter(h => h.baseModule.hullType.typeName === module.baseModule.hullType.typeName).length == 0) {
+                elements.push(module);
+            }
+        } else {
+            this.removeIfPresent(elements, module);
+        }
     }
 
-    /**
-     * sets the user selected hull
-     * @param hull
-     */
+    private removeIfPresent<MODULE>(elements: MODULE[], module: MODULE) {
+        const indexOf = elements.indexOf(module);
+        if (indexOf != -1) {
+            elements.splice(indexOf, 1);
+        }
+    }
+
+    private isPushCandidate<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], candidate: MODULE, selection: MODULE | undefined) {
+        const baseModule: BaseModule = candidate.baseModule;
+        const typeName = baseModule.hullType.typeName;
+        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === baseModule.hullType.typeName;
+        const moduleSelected = !!selection && selection.baseModule.idModule === baseModule.idModule;
+        return selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected;
+    }
+
     chooseHull(hull?: Hull) {
         this.hullSelection = hull;
         this.hoverHull(hull);
         this.createAndEmitDesignedShipClass();
     }
 
-    /**
-     * sets the user selected weapon loadout
-     * @param loadout
-     */
-    chooseWeapon(loadout: WeaponsSelection) {
+    updateWeaponSelection(loadout: WeaponsSelection) {
         this.setWeaponModule(loadout);
         let hasAmmoModule = !!loadout.ammo;
         let hasAmmoAmount = !!loadout.ammoAmount;
@@ -389,57 +280,12 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.createAndEmitDesignedShipClass();
     }
 
-    /**
-     * sets the user selected armor
-     * @param armor
-     */
-    chooseArmor(armor?: Armor) {
-        this.armorSelection = armor;
-        this.createAndEmitDesignedShipClass();
-    }
-
-    /**
-     * * sets the user selected sidewall
-     * @param sidewall
-     */
-    chooseSidewall(sidewall?: Sidewall) {
-        this.sidewallsSelection = sidewall;
-        this.createAndEmitDesignedShipClass();
-    }
-
-    /**
-     * * sets the user selected prop
-     * @param propulsion
-     */
-    choosePropulsion(propulsion?: Propulsion) {
-        this.propulsionSelection = propulsion;
-        this.createAndEmitDesignedShipClass();
-    }
-
-    /**
-     * sets the user selected eloka loadout
-     * @param eloka
-     */
-    chooseEloka(eloka?: ElectronicWarfare) {
-        this.elokaSelection = eloka;
-        this.createAndEmitDesignedShipClass();
-    }
-
-    /**
-     * sets the user selected passive loadout
-     * @param amount
-     * @param passive
-     */
     choosePassiveModule(amount: number, passive: PassiveModule) {
         this.setPassiveModule(passive, amount);
         this.createAndEmitDesignedShipClass();
     }
 
-    /**
-     * returns the weapon selection for the given weapon
-     * @param weapon
-     */
-    getWeaponSelection(weapon: Weapon | Launcher): WeaponsSelection | undefined {
+    getWeaponSelection(weapon?: Weapon | Launcher): WeaponsSelection | undefined {
         let ammoAmount: number = 0;
         let w: WeaponsSelection | undefined;
         if (!!weapon) {
@@ -464,11 +310,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return undefined;
     }
 
-    /**
-     * returns the positioning for the weapon system
-     * @param weapon
-     * @private
-     */
     private getWeaponModuleAmount(weapon: Weapon | Launcher): Map<AlignedFitting.WeaponAlignmentEnum, number> {
         let map = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
         weapon.alignmentTypes.forEach(key => {
@@ -483,11 +324,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return map;
     }
 
-    /**
-     * checks if the weapon loadout has changed and must be redrawn
-     * @param newData
-     * @private
-     */
     private checkIfChanged(newData: Map<AlignedFitting.WeaponAlignmentEnum, number>): boolean {
         let result: boolean = false;
         Object.keys(AlignedFitting.WeaponAlignmentEnum).forEach(key => {
@@ -510,11 +346,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return result;
     }
 
-    /**
-     * sets the weapon selection to the data structure
-     * @param weapon
-     * @private
-     */
     private setWeaponModule(weapon: WeaponsSelection) {
         let event: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
         weapon.weapon.alignmentTypes.forEach(key => {
@@ -561,22 +392,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         }
     }
 
-    /**
-     * creates the output data
-     * @private
-     */
-    private createAndEmitDesignedShipClass() {
-
-        if (!this.hullSelection || !this.shipClassNameInput || !this.propulsionSelection) {
-            if (!!this.designedShipClassInputEmitter) {
-                this.designedShipClassInputEmitter.emit(undefined);
-            }
-            return;
-        }
-
-        let userID = this.tokenStorage.getUserID();
-        let role = this.tokenStorage.getRole();
-        let username = this.tokenStorage.getLogin();
+    createAndEmitDesignedShipClass() {
 
         // maps weapons to the output
         const weapons: AlignedFitting[] = [];
@@ -637,56 +453,24 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             }
         });
 
-        let output: ShipClass = {
-            idShipClass: !!this.shipClassInput ? this.shipClassInput.idShipClass : undefined,
-            hull: this.hullSelection!,
+        let output: ShipClassMock = {
+            hull: this.hullSelection,
             fittings: weapons,
             ammunitionFittings: ammo,
             supportFittings: passives,
             armor: this.armorSelection,
             electronicWarfare: this.elokaSelection,
             propulsion: this.propulsionSelection,
-            sidewall: this.sidewallsSelection,
-            idPredecessor: !!this.shipClassInput ? this.shipClassInput.idShipClass : undefined,
-            idSuccessor: undefined,
-            mark: !!this.shipClassInput ? this.shipClassInput.mark : 1,
-            name: this.shipClassNameInput!,
-            owner: {
-                idUser: userID,
-                role: role,
-                username: username
-            },
-            shipClassCapabilities: {
-                capabilities: []
-            },
-            spacecraftCapacityAreas: {
-                capacityValues: []
-            },
-            ammunitionState: {
-                shotsPerMissile: []
-            }
+            sidewall: this.sidewallSelection
         };
-        if (!!this.designedShipClassInputEmitter) {
-            this.designedShipClassInputEmitter.emit(output);
-        }
+        this.shipClassMockEmitter.emit(output);
     }
 
-    /**
-     * sets the ammunition module to the data structure
-     * @param ammunitionModule
-     * @param amount
-     * @private
-     */
     private setAmmunitionModule(ammunitionModule: AmmunitionModule, amount: number) {
         let id: string = FittingHelper.getAmmunitionMapKey(ammunitionModule);
         this.ammoSelection.set(id, amount);
     }
 
-    /**
-     * returns the amount of the ammo module
-     * @param ammunitionModule
-     * @private
-     */
     private getAmmunitionModuleAmount(ammunitionModule: AmmunitionModule): number {
         let id: string = FittingHelper.getAmmunitionMapKey(ammunitionModule);
         let amount = this.ammoSelection.get(id);
@@ -696,21 +480,11 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return amount;
     }
 
-    /**
-     * sets the passive module to the data structure
-     * @param passive
-     * @param amount
-     * @private
-     */
     private setPassiveModule(passive: PassiveModule, amount: number) {
         let id: string = FittingHelper.getPassiveMapKey(passive);
         this.supportSelection.set(id, amount);
     }
 
-    /**
-     * returns the amount of passive modules
-     * @param passive
-     */
     getPassiveModuleAmount(passive: PassiveModule): number {
         let id: string = FittingHelper.getPassiveMapKey(passive);
         let amount = this.supportSelection.get(id);
@@ -727,8 +501,35 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         }
     }
 
-    isSelected(hull: Hull) {
+    isFiltered(element: Hull) {
         // workaround to hide options because on adding options to the list the selected element will be the last in the list -> the new one
-        return this.filteredHulls.filter(fh => fh.hullType.typeName === hull.hullType.typeName).length > 0;
+        return this.filteredHulls.filter(fh => fh.hullType.typeName === element.hullType.typeName).length > 0;
+    }
+
+    selectWeaponType(type: EWeaponTypeEnum) {
+        this.selectedWeaponType = type;
+        this.filterDisplayedItems();
+    }
+
+    selectFiringArc(arc: EAlignmentTypeEnum) {
+        this.selectedArc = arc;
+        this.filterDisplayedItems();
+    }
+
+    chooseWeapon(weapon?: Weapon | Launcher) {
+        this.selectedWeapon = weapon;
+        this.hoverWeapon(weapon);
+    }
+
+    hoverWeapon(weapon?: Weapon | Launcher) {
+        this.hoveredWeapon = weapon;
+        if (!weapon && !!this.selectedWeapon) {
+            this.hoveredWeapon = this.selectedWeapon;
+        }
+    }
+
+    isFilteredModule<MODULE extends { baseModule: BaseModule }>(module: MODULE, filteredModules: MODULE[]) {
+        // workaround to hide options because on adding options to the list the selected element will be the last in the list -> the new one
+        return filteredModules.filter(fh => fh.baseModule.idModule === module.baseModule.idModule).length > 0;
     }
 }

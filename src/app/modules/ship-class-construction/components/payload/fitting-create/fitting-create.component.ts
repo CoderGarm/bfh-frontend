@@ -1,10 +1,11 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {
     AlignedFitting,
     ResourceDeposit,
     ResourcesApiService,
     ShipClass,
+    ShipClassMock,
     ShipyardApiService,
     SpacecraftCapabilities,
     SpacecraftCapacityAreas
@@ -13,49 +14,19 @@ import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipN
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {ShipClassComparator} from "../ShipClassComparator";
 import {ShipClassTabViewComponent} from "../../orga/ship-class-tab-view/ship-class-tab-view.component";
+import {ShipyardEventService} from "../../../shipyard-event.service";
+import {TypeService} from "../../../../../services/type.service";
 
 @Component({
     selector: 'app-fitting-create',
     templateUrl: './fitting-create.component.html',
     styleUrls: ['./fitting-create.component.scss']
 })
-export class FittingCreateComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class FittingCreateComponent extends SubscriptionManager implements AfterViewInit {
 
     static path: string = ShipClassTabViewComponent.path + '/create';
 
-    /**
-     * The user selected ShipClass.
-     */
-    @Input()
-    shipClass?: ShipClass;
-    selectedShipClassInputDefinition: string = "shipClass";
-
-    /**
-     * listens to the parents event which tab is selected
-     */
-    @Input()
-    selectedIndexInput?: EventEmitter<number>;
-    selectedIndexInputDefinition: string = "selectedIndexInput";
-
-    /**
-     * emits an event if this component was selected in the parent's tab group and was rendered
-     */
-    @Output()
-    isSelectedOutput: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-    @Input()
     resourceDeposit?: ResourceDeposit;
-
-    /**
-     * the css selector which should be used to create the svg div in the svg component
-     */
-    svgSelector: string = "ship-class-fitting-selection";
-
-    /**
-     * the displayed ship class name
-     */
-    @Output()
-    shipClassNameOutput?: string;
 
     /**
      * forwards the weapon alignments by amount to the svg component
@@ -63,24 +34,12 @@ export class FittingCreateComponent extends SubscriptionManager implements After
     @Output()
     weaponsAmountByAlignmentOutput: EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>> = new EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>>();
 
-    /**
-     * if the ship class which was created by the user is valid, it will appear here
-     */
-    @Output()
-    designedShipClassOutputEmitter: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
-
-    designedShipClassInput?: ShipClass;
+    designedShipClassInput?: ShipClassMock;
 
     /**
      * the state of the store-button
      */
     disabled: boolean = true;
-
-    /**
-     * the event emitter that communicates the successful creation of a new class
-     */
-    @Output()
-    modifiedShipClassOutput: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
 
     /**
      * all possible errors to display
@@ -91,63 +50,44 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      * the form group which defines the name field
      */
     form: UntypedFormGroup = new UntypedFormGroup({
-        scName: new UntypedFormControl({value: '', disabled: !!this.shipClass})
+        scName: new UntypedFormControl()
     });
 
     costs?: ResourceDeposit;
 
-    compareClass?: ShipClass;
-    capabilities?: SpacecraftCapabilities;
-    capacities?: SpacecraftCapacityAreas;
+    compareClass?: ShipClassMock;
+    capabilities: SpacecraftCapabilities;
+    defaultCapabilities: SpacecraftCapabilities = {capabilities: []};
+    capacities: SpacecraftCapacityAreas;
+    defaultCapacities: SpacecraftCapacityAreas = {
+        capacityValues: [
+            {capacity: 0, usedCapacity: 0, capacityArea: "OVERALL"},
+            {capacity: 0, usedCapacity: 0, capacityArea: "STERN"},
+            {capacity: 0, usedCapacity: 0, capacityArea: "BROADSIDE"},
+            {capacity: 0, usedCapacity: 0, capacityArea: "BOW"},
+            {capacity: 0, usedCapacity: 0, capacityArea: "MODULE"},
+        ]
+    };
 
     constructor(private shipYardApi: ShipyardApiService,
+                private shipyardService: ShipyardEventService,
+                private typeService: TypeService,
                 private resourceApi: ResourcesApiService) {
         super();
+
+        const eModuleTypes = this.typeService.eModuleTypes;
+        eModuleTypes.forEach(eModuleTypes => this.defaultCapabilities.capabilities.push({value: 0, moduleType: eModuleTypes}));
+
+        this.capabilities = this.defaultCapabilities;
+        this.capacities = this.defaultCapacities;
     }
 
     ngAfterViewInit(): void {
-        let sub = this.form.controls.scName.valueChanges.subscribe(value => {
-            if (this.shipClassNameOutput != value) {
-                this.shipClassNameOutput = value;
-            }
-        });
+        // just the time-efficient way to provoke drawing the hull outlines in the svg
+        this.weaponsAmountByAlignmentOutput.emit(undefined);
+
+        let sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
         this.subscriptions.push(sub);
-
-        sub = this.designedShipClassOutputEmitter.subscribe(event => {
-            this.designedShipClassInput = event;
-            this.setShipClass(this.designedShipClassInput)
-        });
-        this.subscriptions.push(sub!);
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.selectedIndexInputDefinition]) {
-            if (!!this.selectedIndexInput) {
-                let sub = this.selectedIndexInput.subscribe(event => {
-                    if (event == 1) {
-                        this.isSelectedOutput.emit(true);
-                    }
-                });
-                this.subscriptions.push(sub);
-            }
-        }
-        if (changes[this.selectedShipClassInputDefinition]) {
-            // detecting ship class name
-            if (!!this.shipClass) {
-                this.shipClassNameOutput = this.shipClass.name;
-            } else {
-                this.shipClassNameOutput = '';
-            }
-            // setting detected name
-            this.form.controls.scName.setValue(this.shipClassNameOutput);
-            // enable or disable input depending on if the name could be changed or is fixed
-            if (!!this.shipClass) {
-                this.form.controls.scName.disable();
-            } else {
-                this.form.controls.scName.enable();
-            }
-            this.setShipClass(this.shipClass)
-        }
     }
 
     /**
@@ -163,8 +103,38 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      */
     storeClass() {
         if (!!this.designedShipClassInput) {
-            let sub = this.shipYardApi.setShipClass(this.designedShipClassInput)
-                .subscribe(resp => this.modifiedShipClassOutput.emit(resp));
+            let userID = this.tokenStorage.getUserID();
+            let role = this.tokenStorage.getRole();
+            let username = this.tokenStorage.getLogin();
+            let output: ShipClass = {
+                hull: this.designedShipClassInput.hull!,
+                fittings: this.designedShipClassInput.fittings,
+                ammunitionFittings: this.designedShipClassInput.ammunitionFittings,
+                supportFittings: this.designedShipClassInput.supportFittings,
+                armor: this.designedShipClassInput.armor,
+                electronicWarfare: this.designedShipClassInput.electronicWarfare,
+                propulsion: this.designedShipClassInput.propulsion,
+                sidewall: this.designedShipClassInput.sidewall,
+                mark: 1,
+                name: this.form.controls.scName.value,
+                owner: {
+                    idUser: userID,
+                    role: role,
+                    username: username
+                },
+                shipClassCapabilities: {
+                    capabilities: []
+                },
+                spacecraftCapacityAreas: {
+                    capacityValues: []
+                },
+                ammunitionState: {
+                    shotsPerMissile: []
+                }
+            };
+
+            let sub = this.shipYardApi.setShipClass(output)
+                .subscribe(resp => this.shipyardService.modifyShipClass(resp));
             this.subscriptions.push(sub);
         }
     }
@@ -173,7 +143,7 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      * sets the ship class and defines the state of the store-button
      * @param shipClass
      */
-    setShipClass(shipClass?: ShipClass) {
+    setShipClass(shipClass?: ShipClassMock) {
         this.designedShipClassInput = shipClass;
         if (this.disabled != !this.designedShipClassInput) {
             setTimeout(() => {
@@ -198,8 +168,8 @@ export class FittingCreateComponent extends SubscriptionManager implements After
             this.subscriptions.push(sub);
         } else if (!this.designedShipClassInput) {
             this.costs = undefined;
-            this.capabilities = undefined;
-            this.capacities = undefined;
+            this.capabilities = this.defaultCapabilities;
+            this.capacities = this.defaultCapacities;
             this.compareClass = undefined;
         }
     }

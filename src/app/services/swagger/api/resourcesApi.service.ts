@@ -24,7 +24,7 @@ import { MiningFactors } from '../model/miningFactors';
 import { PlannedConstruction } from '../model/plannedConstruction';
 import { ResourceDeposit } from '../model/resourceDeposit';
 import { ResourceTransfer } from '../model/resourceTransfer';
-import { ShipClass } from '../model/shipClass';
+import { ShipClassMock } from '../model/shipClassMock';
 import { ShipyardConstructionSelection } from '../model/shipyardConstructionSelection';
 import { SpacecraftCapabilities } from '../model/spacecraftCapabilities';
 import { SpacecraftCapacityAreas } from '../model/spacecraftCapacityAreas';
@@ -610,10 +610,10 @@ export class ResourcesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipClassCapabilities(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapabilities>;
-    public getShipClassCapabilities(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapabilities>>;
-    public getShipClassCapabilities(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapabilities>>;
-    public getShipClassCapabilities(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShipClassCapabilities(body: ShipClassMock, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapabilities>;
+    public getShipClassCapabilities(body: ShipClassMock, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapabilities>>;
+    public getShipClassCapabilities(body: ShipClassMock, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapabilities>>;
+    public getShipClassCapabilities(body: ShipClassMock, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling getShipClassCapabilities.');
@@ -658,10 +658,10 @@ export class ResourcesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipClassCapacities(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapacityAreas>;
-    public getShipClassCapacities(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapacityAreas>>;
-    public getShipClassCapacities(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapacityAreas>>;
-    public getShipClassCapacities(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShipClassCapacities(body: ShipClassMock, observe?: 'body', reportProgress?: boolean): Observable<SpacecraftCapacityAreas>;
+    public getShipClassCapacities(body: ShipClassMock, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SpacecraftCapacityAreas>>;
+    public getShipClassCapacities(body: ShipClassMock, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SpacecraftCapacityAreas>>;
+    public getShipClassCapacities(body: ShipClassMock, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling getShipClassCapacities.');
@@ -706,10 +706,10 @@ export class ResourcesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getShipClassCosts(body: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
-    public getShipClassCosts(body: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
-    public getShipClassCosts(body: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
-    public getShipClassCosts(body: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShipClassCosts(body: ShipClassMock, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipClassCosts(body: ShipClassMock, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipClassCosts(body: ShipClassMock, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipClassCosts(body: ShipClassMock, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling getShipClassCosts.');

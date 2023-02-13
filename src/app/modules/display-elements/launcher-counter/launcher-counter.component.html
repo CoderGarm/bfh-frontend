@@ -1,15 +1,6 @@
 <mat-accordion *ngIf="!!weapon">
     <mat-expansion-panel class="margin-bottom">
         <mat-expansion-panel-header>
-            <app-numeric-counter [disabled]="supportsAlignment('STERN')" [startAt]="getAmountByAlignment('STERN')"
-                                 caption='Stern'
-                                 [min]="min" [max]="max" (amount)="setAmount('STERN', $event)"></app-numeric-counter>
-            <app-numeric-counter [disabled]="supportsAlignment('BROADSIDE')" [startAt]="getAmountByAlignment('BROADSIDE')"
-                                 caption='Broadside'
-                                 [min]="min" [max]="max" (amount)="setAmount('BROADSIDE', $event)"></app-numeric-counter>
-            <app-numeric-counter [disabled]="supportsAlignment('BOW')" [startAt]="getAmountByAlignment('BOW')"
-                                 caption='Bow'
-                                 [min]="min" [max]="max" (amount)="setAmount('BOW', $event)"></app-numeric-counter>
             <mat-panel-title>
                 {{weapon.baseModule.name}}
                 <mat-icon *ngIf="!!ammunitionModule"
@@ -21,6 +12,17 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="flex-items-container">
+            <app-numeric-counter [disabled]="supportsAlignment('STERN')" [startAt]="getAmountByAlignment('STERN')"
+                                 caption='Stern'
+                                 [min]="min" [max]="max" (amount)="setAmount('STERN', $event)"></app-numeric-counter>
+            <app-numeric-counter [disabled]="supportsAlignment('BROADSIDE')" [startAt]="getAmountByAlignment('BROADSIDE')"
+                                 caption='Broadside'
+                                 [min]="min" [max]="max" (amount)="setAmount('BROADSIDE', $event)"></app-numeric-counter>
+            <app-numeric-counter [disabled]="supportsAlignment('BOW')" [startAt]="getAmountByAlignment('BOW')"
+                                 caption='Bow'
+                                 [min]="min" [max]="max" (amount)="setAmount('BOW', $event)"></app-numeric-counter>
+        </div>
+        <div class="flex-items-container" *ngIf="!!weapon">
             <mat-form-field appearance="fill" class="short-field">
                 <mat-label>Effect value</mat-label>
                 <input matInput disabled value="{{weapon.baseModule.effectValue}}">

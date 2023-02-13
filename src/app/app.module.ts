@@ -53,6 +53,8 @@ import {NestedSidenavComponent} from './components/nested-sidenav/nested-sidenav
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
 import {SidenavSelectionManager} from "./sidenav-selection-manager";
 import {ModuleService} from "./services/prefetch/module.service";
+import {DistancePipe} from "./services/pipes/distance.pipe";
+import {TechLevelPipe} from "./services/pipes/tech-level.pipe";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -131,6 +133,8 @@ export let AppInjector: Injector;
         BackgroundService,
         DatePipe,
         NumberShortPipe,
+        DistancePipe,
+        TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
         MarkdownService,

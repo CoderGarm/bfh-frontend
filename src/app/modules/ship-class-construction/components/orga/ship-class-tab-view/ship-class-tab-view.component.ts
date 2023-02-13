@@ -46,10 +46,6 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
         this.selectionEmitter.emit($event.index);
     }
 
-    passOutput(event: ShipClass) {
-        this.shipyardService.modifyShipClass(event);
-    }
-
     indexChanged(event: number) {
         this.resourceEmitter.clear();
     }

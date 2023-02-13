@@ -5,8 +5,8 @@ import {MatIcon} from "@angular/material/icon";
 
 export interface ChipSelectorValue {
     value: string;
-    trailingIcon?: string | MatIcon; /* todo not working */
-    leadingIcon?: string | MatIcon; /* todo not working */
+    trailingIcon?: string | MatIcon;
+    leadingIcon?: string | MatIcon;
 }
 
 export interface ChipSelectorValueResult {
@@ -61,8 +61,6 @@ export class ChipSelectorComponent implements AfterContentInit, OnChanges {
 
     chipControl: UntypedFormControl = new UntypedFormControl({});
 
-    private selection: string[] = [];
-
     constructor() {
         /* todo give me trailing icons*/
     }
@@ -111,9 +109,6 @@ export class ChipSelectorComponent implements AfterContentInit, OnChanges {
             this.chipList._chips.filter(chip => chip.selected).forEach(chip => {
                 chips.filter(c => c.chipValue === chip.value).forEach(c => c.selected = true);
             });
-
-            this.selection = chips.filter(c => c.selected).map(c => c.chipValue);
-
             this.chipValuesChange.emit(chips);
         }
     }

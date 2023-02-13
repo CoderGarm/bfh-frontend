@@ -12,6 +12,9 @@ export class FittingHelper {
         if (WeaponHelper.isLauncher(weapon)) {
             id = FittingHelper.getLauncherMapKey(<Launcher>weapon, alignment);
         }
+        if (id.length == 0) {
+            throw new Error("This is neither a weapon nor a launcher: " + JSON.stringify(weapon));
+        }
         return id;
     }
 

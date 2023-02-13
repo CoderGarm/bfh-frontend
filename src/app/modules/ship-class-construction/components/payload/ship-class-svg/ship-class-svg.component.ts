@@ -66,11 +66,6 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
     ngAfterViewInit(): void {
         this.createCanvas();
         this.createHullOutlines();
-
-    }
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     ngOnChanges(changes: SimpleChanges): void {

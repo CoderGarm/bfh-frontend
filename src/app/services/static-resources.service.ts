@@ -1,6 +1,7 @@
 import {EDepositType, EEducationType, EnumValueDto} from "./swagger";
 
 
+
 export class StaticResourcesService {
 
     /**

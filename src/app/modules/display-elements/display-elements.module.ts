@@ -52,6 +52,9 @@ import {AmmunitionRosterComponent} from './ammunition-roster/ammunition-roster.c
 import {MilitaryPeopleComponent} from './military-people/military-people.component';
 import {CommissionedOperationalsComponent} from './commissioned-operationals/commissioned-operationals.component';
 import {ShipClassFittingModifyComponent} from './ship-class-fitting-modify/ship-class-fitting-modify.component';
+import {WeaponDisplayComponent} from './weapon-display/weapon-display.component';
+import {WeaponPerAlignmentCounterComponent} from './weapon-per-alingment-counter/weapon-per-alignment-counter.component';
+import {ModuleDisplayComponent} from './module-display/module-display.component';
 
 @NgModule({
     declarations: [
@@ -106,6 +109,9 @@ import {ShipClassFittingModifyComponent} from './ship-class-fitting-modify/ship-
         MilitaryPeopleComponent,
         CommissionedOperationalsComponent,
         ShipClassFittingModifyComponent,
+        WeaponDisplayComponent,
+        WeaponPerAlignmentCounterComponent,
+        ModuleDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -164,6 +170,7 @@ import {ShipClassFittingModifyComponent} from './ship-class-fitting-modify/ship-
         MilitaryPeopleComponent,
         CommissionedOperationalsComponent,
         ShipClassFittingModifyComponent,
+        WeaponDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

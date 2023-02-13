@@ -19,7 +19,6 @@ export class HullDisplayComponent implements OnInit, OnChanges {
      */
     @Input()
     hullInput?: Hull;
-    private hullInputDefinition = "hullInput";
 
     constructor() {
     }

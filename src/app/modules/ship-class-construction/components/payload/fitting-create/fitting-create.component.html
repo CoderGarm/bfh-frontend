@@ -1,4 +1,4 @@
-<div class="fitting">
+<div class="fitting bottom-spacer">
     <div class="flex-items-container">
         <div [formGroup]="form" shipClassNamePatternValidator>
             <mat-form-field appearance="outline">
@@ -17,9 +17,8 @@
             Store ship class
         </button>
     </div>
-    <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
-                        [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"
-                        [selectedShipClassInput]="shipClass"></app-ship-class-svg>
+    <app-ship-class-svg svgSelector="ship-class-fitting-selection"
+                        [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"></app-ship-class-svg>
 
     <app-resource-display [deposit]="resourceDeposit"
                           [costs]="costs"></app-resource-display>
@@ -29,8 +28,6 @@
         <app-construction-capacity-display [capacities]="capacities"></app-construction-capacity-display>
     </div>
 
-    <app-ship-class-fitting-create [shipClassInput]="shipClass"
-                                   [shipClassNameInput]="shipClassNameOutput"
-                                   [designedShipClassInputEmitter]="designedShipClassOutputEmitter"
+    <app-ship-class-fitting-create (shipClassMockEmitter)="setShipClass($event)"
                                    (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-create>
 </div>

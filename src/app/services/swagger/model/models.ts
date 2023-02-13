@@ -83,6 +83,7 @@ export * from './resourceAmount';
 export * from './resourceDeposit';
 export * from './resourceTransfer';
 export * from './shipClass';
+export * from './shipClassMock';
 export * from './shipKillerHit';
 export * from './shipyardConstructionOrder';
 export * from './shipyardConstructionSelection';

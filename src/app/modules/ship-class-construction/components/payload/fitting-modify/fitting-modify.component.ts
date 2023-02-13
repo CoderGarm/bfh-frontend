@@ -10,6 +10,7 @@ import {
 } from "../../../../../services/swagger";
 import {ShipClassComparator} from "../ShipClassComparator";
 import {SubscriptionManager} from "../../../../../subscription.manager";
+import {ShipyardEventService} from "../../../shipyard-event.service";
 
 @Component({
     selector: 'app-fitting-modify',
@@ -65,12 +66,6 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      */
     disabled: boolean = true;
 
-    /**
-     * the event emitter that communicates the successful creation of a new class
-     */
-    @Output()
-    modifiedShipClassOutput: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
-
     costs?: ResourceDeposit;
 
     compareClass?: ShipClass;
@@ -78,6 +73,7 @@ export class FittingModifyComponent extends SubscriptionManager implements After
     capacities?: SpacecraftCapacityAreas;
 
     constructor(private shipYardApi: ShipyardApiService,
+                private shipyardService: ShipyardEventService,
                 private resourceApi: ResourcesApiService) {
         super();
     }
@@ -120,7 +116,7 @@ export class FittingModifyComponent extends SubscriptionManager implements After
     storeClass() {
         if (!!this.designedShipClassInput) {
             let sub = this.shipYardApi.setShipClass(this.designedShipClassInput)
-                .subscribe(resp => this.modifiedShipClassOutput.emit(resp));
+                .subscribe(resp => this.shipyardService.modifyShipClass(resp));
             this.subscriptions.push(sub);
         }
     }
@@ -150,9 +146,7 @@ export class FittingModifyComponent extends SubscriptionManager implements After
             if (!idShipClass) {
                 return;
             }
-            let sub = this.shipYardApi.deleteShipClass(idShipClass).subscribe(resp => {
-                this.modifiedShipClassOutput.emit(resp);
-            });
+            let sub = this.shipYardApi.deleteShipClass(idShipClass).subscribe(resp => this.shipyardService.modifyShipClass(resp));
             this.subscriptions.push(sub);
         }
     }
