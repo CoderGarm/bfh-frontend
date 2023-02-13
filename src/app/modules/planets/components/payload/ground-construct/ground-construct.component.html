@@ -26,7 +26,7 @@
                     *ngFor="let sequence of eRefinementSequences"
                     [value]="sequence.typeName"
                     (click)="filterDisplayedConstructions(); $event.stopPropagation();">
-                <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="sequence.typeName" fontIcon="precision_manufacturing"></mat-icon>
+                <img matChipTrailingIcon src="{{getLink(sequence.product)}}" alt="{{sequence.typeName}}">
                 {{sequence.typeName}}
             </mat-chip-option>
         </mat-chip-listbox>
@@ -39,7 +39,7 @@
                     *ngFor="let eResourceType of eResourceTypes"
                     [value]="eResourceType.typeName"
                     (click)="filterDisplayedConstructions(); $event.stopPropagation();">
-                <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="eResourceType.typeName" fontIcon="precision_manufacturing"></mat-icon>
+                <img matChipTrailingIcon src="{{getLink(eResourceType)}}" alt="{{eResourceType.typeName}}">
                 {{eResourceType.typeName}}
             </mat-chip-option>
         </mat-chip-listbox>

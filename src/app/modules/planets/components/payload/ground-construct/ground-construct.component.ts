@@ -386,15 +386,14 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
     /**
      * constructs and returns the url to the icon
      */
-    getLink(construction: Construction): string {
-        let folder = construction.building.productionTarget.folder;
-        let iconName = construction.building.productionTarget.iconName;
-        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
-    }
-
-    getLinkR(resourceType: EResourceType | EEducationType): string { // fixme unify with above
-        let folder = resourceType.folder;
-        let iconName = resourceType.iconName;
+    getLink(input: Construction | EResourceType | EEducationType): string {
+        if ('idConstruction' in input) {
+            let folder = input.building.productionTarget.folder;
+            let iconName = input.building.productionTarget.iconName;
+            return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+        }
+        let folder = input.folder;
+        let iconName = input.iconName;
         return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 

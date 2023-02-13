@@ -154,7 +154,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
 
         const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX) && c.id().endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX));
-        // fixme zoom it
+        // todo zoom it
     }
 
     private zoomFleetGroups() {

@@ -106,7 +106,7 @@ export class BattleViewHelper extends BasicViewHelper {
             let destroyedMissiles = hit.destroyedMissiles;
             let color = "orange";
 
-            let icon = this.missileSalvoPolygonsById.get(attackedMissileSalvo); // fixme set amount
+            let icon = this.missileSalvoPolygonsById.get(attackedMissileSalvo);
             if (!icon) {
                 return;
             }
@@ -404,7 +404,6 @@ export class BattleViewHelper extends BasicViewHelper {
                 let polygon = warShipGroup.polygon(hullElements)
                     .id(warshipID)
                     .fill(fleetSharkColor)
-                    //fixme work with zoom .stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK))
                     .click(this.clickForFleet)
                     .mouseover(this.mouseoverForWarship);
                 this.setWarshipPolygonById(warshipID, polygon);
