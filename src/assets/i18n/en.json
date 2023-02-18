@@ -40,6 +40,42 @@
       }
     }
   },
+  "enum": {
+    "abbrev": {
+      "alignmentType": {
+        "BATTLE_ALIGNMENT": "B ALIGN",
+        "CHASE_ALIGNMENT": "C ALIGN"
+      },
+      "weaponAlignment": {
+        "BOW": "Bow",
+        "BROADSIDE": "Broadside",
+        "STERN": "Stern"
+      },
+      "weaponType": {
+        "BEAM": "B",
+        "COUNTER_MISSILE": "CM",
+        "MISSILE": "M",
+        "POINT_DEFENSE": "PD"
+      }
+    },
+    "name": {
+      "alignmentType": {
+        "BATTLE_ALIGNMENT": "Battle alignment",
+        "CHASE_ALIGNMENT": "Chase alignment"
+      },
+      "weaponAlignment": {
+        "BOW": "Bow",
+        "BROADSIDE": "Broadside",
+        "STERN": "Stern"
+      },
+      "weaponType": {
+        "BEAM": "Beam",
+        "COUNTER_MISSILE": "Counter missile",
+        "MISSILE": "Missile",
+        "POINT_DEFENSE": "Point defense"
+      }
+    }
+  },
   "expansion": {
     "organize": {
       "spinner-message": {
@@ -278,7 +314,10 @@
       },
       "fleet-state": "Fleet state",
       "fleet-to-repair": "Fleet in dock",
-      "title": "Shipyard constructions"
+      "title": "Shipyard constructions",
+      "weapon-amount-by-alignment": {
+        "title": "Weaponary"
+      }
     },
     "create-new-class": "Create new class",
     "fitting": {
@@ -301,6 +340,7 @@
           "propulsion": "Select a propulsion."
         },
         "warship-needs": {
+          "ammunition": "If you are creating a warship don't forget the ammunition.",
           "armor": "If you are creating a warship don't forget the armor.",
           "eloka": "If you are creating a warship don't forget the electronic warfare.",
           "sidewall": "If you are creating a warship don't forget the sidewall.",

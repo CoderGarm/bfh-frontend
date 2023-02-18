@@ -55,6 +55,8 @@ import {ShipClassFittingModifyComponent} from './ship-class-fitting-modify/ship-
 import {WeaponDisplayComponent} from './weapon-display/weapon-display.component';
 import {WeaponPerAlignmentCounterComponent} from './weapon-per-alingment-counter/weapon-per-alignment-counter.component';
 import {ModuleDisplayComponent} from './module-display/module-display.component';
+import {WeaponsByTypeDisplayComponent} from './weapons-by-type-display/weapons-by-type-display.component';
+import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignment-display/weapon-amount-by-alignment-display.component';
 
 @NgModule({
     declarations: [
@@ -112,6 +114,8 @@ import {ModuleDisplayComponent} from './module-display/module-display.component'
         WeaponDisplayComponent,
         WeaponPerAlignmentCounterComponent,
         ModuleDisplayComponent,
+        WeaponsByTypeDisplayComponent,
+        WeaponAmountByAlignmentDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -171,6 +175,7 @@ import {ModuleDisplayComponent} from './module-display/module-display.component'
         CommissionedOperationalsComponent,
         ShipClassFittingModifyComponent,
         WeaponDisplayComponent,
+        WeaponAmountByAlignmentDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

@@ -11,6 +11,7 @@ import {
     Launcher,
     PassiveModule,
     Propulsion,
+    ShipClass,
     ShipClassMock,
     Sidewall,
     SupportFitting,
@@ -45,6 +46,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     @Output()
     weaponsAmountByAlignmentOutput: EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>> = new EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>>();
 
+    shipClassMock?: ShipClassMock;
+
     /**
      * the modules to select from
      */
@@ -78,6 +81,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     passiveModuleSelection?: PassiveModule;
     hoveredEloka?: ElectronicWarfare;
     elokaSelection?: ElectronicWarfare;
+    hoveredAmmunitionModule?: AmmunitionModule;
+    ammunitionModuleSelection?: AmmunitionModule;
 
     filteredWeapons: Weapon[] = [];
     filteredLaunchers: Launcher[] = [];
@@ -310,7 +315,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return undefined;
     }
 
-    private getWeaponModuleAmount(weapon: Weapon | Launcher): Map<AlignedFitting.WeaponAlignmentEnum, number> {
+    getWeaponModuleAmount(weapon: Weapon | Launcher): Map<AlignedFitting.WeaponAlignmentEnum, number> {
         let map = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
         weapon.alignmentTypes.forEach(key => {
             let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
@@ -324,7 +329,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return map;
     }
 
-    private checkIfChanged(newData: Map<AlignedFitting.WeaponAlignmentEnum, number>): boolean {
+    checkIfChanged(newData: Map<AlignedFitting.WeaponAlignmentEnum, number>): boolean {
         let result: boolean = false;
         Object.keys(AlignedFitting.WeaponAlignmentEnum).forEach(key => {
             let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
@@ -346,7 +351,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return result;
     }
 
-    private setWeaponModule(weapon: WeaponsSelection) {
+    setWeaponModule(weapon: WeaponsSelection) {
         let event: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
         weapon.weapon.alignmentTypes.forEach(key => {
             // set the current selection to data structure
@@ -394,8 +399,41 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     createAndEmitDesignedShipClass() {
 
-        // maps weapons to the output
         const weapons: AlignedFitting[] = [];
+        const ammo: AmmunitionFitting[] = [];
+        const passives: SupportFitting[] = [];
+
+        this.mapMultiModulesToFitting(weapons, ammo, passives);
+
+        let output: ShipClassMock = {
+            hull: this.hullSelection,
+            fittings: weapons,
+            ammunitionFittings: ammo,
+            supportFittings: passives,
+            armor: this.armorSelection,
+            electronicWarfare: this.elokaSelection,
+            propulsion: this.propulsionSelection,
+            sidewall: this.sidewallSelection
+        };
+        this.shipClassMock = output;
+        this.shipClassMockEmitter.emit(output);
+    }
+
+    getNeededAmmunitionModules(ship?: ShipClass | ShipClassMock): AmmunitionModule[] {
+        if (!ship) {
+            return [];
+        }
+        return ship.fittings.filter(f => !!f.launcher).map(f => f.launcher!.ammunitionModule);
+    }
+
+    getLauncherWithAmmunitionModule(ammunitionModule?: AmmunitionModule, ship?: ShipClass | ShipClassMock): number {
+        if (!ammunitionModule || !ship) {
+            return 0;
+        }
+        return ship.fittings.filter(f => !!f.launcher).filter(f => f.launcher!.ammunitionModule.baseModule.idModule === ammunitionModule.baseModule.idModule).length;
+    }
+
+    mapMultiModulesToFitting(weapons: AlignedFitting[], ammo: AmmunitionFitting[], passives: SupportFitting[]) {
         this.weapons.forEach(module => {
             let amountByAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number> = this.getWeaponModuleAmount(module);
             amountByAlignment.forEach((amount, key) => {
@@ -427,8 +465,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             });
         });
 
-        // maps the ammunition to the output
-        const ammo: AmmunitionFitting[] = [];
         this.munitions.forEach(module => {
             let amount = this.getAmmunitionModuleAmount(module);
             if (!!amount && amount > 0) {
@@ -440,8 +476,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             }
         });
 
-        // maps the supports to the output
-        const passives: SupportFitting[] = [];
         this.passiveModules.forEach(module => {
             let amount = this.getPassiveModuleAmount(module);
             if (!!amount && amount > 0) {
@@ -452,26 +486,19 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
                 passives.push(s);
             }
         });
-
-        let output: ShipClassMock = {
-            hull: this.hullSelection,
-            fittings: weapons,
-            ammunitionFittings: ammo,
-            supportFittings: passives,
-            armor: this.armorSelection,
-            electronicWarfare: this.elokaSelection,
-            propulsion: this.propulsionSelection,
-            sidewall: this.sidewallSelection
-        };
-        this.shipClassMockEmitter.emit(output);
     }
 
-    private setAmmunitionModule(ammunitionModule: AmmunitionModule, amount: number) {
-        let id: string = FittingHelper.getAmmunitionMapKey(ammunitionModule);
-        this.ammoSelection.set(id, amount);
+    setAmmunitionModule(ammunitionModule?: AmmunitionModule, amount?: number) {
+        if (!!ammunitionModule && !!amount) {
+            let id: string = FittingHelper.getAmmunitionMapKey(ammunitionModule);
+            this.ammoSelection.set(id, amount);
+        }
     }
 
-    private getAmmunitionModuleAmount(ammunitionModule: AmmunitionModule): number {
+    getAmmunitionModuleAmount(ammunitionModule?: AmmunitionModule): number {
+        if (!ammunitionModule) {
+            return 0;
+        }
         let id: string = FittingHelper.getAmmunitionMapKey(ammunitionModule);
         let amount = this.ammoSelection.get(id);
         if (!amount) {
@@ -480,7 +507,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return amount;
     }
 
-    private setPassiveModule(passive: PassiveModule, amount: number) {
+    setPassiveModule(passive: PassiveModule, amount: number) {
         let id: string = FittingHelper.getPassiveMapKey(passive);
         this.supportSelection.set(id, amount);
     }

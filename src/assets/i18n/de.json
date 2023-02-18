@@ -40,6 +40,42 @@
       }
     }
   },
+  "enum": {
+    "abbrev": {
+      "alignmentType": {
+        "BATTLE_ALIGNMENT": "Schlacht",
+        "CHASE_ALIGNMENT": "Jagd"
+      },
+      "weaponAlignment": {
+        "BOW": "Bug",
+        "BROADSIDE": "Breitseite",
+        "STERN": "Heck"
+      },
+      "weaponType": {
+        "BEAM": "DF",
+        "COUNTER_MISSILE": "AR",
+        "MISSILE": "R",
+        "POINT_DEFENSE": "NB"
+      }
+    },
+    "name": {
+      "alignmentType": {
+        "BATTLE_ALIGNMENT": "Schlachtbewaffnung",
+        "CHASE_ALIGNMENT": "Jagdbewaffnung"
+      },
+      "weaponAlignment": {
+        "BOW": "Bug",
+        "BROADSIDE": "Breitseite",
+        "STERN": "Heck"
+      },
+      "weaponType": {
+        "BEAM": "Direktfeuer",
+        "COUNTER_MISSILE": "Anti-Rakete",
+        "MISSILE": "Rakete",
+        "POINT_DEFENSE": "Nahbereichsverteidigung"
+      }
+    }
+  },
   "expansion": {
     "organize": {
       "spinner-message": {
@@ -278,7 +314,10 @@
       },
       "fleet-state": "Flottenstatus",
       "fleet-to-repair": "Flotte im Dock",
-      "title": "Schiffsbau"
+      "title": "Schiffsbau",
+      "weapon-amount-by-alignment": {
+        "title": "Bewaffnung"
+      }
     },
     "create-new-class": "Neue Klasse erzeugen",
     "fitting": {
@@ -301,6 +340,7 @@
           "propulsion": "Wähle einen Antrieb."
         },
         "warship-needs": {
+          "ammunition": "Vergiss nicht die Munition für ein Kriegsschiff.",
           "armor": "Vergiss nicht die Panzerung für ein Kriegsschiff.",
           "eloka": "Vergiss nicht die Eloka für ein Kriegsschiff.",
           "sidewall": "Vergiss nicht die Seitenschilde für ein Kriegsschiff.",

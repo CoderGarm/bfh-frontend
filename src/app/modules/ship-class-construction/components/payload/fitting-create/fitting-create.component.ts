@@ -34,7 +34,7 @@ export class FittingCreateComponent extends SubscriptionManager implements After
     @Output()
     weaponsAmountByAlignmentOutput: EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>> = new EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>>();
 
-    designedShipClassInput?: ShipClassMock;
+    shipClassMock?: ShipClassMock;
 
     /**
      * the state of the store-button
@@ -102,19 +102,19 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      * stores the designed class to the database
      */
     storeClass() {
-        if (!!this.designedShipClassInput) {
+        if (!!this.shipClassMock) {
             let userID = this.tokenStorage.getUserID();
             let role = this.tokenStorage.getRole();
             let username = this.tokenStorage.getLogin();
             let output: ShipClass = {
-                hull: this.designedShipClassInput.hull!,
-                fittings: this.designedShipClassInput.fittings,
-                ammunitionFittings: this.designedShipClassInput.ammunitionFittings,
-                supportFittings: this.designedShipClassInput.supportFittings,
-                armor: this.designedShipClassInput.armor,
-                electronicWarfare: this.designedShipClassInput.electronicWarfare,
-                propulsion: this.designedShipClassInput.propulsion,
-                sidewall: this.designedShipClassInput.sidewall,
+                hull: this.shipClassMock.hull!,
+                fittings: this.shipClassMock.fittings,
+                ammunitionFittings: this.shipClassMock.ammunitionFittings,
+                supportFittings: this.shipClassMock.supportFittings,
+                armor: this.shipClassMock.armor,
+                electronicWarfare: this.shipClassMock.electronicWarfare,
+                propulsion: this.shipClassMock.propulsion,
+                sidewall: this.shipClassMock.sidewall,
                 mark: 1,
                 name: this.form.controls.scName.value,
                 owner: {
@@ -144,29 +144,29 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      * @param shipClass
      */
     setShipClass(shipClass?: ShipClassMock) {
-        this.designedShipClassInput = shipClass;
-        if (this.disabled != !this.designedShipClassInput) {
+        this.shipClassMock = shipClass;
+        if (this.disabled != !this.shipClassMock) {
             setTimeout(() => {
-                this.disabled = !this.designedShipClassInput;
+                this.disabled = !this.shipClassMock;
             }, 100);
         }
         this.getCosts();
     }
 
     private getCosts() {
-        if (!!this.designedShipClassInput && this.isChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(this.designedShipClassInput)
+        if (!!this.shipClassMock && this.isChangePending()) {
+            let sub = this.resourceApi.getShipClassCosts(this.shipClassMock)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapabilities(this.designedShipClassInput)
+            sub = this.resourceApi.getShipClassCapabilities(this.shipClassMock)
                 .subscribe(resp => this.capabilities = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapacities(this.designedShipClassInput)
+            sub = this.resourceApi.getShipClassCapacities(this.shipClassMock)
                 .subscribe(resp => this.capacities = resp);
             this.subscriptions.push(sub);
-        } else if (!this.designedShipClassInput) {
+        } else if (!this.shipClassMock) {
             this.costs = undefined;
             this.capabilities = this.defaultCapabilities;
             this.capacities = this.defaultCapacities;
@@ -176,12 +176,12 @@ export class FittingCreateComponent extends SubscriptionManager implements After
 
     private isChangePending() {
         let result: boolean = false;
-        if (!!this.compareClass && !!this.designedShipClassInput) {
-            result = !ShipClassComparator.equals(this.compareClass, this.designedShipClassInput);
-        } else if (!this.compareClass && !!this.designedShipClassInput) {
+        if (!!this.compareClass && !!this.shipClassMock) {
+            result = !ShipClassComparator.equals(this.compareClass, this.shipClassMock);
+        } else if (!this.compareClass && !!this.shipClassMock) {
             result = true;
         }
-        this.compareClass = this.designedShipClassInput;
+        this.compareClass = this.shipClassMock;
         return result;
     }
 }

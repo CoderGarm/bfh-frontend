@@ -32,9 +32,10 @@
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
         <app-construction-capacity-display [capacities]="capacities"></app-construction-capacity-display>
+        <app-weapon-amount-by-alignment-display [shipClass]="shipClass"></app-weapon-amount-by-alignment-display>
     </div>
 
-    <app-ship-class-fitting-modify [shipClassInput]="shipClass"
-                                   [designedShipClassInputEmitter]="designedShipClassOutputEmitter"
+    <app-ship-class-fitting-modify [shipClass]="shipClass"
+                                   (shipClassEmitter)="setShipClass(shipClass)"
                                    (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-modify>
 </div>

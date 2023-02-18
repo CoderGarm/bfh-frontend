@@ -26,6 +26,7 @@
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
         <app-construction-capacity-display [capacities]="capacities"></app-construction-capacity-display>
+        <app-weapon-amount-by-alignment-display [shipClass]="shipClassMock"></app-weapon-amount-by-alignment-display>
     </div>
 
     <app-ship-class-fitting-create (shipClassMockEmitter)="setShipClass($event)"

@@ -1,72 +1,281 @@
-<mat-accordion>
-    <mat-expansion-panel class="margin-bottom">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Hulls</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let hull of hulls" class="margin-bottom">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>{{hull.name}}</mat-panel-title>
-                    <mat-radio-button name="hullGroup" id="{{hull.idHull}}" [disabled]="!!shipClassInput"
-                                      (click)="chooseHull(hull); $event.stopPropagation();"></mat-radio-button>
-                </mat-expansion-panel-header>
-                <app-hull-display [hullInput]="hull"></app-hull-display>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </mat-expansion-panel>
+<app-chip-selector multiple noCheckmark preSelect
+                   titleValue="Filter modules by hull type"
+                   [chipValues]="eHullTypeChipValues"
+                   (chipValuesChange)="filterDisplayedItems($event)"></app-chip-selector>
 
-    <mat-expansion-panel class="margin-bottom">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Offensive weapon systems</mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-weapons-counter (weaponSelectionOutput)="chooseWeapon($event)" *ngFor="let weapon of weapons"
-                             [startAt]="getWeaponSelection(weapon)"></app-weapons-counter>
-        <app-launcher-counter (weaponSelectionOutput)="chooseWeapon($event)" *ngFor="let launcher of launchers"
-                              [startAt]="getWeaponSelection(launcher)"></app-launcher-counter>
-    </mat-expansion-panel>
+<mat-vertical-stepper animationDuration="500ms" *ngIf="!!shipClass">
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{shipClass.hull.name}}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                    <mat-icon>arrow_downward</mat-icon>
+                </button>
+            </div>
 
-    <mat-expansion-panel class="margin-bottom">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Armor</mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-armor-module-selector (selectionOutput)="chooseArmor($event)" *ngFor="let armor of armors"
-                                   [moduleSelectedInput]="armorSelection"
-                                   [moduleInput]="armor"></app-armor-module-selector>
-    </mat-expansion-panel>
+            <app-hull-display [hullInput]="shipClass.hull"></app-hull-display>
+        </ng-template>
+    </mat-step>
 
-    <mat-expansion-panel class="margin-bottom">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Sidewall</mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-sidewall-module-selector (selectionOutput)="chooseSidewall($event)" *ngFor="let sidewall of sidewalls"
-                                      [moduleSelectedInput]="sidewallsSelection"
-                                      [moduleInput]="sidewall"></app-sidewall-module-selector>
-    </mat-expansion-panel>
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{ 'shipyard.fitting.offensive.title' | translate }}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.weapons' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <div>
+                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                </div>
+                <div>
+                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
 
-    <mat-expansion-panel class="margin-bottom">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Propulsion</mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-propulsion-module-selector (selectionOutput)="choosePropulsion($event)" *ngFor="let propulsion of propulsions"
-                                        [moduleSelectedInput]="propulsionSelection"
-                                        [moduleInput]="propulsion"></app-propulsion-module-selector>
-    </mat-expansion-panel>
+            <div class="flex-items-container">
+                <mat-button-toggle-group class="area-toggle">
+                    <mat-button-toggle *ngFor="let type of weaponTypes" (click)="selectWeaponType(type)" [checked]="type === selectedWeaponType">
+                        {{ 'enum.name.weaponType.' + type | translate }}
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
 
-    <mat-expansion-panel class="margin-bottom">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Electronic warfare</mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-eloka-module-selector (selectionOutput)="chooseEloka($event)" *ngFor="let electronicWarfare of eloka"
-                                   [moduleSelectedInput]="elokaSelection"
-                                   [moduleInput]="electronicWarfare"></app-eloka-module-selector>
-    </mat-expansion-panel>
+                <mat-button-toggle-group class="area-toggle">
+                    <mat-button-toggle *ngFor="let arc of capAreas" (click)="selectFiringArc(arc)" [checked]="arc === selectedArc">
+                        {{ 'enum.name.alignmentType.' + arc | translate }}
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
 
-    <mat-expansion-panel class="margin-bottom">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Support loadout</mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-passive-module-counter (amount)="choosePassiveModule($event, passive)" *ngFor="let passive of passiveModules"
-                                    [startAt]="getPassiveModuleAmount(passive)"
-                                    [moduleInput]="passive"></app-passive-module-counter>
-    </mat-expansion-panel>
-</mat-accordion>
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let wep of weapons"
+                                 [ngStyle]="{'display':( !isFilteredModule(wep, filteredWeapons) ? 'none' : '')}"
+                                 [disabled]="!isFilteredModule(wep, filteredWeapons)"
+                                 (selectedChange)="chooseWeapon(wep)"
+                                 (mouseover)="hoverWeapon(wep)"
+                                 (mouseout)="hoverWeapon()">
+                    {{wep.baseModule.name}}
+                </mat-list-option>
+                <mat-list-option *ngFor="let wep of launchers"
+                                 [ngStyle]="{'display':( !isFilteredModule(wep, filteredLaunchers) ? 'none' : '')}"
+                                 [disabled]="!isFilteredModule(wep, filteredLaunchers)"
+                                 (selectedChange)="chooseWeapon(wep)"
+                                 (mouseover)="hoverWeapon(wep)"
+                                 (mouseout)="hoverWeapon()">
+                    {{wep.baseModule.name}}
+                </mat-list-option>
+            </mat-selection-list>
+
+            <app-weapon-per-alignment-counter class="numeric-counter"
+                                              (weaponSelectionOutput)="updateWeaponSelection($event)"
+                                              [startAt]="getWeaponSelection(hoveredWeapon)"></app-weapon-per-alignment-counter>
+            <app-weapon-display [weapon]="hoveredWeapon"></app-weapon-display>
+        </ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{ 'shipyard.fitting.ammunition.title' | translate }}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.ammunition' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <div>
+                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                </div>
+                <div>
+                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let module of getNeededAmmunitionModules(shipClassMock)"
+                                 (selectedChange)="ammunitionModuleSelection = module; hoveredAmmunitionModule = module; createAndEmitDesignedShipClass();"
+                                 (mouseover)="hoveredAmmunitionModule = module"
+                                 (mouseout)="!!ammunitionModuleSelection ? hoveredAmmunitionModule = ammunitionModuleSelection : hoveredAmmunitionModule = undefined">
+                    {{module.missile.typeName}}
+                </mat-list-option>
+            </mat-selection-list>
+
+            <app-numeric-counter class="numeric-counter" [disabled]="!ammunitionModuleSelection"
+                                 matBadge="{{getLauncherWithAmmunitionModule(ammunitionModuleSelection, shipClassMock)}}" matBadgePosition="above before"
+                                 (amount)="setAmmunitionModule(ammunitionModuleSelection, $event)"
+                                 [startAt]="getAmmunitionModuleAmount(ammunitionModuleSelection)"></app-numeric-counter>
+            <app-module-display [module]="hoveredAmmunitionModule"></app-module-display>
+        </ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{ 'shipyard.fitting.armor.title' | translate }}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.armor' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <div>
+                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                </div>
+                <div>
+                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let module of armors"
+                                 [ngStyle]="{'display':( !isFilteredModule(module, filteredArmors) ? 'none' : '')}"
+                                 [disabled]="!isFilteredModule(module, filteredArmors)"
+                                 [selected]="!!armorSelection && armorSelection.baseModule.idModule === module.baseModule.idModule"
+                                 (selectedChange)="armorSelection = module; hoveredArmor = module; createAndEmitDesignedShipClass();"
+                                 (mouseover)="hoveredArmor = module"
+                                 (mouseout)="!!armorSelection ? hoveredArmor = armorSelection : hoveredArmor = undefined">
+                    {{module.baseModule.name}}
+                </mat-list-option>
+            </mat-selection-list>
+            <app-module-display [module]="hoveredArmor"></app-module-display>
+        </ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{ 'shipyard.fitting.sidewall.title' | translate }}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.sidewall' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <div>
+                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                </div>
+                <div>
+                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let module of sidewalls"
+                                 [ngStyle]="{'display':( !isFilteredModule(module, filteredSidewalls) ? 'none' : '')}"
+                                 [disabled]="!isFilteredModule(module, filteredSidewalls)"
+                                 [selected]="!!sidewallSelection && sidewallSelection.baseModule.idModule === module.baseModule.idModule"
+                                 (selectedChange)="sidewallSelection = module; hoveredSidewall = module; createAndEmitDesignedShipClass();"
+                                 (mouseover)="hoveredSidewall = module"
+                                 (mouseout)="!!sidewallSelection ? hoveredSidewall = sidewallSelection : hoveredSidewall = undefined">
+                    {{module.baseModule.name}}
+                </mat-list-option>
+            </mat-selection-list>
+            <app-module-display [module]="hoveredSidewall"></app-module-display>
+        </ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.mandatory.propulsion' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <div>
+                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                </div>
+                <div>
+                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let module of propulsions"
+                                 [ngStyle]="{'display':( !isFilteredModule(module, filteredPropulsions) ? 'none' : '')}"
+                                 [disabled]="!isFilteredModule(module, filteredPropulsions)"
+                                 [selected]="!!propulsionSelection && propulsionSelection.baseModule.idModule === module.baseModule.idModule"
+                                 (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
+                                 (mouseover)="hoveredPropulsion = module"
+                                 (mouseout)="!!propulsionSelection ? hoveredPropulsion = propulsionSelection : hoveredPropulsion = undefined">
+                    {{module.baseModule.name}}
+                </mat-list-option>
+            </mat-selection-list>
+            <app-module-display [module]="hoveredPropulsion"></app-module-display>
+        </ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{ 'shipyard.fitting.electronic-warfare.title' | translate }}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.eloka' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <div>
+                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                </div>
+                <div>
+                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let module of eloka"
+                                 [ngStyle]="{'display':( !isFilteredModule(module, filteredEloka) ? 'none' : '')}"
+                                 [disabled]="!isFilteredModule(module, filteredEloka)"
+                                 [selected]="!!elokaSelection && elokaSelection.baseModule.idModule === module.baseModule.idModule"
+                                 (selectedChange)="elokaSelection = module; hoveredEloka = module; createAndEmitDesignedShipClass();"
+                                 (mouseover)="hoveredEloka = module"
+                                 (mouseout)="!!elokaSelection ? hoveredEloka = elokaSelection : hoveredEloka = undefined">
+                    {{module.baseModule.name}}
+                </mat-list-option>
+            </mat-selection-list>
+            <app-module-display [module]="hoveredEloka"></app-module-display>
+        </ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>
+            <div>{{ 'shipyard.fitting.support.title' | translate }}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.support' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                    <mat-icon>arrow_upward</mat-icon>
+                </button>
+            </div>
+
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let module of passiveModules"
+                                 [ngStyle]="{'display':( !isFilteredModule(module, filteredPassiveModules) ? 'none' : '')}"
+                                 [disabled]="!isFilteredModule(module, filteredPassiveModules)"
+                                 (selectedChange)="passiveModuleSelection = module; hoveredPassiveModule = module;"
+                                 (mouseover)="hoveredPassiveModule = module"
+                                 (mouseout)="!!passiveModuleSelection ? hoveredPassiveModule = passiveModuleSelection : hoveredPassiveModule = undefined">
+                    {{module.baseModule.name}}
+                </mat-list-option>
+            </mat-selection-list>
+
+            <app-numeric-counter class="numeric-counter" [disabled]="!passiveModuleSelection" (amount)="choosePassiveModule($event, passiveModuleSelection!)"
+                                 [startAt]="getPassiveModuleAmount(passiveModuleSelection!)"></app-numeric-counter>
+            <app-module-display [module]="hoveredPassiveModule"></app-module-display>
+        </ng-template>
+    </mat-step>
+</mat-vertical-stepper>

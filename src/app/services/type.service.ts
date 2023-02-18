@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {SubscriptionManager} from "../subscription.manager";
-import {BuildingApiService, EEducationType, EHullType, EModuleType, ERefinementSequence, EResourceType, ResourcesApiService, ShipyardApiService} from "./swagger";
+import {BuildingApiService, EEducationType, EHullType, EModuleType, EnumValueDto, ERefinementSequence, EResourceType, ResourcesApiService, ShipyardApiService} from "./swagger";
+import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
+import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
 
 /**
  * Displays the spinner with or without a message.
@@ -14,6 +16,9 @@ export class TypeService extends SubscriptionManager {
     private _eResourceTypes: EResourceType[] = [];
     private _eProductionCategories: string[] = [];
     private _eRefinementSequences: ERefinementSequence[] = [];
+
+    private readonly _weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE];
+    private readonly _weaponAlignmentTypes: EWeaponAlignmentEnum[] = [EWeaponAlignmentEnum.STERN, EWeaponAlignmentEnum.BROADSIDE, EWeaponAlignmentEnum.BOW];
 
     constructor(private shipyardApi: ShipyardApiService,
                 private resourceApi: ResourcesApiService,
@@ -70,5 +75,13 @@ export class TypeService extends SubscriptionManager {
 
     get eRefinementSequences(): ERefinementSequence[] {
         return this._eRefinementSequences;
+    }
+
+    get weaponTypes(): EnumValueDto.EWeaponTypeEnum[] {
+        return this._weaponTypes;
+    }
+
+    get weaponAlignmentTypes(): EnumValueDto.EWeaponAlignmentEnum[] {
+        return this._weaponAlignmentTypes;
     }
 }
