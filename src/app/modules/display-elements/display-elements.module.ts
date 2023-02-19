@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {ShipClassDisplayComponent} from './ship-class-display/ship-class-display.component';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {HullDisplayComponent} from './hull-display/hull-display.component';
 import {BaseModuleDisplayComponent} from './base-module-display/base-module-display.component';
@@ -60,7 +59,6 @@ import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignm
 
 @NgModule({
     declarations: [
-        ShipClassDisplayComponent,
         HullDisplayComponent,
         BaseModuleDisplayComponent,
         AmmunitionModuleDisplayComponent,
@@ -122,7 +120,6 @@ import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignm
         ResourceDisplayModule,
     ],
     exports: [
-        ShipClassDisplayComponent,
         HullDisplayComponent,
         BaseModuleDisplayComponent,
         AmmunitionModuleDisplayComponent,

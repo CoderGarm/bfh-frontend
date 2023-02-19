@@ -23,6 +23,7 @@ import {ModuleService} from "../../../services/prefetch/module.service";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {ChipSelectorValue, ChipSelectorValueResult} from "../../shared-module/components/chip-selector/chip-selector.component";
 import {FittingHelper} from "../../../services/helper/fitting.helper";
+import {TypeService} from "../../../services/type.service";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
@@ -108,17 +109,20 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
      */
     private validatorMap: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
 
-    capAreas: EAlignmentTypeEnum[] = [EAlignmentTypeEnum.CHASEALIGNMENT, EAlignmentTypeEnum.BATTLEALIGNMENT];
-
-    weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE]
+    alignmentAreas: EAlignmentTypeEnum[];
+    weaponTypes: EWeaponTypeEnum[];
     selectedWeaponType: EWeaponTypeEnum = EWeaponTypeEnum.MISSILE;
     selectedArc: EAlignmentTypeEnum = EAlignmentTypeEnum.BATTLEALIGNMENT;
 
     private chips: ChipSelectorValueResult[] = [];
 
     constructor(private moduleApi: ModuleService,
+                private typeService: TypeService,
                 private change: ChangeDetectorRef) {
         super();
+
+        this.alignmentAreas = this.typeService.alignmentAreas;
+        this.weaponTypes = this.typeService.weaponTypes;
     }
 
     ngAfterViewInit(): void {

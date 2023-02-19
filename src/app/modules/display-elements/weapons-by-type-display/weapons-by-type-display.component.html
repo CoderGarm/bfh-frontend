@@ -1,8 +1,26 @@
 <mat-chip-listbox class="mat-mdc-chip-set-stacked sized-chips" aria-label="Color selection">
-    <mat-chip-option *ngFor="let type of weaponTypes"
-                     selected disabled
-                     class="no-checkmark"
-                     aria-label="{{ 'enum.name.weaponType.' + type | translate }}" matBadge="{{getAmount(type)}}" matBadgePosition="above after">
+    <mat-chip *ngFor="let type of weaponTypes"
+              class="no-checkmark"
+              cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+              (mouseover)="toggle(type,trigger); $event.stopPropagation();"
+              (mouseout)="toggle(type, trigger); $event.stopPropagation();"
+              aria-label="{{ 'enum.name.weaponType.' + type | translate }}" matBadge="{{getAmount(type)}}" matBadgePosition="above after">
+
         {{ 'enum.name.weaponType.' + type | translate }}
-    </mat-chip-option>
+
+        <mat-icon matChipTrailingIcon aria-hidden="true" fontIcon="saved_search"></mat-icon>
+    </mat-chip>
 </mat-chip-listbox>
+
+<ng-template cdkConnectedOverlay
+             class="mat-elevation-z2"
+             [cdkConnectedOverlayOrigin]="triggerOrigin"
+             [cdkConnectedOverlayOpen]="isOpen">
+    <mat-list id="detail-list">
+        <mat-list-item *ngFor="let data of getHoveredData()">
+            <span matListItemTitle>{{data.name}}</span>
+            <span matListItemLine>{{data.amount}} x {{ 'shipyard.fitting.weapon-for.weaponType.' + data.type | translate }}</span>
+            <span *ngIf="!!data.shots" matListItemLine>{{data.shots}} {{ 'enum.name.weaponType.' + data.type | translate }}</span>
+        </mat-list-item>
+    </mat-list>
+</ng-template>

@@ -15,5 +15,32 @@
         <app-weapon-amount-by-alignment-display [shipClass]="shipClass"></app-weapon-amount-by-alignment-display>
     </div>
 
-    <app-ship-class-display *ngIf="!!shipClass" [shipClassInput]="shipClass"></app-ship-class-display>
+    <div>{{ 'shipyard.fitting.singular-module.title' | translate }}</div>
+    <mat-chip-listbox aria-label="Module selection">
+        <mat-chip-option selected disabled class="no-checkmark sized-chips" aria-label="{{ 'shipyard.fitting.hull.title' | translate }}">
+            {{ 'shipyard.fitting.hull.title' | translate }}: {{shipClass?.hull?.name}}
+        </mat-chip-option>
+        <mat-chip-option selected disabled class="no-checkmark sized-chips" aria-label="{{ 'shipyard.fitting.armor.title' | translate }}">
+            {{ 'shipyard.fitting.armor.title' | translate }}: {{shipClass?.armor?.baseModule?.name}}
+        </mat-chip-option>
+        <mat-chip-option selected disabled class="no-checkmark sized-chips" aria-label="{{ 'shipyard.fitting.sidewall.title' | translate }}">
+            {{ 'shipyard.fitting.sidewall.title' | translate }}: {{shipClass?.sidewall?.baseModule?.name}}
+        </mat-chip-option>
+        <mat-chip-option selected disabled class="no-checkmark sized-chips" aria-label="{{ 'shipyard.fitting.propulsion.title' | translate }}">
+            {{ 'shipyard.fitting.propulsion.title' | translate }}: {{shipClass?.propulsion?.baseModule?.name}}
+        </mat-chip-option>
+        <mat-chip-option selected disabled class="no-checkmark sized-chips" aria-label="{{ 'shipyard.fitting.electronic-warfare.title' | translate }}">
+            {{ 'shipyard.fitting.electronic-warfare.title' | translate }}: {{shipClass?.electronicWarfare?.baseModule?.name}}
+        </mat-chip-option>
+    </mat-chip-listbox>
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{ 'shipyard.fitting.support.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <app-support-fitting-module-display *ngFor="let fitting of shipClass?.supportFittings"
+                                                [fittingInput]="fitting"></app-support-fitting-module-display>
+        </mat-card-content>
+    </mat-card>
 </div>

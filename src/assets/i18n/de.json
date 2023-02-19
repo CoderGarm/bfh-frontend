@@ -357,8 +357,19 @@
       "sidewall": {
         "title": "Seitenschild"
       },
+      "singular-module": {
+        "title": "Basismodule"
+      },
       "support": {
         "title": "Unterstützungsmodule"
+      },
+      "weapon-for": {
+        "weaponType": {
+          "BEAM": "Gun",
+          "COUNTER_MISSILE": "Launcher",
+          "MISSILE": "Launcher",
+          "POINT_DEFENSE": "Gun"
+        }
       }
     },
     "hull-capacities": "Rumpfkapazität",

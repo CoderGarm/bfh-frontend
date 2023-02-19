@@ -3,12 +3,16 @@ import {SubscriptionManager} from "../subscription.manager";
 import {BuildingApiService, EEducationType, EHullType, EModuleType, EnumValueDto, ERefinementSequence, EResourceType, ResourcesApiService, ShipyardApiService} from "./swagger";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
+import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 
 /**
  * Displays the spinner with or without a message.
  */
 @Injectable()
 export class TypeService extends SubscriptionManager {
+    get alignmentAreas(): EnumValueDto.EAlignmentTypeEnum[] {
+        return this._alignmentAreas;
+    }
 
     private _eModuleTypes: EModuleType[] = [];
     private _eHullTypes: EHullType[] = [];
@@ -19,6 +23,7 @@ export class TypeService extends SubscriptionManager {
 
     private readonly _weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE];
     private readonly _weaponAlignmentTypes: EWeaponAlignmentEnum[] = [EWeaponAlignmentEnum.STERN, EWeaponAlignmentEnum.BROADSIDE, EWeaponAlignmentEnum.BOW];
+    private readonly _alignmentAreas: EAlignmentTypeEnum[] = [EAlignmentTypeEnum.CHASEALIGNMENT, EAlignmentTypeEnum.BATTLEALIGNMENT];
 
     constructor(private shipyardApi: ShipyardApiService,
                 private resourceApi: ResourcesApiService,

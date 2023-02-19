@@ -1,3 +1,9 @@
+@import "src/styles/variables";
+
 .sized-chips {
   max-width: 200px;
+}
+
+#detail-list {
+  background-color: $element-background-color;
 }

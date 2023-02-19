@@ -316,7 +316,7 @@
       "fleet-to-repair": "Fleet in dock",
       "title": "Shipyard constructions",
       "weapon-amount-by-alignment": {
-        "title": "Weaponary"
+        "title": "Weaponry"
       }
     },
     "create-new-class": "Create new class",
@@ -357,8 +357,19 @@
       "sidewall": {
         "title": "Sidewall"
       },
+      "singular-module": {
+        "title": "Basic modules"
+      },
       "support": {
         "title": "Support loadout"
+      },
+      "weapon-for": {
+        "weaponType": {
+          "BEAM": "Gun",
+          "COUNTER_MISSILE": "Launcher",
+          "MISSILE": "Launcher",
+          "POINT_DEFENSE": "Gun"
+        }
       }
     },
     "hull-capacities": "Construction capacities",

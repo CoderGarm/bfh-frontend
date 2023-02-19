@@ -46,7 +46,7 @@
                 </mat-button-toggle-group>
 
                 <mat-button-toggle-group class="area-toggle">
-                    <mat-button-toggle *ngFor="let arc of capAreas" (click)="selectFiringArc(arc)" [checked]="arc === selectedArc">
+                    <mat-button-toggle *ngFor="let arc of alignmentAreas" (click)="selectFiringArc(arc)" [checked]="arc === selectedArc">
                         {{ 'enum.name.alignmentType.' + arc | translate }}
                     </mat-button-toggle>
                 </mat-button-toggle-group>

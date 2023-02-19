@@ -1,7 +1,11 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
+import {EnumValueDto, ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
 import {ShipClassComparator} from "../ShipClassComparator";
 import {SubscriptionManager} from "../../../../../subscription.manager";
+import {TypeService} from "../../../../../services/type.service";
+import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
+import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
+import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 
 @Component({
     selector: 'app-fitting-display',
@@ -47,8 +51,17 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
 
     compareClass?: ShipClass;
 
-    constructor(private resourceApi: ResourcesApiService) {
+    alignmentAreas: EAlignmentTypeEnum[];
+    weaponTypes: EWeaponTypeEnum[];
+    weaponAlignmentTypes: EWeaponAlignmentEnum[];
+
+    constructor(private resourceApi: ResourcesApiService,
+                private typeService: TypeService) {
         super();
+
+        this.alignmentAreas = this.typeService.alignmentAreas;
+        this.weaponTypes = this.typeService.weaponTypes;
+        this.weaponAlignmentTypes = this.typeService.weaponAlignmentTypes;
     }
 
     ngAfterViewInit(): void {
