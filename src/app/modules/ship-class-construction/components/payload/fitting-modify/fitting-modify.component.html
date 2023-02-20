@@ -23,7 +23,7 @@
         </button>
     </div>
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
-                        [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"
+                        [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentEmitter"
                         [selectedShipClassInput]="shipClass"></app-ship-class-svg>
 
     <app-resource-display [deposit]="resourceDeposit"
@@ -36,6 +36,6 @@
     </div>
 
     <app-ship-class-fitting-modify [shipClass]="shipClass"
-                                   (shipClassEmitter)="setShipClass(shipClass)"
+                                   (shipClassEmitter)="setShipClass($event)"
                                    (weaponsAmountByAlignmentOutput)="setWeaponsAmountByAlignmentInput($event)"></app-ship-class-fitting-modify>
 </div>

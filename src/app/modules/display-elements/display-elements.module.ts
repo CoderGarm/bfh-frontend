@@ -173,6 +173,7 @@ import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignm
         ShipClassFittingModifyComponent,
         WeaponDisplayComponent,
         WeaponAmountByAlignmentDisplayComponent,
+        ModuleDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

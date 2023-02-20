@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {EnumValueDto, ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
-import {ShipClassComparator} from "../ShipClassComparator";
+import {ShipClassComparator} from "../ship-class.comparator";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {TypeService} from "../../../../../services/type.service";
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;

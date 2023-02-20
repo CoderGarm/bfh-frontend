@@ -13,7 +13,7 @@ import {
     Weapon
 } from "../../../services/swagger";
 import {ShipClassFittingCreateComponent} from "../ship-class-fitting-create/ship-class-fitting-create.component";
-import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
 import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
 import {WeaponHelper} from "../../../services/helper/weapon.helper";
 import {FittingHelper} from "../../../services/helper/fitting.helper";
@@ -23,7 +23,7 @@ import {FittingHelper} from "../../../services/helper/fitting.helper";
     templateUrl: './ship-class-fitting-modify.component.html',
     styleUrls: ['./ship-class-fitting-modify.component.scss']
 })
-export class ShipClassFittingModifyComponent extends ShipClassFittingCreateComponent {
+export class ShipClassFittingModifyComponent extends ShipClassFittingCreateComponent implements AfterViewInit {
 
     @Input()
     shipClass?: ShipClass;
@@ -31,6 +31,13 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
 
     @Output()
     shipClassEmitter: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
+
+    designedShipClass?: ShipClass;
+
+    ngAfterViewInit(): void {
+        this.fetchBaseData();
+        this.change.detectChanges();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.shipClassDefinition]) {
@@ -40,7 +47,6 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
 
     private setShipClass() {
         let shipClass = this.shipClass;
-        // clear the selection
         this.clearAllFittings();
         if (!!shipClass) {
             this.chooseHull(shipClass.hull);
@@ -93,7 +99,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                         });
                     }
                 });
-                weaponSelectionMap.forEach((weaponSelection, key) => this.updateWeaponSelection(weaponSelection));
+                weaponSelectionMap.forEach((weaponSelection) => this.updateWeaponSelection(weaponSelection));
                 // old code end
             }
             if (!!shipClass.supportFittings) {
@@ -104,7 +110,9 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                 });
             }
         }
+        this.designedShipClass = shipClass;
         this.createAndEmitDesignedShipClass();
+        this.change.detectChanges();
     }
 
     private clearAllFittings() {
@@ -143,18 +151,15 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
         this.createAndEmitDesignedShipClass();
     }
 
-    choosePassiveModule(amount: number, passive: PassiveModule) {
+    choosePassiveModule(amount: number, passive?: PassiveModule) {
+        if (!passive) {
+            return;
+        }
         this.setPassiveModule(passive, amount);
         this.createAndEmitDesignedShipClass();
     }
 
     createAndEmitDesignedShipClass() {
-        if (!this.hullSelection || !this.propulsionSelection) {
-            if (!!this.shipClassEmitter) {
-                this.shipClassEmitter.emit(undefined);
-            }
-            return;
-        }
 
         let userID = this.tokenStorage.getUserID();
         let role = this.tokenStorage.getRole();
@@ -165,9 +170,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
         const passives: SupportFitting[] = [];
 
         this.mapMultiModulesToFitting(weapons, ammo, passives);
-
         let output: ShipClass = {
-            idShipClass: !!this.shipClass ? this.shipClass.idShipClass : undefined,
             hull: this.hullSelection!,
             fittings: weapons,
             ammunitionFittings: ammo,
@@ -195,8 +198,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                 shotsPerMissile: []
             }
         };
-        if (!!this.shipClassEmitter) {
-            this.shipClassEmitter.emit(output);
-        }
+        this.designedShipClass = output;
+        this.shipClassEmitter.emit(output);
     }
 }

@@ -34,13 +34,12 @@
         </mat-chip-option>
     </mat-chip-listbox>
 
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>{{ 'shipyard.fitting.support.title' | translate }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <app-support-fitting-module-display *ngFor="let fitting of shipClass?.supportFittings"
-                                                [fittingInput]="fitting"></app-support-fitting-module-display>
-        </mat-card-content>
-    </mat-card>
+    <mat-card-title>{{ 'shipyard.fitting.support.title' | translate }}</mat-card-title>
+    <div matSubheader *ngIf="shipClass?.supportFittings?.length == 0">No support modules</div>
+
+    <mat-list aria-label="Module selection">
+        <mat-list-item *ngFor="let fitting of shipClass?.supportFittings">
+            <app-module-display [module]="fitting.passiveModule" matBadge="{{fitting.amount}}" matBadgePosition="above after"></app-module-display>
+        </mat-list-item>
+    </mat-list>
 </div>

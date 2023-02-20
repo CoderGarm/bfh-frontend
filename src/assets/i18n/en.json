@@ -56,6 +56,25 @@
         "COUNTER_MISSILE": "CM",
         "MISSILE": "M",
         "POINT_DEFENSE": "PD"
+      },
+      "hullType": {
+        "AE": "AE",
+        "AR": "AR",
+        "BB": "BB",
+        "BC": "BC",
+        "BCP": "BCP",
+        "CA": "CA",
+        "CL": "CL",
+        "CLAC": "CLAC",
+        "DD": "DD",
+        "DN": "DN",
+        "FAT": "FAT",
+        "FG": "FG",
+        "FR": "FR",
+        "LAC": "LAC",
+        "SD": "SD",
+        "SDP": "SDP",
+        "VT": "VT"
       }
     },
     "name": {
@@ -73,6 +92,25 @@
         "COUNTER_MISSILE": "Counter missile",
         "MISSILE": "Missile",
         "POINT_DEFENSE": "Point defense"
+      },
+      "hullType": {
+        "AE": "Ammunition Ship",
+        "AR": "Repair Ship",
+        "BB": "Battleship",
+        "BC": "Battlecruiser",
+        "BCP": "Battlecruiser (Podlayer)",
+        "CA": "Heavy Cruiser",
+        "CL": "Light Cruiser",
+        "CLAC": "LAC Carrier",
+        "DD": "Destroyer",
+        "DN": "Dreadnought",
+        "FAT": "Fast attack Transport",
+        "FG": "Frigate",
+        "FR": "Freighter",
+        "LAC": "Light Attack Craft",
+        "SD": "Super Dreadnought",
+        "SDP": "Super Dreadnought (Podlayer)",
+        "VT": "Corvette"
       }
     }
   },

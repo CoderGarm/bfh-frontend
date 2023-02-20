@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 
 
 export const ShipClassNamePatternErrorMessages: { [key: string]: string } = {
-    passPattern: 'The password didn\'t match the pattern.',
+    passPattern: 'The must contain between 3 and 30 characters.',
     passAlreadyKnown: 'The name is already known.'
 };
 

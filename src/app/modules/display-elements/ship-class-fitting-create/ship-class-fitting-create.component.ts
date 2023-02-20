@@ -115,17 +115,24 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     selectedArc: EAlignmentTypeEnum = EAlignmentTypeEnum.BATTLEALIGNMENT;
 
     private chips: ChipSelectorValueResult[] = [];
+    private weaponAlignmentTypes: EWeaponAlignmentEnum[];
 
-    constructor(private moduleApi: ModuleService,
-                private typeService: TypeService,
-                private change: ChangeDetectorRef) {
+    constructor(protected moduleApi: ModuleService,
+                protected typeService: TypeService,
+                protected change: ChangeDetectorRef) {
         super();
 
         this.alignmentAreas = this.typeService.alignmentAreas;
         this.weaponTypes = this.typeService.weaponTypes;
+        this.weaponAlignmentTypes = this.typeService.weaponAlignmentTypes;
     }
 
     ngAfterViewInit(): void {
+        this.fetchBaseData();
+        this.change.detectChanges();
+    }
+
+    protected fetchBaseData() {
         let sub = this.moduleApi.getWeaponsByUser().subscribe(resp => this.weapons = resp);
         this.subscriptions.push(sub);
         sub = this.moduleApi.getLaunchersByUser().subscribe(resp => this.launchers = resp);
@@ -152,7 +159,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             });
         });
         this.subscriptions.push(sub);
-        this.change.detectChanges();
     }
 
     filterDisplayedItems(chips?: ChipSelectorValueResult[]) {
@@ -188,9 +194,9 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     private addOrRemoveMultiSelectionModule<MODULE extends Weapon | Launcher | PassiveModule | AmmunitionModule>(selectedTypeNames: string[],
                                                                                                                  module: MODULE,
-                                                                                                                 elements: MODULE[],
-                                                                                                                 selected: Map<String, number>) {
-        const typeName = module.baseModule.hullType.typeName;
+                                                                                                                 filteredElements: MODULE[],
+                                                                                                                 selectionMap: Map<String, number>) {
+        const hullTypeName = module.baseModule.hullType.typeName;
 
         let selectedByFilter: boolean = true;
         let id: string;
@@ -204,39 +210,35 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             if (this.selectedWeaponType != weapon.weaponType) {
                 selectedByFilter = false;
             }
-            if (!!this.selectedArc) {
-                const alignmentTypes = weapon.alignmentTypes;
-                switch (this.selectedArc) {
-                    case "CHASE_ALIGNMENT":
-                        if (!alignmentTypes.includes(EWeaponAlignmentEnum.BOW) || !alignmentTypes.includes(EWeaponAlignmentEnum.STERN)) {
-                            selectedByFilter = false;
-                        }
-                        break;
-                    case "BATTLE_ALIGNMENT":
-                        if (!alignmentTypes.includes(EWeaponAlignmentEnum.BROADSIDE)) {
-                            selectedByFilter = false;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            const alignmentTypes = weapon.alignmentTypes;
+            switch (this.selectedArc) {
+                case "CHASE_ALIGNMENT":
+                    if (!alignmentTypes.includes(EWeaponAlignmentEnum.BOW) || !alignmentTypes.includes(EWeaponAlignmentEnum.STERN)) {
+                        selectedByFilter = false;
+                    }
+                    break;
+                case "BATTLE_ALIGNMENT":
+                    if (!alignmentTypes.includes(EWeaponAlignmentEnum.BROADSIDE)) {
+                        selectedByFilter = false;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
         let moduleSelected: boolean = false;
-        selected.forEach((value, key) => {
+        selectionMap.forEach((value, key) => {
             if (value > 0 && key.startsWith(id)) {
                 moduleSelected = true;
             }
         });
 
         const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-        if (selectedByFilter && (selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected)) {
-            if (elements.filter(h => h.baseModule.hullType.typeName === typeName).length == 0) {
-                elements.push(module);
-            }
+        if (selectedByFilter && (selectedTypeNames.includes(hullTypeName) || matchedSelectedHull || moduleSelected)) {
+            filteredElements.push(module);
         } else {
-            this.removeIfPresent(elements, module);
+            this.removeIfPresent(filteredElements, module);
         }
     }
 
@@ -321,8 +323,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     getWeaponModuleAmount(weapon: Weapon | Launcher): Map<AlignedFitting.WeaponAlignmentEnum, number> {
         let map = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
-        weapon.alignmentTypes.forEach(key => {
-            let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+        this.weaponAlignmentTypes.forEach(alignment => {
             let id = FittingHelper.getWeaponSystemMapKey(weapon, alignment);
             let amount = this.weaponsSelection.get(id);
             if (!amount) {
@@ -335,8 +336,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     checkIfChanged(newData: Map<AlignedFitting.WeaponAlignmentEnum, number>): boolean {
         let result: boolean = false;
-        Object.keys(AlignedFitting.WeaponAlignmentEnum).forEach(key => {
-            let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+        this.weaponAlignmentTypes.forEach(alignment => {
             let oldAmount = this.validatorMap.get(alignment);
             if (!oldAmount) {
                 oldAmount = 0;
@@ -370,27 +370,25 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         let bow = 0;
         let broadside = 0;
         let stern = 0;
-        Object.keys(AlignedFitting.WeaponAlignmentEnum).forEach(key => {
-            let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+        this.weaponAlignmentTypes.forEach(alignment => {
             this.weaponsSelection.forEach((amount, id) => {
                 if (id.includes(alignment)) {
-                    if (AlignedFitting.WeaponAlignmentEnum.BOW === alignment) {
+                    if (EWeaponAlignmentEnum.BOW === alignment) {
                         bow += amount;
-                    } else if (AlignedFitting.WeaponAlignmentEnum.BROADSIDE === alignment) {
+                    } else if (EWeaponAlignmentEnum.BROADSIDE === alignment) {
                         broadside += amount;
-                    } else if (AlignedFitting.WeaponAlignmentEnum.STERN === alignment) {
+                    } else if (EWeaponAlignmentEnum.STERN === alignment) {
                         stern += amount;
                     }
                 }
             });
         });
-        Object.keys(AlignedFitting.WeaponAlignmentEnum).forEach(key => {
-            let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-            if (AlignedFitting.WeaponAlignmentEnum.BOW === alignment) {
+        this.weaponAlignmentTypes.forEach(alignment => {
+            if (EWeaponAlignmentEnum.BOW === alignment) {
                 event.set(alignment, bow);
-            } else if (AlignedFitting.WeaponAlignmentEnum.BROADSIDE === alignment) {
+            } else if (EWeaponAlignmentEnum.BROADSIDE === alignment) {
                 event.set(alignment, broadside);
-            } else if (AlignedFitting.WeaponAlignmentEnum.STERN === alignment) {
+            } else if (EWeaponAlignmentEnum.STERN === alignment) {
                 event.set(alignment, stern);
             }
         });
@@ -402,13 +400,11 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     }
 
     createAndEmitDesignedShipClass() {
-
         const weapons: AlignedFitting[] = [];
         const ammo: AmmunitionFitting[] = [];
         const passives: SupportFitting[] = [];
 
         this.mapMultiModulesToFitting(weapons, ammo, passives);
-
         let output: ShipClassMock = {
             hull: this.hullSelection,
             fittings: weapons,
@@ -423,18 +419,11 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.shipClassMockEmitter.emit(output);
     }
 
-    getNeededAmmunitionModules(ship?: ShipClass | ShipClassMock): AmmunitionModule[] {
+    getNeededAmmunitionModules(ship?: ShipClass | ShipClassMock): AlignedFitting[] {
         if (!ship) {
             return [];
         }
-        return ship.fittings.filter(f => !!f.launcher).map(f => f.launcher!.ammunitionModule);
-    }
-
-    getLauncherWithAmmunitionModule(ammunitionModule?: AmmunitionModule, ship?: ShipClass | ShipClassMock): number {
-        if (!ammunitionModule || !ship) {
-            return 0;
-        }
-        return ship.fittings.filter(f => !!f.launcher).filter(f => f.launcher!.ammunitionModule.baseModule.idModule === ammunitionModule.baseModule.idModule).length;
+        return ship.fittings.filter(f => !!f.launcher);
     }
 
     mapMultiModulesToFitting(weapons: AlignedFitting[], ammo: AmmunitionFitting[], passives: SupportFitting[]) {
@@ -516,7 +505,10 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.supportSelection.set(id, amount);
     }
 
-    getPassiveModuleAmount(passive: PassiveModule): number {
+    getPassiveModuleAmount(passive?: PassiveModule): number {
+        if (!passive) {
+            return 0;
+        }
         let id: string = FittingHelper.getPassiveMapKey(passive);
         let amount = this.supportSelection.get(id);
         if (!amount) {

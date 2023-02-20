@@ -1,16 +1,12 @@
 <mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)" (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.shipyard.fitting.view' | translate }}" [disabled]="!selectedShipClass">
-        <ng-template matTabContent>
-            <app-fitting-display [selectedIndexInput]="selectionEmitter"
-                                 [resourceDeposit]="resourceDeposit"
-                                 [shipClass]="selectedShipClass"></app-fitting-display>
-        </ng-template>
+        <app-fitting-display [selectedIndexInput]="selectionEmitter"
+                             [resourceDeposit]="resourceDeposit"
+                             [shipClass]="selectedShipClass"></app-fitting-display>
     </mat-tab>
     <mat-tab label="{{ 'tab.shipyard.fitting.modify' | translate }}">
-        <ng-template matTabContent>
-            <app-fitting-modify [selectedIndexInput]="selectionEmitter"
-                                [resourceDeposit]="resourceDeposit"
-                                [shipClass]="selectedShipClass"></app-fitting-modify>
-        </ng-template>
+        <app-fitting-modify [selectedIndexInput]="selectionEmitter"
+                            [resourceDeposit]="resourceDeposit"
+                            [shipClass]="selectedShipClass"></app-fitting-modify>
     </mat-tab>
 </mat-tab-group>

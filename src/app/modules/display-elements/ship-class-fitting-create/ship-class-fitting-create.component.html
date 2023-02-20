@@ -72,7 +72,8 @@
                                  (selectedChange)="chooseWeapon(wep)"
                                  (mouseover)="hoverWeapon(wep)"
                                  (mouseout)="hoverWeapon()">
-                    {{wep.baseModule.name}}
+                    <span matListItemTitle>{{wep.baseModule.name}}</span>
+                    <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                 </mat-list-option>
                 <mat-list-option *ngFor="let wep of launchers"
                                  [ngStyle]="{'display':( !isFilteredModule(wep, filteredLaunchers) ? 'none' : '')}"
@@ -80,7 +81,8 @@
                                  (selectedChange)="chooseWeapon(wep)"
                                  (mouseover)="hoverWeapon(wep)"
                                  (mouseout)="hoverWeapon()">
-                    {{wep.baseModule.name}}
+                    <span matListItemTitle>{{wep.baseModule.name}}</span>
+                    <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                 </mat-list-option>
             </mat-selection-list>
 
@@ -112,15 +114,16 @@
 
             <mat-selection-list [multiple]="false">
                 <mat-list-option *ngFor="let module of getNeededAmmunitionModules(shipClassMock)"
-                                 (selectedChange)="ammunitionModuleSelection = module; hoveredAmmunitionModule = module; createAndEmitDesignedShipClass();"
-                                 (mouseover)="hoveredAmmunitionModule = module"
+                                 (selectedChange)="ammunitionModuleSelection = module.launcher!.ammunitionModule; hoveredAmmunitionModule = module.launcher!.ammunitionModule; createAndEmitDesignedShipClass();"
+                                 (mouseover)="hoveredAmmunitionModule = module.launcher!.ammunitionModule"
                                  (mouseout)="!!ammunitionModuleSelection ? hoveredAmmunitionModule = ammunitionModuleSelection : hoveredAmmunitionModule = undefined">
-                    {{module.missile.typeName}}
+                    <span matListItemTitle>{{module.launcher!.ammunitionModule.missile.typeName}}</span>
+                    <span matListItemLine>{{ 'enum.name.weaponAlignment.' + module.weaponAlignment | translate }}, {{module.amount}}
+                        x {{ 'shipyard.fitting.weapon-for.weaponType.' + module.launcher!.weaponType | translate }}</span>
                 </mat-list-option>
             </mat-selection-list>
 
             <app-numeric-counter class="numeric-counter" [disabled]="!ammunitionModuleSelection"
-                                 matBadge="{{getLauncherWithAmmunitionModule(ammunitionModuleSelection, shipClassMock)}}" matBadgePosition="above before"
                                  (amount)="setAmmunitionModule(ammunitionModuleSelection, $event)"
                                  [startAt]="getAmmunitionModuleAmount(ammunitionModuleSelection)"></app-numeric-counter>
             <app-module-display [module]="hoveredAmmunitionModule"></app-module-display>

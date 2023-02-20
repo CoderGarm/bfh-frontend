@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {
     AlignedFitting,
     ResourceDeposit,
@@ -8,9 +8,10 @@ import {
     SpacecraftCapabilities,
     SpacecraftCapacityAreas
 } from "../../../../../services/swagger";
-import {ShipClassComparator} from "../ShipClassComparator";
+import {ShipClassComparator} from "../ship-class.comparator";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {ShipyardEventService} from "../../../shipyard-event.service";
+import {ShipClassValidator} from "../ship-class.validator";
 
 @Component({
     selector: 'app-fitting-modify',
@@ -51,15 +52,15 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      * forwards the weapon alignments by amount to the svg component
      */
     @Output()
-    weaponsAmountByAlignmentOutput: EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>> = new EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>>();
+    weaponsAmountByAlignmentEmitter: EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>> = new EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>>();
 
     /**
      * if the ship class which was created by the user is valid, it will appear here
      */
     @Output()
-    designedShipClassOutputEmitter: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
+    designedShipClassEmitter: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
 
-    designedShipClassInput?: ShipClass;
+    designedShipClass?: ShipClass;
 
     /**
      * the state of the store-button
@@ -73,15 +74,17 @@ export class FittingModifyComponent extends SubscriptionManager implements After
     capacities?: SpacecraftCapacityAreas;
 
     constructor(private shipYardApi: ShipyardApiService,
+                private change: ChangeDetectorRef,
                 private shipyardService: ShipyardEventService,
                 private resourceApi: ResourcesApiService) {
         super();
     }
 
     ngAfterViewInit(): void {
-        let sub = this.designedShipClassOutputEmitter.subscribe(event => {
-            this.designedShipClassInput = event;
-            this.setShipClass(this.designedShipClassInput)
+        let sub = this.designedShipClassEmitter.subscribe(event => {
+            this.designedShipClass = event;
+            this.setShipClass(this.designedShipClass);
+            this.change.detectChanges();
         });
         this.subscriptions.push(sub!);
     }
@@ -107,15 +110,17 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      * @param event
      */
     setWeaponsAmountByAlignmentInput(event: Map<AlignedFitting.WeaponAlignmentEnum, number>) {
-        this.weaponsAmountByAlignmentOutput.emit(event);
+        this.weaponsAmountByAlignmentEmitter.emit(event);
     }
 
     /**
      * stores the designed class to the database
      */
     storeClass() {
-        if (!!this.designedShipClassInput) {
-            let sub = this.shipYardApi.setShipClass(this.designedShipClassInput)
+        if (!!this.designedShipClass) {
+            this.designedShipClass.idPredecessor = this.shipClass!.idShipClass;
+            this.designedShipClass.idShipClass = undefined;
+            let sub = this.shipYardApi.updateShipClass(this.designedShipClass)
                 .subscribe(resp => this.shipyardService.modifyShipClass(resp));
             this.subscriptions.push(sub);
         }
@@ -126,12 +131,10 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      * @param shipClass
      */
     setShipClass(shipClass?: ShipClass) {
-        this.designedShipClassInput = shipClass;
-        if (this.disabled != !this.designedShipClassInput) {
+        this.designedShipClass = shipClass;
+        if (this.disabled != !this.designedShipClass) {
             setTimeout(() => {
-                // because of https://angular.io/errors/NG0100 -> https://stackoverflow.com/a/45341146/18296598
-
-                this.disabled = !this.designedShipClassInput;
+                this.disabled = !ShipClassValidator.isValid(this.designedShipClass);
             }, 100);
         }
         this.getCosts();
@@ -141,8 +144,8 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      * deletes the stored ship class
      */
     deleteClass() {
-        if (!!this.designedShipClassInput) {
-            let idShipClass = this.designedShipClassInput.idShipClass;
+        if (!!this.designedShipClass) {
+            let idShipClass = this.designedShipClass.idShipClass;
             if (!idShipClass) {
                 return;
             }
@@ -156,19 +159,19 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      * @private
      */
     private getCosts() {
-        if (!!this.designedShipClassInput && this.idChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(this.designedShipClassInput)
+        if (!!this.designedShipClass && this.idChangePending()) {
+            let sub = this.resourceApi.getShipClassCosts(this.designedShipClass)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapabilities(this.designedShipClassInput)
+            sub = this.resourceApi.getShipClassCapabilities(this.designedShipClass)
                 .subscribe(resp => this.capabilities = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapacities(this.designedShipClassInput)
+            sub = this.resourceApi.getShipClassCapacities(this.designedShipClass)
                 .subscribe(resp => this.capacities = resp);
             this.subscriptions.push(sub);
-        } else if (!this.designedShipClassInput) {
+        } else if (!this.designedShipClass) {
             this.costs = undefined;
             this.capabilities = undefined;
             this.capacities = undefined;
@@ -182,12 +185,12 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      */
     private idChangePending() {
         let result: boolean = false;
-        if (!!this.compareClass && !!this.designedShipClassInput) {
-            result = !ShipClassComparator.equals(this.compareClass, this.designedShipClassInput);
-        } else if (!this.compareClass && !!this.designedShipClassInput) {
+        if (!!this.compareClass && !!this.designedShipClass) {
+            result = !ShipClassComparator.equals(this.compareClass, this.designedShipClass);
+        } else if (!this.compareClass && !!this.designedShipClass) {
             result = true;
         }
-        this.compareClass = this.designedShipClassInput;
+        this.compareClass = this.designedShipClass;
         return result;
     }
 }

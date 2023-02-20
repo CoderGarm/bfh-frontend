@@ -56,6 +56,25 @@
         "COUNTER_MISSILE": "AR",
         "MISSILE": "R",
         "POINT_DEFENSE": "NB"
+      },
+      "hullType": {
+        "AE": "AE",
+        "AR": "AR",
+        "BB": "BB",
+        "BC": "BC",
+        "BCP": "BCP",
+        "CA": "CA",
+        "CL": "CL",
+        "CLAC": "CLAC",
+        "DD": "DD",
+        "DN": "DN",
+        "FAT": "FAT",
+        "FG": "FG",
+        "FR": "FR",
+        "LAC": "LAC",
+        "SD": "SD",
+        "SDP": "SDP",
+        "VT": "VT"
       }
     },
     "name": {
@@ -73,6 +92,25 @@
         "COUNTER_MISSILE": "Anti-Rakete",
         "MISSILE": "Rakete",
         "POINT_DEFENSE": "Nahbereichsverteidigung"
+      },
+      "hullType": {
+        "AE": "Munitionsschiff",
+        "AR": "Werkstattschiff",
+        "BB": "Schlachtschiff",
+        "BC": "Schlachtkreuzer",
+        "BCP": "Schlachtkreuzer (Gondelleger)",
+        "CA": "Schwerer Kreuzer",
+        "CL": "Leichter Kreuzer",
+        "CLAC": "LAC Träger",
+        "DD": "Zerstörer",
+        "DN": "Dreadnought",
+        "FAT": "Schneller Angriffstransporter",
+        "FG": "Fregatte",
+        "FR": "Frachter",
+        "LAC": "Leichtes Angriffsboot",
+        "SD": "Super Dreadnought",
+        "SDP": "Super Dreadnought (Gondelleger)",
+        "VT": "Korvette"
       }
     }
   },

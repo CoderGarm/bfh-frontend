@@ -21,6 +21,7 @@ import { EHullType } from '../model/eHullType';
 import { EModuleType } from '../model/eModuleType';
 import { FrontendError } from '../model/frontendError';
 import { ShipClass } from '../model/shipClass';
+import { ShipClassMock } from '../model/shipClassMock';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -93,6 +94,51 @@ export class ShipyardApiService {
 
         return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/shipyard/checkName/${encodeURIComponent(String(className))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all active ship classes for the owner .
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createShipClass(body?: ShipClassMock, observe?: 'body', reportProgress?: boolean): Observable<ShipClass>;
+    public createShipClass(body?: ShipClassMock, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShipClass>>;
+    public createShipClass(body?: ShipClassMock, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShipClass>>;
+    public createShipClass(body?: ShipClassMock, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ShipClass>('post',`${this.basePath}/api/private/shipyard/`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -260,10 +306,10 @@ export class ShipyardApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public setShipClass(body?: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ShipClass>;
-    public setShipClass(body?: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShipClass>>;
-    public setShipClass(body?: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShipClass>>;
-    public setShipClass(body?: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateShipClass(body?: ShipClass, observe?: 'body', reportProgress?: boolean): Observable<ShipClass>;
+    public updateShipClass(body?: ShipClass, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShipClass>>;
+    public updateShipClass(body?: ShipClass, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShipClass>>;
+    public updateShipClass(body?: ShipClass, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let headers = this.defaultHeaders;
@@ -287,7 +333,7 @@ export class ShipyardApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShipClass>('post',`${this.basePath}/api/private/shipyard/`,
+        return this.httpClient.request<ShipClass>('put',`${this.basePath}/api/private/shipyard/`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

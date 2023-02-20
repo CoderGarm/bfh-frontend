@@ -22,6 +22,10 @@ import { SupportFitting } from './supportFitting';
  * .
  */
 export interface ShipClassMock { 
+    /**
+     * The name of this class.
+     */
+    name?: string;
     hull?: Hull;
     propulsion?: Propulsion;
     armor?: Armor;

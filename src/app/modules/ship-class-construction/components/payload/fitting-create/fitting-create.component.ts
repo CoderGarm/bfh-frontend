@@ -4,7 +4,6 @@ import {
     AlignedFitting,
     ResourceDeposit,
     ResourcesApiService,
-    ShipClass,
     ShipClassMock,
     ShipyardApiService,
     SpacecraftCapabilities,
@@ -12,10 +11,11 @@ import {
 } from "../../../../../services/swagger";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {ShipClassComparator} from "../ShipClassComparator";
+import {ShipClassComparator} from "../ship-class.comparator";
 import {ShipClassTabViewComponent} from "../../orga/ship-class-tab-view/ship-class-tab-view.component";
 import {ShipyardEventService} from "../../../shipyard-event.service";
 import {TypeService} from "../../../../../services/type.service";
+import {ShipClassValidator} from "../ship-class.validator";
 
 @Component({
     selector: 'app-fitting-create',
@@ -102,38 +102,9 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      * stores the designed class to the database
      */
     storeClass() {
-        if (!!this.shipClassMock) {
-            let userID = this.tokenStorage.getUserID();
-            let role = this.tokenStorage.getRole();
-            let username = this.tokenStorage.getLogin();
-            let output: ShipClass = {
-                hull: this.shipClassMock.hull!,
-                fittings: this.shipClassMock.fittings,
-                ammunitionFittings: this.shipClassMock.ammunitionFittings,
-                supportFittings: this.shipClassMock.supportFittings,
-                armor: this.shipClassMock.armor,
-                electronicWarfare: this.shipClassMock.electronicWarfare,
-                propulsion: this.shipClassMock.propulsion,
-                sidewall: this.shipClassMock.sidewall,
-                mark: 1,
-                name: this.form.controls.scName.value,
-                owner: {
-                    idUser: userID,
-                    role: role,
-                    username: username
-                },
-                shipClassCapabilities: {
-                    capabilities: []
-                },
-                spacecraftCapacityAreas: {
-                    capacityValues: []
-                },
-                ammunitionState: {
-                    shotsPerMissile: []
-                }
-            };
-
-            let sub = this.shipYardApi.setShipClass(output)
+        if (!!this.shipClassMock && !!this.shipClassMock.hull && !!this.shipClassMock.propulsion) {
+            this.shipClassMock.name = this.form.controls.scName.value;
+            let sub = this.shipYardApi.createShipClass(this.shipClassMock)
                 .subscribe(resp => this.shipyardService.modifyShipClass(resp));
             this.subscriptions.push(sub);
         }
@@ -144,10 +115,13 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      * @param shipClass
      */
     setShipClass(shipClass?: ShipClassMock) {
+        if (!!shipClass) {
+            shipClass.name = this.form.controls.scName.value;
+        }
         this.shipClassMock = shipClass;
         if (this.disabled != !this.shipClassMock) {
             setTimeout(() => {
-                this.disabled = !this.shipClassMock;
+                this.disabled = !ShipClassValidator.isValid(this.shipClassMock) || !this.form.valid;
             }, 100);
         }
         this.getCosts();
