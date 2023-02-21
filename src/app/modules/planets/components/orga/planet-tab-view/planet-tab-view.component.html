@@ -1,4 +1,4 @@
-<mat-tab-group (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
+<mat-tab-group (selectedIndexChange)="indexChanged($event)" animationDuration="500ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.planetary.dashboard' | translate }}">
         <ng-template matTabContent>
             <app-planetary-dashboard [planet]="selectedPlanet" [shipyardJobPossible]="shipyardJobPossible" [shipyardExists]="shipyardExists"></app-planetary-dashboard>

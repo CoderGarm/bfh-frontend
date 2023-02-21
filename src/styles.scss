@@ -87,8 +87,12 @@ body {
   width: 180px;
 }
 
-#main-content-area {
+.mat-mdc-tab-body-content {
   padding-left: 50px;
+}
+
+.no-pad > .mat-mdc-tab-body-content {
+  padding-left: 0;
 }
 
 .mat-expansion-panel-header:not([aria-disabled=true]) {
@@ -98,6 +102,10 @@ body {
 .sidenav-expansion-panel {
 
   max-width: 250px;
+
+  & .mat-content {
+    color: white;
+  }
 
   & .mat-expansion-panel {
     width: auto;

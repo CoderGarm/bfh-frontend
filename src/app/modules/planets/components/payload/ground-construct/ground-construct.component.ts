@@ -22,7 +22,7 @@ import {PlanetsEventService} from "../../../planets-event.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
-import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/resource-display.manager";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
 @Component({

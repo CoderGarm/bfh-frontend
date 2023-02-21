@@ -1,4 +1,4 @@
-<mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)" (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
+<mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)" (selectedIndexChange)="indexChanged($event)" animationDuration="500ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.shipyard.fitting.view' | translate }}" [disabled]="!selectedShipClass">
         <app-fitting-display [selectedIndexInput]="selectionEmitter"
                              [resourceDeposit]="resourceDeposit"

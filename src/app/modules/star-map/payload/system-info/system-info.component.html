@@ -1,25 +1,26 @@
 <div *ngIf="!!starSystem">
-    <mat-form-field appearance="fill">
+
+    <mat-form-field appearance="outline">
         <mat-label>System</mat-label>
         <input matInput disabled value="{{starSystem!.name}}">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>X-Coordinate</mat-label>
-        <input matInput disabled value="{{starSystem!.orbit.xCoordinate.coordinate}} {{starSystem!.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Y-Coordinate</mat-label>
-        <input matInput disabled value="{{starSystem!.orbit.yCoordinate.coordinate}} {{starSystem!.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline" class="small-field">
         <mat-label>Planet count</mat-label>
         <input matInput disabled value="{{starSystem.planets.length}}">
     </mat-form-field>
 
-    <mat-form-field appearance="fill" *ngIf="getColonized().length > 0">
+    <mat-form-field appearance="outline" class="small-field">
+        <mat-label>X-Coordinate</mat-label>
+        <input matInput disabled value="{{starSystem!.orbit.xCoordinate.coordinate}} {{starSystem!.orbit.xCoordinate.distanceMetric}}">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="small-field">
+        <mat-label>Y-Coordinate</mat-label>
+        <input matInput disabled value="{{starSystem!.orbit.yCoordinate.coordinate}} {{starSystem!.orbit.xCoordinate.distanceMetric}}">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="getColonized().length > 0">
         <mat-label>Occupied planets</mat-label>
         <input matInput disabled *ngFor="let planet of getColonized()" value="{{planet.name}} - {{planet.owner!.username}}">
     </mat-form-field>

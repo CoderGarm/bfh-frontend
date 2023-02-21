@@ -44,8 +44,8 @@
                 <div>
                     <mat-form-field appearance="fill">
                         <mat-label>Select a star system</mat-label>
-                        <mat-select [(value)]="reference">
-                            <mat-option *ngFor="let sys of knownSystems" [value]="sys">{{sys.name}}</mat-option>
+                        <mat-select [value]="reference?.idStarSystem" (selectionChange)="changeReferenceSystem($event.value)">
+                            <mat-option *ngFor="let sys of knownSystems" [value]="sys.idStarSystem">{{sys.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -56,11 +56,11 @@
         <ng-container matColumnDef="expandedDetail">
             <td mat-cell *matCellDef="let colo" [attr.colspan]="displayedColumns.length">
                 <div class="expandable-element-detail" [@detailExpand]="colo == expandedElement ? 'expanded' : 'collapsed'">
-                    <mat-list class="lister">
+                    <mat-list>
                         <mat-list-item *ngFor="let planet of getPendingColonizations(colo)">
                             <mat-card appearance="outlined" class="planet-card">
                                 <mat-card-header>
-                                    <div class="bordered">
+                                    <div>
                                         {{planet.name}} has a colonization in progress - Ticks left: {{getTicksLeft(colo, planet)}}
                                     </div>
                                 </mat-card-header>

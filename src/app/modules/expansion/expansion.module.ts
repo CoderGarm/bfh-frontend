@@ -4,10 +4,12 @@ import {OrganizeExpansionComponent} from './components/payload/organize-expansio
 import {SeeExpansionComponent} from './components/payload/see-expansion/see-expansion.component';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
+import {ExpansionManager} from "./expansion.manager";
 
 
 @NgModule({
     declarations: [
+        ExpansionManager,
         ExpansionTabViewComponent,
         OrganizeExpansionComponent,
         SeeExpansionComponent
@@ -15,6 +17,9 @@ import {DisplayElementsModule} from "../display-elements/display-elements.module
     imports: [
         SharedModuleModule,
         DisplayElementsModule
+    ],
+    exports: [
+        ExpansionManager,
     ]
 })
 export class ExpansionModule {

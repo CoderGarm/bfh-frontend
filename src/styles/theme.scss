@@ -20,6 +20,7 @@ $bfh-theme: mat.define-dark-theme((
 ));
 
 $bfh-theme: palette-helper.modify-background($bfh-theme, variables.$background-color);
+$bfh-theme: palette-helper.modify-text-color($bfh-theme, variables.$secondary-text-color);
 
 @include mat.all-component-themes($bfh-theme);
 
@@ -66,7 +67,7 @@ $my-dark-theme-foreground: (
         secondary-text: $light-secondary-text,
         icon: white,
         icons: white,
-        text: white,
+        text: $secondary-text-color,
         slider-min: white,
         slider-off: rgba(white, 0.3),
         slider-off-active: rgba(white, 0.3),

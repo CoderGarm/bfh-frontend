@@ -1,12 +1,12 @@
-<mat-tab-group (selectedIndexChange)="indexChanged($event)" animationDuration="0ms" class="bottom-spacer">
-    <mat-tab label="{{ 'tab.expansion.organize' | translate }}">
-        <ng-template matTabContent>
-            <app-organize-expansion></app-organize-expansion>
-        </ng-template>
-    </mat-tab>
+<mat-tab-group animationDuration="500ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.expansion.view' | translate }}">
         <ng-template matTabContent>
             <app-see-expansion></app-see-expansion>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'tab.expansion.organize' | translate }}">
+        <ng-template matTabContent>
+            <app-organize-expansion></app-organize-expansion>
         </ng-template>
     </mat-tab>
 </mat-tab-group>

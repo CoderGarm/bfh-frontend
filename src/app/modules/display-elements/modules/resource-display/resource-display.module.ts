@@ -3,7 +3,7 @@ import {ResourceServiceComponent} from "./components/resource-service/resource-s
 import {ResourceDisplayComponent} from "./components/resource-display/resource-display.component";
 import {ResourceDisplayDialogComponent} from "./components/resource-display-dialog/resource-display-dialog.component";
 import {SharedModuleModule} from "../../../shared-module/shared-module.module";
-import {ResourceDisplayManager} from "./ResourceDisplayManager";
+import {ResourceDisplayManager} from "./resource-display.manager";
 import {ResourceEmitterService} from "../../../../services/resource-emitter.service";
 
 

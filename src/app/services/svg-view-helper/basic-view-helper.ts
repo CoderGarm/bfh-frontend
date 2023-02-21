@@ -8,6 +8,10 @@ import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
+interface ElementToParent {
+    parent: Dom;
+    element?: Element;
+}
 
 @Component({
     template: ''
@@ -609,9 +613,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
     }
 
-    private drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
-        const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
-
+    private findElementAndParentById(id: string): ElementToParent {
         let parent: Dom = this.canvas!;
         let element: Element | undefined;
         const group = this.getGroupById(id);
@@ -630,6 +632,18 @@ export class BasicViewHelper extends BasicViewHelperData {
         } else {
             element = group;
         }
+        return {
+            parent: parent,
+            element: element
+        }
+    }
+
+    private drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
+        const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
+
+        const elementToParent = this.findElementAndParentById(id);
+        let parent: Dom = elementToParent.parent;
+        let element: Element | undefined = elementToParent.element;
         if (!!element) {
             const radius = this.getRadius(element, zoomFactor);
             const circle = new Circle().x(x).y(y)
@@ -653,9 +667,12 @@ export class BasicViewHelper extends BasicViewHelperData {
         if (!id.endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX)) {
             id = this.getCyclingCircleId(id);
         }
-        let cyclingCircles = this.canvas!.children().filter(value => value.id() === id);
-        if (cyclingCircles.length > 0) {
-            cyclingCircles.forEach(cc => this.canvas!.removeElement(cc));
+
+        const elementToParent = this.findElementAndParentById(id);
+        let parent: Dom = elementToParent.parent;
+        let element: Element | undefined = elementToParent.element;
+        if (!!element) {
+            parent.removeElement(element);
         }
     }
 

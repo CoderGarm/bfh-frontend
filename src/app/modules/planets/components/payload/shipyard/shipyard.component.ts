@@ -17,7 +17,7 @@ import {PlanetsEventService} from "../../../planets-event.service";
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
-import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/resource-display.manager";
 import {ChipSelectorValue} from "../../../../shared-module/components/chip-selector/chip-selector.component";
 
 @Component({

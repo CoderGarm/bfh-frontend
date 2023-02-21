@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Job, JobApiService, Planet} from "../../../../../services/swagger";
 import {PlanetsEventService} from "../../../planets-event.service";
-import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/ResourceDisplayManager";
+import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/resource-display.manager";
 
 @Component({
     selector: 'app-planetary-job-list',

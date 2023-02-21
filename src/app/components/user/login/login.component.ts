@@ -18,6 +18,7 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
 
     loginForm: UntypedFormGroup;
     isAuthenticated: boolean = false;
+    hide: boolean = true;
 
     constructor(protected authService: AuthenticationService,
                 private tokenService: TokenStorage,
@@ -28,10 +29,6 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
             login: new UntypedFormControl(''),
             pass: new UntypedFormControl('')
         });
-        if (this.tokenService.isLocalhost()) {
-            this.loginForm.controls.login.setValue('flashkid');
-            this.loginForm.controls.pass.setValue('12457aA!');
-        }
     }
 
     ngOnInit(): void {

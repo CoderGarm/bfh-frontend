@@ -1,6 +1,5 @@
 @import 'variables';
 
-@function modify-background($theme, $background-color) {
   // A theme is a map with the following structure:
   // (
   //   color: (..., background),
@@ -12,6 +11,7 @@
   // Once in the background palette inside the color map.
   // Again in the background palette itself.
 
+@function modify-background($theme, $background-color) {
   // Replace the background in the color object's background palette.
   $theme-color: map-get($theme, color);
   $color-background-palette: map-get($theme-color, background);
@@ -27,6 +27,17 @@
   $modified-theme-color: map-merge($theme-color, (background: $color-background-palette));
   $modified-theme: map-merge($theme, (color: $modified-theme-color));
   $modified-theme: map-merge($modified-theme, (background: $background-palette));
+
+  @return $modified-theme;
+}
+
+@function modify-text-color($theme, $text-color) {
+  $theme-color: map-get($theme, color);
+  $color-foreground-palette: map-get($theme-color, foreground);
+  $color-foreground-palette: map-merge($color-foreground-palette, (text: $text-color));
+
+  $my-app-colors: map-merge($theme-color, (foreground: $color-foreground-palette));
+  $modified-theme: map-merge($theme, (color: $my-app-colors));
 
   @return $modified-theme;
 }

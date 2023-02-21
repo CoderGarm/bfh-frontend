@@ -25,7 +25,6 @@ tr.expandable-detail-row {
 }
 
 .expandable-element-detail {
-  display: flex;
   overflow-y: scroll;
 }
 
@@ -36,10 +35,10 @@ mat-mdc-list {
 }
 
 .mat-mdc-list-item-content, .mat-mdc-list-base .mat-mdc-list-item, .mat-mdc-list-base .mat-mdc-list-option {
-  height: 85px;
+  height: auto;
+  margin-bottom: 15px;
 }
 
 .planet-card {
-  width: 90%;
 }
 

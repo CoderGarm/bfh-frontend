@@ -11,7 +11,7 @@
 
     <mat-form-field appearance="fill" *ngIf="!!weapon && weapon.weaponType === 'BEAM'">
         <mat-label>Effect value</mat-label>
-        <input matInput disabled value="{{weapon?.baseModule?.effectValue}}">
+        <input matInput disabled value="{{weapon.baseModule.effectValue}}">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
