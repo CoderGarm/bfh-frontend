@@ -31,31 +31,20 @@
   stroke-width: 1;
   stroke-dasharray: 6;
   stroke-dashoffset: 50;
-  animation: move 1s linear 1;
+  animation: beam-shot 1s linear 1;
+  animation-fill-mode: forwards;
 }
 
-@keyframes move {
+@keyframes beam-shot {
   // the animation in journal for beam volleys
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-.circle-cycle {
-  animation: cycling-circle 5s infinite;
-  stroke-linecap: square;
-  animation-timing-function: linear;
-  transform-origin: center;
-  transform-box: fill-box;
-  fill: transparent;
-}
-
-@keyframes cycling-circle {
-  // animation for the selected object and subject
   0% {
-    transform: rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
   100% {
-    transform: rotate(360deg);
+    opacity: 0;
+    stroke-dashoffset: 0;
   }
 }

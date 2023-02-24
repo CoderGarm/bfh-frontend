@@ -268,7 +268,7 @@ export class BattleViewHelper extends BasicViewHelper {
             if (weaponType === WeaponTypeEnum.COUNTERMISSILE) {
 
             }
-            if (weaponType === WeaponTypeEnum.BEAM || weaponType === WeaponTypeEnum.MISSILE) {
+            if (weaponType === WeaponTypeEnum.BEAM) {
                 this.canvas!
                     .line([[shooterG.cx(), shooterG.cy()], [targetG.cx(), targetG.cy()]])
                     .addClass("beamVolley")
@@ -292,13 +292,22 @@ export class BattleViewHelper extends BasicViewHelper {
             if (!startOrbit || !targetOrbit) {
                 return;
             }
+            const angle: number = this.getAngle(startOrbit, targetOrbit);
             // expanding the coordinates by the multiplier but center it at the combat orbit
             startOrbit = this.modifyOrbit(startOrbit, baseOrbit, this.POSITION_MULTIPLIER);
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
-            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit);
+            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
         });
+    }
+
+    private getAngle(origin: Orbit, destination: Orbit): number {
+        return NavigationCalculator.getAngle(this.convertToStandardMetric(origin.xCoordinate),
+            this.convertToStandardMetric(origin.yCoordinate),
+            this.convertToStandardMetric(destination.xCoordinate),
+            this.convertToStandardMetric(destination.yCoordinate)
+        );
     }
 
     private getFightingWarships(fleet: FleetMarker, activeRound: number, hitLogsByRound: Map<number, HitLog[]>) {
@@ -425,7 +434,7 @@ export class BattleViewHelper extends BasicViewHelper {
         return this.warshipPolygonById.get(id);
     }
 
-    private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, centerOrbit: Orbit): Array<Array<ArrayXY[]>> {
+    private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, centerOrbit: Orbit, angle: number): Array<Array<ArrayXY[]>> {
         const yShift = 7.5;
         const xShift = 37.5;
 
@@ -446,7 +455,7 @@ export class BattleViewHelper extends BasicViewHelper {
         for (let i = 0; i < warShips.length; i++) {
             let x: number = baseX + verticalLift;
             let y: number = baseY + horizontalLift;
-            let hullOutlines = this.createHullOutlines(x, y);
+            let hullOutlines = this.createHullOutlines(x, y, angle);
             result.push(hullOutlines);
             horizontalLift += yShift;
             verticalLift += xShift;
@@ -454,78 +463,84 @@ export class BattleViewHelper extends BasicViewHelper {
         return result;
     }
 
-    private addAndScale(coord: number, additional: number, scale: number) {
+    private addAndScale(coord: number, additional: number, scale: number): number {
         return coord + (additional / scale);
     }
 
-    private createHullOutlines(x: number, y: number): Array<ArrayXY[]> {
+    private addAndScaleBoth(x: number, additionalX: number, y: number, additionalY: number, angle: number, scale: number): ArrayXY {
+        const p1: ArrayXY = [x, y];
+        let p2: ArrayXY = [this.addAndScale(x, additionalX, scale), this.addAndScale(y, additionalY, scale)];
+        return NavigationCalculator.rotatePoint(p1, angle + 90, p2);
+    }
+
+    private createHullOutlines(x: number, y: number, angle: number): Array<ArrayXY[]> {
         const result: Array<ArrayXY[]> = [];
         let lines: ArrayXY[];
         lines = []; // upper bow
         let scale = 2;
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 2, scale)]);
-        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 3, scale)]);
-        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 1.5, scale)]);
-        lines.push([this.addAndScale(x, 59, scale), this.addAndScale(y, 1.5, scale)]);
-        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 3.5, scale)]);
-        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 5.5, scale)]);
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 5.5, scale)]);
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 2, scale)]);
+        lines.push(this.addAndScaleBoth(x, 50, y, 2, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 55, y, 3, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 55, y, 1.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 59, y, 1.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 65, y, 3.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 65, y, 5.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 50, y, 5.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 50, y, 2, angle, scale));
         let upperBowPoints = lines;
         result.push(upperBowPoints);
 
         lines = [];
-        lines.push([this.addAndScale(x, 35, scale), this.addAndScale(y, 2, scale)]);  // upper broadside
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 2, scale)]);
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 5.5, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 5.5, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 2, scale)]);
-        lines.push([this.addAndScale(x, 35, scale), this.addAndScale(y, 2, scale)]);
+        lines.push(this.addAndScaleBoth(x, 35, y, 2, angle, scale));  // upper broadside
+        lines.push(this.addAndScaleBoth(x, 50, y, 2, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 50, y, 5.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 5.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 2, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 35, y, 2, angle, scale));
         let upperBroadsidePoints = lines;
         result.push(upperBroadsidePoints);
 
         lines = []; // upper stern
-        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 5.5, scale)]);
-        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 3.5, scale)]);
-        lines.push([this.addAndScale(x, 11, scale), this.addAndScale(y, 1.5, scale)]);
-        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 1.5, scale)]);
-        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 3, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 2, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 5.5, scale)]);
-        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 5.5, scale)]);
+        lines.push(this.addAndScaleBoth(x, 5, y, 5.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 5, y, 3.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 11, y, 1.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 15, y, 1.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 15, y, 3, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 2, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 5.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 5, y, 5.5, angle, scale));
         let upperSternPoints = lines;
         result.push(upperSternPoints);
 
         // todo outline by class?
         lines = []; // lower stern
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 6.5, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 10, scale)]);
-        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 9, scale)]);
-        lines.push([this.addAndScale(x, 15, scale), this.addAndScale(y, 10.5, scale)]);
-        lines.push([this.addAndScale(x, 11, scale), this.addAndScale(y, 10.5, scale)]);
-        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 8.5, scale)]);
-        lines.push([this.addAndScale(x, 5, scale), this.addAndScale(y, 6.5, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 6.5, scale)]);
+        lines.push(this.addAndScaleBoth(x, 20, y, 6.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 10, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 15, y, 9, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 15, y, 10.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 11, y, 10.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 5, y, 8.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 5, y, 6.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 6.5, angle, scale));
         let lowerSternPoints = lines;
         result.push(lowerSternPoints);
 
         lines = [];
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 10, scale)]); // lower broadside
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 6.5, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 6.5, scale)]);
-        lines.push([this.addAndScale(x, 20, scale), this.addAndScale(y, 10, scale)]);
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 10, scale)]);
+        lines.push(this.addAndScaleBoth(x, 50, y, 10, angle, scale)); // lower broadside
+        lines.push(this.addAndScaleBoth(x, 50, y, 6.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 6.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 20, y, 10, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 50, y, 10, angle, scale));
         let lowerBroadsidePoints = lines;
         result.push(lowerBroadsidePoints);
 
         lines = [];
-        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 6.5, scale)]); // lower bow
-        lines.push([this.addAndScale(x, 65, scale), this.addAndScale(y, 8.5, scale)]);
-        lines.push([this.addAndScale(x, 59, scale), this.addAndScale(y, 10.5, scale)]);
-        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 10.5, scale)]);
-        lines.push([this.addAndScale(x, 55, scale), this.addAndScale(y, 9, scale)]);
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 10, scale)]);
-        lines.push([this.addAndScale(x, 50, scale), this.addAndScale(y, 6.5, scale)]);
+        lines.push(this.addAndScaleBoth(x, 65, y, 6.5, angle, scale)); // lower bow
+        lines.push(this.addAndScaleBoth(x, 65, y, 8.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 59, y, 10.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 55, y, 10.5, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 55, y, 9, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 50, y, 10, angle, scale));
+        lines.push(this.addAndScaleBoth(x, 50, y, 6.5, angle, scale));
         let lowerBowPoints = lines;
         result.push(lowerBowPoints);
         return result;

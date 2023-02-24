@@ -13,16 +13,3 @@ app-fleet-round-state {
   overflow: auto;
   direction: rtl;
 }
-
-.beamVolley {
-  stroke: yellow;
-  stroke-width: 1;
-  stroke-dasharray: 4;
-  animation: move 1s linear infinite;
-}
-
-@keyframes move {
-  100% {
-    stroke-dashoffset: 0;
-  }
-}

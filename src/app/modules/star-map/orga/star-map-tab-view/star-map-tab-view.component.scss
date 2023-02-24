@@ -84,3 +84,23 @@ svg {
   stroke-dasharray: 0 20 28.284;
   animation: infinite;
 }
+
+
+.circle-cycle {
+  animation: cycling-circle 5s infinite;
+  stroke-linecap: square;
+  animation-timing-function: linear;
+  transform-origin: center;
+  transform-box: fill-box;
+  fill: transparent;
+}
+
+@keyframes cycling-circle {
+  // animation for the selected object and subject
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
