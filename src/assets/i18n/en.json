@@ -300,7 +300,11 @@
   },
   "register": {
     "email": {
-      "info": "Your eMail address will be used only for resetting the password."
+      "info": "Your eMail address will be used only for resetting the password.",
+      "will-not-provide": {
+        "message": "I don't want to provide my eMail address.",
+        "tooltip": "If you chose this option, you can't change the password later."
+      }
     },
     "spinner-message": "Please wait while you navy is fighting for you."
   },

@@ -6,7 +6,7 @@ import {FittingModifyComponent} from './components/payload/fitting-modify/fittin
 import {ShipClassSelectionComponent} from './components/orga/ship-class-selection/ship-class-selection.component';
 import {ShipClassTabViewComponent} from './components/orga/ship-class-tab-view/ship-class-tab-view.component';
 import {ShipClassSvgComponent} from './components/payload/ship-class-svg/ship-class-svg.component';
-import {ShipClassNamePatternValidatorDirective} from "../../validators/shipNamePatternValidator";
+import {ShipClassNamePatternValidatorDirective} from "../../validators/shipName-pattern.validator";
 import {ShipyardEventService} from "./shipyard-event.service";
 import {FittingCreateComponent} from './components/payload/fitting-create/fitting-create.component';
 

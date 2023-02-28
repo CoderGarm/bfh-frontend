@@ -300,7 +300,11 @@
   },
   "register": {
     "email": {
-      "info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet."
+      "info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet.",
+      "will-not-provide": {
+        "message": "Ich möchte meine eMail Adresse nicht angeben.",
+        "tooltip": "Wählst du diese Option, kannst du dein Passwort nicht ändern."
+      }
     },
     "spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
   },

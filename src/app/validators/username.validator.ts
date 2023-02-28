@@ -1,4 +1,4 @@
-import {Directive} from '@angular/core';
+import {Directive, OnDestroy} from '@angular/core';
 import {NG_VALIDATORS, UntypedFormGroup, ValidationErrors, Validator} from '@angular/forms';
 import {AuthApiService} from "../services/swagger";
 import {Subscription} from "rxjs";
@@ -6,6 +6,7 @@ import {Subscription} from "rxjs";
 
 export const UserErrorMessages: { [key: string]: string } = {
     userNameInvalid: 'The username is already in use.',
+    userNamePatternInvalid: 'The username must contain of 3 to 30 characters of numbers or letters.',
     eMailInvalid: 'The eMail address is already in use.'
 };
 
@@ -13,9 +14,11 @@ export const UserErrorMessages: { [key: string]: string } = {
     selector: '[userNameValidator]',
     providers: [{provide: NG_VALIDATORS, useExisting: UserNameValidatorDirective, multi: true}]
 })
-export class UserNameValidatorDirective implements Validator {
+export class UserNameValidatorDirective implements Validator, OnDestroy {
 
     subscriptions: Subscription[] = [];
+
+    username: string = '';
 
     ngOnDestroy() {
         this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -28,7 +31,8 @@ export class UserNameValidatorDirective implements Validator {
         const loginControl = control.get('login');
         if (!!loginControl) {
             let username: string = loginControl.value;
-            if (loginControl.dirty && !!username) {
+            if (username != this.username && loginControl.dirty && !!username) {
+                this.username = username;
                 loginControl.markAsTouched();
                 let sub = this.authAPi.checkUsername(username).subscribe(resp => {
                     if (!resp) {
@@ -43,36 +47,30 @@ export class UserNameValidatorDirective implements Validator {
 }
 
 @Directive({
-    selector: '[eMailValidator]',
-    providers: [{provide: NG_VALIDATORS, useExisting: EMailValidatorDirective, multi: true}]
+    selector: '[usernamePatternValidator]',
+    providers: [{provide: NG_VALIDATORS, useExisting: UsernamePatternValidatorDirective, multi: true}]
 })
-export class EMailValidatorDirective implements Validator {
-
-    subscriptions: Subscription[] = [];
-
-    ngOnDestroy() {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    }
-
-    constructor(private authAPi: AuthApiService) {
-    }
-
+export class UsernamePatternValidatorDirective implements Validator {
     validate(control: UntypedFormGroup): ValidationErrors {
-        const eMailControl = control.get('email');
-        if (!!eMailControl) {
-            let eMailAddress: string = eMailControl.value;
-            if (eMailControl.dirty && !!eMailAddress) {
-                eMailControl.markAsTouched();
-                let sub = this.authAPi.checkEmail(eMailAddress).subscribe(resp => {
-                    if (!resp) {
-                        eMailControl.setErrors({eMailInvalid: true});
-                    }
-                });
-                this.subscriptions.push(sub);
-            }
-        }
-        return {};
+        return loginPattern(control);
     }
+}
+
+export function loginPattern(control: UntypedFormGroup): ValidationErrors {
+
+    const loginControl = control.get('login');
+    const regex: RegExp = new RegExp(/^[a-zA-Z0-9]{3,30}$/);
+
+    if (!!loginControl) {
+        let loginString: string = loginControl.value;
+        const matchRegex = regex.test(loginString)
+        if (loginControl.dirty && !matchRegex) {
+            loginControl.markAsTouched();
+            loginControl.setErrors({userNamePatternInvalid: true});
+        }
+    }
+
+    return {};
 }
 
 

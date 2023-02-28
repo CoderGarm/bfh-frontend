@@ -1,7 +1,7 @@
 import {ChatModule} from './modules/chat/chat.module';
 import {ErrorDialogComponent} from './components/error-dialog/error-dialog.component';
 import {CustomErrorHandler} from './services/custom-error-handler.service';
-import {PasswordEqualityValidatorDirective, PasswordPatternValidatorDirective} from './validators/passwordValidator';
+import {PasswordEqualityValidatorDirective, PasswordPatternValidatorDirective} from './validators/password.validator';
 import {AuthenticationModule} from './services/authentication';
 import {ErrorHandler, Injector, NgModule, SecurityContext} from '@angular/core';
 import {AppComponent} from './app.component';
@@ -26,7 +26,7 @@ import {BasicViewHelper} from "./services/svg-view-helper/basic-view-helper";
 import {SnackbarNotificationService} from "./services/snackbar-notification.service";
 import {AdminModule} from "./modules/admin/admin.module";
 import {ForumModule} from "./modules/forum/forum.module";
-import {EMailValidatorDirective, UserNameValidatorDirective} from "./validators/userNameValidator";
+import {UsernamePatternValidatorDirective, UserNameValidatorDirective} from "./validators/username.validator";
 import {AllianceModule} from "./modules/alliance/alliance.module";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -55,6 +55,7 @@ import {SidenavSelectionManager} from "./sidenav-selection-manager";
 import {ModuleService} from "./services/prefetch/module.service";
 import {DistancePipe} from "./services/pipes/distance.pipe";
 import {TechLevelPipe} from "./services/pipes/tech-level.pipe";
+import {EMailValidatorDirective} from "./validators/email.validator";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -83,6 +84,7 @@ export let AppInjector: Injector;
         PasswordEqualityValidatorDirective,
         PasswordPatternValidatorDirective,
         UserNameValidatorDirective,
+        UsernamePatternValidatorDirective,
         EMailValidatorDirective,
         ConfirmDialogComponent,
         GlobalSpinnerComponent,

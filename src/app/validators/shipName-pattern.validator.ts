@@ -1,4 +1,4 @@
-import {Directive} from '@angular/core';
+import {Directive, OnDestroy} from '@angular/core';
 import {NG_VALIDATORS, UntypedFormGroup, ValidationErrors, Validator} from '@angular/forms';
 import {ShipyardApiService} from "../services/swagger";
 import {TokenStorage} from "../services/authentication/token-storage.service";
@@ -15,7 +15,7 @@ export const ShipClassNamePatternErrorMessages: { [key: string]: string } = {
     selector: '[shipClassNamePatternValidator]',
     providers: [{provide: NG_VALIDATORS, useExisting: ShipClassNamePatternValidatorDirective, multi: true}]
 })
-export class ShipClassNamePatternValidatorDirective implements Validator {
+export class ShipClassNamePatternValidatorDirective implements Validator, OnDestroy {
 
     private subscriptions: Subscription[] = [];
 

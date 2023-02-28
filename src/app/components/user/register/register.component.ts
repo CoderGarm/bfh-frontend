@@ -1,13 +1,14 @@
 import {AuthApiService, UserApiService, UserReq} from '../../../services/swagger';
-import {PasswordErrorMessages} from '../../../validators/passwordValidator';
+import {PasswordErrorMessages} from '../../../validators/password.validator';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
-import {UserErrorMessages} from "../../../validators/userNameValidator";
+import {UserErrorMessages} from "../../../validators/username.validator";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {TranslateService} from "@ngx-translate/core";
 import {SpinnerService} from "../../../services/spinner.service";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 
 @Component({
     selector: 'app-register',
@@ -31,19 +32,13 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
                 private spinnerService: SpinnerService,
                 public translate: TranslateService) {
         super();
-        let utcDate = new Date().getMilliseconds();
         this.registerForm = new UntypedFormGroup({
             login: new UntypedFormControl('', Validators.required),
             pass: new UntypedFormControl('', [Validators.required]),
             passRepeat: new UntypedFormControl('', Validators.required),
-            email: new UntypedFormControl('', Validators.email)
+            email: new UntypedFormControl('', Validators.email),
+            noEMailWanted: new UntypedFormControl(false)
         });
-        if (this.tokenService.isLocalhost()) {
-            this.registerForm.controls.login.setValue(utcDate);
-            this.registerForm.controls.pass.setValue('12457aA!');
-            this.registerForm.controls.passRepeat.setValue('12457aA!');
-            this.registerForm.controls.email.setValue(utcDate + '@' + utcDate);
-        }
 
         // just make sure that the key exists
         this.translate.get('register.spinner-message');
@@ -54,10 +49,17 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
 
     submitRegister(): void {
         this.spinnerService.activateSpinner('register.spinner-message');
+        let email: string = this.registerForm.controls.email.value;
+        const noEMailWanted: boolean = this.registerForm.controls.noEMailWanted.value;
+        const userName: string = this.registerForm.controls.login.value;
+        if (noEMailWanted) {
+            email = userName + '@' + userName;
+        }
         let newUser: UserReq = {
-            email: this.registerForm.controls.email.value,
+            email: email,
+            noEMailWanted: noEMailWanted,
             password: this.registerForm.controls.pass.value,
-            username: this.registerForm.controls.login.value
+            username: userName
         };
         const sub = this.authService.createUser(newUser)
             .subscribe(() => {
@@ -72,5 +74,28 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
         this.registerForm.controls.pass.setValue('');
         this.registerForm.controls.passRepeat.setValue('');
         this.registerForm.controls.email.setValue('');
+        this.registerForm.controls.noEMailWanted.setValue(false);
+    }
+
+    changeNoEMailWanted(event: MatCheckboxChange) {
+        this.registerForm.controls.noEMailWanted.setValue(event.checked);
+        if (<boolean>this.registerForm.controls.noEMailWanted.value) {
+            this.registerForm.controls.email.setValue('');
+            this.registerForm.controls.email.disable({onlySelf: true});
+            this.registerForm.controls.email.validator
+        } else {
+            this.registerForm.controls.email.enable();
+        }
+    }
+
+    isRegisterValid() {
+        let unCrit = this.registerForm.controls.login.valid;
+        unCrit = unCrit && this.registerForm.controls.pass.valid;
+        unCrit = unCrit && this.registerForm.controls.passRepeat.valid;
+        let mailValid = this.registerForm.controls.email.valid;
+        if (this.registerForm.controls.noEMailWanted.valid) {
+            mailValid = true;
+        }
+        return (unCrit && mailValid) || this.inProgress;
     }
 }

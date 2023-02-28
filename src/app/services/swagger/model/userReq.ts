@@ -13,11 +13,7 @@
 /**
  * .
  */
-export interface UserReq { 
-    /**
-     * The user's database id.
-     */
-    idUser?: number;
+export interface UserReq {
     /**
      * The user's name
      */
@@ -30,5 +26,8 @@ export interface UserReq {
      * The user's e-mail - only shipped in a creation process
      */
     email: string;
-    idAlliance?: number;
+    /**
+     * The user don't want to provide an eMail and will not recover the password.
+     */
+    noEMailWanted: Boolean;
 }

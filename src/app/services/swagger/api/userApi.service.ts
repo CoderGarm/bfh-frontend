@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
 import { UserJson } from '../model/userJson';
-import { UserReq } from '../model/userReq';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -212,54 +211,6 @@ export class UserApiService {
 
         return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/user/byNameLike/${encodeURIComponent(String(username))}`,
             {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Updates a single user
-     * Updates and returns a user which is now registered in the system. Every changed field except the idUser will be updated. The user id must be present.
-     * @param body default response
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updateUser(body: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
-    public updateUser(body: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
-    public updateUser(body: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
-    public updateUser(body: UserReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling updateUser.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<UserJson>('put',`${this.basePath}/api/private/user/`,
-            {
-                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

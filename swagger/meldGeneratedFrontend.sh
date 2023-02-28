@@ -14,9 +14,23 @@ for filename in ./*; do
 done
 
 cd ../..
+echo 'editing models'
+cd swaggerGenerated/model/ || exit 1
+for filename in ./*; do
+  if [[ $filename == './userReq.ts' ]]; then
+    echo "replacing boolean primitive by wrapper because a primitive boolean will not be 'rendered' in a http post request for whatever reasons"
+    lineNo=$(awk "/noEMailWanted: boolean;/{ print NR; exit }" $filename)
+    if [[ ! -z "$lineNo" ]]; then
+      cmd=$(echo -n "$lineNo")
+      cmd2=$(echo -n "s/boolean/Boolean/")
+      sed -i "$cmd$cmd2" $filename
+    fi
+  fi
+done
+
+cd ../..
 echo 'using environment'
 find . -name '*Api.service.ts' -exec sed -i -E "s|protected basePath = 'http://localhost:8080';|protected basePath = environment.backendServer;|g" {} \;
-
 
 echo 'removing unnecessary files'
 find . -name .gitignore -exec rm {} \;

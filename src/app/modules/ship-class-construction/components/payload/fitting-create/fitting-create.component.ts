@@ -9,7 +9,7 @@ import {
     SpacecraftCapabilities,
     SpacecraftCapacityAreas
 } from "../../../../../services/swagger";
-import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipNamePatternValidator";
+import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipName-pattern.validator";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {ShipClassComparator} from "../ship-class.comparator";
 import {ShipClassTabViewComponent} from "../../orga/ship-class-tab-view/ship-class-tab-view.component";

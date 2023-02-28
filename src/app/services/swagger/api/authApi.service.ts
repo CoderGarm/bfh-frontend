@@ -331,4 +331,45 @@ export class AuthApiService {
         );
     }
 
+    /**
+     * Checks if a eMail already exists.
+     * 
+     * @param code 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public verifyEmail(code: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public verifyEmail(code: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public verifyEmail(code: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public verifyEmail(code: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (code === null || code === undefined) {
+            throw new Error('Required parameter code was null or undefined when calling verifyEmail.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<any>('get',`${this.basePath}/api/public/auth/verify/${encodeURIComponent(String(code))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
 }

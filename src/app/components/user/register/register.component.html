@@ -1,46 +1,55 @@
-<form [formGroup]="registerForm" passwordPatternValidator passwordEqualityValidator userNameValidator eMailValidator>
-    <mat-grid-list cols="1" rowHeight="100px">
-        <mat-grid-tile>
-            <h2>Register</h2>
-        </mat-grid-tile>
-        <mat-grid-tile>
+<form [formGroup]="registerForm" passwordPatternValidator passwordEqualityValidator userNameValidator usernamePatternValidator eMailValidator>
+    <div id="register">
+        <h2 id="headline">Register</h2>
+
+        <div class="register-element">
             <mat-form-field appearance="outline">
                 <mat-label>Login</mat-label>
                 <input matInput type='text' formControlName='login' required autocomplete="off" [readonly]="inProgress">
                 <mat-error *ngIf="registerForm.get('login')?.hasError('userNameInvalid')">{{userErrors.userNameInvalid}} </mat-error>
+                <mat-error *ngIf="registerForm.get('login')?.hasError('userNamePatternInvalid')">{{userErrors.userNamePatternInvalid}} </mat-error>
             </mat-form-field>
-        </mat-grid-tile>
+        </div>
 
-        <mat-grid-tile>
+        <div class="register-element">
             <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="pass" min="0" required autocomplete="off" [readonly]="inProgress"
                        matTooltip="The password should contain of between 8 and 30 characters, numerals and if you want special characters.">
                 <mat-error *ngIf="registerForm.get('pass')?.hasError('passPattern')">{{passErrors.passPattern}} </mat-error>
             </mat-form-field>
-        </mat-grid-tile>
+        </div>
 
-        <mat-grid-tile>
+        <div class="register-element">
             <mat-form-field appearance="outline">
                 <mat-label>Repeat passwort</mat-label>
                 <input matInput type="password" formControlName="passRepeat" min="0" required autocomplete="off" [readonly]="inProgress">
                 <mat-error *ngIf="registerForm.get('passRepeat')?.hasError('passwordNotEqual')">{{passErrors.passwordNotEqual}} </mat-error>
             </mat-form-field>
-        </mat-grid-tile>
+        </div>
 
-        <mat-grid-tile>
+        <div class="register-element">
             <mat-form-field appearance="outline">
                 <mat-label>eMail</mat-label>
                 <input matInput type='email' formControlName='email' required autocomplete="off" [readonly]="inProgress"
                        matTooltip="{{ 'register.email.info' | translate }}">
-                <mat-error *ngIf="registerForm.get('email')?.hasError('eMailInvalid')">{{userErrors.eMailInvalid}} </mat-error>
-            </mat-form-field>
-        </mat-grid-tile>
 
-        <mat-grid-tile>
-            <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitRegister()" [disabled]="!this.registerForm.valid || inProgress">Submit
+                <mat-error *ngIf="registerForm.get('email')?.hasError('eMailInvalid')">{{userErrors.eMailInvalid}} </mat-error>
+
+                <mat-hint>
+                    <mat-checkbox [checked]="registerForm.get('noEMailWanted')!.value" (change)="changeNoEMailWanted($event)" class="no-mail"
+                                  matTooltip="{{ 'register.email.will-not-provide.tooltip' | translate }}">
+                        {{ 'register.email.will-not-provide.message' | translate }}
+                    </mat-checkbox>
+                </mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <button mat-raised-button class="action-button" color="secondary" type="submit"
+                    (click)="submitRegister()" [disabled]="!isRegisterValid()">Submit
             </button>
             <button mat-raised-button class="action-button" color="secondary" [disabled]="inProgress" (click)="clear()">Clear</button>
-        </mat-grid-tile>
-    </mat-grid-list>
+        </div>
+    </div>
 </form>

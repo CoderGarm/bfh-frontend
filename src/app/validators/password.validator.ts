@@ -48,7 +48,7 @@ export class PasswordPatternValidatorDirective implements Validator {
 export function passPattern(control: UntypedFormGroup): ValidationErrors {
 
     const passControl = control.get('pass');
-    const regex: RegExp = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})/);
+    const regex: RegExp = new RegExp(/^((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})$/);
 
     if (!!passControl) {
         let passString: string = passControl.value;
