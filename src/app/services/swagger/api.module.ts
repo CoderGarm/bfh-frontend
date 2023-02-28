@@ -18,6 +18,7 @@ import { JobApiService } from './api/jobApi.service';
 import { JournalApiService } from './api/journalApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
+import { PublicResourcesApiService } from './api/publicResourcesApi.service';
 import { ResearchApiService } from './api/researchApi.service';
 import { ResourcesApiService } from './api/resourcesApi.service';
 import { ShipyardApiService } from './api/shipyardApi.service';
@@ -46,6 +47,7 @@ import { WikiApiService } from './api/wikiApi.service';
     JournalApiService,
     ModuleApiService,
     PlanetApiService,
+    PublicResourcesApiService,
     ResearchApiService,
     ResourcesApiService,
     ShipyardApiService,

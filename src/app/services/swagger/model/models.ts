@@ -27,6 +27,7 @@ export * from './combatRound';
 export * from './combatRoundKey';
 export * from './commissioning';
 export * from './construction';
+export * from './coords';
 export * from './counterMissileHit';
 export * from './createForumThread';
 export * from './createForumThreadMessage';
