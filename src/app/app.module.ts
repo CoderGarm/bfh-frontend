@@ -56,6 +56,7 @@ import {ModuleService} from "./services/prefetch/module.service";
 import {DistancePipe} from "./services/pipes/distance.pipe";
 import {TechLevelPipe} from "./services/pipes/tech-level.pipe";
 import {EMailValidatorDirective} from "./validators/email.validator";
+import {ForgottenPasswordComponent} from './components/user/forgotten-password/forgotten-password.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -89,6 +90,7 @@ export let AppInjector: Injector;
         ConfirmDialogComponent,
         GlobalSpinnerComponent,
         NestedSidenavComponent,
+        ForgottenPasswordComponent,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),

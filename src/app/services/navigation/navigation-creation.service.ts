@@ -21,6 +21,7 @@ import {ShipClassTabViewComponent} from "../../modules/ship-class-construction/c
 import {PlanetTabViewComponent} from "../../modules/planets/components/orga/planet-tab-view/planet-tab-view.component";
 import {FleetTabViewComponent} from "../../modules/fleet/components/orga/fleet-tab-view/fleet-tab-view.component";
 import {FittingCreateComponent} from "../../modules/ship-class-construction/components/payload/fitting-create/fitting-create.component";
+import {ForgottenPasswordComponent} from "../../components/user/forgotten-password/forgotten-password.component";
 
 
 export class NavigationCreationService {
@@ -36,6 +37,8 @@ export class NavigationCreationService {
             {path: HomeComponent.path, component: HomeComponent},
             {path: RegisterComponent.path, component: RegisterComponent},
             {path: LoginComponent.path, component: LoginComponent},
+            {path: ForgottenPasswordComponent.path, component: ForgottenPasswordComponent},
+            {path: ForgottenPasswordComponent.paramPath, component: ForgottenPasswordComponent},
             {path: ProfileComponent.path, component: ProfileComponent, canActivate: [ProtectedGuard]},
         ];
     }

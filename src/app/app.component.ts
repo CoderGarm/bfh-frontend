@@ -16,6 +16,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {WikiMainComponent} from "./modules/wiki/orga/wiki-main/wiki-main.component";
 import {RegisterComponent} from "./components/user/register/register.component";
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
+import {ForgottenPasswordComponent} from "./components/user/forgotten-password/forgotten-password.component";
 
 
 @Component({
@@ -115,6 +116,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             && !this.router.url.endsWith(LoginComponent.path)
             && !this.router.url.endsWith(HomeComponent.path)
             && !this.router.url.endsWith(RegisterComponent.path)
+            && !this.router.url.includes(ForgottenPasswordComponent.path)
             && !this.router.url.endsWith(WikiMainComponent.path);
     }
 }

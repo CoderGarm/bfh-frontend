@@ -13,7 +13,7 @@
 /**
  * .
  */
-export interface UserReq {
+export interface UserReq { 
     /**
      * The user's name
      */

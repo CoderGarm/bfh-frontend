@@ -17,9 +17,9 @@ export interface ChangePassword {
     /**
      * The user's name
      */
-    username: string;
+    username?: string;
     /**
      * The user's eMail.
      */
-    geteMail?: string;
+    eMail?: string;
 }

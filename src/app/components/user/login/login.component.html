@@ -17,6 +17,9 @@
                 <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-hint>
+                    <button mat-button routerLink='/forgotten-password' style="font-size: 0.8rem;">Password forgotten</button>
+                </mat-hint>
             </mat-form-field>
         </mat-grid-tile>
 
