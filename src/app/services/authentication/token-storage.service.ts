@@ -50,7 +50,11 @@ export class TokenStorage {
     }
 
     getGameRoles(): GameUserRolesEnum[] {
-        const roleStrings = (<string>localStorage.getItem(this.gameRoles)).split("|");
+        const item = <string>localStorage.getItem(this.gameRoles);
+        if (!item || item.length == 0) {
+            return [];
+        }
+        const roleStrings = item.split("|");
         const roles: GameUserRolesEnum[] = [];
         roleStrings.forEach(s => {
             let role: GameUserRolesEnum = s as keyof typeof GameUserRolesEnum

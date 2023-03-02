@@ -82,9 +82,11 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     private detectUnreadMessages() {
         if (this.isLoggedIn) {
-            let sub = this.chatApi.hasUserUnread().subscribe(resp => this.setUnread(resp, ChatComponent.path));
+            let sub = this.chatApi.hasUserUnread().subscribe(resp => this.setUnread(resp, ChatComponent.path), error => {
+            });
             this.subscriptions.push(sub);
-            sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.setUnread(resp, ForumsListComponent.path));
+            sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.setUnread(resp, ForumsListComponent.path), error => {
+            });
             this.subscriptions.push(sub);
         }
     }

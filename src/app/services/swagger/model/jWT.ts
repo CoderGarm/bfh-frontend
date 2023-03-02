@@ -49,8 +49,11 @@ export namespace JWT {
         USER: 'USER' as RoleEnum,
         ADMIN: 'ADMIN' as RoleEnum
     };
-    export type GameUserRolesEnum = 'ALLIANCE_ADMIN';
+    export type GameUserRolesEnum = 'ALLIANCE_ADMIN' | 'WIKI_ADMIN' | 'FORUM_READ' | 'FORUM_WRITE';
     export const GameUserRolesEnum = {
-        ALLIANCE_ADMIN: 'ALLIANCE_ADMIN' as GameUserRolesEnum
+        ALLIANCE_ADMIN: 'ALLIANCE_ADMIN' as GameUserRolesEnum,
+        WIKI_ADMIN: 'WIKI_ADMIN' as GameUserRolesEnum,
+        FORUM_READ: 'FORUM_READ' as GameUserRolesEnum,
+        FORUM_WRITE: 'FORUM_WRITE' as GameUserRolesEnum
     };
 }

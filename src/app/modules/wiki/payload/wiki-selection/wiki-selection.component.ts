@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SubscriptionManager} from "../../../../subscription.manager";
-import {Article, EnumValueDto, WikiApiService} from "../../../../services/swagger";
+import {Article, EnumValueDto, JWT, WikiApiService} from "../../../../services/swagger";
 import EWikiCategoriesEnum = EnumValueDto.EWikiCategoriesEnum;
+import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({
     selector: 'app-wiki-selection',
@@ -22,8 +23,12 @@ export class WikiSelectionComponent extends SubscriptionManager implements OnIni
     @Input()
     articleChangeReceiver: EventEmitter<Article> = new EventEmitter();
 
+    isWikiAdmin: boolean = false;
+
     constructor(private wikiService: WikiApiService) {
         super();
+
+        this.isWikiAdmin = this.tokenStorage.getGameRoles().filter(role => role === GameUserRolesEnum.WIKI_ADMIN).length > 0;
     }
 
     ngOnInit(): void {
@@ -48,6 +53,9 @@ export class WikiSelectionComponent extends SubscriptionManager implements OnIni
                 arr.push(a);
                 display.set(category, arr);
             });
+            if (!this.isWikiAdmin) {
+                display.delete(EWikiCategoriesEnum.WELCOMEMESSAGE);
+            }
             this.display = display;
         });
         this.subscriptions.push(sub);
