@@ -1,5 +1,5 @@
 <div class="bottom-spacer content-area">
-    <mat-card appearance="outlined" *ngFor="let alliance of alliances">
+    <mat-card appearance="outlined" *ngFor="let alliance of alliances" class="ally-card">
         <mat-card-header>
             <div mat-card-avatar class="avatar-image"></div>
             <mat-card-title>{{alliance.name}}</mat-card-title>
@@ -9,18 +9,17 @@
             <p>{{ 'alliance.founder' | translate }}: {{alliance.founder.username}}</p>
             <p>{{ 'alliance.members' | translate }}: {{alliance.membersAmount}}</p>
         </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button color="secondary"
-                    *ngIf="!idAllianceUser && (!applicationOpenAt || applicationOpenAt.idAlliance != alliance.idAlliance)"
-                    [disabled]="!!applicationOpenAt"
-                    (click)="apply(alliance)">
-                Apply
-            </button>
-            <button mat-raised-button color="secondary"
-                    *ngIf="!!applicationOpenAt && applicationOpenAt.idAlliance === alliance.idAlliance"
-                    disabled>
-                Applied
-            </button>
+        <mat-card-actions *ngIf="!isAdmin">
+            <div *ngIf="!idAlliance && !isApplicantAt(alliance)">
+                <button mat-raised-button color="secondary" (click)="apply(alliance)">Apply</button>
+            </div>
+            <div *ngIf="isApplicantAt(alliance)">
+                <button mat-raised-button color="secondary" disabled>Applied</button>
+                <button mat-raised-button color="secondary" (click)="revoke(alliance)">Revoke application</button>
+            </div>
+            <div *ngIf="!!idAlliance && idAlliance === alliance.idAlliance">
+                <button mat-raised-button color="secondary" (click)="leave()">Leave alliance</button>
+            </div>
         </mat-card-actions>
     </mat-card>
 </div>

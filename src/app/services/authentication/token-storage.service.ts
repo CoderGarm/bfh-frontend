@@ -99,7 +99,7 @@ export class TokenStorage {
 
     setGameRoles(roles: GameUserRolesEnum[]): TokenStorage {
         let rolesString: string = "";
-        roles.forEach(r => rolesString += r);
+        roles.forEach(r => rolesString += r + "|");
         localStorage.setItem(this.gameRoles, rolesString);
         return this;
     }
@@ -117,6 +117,8 @@ export class TokenStorage {
     setAllianceID(idAlliance: number | undefined): TokenStorage {
         if (!!idAlliance) {
             localStorage.setItem(this.allianceID, String(idAlliance));
+        } else {
+            localStorage.removeItem(this.allianceID);
         }
         return this;
     }

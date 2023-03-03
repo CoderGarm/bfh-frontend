@@ -7,10 +7,13 @@ import {AllianceDashboardComponent} from './components/payload/alliance-dashboar
 import {ForumModule} from "../forum/forum.module";
 import {MembersListComponent} from './components/payload/members-list/members-list.component';
 import {AllianceCreateComponent} from "./components/payload/alliance-create/alliance-create.component";
+import {AllianceCodeValidatorDirective, AllianceNameValidatorDirective} from "./validators/alliance.validator";
 
 
 @NgModule({
     declarations: [
+        AllianceNameValidatorDirective,
+        AllianceCodeValidatorDirective,
         AllianceTabViewComponent,
         AllianceListComponent,
         AllianceForumComponent,

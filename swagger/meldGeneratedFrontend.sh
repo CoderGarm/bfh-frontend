@@ -26,6 +26,13 @@ for filename in ./*; do
       sed -i "$cmd$cmd2" $filename
     fi
   fi
+  if [[ $filename == './jWT.ts' ]]; then
+    echo "replacing enum constants with camel case"
+    sed -i 's/ALLIANCEADMIN/ALLIANCE_ADMIN/' $filename
+    sed -i 's/WIKIADMIN/WIKI_ADMIN/' $filename
+    sed -i 's/FORUMREAD/FORUM_READ/' $filename
+    sed -i 's/FORUMWRITE/FORUM_WRITE/' $filename
+  fi
 done
 
 cd ../..

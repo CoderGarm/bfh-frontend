@@ -3,6 +3,7 @@ import {AllianceApiService} from "../../../../../services/swagger";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {AllianceErrorMessages} from "../../../validators/alliance.validator";
 
 @Component({
     selector: 'app-alliance-create',
@@ -10,6 +11,8 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
     styleUrls: ['./alliance-create.component.scss']
 })
 export class AllianceCreateComponent extends SubscriptionManager implements OnInit {
+
+    errors = AllianceErrorMessages;
 
     allianceG: UntypedFormGroup = new UntypedFormGroup({
         allianceNameFC: new UntypedFormControl(''),

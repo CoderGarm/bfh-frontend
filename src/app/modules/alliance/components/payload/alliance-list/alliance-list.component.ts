@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {Alliance, AllianceApiService} from "../../../../../services/swagger";
+import {Alliance, AllianceApiService, JWT} from "../../../../../services/swagger";
+import {AllianceHelper} from "../../../alliance.helper";
+import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({
     selector: 'app-alliance-list',
@@ -9,9 +11,10 @@ import {Alliance, AllianceApiService} from "../../../../../services/swagger";
 })
 export class AllianceListComponent extends SubscriptionManager implements OnInit {
 
-    idAllianceUser?: number;
+    idAlliance?: number;
+    isAdmin: boolean = false;
     alliances: Alliance[] = [];
-    applicationOpenAt?: Alliance;
+    applicationOpenAt: Alliance[] = [];
 
     constructor(private allianceApi: AllianceApiService) {
         super();
@@ -24,14 +27,46 @@ export class AllianceListComponent extends SubscriptionManager implements OnInit
     private reload() {
         let sub = this.allianceApi.getAlliances().subscribe(resp => this.alliances = resp);
         this.subscriptions.push(sub);
-        sub = this.allianceApi.isApplicant().subscribe(resp => this.applicationOpenAt = resp);
+        sub = this.allianceApi.getOpenApplications().subscribe(resp => this.applicationOpenAt = resp);
         this.subscriptions.push(sub);
-        this.idAllianceUser = this.tokenStorage.getAllianceID();
+        this.idAlliance = this.tokenStorage.getAllianceID();
+        this.isAdmin = AllianceHelper.isAllianceAdmin(this.tokenStorage.getGameRoles());
+    }
+
+    isApplicantAt(alliance?: Alliance): boolean {
+        if (!alliance) {
+            return this.applicationOpenAt.length > 0;
+        }
+        return this.applicationOpenAt.filter(a => a.idAlliance === alliance.idAlliance).length > 0;
     }
 
     apply(alliance: Alliance) {
         this.allianceApi.applyForMembership(alliance.idAlliance).subscribe(resp => {
             if (resp) {
+                this.reload();
+            }
+        });
+    }
+
+    revoke(alliance: Alliance) {
+        this.allianceApi.withdrawApplication(alliance.idAlliance).subscribe(resp => {
+            if (resp) {
+                this.reload();
+            }
+        });
+    }
+
+    leave() {
+        this.allianceApi.leaveAlliance().subscribe(resp => {
+            if (resp) {
+                this.tokenStorage.setAllianceID(undefined);
+                const gameRoles: GameUserRolesEnum[] = [];
+                this.tokenStorage.getGameRoles().forEach(r => {
+                    if (r != GameUserRolesEnum.ALLIANCE_ADMIN) {
+                        gameRoles.push(r);
+                    }
+                })
+                this.tokenStorage.setGameRoles(gameRoles);
                 this.reload();
             }
         });

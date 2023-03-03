@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Alliance, AllianceApiService, JWT} from "../../../../../services/swagger";
+import {Alliance, AllianceApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import GameUserRolesEnum = JWT.GameUserRolesEnum;
+import {AllianceHelper} from "../../../alliance.helper";
 
 @Component({
     selector: 'app-alliance-tab-view',
@@ -14,6 +14,8 @@ export class AllianceTabViewComponent extends SubscriptionManager implements OnI
 
     alliance?: Alliance;
     isAdmin: boolean = false;
+    allianceID?: number;
+    applicationOpenAt: Alliance[] = [];
 
     constructor(private allianceApi: AllianceApiService) {
         super();
@@ -23,11 +25,17 @@ export class AllianceTabViewComponent extends SubscriptionManager implements OnI
         let sub = this.allianceApi.getAllianceForUser().subscribe(resp => this.alliance = resp);
         this.subscriptions.push(sub);
 
-        let gameRoles = this.tokenStorage.getGameRoles();
-        const index: number = gameRoles.indexOf(GameUserRolesEnum.ALLIANCE_ADMIN);
-        if (index != -1) {
-            this.isAdmin = true;
-        }
+        this.allianceID = this.tokenStorage.getAllianceID();
+        this.isAdmin = AllianceHelper.isAllianceAdmin(this.tokenStorage.getGameRoles());
+
+        sub = this.allianceApi.getOpenApplications().subscribe(resp => this.applicationOpenAt = resp);
+        this.subscriptions.push(sub);
     }
 
+    isApplicantAt(alliance?: Alliance): boolean {
+        if (!alliance) {
+            return this.applicationOpenAt.length > 0;
+        }
+        return this.applicationOpenAt.filter(a => a.idAlliance === alliance.idAlliance).length > 0;
+    }
 }

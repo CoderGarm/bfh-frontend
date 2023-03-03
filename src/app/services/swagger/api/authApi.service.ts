@@ -242,6 +242,52 @@ export class AuthApiService {
     }
 
     /**
+     * Changes the password.
+     * 
+     * @param code 
+     * @param newPassword 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public processPasswordChange(code: string, newPassword: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public processPasswordChange(code: string, newPassword: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public processPasswordChange(code: string, newPassword: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public processPasswordChange(code: string, newPassword: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (code === null || code === undefined) {
+            throw new Error('Required parameter code was null or undefined when calling processPasswordChange.');
+        }
+
+        if (newPassword === null || newPassword === undefined) {
+            throw new Error('Required parameter newPassword was null or undefined when calling processPasswordChange.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<any>('post',`${this.basePath}/api/public/auth/processPasswordChange/${encodeURIComponent(String(code))}/${encodeURIComponent(String(newPassword))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Does a refresh of the access token
      * Takes the refresh token and tries to create a valid login from it.
      * @param refreshToken 
@@ -366,52 +412,6 @@ export class AuthApiService {
         ];
 
         return this.httpClient.request<any>('get',`${this.basePath}/api/public/auth/verify/${encodeURIComponent(String(code))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Changes the password.
-     * 
-     * @param code 
-     * @param newPassword 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public processPasswordChange(code: string, newPassword: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public processPasswordChange(code: string, newPassword: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public processPasswordChange(code: string, newPassword: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public processPasswordChange(code: string, newPassword: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (code === null || code === undefined) {
-            throw new Error('Required parameter code was null or undefined when calling processPasswordChange.');
-        }
-
-        if (newPassword === null || newPassword === undefined) {
-            throw new Error('Required parameter newPassword was null or undefined when calling processPasswordChange.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<any>('post',`${this.basePath}/api/public/auth/processPasswordChange/${encodeURIComponent(String(code))}/${encodeURIComponent(String(newPassword))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

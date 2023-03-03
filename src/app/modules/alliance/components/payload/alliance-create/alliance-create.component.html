@@ -1,15 +1,17 @@
 <p id="title">{{ 'alliance.create.title' | translate }}</p>
 
-<form [formGroup]=allianceG id="create-form">
+<form [formGroup]=allianceG id="create-form" allianceNameValidator allianceCodeValidator>
     <mat-form-field appearance="fill">
         <mat-label>{{ 'alliance.create.name' | translate }}</mat-label>
         <input matInput autocomplete="off" placeholder="Name ..." formControlName=allianceNameFC>
+        <mat-error *ngIf="allianceG.get('allianceNameFC')?.hasError('allianceNameInvalid')">{{errors.allianceNameInvalid}} </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
         <mat-label>{{ 'alliance.create.code' | translate }}</mat-label>
-        <input matInput autocomplete="off" placeholder="Name ..." formControlName=allianceCodeFC>
+        <input matInput autocomplete="off" placeholder="Code ..." formControlName=allianceCodeFC>
+        <mat-error *ngIf="allianceG.get('allianceCodeFC')?.hasError('allianceCodeInvalid')">{{errors.allianceCodeInvalid}} </mat-error>
     </mat-form-field>
 </form>
 
-<button id="create-btn" mat-flat-button color="primary" mat-button (click)="create()">{{ 'alliance.create.submit' | translate }}</button>
+<button id="create-btn" mat-flat-button color="primary" mat-button (click)="create()" [disabled]="!allianceG.valid">{{ 'alliance.create.submit' | translate }}</button>
