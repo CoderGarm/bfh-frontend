@@ -17,6 +17,7 @@ import {WikiMainComponent} from "./modules/wiki/orga/wiki-main/wiki-main.compone
 import {RegisterComponent} from "./components/user/register/register.component";
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
 import {ForgottenPasswordComponent} from "./components/user/forgotten-password/forgotten-password.component";
+import {Meta, Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -47,6 +48,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     constructor(private translate: TranslateService,
                 private router: Router,
+                private meta: Meta,
+                private titleService: Title,
                 private authenticationService: AuthenticationService,
                 private navService: NavigationCommunicationService,
                 private chatApi: ChatApiService,
@@ -63,6 +66,17 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         }
 
         this.navService.getNavigationEmitter().subscribe(route => this.navigate(route));
+
+        this.titleService.setTitle("Battle for Honor");
+        this.meta.addTags([
+            {name: 'keywords', content: 'honor harrington, honorverse, browsergame, 4x, round based, turn based, rundenbasiert, strategy, strategie'},
+            {name: 'description', content: 'A browsergame in the honorverse'},
+            {name: 'og:description', content: 'A browsergame in the honorverse'},
+            {name: 'og:type', content: 'game'},
+            {name: 'og:site_name', content: 'Battle for Honor'},
+            {name: 'og:title', content: 'Battle for Honor'},
+            {name: 'og:url', content: 'https://www.battleforhonor.de'},
+        ]);
     }
 
     ngOnInit(): void {
