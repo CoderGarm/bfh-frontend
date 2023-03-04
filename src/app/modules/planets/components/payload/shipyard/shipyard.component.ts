@@ -361,7 +361,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
     }
 
     getJobButtonText() {
-        if (this.shipyardJobPossible) {
+        if (!this.shipyardJobPossible) {
             return this.translations.get('shipyard.constructions.build.already-in-use')!;
         }
         if (this.jobTooExpensive) {

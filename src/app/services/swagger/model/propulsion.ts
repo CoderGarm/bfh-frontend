@@ -20,6 +20,10 @@ export interface Propulsion {
      * If this propulsion module if for faster then light.
      */
     ftlCapable: Propulsion.FtlCapableEnum;
+    /**
+     * If this propulsion module is for military or civil purposes.
+     */
+    technologyType: Propulsion.TechnologyTypeEnum;
 }
 export namespace Propulsion {
     export type FtlCapableEnum = 'NONE' | 'ALPHA' | 'BETA' | 'GAMMA' | 'DELTA' | 'EPSILON' | 'ZETA' | 'ETA' | 'THETA';
@@ -33,5 +37,10 @@ export namespace Propulsion {
         ZETA: 'ZETA' as FtlCapableEnum,
         ETA: 'ETA' as FtlCapableEnum,
         THETA: 'THETA' as FtlCapableEnum
+    };
+    export type TechnologyTypeEnum = 'CIVIL' | 'MILITARY';
+    export const TechnologyTypeEnum = {
+        CIVIL: 'CIVIL' as TechnologyTypeEnum,
+        MILITARY: 'MILITARY' as TechnologyTypeEnum
     };
 }
