@@ -357,7 +357,8 @@ export class BasicViewHelper extends BasicViewHelperData {
         const circle = mainGroup.circle()
             .x(x)
             .y(y)
-            .id(celestialBodyID);
+            .id(celestialBodyID)
+            .addClass(BasicViewHelper.CLICKABLE_CSS_CLASS);
 
         if (this.isInterstellarViewHelper()) {
             circle.addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER);
@@ -650,6 +651,7 @@ export class BasicViewHelper extends BasicViewHelperData {
                 .radius(radius)
                 .stroke(this.zoomStroke(BasicViewHelper.STROKE_CYCLING_CIRCLE))
                 .addClass(BasicViewHelper.CYCLING_CIRCLE_MARKER)
+                .addClass(BasicViewHelper.CLICKABLE_CSS_CLASS)
                 .addClass(BasicViewHelperData.ICON_ID_MARKER + id)
                 .id(this.getCyclingCircleId(id));
 
@@ -945,6 +947,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             .fill(fleetSharkColor)
             .stroke(BasicViewHelper.STROKE_BLACK)
             .addClass(BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER)
+            .addClass(BasicViewHelperData.CLICKABLE_CSS_CLASS)
             .id(fleetSharkID);
 
         if (!!orbit) {

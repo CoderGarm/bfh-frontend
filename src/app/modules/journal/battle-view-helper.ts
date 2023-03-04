@@ -645,7 +645,8 @@ export class BattleViewHelper extends BasicViewHelper {
                 .x(this.convertToStandardMetric(orbit.xCoordinate))
                 .y(this.convertToStandardMetric(orbit.yCoordinate))
                 .radius(5)
-                .id(celestialBodyID);
+                .id(celestialBodyID)
+                .addClass(BasicViewHelper.CELESTIAL_BODY_CSS_CLASS);
 
             if (orbitDefinition.isColonizedByLoggedInUser) {
                 circle.addClass(BasicViewHelper.IS_COLONIZED_BY_USER_COLOR_CSS_CLASS);

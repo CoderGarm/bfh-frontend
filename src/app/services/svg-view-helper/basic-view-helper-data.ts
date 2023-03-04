@@ -28,6 +28,8 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly WARSHIP_SELECTOR_ID_PREFIX: string = "-warship";
     protected static readonly MISSILE_SALVO_SELECTOR_ID_PREFIX: string = "-missile-salvo";
 
+    protected static readonly CLICKABLE_CSS_CLASS = "clickable";
+    protected static readonly CELESTIAL_BODY_CSS_CLASS: string = "celestial";
     protected static readonly CYCLING_CIRCLE_MARKER = "circle-cycle";
     protected static readonly ICON_ID_MARKER: string = "iconId-";
     protected static readonly MOVABLE_STATE_DOT_MARKER: string = "movableStateDot";
