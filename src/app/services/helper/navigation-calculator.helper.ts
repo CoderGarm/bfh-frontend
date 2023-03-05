@@ -1,7 +1,8 @@
-import {Acceleration, Distance, Orbit} from "../swagger";
+import {Acceleration, Distance, Orbit, Propulsion} from "../swagger";
 import {ArrayXY} from "@svgdotjs/svg.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
+import TechnologyTypeEnum = Propulsion.TechnologyTypeEnum;
 
 export enum Direction {
     NORTH,
@@ -31,6 +32,12 @@ export class NavigationCalculator {
         this.accelerationMetricValues.set(AccelerationMetricEnum.G, 9.81);
     }
 
+    private static velocityRestriction: Map<TechnologyTypeEnum, number> = new Map<TechnologyTypeEnum, number>();
+    static {
+        this.velocityRestriction.set(TechnologyTypeEnum.CIVIL, 0.6);
+        this.velocityRestriction.set(TechnologyTypeEnum.MILITARY, 0.8);
+    }
+
     /**
      * Calculates the distance for the given time and acceleration.
      *
@@ -46,11 +53,11 @@ export class NavigationCalculator {
 
     static convertAccelerationToMetric(distance: Acceleration, targetMetric: AccelerationMetricEnum): number {
         if (distance.accelerationMetric == targetMetric) {
-            return distance.accelerationValue;
+            return distance.value;
         }
 
         const factor = NavigationCalculator.getAccelerationConversionFactor(distance.accelerationMetric, targetMetric);
-        return distance.accelerationValue * factor;
+        return distance.value * factor;
     }
 
     private static getAccelerationConversionFactor(originalMetric: AccelerationMetricEnum, targetMetric: AccelerationMetricEnum) {

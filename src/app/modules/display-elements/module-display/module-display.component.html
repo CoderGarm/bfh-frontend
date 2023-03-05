@@ -9,7 +9,7 @@
         <input matInput disabled value="{{module?.baseModule?.description}}">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="!propulsion">
         <mat-label>Effect value</mat-label>
         <input matInput disabled value="{{module?.baseModule?.effectValue}}">
     </mat-form-field>

@@ -17,7 +17,7 @@ export interface Acceleration {
     /**
      * The value of this acceleration.
      */
-    accelerationValue: number;
+    value: number;
     /**
      * The metric of this acceleration.
      */

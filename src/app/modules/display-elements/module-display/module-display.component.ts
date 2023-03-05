@@ -15,7 +15,7 @@ export class ModuleDisplayComponent<MODULE extends { baseModule: BaseModule }> i
 
     ngOnChanges(changes: SimpleChanges) {
         if (!!this.module) {
-            if ('ftlCapable' in this.module) {
+            if ('ftlCapable' in this.module && 'technologyType' in this.module) {
                 this.propulsion = <Propulsion>this.module;
             }
         } else {

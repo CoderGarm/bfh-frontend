@@ -11,8 +11,10 @@ import {
     Launcher,
     PassiveModule,
     Propulsion,
+    PropulsionCapacity,
     ShipClass,
     ShipClassMock,
+    ShipyardApiService,
     Sidewall,
     SupportFitting,
     Weapon
@@ -117,7 +119,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     private chips: ChipSelectorValueResult[] = [];
     private weaponAlignmentTypes: EWeaponAlignmentEnum[];
 
-    constructor(protected moduleApi: ModuleService,
+    constructor(protected moduleService: ModuleService,
+                private shipyardApi: ShipyardApiService,
                 protected typeService: TypeService,
                 protected change: ChangeDetectorRef) {
         super();
@@ -133,23 +136,23 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     }
 
     protected fetchBaseData() {
-        let sub = this.moduleApi.getWeaponsByUser().subscribe(resp => this.weapons = resp);
+        let sub = this.moduleService.getWeaponsByUser().subscribe(resp => this.weapons = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getLaunchersByUser().subscribe(resp => this.launchers = resp);
+        sub = this.moduleService.getLaunchersByUser().subscribe(resp => this.launchers = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getArmorsByUser().subscribe(resp => this.armors = resp);
+        sub = this.moduleService.getArmorsByUser().subscribe(resp => this.armors = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getSidewallsByUser().subscribe(resp => this.sidewalls = resp);
+        sub = this.moduleService.getSidewallsByUser().subscribe(resp => this.sidewalls = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getElectronicWarfareByUser().subscribe(resp => this.eloka = resp);
+        sub = this.moduleService.getElectronicWarfareByUser().subscribe(resp => this.eloka = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getAmmunitionModulesByUser().subscribe(resp => this.munitions = resp);
+        sub = this.moduleService.getAmmunitionModulesByUser().subscribe(resp => this.munitions = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getPropulsionsByUser().subscribe(resp => this.propulsions = resp);
+        sub = this.moduleService.getPropulsionsByUser().subscribe(resp => this.propulsions = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getPassiveModulesByUser().subscribe(resp => this.passiveModules = resp);
+        sub = this.moduleService.getPassiveModulesByUser().subscribe(resp => this.passiveModules = resp);
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getHullsByUser().subscribe(resp => {
+        sub = this.moduleService.getHullsByUser().subscribe(resp => {
             this.hulls = resp;
             this.eHullTypeChipValues = [];
             this.hulls.map(hull => ({value: hull.hullType.type})).forEach(ht => {
@@ -554,5 +557,25 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     isFilteredModule<MODULE extends { baseModule: BaseModule }>(module: MODULE, filteredModules: MODULE[]) {
         // workaround to hide options because on adding options to the list the selected element will be the last in the list -> the new one
         return filteredModules.filter(fh => fh.baseModule.idModule === module.baseModule.idModule).length > 0;
+    }
+
+    map: Map<string, PropulsionCapacity[]> = new Map<string, PropulsionCapacity[]>();
+
+    getPropulsionCapacity(): PropulsionCapacity[] {
+        if (!this.hoveredHull || !this.hoveredPropulsion) {
+            return [];
+        }
+        const idHull = this.hoveredHull.idHull;
+        const idPropulsion = this.hoveredPropulsion.baseModule.idModule;
+        const key = idHull + '-' + idPropulsion;
+        const propulsionCapacities = this.map.get(key);
+        if (!!propulsionCapacities) {
+            return propulsionCapacities;
+        }
+        let sub = this.shipyardApi.getPropulsionCapacity(idHull, idPropulsion).subscribe(resp => {
+            this.map.set(key, resp);
+        })
+        this.subscriptions.push(sub);
+        return [];
     }
 }

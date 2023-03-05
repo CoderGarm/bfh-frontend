@@ -56,6 +56,7 @@ import {WeaponPerAlignmentCounterComponent} from './weapon-per-alingment-counter
 import {ModuleDisplayComponent} from './module-display/module-display.component';
 import {WeaponsByTypeDisplayComponent} from './weapons-by-type-display/weapons-by-type-display.component';
 import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignment-display/weapon-amount-by-alignment-display.component';
+import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/propulsion-capacity-display.component';
 
 @NgModule({
     declarations: [
@@ -114,6 +115,7 @@ import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignm
         ModuleDisplayComponent,
         WeaponsByTypeDisplayComponent,
         WeaponAmountByAlignmentDisplayComponent,
+        PropulsionCapacityDisplayComponent,
     ],
     imports: [
         SharedModuleModule,

@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { EHullType } from '../model/eHullType';
 import { EModuleType } from '../model/eModuleType';
 import { FrontendError } from '../model/frontendError';
+import { PropulsionCapacity } from '../model/propulsionCapacity';
 import { ShipClass } from '../model/shipClass';
 import { ShipClassMock } from '../model/shipClassMock';
 
@@ -253,6 +254,53 @@ export class ShipyardApiService {
         ];
 
         return this.httpClient.request<Array<EModuleType>>('get',`${this.basePath}/api/private/shipyard/moduleType`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Calculates the ability of the propulsion to move the hull.
+     * 
+     * @param idHull 
+     * @param idPropulsion 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PropulsionCapacity>>;
+    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PropulsionCapacity>>>;
+    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PropulsionCapacity>>>;
+    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idHull === null || idHull === undefined) {
+            throw new Error('Required parameter idHull was null or undefined when calling getPropulsionCapacity.');
+        }
+
+        if (idPropulsion === null || idPropulsion === undefined) {
+            throw new Error('Required parameter idPropulsion was null or undefined when calling getPropulsionCapacity.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<PropulsionCapacity>>('get',`${this.basePath}/api/private/shipyard/propulsionCapacity/${encodeURIComponent(String(idHull))}/${encodeURIComponent(String(idPropulsion))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
