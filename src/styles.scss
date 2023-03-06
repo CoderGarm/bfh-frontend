@@ -292,3 +292,9 @@ app-shipyard > .ship-class-card > mat-card-header {
 .mat-step-header .mat-step-icon {
   background-color: $primary-color;
 }
+
+app-module-display, app-propulsion-display {
+  & mat-form-field {
+    margin: 5px;
+  }
+}

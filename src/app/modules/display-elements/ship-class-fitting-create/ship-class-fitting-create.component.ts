@@ -180,7 +180,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.armors.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredArmors, this.armorSelection));
         this.sidewalls.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredSidewalls, this.sidewallSelection));
         this.eloka.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredEloka, this.elokaSelection));
-        this.propulsions.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredPropulsions, this.propulsionSelection));
 
         this.hulls.filter(hull => {
             const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === hull.hullType.typeName;
@@ -566,7 +565,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             return [];
         }
         const idHull = this.hoveredHull.idHull;
-        const idPropulsion = this.hoveredPropulsion.baseModule.idModule;
+        const idPropulsion = this.hoveredPropulsion.idModule;
         const key = idHull + '-' + idPropulsion;
         const propulsionCapacities = this.map.get(key);
         if (!!propulsionCapacities) {

@@ -9,34 +9,66 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { BaseModule } from './baseModule';
 
 /**
  * .
  */
 export interface Propulsion { 
-    baseModule: BaseModule;
+    /**
+     * The id of this module.
+     */
+    idModule: number;
+    /**
+     * The name of this module.
+     */
+    name: string;
+    /**
+    * The technical type name of this module.
+    */
+    technicalTypeName:string;
+    /**
+     * The description of this module.
+     */
+    description: string;
+    /**
+     * The percentage of the parent's module cost which represents the costs of 'this'.
+     */
+    costsPercentage: number;
+    /**
+     * The base effect value of this module.
+     */
+    effectValue: number;
+    /**
+     * The level of this module.
+     */
+    techLevel: Propulsion.TechLevelEnum;
     /**
      * If this propulsion module if for faster then light.
      */
-    ftlCapable: Propulsion.FtlCapableEnum;
+    hyperBand: Propulsion.HyperBandEnum;
     /**
      * If this propulsion module is for military or civil purposes.
      */
     technologyType: Propulsion.TechnologyTypeEnum;
 }
 export namespace Propulsion {
-    export type FtlCapableEnum = 'NONE' | 'ALPHA' | 'BETA' | 'GAMMA' | 'DELTA' | 'EPSILON' | 'ZETA' | 'ETA' | 'THETA';
-    export const FtlCapableEnum = {
-        NONE: 'NONE' as FtlCapableEnum,
-        ALPHA: 'ALPHA' as FtlCapableEnum,
-        BETA: 'BETA' as FtlCapableEnum,
-        GAMMA: 'GAMMA' as FtlCapableEnum,
-        DELTA: 'DELTA' as FtlCapableEnum,
-        EPSILON: 'EPSILON' as FtlCapableEnum,
-        ZETA: 'ZETA' as FtlCapableEnum,
-        ETA: 'ETA' as FtlCapableEnum,
-        THETA: 'THETA' as FtlCapableEnum
+    export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';
+    export const TechLevelEnum = {
+        I: 'TECH_I' as TechLevelEnum,
+        II: 'TECH_II' as TechLevelEnum,
+        III: 'TECH_III' as TechLevelEnum
+    };
+    export type HyperBandEnum = 'NONE' | 'ALPHA' | 'BETA' | 'GAMMA' | 'DELTA' | 'EPSILON' | 'ZETA' | 'ETA' | 'THETA';
+    export const HyperBandEnum = {
+        NONE: 'NONE' as HyperBandEnum,
+        ALPHA: 'ALPHA' as HyperBandEnum,
+        BETA: 'BETA' as HyperBandEnum,
+        GAMMA: 'GAMMA' as HyperBandEnum,
+        DELTA: 'DELTA' as HyperBandEnum,
+        EPSILON: 'EPSILON' as HyperBandEnum,
+        ZETA: 'ZETA' as HyperBandEnum,
+        ETA: 'ETA' as HyperBandEnum,
+        THETA: 'THETA' as HyperBandEnum
     };
     export type TechnologyTypeEnum = 'CIVIL' | 'MILITARY';
     export const TechnologyTypeEnum = {

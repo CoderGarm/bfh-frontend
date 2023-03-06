@@ -23,7 +23,7 @@ export class ShipClassValidator {
         }
 
         let m = h.constructionCapacity;
-        m = m - ShipClassValidator.cap(shipClass.propulsion)
+        m = m - ShipClassValidator.getPropulsionCapacity(shipClass)
             - ShipClassValidator.cap(shipClass.electronicWarfare)
             - ShipClassValidator.cap(shipClass.armor)
             - ShipClassValidator.cap(shipClass.sidewall);
@@ -79,5 +79,12 @@ export class ShipClassValidator {
 
     private static cap<MODULE extends { baseModule: BaseModule }>(module?: MODULE): number {
         return (!!module ? module.baseModule.useCapacity : 0);
+    }
+
+    private static getPropulsionCapacity(shipClass: ShipClass | ShipClassMock): number {
+        if (!shipClass.propulsion || !shipClass.hull) {
+            return 0;
+        }
+        return Math.floor(shipClass.propulsion.costsPercentage * shipClass.hull.constructionCapacity / 100);
     }
 }

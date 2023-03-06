@@ -59,6 +59,7 @@ import {EMailValidatorDirective} from "./validators/email.validator";
 import {ForgottenPasswordComponent} from './components/user/forgotten-password/forgotten-password.component';
 
 // AoT requires an exported function for factories
+// noinspection JSUnusedGlobalSymbols
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
 }

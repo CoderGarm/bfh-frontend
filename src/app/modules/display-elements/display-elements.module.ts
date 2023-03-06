@@ -6,7 +6,6 @@ import {AmmunitionModuleDisplayComponent} from './ammunition-module-display/ammu
 import {PassiveModuleDisplayComponent} from './passive-module-display/passive-module-display.component';
 import {ElokaModuleDisplayComponent} from './eloka-module-display/eloka-module-display.component';
 import {SidewallModuleDisplayComponent} from './sidewall-module-display/sidewall-module-display.component';
-import {PropulsionModuleDisplayComponent} from './propulsion-module-display/propulsion-module-display.component';
 import {ArmorModuleDisplayComponent} from './armor-module-display/armor-module-display.component';
 import {WeaponModuleDisplayComponent} from './weapon-module-display/weapon-module-display.component';
 import {AlignedFittingModuleDisplayComponent} from './aligned-fitting-module-display/aligned-fitting-module-display.component';
@@ -17,7 +16,6 @@ import {ShipClassFittingCreateComponent} from './ship-class-fitting-create/ship-
 import {WeaponsCounterComponent} from './weapons-counter/weapons-counter.component';
 import {BaseModuleCounterComponent} from './base-module-counter/base-module-counter.component';
 import {SidewallModuleSelectorComponent} from './sidewall-module-selector/sidewall-module-selector.component';
-import {PropulsionModuleSelectorComponent} from './propulsion-module-selector/propulsion-module-selector.component';
 import {PassiveModuleCounterComponent} from './passive-module-counter/passive-module-counter.component';
 import {ElokaModuleSelectorComponent} from './eloka-module-selector/eloka-module-selector.component';
 import {ArmorModuleSelectorComponent} from './armor-module-selector/armor-module-selector.component';
@@ -57,6 +55,7 @@ import {ModuleDisplayComponent} from './module-display/module-display.component'
 import {WeaponsByTypeDisplayComponent} from './weapons-by-type-display/weapons-by-type-display.component';
 import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignment-display/weapon-amount-by-alignment-display.component';
 import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/propulsion-capacity-display.component';
+import {PropulsionDisplayComponent} from "../../display-elements/propulsion-display/propulsion-display.component";
 
 @NgModule({
     declarations: [
@@ -66,7 +65,6 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
         PassiveModuleDisplayComponent,
         ElokaModuleDisplayComponent,
         SidewallModuleDisplayComponent,
-        PropulsionModuleDisplayComponent,
         ArmorModuleDisplayComponent,
         WeaponModuleDisplayComponent,
         AlignedFittingModuleDisplayComponent,
@@ -78,7 +76,7 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
         WeaponsCounterComponent,
         ConstructionDisplayComponent,
         SidewallModuleSelectorComponent,
-        PropulsionModuleSelectorComponent,
+        PropulsionDisplayComponent,
         PassiveModuleCounterComponent,
         ElokaModuleSelectorComponent,
         ArmorModuleSelectorComponent,
@@ -128,7 +126,6 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
         PassiveModuleDisplayComponent,
         ElokaModuleDisplayComponent,
         SidewallModuleDisplayComponent,
-        PropulsionModuleDisplayComponent,
         ArmorModuleDisplayComponent,
         WeaponModuleDisplayComponent,
         AlignedFittingModuleDisplayComponent,
@@ -140,7 +137,7 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
         BaseModuleCounterComponent,
         WeaponsCounterComponent,
         SidewallModuleSelectorComponent,
-        PropulsionModuleSelectorComponent,
+        PropulsionDisplayComponent,
         PassiveModuleCounterComponent,
         ElokaModuleSelectorComponent,
         ArmorModuleSelectorComponent,

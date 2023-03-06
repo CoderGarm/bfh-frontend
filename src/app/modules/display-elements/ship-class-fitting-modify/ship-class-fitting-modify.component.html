@@ -191,16 +191,14 @@
 
             <mat-selection-list [multiple]="false">
                 <mat-list-option *ngFor="let module of propulsions"
-                                 [ngStyle]="{'display':( !isFilteredModule(module, filteredPropulsions) ? 'none' : '')}"
-                                 [disabled]="!isFilteredModule(module, filteredPropulsions)"
-                                 [selected]="!!propulsionSelection && propulsionSelection.baseModule.idModule === module.baseModule.idModule"
+                                 [selected]="!!propulsionSelection && propulsionSelection.idModule === module.idModule"
                                  (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredPropulsion = module"
                                  (mouseout)="!!propulsionSelection ? hoveredPropulsion = propulsionSelection : hoveredPropulsion = undefined">
-                    {{module.baseModule.name}}
+                    {{module.name}}
                 </mat-list-option>
             </mat-selection-list>
-            <app-module-display [module]="hoveredPropulsion"></app-module-display>
+            <app-propulsion-display [module]="hoveredPropulsion"></app-propulsion-display>
         </ng-template>
     </mat-step>
 
