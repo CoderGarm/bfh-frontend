@@ -34,7 +34,9 @@
 
     <mat-step>
         <ng-template matStepLabel>
-            <div>{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
+            <div *ngIf="!propulsionSelection">{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
+            <div *ngIf="!!propulsionSelection">{{propulsionSelection.hasCostsByParent.hasNamedTechLevel.name}}
+                , {{propulsionSelection.hasCostsByParent.hasNamedTechLevel.technicalTypeName}}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.mandatory.propulsion' | translate }}</div>
         </ng-template>
         <ng-template matStepContent>
@@ -57,7 +59,7 @@
                                  (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredPropulsion = module"
                                  (mouseout)="!!propulsionSelection ? hoveredPropulsion = propulsionSelection : hoveredPropulsion = undefined">
-                    {{module.name}}, {{module.technicalTypeName}}
+                    {{module.hasCostsByParent.hasNamedTechLevel.name}}, {{module.hasCostsByParent.hasNamedTechLevel.technicalTypeName}}
                 </mat-list-option>
             </mat-selection-list>
             <app-propulsion-display [module]="hoveredPropulsion"></app-propulsion-display>

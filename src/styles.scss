@@ -293,7 +293,7 @@ app-shipyard > .ship-class-card > mat-card-header {
   background-color: $primary-color;
 }
 
-app-module-display, app-propulsion-display {
+app-has-base-module-display, app-propulsion-display {
   & mat-form-field {
     margin: 5px;
   }

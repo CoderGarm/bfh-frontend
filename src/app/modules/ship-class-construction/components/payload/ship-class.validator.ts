@@ -1,4 +1,4 @@
-import {BaseModule, ShipClass, ShipClassMock} from "../../../../services/swagger";
+import {BaseModule, HasCostsByParent, ShipClass, ShipClassMock} from "../../../../services/swagger";
 
 export class ShipClassValidator {
 
@@ -23,9 +23,9 @@ export class ShipClassValidator {
         }
 
         let m = h.constructionCapacity;
-        m = m - ShipClassValidator.getPropulsionCapacity(shipClass)
+        m = m - ShipClassValidator.getCapacityByHull(shipClass, shipClass.propulsion)
             - ShipClassValidator.cap(shipClass.electronicWarfare)
-            - ShipClassValidator.cap(shipClass.armor)
+            - ShipClassValidator.getCapacityByHull(shipClass, shipClass.armor)
             - ShipClassValidator.cap(shipClass.sidewall);
 
         shipClass.supportFittings.forEach(sf => {
@@ -81,10 +81,10 @@ export class ShipClassValidator {
         return (!!module ? module.baseModule.useCapacity : 0);
     }
 
-    private static getPropulsionCapacity(shipClass: ShipClass | ShipClassMock): number {
-        if (!shipClass.propulsion || !shipClass.hull) {
+    private static getCapacityByHull<MODULE extends { hasCostsByParent: HasCostsByParent }>(shipClass: ShipClass | ShipClassMock, module?: MODULE): number {
+        if (!module || !shipClass.hull) {
             return 0;
         }
-        return Math.floor(shipClass.propulsion.costsPercentage * shipClass.hull.constructionCapacity / 100);
+        return Math.floor(module.hasCostsByParent.costsPercentage * shipClass.hull.constructionCapacity / 100);
     }
 }

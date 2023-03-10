@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { HasCostsByParent } from './hasCostsByParent';
 
 /**
  * .
@@ -18,22 +19,7 @@ export interface Propulsion {
      * The id of this module.
      */
     idModule: number;
-    /**
-     * The name of this module.
-     */
-    name: string;
-    /**
-    * The technical type name of this module.
-    */
-    technicalTypeName:string;
-    /**
-     * The description of this module.
-     */
-    description: string;
-    /**
-     * The percentage of the parent's module cost which represents the costs of 'this'.
-     */
-    costsPercentage: number;
+    hasCostsByParent: HasCostsByParent;
     /**
      * The base effect value of this module.
      */
