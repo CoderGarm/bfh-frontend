@@ -1,6 +1,12 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {AlignedFitting, Launcher, Weapon} from "../../../services/swagger";
-import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
+import {AlignedFitting, AmmunitionModule, Launcher, Weapon} from "../../../services/swagger";
+
+export interface WeaponsSelection {
+    weapon: Weapon | Launcher,
+    weaponAmountPerAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number>,
+    ammo?: AmmunitionModule,
+    ammoAmount?: number
+}
 
 @Component({
     selector: 'app-weapon-per-alignment-counter',

@@ -14,9 +14,9 @@ import {
 } from "../../../services/swagger";
 import {ShipClassFittingCreateComponent} from "../ship-class-fitting-create/ship-class-fitting-create.component";
 import {AfterViewInit, Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
-import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
 import {WeaponHelper} from "../../../services/helper/weapon.helper";
 import {FittingHelper} from "../../../services/helper/fitting.helper";
+import {WeaponsSelection} from "../weapon-per-alingment-counter/weapon-per-alignment-counter.component";
 
 @Component({
     selector: 'app-ship-class-fitting-modify',

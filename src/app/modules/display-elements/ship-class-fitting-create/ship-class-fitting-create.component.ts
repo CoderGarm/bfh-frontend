@@ -19,13 +19,13 @@ import {
     SupportFitting,
     Weapon
 } from "../../../services/swagger";
-import {WeaponsSelection} from "../weapons-counter/weapons-counter.component";
 import {WeaponHelper} from "../../../services/helper/weapon.helper";
 import {ModuleService} from "../../../services/prefetch/module.service";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {ChipSelectorValue, ChipSelectorValueResult} from "../../shared-module/components/chip-selector/chip-selector.component";
 import {FittingHelper} from "../../../services/helper/fitting.helper";
 import {TypeService} from "../../../services/type.service";
+import {WeaponsSelection} from "../weapon-per-alingment-counter/weapon-per-alignment-counter.component";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;

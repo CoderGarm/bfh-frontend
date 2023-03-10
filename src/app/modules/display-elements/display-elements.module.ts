@@ -2,24 +2,8 @@ import {NgModule} from '@angular/core';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {HullDisplayComponent} from './hull-display/hull-display.component';
 import {BaseModuleDisplayComponent} from './base-module-display/base-module-display.component';
-import {AmmunitionModuleDisplayComponent} from './ammunition-module-display/ammunition-module-display.component';
-import {PassiveModuleDisplayComponent} from './passive-module-display/passive-module-display.component';
-import {ElokaModuleDisplayComponent} from './eloka-module-display/eloka-module-display.component';
-import {SidewallModuleDisplayComponent} from './sidewall-module-display/sidewall-module-display.component';
-import {ArmorModuleDisplayComponent} from './armor-module-display/armor-module-display.component';
-import {WeaponModuleDisplayComponent} from './weapon-module-display/weapon-module-display.component';
-import {AlignedFittingModuleDisplayComponent} from './aligned-fitting-module-display/aligned-fitting-module-display.component';
-import {AmmunitionFittingModuleDisplayComponent} from './ammunition-fitting-module-display/ammunition-fitting-module-display.component';
-import {SupportFittingModuleDisplayComponent} from './support-fitting-module-display/support-fitting-module-display.component';
 import {ResearchDisplayComponent} from './research-display/research-display.component';
 import {ShipClassFittingCreateComponent} from './ship-class-fitting-create/ship-class-fitting-create.component';
-import {WeaponsCounterComponent} from './weapons-counter/weapons-counter.component';
-import {BaseModuleCounterComponent} from './base-module-counter/base-module-counter.component';
-import {SidewallModuleSelectorComponent} from './sidewall-module-selector/sidewall-module-selector.component';
-import {PassiveModuleCounterComponent} from './passive-module-counter/passive-module-counter.component';
-import {ElokaModuleSelectorComponent} from './eloka-module-selector/eloka-module-selector.component';
-import {ArmorModuleSelectorComponent} from './armor-module-selector/armor-module-selector.component';
-import {AmmunitionModuleCounterComponent} from './ammunition-module-counter/ammunition-module-counter.component';
 import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/base-module-single-selector.component';
 import {FleetDisplayComponent} from './fleet-display/fleet-display.component';
 import {ConstructionDisplayComponent} from "./construction-display/construction-display.component";
@@ -29,10 +13,7 @@ import {FleetMergeEditComponent} from './fleet-merge-edit/fleet-merge-edit.compo
 import {FleetMoveEditComponent} from './fleet-move-edit/fleet-move-edit.component';
 import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display.component';
 import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-factors-display.component';
-import {InterstellarFleetDisplayComponent} from './interstellar-fleet-display/interstellar-fleet-display.component';
 import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component';
-import {LauncherModuleDisplayComponent} from './launcher-module-display/launcher-module-display.component';
-import {LauncherCounterComponent} from './launcher-counter/launcher-counter.component';
 import {TechTreeDisplayComponent} from './tech-tree-display/tech-tree-display.component';
 import {JobListDisplayComponent} from './job-list-display/job-list-display.component';
 import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability-display-small/spacecraft-capability-display-small.component";
@@ -61,26 +42,10 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
     declarations: [
         HullDisplayComponent,
         BaseModuleDisplayComponent,
-        AmmunitionModuleDisplayComponent,
-        PassiveModuleDisplayComponent,
-        ElokaModuleDisplayComponent,
-        SidewallModuleDisplayComponent,
-        ArmorModuleDisplayComponent,
-        WeaponModuleDisplayComponent,
-        AlignedFittingModuleDisplayComponent,
-        AmmunitionFittingModuleDisplayComponent,
-        SupportFittingModuleDisplayComponent,
         ResearchDisplayComponent,
         ShipClassFittingCreateComponent,
-        BaseModuleCounterComponent,
-        WeaponsCounterComponent,
         ConstructionDisplayComponent,
-        SidewallModuleSelectorComponent,
         PropulsionDisplayComponent,
-        PassiveModuleCounterComponent,
-        ElokaModuleSelectorComponent,
-        ArmorModuleSelectorComponent,
-        AmmunitionModuleCounterComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
         FleetFormationDisplay,
@@ -90,10 +55,7 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,
         MiningFactorsDisplayComponent,
-        InterstellarFleetDisplayComponent,
         InterstellarFleetMovementEditComponent,
-        LauncherModuleDisplayComponent,
-        LauncherCounterComponent,
         TechTreeDisplayComponent,
         JobListDisplayComponent,
         PopulationDevelopmentComponent,
@@ -122,26 +84,10 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
     exports: [
         HullDisplayComponent,
         BaseModuleDisplayComponent,
-        AmmunitionModuleDisplayComponent,
-        PassiveModuleDisplayComponent,
-        ElokaModuleDisplayComponent,
-        SidewallModuleDisplayComponent,
-        ArmorModuleDisplayComponent,
-        WeaponModuleDisplayComponent,
-        AlignedFittingModuleDisplayComponent,
-        AmmunitionFittingModuleDisplayComponent,
-        SupportFittingModuleDisplayComponent,
         ResearchDisplayComponent,
         ConstructionDisplayComponent,
         ShipClassFittingCreateComponent,
-        BaseModuleCounterComponent,
-        WeaponsCounterComponent,
-        SidewallModuleSelectorComponent,
         PropulsionDisplayComponent,
-        PassiveModuleCounterComponent,
-        ElokaModuleSelectorComponent,
-        ArmorModuleSelectorComponent,
-        AmmunitionModuleCounterComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
         FleetFormationDisplay,
@@ -151,10 +97,7 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
         FleetMoveEditComponent,
         FleetMoveDisplayComponent,
         MiningFactorsDisplayComponent,
-        InterstellarFleetDisplayComponent,
         InterstellarFleetMovementEditComponent,
-        LauncherModuleDisplayComponent,
-        LauncherCounterComponent,
         TechTreeDisplayComponent,
         JobListDisplayComponent,
         ResourceDisplayModule,
