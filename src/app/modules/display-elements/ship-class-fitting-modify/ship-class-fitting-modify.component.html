@@ -45,7 +45,7 @@
                                  (mouseover)="hoverWeapon(wep)"
                                  (mouseout)="hoverWeapon()">
                     <span matListItemTitle>{{wep.baseModule.name}}</span>
-                    <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
+                    <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType?.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                 </mat-list-option>
                 <mat-list-option *ngFor="let wep of launchers"
                                  [ngStyle]="{'display':( !isFilteredModule(wep, filteredLaunchers) ? 'none' : '')}"
@@ -54,7 +54,7 @@
                                  (mouseover)="hoverWeapon(wep)"
                                  (mouseout)="hoverWeapon()">
                     <span matListItemTitle>{{wep.baseModule.name}}</span>
-                    <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
+                    <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType?.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                 </mat-list-option>
             </mat-selection-list>
 
@@ -173,8 +173,8 @@
     <mat-step>
         <ng-template matStepLabel>
             <div *ngIf="!propulsionSelection">{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
-            <div *ngIf="!!propulsionSelection">{{propulsionSelection.hasCostsByParent.hasNamedTechLevel.name}}
-                , {{propulsionSelection.hasCostsByParent.hasNamedTechLevel.technicalTypeName}}</div>
+            <div *ngIf="!!propulsionSelection">{{propulsionSelection.baseModule.name}}
+                , {{propulsionSelection.baseModule.technicalTypeName}}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.mandatory.propulsion' | translate }}</div>
         </ng-template>
         <ng-template matStepContent>
@@ -193,11 +193,11 @@
 
             <mat-selection-list [multiple]="false">
                 <mat-list-option *ngFor="let module of propulsions"
-                                 [selected]="!!propulsionSelection && propulsionSelection.idModule === module.idModule"
+                                 [selected]="!!propulsionSelection && propulsionSelection.baseModule.idModule === module.baseModule.idModule"
                                  (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredPropulsion = module"
                                  (mouseout)="!!propulsionSelection ? hoveredPropulsion = propulsionSelection : hoveredPropulsion = undefined">
-                    {{module.hasCostsByParent.hasNamedTechLevel.name}}, {{module.hasCostsByParent.hasNamedTechLevel.technicalTypeName}}
+                    {{module.baseModule.name}}, {{module.baseModule.technicalTypeName}}
                 </mat-list-option>
             </mat-selection-list>
             <app-propulsion-display [module]="hoveredPropulsion"></app-propulsion-display>

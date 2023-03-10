@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 import { BaseModule } from './baseModule';
+import { HasCostsByParent } from './hasCostsByParent';
 
 /**
  * .
  */
 export interface Armor { 
     baseModule: BaseModule;
+    hasCostsByParent: HasCostsByParent;
 }

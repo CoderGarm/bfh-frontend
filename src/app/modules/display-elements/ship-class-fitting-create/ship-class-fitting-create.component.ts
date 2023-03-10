@@ -198,7 +198,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
                                                                                                                  module: MODULE,
                                                                                                                  filteredElements: MODULE[],
                                                                                                                  selectionMap: Map<String, number>) {
-        const hullTypeName = module.baseModule.hullType.typeName;
+        const hullTypeName = module.baseModule.hullType?.typeName;
 
         let selectedByFilter: boolean = true;
         let id: string;
@@ -236,8 +236,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             }
         });
 
-        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType.typeName;
-        if (selectedByFilter && (selectedTypeNames.includes(hullTypeName) || matchedSelectedHull || moduleSelected)) {
+        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === module.baseModule.hullType?.typeName;
+        if (selectedByFilter && ((!!hullTypeName && selectedTypeNames.includes(hullTypeName)) || matchedSelectedHull || moduleSelected)) {
             filteredElements.push(module);
         } else {
             this.removeIfPresent(filteredElements, module);
@@ -246,7 +246,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     private addOrRemoveSingleSelectModule<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], module: MODULE, elements: MODULE[], selection: MODULE | undefined) {
         if (this.isPushCandidate(selectedTypeNames, module, selection)) {
-            if (elements.filter(h => h.baseModule.hullType.typeName === module.baseModule.hullType.typeName).length == 0) {
+            if (elements.filter(h => h.baseModule.hullType?.typeName === module.baseModule.hullType?.typeName).length == 0) {
                 elements.push(module);
             }
         } else {
@@ -263,10 +263,10 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     private isPushCandidate<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], candidate: MODULE, selection: MODULE | undefined) {
         const baseModule: BaseModule = candidate.baseModule;
-        const typeName = baseModule.hullType.typeName;
-        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === baseModule.hullType.typeName;
+        const typeName = baseModule.hullType?.typeName;
+        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === baseModule.hullType?.typeName;
         const moduleSelected = !!selection && selection.baseModule.idModule === baseModule.idModule;
-        return selectedTypeNames.includes(typeName) || matchedSelectedHull || moduleSelected;
+        return (!!typeName && selectedTypeNames.includes(typeName)) || matchedSelectedHull || moduleSelected;
     }
 
     chooseHull(hull?: Hull) {
@@ -565,7 +565,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             return [];
         }
         const idHull = this.hoveredHull.idHull;
-        const idPropulsion = this.hoveredPropulsion.idModule;
+        const idPropulsion = this.hoveredPropulsion.baseModule.idModule;
         const key = idHull + '-' + idPropulsion;
         const propulsionCapacities = this.map.get(key);
         if (!!propulsionCapacities) {

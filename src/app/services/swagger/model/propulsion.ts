@@ -9,25 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { BaseModule } from './baseModule';
 import { HasCostsByParent } from './hasCostsByParent';
 
 /**
  * .
  */
 export interface Propulsion { 
-    /**
-     * The id of this module.
-     */
-    idModule: number;
+    baseModule: BaseModule;
     hasCostsByParent: HasCostsByParent;
-    /**
-     * The base effect value of this module.
-     */
-    effectValue: number;
-    /**
-     * The level of this module.
-     */
-    techLevel: Propulsion.TechLevelEnum;
     /**
      * If this propulsion module if for faster then light.
      */
@@ -38,12 +28,6 @@ export interface Propulsion {
     technologyType: Propulsion.TechnologyTypeEnum;
 }
 export namespace Propulsion {
-    export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';
-    export const TechLevelEnum = {
-        I: 'TECH_I' as TechLevelEnum,
-        II: 'TECH_II' as TechLevelEnum,
-        III: 'TECH_III' as TechLevelEnum
-    };
     export type HyperBandEnum = 'NONE' | 'ALPHA' | 'BETA' | 'GAMMA' | 'DELTA' | 'EPSILON' | 'ZETA' | 'ETA' | 'THETA';
     export const HyperBandEnum = {
         NONE: 'NONE' as HyperBandEnum,

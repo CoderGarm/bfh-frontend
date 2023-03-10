@@ -57,7 +57,6 @@ export * from './forumThread';
 export * from './frontendError';
 export * from './hasCostsByParent';
 export * from './hasIcon';
-export * from './hasNamedTechLevel';
 export * from './hitLog';
 export * from './hull';
 export * from './humanResourceAmount';

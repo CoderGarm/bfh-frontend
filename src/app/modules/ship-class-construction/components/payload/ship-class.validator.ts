@@ -78,7 +78,7 @@ export class ShipClassValidator {
     }
 
     private static cap<MODULE extends { baseModule: BaseModule }>(module?: MODULE): number {
-        return (!!module ? module.baseModule.useCapacity : 0);
+        return (!!module && !!module.baseModule.useCapacity ? module.baseModule.useCapacity : 0);
     }
 
     private static getCapacityByHull<MODULE extends { hasCostsByParent: HasCostsByParent }>(shipClass: ShipClass | ShipClassMock, module?: MODULE): number {

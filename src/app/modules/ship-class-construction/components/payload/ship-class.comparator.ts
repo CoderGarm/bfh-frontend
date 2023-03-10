@@ -12,7 +12,7 @@ export class ShipClassComparator {
         if (o1 === o2) return true
 
         if (o1.hull?.idHull != o2.hull?.idHull) return false;
-        if (o1.propulsion != null && o2.propulsion != null ? o1.propulsion.idModule != o2.propulsion.idModule : o2.propulsion != null) return false;
+        if (o1.propulsion != null && o2.propulsion != null ? o1.propulsion.baseModule.idModule != o2.propulsion.baseModule.idModule : o2.propulsion != null) return false;
         if (o1.armor != null && o2.armor != null ? o1.armor.baseModule.idModule != o2.armor.baseModule.idModule : o2.armor != null) return false;
         if (o1.sidewall != null && o2.sidewall != null ? o1.sidewall.baseModule.idModule != o2.sidewall.baseModule.idModule : o2.sidewall != null) return false;
         if (o1.electronicWarfare != null && o2.electronicWarfare != null ? o1.electronicWarfare.baseModule.idModule != o2.electronicWarfare.baseModule.idModule : o2.electronicWarfare != null) return false;

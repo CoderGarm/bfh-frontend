@@ -24,13 +24,17 @@ export interface BaseModule {
      */
     name: string;
     /**
+     * The technical type name of this module.
+     */
+    technicalTypeName?: string;
+    /**
      * The description of this module.
      */
     description: string;
     /**
      * The capacity usage of this module.
      */
-    useCapacity: number;
+    useCapacity?: number;
     /**
      * The base effect value of this module.
      */
@@ -39,7 +43,7 @@ export interface BaseModule {
      * The level of this module.
      */
     techLevel: BaseModule.TechLevelEnum;
-    hullType: EHullType;
+    hullType?: EHullType;
 }
 export namespace BaseModule {
     export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';

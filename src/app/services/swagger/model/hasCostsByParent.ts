@@ -9,13 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { HasNamedTechLevel } from './hasNamedTechLevel';
 
 /**
  * .
  */
 export interface HasCostsByParent { 
-    hasNamedTechLevel: HasNamedTechLevel;
     /**
      * The percentage of the parent's module cost which represents the costs of 'this'.
      */
