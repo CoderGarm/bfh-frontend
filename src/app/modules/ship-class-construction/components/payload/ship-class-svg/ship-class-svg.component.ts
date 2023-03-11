@@ -15,8 +15,8 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
      * The user selected ShipClass.
      */
     @Input()
-    selectedShipClassInput?: ShipClass;
-    selectedShipClassInputDefinition: string = "selectedShipClassInput";
+    shipClass?: ShipClass;
+    shipClassInputDefinition: string = "shipClass";
 
     @Input()
     weaponsAmountByAlignmentInput?: EventEmitter<Map<AlignedFitting.WeaponAlignmentEnum, number>>;
@@ -69,7 +69,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.selectedShipClassInputDefinition]) {
+        if (changes[this.shipClassInputDefinition]) {
             this.clearCanvas();
             this.createHullOutlines();
             this.createWeaponSlots(undefined);
@@ -131,10 +131,11 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
      * @private
      */
     private createWeaponSlots(event?: Map<AlignedFitting.WeaponAlignmentEnum, number>) {
+        // todo positioning more honorverse-style
         if (!!this.canvas) {
             let map: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
-            if (!!this.selectedShipClassInput && !event) {
-                let fittings: AlignedFitting[] = this.selectedShipClassInput!.fittings;
+            if (!!this.shipClass && !event) {
+                let fittings: AlignedFitting[] = this.shipClass!.fittings;
                 fittings.forEach(fitting => {
                     let amount: number = fitting.amount;
                     let weaponAlignment: AlignedFitting.WeaponAlignmentEnum = fitting.weaponAlignment;
@@ -149,6 +150,7 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
                 // if the user selected more
                 map = event;
             }
+
             map.forEach((amount, weaponAlignment) => {
                 let half: number[];
                 let firstHalfSeparated: number[];

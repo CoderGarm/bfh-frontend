@@ -35,7 +35,7 @@ export class ShipClassValidator {
         });
         shipClass.ammunitionFittings.forEach(sf => {
             for (let i = 0; i < sf.amount; i++) {
-                m -= ShipClassValidator.cap(sf.ammunitionModule);
+                m -= sf.missile.useCapacity;
             }
         });
         if (m < 0) {

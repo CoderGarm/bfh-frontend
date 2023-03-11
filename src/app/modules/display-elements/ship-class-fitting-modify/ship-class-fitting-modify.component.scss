@@ -13,3 +13,16 @@
   height: 90px;
   display: block;
 }
+
+#ammunition-selection {
+
+}
+
+.ammo-card {
+  width: fit-content;
+  height: fit-content;
+
+  & app-numeric-counter {
+    margin-top: 15px
+  }
+}

@@ -40,15 +40,15 @@ export class AmmunitionRosterComponent implements AfterViewInit, OnChanges {
 
         classLoadOut.shotsPerMissile.forEach(byClass => {
 
-            const idMissile = byClass.missile.idMissile;
+            const idMissile = byClass.missile.baseModule.idModule;
             const amountByClass: number = byClass.value;
 
-            const current: AmmunitionValue[] = ammunitionState.shotsPerMissile.filter(a => a.missile.idMissile === idMissile);
+            const current: AmmunitionValue[] = ammunitionState.shotsPerMissile.filter(a => a.missile.baseModule.idModule === idMissile);
             let amountByUsage: number = 0;
             if (current.length > 0) {
                 amountByUsage = current[0].value;
             }
-            const present: AmmunitionRoster[] = this.ammo.filter(a => a.missile.idMissile === idMissile);
+            const present: AmmunitionRoster[] = this.ammo.filter(a => a.missile.baseModule.idModule === idMissile);
             if (present.length == 0) {
                 this.ammo.push({
                     missile: byClass.missile,

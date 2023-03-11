@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {AlignedFitting, AmmunitionModule, Launcher, Weapon} from "../../../services/swagger";
+import {AlignedFitting, Launcher, Missile, Weapon} from "../../../services/swagger";
 
 export interface WeaponsSelection {
     weapon: Weapon | Launcher,
     weaponAmountPerAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number>,
-    ammo?: AmmunitionModule,
-    ammoAmount?: number
+    missile?: Missile, /*fixme multiple selection of missiles not possible*/
+    missileAmount?: number
 }
 
 @Component({

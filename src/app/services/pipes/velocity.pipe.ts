@@ -23,6 +23,6 @@ export class VelocityPipe implements PipeTransform {
         if ((sol * 0.1) < result) {
             return (result / sol).toFixed(2) + " c";
         }
-        return this.numberShort.transform(result) + ' ' + targetDistanceMetric + '/' + targetTimeMetric;
+        return this.numberShort.transform(result) + ' ' + targetDistanceMetric.toLowerCase() + '/' + targetTimeMetric.toLowerCase();
     }
 }

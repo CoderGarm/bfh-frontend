@@ -11,7 +11,7 @@
  */
 
 /**
- * The time to reach the maximum velocity.
+ * .
  */
 export interface Time { 
     /**

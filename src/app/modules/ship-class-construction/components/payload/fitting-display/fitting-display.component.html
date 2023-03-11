@@ -4,7 +4,7 @@
         <input matInput disabled value="{{shipClassName}}" autocomplete="off">
     </mat-form-field>
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
-                        [selectedShipClassInput]="shipClass"></app-ship-class-svg>
+                        [shipClass]="shipClass"></app-ship-class-svg>
 
     <app-resource-display [deposit]="resourceDeposit"
                           [costs]="costs"></app-resource-display>

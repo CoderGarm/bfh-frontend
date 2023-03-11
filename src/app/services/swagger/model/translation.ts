@@ -40,22 +40,19 @@ export interface Translation {
     translation: string;
 }
 export namespace Translation {
-    export type TranslationTargetEnum = 'BUILDING' | 'HULL' | 'RESEARCH' | 'MISSILE' | 'WARHEAD' | 'MISSILE_MOTOR' | 'LAUNCHER' | 'ARMOR' | 'ELECTRONIC_WARFARE' | 'PROPULSION' | 'WEAPON' | 'PASSIVE_MODULE' | 'SIDEWALL' | 'AMMUNITION_MODULE';
+    export type TranslationTargetEnum = 'BUILDING' | 'HULL' | 'RESEARCH' | 'MISSILE' | 'LAUNCHER' | 'ARMOR' | 'ELECTRONIC_WARFARE' | 'PROPULSION' | 'WEAPON' | 'PASSIVE_MODULE' | 'SIDEWALL';
     export const TranslationTargetEnum = {
         BUILDING: 'BUILDING' as TranslationTargetEnum,
         HULL: 'HULL' as TranslationTargetEnum,
         RESEARCH: 'RESEARCH' as TranslationTargetEnum,
         MISSILE: 'MISSILE' as TranslationTargetEnum,
-        WARHEAD: 'WARHEAD' as TranslationTargetEnum,
-        MISSILEMOTOR: 'MISSILE_MOTOR' as TranslationTargetEnum,
         LAUNCHER: 'LAUNCHER' as TranslationTargetEnum,
         ARMOR: 'ARMOR' as TranslationTargetEnum,
         ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as TranslationTargetEnum,
         PROPULSION: 'PROPULSION' as TranslationTargetEnum,
         WEAPON: 'WEAPON' as TranslationTargetEnum,
         PASSIVEMODULE: 'PASSIVE_MODULE' as TranslationTargetEnum,
-        SIDEWALL: 'SIDEWALL' as TranslationTargetEnum,
-        AMMUNITIONMODULE: 'AMMUNITION_MODULE' as TranslationTargetEnum
+        SIDEWALL: 'SIDEWALL' as TranslationTargetEnum
     };
     export type TranslatableTypeEnum = 'NAME' | 'DESCRIPTION';
     export const TranslatableTypeEnum = {

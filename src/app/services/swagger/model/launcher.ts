@@ -9,7 +9,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { AmmunitionModule } from './ammunitionModule';
 import { BaseModule } from './baseModule';
 import { Missile } from './missile';
 
@@ -30,7 +29,6 @@ export interface Launcher {
      * The bunch of allowed missiles for this launcher.
      */
     allowedMissiles: Array<Missile>;
-    ammunitionModule: AmmunitionModule;
 }
 export namespace Launcher {
     export type WeaponTypeEnum = 'MISSILE' | 'BEAM' | 'COUNTER_MISSILE' | 'POINT_DEFENSE';

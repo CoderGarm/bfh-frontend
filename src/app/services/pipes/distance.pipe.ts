@@ -16,6 +16,6 @@ export class DistancePipe implements PipeTransform {
         }
         const metric: DistanceMetricEnum = targetDistanceMetric as keyof typeof DistanceMetricEnum;
         const result = NavigationCalculator.convertDistanceToMetric(value, metric);
-        return this.numberShort.transform(result) + ' ' + metric;
+        return this.numberShort.transform(result) + ' ' + metric.toLowerCase();
     }
 }

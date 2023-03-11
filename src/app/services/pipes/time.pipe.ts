@@ -16,6 +16,6 @@ export class TimePipe implements PipeTransform {
         }
         const metric: TimeMetricEnum = targetTimeMetric as keyof typeof TimeMetricEnum;
         const result = NavigationCalculator.convertTimeToMetric(value, metric);
-        return this.numberShort.transform(result) + ' ' + metric;
+        return this.numberShort.transform(result) + ' ' + metric.toLowerCase();
     }
 }

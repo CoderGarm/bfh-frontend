@@ -33,11 +33,9 @@ export class WeaponHelper {
      */
     static getMissileRange(missile: Missile): number {
         let range = 0;
-        missile.missileMotors.forEach(missileMotor => {
-            let endurance = missileMotor.endurance;
-            let acceleration = missileMotor.acceleration;
-            range += NavigationCalculator.getRangeByTimeAndAcceleration(endurance, acceleration, AccelerationMetricEnum.MS2);
-        });
+        let endurance = missile.missileMotor.endurance;
+        let acceleration = missile.missileMotor.acceleration;
+        range += NavigationCalculator.getRangeByTimeAndAcceleration(endurance, acceleration, AccelerationMetricEnum.MS2);
         return range;
     }
 }

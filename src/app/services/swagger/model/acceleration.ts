@@ -11,7 +11,7 @@
  */
 
 /**
- * The acceleration of this engine in msÂ².
+ * The acceleration of this engine.
  */
 export interface Acceleration { 
     /**

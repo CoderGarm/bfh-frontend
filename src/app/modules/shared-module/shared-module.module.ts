@@ -29,6 +29,7 @@ import {TechLevelPipe} from "../../services/pipes/tech-level.pipe";
 import {AccelerationPipe} from "../../services/pipes/acceleration.pipe";
 import {VelocityPipe} from "../../services/pipes/velocity.pipe";
 import {TimePipe} from "../../services/pipes/time.pipe";
+import {MissileEndurancePipe} from "../../services/pipes/missile-endurance.pipe";
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import {TimePipe} from "../../services/pipes/time.pipe";
         NumberShortPipe,
         TimePipe,
         DistancePipe,
+        MissileEndurancePipe,
         AccelerationPipe,
         VelocityPipe,
         TechLevelPipe,
@@ -81,6 +83,7 @@ import {TimePipe} from "../../services/pipes/time.pipe";
         NumberShortPipe,
         TimePipe,
         DistancePipe,
+        MissileEndurancePipe,
         AccelerationPipe,
         VelocityPipe,
         TechLevelPipe,

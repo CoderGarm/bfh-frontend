@@ -65,9 +65,10 @@ export class NavigationCalculator {
      * @param acceleration the acceleration in m/s²
      * @param targetMetric the target metric
      */
-    static getRangeByTimeAndAcceleration(time: number, acceleration: Acceleration, targetMetric: AccelerationMetricEnum): number {
+    static getRangeByTimeAndAcceleration(time: Time, acceleration: Acceleration, targetMetric: AccelerationMetricEnum): number {
+        const timeToMetric = this.convertTimeToMetric(time, TimeMetricEnum.SECOND);
         const valueInTargetMetric = this.convertAccelerationToMetric(acceleration, targetMetric);
-        let squaredTime = Math.pow(time, 2);
+        let squaredTime = Math.pow(timeToMetric, 2);
         return 0.5 * valueInTargetMetric * squaredTime;
     }
 

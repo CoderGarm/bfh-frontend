@@ -60,6 +60,7 @@ import {ForgottenPasswordComponent} from './components/user/forgotten-password/f
 import {AccelerationPipe} from "./services/pipes/acceleration.pipe";
 import {VelocityPipe} from "./services/pipes/velocity.pipe";
 import {TimePipe} from "./services/pipes/time.pipe";
+import {MissileEndurancePipe} from "./services/pipes/missile-endurance.pipe";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -141,6 +142,7 @@ export let AppInjector: Injector;
         BackgroundService,
         DatePipe,
         NumberShortPipe,
+        MissileEndurancePipe,
         TimePipe,
         DistancePipe,
         AccelerationPipe,

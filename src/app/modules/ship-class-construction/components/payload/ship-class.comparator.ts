@@ -105,13 +105,13 @@ export class ShipClassComparator {
     private static getAmmunitionFittings(shipClass: ShipClassMock): Map<number, number> {
         const fittings: Map<number, number> = new Map<number, number>();
         shipClass.ammunitionFittings.map(af => {
-            let idModule = af.ammunitionModule.baseModule.idModule;
+            let idMissile = af.missile.baseModule.idModule;
             let amount = af.amount;
-            let o1Am = fittings.get(idModule);
+            let o1Am = fittings.get(idMissile);
             if (!o1Am) {
-                fittings.set(idModule, amount);
+                fittings.set(idMissile, amount);
             } else {
-                fittings.set(idModule, amount + o1Am);
+                fittings.set(idMissile, amount + o1Am);
             }
         });
         return fittings;

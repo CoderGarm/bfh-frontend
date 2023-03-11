@@ -10,23 +10,13 @@
  * Do not edit the class manually.
  */
 import { Acceleration } from './acceleration';
+import { Time } from './time';
 
 /**
  * .
  */
 export interface MissileMotor { 
-    /**
-     * The id of this MissileMotor.
-     */
-    idMissileMotor: number;
-    /**
-     * The type name of this engine.
-     */
-    typeName: string;
-    /**
-     * The endurance of this engine.
-     */
-    endurance: number;
+    endurance: Time;
     acceleration: Acceleration;
     /**
      * Defines the capability of this weapon to penetrate the shield.  The means the maneuver capability to find a gap in the tank to fire into it, for instance.

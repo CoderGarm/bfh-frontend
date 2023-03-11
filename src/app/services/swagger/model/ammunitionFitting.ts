@@ -9,13 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { AmmunitionModule } from './ammunitionModule';
+import { Missile } from './missile';
 
 /**
  * .
  */
 export interface AmmunitionFitting { 
-    ammunitionModule: AmmunitionModule;
+    missile: Missile;
     /**
      * The amount of ammunition modules.
      */

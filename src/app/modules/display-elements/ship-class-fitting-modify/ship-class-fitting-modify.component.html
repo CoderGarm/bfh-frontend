@@ -1,7 +1,7 @@
 <app-chip-selector multiple noCheckmark preSelect
                    titleValue="Filter modules by hull type"
                    [chipValues]="eHullTypeChipValues"
-                   (chipValuesChange)="filterDisplayedItems($event)"></app-chip-selector>
+                   (chipValuesChange)="filterDisplayedItems($event)" xmlns="http://www.w3.org/1999/html"></app-chip-selector>
 
 <div>{{ 'shipyard.fitting.singular-module.title' | translate }}</div>
 <mat-chip-listbox aria-label="Module selection">
@@ -62,43 +62,24 @@
                                               (weaponSelectionOutput)="updateWeaponSelection($event)"
                                               [startAt]="getWeaponSelection(hoveredWeapon)"></app-weapon-per-alignment-counter>
             <app-weapon-display [weapon]="hoveredWeapon"></app-weapon-display>
-        </ng-template>
-    </mat-step>
-
-    <mat-step>
-        <ng-template matStepLabel>
-            <div>{{ 'shipyard.fitting.ammunition.title' | translate }}</div>
-            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.ammunition' | translate }}</div>
-        </ng-template>
-        <ng-template matStepContent>
-            <div class="nav-control">
-                <div>
-                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
-                        <mat-icon>arrow_upward</mat-icon>
-                    </button>
-                </div>
-                <div>
-                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
-                        <mat-icon>arrow_downward</mat-icon>
-                    </button>
-                </div>
+            
+            <div id="ammunition-selection" class="flex-items-container">
+                <mat-card *ngFor="let missile of getMissilesOfLoadout(designedShipClass)" class="ammo-card">
+                    <mat-card-header>
+                        <mat-card-title>{{getDisplayName(missile)}}</mat-card-title>
+                        <mat-card-subtitle>
+                            <span matListItemLine>Range: {{ missile.missileMotor | missileEndurance: 'KM' }}</span>
+                            <span matListItemLine>Attack type: {{ missile.warhead.warheadType }} at {{ missile.warhead.damageProjectionRange | distance: 'KM' }}</span>
+                            <span matListItemLine>Used by: {{getAmountOfLaunchersFor(missile, designedShipClass)}}  {{ 'shipyard.fitting.weapon-for.weaponType.MISSILE' | translate }}</span>
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <app-numeric-counter class="numeric-counter" caption="Shots"
+                                             (amount)="setAmmunitionModule(missile, $event)"
+                                             [startAt]="getAmmunitionModuleAmount(missile)"></app-numeric-counter>
+                    </mat-card-content>
+                </mat-card>
             </div>
-
-            <mat-selection-list [multiple]="false">
-                <mat-list-option *ngFor="let module of getNeededAmmunitionModules(designedShipClass)"
-                                 (selectedChange)="ammunitionModuleSelection = module.launcher!.ammunitionModule; hoveredAmmunitionModule = module.launcher!.ammunitionModule; createAndEmitDesignedShipClass();"
-                                 (mouseover)="hoveredAmmunitionModule = module.launcher!.ammunitionModule"
-                                 (mouseout)="!!ammunitionModuleSelection ? hoveredAmmunitionModule = ammunitionModuleSelection : hoveredAmmunitionModule = undefined">
-                    <span matListItemTitle>{{module.launcher!.ammunitionModule.missile.typeName}}</span>
-                    <span matListItemLine>{{ 'enum.name.weaponAlignment.' + module.weaponAlignment | translate }}, {{module.amount}}
-                        x {{ 'shipyard.fitting.weapon-for.weaponType.' + module.launcher!.weaponType | translate }}</span>
-                </mat-list-option>
-            </mat-selection-list>
-
-            <app-numeric-counter class="numeric-counter" [disabled]="!ammunitionModuleSelection"
-                                 (amount)="setAmmunitionModule(ammunitionModuleSelection, $event)"
-                                 [startAt]="getAmmunitionModuleAmount(ammunitionModuleSelection)"></app-numeric-counter>
-            <app-module-display [module]="hoveredAmmunitionModule"></app-module-display>
         </ng-template>
     </mat-step>
 

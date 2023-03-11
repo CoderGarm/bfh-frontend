@@ -16,14 +16,6 @@ import { Distance } from './distance';
  */
 export interface Warhead { 
     /**
-     * The id of this warhead.
-     */
-    idWarhead: number;
-    /**
-     * The type name of this warhead.
-     */
-    typeName: string;
-    /**
      * The projected damage of this warhead.
      */
     damageValue: number;

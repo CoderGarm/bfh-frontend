@@ -57,7 +57,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
 
             // set ammunition fittings
             let ammunitionFittings = shipClass.ammunitionFittings;
-            ammunitionFittings.forEach(ammo => this.setAmmunitionModule(ammo.ammunitionModule, ammo.amount));
+            ammunitionFittings.forEach(ammo => this.setAmmunitionModule(ammo.missile, ammo.amount));
             // set fittings
             if (!!shipClass.fittings) {
                 let fittings = shipClass.fittings;
@@ -85,16 +85,16 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                         // match ammunition with weapons
                         let ammoFittingForWeapon: AmmunitionFitting[] = ammunitionFittings
                             .filter(ammo => {
-                                if (!!(<Launcher>weapon).ammunitionModule) {
-                                    return ammo.ammunitionModule.baseModule.idModule === (<Launcher>weapon).ammunitionModule.baseModule.idModule
+                                if (!!(<Launcher>weapon).allowedMissiles[0]) { // fixme fix missile selection
+                                    return ammo.missile.baseModule.idModule === (<Launcher>weapon).allowedMissiles[0].baseModule.idModule // fixme fix missile selection
                                 }
                                 return false;
                             });
                         // currently there is only one ammunition type present per weapon
                         ammoFittingForWeapon.forEach(ammo => {
                             if (!!selection) {
-                                selection.ammo = ammo.ammunitionModule;
-                                selection.ammoAmount = (!!selection.ammoAmount ? selection.ammoAmount : 0) + ammo.amount;
+                                selection.missile = ammo.missile;
+                                selection.missileAmount = (!!selection.missileAmount ? selection.missileAmount : 0) + ammo.amount;
                             }
                         });
                     }

@@ -1,6 +1,6 @@
 import {Pipe, PipeTransform} from "@angular/core";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
-import {Acceleration, Distance} from "../swagger";
+import {Acceleration} from "../swagger";
 import {NumberShortPipe} from "./number-short.pipe";
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
 
@@ -16,6 +16,6 @@ export class AccelerationPipe implements PipeTransform {
         }
         const metric: AccelerationMetricEnum = targetAccelerationMetric as keyof typeof AccelerationMetricEnum;
         const result = NavigationCalculator.convertAccelerationToMetric(value, metric);
-        return this.numberShort.transform(result) + ' ' + metric;
+        return this.numberShort.transform(result) + ' ' + metric.toLowerCase();
     }
 }

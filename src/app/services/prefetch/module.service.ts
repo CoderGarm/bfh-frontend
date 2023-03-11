@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../../subscription.manager";
-import {AmmunitionModule, Armor, ElectronicWarfare, Hull, Launcher, ModuleApiService, PassiveModule, Propulsion, Sidewall, Weapon} from "../swagger";
+import {Armor, ElectronicWarfare, Hull, Launcher, ModuleApiService, PassiveModule, Propulsion, Sidewall, Weapon} from "../swagger";
 import {ReplaySubject} from "rxjs";
 
 /**
@@ -11,7 +11,6 @@ export class ModuleService extends SubscriptionManager {
 
     private weapons: ReplaySubject<Weapon[]> = new ReplaySubject<Weapon[]>();
     private launchers: ReplaySubject<Launcher[]> = new ReplaySubject<Launcher[]>();
-    private ammo: ReplaySubject<AmmunitionModule[]> = new ReplaySubject<AmmunitionModule[]>();
     private armors: ReplaySubject<Armor[]> = new ReplaySubject<Armor[]>();
     private sidewalls: ReplaySubject<Sidewall[]> = new ReplaySubject<Sidewall[]>();
     private eloka: ReplaySubject<ElectronicWarfare[]> = new ReplaySubject<ElectronicWarfare[]>();
@@ -28,7 +27,6 @@ export class ModuleService extends SubscriptionManager {
         this.zone.run(() => this.fetchArmors());
         this.zone.run(() => this.fetchSidewalls());
         this.zone.run(() => this.fetchElokas());
-        this.zone.run(() => this.fetchAmmunitions());
         this.zone.run(() => this.fetchPropulsions());
         this.zone.run(() => this.fetchPassives());
         this.zone.run(() => this.fetchHulls());
@@ -56,11 +54,6 @@ export class ModuleService extends SubscriptionManager {
 
     private fetchElokas() {
         let sub = this.moduleApi.getElectronicWarfareByUser().subscribe(resp => this.eloka.next(resp));
-        this.subscriptions.push(sub);
-    }
-
-    private fetchAmmunitions() {
-        let sub = this.moduleApi.getAmmunitionModulesByUser().subscribe(resp => this.ammo.next(resp));
         this.subscriptions.push(sub);
     }
 
@@ -97,10 +90,6 @@ export class ModuleService extends SubscriptionManager {
 
     getElectronicWarfareByUser() {
         return this.eloka;
-    }
-
-    getAmmunitionModulesByUser() {
-        return this.ammo;
     }
 
     getPropulsionsByUser() {

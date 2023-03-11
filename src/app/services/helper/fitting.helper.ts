@@ -1,4 +1,4 @@
-import {AlignedFitting, AmmunitionModule, Launcher, PassiveModule, Weapon} from "../swagger";
+import {AlignedFitting, Launcher, Missile, PassiveModule, Weapon} from "../swagger";
 import {WeaponHelper} from "./weapon.helper";
 
 export class FittingHelper {
@@ -43,8 +43,8 @@ export class FittingHelper {
      * @param passive
      * @public
      */
-    public static getAmmunitionMapKey(passive: AmmunitionModule): string {
-        return passive.baseModule.idModule + "-passive";
+    public static getAmmunitionMapKey(passive: Missile): string {
+        return passive.baseModule.idModule + "-missile";
     }
 
     /**

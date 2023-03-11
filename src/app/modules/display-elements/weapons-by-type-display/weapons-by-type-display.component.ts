@@ -63,9 +63,8 @@ export class WeaponsByTypeDisplayComponent<MODULE extends { baseModule: BaseModu
 
             const baseModule = (!!af.launcher ? af.launcher : af.weapon)!;
             const shots: number = this.shipClass!.ammunitionFittings
-                .filter(ammo => ammo.ammunitionModule.baseModule.idModule === baseModule.baseModule.idModule)
-                .filter(ammo => !!ammo.ammunitionModule.baseModule.effectValue)
-                .map(ammo => ammo.amount * ammo.ammunitionModule.baseModule.effectValue!)
+                .filter(ammo => ammo.missile.baseModule.idModule === af.launcher?.allowedMissiles[0].baseModule.idModule) // fixme fix missile selection
+                .map(ammo => ammo.amount)
                 .reduce((sum, current) => sum + current, 0);
 
             result.push(({

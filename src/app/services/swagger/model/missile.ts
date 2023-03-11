@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { BaseModule } from './baseModule';
 import { MissileMotor } from './missileMotor';
 import { Warhead } from './warhead';
 
@@ -16,29 +17,15 @@ import { Warhead } from './warhead';
  * .
  */
 export interface Missile { 
-    /**
-     * The id of this Missile.
-     */
-    idMissile: number;
-    /**
-     * The type name of this missile.
-     */
-    typeName: string;
-    /**
-     * The warhead capacity of this missile.
-     */
-    warheadCapacity: number;
-    /**
-     * The engine capacity of this missile.
-     */
-    motorCapacity: number;
+    baseModule: BaseModule;
     /**
      * The engine capacity of this missile.
      */
     elokaResistance: number;
-    warhead: Warhead;
     /**
-     * The implemented engine of this missile.
+     * The uses capacity of this missile.
      */
-    missileMotors: Array<MissileMotor>;
+    useCapacity: number;
+    warhead: Warhead;
+    missileMotor: MissileMotor;
 }

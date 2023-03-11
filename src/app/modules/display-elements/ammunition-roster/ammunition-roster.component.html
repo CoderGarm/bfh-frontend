@@ -3,7 +3,7 @@
     <mat-list>
         <mat-list-item *ngFor="let a of ammo">
             <div mat-line>
-                {{a.missile.typeName}}: {{a.amount}} / {{a.capacity}}
+                {{a.missile.baseModule.technicalTypeName}}: {{a.amount}} / {{a.capacity}}
             </div>
         </mat-list-item>
     </mat-list>
