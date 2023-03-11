@@ -14,6 +14,6 @@ export class PropulsionCapacityDisplayComponent implements OnChanges {
     capacities: PropulsionCapacity[] = [];
 
     ngOnChanges(changes: SimpleChanges) {
-        this.capacities = this.capacities.filter(e => e.timeToVMax > 0);
+        this.capacities = this.capacities.filter(e => e.timeToVMax.coordinate > 0);
     }
 }

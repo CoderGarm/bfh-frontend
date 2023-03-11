@@ -26,13 +26,19 @@ import {OutlinedComponent} from './components/outlined/outlined.component';
 import {ChipSelectorComponent} from "./components/chip-selector/chip-selector.component";
 import {DistancePipe} from "../../services/pipes/distance.pipe";
 import {TechLevelPipe} from "../../services/pipes/tech-level.pipe";
+import {AccelerationPipe} from "../../services/pipes/acceleration.pipe";
+import {VelocityPipe} from "../../services/pipes/velocity.pipe";
+import {TimePipe} from "../../services/pipes/time.pipe";
 
 @NgModule({
     declarations: [
         NumericCounterComponent,
         NumberShortComponent,
         NumberShortPipe,
+        TimePipe,
         DistancePipe,
+        AccelerationPipe,
+        VelocityPipe,
         TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
@@ -73,7 +79,10 @@ import {TechLevelPipe} from "../../services/pipes/tech-level.pipe";
         OverlayModule,
         TranslateModule,
         NumberShortPipe,
+        TimePipe,
         DistancePipe,
+        AccelerationPipe,
+        VelocityPipe,
         TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,

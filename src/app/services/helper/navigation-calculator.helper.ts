@@ -1,8 +1,9 @@
-import {Acceleration, Distance, Orbit, Propulsion} from "../swagger";
+import {Acceleration, Distance, Orbit, Propulsion, Time, Velocity} from "../swagger";
 import {ArrayXY} from "@svgdotjs/svg.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
 import TechnologyTypeEnum = Propulsion.TechnologyTypeEnum;
+import TimeMetricEnum = Velocity.TimeMetricEnum;
 
 export enum Direction {
     NORTH,
@@ -13,7 +14,18 @@ export enum Direction {
 
 export class NavigationCalculator {
 
-    private static distanceMetricValues: Map<DistanceMetricEnum, number> = new Map<Distance.DistanceMetricEnum, number>();
+    private static timeMetricValues: Map<TimeMetricEnum, number> = new Map<TimeMetricEnum, number>();
+    static {
+        this.timeMetricValues.set(TimeMetricEnum.SECOND, 1);
+        this.timeMetricValues.set(TimeMetricEnum.MINUTE, 60);
+        this.timeMetricValues.set(TimeMetricEnum.HOUR, 3600);
+        this.timeMetricValues.set(TimeMetricEnum.DAY, 86400);
+        this.timeMetricValues.set(TimeMetricEnum.WEEK, 604800);
+        this.timeMetricValues.set(TimeMetricEnum.MONTH, 2419200);
+        this.timeMetricValues.set(TimeMetricEnum.YEAR, 29030400);
+    }
+
+    private static distanceMetricValues: Map<DistanceMetricEnum, number> = new Map<DistanceMetricEnum, number>();
     static {
         this.distanceMetricValues.set(DistanceMetricEnum.M, 1);
         this.distanceMetricValues.set(DistanceMetricEnum.KM, 1000);
@@ -36,6 +48,14 @@ export class NavigationCalculator {
     static {
         this.velocityRestriction.set(TechnologyTypeEnum.CIVIL, 0.6);
         this.velocityRestriction.set(TechnologyTypeEnum.MILITARY, 0.8);
+    }
+
+    static getSOLinMetric(dMetric: DistanceMetricEnum, tMetric: TimeMetricEnum): number {
+        return NavigationCalculator.convertVelocityToMetric({
+            value: this.distanceMetricValues.get(DistanceMetricEnum.LS)!,
+            distanceMetric: DistanceMetricEnum.M,
+            timeMetric: TimeMetricEnum.SECOND
+        }, dMetric, tMetric);
     }
 
     /**
@@ -70,6 +90,22 @@ export class NavigationCalculator {
         return originalMetricValue! / targetMetricValue!;
     }
 
+    static convertVelocityToMetric(distance: Velocity, dMetric: DistanceMetricEnum, tMetric: TimeMetricEnum): number {
+        if (distance.distanceMetric === dMetric && distance.timeMetric === tMetric) {
+            return distance.value;
+        }
+
+        const factor = NavigationCalculator.getVelocityConversionFactor(distance, dMetric, tMetric);
+        return distance.value * factor;
+    }
+
+    private static getVelocityConversionFactor(distance: Velocity, dMetric: DistanceMetricEnum, tMetric: TimeMetricEnum) {
+        const tFactor = NavigationCalculator.getTimeConversionFactor(distance.timeMetric, tMetric);
+        const dFactor = NavigationCalculator.getDistanceConversionFactor(distance.distanceMetric, dMetric);
+
+        return tFactor * dFactor * distance.value;
+    }
+
     static convertDistanceToMetric(distance: Distance, targetMetric: DistanceMetricEnum): number {
         if (distance.distanceMetric == targetMetric) {
             return distance.coordinate;
@@ -83,6 +119,25 @@ export class NavigationCalculator {
 
         const originalMetricValue: number | undefined = this.distanceMetricValues.get(originalMetric);
         const targetMetricValue: number | undefined = this.distanceMetricValues.get(targetMetric);
+        if (originalMetric == undefined || targetMetric == undefined) {
+            throw new Error("There must be both metrics present.");
+        }
+        return originalMetricValue! / targetMetricValue!;
+    }
+
+    static convertTimeToMetric(distance: Time, targetMetric: TimeMetricEnum): number {
+        if (distance.timeMetric == targetMetric) {
+            return distance.coordinate;
+        }
+
+        const factor = NavigationCalculator.getTimeConversionFactor(distance.timeMetric, targetMetric);
+        return distance.coordinate * factor;
+    }
+
+    private static getTimeConversionFactor(originalMetric: TimeMetricEnum, targetMetric: TimeMetricEnum) {
+
+        const originalMetricValue: number | undefined = this.timeMetricValues.get(originalMetric);
+        const targetMetricValue: number | undefined = this.timeMetricValues.get(targetMetric);
         if (originalMetric == undefined || targetMetric == undefined) {
             throw new Error("There must be both metrics present.");
         }

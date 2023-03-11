@@ -192,7 +192,17 @@
             </div>
 
             <mat-selection-list [multiple]="false">
-                <mat-list-option *ngFor="let module of propulsions"
+                <div mat-subheader>Civil propulsions</div>
+                <mat-list-option *ngFor="let module of getPropulsionsByTechType(propulsions, 'CIVIL')"
+                                 [selected]="!!propulsionSelection && propulsionSelection.baseModule.idModule === module.baseModule.idModule"
+                                 (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
+                                 (mouseover)="hoveredPropulsion = module"
+                                 (mouseout)="!!propulsionSelection ? hoveredPropulsion = propulsionSelection : hoveredPropulsion = undefined">
+                    {{module.baseModule.name}}, {{module.baseModule.technicalTypeName}}
+                </mat-list-option>
+                <mat-divider></mat-divider>
+                <div mat-subheader>Military propulsions</div>
+                <mat-list-option *ngFor="let module of getPropulsionsByTechType(propulsions, 'MILITARY')"
                                  [selected]="!!propulsionSelection && propulsionSelection.baseModule.idModule === module.baseModule.idModule"
                                  (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredPropulsion = module"

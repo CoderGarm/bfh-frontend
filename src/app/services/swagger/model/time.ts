@@ -9,23 +9,21 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Acceleration } from './acceleration';
-import { Time } from './time';
-import { Velocity } from './velocity';
 
 /**
- * .
+ * The time to reach the maximum velocity.
  */
-export interface PropulsionCapacity { 
-    acceleration: Acceleration;
-    velocity: Velocity;
-    timeToVMax: Time;
+export interface Time { 
     /**
-     * The time metric.
+     * The value of this distance.
      */
-    timeMetric: PropulsionCapacity.TimeMetricEnum;
+    coordinate: number;
+    /**
+     * The metric of this time.
+     */
+    timeMetric: Time.TimeMetricEnum;
 }
-export namespace PropulsionCapacity {
+export namespace Time {
     export type TimeMetricEnum = 'SECOND' | 'MINUTE' | 'HOUR' | 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
     export const TimeMetricEnum = {
         SECOND: 'SECOND' as TimeMetricEnum,

@@ -29,6 +29,10 @@ export interface Hull {
     description: string;
     hullType: EHullType;
     /**
+     * The tech type of this hull.
+     */
+    technologyType: Hull.TechnologyTypeEnum;
+    /**
      * The overall construction capacity as displacement like in the wet navies.
      */
     overallConstructionCapacity: number;
@@ -48,4 +52,11 @@ export interface Hull {
      * The broadside-aligned construction capacity.
      */
     constructionCapacityBroadsides: number;
+}
+export namespace Hull {
+    export type TechnologyTypeEnum = 'CIVIL' | 'MILITARY';
+    export const TechnologyTypeEnum = {
+        CIVIL: 'CIVIL' as TechnologyTypeEnum,
+        MILITARY: 'MILITARY' as TechnologyTypeEnum
+    };
 }

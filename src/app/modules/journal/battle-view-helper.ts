@@ -75,7 +75,6 @@ export class BattleViewHelper extends BasicViewHelper {
         this.clearData();
         this.drawOrbits(starSystem);
         if (!activeRound || !this.combatArenaData) {
-            console.log("no active round selected: ", activeRound);
             return;
         }
 

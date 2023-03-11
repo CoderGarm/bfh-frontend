@@ -57,6 +57,9 @@ import {DistancePipe} from "./services/pipes/distance.pipe";
 import {TechLevelPipe} from "./services/pipes/tech-level.pipe";
 import {EMailValidatorDirective} from "./validators/email.validator";
 import {ForgottenPasswordComponent} from './components/user/forgotten-password/forgotten-password.component';
+import {AccelerationPipe} from "./services/pipes/acceleration.pipe";
+import {VelocityPipe} from "./services/pipes/velocity.pipe";
+import {TimePipe} from "./services/pipes/time.pipe";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -138,7 +141,10 @@ export let AppInjector: Injector;
         BackgroundService,
         DatePipe,
         NumberShortPipe,
+        TimePipe,
         DistancePipe,
+        AccelerationPipe,
+        VelocityPipe,
         TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,

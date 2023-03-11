@@ -98,6 +98,7 @@ export * from './starSystemColonization';
 export * from './stateBlock';
 export * from './supportFitting';
 export * from './tick';
+export * from './time';
 export * from './translation';
 export * from './transportJob';
 export * from './userJson';

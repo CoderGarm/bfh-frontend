@@ -29,6 +29,7 @@ import {WeaponsSelection} from "../weapon-per-alingment-counter/weapon-per-align
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
+import TechnologyTypeEnum = Propulsion.TechnologyTypeEnum;
 
 @Component({
     selector: 'app-ship-class-fitting-create',
@@ -576,5 +577,13 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         })
         this.subscriptions.push(sub);
         return [];
+    }
+
+    getHullsByTechType(hulls: Hull[], techType: TechnologyTypeEnum) {
+        return hulls.filter(h => h.technologyType === techType).sort((a, b) => a.overallConstructionCapacity - b.overallConstructionCapacity);
+    }
+
+    getPropulsionsByTechType(propulsions: Propulsion[], techType: TechnologyTypeEnum) {
+        return propulsions.filter(h => h.technologyType === techType).sort((a, b) => a.hasCostsByParent.costsPercentage - b.hasCostsByParent.costsPercentage);
     }
 }
