@@ -1,20 +1,20 @@
 <div class="flex-items-container">
-    <mat-form-field appearance="fill" matBadge="{{module?.baseModule?.techLevel | techLevel}}" matBadgePosition="above after">
+    <mat-form-field appearance="outline" matBadge="{{module?.baseModule?.techLevel | techLevel}}" matBadgePosition="above after">
         <mat-label>Name</mat-label>
         <input matInput disabled value="{{module?.baseModule?.name}}">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
         <mat-label>Description</mat-label>
         <input matInput disabled value="{{module?.baseModule?.description}}">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
         <mat-label>Hyper band</mat-label>
         <input matInput disabled value="{{module?.hyperBand}}">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
         <mat-label>Percentage of hull costs</mat-label>
         <input matInput disabled value="{{module?.hasCostsByParent?.costsPercentage}}">
     </mat-form-field>

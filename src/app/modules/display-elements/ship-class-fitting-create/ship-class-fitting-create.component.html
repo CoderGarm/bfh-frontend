@@ -46,8 +46,7 @@
     <mat-step>
         <ng-template matStepLabel>
             <div *ngIf="!propulsionSelection">{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
-            <div *ngIf="!!propulsionSelection">{{propulsionSelection.baseModule.name}}
-                , {{propulsionSelection.baseModule.technicalTypeName}}</div>
+            <div *ngIf="!!propulsionSelection">{{getDisplayName(propulsionSelection)}}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.mandatory.propulsion' | translate }}</div>
         </ng-template>
         <ng-template matStepContent>
@@ -71,7 +70,7 @@
                                  (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredPropulsion = module"
                                  (mouseout)="!!propulsionSelection ? hoveredPropulsion = propulsionSelection : hoveredPropulsion = undefined">
-                    {{module.baseModule.name}}, {{module.baseModule.technicalTypeName}}
+                    {{getDisplayName(module)}}
                 </mat-list-option>
                 <mat-divider></mat-divider>
                 <div mat-subheader>Military propulsions</div>
@@ -80,7 +79,7 @@
                                  (selectedChange)="propulsionSelection = module; hoveredPropulsion = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredPropulsion = module"
                                  (mouseout)="!!propulsionSelection ? hoveredPropulsion = propulsionSelection : hoveredPropulsion = undefined">
-                    {{module.baseModule.name}}, {{module.baseModule.technicalTypeName}}
+                    {{getDisplayName(module)}}
                 </mat-list-option>
             </mat-selection-list>
             <app-propulsion-display [module]="hoveredPropulsion"></app-propulsion-display>
@@ -115,7 +114,7 @@
                                  (selectedChange)="armorSelection = module; hoveredArmor = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredArmor = module"
                                  (mouseout)="!!armorSelection ? hoveredArmor = armorSelection : hoveredArmor = undefined">
-                    {{module.baseModule.name}}
+                    {{getDisplayName(module)}}
                 </mat-list-option>
             </mat-selection-list>
             <app-module-display [module]="hoveredArmor"></app-module-display>
@@ -149,7 +148,7 @@
                                  (selectedChange)="sidewallSelection = module; hoveredSidewall = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredSidewall = module"
                                  (mouseout)="!!sidewallSelection ? hoveredSidewall = sidewallSelection : hoveredSidewall = undefined">
-                    {{module.baseModule.name}}
+                    {{getDisplayName(module)}}
                 </mat-list-option>
             </mat-selection-list>
             <app-module-display [module]="hoveredSidewall"></app-module-display>
@@ -183,7 +182,7 @@
                                  (selectedChange)="elokaSelection = module; hoveredEloka = module; createAndEmitDesignedShipClass();"
                                  (mouseover)="hoveredEloka = module"
                                  (mouseout)="!!elokaSelection ? hoveredEloka = elokaSelection : hoveredEloka = undefined">
-                    {{module.baseModule.name}}
+                    {{getDisplayName(module)}}
                 </mat-list-option>
             </mat-selection-list>
             <app-module-display [module]="hoveredEloka"></app-module-display>
@@ -209,7 +208,7 @@
                                  (selectedChange)="passiveModuleSelection = module; hoveredPassiveModule = module;"
                                  (mouseover)="hoveredPassiveModule = module"
                                  (mouseout)="!!passiveModuleSelection ? hoveredPassiveModule = passiveModuleSelection : hoveredPassiveModule = undefined">
-                    {{module.baseModule.name}}
+                    {{getDisplayName(module)}}
                 </mat-list-option>
             </mat-selection-list>
 
@@ -258,7 +257,7 @@
                                  (selectedChange)="chooseWeapon(wep)"
                                  (mouseover)="hoverWeapon(wep)"
                                  (mouseout)="hoverWeapon()">
-                    <span matListItemTitle>{{wep.baseModule.name}}</span>
+                    <span matListItemTitle>{{getDisplayName(wep)}}</span>
                     <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType?.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                 </mat-list-option>
                 <mat-list-option *ngFor="let wep of launchers"
@@ -267,7 +266,7 @@
                                  (selectedChange)="chooseWeapon(wep)"
                                  (mouseover)="hoverWeapon(wep)"
                                  (mouseout)="hoverWeapon()">
-                    <span matListItemTitle>{{wep.baseModule.name}}</span>
+                    <span matListItemTitle>{{getDisplayName(wep)}}</span>
                     <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.hullType?.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                 </mat-list-option>
             </mat-selection-list>

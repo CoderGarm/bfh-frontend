@@ -3,7 +3,7 @@
         <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="fleet-icon">
         <mat-card-title class="title-block" *ngIf="nameChangeAllowed">
             <form [formGroup]="formGroup">
-                <mat-form-field appearance="fill"
+                <mat-form-field appearance="outline"
                                 class="name-input rename-element"
                                 (dblclick)="enable()">
                     <input matInput autocomplete="off"

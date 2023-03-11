@@ -52,6 +52,9 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     shipClassMock?: ShipClassMock;
 
+
+    propulsionCapacityCache: Map<string, PropulsionCapacity[]> = new Map<string, PropulsionCapacity[]>();
+
     /**
      * the modules to select from
      */
@@ -99,7 +102,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     filteredArmors: Armor[] = [];
     filteredSidewalls: Sidewall[] = [];
     filteredEloka: ElectronicWarfare[] = [];
-    filteredPropulsions: Propulsion[] = [];
+    filteredPropulsions: Propulsion[] = []; // filter by hyper band?
     filteredHulls: Hull[] = [];
     eHullTypeChipValues: ChipSelectorValue[] = [];
     hoveredHull?: Hull;
@@ -215,12 +218,12 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             }
             const alignmentTypes = weapon.alignmentTypes;
             switch (this.selectedArc) {
-                case "CHASE_ALIGNMENT":
+                case EAlignmentTypeEnum.CHASEALIGNMENT:
                     if (!alignmentTypes.includes(EWeaponAlignmentEnum.BOW) || !alignmentTypes.includes(EWeaponAlignmentEnum.STERN)) {
                         selectedByFilter = false;
                     }
                     break;
-                case "BATTLE_ALIGNMENT":
+                case EAlignmentTypeEnum.BATTLEALIGNMENT:
                     if (!alignmentTypes.includes(EWeaponAlignmentEnum.BROADSIDE)) {
                         selectedByFilter = false;
                     }
@@ -247,7 +250,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     private addOrRemoveSingleSelectModule<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], module: MODULE, elements: MODULE[], selection: MODULE | undefined) {
         if (this.isPushCandidate(selectedTypeNames, module, selection)) {
-            if (elements.filter(h => h.baseModule.hullType?.typeName === module.baseModule.hullType?.typeName).length == 0) {
+            if (elements.filter(h => h.baseModule.hullType!.typeName === module.baseModule.hullType!.typeName).length == 0) {
                 elements.push(module);
             }
         } else {
@@ -264,8 +267,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     private isPushCandidate<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], candidate: MODULE, selection: MODULE | undefined) {
         const baseModule: BaseModule = candidate.baseModule;
-        const typeName = baseModule.hullType?.typeName;
-        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === baseModule.hullType?.typeName;
+        const typeName = baseModule.hullType!.typeName;
+        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === baseModule.hullType!.typeName;
         const moduleSelected = !!selection && selection.baseModule.idModule === baseModule.idModule;
         return (!!typeName && selectedTypeNames.includes(typeName)) || matchedSelectedHull || moduleSelected;
     }
@@ -559,8 +562,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return filteredModules.filter(fh => fh.baseModule.idModule === module.baseModule.idModule).length > 0;
     }
 
-    map: Map<string, PropulsionCapacity[]> = new Map<string, PropulsionCapacity[]>();
-
     getPropulsionCapacity(): PropulsionCapacity[] {
         if (!this.hoveredHull || !this.hoveredPropulsion) {
             return [];
@@ -568,12 +569,12 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         const idHull = this.hoveredHull.idHull;
         const idPropulsion = this.hoveredPropulsion.baseModule.idModule;
         const key = idHull + '-' + idPropulsion;
-        const propulsionCapacities = this.map.get(key);
+        const propulsionCapacities = this.propulsionCapacityCache.get(key);
         if (!!propulsionCapacities) {
             return propulsionCapacities;
         }
         let sub = this.shipyardApi.getPropulsionCapacity(idHull, idPropulsion).subscribe(resp => {
-            this.map.set(key, resp);
+            this.propulsionCapacityCache.set(key, resp);
         })
         this.subscriptions.push(sub);
         return [];
@@ -585,5 +586,12 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     getPropulsionsByTechType(propulsions: Propulsion[], techType: TechnologyTypeEnum) {
         return propulsions.filter(h => h.technologyType === techType).sort((a, b) => a.hasCostsByParent.costsPercentage - b.hasCostsByParent.costsPercentage);
+    }
+
+    getDisplayName<MODULE extends { baseModule: BaseModule }>(module: MODULE) {
+        if (!module.baseModule.technicalTypeName) {
+            return module.baseModule.name;
+        }
+        return module.baseModule.name + ", " + module.baseModule.technicalTypeName;
     }
 }

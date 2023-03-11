@@ -1,9 +1,9 @@
 <div class="container" *ngIf="!!article">
-    <mat-form-field class="example-full-width mar-ri" appearance="fill">
+    <mat-form-field class="example-full-width mar-ri" appearance="outline">
         <mat-label>{{ 'wiki.article.display.author' | translate }}</mat-label>
         <input matInput type='text' [value]="authorName" disabled required autocomplete="off">
     </mat-form-field>
-    <mat-form-field class="example-full-width mar-ri" appearance="fill">
+    <mat-form-field class="example-full-width mar-ri" appearance="outline">
         <mat-label>{{ 'wiki.article.display.revision' | translate }}</mat-label>
         <input matInput type='text' [value]="revision" disabled required autocomplete="off">
     </mat-form-field>

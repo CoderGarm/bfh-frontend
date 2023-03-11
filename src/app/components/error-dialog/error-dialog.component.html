@@ -1,5 +1,5 @@
 <div *ngIf="!!errorData.validationResults && errorData.validationResults.length > 0">
-    <mat-form-field appearance="fill" id="mainMessage">
+    <mat-form-field appearance="outline" id="mainMessage">
         <mat-label>Message</mat-label>
         <input matInput disabled [value]="errorData.message">
     </mat-form-field>
@@ -20,7 +20,7 @@
 </div>
 <br>
 <div *ngIf="!errorData.validationResults || errorData.validationResults.length == 0">
-    <mat-form-field appearance="fill" id="mainMessageTextArea">
+    <mat-form-field appearance="outline" id="mainMessageTextArea">
         <mat-label>Message</mat-label>
         <textarea matInput
                   disabled

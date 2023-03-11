@@ -6,7 +6,7 @@
     </mat-card-subtitle>
     <mat-card-content>
         <div>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>{{ 'translation.reference.language' | translate }}</mat-label>
                 <input matInput autocomplete="off" placeholder="{{ 'translation.designated.language' | translate }}" [disabled]="true" [value]="referenceTranslation.languageCode">
             </mat-form-field>
@@ -16,7 +16,7 @@
                     [ngModel]="referenceTranslation.translation"></textarea>
         </div>
         <div *ngFor="let translation of translations" class="input-translation">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>{{ 'translation.reference.language' | translate }}</mat-label>
                 <input matInput autocomplete="off" placeholder="{{ 'translation.designated.language' | translate }}" [disabled]="true" [value]="translation.languageCode">
             </mat-form-field>
@@ -26,7 +26,7 @@
         </div>
         <div class="input-translation" *ngIf="getReducedLanguageCodes().length > 0">
             <form [formGroup]=newTranslationFG>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>{{ 'translation.designated.language' | translate }}</mat-label>
                     <mat-select formControlName="selectedLanguageCode">
                         <mat-option *ngFor="let languageCode of getReducedLanguageCodes()" [value]="languageCode">

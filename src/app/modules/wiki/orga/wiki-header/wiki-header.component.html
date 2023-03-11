@@ -9,7 +9,7 @@
         </mat-button-toggle-group>
     </section>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
         <mat-label>{{ 'wiki.header.search-wiki.label' | translate }}</mat-label>
         <input matInput [matAutocomplete]="auto" [(ngModel)]="searchTerm" (ngModelChange)="searchForTerm($event)">
         <mat-icon matSuffix (click)="$event.stopPropagation();" class="disabled">search</mat-icon>
