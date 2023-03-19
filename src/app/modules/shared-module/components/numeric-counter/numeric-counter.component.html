@@ -7,7 +7,7 @@
            class="direct-input"
            [disabled]="inputDisabled"
            type="number"
-           step="1"
+           [step]="step"
            min="0"
            (click)="$event.stopPropagation();"
            autocomplete="off"

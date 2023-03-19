@@ -17,7 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { Coords } from '../model/coords';
+import { CoordsBlob } from '../model/coordsBlob';
 import { FrontendError } from '../model/frontendError';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -63,9 +63,9 @@ export class PublicResourcesApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllSystemCoordinates(observe?: 'body', reportProgress?: boolean): Observable<Array<Coords>>;
-    public getAllSystemCoordinates(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Coords>>>;
-    public getAllSystemCoordinates(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Coords>>>;
+    public getAllSystemCoordinates(observe?: 'body', reportProgress?: boolean): Observable<CoordsBlob>;
+    public getAllSystemCoordinates(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CoordsBlob>>;
+    public getAllSystemCoordinates(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CoordsBlob>>;
     public getAllSystemCoordinates(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -84,7 +84,7 @@ export class PublicResourcesApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Coords>>('get',`${this.basePath}/api/public/resources/system-coordinates`,
+        return this.httpClient.request<CoordsBlob>('get',`${this.basePath}/api/public/resources/system-coordinates`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -49,6 +49,9 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     @Input()
     ngClass: string = 'small';
 
+    @Input()
+    step: number = 1;
+
     /**
      * holds the internal value
      */

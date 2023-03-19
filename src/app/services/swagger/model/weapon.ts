@@ -22,10 +22,6 @@ export interface Weapon {
      * The way how the damage will be projected.
      */
     weaponType: Weapon.WeaponTypeEnum;
-    /**
-     * The possible mount points of this weapon.
-     */
-    alignmentTypes: Array<Weapon.AlignmentTypesEnum>;
 }
 export namespace Weapon {
     export type WeaponTypeEnum = 'MISSILE' | 'BEAM' | 'COUNTER_MISSILE' | 'POINT_DEFENSE';
@@ -34,11 +30,5 @@ export namespace Weapon {
         BEAM: 'BEAM' as WeaponTypeEnum,
         COUNTERMISSILE: 'COUNTER_MISSILE' as WeaponTypeEnum,
         POINTDEFENSE: 'POINT_DEFENSE' as WeaponTypeEnum
-    };
-    export type AlignmentTypesEnum = 'BOW' | 'STERN' | 'BROADSIDE';
-    export const AlignmentTypesEnum = {
-        BOW: 'BOW' as AlignmentTypesEnum,
-        STERN: 'STERN' as AlignmentTypesEnum,
-        BROADSIDE: 'BROADSIDE' as AlignmentTypesEnum
     };
 }

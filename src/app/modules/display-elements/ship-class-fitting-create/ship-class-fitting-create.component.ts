@@ -113,7 +113,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     alignmentAreas: EAlignmentTypeEnum[];
     weaponTypes: EWeaponTypeEnum[];
     selectedWeaponType: EWeaponTypeEnum = EWeaponTypeEnum.MISSILE;
-    selectedArc: EAlignmentTypeEnum = EAlignmentTypeEnum.BATTLEALIGNMENT;
 
     private chips: ChipSelectorValueResult[] = [];
     private weaponAlignmentTypes: EWeaponAlignmentEnum[];
@@ -204,21 +203,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             const weapon = <Weapon | Launcher>module;
             if (this.selectedWeaponType != weapon.weaponType) {
                 selectedByFilter = false;
-            }
-            const alignmentTypes = weapon.alignmentTypes;
-            switch (this.selectedArc) {
-                case EAlignmentTypeEnum.CHASEALIGNMENT:
-                    if (!alignmentTypes.includes(EWeaponAlignmentEnum.BOW) || !alignmentTypes.includes(EWeaponAlignmentEnum.STERN)) {
-                        selectedByFilter = false;
-                    }
-                    break;
-                case EAlignmentTypeEnum.BATTLEALIGNMENT:
-                    if (!alignmentTypes.includes(EWeaponAlignmentEnum.BROADSIDE)) {
-                        selectedByFilter = false;
-                    }
-                    break;
-                default:
-                    break;
             }
         }
 
@@ -353,13 +337,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     setWeaponModule(weapon: WeaponsSelection) {
         let event: Map<AlignedFitting.WeaponAlignmentEnum, number> = new Map<AlignedFitting.WeaponAlignmentEnum, number>();
-        weapon.weapon.alignmentTypes.forEach(key => {
+        weapon.weaponAmountPerAlignment.forEach((amount, alignment) => {
             // set the current selection to data structure
-            let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-            let amount = weapon.weaponAmountPerAlignment.get(alignment);
-            if (!amount) {
-                amount = 0;
-            }
             let id: string = FittingHelper.getWeaponSystemMapKey(weapon.weapon, alignment);
             this.weaponsSelection.set(id, amount);
         });
@@ -509,11 +488,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     selectWeaponType(type: EWeaponTypeEnum) {
         this.selectedWeaponType = type;
-        this.filterDisplayedItems();
-    }
-
-    selectFiringArc(arc: EAlignmentTypeEnum) {
-        this.selectedArc = arc;
         this.filterDisplayedItems();
     }
 

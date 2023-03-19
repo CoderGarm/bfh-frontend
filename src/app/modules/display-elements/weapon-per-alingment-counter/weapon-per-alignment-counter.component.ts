@@ -75,17 +75,4 @@ export class WeaponPerAlignmentCounterComponent implements OnChanges {
         }
         return amount;
     }
-
-    /**
-     * returns if the given weapon supports the given alignment
-     * @param alignmentString
-     */
-    supportsAlignment(alignmentString: string) {
-        if (!!this.startAt) {
-            let alignment = alignmentString as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-            return !this.startAt.weapon.alignmentTypes.includes(alignment);
-        }
-        return false;
-    }
-
 }

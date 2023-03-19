@@ -22,10 +22,6 @@ export interface Launcher {
      */
     weaponType: Launcher.WeaponTypeEnum;
     /**
-     * The possible mount points of this weapon.
-     */
-    alignmentTypes: Array<Launcher.AlignmentTypesEnum>;
-    /**
      * The bunch of allowed missiles for this launcher.
      */
     allowedMissiles: Array<Missile>;
@@ -37,11 +33,5 @@ export namespace Launcher {
         BEAM: 'BEAM' as WeaponTypeEnum,
         COUNTERMISSILE: 'COUNTER_MISSILE' as WeaponTypeEnum,
         POINTDEFENSE: 'POINT_DEFENSE' as WeaponTypeEnum
-    };
-    export type AlignmentTypesEnum = 'BOW' | 'STERN' | 'BROADSIDE';
-    export const AlignmentTypesEnum = {
-        BOW: 'BOW' as AlignmentTypesEnum,
-        STERN: 'STERN' as AlignmentTypesEnum,
-        BROADSIDE: 'BROADSIDE' as AlignmentTypesEnum
     };
 }
