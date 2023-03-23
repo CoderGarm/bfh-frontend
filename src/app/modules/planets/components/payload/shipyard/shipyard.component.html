@@ -28,7 +28,7 @@
     <mat-card-header>
         <div>
             <mat-card-title>{{shipClass.name}}</mat-card-title>
-            <mat-card-subtitle>{{shipClass.hull.description}} - Class code '{{shipClass.hull.hullType.typeName}}'</mat-card-subtitle>
+            <mat-card-subtitle>{{shipClass.shipClassType.description}} - Class code '{{shipClass.shipClassType.typeName}}'</mat-card-subtitle>
         </div>
         <div class="right-block">
             <app-numeric-counter [inputDisabled]="false"

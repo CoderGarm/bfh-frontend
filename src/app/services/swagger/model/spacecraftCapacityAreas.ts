@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CapacityValue } from './capacityValue';
+import { Mass } from './mass';
 
 /**
  * .
@@ -19,4 +20,9 @@ export interface SpacecraftCapacityAreas {
      * The construction capacity values per area.
      */
     capacityValues: Array<CapacityValue>;
+    cargoHold: Mass;
+    /**
+     * The amount of passengers can be taken over.
+     */
+    passengerSpace: number;
 }

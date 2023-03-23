@@ -17,8 +17,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { EHullType } from '../model/eHullType';
 import { EModuleType } from '../model/eModuleType';
+import { EShipClassType } from '../model/eShipClassType';
 import { FrontendError } from '../model/frontendError';
 import { PropulsionCapacity } from '../model/propulsionCapacity';
 import { ShipClass } from '../model/shipClass';
@@ -190,43 +190,6 @@ export class ShipyardApiService {
     }
 
     /**
-     * Get all EHullType.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getEHullTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EHullType>>;
-    public getEHullTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EHullType>>>;
-    public getEHullTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EHullType>>>;
-    public getEHullTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<EHullType>>('get',`${this.basePath}/api/private/shipyard/hullType`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Get all EModuleType.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -264,20 +227,57 @@ export class ShipyardApiService {
     }
 
     /**
+     * Get all EShipClassTypes.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEShipClassTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EShipClassType>>;
+    public getEShipClassTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EShipClassType>>>;
+    public getEShipClassTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EShipClassType>>>;
+    public getEShipClassTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<EShipClassType>>('get',`${this.basePath}/api/private/shipyard/shipClassType`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Calculates the ability of the propulsion to move the hull.
      * 
-     * @param idHull 
+     * @param body default response
      * @param idPropulsion 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PropulsionCapacity>>;
-    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PropulsionCapacity>>>;
-    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PropulsionCapacity>>>;
-    public getPropulsionCapacity(idHull: number, idPropulsion: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPropulsionCapacity(body: ShipClassMock, idPropulsion: number, observe?: 'body', reportProgress?: boolean): Observable<Array<PropulsionCapacity>>;
+    public getPropulsionCapacity(body: ShipClassMock, idPropulsion: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PropulsionCapacity>>>;
+    public getPropulsionCapacity(body: ShipClassMock, idPropulsion: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PropulsionCapacity>>>;
+    public getPropulsionCapacity(body: ShipClassMock, idPropulsion: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idHull === null || idHull === undefined) {
-            throw new Error('Required parameter idHull was null or undefined when calling getPropulsionCapacity.');
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getPropulsionCapacity.');
         }
 
         if (idPropulsion === null || idPropulsion === undefined) {
@@ -298,10 +298,16 @@ export class ShipyardApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
-        return this.httpClient.request<Array<PropulsionCapacity>>('get',`${this.basePath}/api/private/shipyard/propulsionCapacity/${encodeURIComponent(String(idHull))}/${encodeURIComponent(String(idPropulsion))}`,
+        return this.httpClient.request<Array<PropulsionCapacity>>('put',`${this.basePath}/api/private/shipyard/propulsionCapacity/${encodeURIComponent(String(idPropulsion))}`,
             {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

@@ -17,6 +17,8 @@ export const ShipClassNamePatternErrorMessages: { [key: string]: string } = {
 })
 export class ShipClassNamePatternValidatorDirective implements Validator, OnDestroy {
 
+    public static NAME_REGEX: RegExp = new RegExp(/((.).{2,31})/);
+
     private subscriptions: Subscription[] = [];
 
     ngOnDestroy() {
@@ -51,11 +53,9 @@ export class ShipClassNamePatternValidatorDirective implements Validator, OnDest
 export function passPattern(control: UntypedFormGroup): ValidationErrors {
 
     const passControl = control.get('scName');
-    const regex: RegExp = new RegExp(/((.).{2,31})/);
-
     if (!!passControl) {
         let passString: string = passControl.value;
-        const matchRegex = regex.test(passString);
+        const matchRegex = ShipClassNamePatternValidatorDirective.NAME_REGEX.test(passString);
 
         if (passControl.dirty && !matchRegex) {
             passControl.markAsTouched();

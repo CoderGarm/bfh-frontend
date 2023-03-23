@@ -24,7 +24,7 @@ export class WeaponDisplayComponent {
             if ('effectiveRange' in weapon) {
                 result.coordinate = NavigationCalculator.convertDistanceToMetric(weapon.effectiveRange, DistanceMetricEnum.M);
             } else {
-                result.coordinate = WeaponHelper.getMissileRange(weapon.allowedMissiles[0]) // fixme fix missile selection
+                result.coordinate = WeaponHelper.getMissileRange(weapon.allowedMissiles[0]) // todo fix missile selection
             }
         }
         return result

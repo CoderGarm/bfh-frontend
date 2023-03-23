@@ -9,7 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { EHullType } from './eHullType';
+import { EShipClassType } from './eShipClassType';
+import { Mass } from './mass';
 
 /**
  * .
@@ -31,10 +32,7 @@ export interface BaseModule {
      * The description of this module.
      */
     description: string;
-    /**
-     * The capacity usage of this module.
-     */
-    useCapacity?: number;
+    tonnage?: Mass;
     /**
      * The base effect value of this module.
      */
@@ -43,7 +41,7 @@ export interface BaseModule {
      * The level of this module.
      */
     techLevel: BaseModule.TechLevelEnum;
-    hullType?: EHullType;
+    shipClassType?: EShipClassType;
 }
 export namespace BaseModule {
     export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';

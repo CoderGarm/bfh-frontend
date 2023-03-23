@@ -11,7 +11,7 @@
  */
 
 /**
- * The acceleration of this engine.
+ * .
  */
 export interface Acceleration { 
     /**

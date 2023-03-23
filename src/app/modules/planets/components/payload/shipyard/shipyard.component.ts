@@ -1,6 +1,6 @@
 import {AfterContentInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {
-    EHullType,
+    EShipClassType,
     Planet,
     PlanetApiService,
     ResourceDeposit,
@@ -56,7 +56,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
     /**
      * all EResourceType enum elements
      */
-    readonly eHullTypes: EHullType[] = [];
+    readonly eHullTypes: EShipClassType[] = [];
 
     /**
      * some needed form controls to use the mat chip list
@@ -98,7 +98,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
                 private translate: TranslateService) {
         super();
 
-        this.eHullTypes = typeService.eHullTypes;
+        this.eHullTypes = typeService.shipClassTypes;
 
         this.translations.set('shipyard.constructions.build.already-in-use', 'shipyard.constructions.build.already-in-use');
         let sub = this.translate.get('shipyard.constructions.build.already-in-use').subscribe((translated: string) => {
@@ -206,7 +206,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
         const selectedResourceTypes: string[] = this.getStringArrayFromMatChips(this.hullTypeChipList.selected);
 
         this.filteredShipClasses = this.possibleShipClasses.filter(shipClass => {
-            return selectedResourceTypes.includes(shipClass.hull.hullType.typeName);
+            return selectedResourceTypes.includes(shipClass.shipClassType.typeName);
         });
     }
 

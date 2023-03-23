@@ -23,7 +23,7 @@ export class NumericCounterComponent implements OnInit, OnChanges {
      * defines the minimum value
      */
     @Input()
-    min: number = -Number.MAX_VALUE;
+    min: number = 0;
 
     /**
      * defines the maximum value
@@ -70,17 +70,21 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     }
 
     sub() {
-        if (this.internalAmount - 1 >= this.min) {
-            this.internalAmount--;
-            this.fire();
+        if (this.internalAmount - this.step >= this.min) {
+            this.internalAmount -= this.step;
+        } else {
+            this.internalAmount = this.min;
         }
+        this.fire();
     }
 
     add() {
-        if (this.internalAmount + 1 <= this.max) {
-            this.internalAmount++;
-            this.fire();
+        if (this.internalAmount + this.step <= this.max) {
+            this.internalAmount += this.step;
+        } else {
+            this.internalAmount = this.max;
         }
+        this.fire();
     }
 
     private fire() {

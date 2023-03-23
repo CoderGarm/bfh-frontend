@@ -11,7 +11,7 @@
  */
 
 /**
- * The velocity.
+ * .
  */
 export interface Velocity { 
     /**

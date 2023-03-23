@@ -3,7 +3,7 @@ import {
     AmmunitionFitting,
     Armor,
     ElectronicWarfare,
-    Hull,
+    EShipClassType,
     Launcher,
     PassiveModule,
     Propulsion,
@@ -11,12 +11,12 @@ import {
     Sidewall,
     SupportFitting,
     Weapon
-} from "../../../services/swagger";
+} from "../../../../../services/swagger";
 import {ShipClassFittingCreateComponent} from "../ship-class-fitting-create/ship-class-fitting-create.component";
 import {AfterViewInit, Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
-import {WeaponHelper} from "../../../services/helper/weapon.helper";
-import {FittingHelper} from "../../../services/helper/fitting.helper";
-import {WeaponsSelection} from "../weapon-per-alingment-counter/weapon-per-alignment-counter.component";
+import {FittingHelper} from "../../../../../services/helper/fitting.helper";
+import {WeaponsSelection} from "../../../../display-elements/weapon-per-alingment-counter/weapon-per-alignment-counter.component";
+import {ShipClassComparator} from "../ship-class.comparator";
 
 @Component({
     selector: 'app-ship-class-fitting-modify',
@@ -33,6 +33,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
     shipClassEmitter: EventEmitter<ShipClass> = new EventEmitter<ShipClass>();
 
     designedShipClass?: ShipClass;
+    compareClass?: ShipClass;
 
     ngAfterViewInit(): void {
         this.fetchBaseData();
@@ -49,7 +50,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
         let shipClass = this.shipClass;
         this.clearAllFittings();
         if (!!shipClass) {
-            this.chooseHull(shipClass.hull);
+            this.chooseShipClassType(shipClass.shipClassType);
             this.chooseArmor(shipClass.armor);
             this.chooseEloka(shipClass.electronicWarfare);
             this.choosePropulsion(shipClass.propulsion);
@@ -80,24 +81,6 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                     }
                     let alignment = fitting.weaponAlignment as keyof typeof AlignedFitting.WeaponAlignmentEnum;
                     selection.weaponAmountPerAlignment.set(alignment, fitting.amount);
-
-                    if (!!ammunitionFittings && WeaponHelper.isLauncher(weapon)) {
-                        // match ammunition with weapons
-                        let ammoFittingForWeapon: AmmunitionFitting[] = ammunitionFittings
-                            .filter(ammo => {
-                                if (!!(<Launcher>weapon).allowedMissiles[0]) { // fixme fix missile selection
-                                    return ammo.missile.baseModule.idModule === (<Launcher>weapon).allowedMissiles[0].baseModule.idModule // fixme fix missile selection
-                                }
-                                return false;
-                            });
-                        // currently there is only one ammunition type present per weapon
-                        ammoFittingForWeapon.forEach(ammo => {
-                            if (!!selection) {
-                                selection.missile = ammo.missile;
-                                selection.missileAmount = (!!selection.missileAmount ? selection.missileAmount : 0) + ammo.amount;
-                            }
-                        });
-                    }
                 });
                 weaponSelectionMap.forEach((weaponSelection) => this.updateWeaponSelection(weaponSelection));
                 // old code end
@@ -116,7 +99,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
     }
 
     private clearAllFittings() {
-        this.chooseHull(undefined);
+        this.chooseShipClassType(undefined);
         this.chooseArmor(undefined);
         this.chooseEloka(undefined);
         this.choosePropulsion(undefined);
@@ -126,8 +109,8 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
         this.supportSelection.clear();
     }
 
-    chooseHull(hull?: Hull) {
-        this.hullSelection = hull;
+    chooseShipClassType(shipClassType?: EShipClassType) {
+        this.shipClassTypeSelection = shipClassType;
         this.createAndEmitDesignedShipClass();
     }
 
@@ -160,7 +143,9 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
     }
 
     createAndEmitDesignedShipClass() {
-
+        if (!this.isChangePending()) {
+            return;
+        }
         let userID = this.tokenStorage.getUserID();
         let role = this.tokenStorage.getRole();
         let username = this.tokenStorage.getLogin();
@@ -171,13 +156,13 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
 
         this.mapMultiModulesToFitting(weapons, ammo, passives);
         let output: ShipClass = {
-            hull: this.hullSelection!,
+            shipClassType: this.shipClassTypeSelection!,
             fittings: weapons,
             ammunitionFittings: ammo,
             supportFittings: passives,
             armor: this.armorSelection,
             electronicWarfare: this.elokaSelection,
-            propulsion: this.propulsionSelection,
+            propulsion: this.propulsionSelection!,
             sidewall: this.sidewallSelection,
             idPredecessor: !!this.shipClass ? this.shipClass.idShipClass : undefined,
             idSuccessor: undefined,
@@ -192,13 +177,27 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                 capabilities: []
             },
             spacecraftCapacityAreas: {
+                passengerSpace: 0,
+                cargoHold: {coordinate: 0, massMetric: "T"},
                 capacityValues: []
             },
             ammunitionState: {
                 shotsPerMissile: []
             }
         };
+
         this.designedShipClass = output;
         this.shipClassEmitter.emit(output);
+    }
+
+    private isChangePending() {
+        let result: boolean = false;
+        if (!!this.compareClass && !!this.designedShipClass) {
+            result = !ShipClassComparator.equals(this.compareClass, this.designedShipClass);
+        } else if (!this.compareClass && !!this.designedShipClass) {
+            result = true;
+        }
+        this.compareClass = this.designedShipClass;
+        return result;
     }
 }

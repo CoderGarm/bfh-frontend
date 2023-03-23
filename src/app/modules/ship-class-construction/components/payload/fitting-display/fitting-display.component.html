@@ -1,24 +1,41 @@
 <div class="fitting">
-    <mat-form-field appearance="outline" class="name-box">
-        <mat-label>Ship class</mat-label>
-        <input matInput disabled value="{{shipClassName}}" autocomplete="off">
-    </mat-form-field>
+
+    <div class="flex-items-container">
+        <mat-form-field appearance="outline">
+            <mat-label>Ship class</mat-label>
+            <input matInput disabled value="{{shipClassName}}" autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Flight</mat-label>
+            <input matInput disabled value="{{shipClass?.mark}}" autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Ship role</mat-label>
+            <input matInput disabled value="{{ shipClass?.shipClassType?.type }} - {{ 'shipyard.hull.type.' + shipClass?.shipClassType?.typeName | translate }}">
+        </mat-form-field>
+    </div>
+
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
                         [shipClass]="shipClass"></app-ship-class-svg>
 
     <app-resource-display [deposit]="resourceDeposit"
                           [costs]="costs"></app-resource-display>
 
+
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="shipClass?.shipClassCapabilities"></app-spacecraft-capabilities-display>
-        <app-construction-capacity-display [capacities]="shipClass?.spacecraftCapacityAreas"></app-construction-capacity-display>
+        <app-ship-class-tonnage-per-section-display [capacities]="shipClass?.spacecraftCapacityAreas"></app-ship-class-tonnage-per-section-display>
+        <app-military-people [utilization]="costs"></app-military-people>
+        <app-propulsion-capacity-display [shipClass]="shipClass" streamlineBackground></app-propulsion-capacity-display>
         <app-weapon-amount-by-alignment-display [shipClass]="shipClass"></app-weapon-amount-by-alignment-display>
     </div>
 
     <div>{{ 'shipyard.fitting.singular-module.title' | translate }}</div>
     <mat-chip-listbox aria-label="Module selection">
         <mat-chip-option selected disabled class="no-checkmark sized-chips" aria-label="{{ 'shipyard.fitting.hull.title' | translate }}">
-            {{ 'shipyard.fitting.hull.title' | translate }}: {{shipClass?.hull?.name}}
+            {{ 'shipyard.fitting.hull.title' | translate }}: {{shipClass?.shipClassType?.typeName}}
         </mat-chip-option>
         <mat-chip-option selected disabled class="no-checkmark sized-chips" aria-label="{{ 'shipyard.fitting.armor.title' | translate }}">
             {{ 'shipyard.fitting.armor.title' | translate }}: {{shipClass?.armor?.baseModule?.name}}

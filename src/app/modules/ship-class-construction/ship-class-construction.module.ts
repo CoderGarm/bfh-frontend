@@ -9,17 +9,21 @@ import {ShipClassSvgComponent} from './components/payload/ship-class-svg/ship-cl
 import {ShipClassNamePatternValidatorDirective} from "../../validators/shipName-pattern.validator";
 import {ShipyardEventService} from "./shipyard-event.service";
 import {FittingCreateComponent} from './components/payload/fitting-create/fitting-create.component';
+import {ShipClassFittingCreateComponent} from "./components/payload/ship-class-fitting-create/ship-class-fitting-create.component";
+import {ShipClassFittingModifyComponent} from "./components/payload/ship-class-fitting-modify/ship-class-fitting-modify.component";
 
 
 @NgModule({
     declarations: [
+        ShipClassFittingCreateComponent,
+        ShipClassFittingModifyComponent,
         FittingDisplayComponent,
         FittingModifyComponent,
         ShipClassSelectionComponent,
         ShipClassTabViewComponent,
         ShipClassSvgComponent,
         ShipClassNamePatternValidatorDirective,
-        FittingCreateComponent
+        FittingCreateComponent,
     ],
     exports: [
         ShipClassSelectionComponent

@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { BaseModule } from './baseModule';
+import { Mass } from './mass';
 import { MissileMotor } from './missileMotor';
 import { Warhead } from './warhead';
 
@@ -22,10 +23,7 @@ export interface Missile {
      * The engine capacity of this missile.
      */
     elokaResistance: number;
-    /**
-     * The uses capacity of this missile.
-     */
-    useCapacity: number;
+    tonnage: Mass;
     warhead: Warhead;
     missileMotor: MissileMotor;
 }

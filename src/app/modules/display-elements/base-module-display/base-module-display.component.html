@@ -20,8 +20,8 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="short-field">
-                <mat-label>Capacity usage</mat-label>
-                <input matInput disabled value="{{moduleInput.useCapacity}}">
+                <mat-label>Tonnage</mat-label>
+                <input matInput disabled value="{{ moduleInput.tonnage | mass: 'T' }}">
             </mat-form-field>
         </div>
         <ng-content></ng-content>

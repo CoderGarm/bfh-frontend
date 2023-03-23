@@ -4,6 +4,6 @@
                      (click)="selectClass(shipClass)"
                      [selected]="isSelected(shipClass.idShipClass!)"
                      class="sidenav-item">
-        {{shipClass.name}} Flt. {{shipClass.mark}}
+        {{ 'enum.abbrev.hullType.' + shipClass.shipClassType.typeName | translate }} - {{shipClass.name}}
     </mat-list-option>
 </mat-selection-list>

@@ -22,7 +22,7 @@ export interface EnumValueDto {
     eCalculationType?: Array<EnumValueDto.ECalculationTypeEnum>;
     eAlignmentType?: Array<EnumValueDto.EAlignmentTypeEnum>;
     eHitArea?: Array<EnumValueDto.EHitAreaEnum>;
-    eHullType?: Array<EnumValueDto.EHullTypeEnum>;
+    eShipClassType?: Array<EnumValueDto.EShipClassTypeEnum>;
     eProductionCategory?: Array<EnumValueDto.EProductionCategoryEnum>;
     eRefinementSequence?: Array<EnumValueDto.ERefinementSequenceEnum>;
     eSupportType?: Array<EnumValueDto.ESupportTypeEnum>;
@@ -31,6 +31,12 @@ export interface EnumValueDto {
     eWeaponType?: Array<EnumValueDto.EWeaponTypeEnum>;
     eWikiCategories?: Array<EnumValueDto.EWikiCategoriesEnum>;
     eCapacityAreaTypes?: Array<EnumValueDto.ECapacityAreaTypesEnum>;
+    eTechnologyTypes?: Array<EnumValueDto.ETechnologyTypesEnum>;
+    eAccelerationMetrics?: Array<EnumValueDto.EAccelerationMetricsEnum>;
+    eDistanceMetrics?: Array<EnumValueDto.EDistanceMetricsEnum>;
+    eHyperBands?: Array<EnumValueDto.EHyperBandsEnum>;
+    eMassMetrics?: Array<EnumValueDto.EMassMetricsEnum>;
+    eTimeMetrics?: Array<EnumValueDto.ETimeMetricsEnum>;
 }
 export namespace EnumValueDto {
     export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
@@ -98,25 +104,25 @@ export namespace EnumValueDto {
         PROPULSION: 'PROPULSION' as EHitAreaEnum,
         ELOKA: 'ELOKA' as EHitAreaEnum
     };
-    export type EHullTypeEnum = 'LAC' | 'VT' | 'FG' | 'DD' | 'CL' | 'CA' | 'BC' | 'BCP' | 'BB' | 'DN' | 'CLAC' | 'SD' | 'SDP' | 'AE' | 'AR' | 'FAT' | 'FR';
-    export const EHullTypeEnum = {
-        LAC: 'LAC' as EHullTypeEnum,
-        VT: 'VT' as EHullTypeEnum,
-        FG: 'FG' as EHullTypeEnum,
-        DD: 'DD' as EHullTypeEnum,
-        CL: 'CL' as EHullTypeEnum,
-        CA: 'CA' as EHullTypeEnum,
-        BC: 'BC' as EHullTypeEnum,
-        BCP: 'BCP' as EHullTypeEnum,
-        BB: 'BB' as EHullTypeEnum,
-        DN: 'DN' as EHullTypeEnum,
-        CLAC: 'CLAC' as EHullTypeEnum,
-        SD: 'SD' as EHullTypeEnum,
-        SDP: 'SDP' as EHullTypeEnum,
-        AE: 'AE' as EHullTypeEnum,
-        AR: 'AR' as EHullTypeEnum,
-        FAT: 'FAT' as EHullTypeEnum,
-        FR: 'FR' as EHullTypeEnum
+    export type EShipClassTypeEnum = 'LAC' | 'VT' | 'FG' | 'DD' | 'CL' | 'CA' | 'BC' | 'BCP' | 'BB' | 'DN' | 'CLAC' | 'SD' | 'SDP' | 'AE' | 'AR' | 'FAT' | 'FR';
+    export const EShipClassTypeEnum = {
+        LAC: 'LAC' as EShipClassTypeEnum,
+        VT: 'VT' as EShipClassTypeEnum,
+        FG: 'FG' as EShipClassTypeEnum,
+        DD: 'DD' as EShipClassTypeEnum,
+        CL: 'CL' as EShipClassTypeEnum,
+        CA: 'CA' as EShipClassTypeEnum,
+        BC: 'BC' as EShipClassTypeEnum,
+        BCP: 'BCP' as EShipClassTypeEnum,
+        BB: 'BB' as EShipClassTypeEnum,
+        DN: 'DN' as EShipClassTypeEnum,
+        CLAC: 'CLAC' as EShipClassTypeEnum,
+        SD: 'SD' as EShipClassTypeEnum,
+        SDP: 'SDP' as EShipClassTypeEnum,
+        AE: 'AE' as EShipClassTypeEnum,
+        AR: 'AR' as EShipClassTypeEnum,
+        FAT: 'FAT' as EShipClassTypeEnum,
+        FR: 'FR' as EShipClassTypeEnum
     };
     export type EProductionCategoryEnum = 'PRODUCE' | 'CAPACITY' | 'REFINEMENT';
     export const EProductionCategoryEnum = {
@@ -132,7 +138,7 @@ export namespace EnumValueDto {
         MILITARYI: 'EDUCATION_MILITARY_I' as ERefinementSequenceEnum,
         MILITARYII: 'EDUCATION_MILITARY_II' as ERefinementSequenceEnum
     };
-    export type ESupportTypeEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION';
+    export type ESupportTypeEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION' | 'PASSENGER' | 'FREIGHT';
     export const ESupportTypeEnum = {
         WEAPON: 'WEAPON' as ESupportTypeEnum,
         ARMOR: 'ARMOR' as ESupportTypeEnum,
@@ -144,7 +150,9 @@ export namespace EnumValueDto {
         METALORE: 'METALORE' as ESupportTypeEnum,
         RAREELEMENTS: 'RARE_ELEMENTS' as ESupportTypeEnum,
         HEAVYMETALS: 'HEAVY_METALS' as ESupportTypeEnum,
-        POPULATION: 'POPULATION' as ESupportTypeEnum
+        POPULATION: 'POPULATION' as ESupportTypeEnum,
+        PASSENGER: 'PASSENGER' as ESupportTypeEnum,
+        FREIGHT: 'FREIGHT' as ESupportTypeEnum
     };
     export type EWarheadTypeEnum = 'LASER' | 'EXPLOSION' | 'KINETIC' | 'COUNTER_MISSILE';
     export const EWarheadTypeEnum = {
@@ -178,5 +186,57 @@ export namespace EnumValueDto {
         BROADSIDE: 'BROADSIDE' as ECapacityAreaTypesEnum,
         BOW: 'BOW' as ECapacityAreaTypesEnum,
         MODULE: 'MODULE' as ECapacityAreaTypesEnum
+    };
+    export type ETechnologyTypesEnum = 'CIVIL' | 'MILITARY';
+    export const ETechnologyTypesEnum = {
+        CIVIL: 'CIVIL' as ETechnologyTypesEnum,
+        MILITARY: 'MILITARY' as ETechnologyTypesEnum
+    };
+    export type EAccelerationMetricsEnum = 'MS2' | 'G' | 'C';
+    export const EAccelerationMetricsEnum = {
+        MS2: 'MS2' as EAccelerationMetricsEnum,
+        G: 'G' as EAccelerationMetricsEnum,
+        C: 'C' as EAccelerationMetricsEnum
+    };
+    export type EDistanceMetricsEnum = 'M' | 'KM' | 'LS' | 'LM' | 'AU' | 'LH' | 'LD' | 'LY' | 'PC';
+    export const EDistanceMetricsEnum = {
+        M: 'M' as EDistanceMetricsEnum,
+        KM: 'KM' as EDistanceMetricsEnum,
+        LS: 'LS' as EDistanceMetricsEnum,
+        LM: 'LM' as EDistanceMetricsEnum,
+        AU: 'AU' as EDistanceMetricsEnum,
+        LH: 'LH' as EDistanceMetricsEnum,
+        LD: 'LD' as EDistanceMetricsEnum,
+        LY: 'LY' as EDistanceMetricsEnum,
+        PC: 'PC' as EDistanceMetricsEnum
+    };
+    export type EHyperBandsEnum = 'NONE' | 'ALPHA' | 'BETA' | 'GAMMA' | 'DELTA' | 'EPSILON' | 'ZETA' | 'ETA' | 'THETA';
+    export const EHyperBandsEnum = {
+        NONE: 'NONE' as EHyperBandsEnum,
+        ALPHA: 'ALPHA' as EHyperBandsEnum,
+        BETA: 'BETA' as EHyperBandsEnum,
+        GAMMA: 'GAMMA' as EHyperBandsEnum,
+        DELTA: 'DELTA' as EHyperBandsEnum,
+        EPSILON: 'EPSILON' as EHyperBandsEnum,
+        ZETA: 'ZETA' as EHyperBandsEnum,
+        ETA: 'ETA' as EHyperBandsEnum,
+        THETA: 'THETA' as EHyperBandsEnum
+    };
+    export type EMassMetricsEnum = 'KG' | 'T' | 'KT' | 'MT';
+    export const EMassMetricsEnum = {
+        KG: 'KG' as EMassMetricsEnum,
+        T: 'T' as EMassMetricsEnum,
+        KT: 'KT' as EMassMetricsEnum,
+        MT: 'MT' as EMassMetricsEnum
+    };
+    export type ETimeMetricsEnum = 'SECOND' | 'MINUTE' | 'HOUR' | 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
+    export const ETimeMetricsEnum = {
+        SECOND: 'SECOND' as ETimeMetricsEnum,
+        MINUTE: 'MINUTE' as ETimeMetricsEnum,
+        HOUR: 'HOUR' as ETimeMetricsEnum,
+        DAY: 'DAY' as ETimeMetricsEnum,
+        WEEK: 'WEEK' as ETimeMetricsEnum,
+        MONTH: 'MONTH' as ETimeMetricsEnum,
+        YEAR: 'YEAR' as ETimeMetricsEnum
     };
 }

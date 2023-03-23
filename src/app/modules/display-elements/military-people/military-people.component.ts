@@ -14,6 +14,13 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
     @Input()
     utilization?: ResourceDeposit;
 
+    // @formatter:off
+    @Input()
+    get preSelect() { return this._preSelect; }
+    set preSelect(value: any) { this._preSelect = this.coerceBooleanProperty(value); }
+    _preSelect: boolean = false;
+    // @formatter:on
+
     educationTypes: EEducationType[];
 
     constructor(private typeService: TypeService) {
@@ -23,6 +30,10 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
     }
 
     ngOnInit(): void {
+    }
+
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
     }
 
     getLink(cap: HumanResourceAmount): string {
@@ -51,7 +62,7 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
     }
 
     isDisplayingPossible() {
-        return !!this.getBase();
+        return this._preSelect || !!this.getBase();
     }
 
     isPresent(resourceDeposit: ResourceDeposit | undefined) {
@@ -71,6 +82,8 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
                     result.push(dto);
                 }
             });
+        } else if (this._preSelect) {
+            this.educationTypes.forEach(dto => result.push({resourceType: dto, amount: 0}));
         }
         return result;
     }

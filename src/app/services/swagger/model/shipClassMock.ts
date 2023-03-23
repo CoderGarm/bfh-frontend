@@ -12,8 +12,8 @@
 import { AlignedFitting } from './alignedFitting';
 import { AmmunitionFitting } from './ammunitionFitting';
 import { Armor } from './armor';
+import { EShipClassType } from './eShipClassType';
 import { ElectronicWarfare } from './electronicWarfare';
-import { Hull } from './hull';
 import { Propulsion } from './propulsion';
 import { Sidewall } from './sidewall';
 import { SupportFitting } from './supportFitting';
@@ -26,8 +26,8 @@ export interface ShipClassMock {
      * The name of this class.
      */
     name?: string;
-    hull?: Hull;
-    propulsion?: Propulsion;
+    shipClassType?: EShipClassType;
+    propulsion: Propulsion;
     armor?: Armor;
     sidewall?: Sidewall;
     electronicWarfare?: ElectronicWarfare;

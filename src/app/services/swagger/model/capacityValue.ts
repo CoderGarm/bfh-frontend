@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Mass } from './mass';
 
 /**
  * .
@@ -18,14 +19,7 @@ export interface CapacityValue {
      * The value's type.
      */
     capacityArea: CapacityValue.CapacityAreaEnum;
-    /**
-     * The used capacity in that area.
-     */
-    usedCapacity: number;
-    /**
-     * The overall capacity in that area.
-     */
-    capacity: number;
+    tonnage: Mass;
 }
 export namespace CapacityValue {
     export type CapacityAreaEnum = 'OVERALL' | 'STERN' | 'BROADSIDE' | 'BOW' | 'MODULE';

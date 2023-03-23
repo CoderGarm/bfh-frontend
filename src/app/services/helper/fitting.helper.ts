@@ -47,6 +47,10 @@ export class FittingHelper {
         return passive.baseModule.idModule + "-missile";
     }
 
+    public static getAmmunitionIdFromKey(key: string): number {
+        return Number.parseInt(key.split("-")[0]);
+    }
+
     /**
      * returns a unique key for the map
      * @param passive

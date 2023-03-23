@@ -168,8 +168,9 @@ export class ShipClassSvgComponent extends SubscriptionManager implements AfterV
 
                         break;
                     case "BROADSIDE":
-                        this.createBroadSideSlots(amount, this.upperBroadsidePoints!, this.upperBroadsideGroup!);
-                        this.createBroadSideSlots(amount, this.lowerBroadsidePoints!, this.lowerBroadsideGroup!);
+                        const halfAmount = amount / 2;
+                        this.createBroadSideSlots(halfAmount, this.upperBroadsidePoints!, this.upperBroadsideGroup!);
+                        this.createBroadSideSlots(halfAmount, this.lowerBroadsidePoints!, this.lowerBroadsideGroup!);
                         break;
                     case "STERN":
                         half = ShipClassSvgComponent.calculateHalf(amount);

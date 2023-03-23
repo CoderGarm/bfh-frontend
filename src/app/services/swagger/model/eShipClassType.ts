@@ -13,7 +13,7 @@
 /**
  * .
  */
-export interface EHullType { 
+export interface EShipClassType { 
     /**
      * The type name of this  transformed enum.
      */

@@ -1,9 +1,7 @@
 import {NgModule} from '@angular/core';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
-import {HullDisplayComponent} from './hull-display/hull-display.component';
 import {BaseModuleDisplayComponent} from './base-module-display/base-module-display.component';
 import {ResearchDisplayComponent} from './research-display/research-display.component';
-import {ShipClassFittingCreateComponent} from './ship-class-fitting-create/ship-class-fitting-create.component';
 import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/base-module-single-selector.component';
 import {FleetDisplayComponent} from './fleet-display/fleet-display.component';
 import {ConstructionDisplayComponent} from "./construction-display/construction-display.component";
@@ -20,7 +18,7 @@ import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability
 import {ResourceDisplayModule} from "./modules/resource-display/resource-display.module";
 import {PopulationDevelopmentComponent} from './population-development/population-development.component';
 import {TransportationListDisplayComponent} from './transportation-list-display/transportation-list-display.component';
-import {ConstructionCapacityDisplayComponent} from './construction-capacity-display/construction-capacity-display.component';
+import {ShipClassTonnagePerSectionDisplayComponent} from './construction-capacity-display/ship-class-tonnage-per-section-display.component';
 import {ManualTransportComponent} from './manual-transport/manual-transport.component';
 import {SingleResourceTransferComponent} from './single-resource-transfer/single-resource-transfer.component';
 import {FinishedMovementsListComponent} from "./finished-movements-list/finished-movements-list.component";
@@ -29,23 +27,18 @@ import {SpacecraftStateBlockDisplayComponent} from './spacecraft-state-block-dis
 import {AmmunitionRosterComponent} from './ammunition-roster/ammunition-roster.component';
 import {MilitaryPeopleComponent} from './military-people/military-people.component';
 import {CommissionedOperationalsComponent} from './commissioned-operationals/commissioned-operationals.component';
-import {ShipClassFittingModifyComponent} from './ship-class-fitting-modify/ship-class-fitting-modify.component';
 import {WeaponDisplayComponent} from './weapon-display/weapon-display.component';
 import {WeaponPerAlignmentCounterComponent} from './weapon-per-alingment-counter/weapon-per-alignment-counter.component';
 import {ModuleDisplayComponent} from './module-display/module-display.component';
 import {WeaponsByTypeDisplayComponent} from './weapons-by-type-display/weapons-by-type-display.component';
 import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignment-display/weapon-amount-by-alignment-display.component';
 import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/propulsion-capacity-display.component';
-import {PropulsionDisplayComponent} from "../../display-elements/propulsion-display/propulsion-display.component";
 
 @NgModule({
     declarations: [
-        HullDisplayComponent,
         BaseModuleDisplayComponent,
         ResearchDisplayComponent,
-        ShipClassFittingCreateComponent,
         ConstructionDisplayComponent,
-        PropulsionDisplayComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
         FleetFormationDisplay,
@@ -60,7 +53,7 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
         JobListDisplayComponent,
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
-        ConstructionCapacityDisplayComponent,
+        ShipClassTonnagePerSectionDisplayComponent,
         ManualTransportComponent,
         SingleResourceTransferComponent,
         FinishedMovementsListComponent,
@@ -69,7 +62,6 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
         AmmunitionRosterComponent,
         MilitaryPeopleComponent,
         CommissionedOperationalsComponent,
-        ShipClassFittingModifyComponent,
         WeaponDisplayComponent,
         WeaponPerAlignmentCounterComponent,
         ModuleDisplayComponent,
@@ -82,12 +74,9 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
         ResourceDisplayModule,
     ],
     exports: [
-        HullDisplayComponent,
         BaseModuleDisplayComponent,
         ResearchDisplayComponent,
         ConstructionDisplayComponent,
-        ShipClassFittingCreateComponent,
-        PropulsionDisplayComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
         FleetFormationDisplay,
@@ -103,7 +92,7 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
         ResourceDisplayModule,
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
-        ConstructionCapacityDisplayComponent,
+        ShipClassTonnagePerSectionDisplayComponent,
         ManualTransportComponent,
         SingleResourceTransferComponent,
         FinishedMovementsListComponent,
@@ -112,9 +101,10 @@ import {PropulsionDisplayComponent} from "../../display-elements/propulsion-disp
         AmmunitionRosterComponent,
         MilitaryPeopleComponent,
         CommissionedOperationalsComponent,
-        ShipClassFittingModifyComponent,
         WeaponDisplayComponent,
         WeaponAmountByAlignmentDisplayComponent,
+        WeaponPerAlignmentCounterComponent,
+        PropulsionCapacityDisplayComponent,
         ModuleDisplayComponent,
     ]
 })

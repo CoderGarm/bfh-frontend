@@ -4,6 +4,7 @@ import {
     EResourceType,
     Fleet,
     HumanResourceAmount,
+    Mass,
     Planet,
     PlanetApiService,
     ResourceAmount,
@@ -14,7 +15,9 @@ import {
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TypeService} from "../../../services/type.service";
 import {ResourceHelper} from "../../../services/helper/resource.helper";
+import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
 import TransportTypeEnum = ResourceTransfer.TransportTypeEnum;
+import MassMetricEnum = Mass.MassMetricEnum;
 
 
 @Component({
@@ -51,7 +54,8 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
     resourceTypes: EResourceType[];
     educationTypes: EEducationType[];
 
-    initialFreeCapacity: number = 0;
+    initialFreeCargoCapacity: number = 0;
+    initialFreePassengerCapacity: number = 0;
     usedCapacity: number = 0;
     freeCapacity: number = 0;
 
@@ -90,11 +94,11 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
             let sub = this.resourceService.getResourceDepositForFleet(this.fleet.idFleet).subscribe(resp => {
                 this.left = resp;
                 this.leftCopy = ResourceHelper.copy(this.left);
-                this.initialFreeCapacity = this.fleet!.spacecraftCapacityAreas.capacityValues
-                        .reduce((sum, current) => sum + current.capacity - current.usedCapacity, 0)
+                this.initialFreePassengerCapacity = this.fleet!.spacecraftCapacityAreas.passengerSpace;
+                this.initialFreeCargoCapacity = NavigationCalculator.convertMassToMetric(this.fleet!.spacecraftCapacityAreas.cargoHold, MassMetricEnum.T)
                     * ManualTransportComponent.CAPACITY_TO_RESOURCE_UNIT_CONVERSION_FACTOR;
 
-                this.freeCapacity = this.initialFreeCapacity;
+                this.freeCapacity = this.initialFreeCargoCapacity;
 
                 let used = this.getSum(this.left.resources) + this.getSum(this.left.humanResources);
                 this.freeCapacity -= used;

@@ -15,6 +15,10 @@ export class NumberShortPipe implements PipeTransform {
         if (!value) {
             return "0";
         }
-        return this.formatter.format(value).toLowerCase();
+        let result = this.formatter.format(value);
+        if (result.includes('K')) {
+            result = result.toLowerCase();
+        }
+        return result;
     }
 }

@@ -10,14 +10,16 @@
  * Do not edit the class manually.
  */
 import { BaseModule } from './baseModule';
-import { HasCostsByParent } from './hasCostsByParent';
 
 /**
  * .
  */
 export interface Propulsion { 
     baseModule: BaseModule;
-    hasCostsByParent: HasCostsByParent;
+    /**
+     * The percentage of the parent's module cost which represents the costs of 'this'.
+     */
+    costsPercentage: number;
     /**
      * If this propulsion module if for faster then light.
      */

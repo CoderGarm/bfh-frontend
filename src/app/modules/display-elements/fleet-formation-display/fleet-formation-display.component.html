@@ -7,8 +7,8 @@
                 <div mat-subheader>
                     <img matListItemAvatar
                          class="icon"
-                         src="{{getLink(entry.value[0].shipClass.hull.hullType.typeName)}}"
-                         [matTooltip]="getHullDescription(entry.value[0].shipClass.hull.hullType.typeName)"
+                         src="{{getLink(entry.value[0].shipClass.shipClassType.typeName)}}"
+                         [matTooltip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"
                          alt="hull-icon">
                     {{entry.value[0].shipClass.name}} {{ 'fleet.composition.class.title' | translate }}
                 </div>

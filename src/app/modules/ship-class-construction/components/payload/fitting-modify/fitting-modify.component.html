@@ -1,18 +1,25 @@
 <div class="fitting">
     <div class="flex-items-container">
-        <button mat-button
-                [disabled]="disabled"
-                (click)="deleteClass()"
-                class="ship-action-button">
-            Delete ship class
-        </button>
-
         <mat-form-field appearance="outline">
             <mat-label>Ship class</mat-label>
             <input matInput disabled
                    [value]="shipClass?.name"
                    matTooltip="The class name should contain of between 3 and 30 characters.">
         </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Ship role</mat-label>
+            <input matInput disabled value="{{ shipClass?.shipClassType?.type }} - {{ 'shipyard.hull.type.' + shipClass?.shipClassType?.typeName | translate }}">
+        </mat-form-field>
+    </div>
+
+    <div class="flex-items-container">
+        <button mat-button
+                [disabled]="disabled"
+                (click)="deleteClass()"
+                class="ship-action-button warning">
+            Delete ship class
+        </button>
 
         <button mat-button
                 [disabled]="disabled"
@@ -22,6 +29,7 @@
             Store ship class
         </button>
     </div>
+
     <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
                         [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentEmitter"
                         [shipClass]="shipClass"></app-ship-class-svg>
@@ -29,9 +37,11 @@
     <app-resource-display [deposit]="resourceDeposit"
                           [costs]="costs"></app-resource-display>
 
+    <app-military-people [utilization]="costs"></app-military-people>
+
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
-        <app-construction-capacity-display [capacities]="capacities"></app-construction-capacity-display>
+        <app-ship-class-tonnage-per-section-display [capacities]="capacities"></app-ship-class-tonnage-per-section-display>
         <app-weapon-amount-by-alignment-display [shipClass]="shipClass"></app-weapon-amount-by-alignment-display>
     </div>
 

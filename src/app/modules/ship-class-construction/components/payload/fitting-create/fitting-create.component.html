@@ -1,14 +1,20 @@
 <div class="fitting bottom-spacer pad-left">
-    <div class="flex-items-container">
-        <div [formGroup]="form" shipClassNamePatternValidator>
-            <mat-form-field appearance="outline">
-                <mat-label>Ship class</mat-label>
-                <input matInput formControlName="scName" autocomplete="off"
-                       matTooltip="The class name should contain of between 3 and 30 characters.">
-                <mat-error *ngIf="form.get('scName')?.hasError('passPattern')">{{errors.passPattern}} </mat-error>
-                <mat-error *ngIf="form.get('scName')?.hasError('passAlreadyKnown')">{{errors.passAlreadyKnown}} </mat-error>
-            </mat-form-field>
-        </div>
+    <div class="flex-items-container" [formGroup]="form" shipClassNamePatternValidator>
+        <mat-form-field appearance="outline">
+            <mat-label>Ship class</mat-label>
+            <input matInput formControlName="scName" autocomplete="off"
+                   matTooltip="The class name should contain of between 3 and 30 characters."
+                   (change)="setShipClass(shipClassMock)">
+            <mat-error *ngIf="form.get('scName')?.hasError('passPattern')">{{errors.passPattern}} </mat-error>
+            <mat-error *ngIf="form.get('scName')?.hasError('passAlreadyKnown')">{{errors.passAlreadyKnown}} </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Designated ship role</mat-label>
+            <select matNativeControl required formControlName="scTypeName" (change)="setShipClass(shipClassMock)">
+                <option></option>
+                <option *ngFor="let type of shipClassTypes" [ngValue]="type">{{ type.type }} - {{ 'shipyard.hull.type.' + type.typeName | translate }}</option>
+            </select>
+        </mat-form-field>
         <button mat-button
                 [disabled]="disabled"
                 (click)="storeClass()"
@@ -25,8 +31,9 @@
 
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
-        <app-construction-capacity-display [capacities]="capacities"></app-construction-capacity-display>
+        <app-ship-class-tonnage-per-section-display [capacities]="capacities"></app-ship-class-tonnage-per-section-display>
         <app-weapon-amount-by-alignment-display [shipClass]="shipClassMock"></app-weapon-amount-by-alignment-display>
+        <app-military-people preSelect [utilization]="costs"></app-military-people>
     </div>
 
     <app-ship-class-fitting-create (shipClassMockEmitter)="setShipClass($event)"

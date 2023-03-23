@@ -5,7 +5,7 @@
             <app-spacecraft-capabilities-display body
                                                  [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
                                                  [currentFleetCapabilities]="fleet.spacecraftCapabilities"></app-spacecraft-capabilities-display>
-            <app-construction-capacity-display body [capacities]="fleet.spacecraftCapacityAreas"></app-construction-capacity-display>
+            <app-ship-class-tonnage-per-section-display body [capacities]="fleet.spacecraftCapacityAreas"></app-ship-class-tonnage-per-section-display>
             <app-fleet-move-display body [fleet]="fleet" [showTitle]="false"></app-fleet-move-display>
         </app-fleet-display>
     </mat-expansion-panel>

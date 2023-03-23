@@ -1,9 +1,10 @@
-import {Acceleration, Distance, Orbit, Propulsion, Time, Velocity} from "../swagger";
+import {Acceleration, Distance, Mass, Orbit, Propulsion, Time, Velocity} from "../swagger";
 import {ArrayXY} from "@svgdotjs/svg.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
 import TechnologyTypeEnum = Propulsion.TechnologyTypeEnum;
 import TimeMetricEnum = Velocity.TimeMetricEnum;
+import MassMetricEnum = Mass.MassMetricEnum;
 
 export enum Direction {
     NORTH,
@@ -23,6 +24,14 @@ export class NavigationCalculator {
         this.timeMetricValues.set(TimeMetricEnum.WEEK, 604800);
         this.timeMetricValues.set(TimeMetricEnum.MONTH, 2419200);
         this.timeMetricValues.set(TimeMetricEnum.YEAR, 29030400);
+    }
+
+    private static massMetricValues: Map<MassMetricEnum, number> = new Map<MassMetricEnum, number>();
+    static {
+        this.massMetricValues.set(MassMetricEnum.KG, 1);
+        this.massMetricValues.set(MassMetricEnum.T, 1000);
+        this.massMetricValues.set(MassMetricEnum.KT, 1000000);
+        this.massMetricValues.set(MassMetricEnum.MT, 1000000000);
     }
 
     private static distanceMetricValues: Map<DistanceMetricEnum, number> = new Map<DistanceMetricEnum, number>();
@@ -105,6 +114,25 @@ export class NavigationCalculator {
         const dFactor = NavigationCalculator.getDistanceConversionFactor(distance.distanceMetric, dMetric);
 
         return tFactor * dFactor * distance.value;
+    }
+
+    static convertMassToMetric(distance: Mass, targetMetric: MassMetricEnum): number {
+        if (distance.massMetric == targetMetric) {
+            return distance.coordinate;
+        }
+
+        const factor = NavigationCalculator.getMassConversionFactor(distance.massMetric, targetMetric);
+        return distance.coordinate * factor;
+    }
+
+    private static getMassConversionFactor(originalMetric: MassMetricEnum, targetMetric: MassMetricEnum) {
+
+        const originalMetricValue: number | undefined = this.massMetricValues.get(originalMetric);
+        const targetMetricValue: number | undefined = this.massMetricValues.get(targetMetric);
+        if (originalMetric == undefined || targetMetric == undefined) {
+            throw new Error("There must be both metrics present.");
+        }
+        return originalMetricValue! / targetMetricValue!;
     }
 
     static convertDistanceToMetric(distance: Distance, targetMetric: DistanceMetricEnum): number {

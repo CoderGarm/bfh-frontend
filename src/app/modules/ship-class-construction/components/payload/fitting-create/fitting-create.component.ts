@@ -2,6 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {
     AlignedFitting,
+    EShipClassType,
     ResourceDeposit,
     ResourcesApiService,
     ShipClassMock,
@@ -10,7 +11,7 @@ import {
     SpacecraftCapacityAreas
 } from "../../../../../services/swagger";
 import {ShipClassNamePatternErrorMessages} from "../../../../../validators/shipName-pattern.validator";
-import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
+import {FormControl, FormGroup, UntypedFormControl, Validators} from "@angular/forms";
 import {ShipClassComparator} from "../ship-class.comparator";
 import {ShipClassTabViewComponent} from "../../orga/ship-class-tab-view/ship-class-tab-view.component";
 import {ShipyardEventService} from "../../../shipyard-event.service";
@@ -46,28 +47,28 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      */
     errors = ShipClassNamePatternErrorMessages;
 
-    /**
-     * the form group which defines the name field
-     */
-    form: UntypedFormGroup = new UntypedFormGroup({
-        scName: new UntypedFormControl()
-    });
+    shipClassTypes: EShipClassType[] = [];
+    form: FormGroup;
 
     costs?: ResourceDeposit;
+    utilization?: ResourceDeposit;
 
     compareClass?: ShipClassMock;
     capabilities: SpacecraftCapabilities;
     defaultCapabilities: SpacecraftCapabilities = {capabilities: []};
     capacities: SpacecraftCapacityAreas;
     defaultCapacities: SpacecraftCapacityAreas = {
+        passengerSpace: 0,
+        cargoHold: {coordinate: 0, massMetric: "T"},
         capacityValues: [
-            {capacity: 0, usedCapacity: 0, capacityArea: "OVERALL"},
-            {capacity: 0, usedCapacity: 0, capacityArea: "STERN"},
-            {capacity: 0, usedCapacity: 0, capacityArea: "BROADSIDE"},
-            {capacity: 0, usedCapacity: 0, capacityArea: "BOW"},
-            {capacity: 0, usedCapacity: 0, capacityArea: "MODULE"},
+            {tonnage: {coordinate: 0, massMetric: "T"}, capacityArea: "OVERALL"},
+            {tonnage: {coordinate: 0, massMetric: "T"}, capacityArea: "STERN"},
+            {tonnage: {coordinate: 0, massMetric: "T"}, capacityArea: "BROADSIDE"},
+            {tonnage: {coordinate: 0, massMetric: "T"}, capacityArea: "BOW"},
+            {tonnage: {coordinate: 0, massMetric: "T"}, capacityArea: "MODULE"},
         ]
     };
+
 
     constructor(private shipYardApi: ShipyardApiService,
                 private shipyardService: ShipyardEventService,
@@ -80,6 +81,11 @@ export class FittingCreateComponent extends SubscriptionManager implements After
 
         this.capabilities = this.defaultCapabilities;
         this.capacities = this.defaultCapacities;
+        this.shipClassTypes = this.typeService.shipClassTypes;
+        this.form = new FormGroup({
+            scName: new UntypedFormControl(),
+            scTypeName: new FormControl<EShipClassType | null>(null, Validators.required)
+        });
     }
 
     ngAfterViewInit(): void {
@@ -102,7 +108,7 @@ export class FittingCreateComponent extends SubscriptionManager implements After
      * stores the designed class to the database
      */
     storeClass() {
-        if (!!this.shipClassMock && !!this.shipClassMock.hull && !!this.shipClassMock.propulsion) {
+        if (!!this.shipClassMock && !!this.shipClassMock.shipClassType && !!this.shipClassMock.propulsion) {
             this.shipClassMock.name = this.form.controls.scName.value;
             let sub = this.shipYardApi.createShipClass(this.shipClassMock)
                 .subscribe(resp => this.shipyardService.modifyShipClass(resp));
@@ -117,6 +123,7 @@ export class FittingCreateComponent extends SubscriptionManager implements After
     setShipClass(shipClass?: ShipClassMock) {
         if (!!shipClass) {
             shipClass.name = this.form.controls.scName.value;
+            shipClass.shipClassType = this.form.controls.scTypeName.value;
         }
         this.shipClassMock = shipClass;
         if (this.disabled != !this.shipClassMock) {
@@ -128,7 +135,7 @@ export class FittingCreateComponent extends SubscriptionManager implements After
     }
 
     private getCosts() {
-        if (!!this.shipClassMock && this.isChangePending()) {
+        if (!!this.shipClassMock && ShipClassValidator.isValid(this.shipClassMock) && this.isChangePending()) {
             let sub = this.resourceApi.getShipClassCosts(this.shipClassMock)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);

@@ -20,7 +20,6 @@ import { Observable }                                        from 'rxjs';
 import { Armor } from '../model/armor';
 import { ElectronicWarfare } from '../model/electronicWarfare';
 import { FrontendError } from '../model/frontendError';
-import { Hull } from '../model/hull';
 import { Launcher } from '../model/launcher';
 import { PassiveModule } from '../model/passiveModule';
 import { Propulsion } from '../model/propulsion';
@@ -129,43 +128,6 @@ export class ModuleApiService {
         ];
 
         return this.httpClient.request<Array<ElectronicWarfare>>('get',`${this.basePath}/api/private/modules/eloka`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all unlocked hulls for the owner .
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getHullsByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Hull>>;
-    public getHullsByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Hull>>>;
-    public getHullsByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Hull>>>;
-    public getHullsByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<Hull>>('get',`${this.basePath}/api/private/modules/hull`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

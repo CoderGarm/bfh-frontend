@@ -40,10 +40,9 @@ export interface Translation {
     translation: string;
 }
 export namespace Translation {
-    export type TranslationTargetEnum = 'BUILDING' | 'HULL' | 'RESEARCH' | 'MISSILE' | 'LAUNCHER' | 'ARMOR' | 'ELECTRONIC_WARFARE' | 'PROPULSION' | 'WEAPON' | 'PASSIVE_MODULE' | 'SIDEWALL';
+    export type TranslationTargetEnum = 'BUILDING' | 'RESEARCH' | 'MISSILE' | 'LAUNCHER' | 'ARMOR' | 'ELECTRONIC_WARFARE' | 'PROPULSION' | 'WEAPON' | 'PASSIVE_MODULE' | 'SIDEWALL';
     export const TranslationTargetEnum = {
         BUILDING: 'BUILDING' as TranslationTargetEnum,
-        HULL: 'HULL' as TranslationTargetEnum,
         RESEARCH: 'RESEARCH' as TranslationTargetEnum,
         MISSILE: 'MISSILE' as TranslationTargetEnum,
         LAUNCHER: 'LAUNCHER' as TranslationTargetEnum,

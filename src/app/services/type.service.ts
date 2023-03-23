@@ -1,6 +1,16 @@
 import {Injectable} from '@angular/core';
 import {SubscriptionManager} from "../subscription.manager";
-import {BuildingApiService, EEducationType, EHullType, EModuleType, EnumValueDto, ERefinementSequence, EResourceType, ResourcesApiService, ShipyardApiService} from "./swagger";
+import {
+    BuildingApiService,
+    EEducationType,
+    EModuleType,
+    EnumValueDto,
+    ERefinementSequence,
+    EResourceType,
+    EShipClassType,
+    ResourcesApiService,
+    ShipyardApiService
+} from "./swagger";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
@@ -15,7 +25,7 @@ export class TypeService extends SubscriptionManager {
     }
 
     private _eModuleTypes: EModuleType[] = [];
-    private _eHullTypes: EHullType[] = [];
+    private _shipClassTypes: EShipClassType[] = [];
     private _educationTypes: EEducationType[] = [];
     private _eResourceTypes: EResourceType[] = [];
     private _eProductionCategories: string[] = [];
@@ -33,7 +43,7 @@ export class TypeService extends SubscriptionManager {
         let sub = shipyardApi.getEModuleTypes().subscribe(resp => this._eModuleTypes = resp);
         this.subscriptions.push(sub);
 
-        sub = shipyardApi.getEHullTypes().subscribe(resp => this._eHullTypes = resp);
+        sub = shipyardApi.getEShipClassTypes().subscribe(resp => this._shipClassTypes = resp);
         this.subscriptions.push(sub);
 
         sub = this.resourceApi.getEEducationTypes().subscribe(resp => this._educationTypes = resp);
@@ -54,8 +64,8 @@ export class TypeService extends SubscriptionManager {
         return this._eModuleTypes;
     }
 
-    get eHullTypes(): EHullType[] {
-        return this._eHullTypes;
+    get shipClassTypes(): EShipClassType[] {
+        return this._shipClassTypes;
     }
 
     get educationTypes(): EEducationType[] {

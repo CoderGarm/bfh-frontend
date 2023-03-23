@@ -159,7 +159,7 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      * @private
      */
     private getCosts() {
-        if (!!this.designedShipClass && this.idChangePending()) {
+        if (!!this.designedShipClass && ShipClassValidator.isValid(this.designedShipClass) && this.idChangePending()) {
             let sub = this.resourceApi.getShipClassCosts(this.designedShipClass)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);

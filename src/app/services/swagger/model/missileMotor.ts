@@ -22,8 +22,4 @@ export interface MissileMotor {
      * Defines the capability of this weapon to penetrate the shield.  The means the maneuver capability to find a gap in the tank to fire into it, for instance.
      */
     maneuverability: number;
-    /**
-     * The capacity usage of this module.
-     */
-    useCapacity: number;
 }

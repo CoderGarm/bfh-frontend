@@ -1,0 +1,52 @@
+.nav-control {
+  position: absolute;
+  right: 0;
+  top: -65px;
+  z-index: 999;
+}
+
+.area-toggle {
+  margin: 5px 0;
+}
+
+#ammunition-selection {
+  margin-top: 25px;
+}
+
+.ammo-card {
+  width: fit-content;
+  height: fit-content;
+  flex: 2 1 auto;
+
+  & .mat-mdc-card-content {
+    margin-top: 15px
+  }
+}
+
+.capitalize {
+  text-transform: lowercase;
+}
+
+.capitalize:first-letter {
+  text-transform: uppercase;
+}
+
+.list-head {
+}
+
+.mat-mdc-list-item-line {
+  width: 220px;
+  font-size: small;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.list-cont {
+  margin: auto;
+  width: 100%;
+}

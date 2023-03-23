@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EHullType, Fleet, Hull, WarShip} from "../../../services/swagger";
+import {EShipClassType, Fleet, WarShip} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 
 @Component({
@@ -16,8 +16,8 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
     fleet?: Fleet;
     fleetInputDefinition: string = "fleet";
 
-    private hullTypes: Map<string, EHullType> = new Map<string, EHullType>();
-    hullsByType: Map<string, Hull> = new Map<string, Hull>();
+    private hullTypes: Map<string, EShipClassType> = new Map<string, EShipClassType>();
+    hullsByType: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
 
     constructor() {
@@ -40,13 +40,13 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
         if (!!this.fleet) {
             let warShips: WarShip[] = this.fleet.ships;
             warShips.forEach(warShip => {
-                let hullType = warShip.shipClass.hull.hullType;
+                let hullType = warShip.shipClass.shipClassType;
                 const typeName = hullType.typeName;
                 this.hullTypes.set(typeName, hullType);
 
                 let warShips: WarShip[] | undefined = this.warShipsByType.get(warShip.shipClass.name);
                 if (!warShips) {
-                    this.hullsByType.set(typeName, warShip.shipClass.hull);
+                    this.hullsByType.set(typeName, warShip.shipClass.shipClassType);
                     warShips = [warShip];
                 } else {
                     warShips.push(warShip);
@@ -59,7 +59,7 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
     getHullDescription(typeName: string): string {
         let hull = this.hullsByType.get(typeName);
         if (!!hull) {
-            return hull.hullType.typeName + ' - ' + hull.description;
+            return hull.typeName + ' - ' + hull.description;
         }
         return "";
     }

@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../../subscription.manager";
-import {Armor, ElectronicWarfare, Hull, Launcher, ModuleApiService, PassiveModule, Propulsion, Sidewall, Weapon} from "../swagger";
+import {Armor, ElectronicWarfare, Launcher, ModuleApiService, PassiveModule, Propulsion, Sidewall, Weapon} from "../swagger";
 import {ReplaySubject} from "rxjs";
 
 /**
@@ -16,7 +16,6 @@ export class ModuleService extends SubscriptionManager {
     private eloka: ReplaySubject<ElectronicWarfare[]> = new ReplaySubject<ElectronicWarfare[]>();
     private passiveModules: ReplaySubject<PassiveModule[]> = new ReplaySubject<PassiveModule[]>();
     private propulsions: ReplaySubject<Propulsion[]> = new ReplaySubject<Propulsion[]>();
-    private hulls: ReplaySubject<Hull[]> = new ReplaySubject<Hull[]>();
 
     constructor(private zone: NgZone,
                 private moduleApi: ModuleApiService) {
@@ -29,7 +28,6 @@ export class ModuleService extends SubscriptionManager {
         this.zone.run(() => this.fetchElokas());
         this.zone.run(() => this.fetchPropulsions());
         this.zone.run(() => this.fetchPassives());
-        this.zone.run(() => this.fetchHulls());
     }
 
     private fetchWeapons() {
@@ -67,11 +65,6 @@ export class ModuleService extends SubscriptionManager {
         this.subscriptions.push(sub);
     }
 
-    private fetchHulls() {
-        let sub = this.moduleApi.getHullsByUser().subscribe(resp => this.hulls.next(resp));
-        this.subscriptions.push(sub);
-    }
-
     getWeaponsByUser() {
         return this.weapons;
     }
@@ -98,9 +91,5 @@ export class ModuleService extends SubscriptionManager {
 
     getPassiveModulesByUser() {
         return this.passiveModules;
-    }
-
-    getHullsByUser() {
-        return this.hulls;
     }
 }

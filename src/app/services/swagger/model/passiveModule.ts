@@ -26,7 +26,7 @@ export interface PassiveModule {
     calculationType: PassiveModule.CalculationTypeEnum;
 }
 export namespace PassiveModule {
-    export type SupportTypeEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION';
+    export type SupportTypeEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION' | 'PASSENGER' | 'FREIGHT';
     export const SupportTypeEnum = {
         WEAPON: 'WEAPON' as SupportTypeEnum,
         ARMOR: 'ARMOR' as SupportTypeEnum,
@@ -38,7 +38,9 @@ export namespace PassiveModule {
         METALORE: 'METALORE' as SupportTypeEnum,
         RAREELEMENTS: 'RARE_ELEMENTS' as SupportTypeEnum,
         HEAVYMETALS: 'HEAVY_METALS' as SupportTypeEnum,
-        POPULATION: 'POPULATION' as SupportTypeEnum
+        POPULATION: 'POPULATION' as SupportTypeEnum,
+        PASSENGER: 'PASSENGER' as SupportTypeEnum,
+        FREIGHT: 'FREIGHT' as SupportTypeEnum
     };
     export type CalculationTypeEnum = 'NONE' | 'ADD' | 'SUBTRACT';
     export const CalculationTypeEnum = {

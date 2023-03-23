@@ -24,10 +24,6 @@ export interface Warhead {
      * The warhead type.
      */
     warheadType: Warhead.WarheadTypeEnum;
-    /**
-     * The used capacity of this warhead.
-     */
-    useCapacity: number;
 }
 export namespace Warhead {
     export type WarheadTypeEnum = 'LASER' | 'EXPLOSION' | 'KINETIC' | 'COUNTER_MISSILE';

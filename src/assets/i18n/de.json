@@ -62,7 +62,7 @@
         "AR": "AR",
         "BB": "BB",
         "BC": "BC",
-        "BCP": "BCP",
+        "BCP": "BC(P)",
         "CA": "CA",
         "CL": "CL",
         "CLAC": "CLAC",
@@ -73,7 +73,7 @@
         "FR": "FR",
         "LAC": "LAC",
         "SD": "SD",
-        "SDP": "SDP",
+        "SDP": "SD(P)",
         "VT": "VT"
       }
     },
@@ -352,7 +352,7 @@
         "too-expensive": "Auftrag zu teuer"
       },
       "capacity": {
-        "title": "Konstruktionskapazität"
+        "title": "Tonnage"
       },
       "fleet-state": "Flottenstatus",
       "fleet-to-repair": "Flotte im Dock",

@@ -19,7 +19,7 @@
         </svg>
 
         <mat-chip-option mat-subheader selected disabled class="no-checkmark">
-            {{cap.usedCapacity | numberThousandSeparator }} / {{cap.capacity | numberThousandSeparator }}
+            {{cap.tonnage | mass: 'T' }}
         </mat-chip-option>
     </div>
 </div>

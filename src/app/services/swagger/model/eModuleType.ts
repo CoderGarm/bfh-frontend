@@ -26,5 +26,8 @@ export interface EModuleType {
      * The folder name for resources.
      */
     folder: string;
-    moduleName?: string;
+    /**
+     * The enum name
+     */
+    moduleName: string;
 }

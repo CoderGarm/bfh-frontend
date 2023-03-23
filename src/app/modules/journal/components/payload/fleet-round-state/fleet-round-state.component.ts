@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {AbstractId, CapabilityValue, EHullType, Fleet, FleetMarker, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
+import {AbstractId, CapabilityValue, EShipClassType, Fleet, FleetMarker, HitLog, SpacecraftCapabilities, WarShip} from "../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {CombatArenaData} from "../../../combat-arena-data";
@@ -41,7 +41,7 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
     @Input()
     clickedFleet?: FleetMarker;
 
-    private hullTypes: Map<string, EHullType> = new Map<string, EHullType>();
+    private hullTypes: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     warShips: WarShip[] = [];
 
     private statesByRound: StateByRound[] = [];
@@ -149,7 +149,7 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
     }
 
     private createInitialState(warShip: WarShip) {
-        let hullType = warShip.shipClass.hull.hullType;
+        let hullType = warShip.shipClass.shipClassType;
         this.hullTypes.set(hullType.typeName, hullType);
         let capabilityValues = this.deepCloneSpacecraftCapabilities(warShip.warshipHealthState.spacecraftCapabilities.capabilities);
         const state: StateByRound = {

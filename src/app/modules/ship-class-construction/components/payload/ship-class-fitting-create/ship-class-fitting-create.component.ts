@@ -6,7 +6,7 @@ import {
     BaseModule,
     ElectronicWarfare,
     EnumValueDto,
-    Hull,
+    EShipClassType,
     Launcher,
     Missile,
     PassiveModule,
@@ -18,18 +18,21 @@ import {
     Sidewall,
     SupportFitting,
     Weapon
-} from "../../../services/swagger";
-import {WeaponHelper} from "../../../services/helper/weapon.helper";
-import {ModuleService} from "../../../services/prefetch/module.service";
-import {SubscriptionManager} from "../../../subscription.manager";
-import {ChipSelectorValue, ChipSelectorValueResult} from "../../shared-module/components/chip-selector/chip-selector.component";
-import {FittingHelper} from "../../../services/helper/fitting.helper";
-import {TypeService} from "../../../services/type.service";
-import {WeaponsSelection} from "../weapon-per-alingment-counter/weapon-per-alignment-counter.component";
+} from "../../../../../services/swagger";
+import {ModuleService} from "../../../../../services/prefetch/module.service";
+import {SubscriptionManager} from "../../../../../subscription.manager";
+import {ChipSelectorValue, ChipSelectorValueResult} from "../../../../shared-module/components/chip-selector/chip-selector.component";
+import {FittingHelper} from "../../../../../services/helper/fitting.helper";
+import {TypeService} from "../../../../../services/type.service";
+import {WeaponsSelection} from "../../../../display-elements/weapon-per-alingment-counter/weapon-per-alignment-counter.component";
+import {ShipClassHelper} from "../ship-class.helper";
+import {ShipClassValidator} from "../ship-class.validator";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
-import TechnologyTypeEnum = Propulsion.TechnologyTypeEnum;
+import TechnologyTypeEnum = EnumValueDto.ETechnologyTypesEnum;
+import HyperBandEnum = EnumValueDto.EHyperBandsEnum;
+import WeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 
 @Component({
     selector: 'app-ship-class-fitting-create',
@@ -52,32 +55,35 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     shipClassMock?: ShipClassMock;
 
-
-    propulsionCapacityCache: Map<string, PropulsionCapacity[]> = new Map<string, PropulsionCapacity[]>();
+    private propulsionCapacityCache: Map<string, PropulsionCapacity[]> = new Map<string, PropulsionCapacity[]>();
 
     /**
      * the modules to select from
      */
     weapons: Weapon[] = [];
     launchers: Launcher[] = [];
+    missiles: Missile[] = [];
+    private weaponsDescriptions: Map<EWeaponTypeEnum, string> = new Map<EWeaponTypeEnum, string>();
+    weaponsDescription: string = '';
     armors: Armor[] = [];
+    exampleArmor?: Armor;
     sidewalls: Sidewall[] = [];
+    exampleSidewall?: Sidewall;
     eloka: ElectronicWarfare[] = [];
+    exampleEloka?: ElectronicWarfare;
     passiveModules: PassiveModule[] = [];
     propulsions: Propulsion[] = [];
-    hulls: Hull[] = [];
 
     /**
      * the maps which are holding the user's selections
      */
-    weaponsSelection: Map<String, number> = new Map<String, number>();
-    ammoSelection: Map<String, number> = new Map<String, number>();
-    supportSelection: Map<String, number> = new Map<String, number>();
+    weaponsSelection: Map<string, number> = new Map<string, number>();
+    ammoSelection: Map<string, number> = new Map<string, number>();
+    supportSelection: Map<string, number> = new Map<string, number>();
     /**
      * the single selection items
      */
-    hullSelection?: Hull;
-    hoveredPropulsion?: Propulsion;
+    shipClassTypeSelection?: EShipClassType;
     propulsionSelection?: Propulsion;
     hoveredArmor?: Armor;
     armorSelection?: Armor;
@@ -95,10 +101,8 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     filteredArmors: Armor[] = [];
     filteredSidewalls: Sidewall[] = [];
     filteredEloka: ElectronicWarfare[] = [];
-    filteredPropulsions: Propulsion[] = []; // filter by hyper band?
-    filteredHulls: Hull[] = [];
+    filteredPropulsions: Propulsion[] = [];
     eHullTypeChipValues: ChipSelectorValue[] = [];
-    hoveredHull?: Hull;
     hoveredWeapon?: Weapon | Launcher;
     selectedWeapon?: Weapon | Launcher;
 
@@ -114,6 +118,11 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     weaponTypes: EWeaponTypeEnum[];
     selectedWeaponType: EWeaponTypeEnum = EWeaponTypeEnum.MISSILE;
 
+    technologyTypes: TechnologyTypeEnum[] = [TechnologyTypeEnum.CIVIL, TechnologyTypeEnum.MILITARY];
+    selectedTechnologyType: TechnologyTypeEnum = TechnologyTypeEnum.MILITARY;
+    selectedHyperband: HyperBandEnum = HyperBandEnum.NONE;
+    hyperBands: HyperBandEnum[] = [];
+
     private chips: ChipSelectorValueResult[] = [];
     private weaponAlignmentTypes: EWeaponAlignmentEnum[];
 
@@ -126,37 +135,56 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.alignmentAreas = this.typeService.alignmentAreas;
         this.weaponTypes = this.typeService.weaponTypes;
         this.weaponAlignmentTypes = this.typeService.weaponAlignmentTypes;
+        this.typeService.shipClassTypes.map(type => ({value: type.type})).forEach(ht => {
+            if (this.eHullTypeChipValues.filter(t => t.value === ht.value).length === 0) {
+                this.eHullTypeChipValues.push(ht);
+            }
+        });
     }
 
     ngAfterViewInit(): void {
         this.fetchBaseData();
+        this.filterDisplayedItems();
+        this.selectPropulsion();
+        this.setWeaponDescription();
         this.change.detectChanges();
     }
 
     protected fetchBaseData() {
-        let sub = this.moduleService.getWeaponsByUser().subscribe(resp => this.weapons = resp);
+        let sub = this.moduleService.getWeaponsByUser().subscribe(resp => {
+            this.weapons = resp;
+            resp.forEach(w => this.weaponsDescriptions.set(w.weaponType, w.baseModule.description));
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getLaunchersByUser().subscribe(resp => this.launchers = resp);
+        sub = this.moduleService.getLaunchersByUser().subscribe(resp => {
+            this.launchers = resp;
+            const missiles = resp.flatMap(l => l.allowedMissiles);
+            missiles.forEach(missile => {
+                if (this.missiles.filter(m => m.baseModule.idModule === missile.baseModule.idModule).length === 0) {
+                    this.missiles.push(missile);
+                }
+            });
+            resp.forEach(w => this.weaponsDescriptions.set(w.weaponType, w.baseModule.description));
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getArmorsByUser().subscribe(resp => this.armors = resp);
+        sub = this.moduleService.getArmorsByUser().subscribe(resp => {
+            this.armors = resp;
+            this.exampleArmor = resp[0];
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getSidewallsByUser().subscribe(resp => this.sidewalls = resp);
+        sub = this.moduleService.getSidewallsByUser().subscribe(resp => {
+            this.sidewalls = resp;
+            this.exampleSidewall = resp[0];
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getElectronicWarfareByUser().subscribe(resp => this.eloka = resp);
+        sub = this.moduleService.getElectronicWarfareByUser().subscribe(resp => {
+            this.eloka = resp;
+            this.exampleEloka = resp[0];
+        });
         this.subscriptions.push(sub);
         sub = this.moduleService.getPropulsionsByUser().subscribe(resp => this.propulsions = resp);
         this.subscriptions.push(sub);
         sub = this.moduleService.getPassiveModulesByUser().subscribe(resp => this.passiveModules = resp);
-        this.subscriptions.push(sub);
-        sub = this.moduleService.getHullsByUser().subscribe(resp => {
-            this.hulls = resp;
-            this.eHullTypeChipValues = [];
-            this.hulls.map(hull => ({value: hull.hullType.type})).forEach(ht => {
-                if (this.eHullTypeChipValues.filter(t => t.value === ht.value).length === 0) {
-                    this.eHullTypeChipValues.push(ht);
-                }
-            });
-        });
         this.subscriptions.push(sub);
     }
 
@@ -168,24 +196,16 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         }
         const selectedTypeNames: string[] = chips.filter(c => c.selected).map(c => c.chipValue);
 
-        this.passiveModules.filter(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredPassiveModules, this.supportSelection));
-        this.launchers.filter(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredLaunchers, this.weaponsSelection));
-        this.weapons.filter(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredWeapons, this.weaponsSelection));
+        this.passiveModules.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredPassiveModules, this.supportSelection));
+        this.launchers.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredLaunchers, this.weaponsSelection));
+        this.weapons.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredWeapons, this.weaponsSelection));
 
-        this.armors.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredArmors, this.armorSelection));
-        this.sidewalls.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredSidewalls, this.sidewallSelection));
-        this.eloka.filter(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredEloka, this.elokaSelection));
+        this.armors.forEach(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredArmors, this.armorSelection));
+        this.sidewalls.forEach(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredSidewalls, this.sidewallSelection));
+        this.eloka.forEach(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredEloka, this.elokaSelection));
+        this.propulsions.forEach(module => this.addOrRemovePropulsion(module));
 
-        this.hulls.filter(hull => {
-            const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === hull.hullType.typeName;
-            if (selectedTypeNames.includes(hull.hullType.typeName) || matchedSelectedHull) {
-                if (this.filteredHulls.filter(h => h.hullType.typeName === hull.hullType.typeName).length == 0) {
-                    this.filteredHulls.push(hull);
-                }
-            } else {
-                this.removeIfPresent(this.filteredHulls, hull);
-            }
-        });
+        this.hyperBands = Array.from(new Set(this.propulsions.map(p => p.hyperBand)));
         this.change.detectChanges();
     }
 
@@ -213,22 +233,41 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             }
         });
 
-        const hullTypeName = module.baseModule.hullType?.typeName;
-        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === hullTypeName;
+        const hullTypeName = module.baseModule.shipClassType?.typeName;
+        const matchedSelectedHull = !!this.shipClassTypeSelection && this.shipClassTypeSelection.typeName === hullTypeName;
         if (selectedByFilter && ((!!hullTypeName && selectedTypeNames.includes(hullTypeName)) || matchedSelectedHull || moduleSelected)) {
-            filteredElements.push(module);
+            if (!filteredElements.includes(module)) {
+                filteredElements.push(module);
+            }
         } else {
             this.removeIfPresent(filteredElements, module);
         }
     }
 
-    private addOrRemoveSingleSelectModule<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], module: MODULE, elements: MODULE[], selection: MODULE | undefined) {
+    private addOrRemoveSingleSelectModule<MODULE extends {
+        baseModule: BaseModule
+    }>(selectedTypeNames: string[], module: MODULE, elements: MODULE[], selection: MODULE | undefined) {
         if (this.isPushCandidate(selectedTypeNames, module, selection)) {
-            if (elements.filter(h => h.baseModule.hullType!.typeName === module.baseModule.hullType!.typeName).length == 0) {
+            if (elements.filter(h => h.baseModule.shipClassType!.typeName === module.baseModule.shipClassType!.typeName).length == 0) {
                 elements.push(module);
             }
         } else {
             this.removeIfPresent(elements, module);
+        }
+    }
+
+    private addOrRemovePropulsion(module: Propulsion) {
+        if (module.technologyType === this.selectedTechnologyType && module.hyperBand === this.selectedHyperband) {
+            this.addIfNotPresent(this.filteredPropulsions, module);
+        } else {
+            this.removeIfPresent(this.filteredPropulsions, module);
+        }
+    }
+
+    private addIfNotPresent<MODULE>(elements: MODULE[], module: MODULE) {
+        const indexOf = elements.indexOf(module);
+        if (indexOf == -1) {
+            elements.push(module);
         }
     }
 
@@ -239,35 +278,29 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         }
     }
 
-    private isPushCandidate<MODULE extends { baseModule: BaseModule }>(selectedTypeNames: string[], candidate: MODULE, selection: MODULE | undefined) {
+    private isPushCandidate<MODULE extends {
+        baseModule: BaseModule,
+        technologyType?: TechnologyTypeEnum
+    }>(selectedTypeNames: string[], candidate: MODULE, selection: MODULE | undefined) {
         const baseModule: BaseModule = candidate.baseModule;
-        const typeName = baseModule.hullType!.typeName;
-        const matchedSelectedHull = !!this.hullSelection && this.hullSelection.hullType.typeName === baseModule.hullType!.typeName;
-        const moduleSelected = !!selection && selection.baseModule.idModule === baseModule.idModule;
-        return (!!typeName && selectedTypeNames.includes(typeName)) || matchedSelectedHull || moduleSelected;
+        const shipClassType = baseModule.shipClassType;
+        if (!!shipClassType) {
+            const typeName = shipClassType.typeName;
+            const matchedSelectedHull = !!this.shipClassTypeSelection && this.shipClassTypeSelection.typeName === shipClassType.typeName;
+            const moduleSelected = !!selection && selection.baseModule.idModule === baseModule.idModule;
+            return (!!typeName && selectedTypeNames.includes(typeName)) || matchedSelectedHull || moduleSelected;
+        }
+        return !!candidate.technologyType && candidate.technologyType === this.selectedTechnologyType;
     }
 
-    chooseHull(hull?: Hull) {
-        this.hullSelection = hull;
-        this.hoverHull(hull);
+    chooseShipClassType(shipClassType?: EShipClassType) {
+        this.shipClassTypeSelection = shipClassType;
         this.createAndEmitDesignedShipClass();
     }
 
     updateWeaponSelection(loadout: WeaponsSelection) {
+        console.log("updateWeaponSelection", loadout)
         this.setWeaponModule(loadout);
-        let hasAmmoModule = !!loadout.missile;
-        let hasAmmoAmount = !!loadout.missileAmount;
-        let hasNoAmmoAmount = !hasAmmoAmount || loadout.missileAmount == 0;
-        if (hasAmmoModule && hasNoAmmoAmount) {
-            let ammoAmount = this.getAmmunitionModuleAmount(loadout!.missile!);
-            if (ammoAmount != loadout.missileAmount) {
-                this.setAmmunitionModule(loadout!.missile!, ammoAmount);
-            }
-        } else {
-            if (hasAmmoModule && hasAmmoAmount) {
-                this.setAmmunitionModule(loadout!.missile!, loadout!.missileAmount!);
-            }
-        }
         this.createAndEmitDesignedShipClass();
     }
 
@@ -283,18 +316,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             w = {
                 weapon: weapon,
                 weaponAmountPerAlignment: this.getWeaponModuleAmount(weapon),
-            }
-            let isLauncher = WeaponHelper.isLauncher(weapon);
-            if (isLauncher) {
-                let ammoModule = (<Launcher>weapon).allowedMissiles[0]; // fixme fix missile selection
-                if (!!ammoModule) {
-                    let inBetweenAmmoAmount = this.getAmmunitionModuleAmount(ammoModule);
-                    if (!!inBetweenAmmoAmount) {
-                        ammoAmount = inBetweenAmmoAmount;
-                    }
-                    w.missile = ammoModule;
-                    w.missileAmount = ammoAmount;
-                }
             }
             return w;
         }
@@ -381,79 +402,98 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
         this.mapMultiModulesToFitting(weapons, ammo, passives);
         let output: ShipClassMock = {
-            hull: this.hullSelection,
+            shipClassType: this.shipClassTypeSelection,
             fittings: weapons,
             ammunitionFittings: ammo,
             supportFittings: passives,
             armor: this.armorSelection,
             electronicWarfare: this.elokaSelection,
-            propulsion: this.propulsionSelection,
+            propulsion: this.propulsionSelection!,
             sidewall: this.sidewallSelection
         };
         this.shipClassMock = output;
-        this.shipClassMockEmitter.emit(output);
+        if (ShipClassValidator.hasPayload(output)) {
+            this.shipClassMockEmitter.emit(output);
+        }
     }
 
     mapMultiModulesToFitting(weapons: AlignedFitting[], ammo: AmmunitionFitting[], passives: SupportFitting[]) {
         this.weapons.forEach(module => {
             let amountByAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number> = this.getWeaponModuleAmount(module);
             amountByAlignment.forEach((amount, key) => {
-                let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-                let s: AlignedFitting = {
-                    amount: amount,
-                    weapon: module,
-                    weaponAlignment: alignment
-
-                }
-                if (amount > 0) {
-                    weapons.push(s);
+                if (!!amount && amount > 0) {
+                    let alignment: EWeaponAlignmentEnum = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+                    weapons.push({
+                        amount: amount,
+                        weapon: module,
+                        weaponAlignment: alignment
+                    });
                 }
             });
         });
         this.launchers.forEach(module => {
             let amountByAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number> = this.getWeaponModuleAmount(module);
             amountByAlignment.forEach((amount, key) => {
-                let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
-                let s: AlignedFitting = {
-                    amount: amount,
-                    launcher: module,
-                    weaponAlignment: alignment
-
-                }
-                if (amount > 0) {
-                    weapons.push(s);
+                if (!!amount && amount > 0) {
+                    let alignment: EWeaponAlignmentEnum = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
+                    weapons.push({
+                        amount: amount,
+                        launcher: module,
+                        weaponAlignment: alignment
+                    });
                 }
             });
+        });
+
+        this.ammoSelection.forEach((amount, key) => {
+            if (!!amount && amount > 0) {
+                let id: number = FittingHelper.getAmmunitionIdFromKey(key);
+                const missile = this.missiles.filter(m => m.baseModule.idModule === id)[0];
+                if (!missile) {
+                    console.log("missile missing", key, id)
+                    console.log(this.missiles)
+                }
+                ammo.push({
+                    amount: amount,
+                    missile: missile
+                });
+            }
         });
 
         this.passiveModules.forEach(module => {
             let amount = this.getPassiveModuleAmount(module);
             if (!!amount && amount > 0) {
-                let s: SupportFitting = {
+                passives.push({
                     passiveModule: module,
                     amount: amount,
-                }
-                passives.push(s);
+                });
             }
         });
     }
 
-    setAmmunitionModule(ammunitionModule?: Missile, amount?: number) {
-        if (!!ammunitionModule && !!amount) {
-            let id: string = FittingHelper.getAmmunitionMapKey(ammunitionModule);
+    setAmmunitionModule(missile?: Missile, amount?: number) {
+        if (!!missile && !!amount) {
+            let id: string = FittingHelper.getAmmunitionMapKey(missile);
+            console.log(id, amount)
+            if (amount > 444) {
+                throw new Error("to big too fail");
+            }
             this.ammoSelection.set(id, amount);
+            this.createAndEmitDesignedShipClass();
         }
     }
 
-    getAmmunitionModuleAmount(ammunitionModule?: Missile): number {
-        if (!ammunitionModule) {
+    getMissileAmount(missile?: Missile): number {
+        if (!missile) {
             return 0;
         }
-        let id: string = FittingHelper.getAmmunitionMapKey(ammunitionModule);
+        let id: string = FittingHelper.getAmmunitionMapKey(missile);
         let amount = this.ammoSelection.get(id);
         if (!amount) {
             amount = 0;
         }
+        console.log("getMissileAmount", amount)
+        console.log("getMissileAmount", this.ammoSelection)
         return amount;
     }
 
@@ -474,21 +514,35 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return amount;
     }
 
-    hoverHull(hull?: Hull) {
-        this.hoveredHull = hull;
-        if (!hull && !!this.hullSelection) {
-            this.hoveredHull = this.hullSelection;
-        }
-    }
-
-    isFiltered(element: Hull) {
-        // workaround to hide options because on adding options to the list the selected element will be the last in the list -> the new one
-        return this.filteredHulls.filter(fh => fh.hullType.typeName === element.hullType.typeName).length > 0;
-    }
-
     selectWeaponType(type: EWeaponTypeEnum) {
         this.selectedWeaponType = type;
+        this.setWeaponDescription();
         this.filterDisplayedItems();
+    }
+
+    private setWeaponDescription() {
+        const desc = this.weaponsDescriptions.get(this.selectedWeaponType);
+        this.weaponsDescription = !!desc ? desc : '';
+    }
+
+    selectTechnologyType(type: TechnologyTypeEnum) {
+        this.selectedTechnologyType = type;
+        this.filterDisplayedItems();
+        this.selectPropulsion();
+    }
+
+    selectHyperband(type: HyperBandEnum) {
+        this.selectedHyperband = type;
+        this.filterDisplayedItems();
+        this.selectPropulsion();
+    }
+
+    private selectPropulsion() {
+        if (this.filteredPropulsions.length == 1) {
+            this.propulsionSelection = this.filteredPropulsions[0];
+            this.change.detectChanges();
+            this.createAndEmitDesignedShipClass();
+        }
     }
 
     chooseWeapon(weapon?: Weapon | Launcher) {
@@ -509,33 +563,32 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     isFilteredModule<MODULE extends { baseModule: BaseModule }>(module: MODULE, filteredModules: MODULE[]) {
         // workaround to hide options because on adding options to the list the selected element will be the last in the list -> the new one
-        return filteredModules.filter(fh => fh.baseModule.idModule === module.baseModule.idModule).length > 0;
+        const isFiltered = filteredModules.filter(fh => fh.baseModule.idModule === module.baseModule.idModule).length > 0;
+        if ('weaponType' in module) {
+            // noinspection UnnecessaryLocalVariableJS
+            const excludedByWeaponType = !!this.selectedWeaponType && this.selectedWeaponType === <WeaponTypeEnum>module.weaponType;
+            return excludedByWeaponType;
+        }
+        return isFiltered;
     }
 
-    getPropulsionCapacity(): PropulsionCapacity[] {
-        if (!this.hoveredHull || !this.hoveredPropulsion) {
+    getPropulsionCapacity(shipClass?: ShipClass | ShipClassMock): PropulsionCapacity[] {
+        if (!shipClass || !this.propulsionSelection) {
             return [];
         }
-        const idHull = this.hoveredHull.idHull;
-        const idPropulsion = this.hoveredPropulsion.baseModule.idModule;
-        const key = idHull + '-' + idPropulsion;
+
+        const pseudoHash = ShipClassHelper.generateFittingPseudoHash(shipClass);
+        const idPropulsion = this.propulsionSelection.baseModule.idModule;
+        const key = pseudoHash + 'p' + idPropulsion;
         const propulsionCapacities = this.propulsionCapacityCache.get(key);
         if (!!propulsionCapacities) {
             return propulsionCapacities;
         }
-        let sub = this.shipyardApi.getPropulsionCapacity(idHull, idPropulsion).subscribe(resp => {
+        let sub = this.shipyardApi.getPropulsionCapacity(shipClass, idPropulsion).subscribe(resp => {
             this.propulsionCapacityCache.set(key, resp);
         })
         this.subscriptions.push(sub);
         return [];
-    }
-
-    getHullsByTechType(hulls: Hull[], techType: TechnologyTypeEnum) {
-        return hulls.filter(h => h.technologyType === techType).sort((a, b) => a.overallConstructionCapacity - b.overallConstructionCapacity);
-    }
-
-    getPropulsionsByTechType(propulsions: Propulsion[], techType: TechnologyTypeEnum) {
-        return propulsions.filter(h => h.technologyType === techType).sort((a, b) => a.hasCostsByParent.costsPercentage - b.hasCostsByParent.costsPercentage);
     }
 
     getDisplayName<MODULE extends { baseModule: BaseModule }>(module: MODULE) {
