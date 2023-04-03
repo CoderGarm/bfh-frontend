@@ -13,7 +13,8 @@ export class HttpCacheInterceptor implements HttpInterceptor {
         '/api/private/starMap/',
         '/api/private/colonization/all/',
         '/api/private/report/battle/',
-        '/api/private/resources/miningFactors/'
+        '/api/private/resources/miningFactors/',
+        '/api/private/research/tree'
     ];
 
     private cache: Map<string, HttpResponse<any>> = new Map()

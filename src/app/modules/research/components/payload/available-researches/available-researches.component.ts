@@ -97,7 +97,7 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
         }
         let folder = hasIcon.folder;
         let iconName = hasIcon.iconName;
-        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
+        return "assets/" + folder + "/png32x/" + iconName + "_c.png";
     }
 
     getInvisibility(researchLevel: ResearchLevel) {

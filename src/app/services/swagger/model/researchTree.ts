@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { Research } from './research';
-import { ResearchTreeElement } from './researchTreeElement';
+import { ResearchTreeChain } from './researchTreeChain';
 
 /**
  * The research tree contains basic information about all researches and kind of a linked list by the tech tree's single elements itself.
@@ -19,7 +19,7 @@ export interface ResearchTree {
     /**
      * The elements of the tech tree which know their 'predecessor' and 'successor'.
      */
-    treeElements: Array<ResearchTreeElement>;
+    researchTreeChains: Array<ResearchTreeChain>;
     /**
      * The researches which are part of the treeElements.
      */

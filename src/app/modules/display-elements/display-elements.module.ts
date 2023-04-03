@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {BaseModuleDisplayComponent} from './base-module-display/base-module-display.component';
-import {ResearchDisplayComponent} from './research-display/research-display.component';
 import {BaseModuleSingleSelectorComponent} from './base-module-single-selector/base-module-single-selector.component';
 import {FleetDisplayComponent} from './fleet-display/fleet-display.component';
 import {ConstructionDisplayComponent} from "./construction-display/construction-display.component";
@@ -12,7 +11,6 @@ import {FleetMoveEditComponent} from './fleet-move-edit/fleet-move-edit.componen
 import {FleetMoveDisplayComponent} from './fleet-move-display/fleet-move-display.component';
 import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-factors-display.component';
 import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component';
-import {TechTreeDisplayComponent} from './tech-tree-display/tech-tree-display.component';
 import {JobListDisplayComponent} from './job-list-display/job-list-display.component';
 import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability-display-small/spacecraft-capability-display-small.component";
 import {ResourceDisplayModule} from "./modules/resource-display/resource-display.module";
@@ -37,7 +35,6 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
 @NgModule({
     declarations: [
         BaseModuleDisplayComponent,
-        ResearchDisplayComponent,
         ConstructionDisplayComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
@@ -49,7 +46,6 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
         FleetMoveDisplayComponent,
         MiningFactorsDisplayComponent,
         InterstellarFleetMovementEditComponent,
-        TechTreeDisplayComponent,
         JobListDisplayComponent,
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
@@ -75,7 +71,6 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
     ],
     exports: [
         BaseModuleDisplayComponent,
-        ResearchDisplayComponent,
         ConstructionDisplayComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
@@ -87,7 +82,6 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
         FleetMoveDisplayComponent,
         MiningFactorsDisplayComponent,
         InterstellarFleetMovementEditComponent,
-        TechTreeDisplayComponent,
         JobListDisplayComponent,
         ResourceDisplayModule,
         PopulationDevelopmentComponent,

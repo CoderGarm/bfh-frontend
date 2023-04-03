@@ -1,5 +1,6 @@
 @import "styles/variables";
 @import "src/app/modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
+@import "src/app/modules/research/components/payload/tech-tree/tech-tree.component";
 @import "src/app/modules/display-elements/fleet-display/fleet-display.component";
 @import "src/styles/combat-arena";
 @import "src/styles/scrollbar";
@@ -53,6 +54,7 @@ div .mat-subheader {
 .mat-mdc-tab-body-wrapper {
   // make sure that the tab body grows to the full height
   flex-grow: 1;
+  //flex: 1 1 100%;
 }
 
 body {
@@ -291,4 +293,8 @@ app-shipyard > .ship-class-card > mat-card-header {
 
 .mat-step-header .mat-step-icon {
   background-color: $primary-color;
+}
+
+app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-content > app-outlined > .mat-mdc-text-field-wrapper {
+  margin: 0;
 }

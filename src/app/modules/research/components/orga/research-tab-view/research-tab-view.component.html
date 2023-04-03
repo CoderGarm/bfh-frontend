@@ -1,11 +1,12 @@
 <mat-tab-group animationDuration="500ms">
     <mat-tab label="{{ 'tab.research.available' | translate }}">
-        <app-available-researches></app-available-researches>
-    </mat-tab>
-    <mat-tab label="{{ 'tab.research.completed' | translate }}">
-        <app-completed-researches></app-completed-researches>
+        <ng-template matTabContent>
+            <app-available-researches></app-available-researches>
+        </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.research.tech-tree' | translate }}">
-        <app-tech-tree></app-tech-tree>
+        <ng-template matTabContent>
+            <app-tech-tree></app-tech-tree>
+        </ng-template>
     </mat-tab>
 </mat-tab-group>

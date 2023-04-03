@@ -3,17 +3,15 @@
 .icon {
   height: fit-content;
   width: fit-content;
-  margin: 0 5px 0 0;
 }
 
 .mat-mdc-card {
-  width: $page-width;
+  width: fit-content;
   margin-bottom: 15px;
   padding: 15px;
+  font-size: smaller;
 }
 
-.floated {
-  float: left;
-  width: fit-content;
-  margin: 0 25px 15px 0;
+.mat-mdc-list-item-title {
+  margin: 7px 0 0 5px;
 }

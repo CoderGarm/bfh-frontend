@@ -499,7 +499,6 @@
     },
     "research": {
       "available": "Available researches",
-      "completed": "Completed researches",
       "tech-tree": "Tech tree"
     },
     "shipyard": {

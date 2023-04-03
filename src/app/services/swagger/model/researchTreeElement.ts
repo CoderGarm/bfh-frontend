@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ResearchResult } from './researchResult';
 
 /**
  * The ids of a research by the id of the unlocking research and the id of an unlocked research.
@@ -26,4 +27,12 @@ export interface ResearchTreeElement {
      * The id of the research which is unlocked by this research.
      */
     idUnlocks?: number;
+    /**
+     * The important levels for this research.
+     */
+    levels: Array<number>;
+    /**
+     * The results which are unlocked by this research.
+     */
+    unlocks: Array<ResearchResult>;
 }

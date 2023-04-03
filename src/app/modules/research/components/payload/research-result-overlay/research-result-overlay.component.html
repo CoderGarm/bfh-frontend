@@ -1,0 +1,22 @@
+<ng-template *ngIf="!!boxWithContext"
+             cdkConnectedOverlay
+             [cdkConnectedOverlayOrigin]="origin"
+             [cdkConnectedOverlayOpen]="!!boxWithContext"
+             [cdkConnectedOverlayPositions]="position">
+    <mat-card appearance="outlined" class="mat-drawer-container" *ngFor="let researchResult of boxWithContext.context">
+        <mat-card-header>
+            <mat-card-title>
+                <div class="flex-items-container">
+                    <img mat-card-avatar class="avatar-image icon"
+                         src="{{getLink(researchResult.hasIcon)}}" alt="research-icon">
+                    <span matListItemTitle>{{ researchResult.name }}</span>
+                </div>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div *ngFor="let prop of researchResult.additionalProperties  | keyvalue">
+                <span matListItemLine>{{ prop.key }}: {{ prop.value }}</span>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>
