@@ -5,7 +5,7 @@
         <input matInput disabled value="{{starSystem!.name}}">
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="small-field">
+    <mat-form-field appearance="outline" class="small-field" *ngIf="!!starSystem.planets">
         <mat-label>Planet count</mat-label>
         <input matInput disabled value="{{starSystem.planets.length}}">
     </mat-form-field>
