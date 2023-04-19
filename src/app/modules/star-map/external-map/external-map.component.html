@@ -1,0 +1,22 @@
+<div id="external-map">
+    <div class="info-div" *ngIf="!!hoveredSystem">
+        <mat-form-field appearance="outline">
+            <mat-label>System</mat-label>
+            <input matInput disabled value="{{hoveredSystem.name}}">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small-field">
+            <mat-label>X-Coordinate</mat-label>
+            <input matInput disabled value="{{hoveredSystem!.orbit.xCoordinate.coordinate}} {{hoveredSystem!.orbit.xCoordinate.distanceMetric}}">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="small-field">
+            <mat-label>Y-Coordinate</mat-label>
+            <input matInput disabled value="{{hoveredSystem!.orbit.yCoordinate.coordinate}} {{hoveredSystem!.orbit.xCoordinate.distanceMetric}}">
+        </mat-form-field>
+    </div>
+
+    <div id="universe">
+        <!-- svg elements will be created programmatically -->
+    </div>
+</div>

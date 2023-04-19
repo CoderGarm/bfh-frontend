@@ -40,6 +40,7 @@
     "jquery": "^3.6.1",
     "marked": "^4.2.2",
     "ngx-auth": "^5.4.0",
+    "ngx-color-picker": "^14.0.0",
     "ngx-markdown": "^15.1.0",
     "ngx-permissions": "^8.1.1",
     "prismjs": "^1.29.0",

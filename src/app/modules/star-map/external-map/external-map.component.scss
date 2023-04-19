@@ -1,5 +1,10 @@
 @import "src/styles/variables";
 
+#external-map {
+  background-color: $background-color;
+  overflow: hidden;
+}
+
 .info-div {
   position: absolute;
   left: 50%;
@@ -31,11 +36,8 @@
 
 .star {
   opacity: 0.5;
-  filter: alpha(opacity=50);
-}
-
-.star-color {
   fill: yellow;
+  filter: alpha(opacity=50);
 }
 
 .roundCap {

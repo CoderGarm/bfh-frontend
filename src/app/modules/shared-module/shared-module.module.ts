@@ -31,6 +31,9 @@ import {VelocityPipe} from "../../services/pipes/velocity.pipe";
 import {TimePipe} from "../../services/pipes/time.pipe";
 import {MissileEndurancePipe} from "../../services/pipes/missile-endurance.pipe";
 import {MassPipe} from "../../services/pipes/mass.pipe";
+import {SafePipe} from "../../services/pipes/safe.pipe";
+import {ClipboardModule} from "@angular/cdk/clipboard";
+import {ColorPickerModule} from "ngx-color-picker";
 
 @NgModule({
     declarations: [
@@ -46,6 +49,7 @@ import {MassPipe} from "../../services/pipes/mass.pipe";
         TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
+        SafePipe,
         OutlinedComponent,
         ChipSelectorComponent,
         ResourceCounterComponent,
@@ -69,6 +73,8 @@ import {MassPipe} from "../../services/pipes/mass.pipe";
         MarkdownModule.forChild(),
         AngularMarkdownEditorModule,
         TranslateModule,
+        ClipboardModule,
+        ColorPickerModule,
     ],
     exports: [
         CommonModule,
@@ -92,6 +98,7 @@ import {MassPipe} from "../../services/pipes/mass.pipe";
         TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
+        SafePipe,
         OutlinedComponent,
         ChipSelectorComponent,
         MarkdownModule,
@@ -104,6 +111,8 @@ import {MassPipe} from "../../services/pipes/mass.pipe";
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,
+        ClipboardModule,
+        ColorPickerModule,
     ]
 })
 export class SharedModuleModule {

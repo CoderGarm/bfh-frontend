@@ -11,7 +11,7 @@
  */
 
 export interface Coords { 
-    x?: number;
-    y?: number;
-    name?: string;
+    x: number;
+    y: number;
+    name: string;
 }

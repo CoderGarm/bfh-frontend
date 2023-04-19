@@ -1,5 +1,9 @@
-<app-nav></app-nav>
-<mat-drawer-container id="main-drawer" autosize>
+<div *ngIf="isStandalone">
+    <router-outlet></router-outlet>
+</div>
+
+<app-nav [ngStyle]="{'display':( isStandalone ? 'none' : '')}"></app-nav>
+<mat-drawer-container id="main-drawer" autosize [ngStyle]="{'display':( isStandalone ? 'none' : '')}">
     <mat-drawer mode="side" #drawer [opened]="isLoggedIn" id="nav-drawer">
         <app-nested-sidenav [routes]="routes"
                             [hasUnread]="hasUnread"
@@ -12,7 +16,7 @@
         <app-home *ngIf="displayWelcome()"></app-home>
     </mat-drawer-content>
 </mat-drawer-container>
-<button id="toggle-nav" type="button" mat-button (click)="drawer.toggle()" *ngIf="isLoggedIn">
+<button id="toggle-nav" type="button" mat-button (click)="drawer.toggle()" *ngIf="isLoggedIn" [ngStyle]="{'display':( isStandalone ? 'none' : '')}">
     <mat-icon *ngIf="drawer.opened">switch_right</mat-icon>
     <mat-icon *ngIf="!drawer.opened">switch_left</mat-icon>
 </button>

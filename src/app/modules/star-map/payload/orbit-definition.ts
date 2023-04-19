@@ -19,11 +19,14 @@ export class OrbitDefinition {
 
     readonly isMain: boolean;
 
+    readonly color?: string;
+
     constructor(celestial: Planet | StarSystem,
                 isColonizedByLoggedInUser: boolean,
                 isColonizedByOtherUser: boolean,
                 isColonizable: boolean,
-                isMain: boolean) {
+                isMain: boolean,
+                color?: string) {
         this.celestial = celestial;
         this.name = celestial.name;
         this.orbit = celestial.orbit;
@@ -31,6 +34,19 @@ export class OrbitDefinition {
         this.isColonizedByOtherUser = isColonizedByOtherUser;
         this.isColonizable = isColonizable;
         this.isMain = isMain;
+        this.color = color;
+    }
+
+    public static getOrbitDefinitionsForExternalStarMap(center: StarSystem, systems: StarSystem[], colors: Map<number, string>): OrbitDefinition[] {
+        const od: OrbitDefinition[] = [];
+        systems.forEach(system => {
+            let isColonizedByLoggedInUser: boolean = false;
+            let isColonizedByOtherUser: boolean = false;
+            let isColonizable: boolean = false;
+            let isMain: boolean = system.name === center.name;
+            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isColonizable, isMain, colors.get(system.idStarSystem)));
+        });
+        return od;
     }
 
     public static getOrbitDefinitionsForStarSystem(userId: number, systems: StarSystem[]): OrbitDefinition[] {

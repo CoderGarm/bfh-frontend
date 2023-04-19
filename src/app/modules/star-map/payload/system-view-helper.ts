@@ -1,4 +1,4 @@
-import {Distance, FleetMarker, Orbit, Planet, StarSystem} from "../../../services/swagger";
+import {Distance, FleetMarker, StarSystem} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
 import {BasicViewHelper} from "../../../services/svg-view-helper/basic-view-helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
@@ -33,8 +33,6 @@ export class SystemViewHelper extends BasicViewHelper {
     }
 
     drawOrbits(system: StarSystem) {
-        let planetsByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
-        system.planets.forEach((planet) => planetsByOrbit.set(planet.orbit, planet));
         let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForPlanet(this.tokenStorage.getUserID(), system.planets);
 
         this.setOrbits(orbitDefinitions);
@@ -56,6 +54,7 @@ export class SystemViewHelper extends BasicViewHelper {
             .y(0)
             .id("star-of-" + system.idStarSystem)
             .addClass(BasicViewHelper.STAR_MARKER)
+            .addClass(BasicViewHelper.STAR_COLOR_MARKER)
             .addClass(BasicViewHelper.STAR_IN_SYSTEM_MARKER)
             .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
             .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);

@@ -22,11 +22,20 @@ import {PlanetTabViewComponent} from "../../modules/planets/components/orga/plan
 import {FleetTabViewComponent} from "../../modules/fleet/components/orga/fleet-tab-view/fleet-tab-view.component";
 import {FittingCreateComponent} from "../../modules/ship-class-construction/components/payload/fitting-create/fitting-create.component";
 import {ForgottenPasswordComponent} from "../../components/user/forgotten-password/forgotten-password.component";
+import {ExternalMapComponent} from "../../modules/star-map/external-map/external-map.component";
+import {ExternalMapManagerComponent} from "../../modules/star-map/external-map-manager/external-map-manager.component";
 
 
 export class NavigationCreationService {
 
     public static AFTER_LOGIN_ROUTE: string = JournalTabViewComponent.path;
+
+    static getExternalRoutes(): Route[] {
+        return [
+            {path: ExternalMapManagerComponent.path, component: ExternalMapManagerComponent},
+            {path: ExternalMapComponent.path, component: ExternalMapComponent}
+        ];
+    }
 
     static getLoginRoute(): Route {
         return {path: LoginComponent.path, component: LoginComponent};
@@ -84,11 +93,13 @@ export class NavigationCreationService {
     static createBurgerMenuRoutes(): Routes {
         return [
             {path: WikiMainComponent.path, component: WikiMainComponent},
+            {path: ExternalMapManagerComponent.path, component: ExternalMapManagerComponent}
         ];
     }
 
     static createAllRoutes(): Routes {
         const routes: Route[] = [];
+        routes.push(...NavigationCreationService.getExternalRoutes());
         routes.push(NavigationCreationService.getLoginRoute());
         routes.push(NavigationCreationService.getShipYardCreateRoute());
         routes.push(...NavigationCreationService.createBasicRoutes());

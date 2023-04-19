@@ -117,7 +117,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
     }
 
-    createCanvas(id: string, parentCssId: string): void {
+    createCanvas(id: string, parentCssId: string): Svg {
         if (!this.canvas) {
             this.canvas = SVG().id(id).addTo(parentCssId).panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
             this.canvas
@@ -127,6 +127,7 @@ export class BasicViewHelper extends BasicViewHelperData {
                 .click(this.clickEventForCelestial)
                 .click(this.clickEventForFleetGroup)
         }
+        return this.canvas;
     }
 
     private zoomModification = (ev: any) => {
@@ -369,6 +370,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             circle.radius(BasicViewHelper.PLANET_RADIUS);
         } else {
             circle.addClass(BasicViewHelperData.STAR_MARKER);
+            circle.addClass(BasicViewHelperData.STAR_COLOR_MARKER);
             circle.radius(BasicViewHelper.STAR_RADIUS);
         }
 
@@ -379,6 +381,16 @@ export class BasicViewHelper extends BasicViewHelperData {
         } else {
             circle.addClass(BasicViewHelper.NOT_COLONIZED_COLOR_CSS_CLASS);
         }
+
+        if (!!orbitDefinition.color) {
+            // if there is a color, we are at the external map, it's ugly, I know
+            circle.fill(orbitDefinition.color);
+            circle.removeClass(BasicViewHelperData.STAR_COLOR_MARKER);
+            circle.removeClass(BasicViewHelper.IS_COLONIZED_BY_USER_COLOR_CSS_CLASS);
+            circle.removeClass(BasicViewHelper.COLONIZED_BY_OTHERS_COLOR_CSS_CLASS);
+            circle.removeClass(BasicViewHelper.NOT_COLONIZED_COLOR_CSS_CLASS);
+        }
+
         this.setCelestialCircleById(celestialBodyID, circle);
         this.setCelestialOrbitById(celestialBodyID, orbit);
         this.setCelestialObjectById(orbitID, orbitDefinition.celestial);
@@ -764,7 +776,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         const group = mainGroup.group().id(idPrefix + "-" + BasicViewHelper.COORD_CROSS);
         let steps = 6;
         const radiusSteps = radius / steps;
-        for (let i = 0; i < steps; i++) {
+        for (let i = 1; i < steps; i++) {
             group.circle()
                 .x(xBase)
                 .y(yBase)

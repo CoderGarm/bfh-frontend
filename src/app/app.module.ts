@@ -62,6 +62,9 @@ import {VelocityPipe} from "./services/pipes/velocity.pipe";
 import {TimePipe} from "./services/pipes/time.pipe";
 import {MissileEndurancePipe} from "./services/pipes/missile-endurance.pipe";
 import {MassPipe} from "./services/pipes/mass.pipe";
+import {SafePipe} from "./services/pipes/safe.pipe";
+import {ClipboardModule} from "@angular/cdk/clipboard";
+import {ColorPickerModule} from "ngx-color-picker";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -129,6 +132,8 @@ export let AppInjector: Injector;
         AngularMarkdownEditorModule.forRoot(),
         WikiModule,
         TransportationModule,
+        ClipboardModule,
+        ColorPickerModule,
     ],
     providers: [
         NgxPermissionsModule,
@@ -152,6 +157,7 @@ export let AppInjector: Injector;
         TechLevelPipe,
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
+        SafePipe,
         MarkdownService,
         StarMapCommunicationService,
     ],
@@ -159,6 +165,7 @@ export let AppInjector: Injector;
         MarkdownModule,
         AngularMarkdownEditorModule,
         ConfirmDialogComponent,
+        ClipboardModule,
     ],
     bootstrap: [AppComponent]
 })

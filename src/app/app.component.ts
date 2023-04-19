@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Route, Router, Routes} from '@angular/router';
+import {NavigationStart, Route, Router, Routes} from '@angular/router';
 import {AuthenticationService} from './services/authentication';
 import {NavigationCreationService} from './services/navigation/navigation-creation.service';
 import {interval} from "rxjs";
@@ -45,6 +45,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         ChatComponent.path
     ];
 
+    isStandalone: boolean = false;
 
     constructor(private translate: TranslateService,
                 private router: Router,
@@ -64,6 +65,15 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         if (!!browserLang) {
             translate.use(browserLang);
         }
+
+        const path = NavigationCreationService.getExternalRoutes().map(r => r.path);
+        this.router.events.subscribe((routerData) => {
+            path.forEach(path => {
+                if (routerData instanceof NavigationStart && routerData.url.includes('/' + path)) {
+                    this.isStandalone = true;
+                }
+            });
+        });
 
         this.navService.getNavigationEmitter().subscribe(route => this.navigate(route));
 
