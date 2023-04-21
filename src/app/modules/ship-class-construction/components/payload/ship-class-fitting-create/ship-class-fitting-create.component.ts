@@ -299,7 +299,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     }
 
     updateWeaponSelection(loadout: WeaponsSelection) {
-        console.log("updateWeaponSelection", loadout)
         this.setWeaponModule(loadout);
         this.createAndEmitDesignedShipClass();
     }
@@ -449,10 +448,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             if (!!amount && amount > 0) {
                 let id: number = FittingHelper.getAmmunitionIdFromKey(key);
                 const missile = this.missiles.filter(m => m.baseModule.idModule === id)[0];
-                if (!missile) {
-                    console.log("missile missing", key, id)
-                    console.log(this.missiles)
-                }
                 ammo.push({
                     amount: amount,
                     missile: missile
@@ -474,10 +469,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     setAmmunitionModule(missile?: Missile, amount?: number) {
         if (!!missile && !!amount) {
             let id: string = FittingHelper.getAmmunitionMapKey(missile);
-            console.log(id, amount)
-            if (amount > 444) {
-                throw new Error("to big too fail");
-            }
             this.ammoSelection.set(id, amount);
             this.createAndEmitDesignedShipClass();
         }
@@ -492,8 +483,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         if (!amount) {
             amount = 0;
         }
-        console.log("getMissileAmount", amount)
-        console.log("getMissileAmount", this.ammoSelection)
         return amount;
     }
 

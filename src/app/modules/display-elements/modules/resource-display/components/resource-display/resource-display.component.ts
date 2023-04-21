@@ -35,6 +35,13 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     @Input()
     showTick: boolean = true;
 
+    // @formatter:off
+    @Input()
+    get onlyResources() { return this._onlyResources; }
+    set onlyResources(value: any) { this._onlyResources = this.coerceBooleanProperty(value); }
+    _onlyResources: boolean = false;
+    // @formatter:on
+
     resourceTypes: EResourceType[];
     educationTypes: EEducationType[];
 
@@ -107,6 +114,9 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     ngAfterViewInit(): void {
     }
 
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
+    }
 
     getTooltip(type: EDepositType, resourceType: EResourceType) {
         let key = 'resource-overlay.' + type.typeName.toLowerCase() + "." + resourceType.typeName.toLowerCase();

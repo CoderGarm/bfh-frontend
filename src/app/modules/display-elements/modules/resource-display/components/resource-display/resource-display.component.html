@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let resource of getBase()!.resources" class="box">
+        <div *ngFor="let resource of getBase()!.resources" class="box" [ngStyle]="{'display':( (_onlyResources && resource.resourceType.typeName == 'POPULATION') ? 'none' : '')}">
             <div class="res-wrapper">
                 <div class="img-container info-holder">
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.singularName}}" matTooltip="{{resource.resourceType.typeName}}">
@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let resource of getBase()!.humanResources" class="box">
+        <div *ngFor="let resource of getBase()!.humanResources" class="box" [ngStyle]="{'display':( _onlyResources ? 'none' : '')}">
             <div class="res-wrapper">
                 <div class="img-container">
                     <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">

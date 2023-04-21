@@ -1,6 +1,6 @@
 import {Pipe, PipeTransform} from "@angular/core";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
-import {Distance, Mass} from "../swagger";
+import {Mass} from "../swagger";
 import {NumberThousandSeparatorPipe} from "./number-thousand-separator.pipe";
 import MassMetricEnum = Mass.MassMetricEnum;
 
@@ -16,6 +16,6 @@ export class MassPipe implements PipeTransform {
         }
         const metric: MassMetricEnum = targetMassMetric as keyof typeof MassMetricEnum;
         const result = NavigationCalculator.convertMassToMetric(value, metric);
-        return this.numberShort.transform(result) + ' ' + metric.toLowerCase();
+        return this.numberShort.transform(Math.round(result)) + ' ' + metric.toLowerCase();
     }
 }

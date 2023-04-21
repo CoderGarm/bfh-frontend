@@ -34,7 +34,8 @@
                         [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentEmitter"
                         [shipClass]="shipClass"></app-ship-class-svg>
 
-    <app-resource-display [deposit]="resourceDeposit"
+    <app-resource-display onlyResources [showTick]="false"
+                          [deposit]="resourceDeposit"
                           [costs]="costs"></app-resource-display>
 
     <app-military-people [utilization]="costs"></app-military-people>

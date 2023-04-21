@@ -57,7 +57,6 @@ export class InterstellarViewHelper extends BasicViewHelper {
             const x = this.convertToStandardMetric({coordinate: coord.x, distanceMetric: EDistanceMetricsEnum.LY});
             const y = this.convertToStandardMetric({coordinate: coord.y, distanceMetric: EDistanceMetricsEnum.LY});
             const radius = this.convertToStandardMetric({coordinate: rg.radius, distanceMetric: EDistanceMetricsEnum.LY});
-            console.log(radius)
             const circle = mainGroup.circle()
                 .x(x)
                 .y(y)

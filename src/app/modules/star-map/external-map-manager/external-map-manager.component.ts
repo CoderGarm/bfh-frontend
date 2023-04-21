@@ -173,8 +173,6 @@ export class ExternalMapManagerComponent extends SubscriptionManager implements 
             return;
         }
         let radialGroup = JSON.stringify(this.radialGroups);
-        console.log(radialGroup)
-        console.log(this.radialGroups)
         this.url = this.basePath + '/external-star-map?radialGroup=' + encodeURIComponent(radialGroup);
         this.iFrameTxt = '<iframe width="900px" height="600px" [src]="' + this.url + '"></iframe>';
     }

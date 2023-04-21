@@ -26,7 +26,8 @@
     <app-ship-class-svg svgSelector="ship-class-fitting-selection"
                         [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"></app-ship-class-svg>
 
-    <app-resource-display [deposit]="resourceDeposit"
+    <app-resource-display onlyResources [showTick]="false"
+                          [deposit]="resourceDeposit"
                           [costs]="costs"></app-resource-display>
 
     <div class="middle">
