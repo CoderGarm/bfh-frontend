@@ -24,6 +24,7 @@ import {FittingCreateComponent} from "../../modules/ship-class-construction/comp
 import {ForgottenPasswordComponent} from "../../components/user/forgotten-password/forgotten-password.component";
 import {ExternalMapComponent} from "../../modules/star-map/external-map/external-map.component";
 import {ExternalMapManagerComponent} from "../../modules/star-map/external-map-manager/external-map-manager.component";
+import {PlayerPointsListComponent} from "../../modules/user-points/player-points-list/player-points-list.component";
 
 
 export class NavigationCreationService {
@@ -60,6 +61,7 @@ export class NavigationCreationService {
 
     static createSidenavRoutes(): Routes {
         return [
+            {path: PlayerPointsListComponent.path, component: PlayerPointsListComponent, canActivate: [ProtectedGuard]},
             {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
             {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},

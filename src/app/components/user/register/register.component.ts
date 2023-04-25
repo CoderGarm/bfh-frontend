@@ -32,6 +32,7 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
                 private spinnerService: SpinnerService,
                 public translate: TranslateService) {
         super();
+        let utcDate = new Date().getMilliseconds();
         this.registerForm = new UntypedFormGroup({
             login: new UntypedFormControl('', Validators.required),
             pass: new UntypedFormControl('', [Validators.required]),
@@ -39,6 +40,12 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
             email: new UntypedFormControl('', Validators.email),
             noEMailWanted: new UntypedFormControl(false)
         });
+        if (this.tokenService.isLocalhost()) {
+            this.registerForm.controls.login.setValue(utcDate);
+            this.registerForm.controls.pass.setValue('12457aA!');
+            this.registerForm.controls.passRepeat.setValue('12457aA!');
+            this.registerForm.controls.email.setValue(utcDate + '@' + utcDate);
+        }
 
         // just make sure that the key exists
         this.translate.get('register.spinner-message');

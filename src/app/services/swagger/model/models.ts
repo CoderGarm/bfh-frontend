@@ -103,6 +103,7 @@ export * from './time';
 export * from './translation';
 export * from './transportJob';
 export * from './userJson';
+export * from './userPoints';
 export * from './userReq';
 export * from './validationResult';
 export * from './velocity';

@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (keyup.enter)="submitLogin()">
     <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
             <h2>Login</h2>
@@ -6,15 +6,15 @@
         <mat-grid-tile>
             <mat-form-field appearance="outline">
                 <mat-label>Login</mat-label>
-                <input matInput type='text' formControlName='login' required autocomplete="off">
+                <input matInput type='text' formControlName='login' required>
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput placeholder="Passwort" [type]="hide ? 'password' : 'text'" formControlName="pass" min="0" required autocomplete="off">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <input matInput placeholder="Passwort" [type]="hide ? 'password' : 'text'" formControlName="pass" min="0" required>
+                <button mat-icon-button matSuffix (click)="toggleHide($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
                 <mat-hint>
@@ -24,7 +24,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile>
-            <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitLogin()" [disabled]="!loginForm.valid && isAuthenticated">Submit</button>
+            <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitLogin()">Submit</button>
             <button mat-raised-button class="action-button" color="secondary" (click)="clear()" [disabled]="isAuthenticated">Clear</button>
         </mat-grid-tile>
 

@@ -65,6 +65,7 @@ import {MassPipe} from "./services/pipes/mass.pipe";
 import {SafePipe} from "./services/pipes/safe.pipe";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {ColorPickerModule} from "ngx-color-picker";
+import {PlayerModule} from "./modules/user-points/player.module";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -126,6 +127,7 @@ export let AppInjector: Injector;
         AdminModule,
         ForumModule,
         AllianceModule,
+        PlayerModule,
         MarkdownModule.forRoot({
             sanitize: SecurityContext.URL
         }),

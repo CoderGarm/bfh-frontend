@@ -1,0 +1,50 @@
+<div class="content-area">
+
+    <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Name" #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 demo-table">
+
+        <ng-container matColumnDef="rank">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Rank</th>
+            <td mat-cell *matCellDef="let element;">{{element.rank}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let element">{{element.user.username}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="overallPoints">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+            <td mat-cell *matCellDef="let element">{{element.points.overallPoints}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="planetaryPoints">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Planetary</th>
+            <td mat-cell *matCellDef="let element">{{element.points.planetaryPoints}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fleetPoints">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fleet</th>
+            <td mat-cell *matCellDef="let element">{{element.points.fleetPoints}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="researchPoints">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Research</th>
+            <td mat-cell *matCellDef="let element">{{element.points.researchPoints}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="6">No data matching the filter "{{input.value}}"</td>
+        </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>

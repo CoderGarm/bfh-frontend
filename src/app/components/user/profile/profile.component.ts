@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
+import {UserApiService} from "../../../services/swagger";
 
 @Component({
     selector: 'app-profile',
@@ -12,7 +13,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit {
 
     role?: string;
 
-    constructor() {
+    constructor(private userService: UserApiService) {
         super();
 
     }

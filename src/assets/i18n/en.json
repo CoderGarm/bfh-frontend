@@ -227,6 +227,7 @@
       "register": "Register"
     },
     "menu": {
+      "player": "Empires",
       "admin": "Admin Area",
       "alliance": "Alliance",
       "chat": "Chat",

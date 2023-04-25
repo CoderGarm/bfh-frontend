@@ -35,6 +35,9 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
     }
 
     submitLogin() {
+        if (this.isSubmitDisabled()) {
+            return;
+        }
         const login: AuthRequest = {
             username: this.loginForm.controls.login.value,
             password: this.loginForm.controls.pass.value,
@@ -51,11 +54,20 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
         this.subscriptions.push(sub);
     }
 
+    isSubmitDisabled() {
+        return !this.loginForm.valid || this.isAuthenticated;
+    }
 
     clear() {
         this.authService.clear();
         this.permissionsService.flushPermissions();
         this.loginForm.controls.login.setValue('');
         this.loginForm.controls.pass.setValue('');
+    }
+
+    toggleHide(event: MouseEvent) {
+        if (event.detail > 0) { // ignoring click event from submit type button
+            this.hide = !this.hide;
+        }
     }
 }

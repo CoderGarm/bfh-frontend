@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
 import { UserJson } from '../model/userJson';
+import { UserPoints } from '../model/userPoints';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -210,6 +211,48 @@ export class UserApiService {
         ];
 
         return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/user/byNameLike/${encodeURIComponent(String(username))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of users
+     * Get the list of users registered in the system
+     * @param idUser 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getUsersPoints(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<UserPoints>;
+    public getUsersPoints(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserPoints>>;
+    public getUsersPoints(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserPoints>>;
+    public getUsersPoints(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getUsersPoints.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<UserPoints>('get',`${this.basePath}/api/private/user/points/${encodeURIComponent(String(idUser))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
