@@ -1,4 +1,9 @@
-<p>I am Groot.</p>
-<p>But in {{role}}.</p>
+<div class="content-area">
+    <p>I am Groot.</p>
+    <p>But in {{role}}.</p>
 
-
+    <section [formGroup]="formGroup">
+        <h4>Select your toppings:</h4>
+        <mat-checkbox formControlName="receiveChangelogInfos">I want to receive mails about a new release.</mat-checkbox>
+    </section>
+</div>

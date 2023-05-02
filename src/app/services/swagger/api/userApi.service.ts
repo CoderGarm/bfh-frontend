@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { FrontendError } from '../model/frontendError';
 import { UserJson } from '../model/userJson';
 import { UserPoints } from '../model/userPoints';
+import { UserSettings } from '../model/userSettings';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -57,6 +58,51 @@ export class UserApiService {
         return false;
     }
 
+
+    /**
+     * Changes settings for the user.
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changeSettings(body?: UserSettings, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public changeSettings(body?: UserSettings, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public changeSettings(body?: UserSettings, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public changeSettings(body?: UserSettings, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/user/settings`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * Deletes a single user

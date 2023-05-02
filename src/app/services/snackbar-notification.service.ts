@@ -10,6 +10,10 @@ export class SnackbarNotificationService {
     constructor(public snackBar: MatSnackBar, private zone: NgZone) {
     }
 
+    public short(message: string) {
+        this.open(message, 'copy that', 500);
+    }
+
     public open(message: string, action: string = 'copy that', duration: number = 5000) {
         this.zone.run(() => {
             this.snackBar.open(message, action, {

@@ -105,6 +105,7 @@ export * from './transportJob';
 export * from './userJson';
 export * from './userPoints';
 export * from './userReq';
+export * from './userSettings';
 export * from './validationResult';
 export * from './velocity';
 export * from './warShip';
