@@ -194,6 +194,48 @@ export class ForumApiService {
     }
 
     /**
+     * Creates a chat message
+     * Creates a chat message
+     * @param idForumThread 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public distributeRelease(idForumThread: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public distributeRelease(idForumThread: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public distributeRelease(idForumThread: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public distributeRelease(idForumThread: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idForumThread === null || idForumThread === undefined) {
+            throw new Error('Required parameter idForumThread was null or undefined when calling distributeRelease.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/distributeRelease/${encodeURIComponent(String(idForumThread))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get a list of forums which the given user is allowed to access.
      * 
      * @param body 

@@ -183,6 +183,43 @@ export class UserApiService {
     }
 
     /**
+     * Changes settings for the user.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSettings(observe?: 'body', reportProgress?: boolean): Observable<UserSettings>;
+    public getSettings(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSettings>>;
+    public getSettings(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSettings>>;
+    public getSettings(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<UserSettings>('get',`${this.basePath}/api/private/user/settings`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get a single user by it&#x27;s idUser
      * Returns a user which is  registered in the system
      * @param idUser 

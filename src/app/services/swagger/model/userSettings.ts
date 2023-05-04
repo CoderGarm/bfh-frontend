@@ -18,4 +18,16 @@ export interface UserSettings {
      * If the user want to receive infos about a new released version via mail.
      */
     receiveChangelogInfos: boolean;
+    /**
+     * If the user must not log in.
+     */
+    loginForbidden: boolean;
+    /**
+     * If the user has verified the mail address.
+     */
+    eMailVerified: boolean;
+    /**
+     * If the user does not want receive any mail.
+     */
+    noEMailWanted: boolean;
 }

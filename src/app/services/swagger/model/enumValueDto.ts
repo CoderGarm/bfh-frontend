@@ -37,6 +37,7 @@ export interface EnumValueDto {
     eHyperBands?: Array<EnumValueDto.EHyperBandsEnum>;
     eMassMetrics?: Array<EnumValueDto.EMassMetricsEnum>;
     eTimeMetrics?: Array<EnumValueDto.ETimeMetricsEnum>;
+    eWebUserRoles?: Array<EnumValueDto.EWebUserRolesEnum>;
 }
 export namespace EnumValueDto {
     export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
@@ -238,5 +239,10 @@ export namespace EnumValueDto {
         WEEK: 'WEEK' as ETimeMetricsEnum,
         MONTH: 'MONTH' as ETimeMetricsEnum,
         YEAR: 'YEAR' as ETimeMetricsEnum
+    };
+    export type EWebUserRolesEnum = 'USER' | 'ADMIN';
+    export const EWebUserRolesEnum = {
+        USER: 'USER' as EWebUserRolesEnum,
+        ADMIN: 'ADMIN' as EWebUserRolesEnum
     };
 }

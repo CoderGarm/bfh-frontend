@@ -1,9 +1,11 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {CreateForumThreadMessage, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
+import {CreateForumThreadMessage, EnumValueDto, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {tap} from "rxjs/operators";
 import {MarkdownService} from "ngx-markdown";
+import {DatePipe} from "@angular/common";
+import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
 
 
 @Component({
@@ -31,15 +33,31 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     pageSize: number = 15;
     messageAmountInThread: number = 0;
 
+    isAdmin: boolean = false;
+    noSendAllowed: boolean = false;
+
+    now: string;
+
     constructor(private markdownService: MarkdownService,
+                private datePipe: DatePipe,
+                private notif: SnackbarNotificationService,
                 private forumApi: ForumApiService) {
         super();
+
+        this.isAdmin = this.tokenStorage.getRole() === EnumValueDto.EWebUserRolesEnum.ADMIN;
+        this.now = this.datePipe.transform(new Date(), 'dd.MM.yyyy HH:mm')!;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedForumThreadDefinition]) {
             this.selectThread(this.selectedForumThread);
         }
+    }
+
+    showSendButton(message: ForumMessage) {
+        const timeframe = this.datePipe.transform(new Date(Date.parse(message.sentAt + '') + (1000 * 60 * 60)), 'dd.MM.yyyy HH:mm')!;
+        const indexOf = this.messagesInThread?.indexOf(message);
+        return message.idForum == 1 && indexOf == 0 && this.isAdmin && this.now < timeframe;
     }
 
     ngAfterViewInit(): void {
@@ -110,5 +128,13 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             this.forumApi.markForumMessageRead(msg.idForum, msg.idForumThread, msg.idForumMessage).subscribe(() => {
             })
         );
+    }
+
+    sendAsMail(message: ForumMessage) {
+        this.noSendAllowed = true;
+        let sub = this.forumApi.distributeRelease(message.idForumThread).subscribe(() => {
+            this.notif.open("Mail sent to all receivers.");
+        });
+        this.subscriptions.push(sub);
     }
 }

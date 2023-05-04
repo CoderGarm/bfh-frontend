@@ -17,6 +17,9 @@ export class ProfileComponent extends SubscriptionManager implements OnInit {
 
     formGroup: FormGroup;
 
+    private disabled: boolean = true;
+    noEMailConfigPossible: boolean = true;
+
     constructor(private formBuilder: FormBuilder,
                 private notif: SnackbarNotificationService,
                 private userService: UserApiService) {
@@ -24,17 +27,41 @@ export class ProfileComponent extends SubscriptionManager implements OnInit {
 
         this.formGroup = this.formBuilder.group({
             receiveChangelogInfos: false,
+            eMailVerified: false,
+            noEMailWanted: false,
         });
+        this.formGroup.controls.eMailVerified.disable({onlySelf: true});
+        this.formGroup.controls.noEMailWanted.disable({onlySelf: true});
+
         this.formGroup.valueChanges.subscribe(val => {
-            const userSettings = <UserSettings>val;
-            let sub = this.userService.changeSettings(userSettings).subscribe(() => {
-                this.notif.short('saved');
-            });
-            this.subscriptions.push(sub);
+            if (!this.disabled) {
+                const userSettings = <UserSettings>val;
+                let sub = this.userService.changeSettings(userSettings).subscribe(() => {
+                    this.notif.short('saved');
+                });
+                this.subscriptions.push(sub);
+            }
         });
     }
 
     ngOnInit(): void {
         this.role = this.tokenStorage.getRole();
+        let sub = this.userService.getSettings().subscribe(resp => {
+            const eMailVerified = resp.eMailVerified;
+            const noEMailWanted = resp.noEMailWanted;
+            this.noEMailConfigPossible = !eMailVerified && noEMailWanted;
+            console.log(this.noEMailConfigPossible, !eMailVerified, noEMailWanted);
+
+            this.formGroup.controls.receiveChangelogInfos.setValue(resp.receiveChangelogInfos);
+            if (this.noEMailConfigPossible) {
+                this.formGroup.controls.receiveChangelogInfos.disable({onlySelf: true});
+            } else {
+                this.formGroup.controls.receiveChangelogInfos.enable();
+            }
+            this.formGroup.controls.eMailVerified.setValue(eMailVerified);
+            this.formGroup.controls.noEMailWanted.setValue(noEMailWanted);
+            this.disabled = false;
+        });
+        this.subscriptions.push(sub);
     }
 }
