@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CoordsBlob } from '../model/coordsBlob';
+import { DistanceElement } from '../model/distanceElement';
 import { FrontendError } from '../model/frontendError';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -56,6 +57,43 @@ export class PublicResourcesApiService {
         return false;
     }
 
+
+    /**
+     * Get the known distances.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllDistances(observe?: 'body', reportProgress?: boolean): Observable<Array<DistanceElement>>;
+    public getAllDistances(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<DistanceElement>>>;
+    public getAllDistances(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<DistanceElement>>>;
+    public getAllDistances(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<DistanceElement>>('get',`${this.basePath}/api/public/resources/distances`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * Get star systems by coordinates.

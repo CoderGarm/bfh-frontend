@@ -62,13 +62,14 @@ export class ExternalMapManagerComponent extends SubscriptionManager implements 
     url: string = '';
 
     iFrameTxt: string = '';
-    private readonly basePath: string;
+    readonly basePath: string;
+    readonly frontendPath: string;
 
     color: string = '#5e8c6a';
 
     colorGroups: ColorGroup[] = [];
 
-    constructor(private starMapService: PublicResourcesApiService) {
+    constructor(private publicResourcesService: PublicResourcesApiService) {
         super();
         this.filtered = this.highlightFormControl.valueChanges.pipe(
             startWith(null),
@@ -83,11 +84,11 @@ export class ExternalMapManagerComponent extends SubscriptionManager implements 
             map((c: string | null) => (c ? this._filter(c) : this.coords.slice()))
         );
         this.basePath = environment.backendServer;
-        this.basePath = this.basePath.replace('8080', '4200');
+        this.frontendPath = this.basePath.replace('8080', '4200');
     }
 
     ngAfterViewInit(): void {
-        let sub = this.starMapService.getAllSystemCoordinates().subscribe(resp => {
+        let sub = this.publicResourcesService.getAllSystemCoordinates().subscribe(resp => {
             this.allCoords = resp;
             this.centerCoord = resp.filter(sys => sys.name === 'Sol')[0];
         });
@@ -163,7 +164,7 @@ export class ExternalMapManagerComponent extends SubscriptionManager implements 
             if (key !== "coords")
                 return val;
         });
-        this.url = this.basePath + '/external-star-map?highlight=' + encodeURIComponent(highlight) + '&center=' + encodeURIComponent(center);
+        this.url = this.frontendPath + '/external-star-map?highlight=' + encodeURIComponent(highlight) + '&center=' + encodeURIComponent(center);
         this.iFrameTxt = '<iframe width="900px" height="600px" [src]="' + this.url + '"></iframe>';
     }
 
@@ -173,7 +174,7 @@ export class ExternalMapManagerComponent extends SubscriptionManager implements 
             return;
         }
         let radialGroup = JSON.stringify(this.radialGroups);
-        this.url = this.basePath + '/external-star-map?radialGroup=' + encodeURIComponent(radialGroup);
+        this.url = this.frontendPath + '/external-star-map?radialGroup=' + encodeURIComponent(radialGroup);
         this.iFrameTxt = '<iframe width="900px" height="600px" [src]="' + this.url + '"></iframe>';
     }
 
