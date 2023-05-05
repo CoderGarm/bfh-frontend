@@ -235,6 +235,7 @@
                                 <span matListItemLine>Attack type: {{ missile.warhead.warheadType }}</span>
                                 <span matListItemLine>Attack range: {{ missile.warhead.damageProjectionRange | distance: 'KM' }}</span>
                                 <span matListItemLine>Used by: {{getAmountOfLaunchersFor(missile, shipClassMock)}}  {{ 'shipyard.fitting.weapon-for.weaponType.MISSILE' | translate }}</span>
+                                <span matListItemLine>Tonnage: {{ getMissileTonnage(missile) | mass: 'T' }}</span>
                             </mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>

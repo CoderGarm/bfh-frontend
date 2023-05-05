@@ -8,6 +8,7 @@ import {
     EnumValueDto,
     EShipClassType,
     Launcher,
+    Mass,
     Missile,
     PassiveModule,
     Propulsion,
@@ -617,5 +618,10 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             });
         });
         return counter;
+    }
+
+    getMissileTonnage(missile: Missile): Mass {
+        const missileAmount = this.getMissileAmount(missile);
+        return {coordinate: missile.baseModule.tonnage!.coordinate * missileAmount, massMetric: missile.baseModule.tonnage!.massMetric};
     }
 }
