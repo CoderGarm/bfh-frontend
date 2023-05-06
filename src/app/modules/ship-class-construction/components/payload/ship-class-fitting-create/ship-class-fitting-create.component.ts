@@ -125,7 +125,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
 
     technologyTypes: TechnologyTypeEnum[] = [TechnologyTypeEnum.CIVIL, TechnologyTypeEnum.MILITARY];
     selectedTechnologyType: TechnologyTypeEnum = TechnologyTypeEnum.CIVIL;
-    allHyperBands: HyperBandEnum[] = [HyperBandEnum.NONE, HyperBandEnum.ALPHA, HyperBandEnum.BETA, HyperBandEnum.GAMMA, HyperBandEnum.DELTA];
     selectedHyperband: HyperBandEnum = HyperBandEnum.NONE;
     hyperBands: HyperBandEnum[] = [];
 
@@ -269,15 +268,19 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     }
 
     private addOrRemovePropulsion(module: Propulsion) {
-        if (this.propulsionMatchesConditions(module)) {
+        if (this.propulsionMatchesConditions(module, false)) {
             this.addIfNotPresent(this.filteredPropulsions, module);
         } else {
             this.removeIfPresent(this.filteredPropulsions, module);
         }
     }
 
-    private propulsionMatchesConditions(module: Propulsion) {
-        return module.technologyType === this.selectedTechnologyType && module.hyperBand === this.selectedHyperband;
+    private propulsionMatchesConditions(module: Propulsion, bothConditionsWorking: boolean = true) {
+        if (bothConditionsWorking) {
+            return module.technologyType === this.selectedTechnologyType && module.hyperBand === this.selectedHyperband;
+        } else {
+            return module.technologyType === this.selectedTechnologyType;
+        }
     }
 
     private addIfNotPresent<MODULE>(elements: MODULE[], module: MODULE) {
@@ -536,21 +539,17 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     selectTechnologyType(type: TechnologyTypeEnum) {
         this.selectedTechnologyType = type;
         this.filterDisplayedItems();
-        this.selectPropulsion();
     }
 
     selectHyperband(type: HyperBandEnum) {
         this.selectedHyperband = type;
-        this.filterDisplayedItems();
         this.selectPropulsion();
     }
 
     private selectPropulsion() {
-        if (this.filteredPropulsions.length == 1) {
-            this.propulsionSelection = this.filteredPropulsions[0];
-            this.change.detectChanges();
-            this.createAndEmitDesignedShipClass();
-        }
+        this.propulsionSelection = this.filteredPropulsions.filter(p => this.propulsionMatchesConditions(p))[0];
+        this.change.detectChanges();
+        this.createAndEmitDesignedShipClass();
     }
 
     chooseWeapon(weapon?: Weapon | Launcher) {

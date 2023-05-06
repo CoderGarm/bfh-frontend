@@ -28,10 +28,11 @@ export class ShipClassValidator {
             return false;
         }
 
-        let content: number = !!shipClass.shipClassType ? 1 : 0;
+        let content: number = 0;
         content += shipClass.fittings.length > 0 ? 1 : 0;
         content += shipClass.ammunitionFittings.length > 0 ? 1 : 0;
         content += shipClass.supportFittings.length > 0 ? 1 : 0;
+        content += !!shipClass.propulsion ? 1 : 0;
         content += !!shipClass.armor ? 1 : 0;
         content += !!shipClass.electronicWarfare ? 1 : 0;
         content += !!shipClass.sidewall ? 1 : 0;

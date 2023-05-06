@@ -30,10 +30,13 @@
             </div>
 
             <mat-selection-list [multiple]="false">
-                <mat-list-option *ngFor="let type of hyperBands"
-                                 (selectedChange)="selectHyperband(type)"
-                                 [selected]="type === selectedHyperband">
-                    <div class="capitalize">{{ type }}</div>
+                <mat-list-option *ngFor="let type of filteredPropulsions"
+                                 (selectedChange)="selectHyperband(type.hyperBand)"
+                                 [selected]="type.hyperBand === selectedHyperband && type.technologyType === selectedTechnologyType">
+                    <div class="flex-items-container">
+                        <div class="capitalize">{{ type.technologyType }}</div>
+                        <div class="capitalize">{{ type.hyperBand }}</div>
+                    </div>
                 </mat-list-option>
             </mat-selection-list>
 
