@@ -15,7 +15,7 @@
         </mat-card-content>
         <mat-card-actions *ngIf="message.idAuthor == userId">
             <button mat-button (click)="msgToEdit = message">Edit</button>
-            <button mat-button (click)="sendAsMail(message)" *ngIf="showSendButton(message)" [disabled]="noSendAllowed">Send via eMail</button>
+            <button mat-button (click)="sendAsMail(message)" *ngIf="showSendButton(message)" [disabled]="noSendAllowed">USE CAREFULLY: Send via eMail</button>
         </mat-card-actions>
     </mat-card>
     <mat-paginator #paginatorBottom

@@ -4,6 +4,8 @@ import {Route, Router, Routes} from '@angular/router';
 import {AdminApiService, ApplicationInfo, JWT, Tick, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../subscription.manager";
 import {NavigationCreationService} from "../../services/navigation/navigation-creation.service";
+import {SnackbarNotificationService} from "../../services/snackbar-notification.service";
+import {DatePipe} from "@angular/common";
 import RoleEnum = JWT.RoleEnum;
 
 
@@ -26,7 +28,9 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     activeRoute?: Route;
 
     constructor(private router: Router,
+                private datePipe: DatePipe,
                 private authenticationService: AuthenticationService,
+                private notif: SnackbarNotificationService,
                 private tickApi: TickApiService,
                 private adminApi: AdminApiService) {
         super();
@@ -60,6 +64,20 @@ export class NavComponent extends SubscriptionManager implements OnInit {
             }
         });
         this.subscriptions.push(sub);
+
+        this.showSeasonBadge();
+    }
+
+    showSeasonBadge() {
+        const date = new Date();
+        date.setDate(1);
+        date.setMonth(5);
+        date.setFullYear(2023)
+        const timeframe = this.datePipe.transform(date, 'MM/dd/yyyy')!;
+        const now = this.datePipe.transform(new Date(), 'MM/dd/yyyy')!;
+        if (now < timeframe) {
+            this.notif.open('Season 2 has launched!', 'Ok', 20000);
+        }
     }
 
     logout() {
