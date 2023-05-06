@@ -36,8 +36,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
     compareClass?: ShipClass;
 
     ngAfterViewInit(): void {
-        this.fetchBaseData();
-        this.change.detectChanges();
+        this.change.detectChanges(); // todo remove change-ref completely
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -187,6 +186,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
         };
 
         this.designedShipClass = output;
+        this.fetchPropulsionCapacity(this.designedShipClass);
         this.shipClassEmitter.emit(output);
     }
 

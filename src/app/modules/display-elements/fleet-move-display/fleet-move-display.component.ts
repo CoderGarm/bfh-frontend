@@ -22,8 +22,19 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
     destinationRepresentation: string = "";
     orbitRepresentation?: string;
 
+    // @formatter:off
+    @Input()
+    get preSelect() { return this._preSelect; }
+    set preSelect(value: any) { this._preSelect = this.coerceBooleanProperty(value); }
+    _preSelect: boolean = false;
+    // @formatter:on
+
     constructor(private planetApi: PlanetApiService) {
         super();
+    }
+
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
     }
 
     ngAfterViewInit(): void {
@@ -90,7 +101,8 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
                 destination += this.fleet.move.targetOrbit.system.name;
             }
             if (!!this.fleet.move) {
-                destination += ', ' + this.fleet.move.moveDoneAtZero + ' ticks';
+                const ticksLeft = this.fleet.move.moveDoneAtZero;
+                destination += ', ' + ticksLeft + ' tick' + (ticksLeft > 1 ? 's' : '') + ' left';
             }
         }
         this.destinationRepresentation = destination;

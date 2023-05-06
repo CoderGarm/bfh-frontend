@@ -61,12 +61,10 @@
                      src="{{getLink(construction)}}"
                      [ngClass]="getInvisibility(construction)"
                      alt="construction">
-                {{construction.building.name}}
+                {{construction.building.name}} ({{ construction.operationalLevel }} / {{ construction.level }})
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(construction)">
-                <div matBadge="{{construction.operationalLevel}}" matBadgePosition="above after">
-                    {{construction.building.description}}
-                </div>
+                {{construction.building.description}}
             </mat-panel-description>
         </mat-expansion-panel-header>
         <app-construction-display

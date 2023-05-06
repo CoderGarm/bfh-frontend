@@ -3,6 +3,7 @@ import {EnumValueDto, ResourceDeposit, ResourcesApiService, ShipClass} from "../
 import {ShipClassComparator} from "../ship-class.comparator";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {TypeService} from "../../../../../services/type.service";
+import {ShipyardEventService} from "../../../shipyard-event.service";
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
@@ -56,12 +57,17 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
     weaponAlignmentTypes: EWeaponAlignmentEnum[];
 
     constructor(private resourceApi: ResourcesApiService,
+                private shipyardService: ShipyardEventService,
                 private typeService: TypeService) {
         super();
 
         this.alignmentAreas = this.typeService.alignmentAreas;
         this.weaponTypes = this.typeService.weaponTypes;
         this.weaponAlignmentTypes = this.typeService.weaponAlignmentTypes;
+        let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => {
+            this.shipClass = shipClass;
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {

@@ -1,12 +1,10 @@
-<mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)" (selectedIndexChange)="indexChanged($event)" animationDuration="500ms" class="bottom-spacer">
-    <mat-tab label="{{ 'tab.shipyard.fitting.view' | translate }}" [disabled]="!selectedShipClass">
+<mat-tab-group (selectedTabChange)="emitTabSelectedIndex($event)" (selectedIndexChange)="indexChanged()" animationDuration="500ms" class="bottom-spacer">
+    <mat-tab label="{{ 'tab.shipyard.fitting.view' | translate }}">
         <app-fitting-display [selectedIndexInput]="selectionEmitter"
-                             [resourceDeposit]="resourceDeposit"
-                             [shipClass]="selectedShipClass"></app-fitting-display>
+                             [resourceDeposit]="resourceDeposit"></app-fitting-display>
     </mat-tab>
     <mat-tab label="{{ 'tab.shipyard.fitting.modify' | translate }}">
         <app-fitting-modify [selectedIndexInput]="selectionEmitter"
-                            [resourceDeposit]="resourceDeposit"
-                            [shipClass]="selectedShipClass"></app-fitting-modify>
+                            [resourceDeposit]="resourceDeposit"></app-fitting-modify>
     </mat-tab>
 </mat-tab-group>

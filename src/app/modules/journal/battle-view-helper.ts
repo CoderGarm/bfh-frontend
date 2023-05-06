@@ -20,6 +20,7 @@ import {OrbitDefinition} from "../star-map/payload/orbit-definition";
 import {BasicViewHelper} from "../../services/svg-view-helper/basic-view-helper";
 import {NavigationCalculator} from "../../services/helper/navigation-calculator.helper";
 import {CombatArenaData} from "./combat-arena-data";
+import {BasicViewHelperData} from "../../services/svg-view-helper/basic-view-helper-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
@@ -614,6 +615,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 .y(0)
                 .id("star-of-" + system.idStarSystem)
                 .addClass(BasicViewHelper.STAR_MARKER)
+                .addClass(BasicViewHelperData.STAR_COLOR_MARKER)
                 .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
                 .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);
 

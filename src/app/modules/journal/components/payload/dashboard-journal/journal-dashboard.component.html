@@ -1,13 +1,30 @@
 <div class="holder content-area">
-    <app-job-list-display
-            [title_key]="'jobs.finished-title'"
-            [runningJobs]="jobs"></app-job-list-display>
 
-    <app-transportation-list-display [transportJobs]="transportJobs"></app-transportation-list-display>
+    <app-outlined titleValue="{{ 'tab.journal.jobs' | translate }}">
+        <app-job-list-display
+                [title_key]="'active'"
+                [jobs]="runningJobs"
+                [allowCancel]="true"></app-job-list-display>
 
-    <app-finished-movements-list [finishedMovements]="movements"></app-finished-movements-list>
+        <app-job-list-display
+                [title_key]="'finished'"
+                [jobs]="jobs"></app-job-list-display>
+    </app-outlined>
 
-    <app-finished-colonizations-list [finishedColonizations]="colonizations"></app-finished-colonizations-list>
+    <app-outlined titleValue="{{ 'tab.journal.movements' | translate }}">
+        <app-fleet-movement-journal></app-fleet-movement-journal>
+        <app-finished-movements-list [finishedMovements]="movements"></app-finished-movements-list>
+    </app-outlined>
 
-    <app-commissioned-operationals [commissionedOperationals]="operationals"></app-commissioned-operationals>
+    <app-outlined titleValue="{{ 'path.menu.transportation' | translate }}">
+        <app-transportation-list-display [transportJobs]="transportJobs"></app-transportation-list-display>
+    </app-outlined>
+
+    <app-outlined titleValue="{{ 'path.menu.colonization' | translate }}">
+        <app-finished-colonizations-list [finishedColonizations]="colonizations"></app-finished-colonizations-list>
+    </app-outlined>
+
+    <app-outlined titleValue="{{ 'journal.commissioned-operationals.finished.title' | translate }}">
+        <app-commissioned-operationals [commissionedOperationals]="operationals"></app-commissioned-operationals>
+    </app-outlined>
 </div>

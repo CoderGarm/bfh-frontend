@@ -12,18 +12,13 @@
         <div mat-subheader>{{ 'planetary.constructions.level.title' | translate }}</div>
         <div class="flex-items-container">
             <mat-form-field appearance="outline" class="short-field">
-                <mat-label>{{ 'planetary.constructions.level.current' | translate }}</mat-label>
-                <input matInput disabled value="{{construction.level}}">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="short-field">
                 <mat-label>{{ 'planetary.constructions.level.operational' | translate }}</mat-label>
                 <input matInput disabled value="{{construction.operationalLevel}}">
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="short-field">
-                <mat-label>{{ 'planetary.constructions.level.next' | translate }}</mat-label>
-                <input matInput disabled value="{{construction.level + 1}}">
+                <mat-label>{{ 'planetary.constructions.level.current' | translate }}</mat-label>
+                <input matInput disabled value="{{construction.level}}">
             </mat-form-field>
         </div>
 
@@ -53,6 +48,9 @@
     <mat-card-actions>
         <button mat-button disabled *ngIf="!constructionPossible && !jobTooExpensive">{{ 'planetary.constructions.build.not-possible' | translate }}</button>
         <button mat-button disabled *ngIf="jobTooExpensive && constructionPossible">{{ 'planetary.constructions.build.too-expensive' | translate }}</button>
-        <button mat-button *ngIf="constructionPossible && !jobTooExpensive" (click)="buildConstruction()">{{ 'planetary.constructions.build.start-building' | translate }}</button>
+        <button mat-button disabled
+                *ngIf="!construction.nextLevel && !(!constructionPossible && !jobTooExpensive) && !(jobTooExpensive && constructionPossible)">{{ 'planetary.constructions.build.must-do-research' | translate }}</button>
+        <button mat-button *ngIf="construction.nextLevel && constructionPossible && !jobTooExpensive"
+                (click)="buildConstruction()">{{ 'planetary.constructions.build.start-building' | translate }}</button>
     </mat-card-actions>
 </mat-card>

@@ -66,6 +66,7 @@ import {SafePipe} from "./services/pipes/safe.pipe";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {ColorPickerModule} from "ngx-color-picker";
 import {PlayerModule} from "./modules/user-points/player.module";
+import {MonitorInterceptor} from "./services/interceptors/monitor.interceptor";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -141,6 +142,7 @@ export let AppInjector: Injector;
         NgxPermissionsModule,
         {provide: ErrorHandler, useClass: CustomErrorHandler},
         {provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: MonitorInterceptor, multi: true},
         NavigationCommunicationService,
         SnackbarNotificationService,
         SpinnerService,

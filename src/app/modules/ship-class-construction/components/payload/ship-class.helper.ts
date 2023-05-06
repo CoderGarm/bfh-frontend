@@ -1,6 +1,53 @@
-import {AlignedFitting, BaseModule, Launcher, ShipClass, ShipClassMock, Weapon} from "../../../../services/swagger";
+import {AlignedFitting, BaseModule, EnumValueDto, Launcher, Mass, ShipClass, ShipClassMock, Weapon} from "../../../../services/swagger";
+import {NavigationCalculator} from "../../../../services/helper/navigation-calculator.helper";
+import EMassMetricsEnum = EnumValueDto.EMassMetricsEnum;
 
 export class ShipClassHelper {
+
+    /**
+     * Returns the pure mass without the geometric correction of the backend calculation.
+     */
+    public static getMassWithoutCorrection(o1: ShipClass | ShipClassMock): Mass {
+        let sum = 0;
+        const massMetric = EMassMetricsEnum.T;
+        if (!!o1.propulsion.baseModule.tonnage) {
+            sum += NavigationCalculator.convertMassToMetric(o1.propulsion.baseModule.tonnage, massMetric);
+        }
+        if (!!o1.armor && !!o1.armor.baseModule.tonnage) {
+            sum += NavigationCalculator.convertMassToMetric(o1.armor.baseModule.tonnage, massMetric);
+        }
+        if (!!o1.sidewall && !!o1.sidewall.baseModule.tonnage) {
+            sum += NavigationCalculator.convertMassToMetric(o1.sidewall.baseModule.tonnage, massMetric);
+        }
+        if (!!o1.electronicWarfare && !!o1.electronicWarfare.baseModule.tonnage) {
+            sum += NavigationCalculator.convertMassToMetric(o1.electronicWarfare.baseModule.tonnage, massMetric);
+        }
+        o1.fittings.forEach(f => {
+            const tonnage = !!f.weapon ? f.weapon.baseModule.tonnage : f.launcher?.baseModule.tonnage;
+            if (!!tonnage) {
+                const mass = {coordinate: tonnage.coordinate * f.amount, massMetric: tonnage.massMetric};
+                sum += NavigationCalculator.convertMassToMetric(mass, massMetric);
+            }
+        });
+        o1.ammunitionFittings.forEach(f => {
+            const tonnage = f.missile.tonnage;
+            if (!!tonnage) {
+                const mass = {coordinate: tonnage.coordinate * f.amount, massMetric: tonnage.massMetric};
+                sum += NavigationCalculator.convertMassToMetric(mass, massMetric);
+            }
+        });
+        o1.supportFittings.forEach(f => {
+            const tonnage = f.passiveModule.baseModule.tonnage;
+            if (!!tonnage) {
+                const mass = {coordinate: tonnage.coordinate * f.amount, massMetric: tonnage.massMetric};
+                sum += NavigationCalculator.convertMassToMetric(mass, massMetric);
+            }
+        });
+        return {
+            coordinate: sum,
+            massMetric: massMetric
+        };
+    }
 
     public static generateFittingPseudoHash(o1: ShipClass | ShipClassMock): string {
 

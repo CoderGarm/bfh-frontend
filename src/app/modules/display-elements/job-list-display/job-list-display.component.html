@@ -1,8 +1,8 @@
 <mat-list id="job-list">
-    <div mat-subheader *ngIf="runningJobs.length == 0">{{ 'jobs.list.nothing' | translate }}</div>
+    <div mat-subheader *ngIf="jobs.length == 0">{{ 'jobs.nothing.' + title_key | translate }}</div>
 
-    <div mat-subheader>{{title_key | translate }}</div>
-    <mat-list-item *ngFor="let pJob of jobs" class="height-fit-content-forced">
+    <div mat-subheader *ngIf="jobs.length > 0">{{ 'jobs.title.' + title_key | translate }}</div>
+    <mat-list-item *ngFor="let pJob of planetaryJobs" class="height-fit-content-forced">
         <img matListItemAvatar src="assets/icons/planets/png24x/planet_c.png">
         <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
 

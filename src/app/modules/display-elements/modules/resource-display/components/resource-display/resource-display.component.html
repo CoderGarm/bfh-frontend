@@ -33,7 +33,8 @@
         <div *ngFor="let resource of getBase()!.resources" class="box" [ngStyle]="{'display':( (_onlyResources && resource.resourceType.typeName == 'POPULATION') ? 'none' : '')}">
             <div class="res-wrapper">
                 <div class="img-container info-holder">
-                    <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.singularName}}" matTooltip="{{resource.resourceType.typeName}}">
+                    <img class="icon" src="assets/{{resource.resourceType.folder}}png24x/{{resource.resourceType.iconName}}_c.png" alt="{{resource.resourceType.singularName}}"
+                         matTooltip="{{resource.resourceType.typeName}}">
                     <mat-icon *ngIf="isCapPresent(resource)"
                               class="capacity"
                               [ngClass]="getCapacityWarningClass(resource)"
@@ -67,7 +68,8 @@
         <div *ngFor="let resource of getBase()!.humanResources" class="box" [ngStyle]="{'display':( _onlyResources ? 'none' : '')}">
             <div class="res-wrapper">
                 <div class="img-container">
-                    <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
+                    <img class="icon" src="assets/{{resource.resourceType.folder}}png24x/{{resource.resourceType.iconName}}_c.png" alt="{{resource.resourceType.typeName}}"
+                         matTooltip="{{resource.resourceType.typeName}}">
                 </div>
                 <div [ngClass]="getClosingBracketClass(resource)">
                     <label class="amount-present">

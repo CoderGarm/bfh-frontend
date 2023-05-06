@@ -145,8 +145,12 @@
       }
     },
     "finished-movement": {
-      "nothing": "Keine Flottenbewegungen",
+      "nothing": "Keine beendeten Flottenbewegungen",
       "title": "Beendete Flottenbewegungen"
+    },
+    "ongoing-movement": {
+      "nothing": "Keine Flottenbewegungen",
+      "title": "Flottenbewegungen"
     },
     "modules": {
       "ammunition-roster": {
@@ -174,12 +178,15 @@
     }
   },
   "jobs": {
-    "active-title": "laufende Aufträge",
     "cancel-btn": "Auftrag abbrechen",
-    "finished-title": "Beendete Aufträge",
     "level": "Level",
-    "list": {
-      "nothing": "Keine Jobs"
+    "title": {
+      "active": "laufende Aufträge",
+      "finished": "Beendete Aufträge"
+    },
+    "nothing": {
+      "active": "Keine laufenden Aufträge",
+      "finished": "Keine beendeten Aufträge"
     },
     "priority": "Priorität",
     "ticks-left": "Ticks",
@@ -253,6 +260,7 @@
         "is-new": "Neukonstruktion",
         "not-possible": "Es wird bereits gebaut",
         "start-building": "Starte den Bau",
+        "must-do-research": "Muss erforscht werden",
         "too-expensive": "Bau zu teuer"
       },
       "info": {
@@ -260,7 +268,6 @@
       },
       "level": {
         "current": "gebaut",
-        "next": "nächstes",
         "operational": "aktiv",
         "title": "Gebäudelevel"
       },
@@ -312,12 +319,14 @@
   },
   "research": {
     "no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
+    "not-possible": "Es gibt kein Labor oder es wird bereits geforscht.",
     "title": "Forschung"
   },
   "resource-overlay": {
     "capacity": {
       "info": {
         "population": "Der Wohnraum für AMOUNT Menschen wird noch TICKS Ticks ausreichen",
+        "population-growth-warning": "Die Bevölkerung hat den Wohnraum ausgeschöpft.",
         "resource": "Der Lagerplatz für AMOUNT RESOURCE_NAME wird noch TICKS Ticks ausreichen"
       }
     },

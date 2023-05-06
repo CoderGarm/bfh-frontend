@@ -11,7 +11,6 @@ export class FleetMovementJournalComponent extends SubscriptionManager implement
 
     movingFleets: Fleet[] = [];
 
-
     constructor(private fleetService: FleetApiService) {
         super();
     }
@@ -23,5 +22,10 @@ export class FleetMovementJournalComponent extends SubscriptionManager implement
     private loadData() {
         let sub = this.fleetService.getMovingFleetsForUser().subscribe(resp => this.movingFleets = resp);
         this.subscriptions.push(sub);
+    }
+
+    getLink(): string {
+        //todo amend fleet size icon
+        return "assets/icons/fleets/png64x/small_fleet_c.png";
     }
 }

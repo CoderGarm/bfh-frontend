@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {EnumValueDto, Fleet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
+import {AbstractId, EnumValueDto, Fleet, FleetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {FleetEventService} from "../../../../../services/fleet-event.service";
 
@@ -17,6 +17,7 @@ export class FleetTabViewComponent extends SubscriptionManager implements AfterV
     utilization?: ResourceDeposit;
 
     constructor(private resourceApi: ResourcesApiService,
+                private fleetService: FleetApiService,
                 private fleetEventService: FleetEventService) {
         super();
     }
@@ -26,13 +27,15 @@ export class FleetTabViewComponent extends SubscriptionManager implements AfterV
         this.subscriptions.push(sub);
     }
 
-    fetchCosts(fleet?: Fleet) {
-        this.fleet = fleet;
-        if (!this.fleet) {
+    fetchCosts(fleet?: AbstractId) {
+        if (!fleet) {
             this.utilization = undefined;
+            this.fleet = undefined;
             return;
         }
-        let sub = this.resourceApi.getCostsForFleet(this.fleet!.idFleet!).subscribe(resp => {
+        let sub = this.fleetService.getFleet(fleet.id).subscribe(resp => this.fleet = resp);
+        this.subscriptions.push(sub);
+        sub = this.resourceApi.getCostsForFleet(fleet.id).subscribe(resp => {
             resp.subType.typeName = EnumValueDto.EDepositTypeEnum.UTILIZATION
             this.utilization = resp;
         });

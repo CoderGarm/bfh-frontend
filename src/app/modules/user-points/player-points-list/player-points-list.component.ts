@@ -44,7 +44,7 @@ export class PlayerPointsListComponent extends SubscriptionManager implements Af
 
     private addData(users: UserJson[]) {
         this.users = users;
-        this.users.forEach(user => { /* fixme change to fetch all sorted points from cache and after fetch by paging */
+        this.users.forEach(user => {
             const sub = this.userService.getUsersPoints(user.idUser).subscribe(resp => {
                 this.points.push(resp);
                 this.setDatasource();

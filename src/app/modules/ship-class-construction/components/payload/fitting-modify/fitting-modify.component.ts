@@ -78,6 +78,11 @@ export class FittingModifyComponent extends SubscriptionManager implements After
                 private shipyardService: ShipyardEventService,
                 private resourceApi: ResourcesApiService) {
         super();
+
+        let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => {
+            this.shipClass = shipClass;
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {

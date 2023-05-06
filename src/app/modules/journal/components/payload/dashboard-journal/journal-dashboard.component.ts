@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Commissioning, FinishedColonization, FleetMovement, Job, JournalApiService, TransportJob} from "../../../../../services/swagger";
+import {Commissioning, FinishedColonization, FleetMovement, Job, JobApiService, JournalApiService, TransportJob} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
@@ -10,17 +10,22 @@ import {SubscriptionManager} from "../../../../../subscription.manager";
 export class JournalDashboardComponent extends SubscriptionManager implements OnInit {
 
     jobs: Job[] = [];
+    runningJobs: Job[] = [];
     transportJobs: TransportJob[] = [];
     movements: FleetMovement[] = [];
     colonizations: FinishedColonization[] = [];
     operationals: Commissioning[] = [];
 
-    constructor(private journalService: JournalApiService) {
+    constructor(private jobService: JobApiService,
+                private journalService: JournalApiService) {
         super();
     }
 
     ngOnInit(): void {
-        let sub = this.journalService.getFinishedJobs().subscribe(resp => this.jobs = resp);
+        let sub = this.jobService.getJobsForEmpire().subscribe(resp => this.runningJobs = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.journalService.getFinishedJobs().subscribe(resp => this.jobs = resp);
         this.subscriptions.push(sub);
 
         sub = this.journalService.getTransportJobs().subscribe(resp => this.transportJobs = resp);

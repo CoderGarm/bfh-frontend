@@ -31,16 +31,21 @@ export class AdminTabViewComponent extends SubscriptionManager implements OnInit
             this.isAdmin = role == RoleEnum.ADMIN;
         }
         if (!this.isLoggedIn || !this.isAdmin) {
-            this.isLoggedIn = false;
-            this.isAdmin = false;
-            this.authenticationService.logout();
-            this.router.navigateByUrl(LoginComponent.path).then(() => {
-            });
+            this.logout();
         }
+    }
+
+    private logout() {
+        this.isLoggedIn = false;
+        this.isAdmin = false;
+        this.authenticationService.logout();
+        this.router.navigateByUrl(LoginComponent.path).then(() => {
+        });
     }
 
     doTick() {
         let outerSub = this.adminApi.doTick().subscribe(() => {
+            this.logout();
         });
         this.subscriptions.push(outerSub);
     }

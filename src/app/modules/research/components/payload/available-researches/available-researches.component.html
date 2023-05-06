@@ -1,6 +1,7 @@
 <div class="side-nav-open-change-area-fixed"></div>
 
 <label *ngIf="availableResearches.length == 0">{{ 'research.no-available' | translate }}</label>
+<label *ngIf="!researchPossible">{{ 'research.not-possible' | translate }}</label>
 
 <div class="bottom-spacer content-area">
     <mat-card appearance="outlined" *ngFor="let research of availableResearches">

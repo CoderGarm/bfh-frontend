@@ -25,6 +25,10 @@ export interface Construction {
      */
     level: number;
     /**
+     * If there is a next level.
+     */
+    nextLevel: boolean;
+    /**
      * The active level of this construction.
      */
     operationalLevel: number;

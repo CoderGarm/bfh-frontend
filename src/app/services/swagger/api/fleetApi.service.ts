@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { AbstractId } from '../model/abstractId';
 import { Fleet } from '../model/fleet';
 import { FleetMarker } from '../model/fleetMarker';
 import { FleetMerge } from '../model/fleetMerge';
@@ -321,9 +322,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFleetsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
-    public getFleetsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
-    public getFleetsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public getFleetsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<AbstractId>>;
+    public getFleetsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AbstractId>>>;
+    public getFleetsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AbstractId>>>;
     public getFleetsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -342,7 +343,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/perUser`,
+        return this.httpClient.request<Array<AbstractId>>('get',`${this.basePath}/api/private/fleet/perUser`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

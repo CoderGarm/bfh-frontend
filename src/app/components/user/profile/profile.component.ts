@@ -50,7 +50,6 @@ export class ProfileComponent extends SubscriptionManager implements OnInit {
             const eMailVerified = resp.eMailVerified;
             const noEMailWanted = resp.noEMailWanted;
             this.noEMailConfigPossible = !eMailVerified && noEMailWanted;
-            console.log(this.noEMailConfigPossible, !eMailVerified, noEMailWanted);
 
             this.formGroup.controls.receiveChangelogInfos.setValue(resp.receiveChangelogInfos);
             if (this.noEMailConfigPossible) {

@@ -5,6 +5,7 @@ import {
     Construction,
     ConstructionApiService,
     EEducationType,
+    EnumValueDto,
     ERefinementSequence,
     EResourceType,
     HumanResourceAmount,
@@ -184,29 +185,45 @@ export class GroundConstructComponent extends ResourceDisplayManager implements 
      * @private
      */
     private fetchPlanet() {
-        if (!!this.selectedPlanetInput && !!this.selectedPlanetInput.idPlanet) {
+        if (!!this.selectedPlanetInput) {
+            const idPlanet = this.selectedPlanetInput.idPlanet;
             let sub = this.constructionApi
-                .getPossibleConstructionsByPlanet(this.selectedPlanetInput.idPlanet)
-                .subscribe(resp => {
+                .getPossibleConstructionsByPlanet(idPlanet).subscribe(resp => {
                     this.possibleConstructions = resp;
                     this.filterDisplayedConstructions();
                 });
             this.subscriptions.push(sub);
 
-            sub = this.planetApi.isConstructionPossibleOnPlanet(this.selectedPlanetInput!.idPlanet)
+            sub = this.planetApi.isConstructionPossibleOnPlanet(idPlanet)
                 .subscribe(resp => this.constructionPossible = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
-                .subscribe(resp => this.resourceDeposit = resp);
+            sub = this.resourceApi.getResourceDeposit(idPlanet)
+                .subscribe(deposit => {
+                    let sub = this.resourceApi.getResourceUtilization(this.selectedPlanetInput!.idPlanet).subscribe(utilization => {
+                        // unfunnily we must sum them up in order to calculate the capacity correctly
+                        utilization.humanResources.forEach(hr => {
+                            deposit?.humanResources.forEach(r => {
+                                if (r.resourceType.typeName === hr.resourceType.typeName) {
+                                    r.amount += hr.amount;
+                                    deposit.resources.filter(res => res.resourceType.typeName === EnumValueDto.EResourceTypeEnum.POPULATION)
+                                        .forEach(res => res.amount += hr.amount);
+                                }
+                            })
+                        });
+                        this.resourceDeposit = deposit;
+                    });
+                    this.subscriptions.push(sub);
+                });
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanetInput.idPlanet)
+
+            sub = this.resourceApi.getPlanetaryIncome(idPlanet)
                 .subscribe(resp => {
                     this.income = resp;
                 });
             this.subscriptions.push(sub);
-            sub = this.resourceApi.getPlanetaryCapacity(this.selectedPlanetInput.idPlanet)
+            sub = this.resourceApi.getPlanetaryCapacity(idPlanet)
                 .subscribe(resp => {
                     this.capacity = resp;
                 });

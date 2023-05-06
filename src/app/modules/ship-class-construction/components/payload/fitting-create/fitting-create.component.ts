@@ -135,7 +135,7 @@ export class FittingCreateComponent extends SubscriptionManager implements After
     }
 
     private getCosts() {
-        if (!!this.shipClassMock && ShipClassValidator.isValid(this.shipClassMock) && this.isChangePending()) {
+        if (!!this.shipClassMock && this.isChangePending()) {
             let sub = this.resourceApi.getShipClassCosts(this.shipClassMock)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);

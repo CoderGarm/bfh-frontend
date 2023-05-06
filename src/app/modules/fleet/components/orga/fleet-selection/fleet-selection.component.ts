@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {Fleet, FleetApiService} from "../../../../../services/swagger";
+import {AbstractId, FleetApiService} from "../../../../../services/swagger";
 import {FleetEventService} from "../../../../../services/fleet-event.service";
 import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
 import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
@@ -11,14 +11,14 @@ import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager"
 })
 export class FleetSelectionComponent extends SidenavSelectionManager implements AfterViewInit {
 
-    fleets: Fleet[] = [];
+    fleets: AbstractId[] = [];
 
     constructor(private fleetApi: FleetApiService,
                 private fleetEventService: FleetEventService) {
         super(NavigationCreationService.getPlanetRoute());
 
         const sub = this.fleetEventService.nameChange.subscribe(resp => {
-            const filter = this.fleets.filter(f => f.idFleet === resp.idFleet);
+            const filter = this.fleets.filter(f => f.id === resp.idFleet);
             if (filter.length == 1) {
                 filter[0].name = resp.name;
             }
@@ -31,11 +31,11 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
         this.subscriptions.push(sub);
     }
 
-    selectFleet(fleet: Fleet) {
+    selectFleet(fleet: AbstractId) {
         this.navService.navigate(NavigationCreationService.getFleetRoute());
         this.fleetEventService.selectFleet(fleet);
         this.selectedItem = {
-            id: fleet.idFleet
+            id: fleet.id
         };
     }
 }

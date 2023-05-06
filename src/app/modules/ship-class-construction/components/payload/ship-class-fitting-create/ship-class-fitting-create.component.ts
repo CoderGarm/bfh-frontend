@@ -67,13 +67,17 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     private weaponsDescriptions: Map<EWeaponTypeEnum, string> = new Map<EWeaponTypeEnum, string>();
     weaponsDescription: string = '';
     armors: Armor[] = [];
-    exampleArmor?: Armor;
     sidewalls: Sidewall[] = [];
-    exampleSidewall?: Sidewall;
     eloka: ElectronicWarfare[] = [];
-    exampleEloka?: ElectronicWarfare;
     passiveModules: PassiveModule[] = [];
     propulsions: Propulsion[] = [];
+
+    /**
+     * Just to store the name's and description's text.
+     */
+    exampleArmor?: Armor;
+    exampleEloka?: ElectronicWarfare;
+    exampleSidewall?: Sidewall;
 
     /**
      * the maps which are holding the user's selections
@@ -120,9 +124,12 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     selectedWeaponType: EWeaponTypeEnum = EWeaponTypeEnum.MISSILE;
 
     technologyTypes: TechnologyTypeEnum[] = [TechnologyTypeEnum.CIVIL, TechnologyTypeEnum.MILITARY];
-    selectedTechnologyType: TechnologyTypeEnum = TechnologyTypeEnum.MILITARY;
+    selectedTechnologyType: TechnologyTypeEnum = TechnologyTypeEnum.CIVIL;
+    allHyperBands: HyperBandEnum[] = [HyperBandEnum.NONE, HyperBandEnum.ALPHA, HyperBandEnum.BETA, HyperBandEnum.GAMMA, HyperBandEnum.DELTA];
     selectedHyperband: HyperBandEnum = HyperBandEnum.NONE;
     hyperBands: HyperBandEnum[] = [];
+
+    propulsionCapacity: PropulsionCapacity[] = [];
 
     private chips: ChipSelectorValueResult[] = [];
     private weaponAlignmentTypes: EWeaponAlignmentEnum[];
@@ -141,10 +148,10 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
                 this.eHullTypeChipValues.push(ht);
             }
         });
+        this.fetchBaseData();
     }
 
     ngAfterViewInit(): void {
-        this.fetchBaseData();
         this.filterDisplayedItems();
         this.selectPropulsion();
         this.setWeaponDescription();
@@ -159,9 +166,13 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.subscriptions.push(sub);
         sub = this.moduleService.getLaunchersByUser().subscribe(resp => {
             this.launchers = resp;
-            const missiles = resp.flatMap(l => l.allowedMissiles);
-            missiles.forEach(missile => {
+            this.launchers.forEach(w => this.weaponsDescriptions.set(w.weaponType, w.baseModule.description));
+        });
+        this.subscriptions.push(sub);
+        sub = this.moduleService.getLaunchers().subscribe(resp => {
+            resp.flatMap(l => l.allowedMissiles).forEach(missile => {
                 if (this.missiles.filter(m => m.baseModule.idModule === missile.baseModule.idModule).length === 0) {
+                    // add if not already present
                     this.missiles.push(missile);
                 }
             });
@@ -258,11 +269,15 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     }
 
     private addOrRemovePropulsion(module: Propulsion) {
-        if (module.technologyType === this.selectedTechnologyType && module.hyperBand === this.selectedHyperband) {
+        if (this.propulsionMatchesConditions(module)) {
             this.addIfNotPresent(this.filteredPropulsions, module);
         } else {
             this.removeIfPresent(this.filteredPropulsions, module);
         }
+    }
+
+    private propulsionMatchesConditions(module: Propulsion) {
+        return module.technologyType === this.selectedTechnologyType && module.hyperBand === this.selectedHyperband;
     }
 
     private addIfNotPresent<MODULE>(elements: MODULE[], module: MODULE) {
@@ -413,11 +428,14 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         };
         this.shipClassMock = output;
         if (ShipClassValidator.hasPayload(output)) {
+            this.fetchPropulsionCapacity(this.shipClassMock);
             this.shipClassMockEmitter.emit(output);
         }
     }
 
-    mapMultiModulesToFitting(weapons: AlignedFitting[], ammo: AmmunitionFitting[], passives: SupportFitting[]) {
+    mapMultiModulesToFitting(weapons: AlignedFitting[],
+                             ammo: AmmunitionFitting[],
+                             passives: SupportFitting[]) {
         this.weapons.forEach(module => {
             let amountByAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number> = this.getWeaponModuleAmount(module);
             amountByAlignment.forEach((amount, key) => {
@@ -562,23 +580,24 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         return isFiltered;
     }
 
-    getPropulsionCapacity(shipClass?: ShipClass | ShipClassMock): PropulsionCapacity[] {
+    fetchPropulsionCapacity(shipClass?: ShipClass | ShipClassMock) {
         if (!shipClass || !this.propulsionSelection) {
-            return [];
+            this.propulsionCapacity = [];
+            return;
         }
-
         const pseudoHash = ShipClassHelper.generateFittingPseudoHash(shipClass);
         const idPropulsion = this.propulsionSelection.baseModule.idModule;
         const key = pseudoHash + 'p' + idPropulsion;
         const propulsionCapacities = this.propulsionCapacityCache.get(key);
         if (!!propulsionCapacities) {
-            return propulsionCapacities;
+            this.propulsionCapacity = propulsionCapacities;
+            return;
         }
         let sub = this.shipyardApi.getPropulsionCapacity(shipClass, idPropulsion).subscribe(resp => {
             this.propulsionCapacityCache.set(key, resp);
+            this.propulsionCapacity = resp;
         })
         this.subscriptions.push(sub);
-        return [];
     }
 
     getDisplayName<MODULE extends { baseModule: BaseModule }>(module: MODULE) {

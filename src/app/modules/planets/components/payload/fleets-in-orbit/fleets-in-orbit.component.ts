@@ -138,17 +138,17 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
     }
 
     getRepairJobButtonText(fleet: Fleet) {
+        if (!fleet.state.needsRepair) {
+            return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-repair-needed')!;
+        }
         if (this.isInRepair(fleet)) {
             return this.translations.get('planetary.fleets-in-orbit.repair-btn.is-in-repair')!;
-        }
-        if (!this.shipyardJobPossible) {
-            return this.translations.get('planetary.fleets-in-orbit.repair-btn.already-in-use')!;
         }
         if (!this.shipyardExists) {
             return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-shipyard')!;
         }
-        if (!fleet.state.needsRepair) {
-            return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-repair-needed')!;
+        if (!this.shipyardJobPossible) {
+            return this.translations.get('planetary.fleets-in-orbit.repair-btn.already-in-use')!;
         }
         return this.translations.get('planetary.fleets-in-orbit.repair-btn.start-job')!;
     }

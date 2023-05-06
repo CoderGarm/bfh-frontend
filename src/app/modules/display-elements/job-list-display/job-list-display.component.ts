@@ -19,17 +19,17 @@ export interface PlanetaryJobs {
 export class JobListDisplayComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     @Input()
-    title_key: string = 'jobs.active-title';
+    title_key: string = 'active';
 
     @Input()
-    runningJobs: Job[] = [];
-    runningJobsDefinition: string = 'runningJobs';
+    jobs: Job[] = [];
+    jobsDefinition: string = 'jobs';
 
     @Input()
     allowCancel: boolean = false;
 
     jobsPerIdPlanet: Map<number, Job[]> = new Map<number, Job[]>();
-    jobs: PlanetaryJobs[] = [];
+    planetaryJobs: PlanetaryJobs[] = [];
 
     translations: Map<string, string> = new Map<string, string>();
 
@@ -37,15 +37,27 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
                 private jobService: JobApiService) {
         super();
 
-        this.translations.set('jobs.active-title', 'jobs.active-title');
-        let sub = this.translate.get('jobs.active-title').subscribe((translated: string) => {
-            this.translations.set('jobs.active-title', translated);
+        this.translations.set('jobs.title.active', 'jobs.title.active');
+        let sub = this.translate.get('jobs.title.active').subscribe((translated: string) => {
+            this.translations.set('jobs.title.active', translated);
         });
         this.subscriptions.push(sub);
 
-        this.translations.set('jobs.finished-title', 'jobs.finished-title');
-        sub = this.translate.get('jobs.finished-title').subscribe((translated: string) => {
-            this.translations.set('jobs.finished-title', translated);
+        this.translations.set('jobs.title.finished', 'jobs.title.finished');
+        sub = this.translate.get('jobs.title.finished').subscribe((translated: string) => {
+            this.translations.set('jobs.title.finished', translated);
+        });
+        this.subscriptions.push(sub);
+
+        this.translations.set('jobs.nothing.active', 'jobs.nothing.active');
+        sub = this.translate.get('jobs.nothing.active').subscribe((translated: string) => {
+            this.translations.set('jobs.nothing.active', translated);
+        });
+        this.subscriptions.push(sub);
+
+        this.translations.set('jobs.nothing.finished', 'jobs.nothing.finished');
+        sub = this.translate.get('jobs.nothing.finished').subscribe((translated: string) => {
+            this.translations.set('jobs.nothing.finished', translated);
         });
         this.subscriptions.push(sub);
     }
@@ -54,7 +66,7 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.runningJobsDefinition]) {
+        if (changes[this.jobsDefinition]) {
             this.prepareData();
         }
     }
@@ -74,16 +86,16 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
                 researches: jobs.filter(job => job.isResearchJob),
                 shipyard: jobs.filter(job => job.isShipyardJob)
             }
-            this.jobs.push(jobsPerPlanet);
+            this.planetaryJobs.push(jobsPerPlanet);
         });
     }
 
     private sortJobsByPlanet() {
 
-        this.jobs = [];
+        this.planetaryJobs = [];
         this.jobsPerIdPlanet = new Map<number, Job[]>();
 
-        this.runningJobs.forEach(job => {
+        this.jobs.forEach(job => {
             let idPlanet = job.facilityPlanet.idPlanet;
             let jobs = this.jobsPerIdPlanet.get(idPlanet);
             if (!jobs) {
@@ -141,7 +153,7 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
 
     private loadData() {
         let sub = this.jobService.getJobsForEmpire().subscribe(resp => {
-            this.runningJobs = resp;
+            this.jobs = resp;
             this.prepareData();
         });
         this.subscriptions.push(sub);

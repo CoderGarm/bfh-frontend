@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EEducationType, HumanResourceAmount, ResourceDeposit} from "../../../services/swagger";
 import {TypeService} from "../../../services/type.service";
 import {StaticResourcesService} from "../../../services/static-resources.service";
@@ -9,10 +9,12 @@ import {SubscriptionManager} from "../../../subscription.manager";
     templateUrl: './military-people.component.html',
     styleUrls: ['./military-people.component.scss']
 })
-export class MilitaryPeopleComponent extends SubscriptionManager implements OnInit {
+export class MilitaryPeopleComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     @Input()
     utilization?: ResourceDeposit;
+
+    displayableResources: HumanResourceAmount[] = [];
 
     // @formatter:off
     @Input()
@@ -32,14 +34,12 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
     ngOnInit(): void {
     }
 
-    private coerceBooleanProperty(value: any): boolean {
-        return value != null && `${value}` !== 'false';
+    ngOnChanges(changes: SimpleChanges) {
+        this.setDisplayableResources();
     }
 
-    getLink(cap: HumanResourceAmount): string {
-        let folder = cap.resourceType.folder;
-        let iconName = cap.resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
     }
 
     getHumans(resource: EEducationType, costs?: ResourceDeposit): number {
@@ -73,7 +73,7 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
         return StaticResourcesService.getMatIconForDepositType(deposit.subType);
     }
 
-    getDisplayableResources(): HumanResourceAmount[] {
+    private setDisplayableResources() {
         const base = this.getBase();
         const result: HumanResourceAmount[] = [];
         if (!!base) {
@@ -85,6 +85,6 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
         } else if (this._preSelect) {
             this.educationTypes.forEach(dto => result.push({resourceType: dto, amount: 0}));
         }
-        return result;
+        this.displayableResources = result;
     }
 }

@@ -47,11 +47,12 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
 
     translations: Map<string, string> = new Map<string, string>();
 
-    private readonly depositPopulation = 'resource-overlay.deposit.population';
-    private readonly incomePopulation = 'resource-overlay.income.population';
-    private readonly costsPopulation = 'resource-overlay.costs.population';
-    private readonly capacityPopulationKey = 'resource-overlay.capacity.info.population';
-    private readonly capacityResourceKey = 'resource-overlay.capacity.info.resource';
+    private readonly depositPopulation: string = 'resource-overlay.deposit.population';
+    private readonly incomePopulation: string = 'resource-overlay.income.population';
+    private readonly costsPopulation: string = 'resource-overlay.costs.population';
+    private readonly capacityPopulationKey: string = 'resource-overlay.capacity.info.population';
+    private readonly capacityPopulationWarningKey: string = 'resource-overlay.capacity.info.population-growth-warning';
+    private readonly capacityResourceKey: string = 'resource-overlay.capacity.info.resource';
 
 
     constructor(private resourceDisplay: ResourceEmitterService,
@@ -104,6 +105,12 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         });
         this.subscriptions.push(sub);
 
+        this.translations.set(this.capacityPopulationWarningKey, this.capacityPopulationWarningKey);
+        sub = this.translate.get('resource-overlay.capacity.info.population-growth-warning').subscribe((translated: string) => {
+            this.translations.set(this.capacityPopulationWarningKey, translated);
+        });
+        this.subscriptions.push(sub);
+
         this.translations.set(this.capacityResourceKey, this.capacityResourceKey);
         sub = this.translate.get('resource-overlay.capacity.info.resource').subscribe((translated: string) => {
             this.translations.set(this.capacityResourceKey, translated);
@@ -125,12 +132,6 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
             return "";
         }
         return translation;
-    }
-
-    getLink(cap: ResourceAmount | HumanResourceAmount): string {
-        let folder = cap.resourceType.folder;
-        let iconName = cap.resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
     getResourceAmount(resource: EResourceType, deposit?: ResourceDeposit): number {
@@ -265,15 +266,19 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         const resourceName = resource.resourceType.typeName.toLocaleLowerCase(this.translate.getLangs());
 
         let lastingTicks = this.calculateLastingCapacityTicks(resource);
-        if (lastingTicks === Number.MAX_VALUE) {
-            lastingTicks = 99;
+        if (this.isPopulationGrowthWarning(lastingTicks)) {
+            translation = this.translations.get(this.capacityPopulationWarningKey);
+        } else {
+            translation = translation.replace("AMOUNT", capacityAmount + "");
+            translation = translation.replace("RESOURCE_NAME", resourceName);
+            translation = translation.replace("TICKS", lastingTicks + "");
         }
 
-        translation = translation.replace("AMOUNT", capacityAmount + "");
-        translation = translation.replace("RESOURCE_NAME", resourceName);
-        translation = translation.replace("TICKS", lastingTicks + "");
-
         return translation;
+    }
+
+    private isPopulationGrowthWarning(lastingTicks: number) {
+        return lastingTicks === Number.MAX_VALUE || lastingTicks > 99;
     }
 
     private calculateLastingCapacityTicks(resource: ResourceAmount) {
@@ -294,10 +299,10 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
 
     getCapacityWarningClass(resource: ResourceAmount) {
         const lastingTicks = this.calculateLastingCapacityTicks(resource);
-        if (lastingTicks <= 3) {
+        if (lastingTicks <= 5) {
             return 'uprising';
         }
-        if (lastingTicks <= 5) {
+        if (lastingTicks <= 10 || this.isPopulationGrowthWarning(lastingTicks)) {
             return 'warning';
         }
         return 'fine';

@@ -6,6 +6,43 @@
 <mat-vertical-stepper animationDuration="500ms">
     <mat-step>
         <ng-template matStepLabel>
+            <div *ngIf="!propulsionSelection">{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
+            <div *ngIf="!!propulsionSelection">{{getDisplayName(propulsionSelection)}}</div>
+            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.mandatory.propulsion' | translate }}</div>
+        </ng-template>
+        <ng-template matStepContent>
+            <div class="nav-control">
+                <div>
+                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <p>{{propulsionSelection?.baseModule?.description}}</p>
+
+            <div class="flex-items-container">
+                <mat-button-toggle-group class="area-toggle">
+                    <mat-button-toggle *ngFor="let type of technologyTypes" (click)="selectTechnologyType(type)" [checked]="type === selectedTechnologyType">
+                        <div class="capitalize">{{ type }}</div>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+
+            <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let type of hyperBands"
+                                 (selectedChange)="selectHyperband(type)"
+                                 [selected]="type === selectedHyperband">
+                    <div class="capitalize">{{ type }}</div>
+                </mat-list-option>
+            </mat-selection-list>
+
+            <app-propulsion-capacity-display [capacities]="propulsionCapacity"></app-propulsion-capacity-display>
+        </ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>
             <div *ngIf="!armorSelection">{{ 'shipyard.fitting.armor.title' | translate }}</div>
             <div *ngIf="!!armorSelection">{{getDisplayName(armorSelection)}}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.armor' | translate }}</div>
@@ -163,16 +200,9 @@
         </ng-template>
         <ng-template matStepContent>
             <div class="nav-control">
-                <div>
-                    <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
-                        <mat-icon>arrow_upward</mat-icon>
-                    </button>
-                </div>
-                <div>
-                    <button mat-mini-fab color="primary" matStepperNext aria-label="next">
-                        <mat-icon>arrow_downward</mat-icon>
-                    </button>
-                </div>
+                <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
+                    <mat-icon>arrow_upward</mat-icon>
+                </button>
             </div>
 
             <div class="flex-items-container">
@@ -247,41 +277,6 @@
                     </mat-card>
                 </div>
             </div>
-        </ng-template>
-    </mat-step>
-
-    <mat-step>
-        <ng-template matStepLabel>
-            <div *ngIf="!propulsionSelection">{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
-            <div *ngIf="!!propulsionSelection">{{getDisplayName(propulsionSelection)}}</div>
-            <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.mandatory.propulsion' | translate }}</div>
-        </ng-template>
-        <ng-template matStepContent>
-            <div class="nav-control">
-                <button mat-mini-fab color="primary" matStepperPrevious aria-label="next">
-                    <mat-icon>arrow_upward</mat-icon>
-                </button>
-            </div>
-
-            <p>{{propulsionSelection?.baseModule?.description}}</p>
-
-            <div class="flex-items-container">
-                <mat-button-toggle-group class="area-toggle">
-                    <mat-button-toggle *ngFor="let type of technologyTypes" (click)="selectTechnologyType(type)" [checked]="type === selectedTechnologyType">
-                        <div class="capitalize">{{ type }}</div>
-                    </mat-button-toggle>
-                </mat-button-toggle-group>
-            </div>
-
-            <mat-selection-list [multiple]="false">
-                <mat-list-option *ngFor="let type of hyperBands"
-                                 (selectedChange)="selectHyperband(type)"
-                                 [selected]="type === selectedHyperband">
-                    <div class="capitalize">{{ type }}</div>
-                </mat-list-option>
-            </mat-selection-list>
-
-            <app-propulsion-capacity-display [capacities]="getPropulsionCapacity(shipClassMock)"></app-propulsion-capacity-display>
         </ng-template>
     </mat-step>
 </mat-vertical-stepper>

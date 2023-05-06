@@ -1,9 +1,8 @@
-import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Output} from '@angular/core';
-import {ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../services/swagger";
+import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
-import {ShipyardEventService} from "../../../shipyard-event.service";
 
 @Component({
     selector: 'app-ship-class-tab-view',
@@ -14,9 +13,7 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
 
     static path: string = 'ship-classes';
 
-    selectedShipClass?: ShipClass;
-
-    /**
+    /** todo pretty stupid solution -> fix it up
      * emits the index of the selected tab
      */
     @Output()
@@ -25,20 +22,12 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
     resourceDeposit?: ResourceDeposit;
 
     constructor(private resourceApi: ResourcesApiService,
-                private change: ChangeDetectorRef,
-                private shipyardService: ShipyardEventService,
                 private resourceEmitter: ResourceEmitterService) {
         super();
     }
 
     ngAfterViewInit() {
-        let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => {
-            this.selectedShipClass = shipClass;
-            this.change.detectChanges();
-        });
-        this.subscriptions.push(sub);
-
-        sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
+        let sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
         this.subscriptions.push(sub);
     }
 
@@ -46,7 +35,7 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
         this.selectionEmitter.emit($event.index);
     }
 
-    indexChanged(event: number) {
+    indexChanged() {
         this.resourceEmitter.clear();
     }
 }
