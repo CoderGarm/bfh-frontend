@@ -26,7 +26,8 @@ import {ShipClassFittingModifyComponent} from "./components/payload/ship-class-f
         FittingCreateComponent,
     ],
     exports: [
-        ShipClassSelectionComponent
+        ShipClassSelectionComponent,
+        ShipClassNamePatternValidatorDirective
     ],
     imports: [
         SharedModuleModule,

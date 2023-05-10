@@ -63,6 +63,10 @@ body {
   background-color: $background-color;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .mat-mdc-snack-bar-container {
   //--mat-mdc-snack-bar-button-color: #ffffff;
   --mdc-snackbar-container-color: #{$background-color};
