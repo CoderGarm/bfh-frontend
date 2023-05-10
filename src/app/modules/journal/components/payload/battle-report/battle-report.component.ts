@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {
     BattleReport,
     BattleReportApiService,
@@ -20,13 +20,14 @@ import {Subscription, timer} from "rxjs";
 import {SpinnerService} from "../../../../../services/spinner.service";
 import {CombatArenaData} from "../../../combat-arena-data";
 import {MatSlider} from "@angular/material/slider";
+import {DoNotScrollService} from "../../../../../services/do-not-scroll.service";
 
 @Component({
     selector: 'app-battle-report',
     templateUrl: './battle-report.component.html',
     styleUrls: ['./battle-report.component.scss']
 })
-export class BattleReportComponent extends SubscriptionManager implements AfterViewInit {
+export class BattleReportComponent extends SubscriptionManager implements AfterViewInit, OnDestroy {
 
     displayedColumnsCombatStatistics: string[] = ['Fleet', 'Kills', 'Losses', 'Released missiles', 'Released beams'];
 
@@ -80,8 +81,16 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
 
     constructor(private reportApi: BattleReportApiService,
                 private planetApi: PlanetApiService,
+                private noScrollService: DoNotScrollService,
                 private spinnerService: SpinnerService) {
         super();
+
+        this.noScrollService.setNoScroll(true);
+    }
+
+    ngOnDestroy() {
+        this.noScrollService.clearScrolling();
+        super.ngOnDestroy();
     }
 
     ngAfterViewInit(): void {

@@ -67,6 +67,7 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
 import {ColorPickerModule} from "ngx-color-picker";
 import {PlayerModule} from "./modules/user-points/player.module";
 import {MonitorInterceptor} from "./services/interceptors/monitor.interceptor";
+import {DoNotScrollService} from "./services/do-not-scroll.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -146,6 +147,7 @@ export let AppInjector: Injector;
         NavigationCommunicationService,
         SnackbarNotificationService,
         SpinnerService,
+        DoNotScrollService,
         FleetEventService,
         TypeService,
         ModuleService,

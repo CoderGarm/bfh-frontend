@@ -4,7 +4,6 @@ import {AuthenticationService} from './services/authentication';
 import {NavigationCreationService} from './services/navigation/navigation-creation.service';
 import {interval} from "rxjs";
 import {StarMapTabViewComponent} from "./modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
-import {JournalTabViewComponent} from "./modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 import {ChatComponent} from "./modules/chat/components/chat/chat.component";
 import {ChatApiService, ForumApiService} from "./services/swagger";
 import {SubscriptionManager} from "./subscription.manager";
@@ -18,6 +17,7 @@ import {RegisterComponent} from "./components/user/register/register.component";
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
 import {ForgottenPasswordComponent} from "./components/user/forgotten-password/forgotten-password.component";
 import {Meta, Title} from "@angular/platform-browser";
+import {DoNotScrollService} from "./services/do-not-scroll.service";
 
 
 @Component({
@@ -38,10 +38,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     hasUnread: string[] = [];
 
-    isNoScroll: Boolean = false;
-    private noScrollingPaths: string[] = [
+    isNoScroll: boolean = false;
+    private noScrollingForFullSection: string[] = [
         StarMapTabViewComponent.path,
-        JournalTabViewComponent.path,
         ChatComponent.path
     ];
 
@@ -49,6 +48,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     constructor(private translate: TranslateService,
                 private router: Router,
+                public doNotScrollService: DoNotScrollService,
                 private meta: Meta,
                 private titleService: Title,
                 private authenticationService: AuthenticationService,
@@ -87,6 +87,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             {name: 'og:title', content: 'Battle for Honor'},
             {name: 'og:url', content: 'https://www.battleforhonor.de'},
         ]);
+
+        let sub = this.doNotScrollService.getNoScrollEmitter().subscribe(noScroll => this.isNoScroll = noScroll);
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {
@@ -123,7 +126,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.router.navigateByUrl("/" + route.path).then(() => {
         });
         const path = this.navService.activeRoute.path;
-        this.isNoScroll = this.noScrollingPaths.includes(path!, 0);
+        this.isNoScroll = this.noScrollingForFullSection.includes(path!, 0);
     }
 
     setUnread(hasUnread: boolean, path: string) {

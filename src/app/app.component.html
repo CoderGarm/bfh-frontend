@@ -10,7 +10,7 @@
                             [isLoggedIn]="isLoggedIn"
                             [afterLoginPath]="afterLoginPath"></app-nested-sidenav>
     </mat-drawer>
-    <mat-drawer-content [ngClass]="{'no-scrolling' : !!isNoScroll}" id="main-content-area">
+    <mat-drawer-content [ngStyle]="{'overflow':( isNoScroll ? 'hidden' : 'auto')}" id="main-content-area">
         <app-global-spinner></app-global-spinner>
         <router-outlet></router-outlet>
         <app-home *ngIf="displayWelcome()"></app-home>
