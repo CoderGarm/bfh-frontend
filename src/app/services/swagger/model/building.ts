@@ -29,6 +29,10 @@ export interface Building {
      */
     description: string;
     /**
+     * The unlocking research name.
+     */
+    unlockedThrough: string;
+    /**
      * The production amount at first level.
      */
     baseValue: number;

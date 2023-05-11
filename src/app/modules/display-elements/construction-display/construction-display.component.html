@@ -48,8 +48,10 @@
     <mat-card-actions>
         <button mat-button disabled *ngIf="!constructionPossible && !jobTooExpensive">{{ 'planetary.constructions.build.not-possible' | translate }}</button>
         <button mat-button disabled *ngIf="jobTooExpensive && constructionPossible">{{ 'planetary.constructions.build.too-expensive' | translate }}</button>
-        <button mat-button disabled
-                *ngIf="!construction.nextLevel && !(!constructionPossible && !jobTooExpensive) && !(jobTooExpensive && constructionPossible)">{{ 'planetary.constructions.build.must-do-research' | translate }}</button>
+        <div [matTooltip]="construction.building.unlockedThrough"
+             *ngIf="!construction.nextLevel && !(!constructionPossible && !jobTooExpensive) && !(jobTooExpensive && constructionPossible)">
+            <button mat-button disabled>{{ 'planetary.constructions.build.must-do-research' | translate }}</button>
+        </div>
         <button mat-button *ngIf="construction.nextLevel && constructionPossible && !jobTooExpensive"
                 (click)="buildConstruction()">{{ 'planetary.constructions.build.start-building' | translate }}</button>
     </mat-card-actions>
