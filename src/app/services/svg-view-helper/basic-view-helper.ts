@@ -3,7 +3,7 @@ import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathA
 import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component, HostListener} from "@angular/core";
-import {StarMapCommunicationService} from "../star-map-communication.service";
+import {StarMapCommunicationService} from "../intercom/star-map-communication.service";
 import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;

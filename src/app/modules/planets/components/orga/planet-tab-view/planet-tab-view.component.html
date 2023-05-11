@@ -14,9 +14,9 @@
             <app-shipyard [selectedPlanetInput]="selectedPlanet"></app-shipyard>
         </ng-template>
     </mat-tab>
-    <!--<mat-tab label="{{ 'tab.planetary.jobs' | translate }}"> fixme marktplatz
+    <mat-tab label="{{ 'tab.planetary.marketplace' | translate }}">
         <ng-template matTabContent>
-            <app-planetary-job-list [selectedPlanetInput]="selectedPlanet"></app-planetary-job-list>
+            <app-planetary-marketplace [planet]="selectedPlanet"></app-planetary-marketplace>
         </ng-template>
-    </mat-tab>-->
+    </mat-tab>
 </mat-tab-group>

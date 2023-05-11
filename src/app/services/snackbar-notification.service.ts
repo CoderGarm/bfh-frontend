@@ -24,4 +24,8 @@ export class SnackbarNotificationService {
             });
         });
     }
+
+    close() {
+        this.snackBar.dismiss();
+    }
 }

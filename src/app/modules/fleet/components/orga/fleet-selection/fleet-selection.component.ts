@@ -1,6 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {AbstractId, FleetApiService} from "../../../../../services/swagger";
-import {FleetEventService} from "../../../../../services/fleet-event.service";
+import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
 import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
 

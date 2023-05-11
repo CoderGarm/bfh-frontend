@@ -2,7 +2,7 @@ import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges}
 import {Fleet, FleetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {FleetEventService} from "../../../services/fleet-event.service";
+import {FleetEventService} from "../../../services/intercom/fleet-event.service";
 
 export interface FleetName {
     idFleet: number;

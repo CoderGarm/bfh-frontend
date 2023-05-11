@@ -1,7 +1,7 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {AbstractId, EnumValueDto, Fleet, FleetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {FleetEventService} from "../../../../../services/fleet-event.service";
+import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 
 @Component({
     selector: 'app-fleet-tab-view',

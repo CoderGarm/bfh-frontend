@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../../subscription.manager";
-import {StarMapCommunicationService} from "../../../../services/star-map-communication.service";
+import {StarMapCommunicationService} from "../../../../services/intercom/star-map-communication.service";
 import {Fleet} from "../../../../services/swagger";
 
 @Component({

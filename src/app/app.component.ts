@@ -17,7 +17,9 @@ import {RegisterComponent} from "./components/user/register/register.component";
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
 import {ForgottenPasswordComponent} from "./components/user/forgotten-password/forgotten-password.component";
 import {Meta, Title} from "@angular/platform-browser";
-import {DoNotScrollService} from "./services/do-not-scroll.service";
+import {DoNotScrollService} from "./services/intercom/do-not-scroll.service";
+import {SnackbarNotificationService} from "./services/snackbar-notification.service";
+import {DatePipe} from "@angular/common";
 
 
 @Component({
@@ -52,6 +54,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
                 private meta: Meta,
                 private titleService: Title,
                 private authenticationService: AuthenticationService,
+                private notif: SnackbarNotificationService,
+                private datePipe: DatePipe,
                 private navService: NavigationCommunicationService,
                 private chatApi: ChatApiService,
                 private forumApi: ForumApiService) {
@@ -71,6 +75,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             path.forEach(path => {
                 if (routerData instanceof NavigationStart && routerData.url.includes('/' + path)) {
                     this.isStandalone = true;
+                    this.notif.close();
                 }
             });
         });
@@ -90,6 +95,22 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
         let sub = this.doNotScrollService.getNoScrollEmitter().subscribe(noScroll => this.isNoScroll = noScroll);
         this.subscriptions.push(sub);
+
+        if (!this.isStandalone) {
+            this.showSeasonBadge();
+        }
+    }
+
+    showSeasonBadge() {
+        const date = new Date();
+        date.setDate(1);
+        date.setMonth(5);
+        date.setFullYear(2023)
+        const timeframe = this.datePipe.transform(date, 'MM/dd/yyyy')!;
+        const now = this.datePipe.transform(new Date(), 'MM/dd/yyyy')!;
+        if (now < timeframe) {
+            this.notif.open('Season 2 has launched!', 'Ok', 20000);
+        }
     }
 
     ngOnInit(): void {

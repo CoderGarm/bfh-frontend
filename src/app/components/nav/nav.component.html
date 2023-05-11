@@ -10,7 +10,7 @@
     </mat-menu>
     <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">Battle for Honor</button>
     <span class="spacer"></span>
-    <div *ngIf="!!currentTick">{{ 'tick.current' | translate }} {{currentTick.tickNo}}</div>
+    <div *ngIf="!!currentTickService.currentTick">{{ 'tick.current' | translate }} {{currentTickService.currentTick.tickNo}}</div>
     <span class="spacer"></span>
     <button mat-flat-button color="primary" *ngIf="!!applicationInfo" disabled>
         {{applicationInfo.applicationVersion}}

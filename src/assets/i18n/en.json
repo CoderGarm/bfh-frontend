@@ -273,6 +273,11 @@
       },
       "title": "Ground constructions"
     },
+    "marketplace": {
+      "price-history": {
+        "title": "Price history"
+      }
+    },
     "fleets-in-orbit": {
       "not-present": "No fleets in orbit",
       "percentage-message": "Combat readiness",
@@ -504,6 +509,7 @@
     },
     "planetary": {
       "dashboard": "Dashboard",
+      "marketplace": "Marketplace",
       "ground-constructions": "Constructions",
       "jobs": "Jobs",
       "shipyard": "Shipyard"

@@ -20,7 +20,7 @@ import {Subscription, timer} from "rxjs";
 import {SpinnerService} from "../../../../../services/spinner.service";
 import {CombatArenaData} from "../../../combat-arena-data";
 import {MatSlider} from "@angular/material/slider";
-import {DoNotScrollService} from "../../../../../services/do-not-scroll.service";
+import {DoNotScrollService} from "../../../../../services/intercom/do-not-scroll.service";
 
 @Component({
     selector: 'app-battle-report',

@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angula
 import {SubscriptionManager} from "../../../subscription.manager";
 import {Fleet, FleetMerge, WarShip} from "../../../services/swagger";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
-import {StarMapCommunicationService} from "../../../services/star-map-communication.service";
+import {StarMapCommunicationService} from "../../../services/intercom/star-map-communication.service";
 
 @Component({
     selector: 'app-fleet-merge-edit',

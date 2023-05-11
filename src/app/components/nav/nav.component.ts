@@ -1,11 +1,10 @@
 import {AuthenticationService} from '../../services/authentication';
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
-import {AdminApiService, ApplicationInfo, JWT, Tick, TickApiService} from "../../services/swagger";
+import {AdminApiService, ApplicationInfo, JWT, TickApiService} from "../../services/swagger";
 import {SubscriptionManager} from "../../subscription.manager";
 import {NavigationCreationService} from "../../services/navigation/navigation-creation.service";
-import {SnackbarNotificationService} from "../../services/snackbar-notification.service";
-import {DatePipe} from "@angular/common";
+import {CurrentTickService} from "../../services/intercom/current-tick.service";
 import RoleEnum = JWT.RoleEnum;
 
 
@@ -23,16 +22,13 @@ export class NavComponent extends SubscriptionManager implements OnInit {
 
     applicationInfo?: ApplicationInfo;
 
-    currentTick?: Tick;
-
     activeRoute?: Route;
 
     constructor(private router: Router,
-                private datePipe: DatePipe,
                 private authenticationService: AuthenticationService,
-                private notif: SnackbarNotificationService,
                 private tickApi: TickApiService,
-                private adminApi: AdminApiService) {
+                private adminApi: AdminApiService,
+                protected currentTickService: CurrentTickService) {
         super();
     }
 
@@ -48,7 +44,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
         this.subscriptions.push(sub);
         sub = this.authenticationService.loginEvent.subscribe(jwt => {
             if (!!jwt) {
-                sub = this.tickApi.getCurrentTick().subscribe(resp => this.currentTick = resp);
+                sub = this.tickApi.getCurrentTick().subscribe(resp => this.currentTickService.setTick(resp));
                 this.subscriptions.push(sub);
                 const isAdmin = jwt.role === RoleEnum.ADMIN;
                 if (isAdmin) {
@@ -60,24 +56,10 @@ export class NavComponent extends SubscriptionManager implements OnInit {
         this.subscriptions.push(sub);
         sub = this.authenticationService.logoutEvent.subscribe(loggedOut => {
             if (loggedOut) {
-                this.currentTick = undefined;
+                this.currentTickService.clear();
             }
         });
         this.subscriptions.push(sub);
-
-        this.showSeasonBadge();
-    }
-
-    showSeasonBadge() {
-        const date = new Date();
-        date.setDate(1);
-        date.setMonth(5);
-        date.setFullYear(2023)
-        const timeframe = this.datePipe.transform(date, 'MM/dd/yyyy')!;
-        const now = this.datePipe.transform(new Date(), 'MM/dd/yyyy')!;
-        if (now < timeframe) {
-            this.notif.open('Season 2 has launched!', 'Ok', 20000);
-        }
     }
 
     logout() {

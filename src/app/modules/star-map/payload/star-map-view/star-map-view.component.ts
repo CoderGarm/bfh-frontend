@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService, FleetMarker, FleetMerge, FleetMove, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import {SystemViewHelper} from "../system-view-helper";
-import {StellarMovement} from "../../../../services/star-map-communication.service";
+import {StellarMovement} from "../../../../services/intercom/star-map-communication.service";
 import {timer} from "rxjs";
 
 @Component({

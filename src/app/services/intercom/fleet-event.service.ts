@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from "@angular/core";
-import {FleetName} from "../modules/display-elements/fleet-display/fleet-display.component";
+import {FleetName} from "../../modules/display-elements/fleet-display/fleet-display.component";
 import {ReplaySubject} from "rxjs";
-import {AbstractId} from "./swagger";
+import {AbstractId} from "../swagger";
 
 @Injectable()
 export class FleetEventService {

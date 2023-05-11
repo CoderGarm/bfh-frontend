@@ -45,8 +45,8 @@ import {MarkdownModule, MarkdownService} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {TransportationModule} from "./modules/transportation/transportation.module";
 import {BackgroundService} from "./services/prefetch/background.service";
-import {FleetEventService} from "./services/fleet-event.service";
-import {StarMapCommunicationService} from "./services/star-map-communication.service";
+import {FleetEventService} from "./services/intercom/fleet-event.service";
+import {StarMapCommunicationService} from "./services/intercom/star-map-communication.service";
 import {NumberRomanPipe} from "./services/pipes/number-roman.pipe";
 import {BasicViewHelperData} from "./services/svg-view-helper/basic-view-helper-data";
 import {NestedSidenavComponent} from './components/nested-sidenav/nested-sidenav.component';
@@ -67,7 +67,9 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
 import {ColorPickerModule} from "ngx-color-picker";
 import {PlayerModule} from "./modules/user-points/player.module";
 import {MonitorInterceptor} from "./services/interceptors/monitor.interceptor";
-import {DoNotScrollService} from "./services/do-not-scroll.service";
+import {DoNotScrollService} from "./services/intercom/do-not-scroll.service";
+import {NgxEchartsModule} from "ngx-echarts";
+import {CurrentTickService} from "./services/intercom/current-tick.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -138,6 +140,9 @@ export let AppInjector: Injector;
         TransportationModule,
         ClipboardModule,
         ColorPickerModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        })
     ],
     providers: [
         NgxPermissionsModule,
@@ -149,6 +154,7 @@ export let AppInjector: Injector;
         SpinnerService,
         DoNotScrollService,
         FleetEventService,
+        CurrentTickService,
         TypeService,
         ModuleService,
         BackgroundService,

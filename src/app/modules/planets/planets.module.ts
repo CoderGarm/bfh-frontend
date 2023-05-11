@@ -9,6 +9,8 @@ import {DisplayElementsModule} from "../display-elements/display-elements.module
 import {PlanetsEventService} from "./planets-event.service";
 import {PlanetaryDashboardComponent} from './components/payload/planetary-dashboard/planetary-dashboard.component';
 import {FleetsInOrbitComponent} from './components/payload/fleets-in-orbit/fleets-in-orbit.component';
+import {PlanetaryMarketplaceComponent} from './components/payload/planetary-marketplace/planetary-marketplace.component';
+import {NgxEchartsModule} from "ngx-echarts";
 
 @NgModule({
     declarations: [
@@ -19,10 +21,12 @@ import {FleetsInOrbitComponent} from './components/payload/fleets-in-orbit/fleet
         ShipyardComponent,
         PlanetaryDashboardComponent,
         FleetsInOrbitComponent,
+        PlanetaryMarketplaceComponent,
     ],
     imports: [
         SharedModuleModule,
-        DisplayElementsModule
+        DisplayElementsModule,
+        NgxEchartsModule
     ],
     providers: [
         PlanetsEventService

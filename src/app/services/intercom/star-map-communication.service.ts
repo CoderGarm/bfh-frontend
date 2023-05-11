@@ -1,4 +1,4 @@
-import {SubscriptionManager} from "../subscription.manager";
+import {SubscriptionManager} from "../../subscription.manager";
 import {EventEmitter, Injectable} from "@angular/core";
 import {
     Distance,
@@ -14,8 +14,8 @@ import {
     ResourceDeposit,
     ResourcesApiService,
     StarSystem
-} from "./swagger";
-import {NavigationCalculator} from "./helper/navigation-calculator.helper";
+} from "../swagger";
+import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export interface StellarMovement {

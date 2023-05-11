@@ -87,6 +87,7 @@ export * from './researchTreeChain';
 export * from './researchTreeElement';
 export * from './resourceAmount';
 export * from './resourceDeposit';
+export * from './resourcePrice';
 export * from './resourceTransfer';
 export * from './shipClass';
 export * from './shipClassMock';

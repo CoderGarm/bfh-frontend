@@ -3,7 +3,7 @@ import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} fr
 import {SubscriptionManager} from "../../../subscription.manager";
 import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
-import {StarMapCommunicationService} from "../../../services/star-map-communication.service";
+import {StarMapCommunicationService} from "../../../services/intercom/star-map-communication.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 @Component({

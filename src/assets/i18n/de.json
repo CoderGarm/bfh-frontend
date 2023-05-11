@@ -273,6 +273,11 @@
       },
       "title": "Gebäude"
     },
+    "marketplace": {
+      "price-history": {
+        "title": "Preisentwicklung"
+      }
+    },
     "fleets-in-orbit": {
       "not-present": "Keine Flotten im Orbit",
       "percentage-message": "Kampfbereitschaft",
@@ -504,6 +509,7 @@
     },
     "planetary": {
       "dashboard": "Übersicht",
+      "marketplace": "Marktplatz",
       "ground-constructions": "Gebäude",
       "jobs": "Jobs",
       "shipyard": "Werft"
