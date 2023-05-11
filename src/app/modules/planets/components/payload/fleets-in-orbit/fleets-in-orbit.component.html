@@ -1,4 +1,4 @@
-<p>{{ 'planetary.fleets-in-orbit.title' | translate }}</p>
+<div mat-subheader *ngIf="!!fleetsInOrbit && fleetsInOrbit.length == 0">{{ 'planetary.fleets-in-orbit.not-present' | translate }}</div>
 <mat-accordion>
     <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit" class="margin-bottom">
         <mat-expansion-panel-header [matTooltip]="getPercentageString(fleet)">

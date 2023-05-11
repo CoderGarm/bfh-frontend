@@ -1,20 +1,30 @@
-<div class="holder">
-    <div class="dash">
-        <p>{{ 'planetary.mining-factors.title' | translate }}</p>
+<div class="holder content-area">
+
+
+    <app-outlined titleValue="{{ 'planetary.mining-factors.title' | translate }}">
+        <p>{{ '' | translate }}</p>
         <app-mining-factors-display [miningFactors]="miningFactors"></app-mining-factors-display>
-    </div>
-    <div class="dash pops">
-        <p>{{ 'planetary.population-development.title' | translate }}</p>
+    </app-outlined>
+
+    <app-outlined titleValue="{{ 'planetary.population-development.title' | translate }}">
         <app-population-development [deposit]="deposit"
                                     [income]="income"
                                     [demand]="demand"
                                     [utilization]="utilization"
                                     [capacity]="capacity"></app-population-development>
-    </div>
-    <div class="dash">
+    </app-outlined>
+
+
+    <app-outlined titleValue="{{ 'jobs.title.active' | translate }}">
+        <app-planetary-job-list [selectedPlanetInput]="planet"></app-planetary-job-list>
+    </app-outlined>
+
+
+    <app-outlined titleValue="{{ 'planetary.fleets-in-orbit.title' | translate }}">
         <app-fleets-in-orbit [planet]="planet"
                              [fleetsInOrbit]="fleetsInOrbit"
                              [shipyardJobPossible]="shipyardJobPossible"
                              [shipyardExists]="shipyardExists"></app-fleets-in-orbit>
-    </div>
+    </app-outlined>
+
 </div>
