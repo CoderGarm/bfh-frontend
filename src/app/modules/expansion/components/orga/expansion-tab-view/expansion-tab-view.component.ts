@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
 
 @Component({
     selector: 'app-expansion-tab-view',
@@ -10,13 +9,9 @@ export class ExpansionTabViewComponent implements OnInit {
 
     static path: string = 'colonization';
 
-    constructor(private resourceEmitter: ResourceEmitterService) {
+    constructor() {
     }
 
     ngOnInit(): void {
-    }
-
-    indexChanged(event: number) {
-        this.resourceEmitter.clear();
     }
 }

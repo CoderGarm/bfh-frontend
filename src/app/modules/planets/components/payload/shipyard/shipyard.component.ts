@@ -18,7 +18,6 @@ import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/resource-display.manager";
-import {ChipSelectorValue} from "../../../../shared-module/components/chip-selector/chip-selector.component";
 
 @Component({
     selector: 'app-shipyard',
@@ -362,23 +361,18 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
 
     getJobButtonText() {
         if (!this.shipyardJobPossible) {
+            console.log("shipyardJobPossible")
             return this.translations.get('shipyard.constructions.build.already-in-use')!;
         }
         if (this.jobTooExpensive) {
+            console.log("jobTooExpensive")
             return this.translations.get('shipyard.constructions.build.too-expensive')!;
         }
         if (!this.hasSomeShipsForBuildSelected()) {
+            console.log("hasSomeShipsForBuildSelected", this.order) /* fixme selection broken? */
             return this.translations.get('shipyard.constructions.build.nothing-to-do')!;
         }
+        console.log("else")
         return this.translations.get('shipyard.constructions.build.start-building')!;
-    }
-
-    getT(): ChipSelectorValue[] {
-        const result: ChipSelectorValue[] = [];
-        this.eHullTypes.forEach(t =>
-            result.push({
-                value: t.typeName
-            }));
-        return result;
     }
 }

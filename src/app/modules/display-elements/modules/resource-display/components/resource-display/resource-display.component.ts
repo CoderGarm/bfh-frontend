@@ -54,8 +54,7 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     private readonly capacityPopulationWarningKey: string = 'resource-overlay.capacity.info.population-growth-warning';
     private readonly capacityResourceKey: string = 'resource-overlay.capacity.info.resource';
 
-
-    constructor(private resourceDisplay: ResourceEmitterService,
+    constructor(private resourceEmitterService: ResourceEmitterService,
                 private typeService: TypeService,
                 public translate: TranslateService) {
         super();
@@ -63,22 +62,22 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         this.resourceTypes = typeService.eResourceTypes;
         this.educationTypes = typeService.educationTypes;
 
-        let sub = this.resourceDisplay.deposit.subscribe(resp => this.deposit = resp);
+        let sub = this.resourceEmitterService.deposit.subscribe(resp => this.deposit = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceDisplay.costs.subscribe(resp => this.costs = resp);
+        sub = this.resourceEmitterService.costs.subscribe(resp => this.costs = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceDisplay.income.subscribe(resp => this.income = resp);
+        sub = this.resourceEmitterService.income.subscribe(resp => this.income = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceDisplay.capacity.subscribe(resp => this.capacity = resp);
+        sub = this.resourceEmitterService.capacity.subscribe(resp => this.capacity = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceDisplay.levelImprovementResources.subscribe(resp => this.levelImprovementResources = resp);
+        sub = this.resourceEmitterService.levelImprovementResources.subscribe(resp => this.levelImprovementResources = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceDisplay.levelImprovementHumanResources.subscribe(resp => this.levelImprovementHumanResources = resp);
+        sub = this.resourceEmitterService.levelImprovementHumanResources.subscribe(resp => this.levelImprovementHumanResources = resp);
         this.subscriptions.push(sub);
 
         this.translations.set(this.incomePopulation, this.incomePopulation);

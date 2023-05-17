@@ -42,6 +42,9 @@ export class ResourceEmitterService extends SubscriptionManager {
     }
 
     clear() {
+        if (!this.dialogRef) {
+            return;
+        }
         this.deposit.emit(undefined);
         this.costs.emit(undefined);
         this.income.emit(undefined);
