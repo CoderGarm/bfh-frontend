@@ -9,6 +9,11 @@
   width: $page-width;
 }
 
+.ugly-child-growth-fix {
+  height: 120%;
+  display: block;
+}
+
 .mat-mdc-chip {
   font-size: 0.8rem;
   min-height: 18px;

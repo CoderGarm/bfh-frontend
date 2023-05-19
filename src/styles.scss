@@ -301,6 +301,6 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
 
 .planetary-tab-group #mat-tab-content-1-2 .mat-mdc-tab-body-content,
 .planetary-tab-group #mat-tab-content-1-1 .mat-mdc-tab-body-content {
-  // absolute height to create scrollbar inside planetary tabs construction and shipyard for .app-resource-display
-  height: 100vh;
+  // to create scrollbar inside planetary tabs construction and shipyard for .app-resource-display
+  position: relative;
 }

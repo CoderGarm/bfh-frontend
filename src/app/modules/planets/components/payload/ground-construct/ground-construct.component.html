@@ -50,7 +50,7 @@
 
 
 {{ 'planetary.constructions.title' | translate }}
-<mat-accordion>
+<mat-accordion class="ugly-child-growth-fix">
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"
                          class="margin-bottom"
                          (opened)="setOpened(construction)"
