@@ -30,11 +30,6 @@ import ECapacityAreaTypesEnum = EnumValueDto.ECapacityAreaTypesEnum;
 export class ShipyardComponent extends ResourceDisplayManager implements AfterContentInit, OnChanges {
 
     /**
-     * the displayed ship class
-     */
-    currentlyOpenedItemIndex?: ShipClass;
-
-    /**
      * the producible ship classes
      */
     possibleShipClasses: ShipClass[] = [];

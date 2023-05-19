@@ -1,5 +1,13 @@
 @import "src/styles/variables";
 
+.ressis {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  //app-resource-display {
+  width: $page-width;
+}
+
 .mat-mdc-chip {
   font-size: 0.8rem;
   min-height: 18px;
