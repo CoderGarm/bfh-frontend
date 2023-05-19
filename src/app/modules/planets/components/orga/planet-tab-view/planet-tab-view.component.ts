@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {PlanetsEventService} from "../../../planets-event.service";
-import {DoNotScrollService} from "../../../../../services/do-not-scroll.service";
+import {DoNotScrollService} from "../../../../../services/intercom/do-not-scroll.service";
 
 @Component({
     selector: 'app-planet-tab-view',
