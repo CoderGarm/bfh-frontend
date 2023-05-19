@@ -13,8 +13,8 @@ export class DoNotScrollService {
         return this.noScrollEmitter;
     }
 
-    setNoScroll(hideScrollbar: boolean) {
-        this.noScrollEmitter.next(hideScrollbar);
+    setNoScroll() {
+        this.noScrollEmitter.next(true);
     }
 
     clearScrolling() {

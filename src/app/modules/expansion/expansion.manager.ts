@@ -1,4 +1,3 @@
-import {ResourceDisplayManager} from "../display-elements/modules/resource-display/resource-display.manager";
 import {Component, Inject, ViewChild} from "@angular/core";
 import {ColonizationApiService, MiningFactors, Orbit, Planet, ResourcesApiService, StarSystem, StarSystemColonization} from "../../services/swagger";
 import {MatCheckboxChange} from "@angular/material/checkbox";
@@ -6,11 +5,12 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {AppInjector} from "../../app.module";
+import {SubscriptionManager} from "../../subscription.manager";
 
 @Component({
     template: ''
 })
-export class ExpansionManager extends ResourceDisplayManager {
+export class ExpansionManager extends SubscriptionManager {
 
     displayedColumns: string[] = [];
 

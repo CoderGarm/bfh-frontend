@@ -1,6 +1,8 @@
-<app-resource-display [deposit]="resourceDeposit"
-                      [costs]="costsToDisplay"
-                      [income]="income"></app-resource-display>
+<div class="app-resource-display">
+    <app-resource-display [deposit]="resourceDeposit"
+                          [costs]="costsToDisplay"
+                          [income]="income"></app-resource-display>
+</div>
 
 <div>
     <app-outlined titleValue="Hull types" class="filter" (click)="toggle()">

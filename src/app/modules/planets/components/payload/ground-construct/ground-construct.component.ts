@@ -23,7 +23,7 @@ import {PlanetsEventService} from "../../../planets-event.service";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
-import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/resource-display.manager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 
 @Component({
@@ -31,7 +31,7 @@ import ProductionCategoryEnum = Building.ProductionCategoryEnum;
     templateUrl: './ground-construct.component.html',
     styleUrls: ['./ground-construct.component.scss']
 })
-export class GroundConstructComponent extends ResourceDisplayManager implements OnChanges, AfterViewInit {
+export class GroundConstructComponent extends SubscriptionManager implements OnChanges, AfterViewInit {
 
     /**
      * the displayed construction

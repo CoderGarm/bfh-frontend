@@ -1,14 +1,14 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Job, JobApiService, Planet} from "../../../../../services/swagger";
 import {PlanetsEventService} from "../../../planets-event.service";
-import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/resource-display.manager";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
     selector: 'app-planetary-job-list',
     templateUrl: './planetary-job-list.component.html',
     styleUrls: ['./planetary-job-list.component.scss']
 })
-export class PlanetaryJobListComponent extends ResourceDisplayManager implements AfterViewInit, OnChanges {
+export class PlanetaryJobListComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * the current selected planet

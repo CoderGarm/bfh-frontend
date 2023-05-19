@@ -2,7 +2,6 @@ import {AfterViewInit, Component, Input} from '@angular/core';
 import {EDepositType, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
-import {ResourceEmitterService} from "../../../../../../services/resource-emitter.service";
 import {TypeService} from "../../../../../../services/type.service";
 import {StaticResourcesService} from "../../../../../../services/static-resources.service";
 import CollectableTypeEnum = EResourceType.CollectableTypeEnum;
@@ -54,34 +53,15 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     private readonly capacityPopulationWarningKey: string = 'resource-overlay.capacity.info.population-growth-warning';
     private readonly capacityResourceKey: string = 'resource-overlay.capacity.info.resource';
 
-    constructor(private resourceEmitterService: ResourceEmitterService,
-                private typeService: TypeService,
+    constructor(private typeService: TypeService,
                 public translate: TranslateService) {
         super();
 
         this.resourceTypes = typeService.eResourceTypes;
         this.educationTypes = typeService.educationTypes;
 
-        let sub = this.resourceEmitterService.deposit.subscribe(resp => this.deposit = resp);
-        this.subscriptions.push(sub);
-
-        sub = this.resourceEmitterService.costs.subscribe(resp => this.costs = resp);
-        this.subscriptions.push(sub);
-
-        sub = this.resourceEmitterService.income.subscribe(resp => this.income = resp);
-        this.subscriptions.push(sub);
-
-        sub = this.resourceEmitterService.capacity.subscribe(resp => this.capacity = resp);
-        this.subscriptions.push(sub);
-
-        sub = this.resourceEmitterService.levelImprovementResources.subscribe(resp => this.levelImprovementResources = resp);
-        this.subscriptions.push(sub);
-
-        sub = this.resourceEmitterService.levelImprovementHumanResources.subscribe(resp => this.levelImprovementHumanResources = resp);
-        this.subscriptions.push(sub);
-
         this.translations.set(this.incomePopulation, this.incomePopulation);
-        sub = this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
+        let sub = this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
             this.translations.set(this.incomePopulation, translated);
         });
         this.subscriptions.push(sub);

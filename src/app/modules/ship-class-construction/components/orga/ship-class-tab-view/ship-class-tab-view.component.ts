@@ -2,7 +2,6 @@ import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
 
 @Component({
     selector: 'app-ship-class-tab-view',
@@ -21,8 +20,7 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
 
     resourceDeposit?: ResourceDeposit;
 
-    constructor(private resourceApi: ResourcesApiService,
-                private resourceEmitter: ResourceEmitterService) {
+    constructor(private resourceApi: ResourcesApiService) {
         super();
     }
 
@@ -33,9 +31,5 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
 
     emitTabSelectedIndex($event: MatTabChangeEvent) {
         this.selectionEmitter.emit($event.index);
-    }
-
-    indexChanged() {
-        this.resourceEmitter.clear();
     }
 }

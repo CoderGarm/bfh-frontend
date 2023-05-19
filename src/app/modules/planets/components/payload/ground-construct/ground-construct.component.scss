@@ -1,10 +1,11 @@
 @import "src/styles/variables";
 
-.ressis {
+.app-resource-display {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  //app-resource-display {
+  z-index: 15;
+  background-color: $background-color;
   width: $page-width;
 }
 

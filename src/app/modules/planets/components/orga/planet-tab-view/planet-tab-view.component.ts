@@ -1,8 +1,8 @@
 import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {ResourceEmitterService} from "../../../../../services/resource-emitter.service";
 import {PlanetsEventService} from "../../../planets-event.service";
+import {DoNotScrollService} from "../../../../../services/do-not-scroll.service";
 
 @Component({
     selector: 'app-planet-tab-view',
@@ -19,10 +19,15 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     shipyardExists: boolean = false;
 
     constructor(private planetApi: PlanetApiService,
+                private noScrollService: DoNotScrollService,
                 private planetsNotificationService: PlanetsEventService,
-                private resourceEmitter: ResourceEmitterService,
                 private change: ChangeDetectorRef) {
         super();
+    }
+
+    ngOnDestroy() {
+        this.noScrollService.clearScrolling();
+        super.ngOnDestroy();
     }
 
     ngAfterViewInit(): void {
@@ -43,6 +48,10 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     }
 
     indexChanged(event: number) {
-        this.resourceEmitter.clear();
+        if (event == 1 || event == 2) {
+            this.noScrollService.setNoScroll();
+        } else {
+            this.noScrollService.clearScrolling();
+        }
     }
 }

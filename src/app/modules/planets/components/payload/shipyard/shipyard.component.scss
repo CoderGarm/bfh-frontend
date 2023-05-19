@@ -1,5 +1,14 @@
 @import "src/styles/variables";
 
+.app-resource-display {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  background-color: $background-color;
+  width: $page-width;
+}
+
 .mdc-card {
   width: $page-width;
 }
