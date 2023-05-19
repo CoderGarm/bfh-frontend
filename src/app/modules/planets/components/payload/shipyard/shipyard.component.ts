@@ -1,6 +1,8 @@
 import {AfterContentInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {
+    EnumValueDto,
     EShipClassType,
+    Mass,
     Planet,
     PlanetApiService,
     ResourceDeposit,
@@ -18,6 +20,7 @@ import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
 import {ResourceDisplayManager} from "../../../../display-elements/modules/resource-display/resource-display.manager";
+import ECapacityAreaTypesEnum = EnumValueDto.ECapacityAreaTypesEnum;
 
 @Component({
     selector: 'app-shipyard',
@@ -85,6 +88,8 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
     selection: ShipyardConstructionSelection[] = [];
 
     costsToDisplay?: ResourceDeposit;
+
+    hasSomeShipsForBuildSelected: boolean = false;
 
     translations: Map<string, string> = new Map<string, string>();
 
@@ -224,43 +229,25 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
         return selectedResourceTypes;
     }
 
-    /**
-     * sets the {@link currentlyOpenedItemIndex} for the opened item
-     * @param itemIndex
-     */
-    setOpened(itemIndex: ShipClass) {
-        this.currentlyOpenedItemIndex = itemIndex;
-    }
-
-    /**
-     * sets the {@link currentlyOpenedItemIndex} for the closed item
-     * @param itemIndex
-     */
-    setClosed(itemIndex: ShipClass) {
-        if (this.currentlyOpenedItemIndex === itemIndex) {
-            this.currentlyOpenedItemIndex = undefined;
-        }
-    }
-
-    /**
-     * returns true if the description should be displayed, false otherwise
-     * @param itemIndex
-     */
-    showHeader(itemIndex: ShipClass): boolean {
-        return this.currentlyOpenedItemIndex != itemIndex;
-    }
-
-    getAmountString(shipClass: ShipClass): string {
-        return "" + this.getAmount(shipClass);
-    }
-
-    getAmount(shipClass: ShipClass): number {
+    setAmount(amount: number, shipClass: ShipClass) {
+        let element: ShipyardConstructionSelection;
         const selection: ShipyardConstructionSelection[] = this.selection.filter(s => s.idShipClass === shipClass.idShipClass);
-        if (!selection || selection.length < 1) {
-            return 0;
+        if (!!selection && selection.length > 0) {
+            element = selection[0];
+            const indexOf = this.selection.indexOf(element);
+            this.selection.splice(indexOf, 1);
+            element.amount = amount;
+        } else {
+            element = {
+                idShipClass: shipClass.idShipClass!,
+                amount: amount
+            }
         }
-        let singleSelection: ShipyardConstructionSelection = selection[0];
-        return !!singleSelection.amount ? singleSelection.amount : 0;
+        this.selection.push(element);
+        if (!!this.order) {
+            this.order.shipJobPayload = this.selection;
+        }
+        this.getCostsAndCheckBalances();
     }
 
     /**
@@ -279,6 +266,7 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
             this.costsToDisplay = undefined;
             this.jobTooExpensive = false;
         }
+        this.detectHasSomeShipsForBuildSelected();
     }
 
     private checkBalances() {
@@ -287,51 +275,6 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
             return;
         }
         this.jobTooExpensive = !ResourceHelper.canPayTheCollectableBill(this.costsToDisplay, this.resourceDeposit);
-    }
-
-    /**
-     * subtracts one of the type for the selection
-     * @param shipClass
-     */
-    sub(shipClass: ShipClass) {
-        const selection: ShipyardConstructionSelection[] = this.selection.filter(s => s.idShipClass === shipClass.idShipClass);
-        if (!selection) {
-            return;
-        }
-        let singleSelection: ShipyardConstructionSelection = selection[0];
-        if (!singleSelection.amount || singleSelection.amount <= 0) {
-            let indexOf = this.selection.indexOf(singleSelection);
-            this.selection.slice(indexOf, indexOf++)
-        } else {
-            singleSelection.amount--;
-        }
-        this.getCostsAndCheckBalances();
-    }
-
-    /**
-     * adds one of the type for the selection
-     * @param shipClass
-     */
-    add(shipClass: ShipClass) {
-        const selection: ShipyardConstructionSelection[] = this.selection.filter(s => s.idShipClass === shipClass.idShipClass);
-        if (!selection || selection.length < 1) {
-            const n: ShipyardConstructionSelection = {
-                idShipClass: shipClass.idShipClass!,
-                amount: 0
-            }
-            selection.push(n);
-        }
-        let singleSelection: ShipyardConstructionSelection = selection[0];
-        if (!singleSelection.amount) {
-            singleSelection.amount = 0;
-        }
-        singleSelection.amount++;
-
-        let indexOf = this.selection.indexOf(singleSelection);
-        if (indexOf == -1) {
-            this.selection.push(singleSelection);
-        }
-        this.getCostsAndCheckBalances();
     }
 
     /**
@@ -350,13 +293,14 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
         }
     }
 
-    hasSomeShipsForBuildSelected() {
+    private detectHasSomeShipsForBuildSelected() {
         if (!this.order) {
-            return false;
+            this.hasSomeShipsForBuildSelected = false;
+        } else {
+            let amount = 0;
+            this.selection.forEach(o => amount += o.amount);
+            this.hasSomeShipsForBuildSelected = amount != 0;
         }
-        let amount = 0;
-        this.selection.forEach(o => amount += o.amount);
-        return amount != 0;
     }
 
     getJobButtonText() {
@@ -368,11 +312,15 @@ export class ShipyardComponent extends ResourceDisplayManager implements AfterCo
             console.log("jobTooExpensive")
             return this.translations.get('shipyard.constructions.build.too-expensive')!;
         }
-        if (!this.hasSomeShipsForBuildSelected()) {
-            console.log("hasSomeShipsForBuildSelected", this.order) /* fixme selection broken? */
+        if (!this.hasSomeShipsForBuildSelected) {
+            console.log("hasSomeShipsForBuildSelected", this.order, this.selection)
             return this.translations.get('shipyard.constructions.build.nothing-to-do')!;
         }
         console.log("else")
         return this.translations.get('shipyard.constructions.build.start-building')!;
+    }
+
+    getMass(shipClass: ShipClass): Mass {
+        return shipClass.spacecraftCapacityAreas.capacityValues.filter(c => c.capacityArea === ECapacityAreaTypesEnum.OVERALL)[0].tonnage;
     }
 }

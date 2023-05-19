@@ -21,19 +21,19 @@
 <div [matTooltip]="getJobButtonText()" class="tooltip-container">
     <button mat-raised-button color="secondary"
             (click)="buildConstruction()"
-            [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected()">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
+            [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
 </div>
 
 <mat-card *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
     <mat-card-header>
         <div>
             <mat-card-title>{{shipClass.name}}</mat-card-title>
-            <mat-card-subtitle>{{shipClass.shipClassType.description}} - Class code '{{shipClass.shipClassType.typeName}}'</mat-card-subtitle>
+            <mat-card-subtitle>{{shipClass.shipClassType.typeName}} - {{ getMass(shipClass) | mass: 'T' }} </mat-card-subtitle>
         </div>
         <div class="right-block">
             <app-numeric-counter [inputDisabled]="false"
                                  caption="Amount"
-                                 (amount)="getAmount(shipClass)"></app-numeric-counter>
+                                 (amount)="setAmount($event, shipClass)"></app-numeric-counter>
         </div>
     </mat-card-header>
 </mat-card>
