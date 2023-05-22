@@ -308,3 +308,7 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
   // to create scrollbar inside planetary tabs construction and shipyard for .app-resource-display
   position: relative;
 }
+
+.streamline-background {
+  background-color: $background-color;
+}

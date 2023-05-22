@@ -92,8 +92,11 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     }
 
     change() {
-        if (this.internalAmount <= this.max && this.internalAmount >= this.min) {
-            this.fire();
+        if (this.internalAmount > this.max) {
+            this.internalAmount = this.max;
+        } else if (this.internalAmount < this.min) {
+            this.internalAmount = this.min;
         }
+        this.fire();
     }
 }

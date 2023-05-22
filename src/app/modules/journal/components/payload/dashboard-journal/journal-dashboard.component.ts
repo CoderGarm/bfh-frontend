@@ -1,5 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {Commissioning, FinishedColonization, FleetMovement, Job, JobApiService, JournalApiService, TransportJob} from "../../../../../services/swagger";
+import {
+    Commissioning,
+    FinishedColonization,
+    FleetMovement,
+    Job,
+    JobApiService,
+    JournalApiService,
+    MarketplaceApiService,
+    TradesByLocation,
+    TransportJob
+} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
@@ -15,9 +25,11 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     movements: FleetMovement[] = [];
     colonizations: FinishedColonization[] = [];
     operationals: Commissioning[] = [];
+    trades: TradesByLocation[] = [];
 
     constructor(private jobService: JobApiService,
-                private journalService: JournalApiService) {
+                private journalService: JournalApiService,
+                private marketService: MarketplaceApiService) {
         super();
     }
 
@@ -38,6 +50,9 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
         this.subscriptions.push(sub);
 
         sub = this.journalService.getNewlyActiveOperationals().subscribe(resp => this.operationals = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.marketService.getTradesForUser().subscribe(resp => this.trades = resp);
         this.subscriptions.push(sub);
     }
 }

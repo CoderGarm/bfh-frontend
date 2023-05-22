@@ -9,16 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ResourceAmount } from './resourceAmount';
-import { Tick } from './tick';
+import { AbstractId } from './abstractId';
+import { Trade } from './trade';
 
 /**
  * .
  */
-export interface ResourcePrice { 
-    tick: Tick;
+export interface TradeOffer { 
     /**
-     * The effective prices of the resources.
+     * The offer's id.
      */
-    prices: Array<ResourceAmount>;
+    idTradeOffer?: number;
+    seller?: AbstractId;
+    origin: AbstractId;
+    trade: Trade;
 }

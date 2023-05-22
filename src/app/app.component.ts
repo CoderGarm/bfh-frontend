@@ -109,7 +109,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         const timeframe = this.datePipe.transform(date, 'MM/dd/yyyy')!;
         const now = this.datePipe.transform(new Date(), 'MM/dd/yyyy')!;
         if (now < timeframe) {
-            this.notif.open('Season 2 has launched!', 'Ok', 20000);
+            // todo season badge
+            // this.notif.open('Season 2 has launched!', 'Ok', 20000);
         }
     }
 

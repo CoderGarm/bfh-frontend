@@ -202,6 +202,13 @@
     }
   },
   "journal": {
+    "trade": {
+      "nothing": "Keine Lieferungen",
+      "present-title": "Aktuelle Lieferungen",
+      "title": "Lieferungen",
+      "expected-arrival": "Erwartete Ankunft zu Tick",
+      "arrival": "Lieferung angenommen"
+    },
     "commissioned-operationals": {
       "finished": {
         "nothing": "Keine Inbetriebnahmen",
@@ -276,6 +283,22 @@
     "marketplace": {
       "price-history": {
         "title": "Preisentwicklung"
+      },
+      "offer": {
+        "create": "Handelsangebot erstellen",
+        "edit": "Handelsangebot bearbeiten",
+        "title": "verfügbare Angebote",
+        "offer-taken": "Du hast das Angebot angenommen.",
+        "action": {
+          "take": "Annehmen",
+          "edit": "Bearbeiten",
+          "release": "Handel anbieten",
+          "abort": "Abbrechen"
+        },
+        "create-for": "Erstelle ein Angebot für",
+        "created-notif": "Angebot erstellt",
+        "chose-amount": "Verkaufsmenge",
+        "chose-price": "Preis pro Einheit"
       }
     },
     "fleets-in-orbit": {

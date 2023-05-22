@@ -202,6 +202,13 @@
     }
   },
   "journal": {
+    "trade": {
+      "nothing": "No deliveries",
+      "present-title": "Current deliveries",
+      "title": "Deliveries",
+      "expected-arrival": "Expected arrival to tick",
+      "arrival": "Delivery arrived"
+    },
     "commissioned-operationals": {
       "finished": {
         "nothing": "No activated operationals",
@@ -276,6 +283,22 @@
     "marketplace": {
       "price-history": {
         "title": "Price history"
+      },
+      "offer": {
+        "create": "Create a trade offer",
+        "edit": "Edit the offer",
+        "title": "Available offers",
+        "offer-taken": "You accepted the offer.",
+        "action": {
+          "take": "Take",
+          "edit": "Edit",
+          "release": "Release for market",
+          "abort": "Cancel"
+        },
+        "create-for": "Create an offer about",
+        "created-notif": "Offer released",
+        "chose-amount": "Amount to sell",
+        "chose-price": "Price per unit"
       }
     },
     "fleets-in-orbit": {

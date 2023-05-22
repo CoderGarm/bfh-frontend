@@ -19,6 +19,10 @@
         <app-transportation-list-display [transportJobs]="transportJobs"></app-transportation-list-display>
     </app-outlined>
 
+    <app-outlined titleValue="{{ 'journal.trade.title' | translate }}">
+        <app-trade-deliveries [trades]="trades"></app-trade-deliveries>
+    </app-outlined>
+
     <app-outlined titleValue="{{ 'path.menu.colonization' | translate }}">
         <app-finished-colonizations-list [finishedColonizations]="colonizations"></app-finished-colonizations-list>
     </app-outlined>

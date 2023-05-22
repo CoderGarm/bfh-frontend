@@ -1,5 +1,41 @@
+@import "src/styles/variables";
+
 .price-history-chart {
   height: 400px;
   width: 90%;
   margin: 50px auto;
+}
+
+.res-wrapper {
+  height: 38px;
+  max-width: 35px;
+}
+
+.info-holder {
+  position: relative;
+}
+
+.img-container {
+  float: left;
+  margin: 9px 10px 5px 5px;
+}
+
+.res-wrapper > button {
+  height: 75px;
+  width: 45px;
+}
+
+.offer-block {
+  margin: 25px 0 65px 0;
+}
+
+mat-card-content {
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+mat-card-header {
+  padding: 16px;
 }
