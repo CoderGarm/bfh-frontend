@@ -165,7 +165,7 @@ export class ExternalMapManagerComponent extends SubscriptionManager implements 
                 return val;
         });
         this.url = this.frontendPath + '/external-star-map?highlight=' + encodeURIComponent(highlight) + '&center=' + encodeURIComponent(center);
-        this.iFrameTxt = '<iframe width="900px" height="600px" [src]="' + this.url + '"></iframe>';
+        this.iFrameTxt = '<iframe width="900px" height="600px" src="' + this.url + '"></iframe>';
     }
 
 
