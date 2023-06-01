@@ -267,15 +267,15 @@
                                 <span matListItemLine>Range: {{ missile.missileMotor | missileEndurance: 'KM' }}</span>
                                 <span matListItemLine>Attack type: {{ missile.warhead.warheadType }}</span>
                                 <span matListItemLine>Attack range: {{ missile.warhead.damageProjectionRange | distance: 'KM' }}</span>
-                                <span matListItemLine>Used by: {{getAmountOfLaunchersFor(missile, shipClassMock)}}  {{ 'shipyard.fitting.weapon-for.weaponType.MISSILE' | translate }}</span>
+                                <span matListItemLine>Used by: {{ getAmountOfLaunchersFor(missile, shipClassMock) }}  {{ 'shipyard.fitting.weapon-for.weaponType.MISSILE' | translate }}</span>
+                                <span matListItemLine>Total of {{ getMissileAmount(missile) }}  {{ 'enum.name.weaponType.MISSILE' | translate }}</span>
                                 <span matListItemLine>Tonnage: {{ getMissileTonnage(missile) | mass: 'T' }}</span>
                             </mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>
                             <app-numeric-counter class="numeric-counter" caption="Rounds"
-                                                 (amount)="setAmmunitionModule(missile, $event)"
-                                                 [step]="getAmountOfLaunchersFor(missile, shipClassMock)>0?getAmountOfLaunchersFor(missile, shipClassMock):1"
-                                                 [startAt]="getMissileAmount(missile)"></app-numeric-counter>
+                                                 (amount)="setSalvoAmount(missile, $event, shipClassMock)"
+                                                 [startAt]="getMissileSalvoAmount(missile, shipClassMock)"></app-numeric-counter>
                         </mat-card-content>
                     </mat-card>
                 </div>

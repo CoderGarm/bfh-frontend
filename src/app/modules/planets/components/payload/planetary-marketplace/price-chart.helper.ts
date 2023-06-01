@@ -63,8 +63,6 @@ export class PriceChartHelper extends SubscriptionManager {
                     data.push(!!resourceAmount ? resourceAmount.resourceAmount.amount : 0);
                 });
 
-                console.log(data)
-
                 return <SeriesOption>{
                     name: r.typeName,
                     type: 'line',

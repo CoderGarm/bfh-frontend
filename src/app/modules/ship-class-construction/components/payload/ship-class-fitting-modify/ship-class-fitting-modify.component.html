@@ -234,15 +234,15 @@
                                 <span matListItemLine>Range: {{ missile.missileMotor | missileEndurance: 'KM' }}</span>
                                 <span matListItemLine>Attack type: {{ missile.warhead.warheadType }}</span>
                                 <span matListItemLine>Attack range: {{ missile.warhead.damageProjectionRange | distance: 'KM' }}</span>
-                                <span matListItemLine>Used by: {{getAmountOfLaunchersFor(missile, designedShipClass)}}  {{ 'shipyard.fitting.weapon-for.weaponType.MISSILE' | translate }}</span>
+                                <span matListItemLine>Used by: {{ getAmountOfLaunchersFor(missile, designedShipClass) }}  {{ 'shipyard.fitting.weapon-for.weaponType.MISSILE' | translate }}</span>
+                                <span matListItemLine>Total of {{ getMissileAmount(missile) }}  {{ 'enum.name.weaponType.MISSILE' | translate }}</span>
                                 <span matListItemLine>Tonnage: {{ getMissileTonnage(missile) | mass: 'T' }}</span>
                             </mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>
                             <app-numeric-counter class="numeric-counter" caption="Rounds"
-                                                 (amount)="setAmmunitionModule(missile, $event)"
-                                                 [step]="getAmountOfLaunchersFor(missile, designedShipClass)>0?getAmountOfLaunchersFor(missile, designedShipClass):1"
-                                                 [startAt]="getMissileAmount(missile)"></app-numeric-counter>
+                                                 (amount)="setSalvoAmount(missile, $event, designedShipClass)"
+                                                 [startAt]="getMissileSalvoAmount(missile, designedShipClass)"></app-numeric-counter>
                         </mat-card-content>
                     </mat-card>
                 </div>
@@ -253,7 +253,7 @@
     <mat-step>
         <ng-template matStepLabel>
             <div *ngIf="!propulsionSelection">{{ 'shipyard.fitting.propulsion.title' | translate }}</div>
-            <div *ngIf="!!propulsionSelection">{{getDisplayName(propulsionSelection)}}</div>
+            <div *ngIf="!!propulsionSelection">{{ getDisplayName(propulsionSelection) }}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.mandatory.propulsion' | translate }}</div>
         </ng-template>
         <ng-template matStepContent>

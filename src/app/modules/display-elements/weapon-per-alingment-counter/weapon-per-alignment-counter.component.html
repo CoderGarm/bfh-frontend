@@ -1,13 +1,13 @@
 <div class="flex-items-container items">
-    <app-numeric-counter [disabled]="!startAt" [startAt]="getAmountByAlignment('STERN')"
+    <app-numeric-counter [disabled]="!startAt" [inputDisabled]="!startAt" [startAt]="getAmountByAlignment('STERN')"
                          caption='Stern'
                          (amount)="setAmount('STERN', $event)"></app-numeric-counter>
 
-    <app-numeric-counter [disabled]="!startAt" [startAt]="getAmountByAlignment('BROADSIDE')"
+    <app-numeric-counter [disabled]="!startAt" [inputDisabled]="!startAt" [startAt]="getAmountByAlignment('BROADSIDE')"
                          caption='Broadside' [step]="2"
                          (amount)="setAmount('BROADSIDE', $event)"></app-numeric-counter>
 
-    <app-numeric-counter [disabled]="!startAt" [startAt]="getAmountByAlignment('BOW')"
+    <app-numeric-counter [disabled]="!startAt" [inputDisabled]="!startAt" [startAt]="getAmountByAlignment('BOW')"
                          caption='Bow'
                          (amount)="setAmount('BOW', $event)"></app-numeric-counter>
 </div>

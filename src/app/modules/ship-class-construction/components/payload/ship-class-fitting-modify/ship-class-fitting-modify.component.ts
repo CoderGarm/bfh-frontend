@@ -142,9 +142,6 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
     }
 
     createAndEmitDesignedShipClass() {
-        if (!this.isChangePending()) {
-            return;
-        }
         let userID = this.tokenStorage.getUserID();
         let role = this.tokenStorage.getRole();
         let username = this.tokenStorage.getLogin();
@@ -167,6 +164,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
             idSuccessor: undefined,
             mark: !!this.shipClass ? this.shipClass.mark : 1,
             name: this.shipClass?.name!,
+            // kind of read-only section of the model
             owner: {
                 idUser: userID,
                 role: role,
@@ -186,6 +184,10 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
         };
 
         this.designedShipClass = output;
+
+        if (!this.isChangePending()) {
+            return;
+        }
         this.fetchPropulsionCapacity(this.designedShipClass);
         this.shipClassEmitter.emit(output);
     }

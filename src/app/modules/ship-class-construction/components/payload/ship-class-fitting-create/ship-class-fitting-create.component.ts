@@ -439,7 +439,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
     mapMultiModulesToFitting(weapons: AlignedFitting[],
                              ammo: AmmunitionFitting[],
                              passives: SupportFitting[]) {
-        this.weapons.forEach(module => {
+        this.weapons.sort((a, b) => a.baseModule.effectValue! - b.baseModule.effectValue!).forEach(module => {
             let amountByAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number> = this.getWeaponModuleAmount(module);
             amountByAlignment.forEach((amount, key) => {
                 if (!!amount && amount > 0) {
@@ -452,7 +452,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
                 }
             });
         });
-        this.launchers.forEach(module => {
+        this.launchers.sort((a, b) => a.allowedMissiles[0].warhead.damageValue - b.allowedMissiles[0].warhead.damageValue).forEach(module => {
             let amountByAlignment: Map<AlignedFitting.WeaponAlignmentEnum, number> = this.getWeaponModuleAmount(module);
             amountByAlignment.forEach((amount, key) => {
                 if (!!amount && amount > 0) {
@@ -466,15 +466,18 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             });
         });
 
+        const missiles: Missile[] = [];
         this.ammoSelection.forEach((amount, key) => {
-            if (!!amount && amount > 0) {
-                let id: number = FittingHelper.getAmmunitionIdFromKey(key);
-                const missile = this.missiles.filter(m => m.baseModule.idModule === id)[0];
-                ammo.push({
-                    amount: amount,
-                    missile: missile
-                });
-            }
+            let id: number = FittingHelper.getAmmunitionIdFromKey(key);
+            missiles.push(this.missiles.filter(m => m.baseModule.idModule === id)[0]);
+        });
+        missiles.sort((a, b) => a.warhead.damageValue - b.warhead.damageValue).forEach(missile => {
+            let amount = this.ammoSelection.get(FittingHelper.getAmmunitionMapKey(missile));
+            amount = !!amount ? amount : 0;
+            ammo.push({
+                amount: amount,
+                missile: missile
+            });
         });
 
         this.passiveModules.forEach(module => {
@@ -496,6 +499,15 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         }
     }
 
+    setSalvoAmount(missile: Missile, amount: number, shipClass?: ShipClass | ShipClassMock) {
+        if (!shipClass) {
+            return;
+        }
+        const amountOfLaunchers = this.getAmountOfLaunchersFor(missile, shipClass);
+        const amountOfMissiles = amount * amountOfLaunchers;
+        this.setAmmunitionModule(missile, amountOfMissiles);
+    }
+
     getMissileAmount(missile?: Missile): number {
         if (!missile) {
             return 0;
@@ -506,6 +518,15 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
             amount = 0;
         }
         return amount;
+    }
+
+    getMissileSalvoAmount(missile?: Missile, shipClass?: ShipClass | ShipClassMock): number {
+        if (!missile || !shipClass) {
+            return 0;
+        }
+        const missileAmount = this.getMissileAmount(missile);
+        const amountOfLaunchers = this.getAmountOfLaunchersFor(missile, shipClass);
+        return Math.round(missileAmount / amountOfLaunchers);
     }
 
     setPassiveModule(passive: PassiveModule, amount: number) {
