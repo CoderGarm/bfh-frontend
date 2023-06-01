@@ -105,6 +105,16 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
         this.dataSource.data = this.tradeOffers;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+
+        this.dataSource.sortingDataAccessor = (item, property) => {
+            switch (property.toLocaleLowerCase()) {
+                case "amount":
+                    return item.trade.resourceAmount.amount;
+                case "price":
+                default:
+                    return item.trade.price;
+            }
+        };
         this.resourceTypeChipList._chips.forEach(chip => chip.select());
         this.change.detectChanges();
     }
@@ -176,9 +186,7 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
     }
 
     takeOffer(idTradeOffer: number) {
-        let sub = this.marketService.takeOffer({idTradeOffer: idTradeOffer, idDestination: this.planet!.idPlanet}).subscribe(resp => {
-            const resourceAmount = resp.offer.trade.resourceAmount;
-            const price = resp.offer.trade.price;
+        let sub = this.marketService.takeOffer({idTradeOffer: idTradeOffer, idDestination: this.planet!.idPlanet}).subscribe(() => {
             this.notif.open(this.translations.get('planetary.marketplace.offer.offer-taken')!)
         });
         this.subscriptions.push(sub);

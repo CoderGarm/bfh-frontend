@@ -70,7 +70,15 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         this.fetchBaseData();
         let sub = this.backgroundService.getColonizationStarSystemsForUser()
             .subscribe(resp => {
-                this.starSystems = this.starSystems.concat(resp);
+                this.starSystems = this.starSystems.concat(resp).sort((a, b) => {
+                    if (!this.reference) {
+                        return 1;
+                    }
+                    const dA = this.getDistance(a);
+                    const dB = this.getDistance(b);
+
+                    return dA - dB;
+                });
                 this.dataSource.data = this.starSystems;
                 this.spinnerService.deactivateSpinner();
             });
