@@ -72,7 +72,7 @@
                                     <div [hidden]="!checkIfPlanetIsAlreadyColonized(planet)">
                                         {{planet.name}} is already colonized
                                     </div>
-                                    <div [hidden]="!!checkIfPlanetIsAlreadyColonized(planet) || checkIfColonizationIsInProgress(colo, planet)">
+                                    <div [hidden]="checkIfPlanetIsAlreadyColonized(planet) || checkIfColonizationIsInProgress(colo, planet)">
                                         <mat-checkbox (change)="addToCosts($event.checked,colo, planet)" class="payBox">Show costs</mat-checkbox>
                                         <button mat-raised-button color="secondary" (click)="colonizePlanet(planet)" [disabled]="!isPayPossible(colo, planet)">Colonize</button>
                                     </div>
@@ -94,7 +94,7 @@
         <tr mat-header-row *matHeaderRowDef="['star-system-filter', 'orbit-filter', 'noop']"></tr>
 
         <tr mat-row *matRowDef="let row; columns: displayedColumns"
-            class="expandable-element-row"
+            class="expandable-element-row clickable"
             [class.example-expanded-row]="expandedElement === row"
             (click)="expandedElement = expandedElement === row ? null : row"></tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="expandable-detail-row"></tr>
