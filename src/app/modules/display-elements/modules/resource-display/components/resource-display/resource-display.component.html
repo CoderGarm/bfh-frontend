@@ -3,13 +3,13 @@
         <div class="box">
             <div class="res-wrapper">
                 <div class="img-container hasSize"></div>
-                <div *ngIf="!!deposit">
+                <div class="height-reduced" *ngIf="!!deposit">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.deposit.toolTip' | translate }}">{{getIcon(deposit!)}}</mat-icon>
                 </div>
-                <div *ngIf="!!income">
+                <div class="height-reduced-2 income-display" *ngIf="!!income">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.toolTip' | translate }}">{{getIcon(income!)}}</mat-icon>
                 </div>
-                <div *ngIf="!!costs">
+                <div class="diffAmount" *ngIf="!!costs">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.costs.toolTip' | translate }}">{{getIcon(costs!)}}</mat-icon>
                 </div>
             </div>
@@ -19,10 +19,10 @@
                 <div class="img-container">
                     <mat-icon [inline]="true">schedule</mat-icon>
                 </div>
-                <div class="amount-present" *ngIf="!!deposit">
+                <div class="height-reduced" *ngIf="!!deposit">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.deposit.tick' | translate }}">all_inclusive</mat-icon>
                 </div>
-                <div class="amount-present" *ngIf="!!income">
+                <div class="height-reduced-2 income-display" *ngIf="!!income">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.tick' | translate }}">all_inclusive</mat-icon>
                 </div>
                 <div class="diffAmount">
@@ -50,11 +50,11 @@
                         <div *ngIf="!!income" class="diffAmount no-flex"
                              matTooltip="{{getTooltip(income!.subType, resource.resourceType)}}">
                             <div>
-                                <app-number-short [input]="getResourceAmount(resource.resourceType, income)"></app-number-short>
+                                <app-number-short color="#46a35e" [input]="getResourceAmount(resource.resourceType, income)"></app-number-short>
                             </div>
                             <div *ngIf="!!getResourceImprovement(resource.resourceType)" class="diffImprovementAmount">
                                 (+
-                                <app-number-short [input]="getResourceImprovement(resource.resourceType)"></app-number-short>
+                                <app-number-short color="#46a35e" [input]="getResourceImprovement(resource.resourceType)"></app-number-short>
                                 )
                             </div>
                         </div>
@@ -78,12 +78,12 @@
                     <div class="amount-holder">
                         <div *ngIf="!!income" class="diffAmount no-flex">
                             <div>
-                                <app-number-short [input]="getHumans(resource.resourceType, income)"></app-number-short>
+                                <app-number-short color="#46a35e" [input]="getHumans(resource.resourceType, income)"></app-number-short>
                             </div>
                             <div *ngIf="!!getHumanImprovement(resource.resourceType)"
                                  class="diffImprovementAmount">
                                 (+
-                                <app-number-short [input]="getHumanImprovement(resource.resourceType)"></app-number-short>
+                                <app-number-short color="#46a35e" [input]="getHumanImprovement(resource.resourceType)"></app-number-short>
                                 )
                             </div>
                         </div>
