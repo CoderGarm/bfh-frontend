@@ -1,12 +1,12 @@
-<div #element id="tech-tree-container"
+<div id="tech-tree-container"
      cdkOverlayOrigin #trigger="cdkOverlayOrigin"
-     (mousedown)="startDragging($event, element)"
-     (mouseup)="stopDragging($event)"
-     (mouseleave)="stopDragging($event)"
-     (mousemove)="moveEvent($event, element)">
+     (mousedown)="startDragging($event)"
+     (mouseup)="stopDragging()"
+     (mouseleave)="stopDragging()"
+     (mousemove)="handleMouseDragMove($event)">
     <app-research-result-overlay [boxWithContext]="boxWithContext"
                                  [origin]="trigger"
                                  [position]="position"></app-research-result-overlay>
-    <canvas #canvas id="tech-tree-display" (mousemove)="handleMouseMove($event)"></canvas>
+    <canvas #canvas id="tech-tree-display" (mousemove)="handleMouseHover($event)"></canvas>
 </div>
 

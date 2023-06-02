@@ -74,8 +74,8 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
         this.fitToContainer();
     }
 
-    handleMouseMove(e: MouseEvent) {
-        if (this.mouseDown || !this.ctx) {
+    handleMouseHover(e: MouseEvent) {
+        if (this.isDragging || !this.ctx) {
             return;
         }
 
@@ -205,10 +205,10 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
     private lineTo(ctx: CanvasRenderingContext2D, xFrom: number, xTo: number, yFrom: number, yTo: number, color: string, lineWidth: number) {
 
         // adjust coordinates by mouse move
-        xFrom += this.offsetX;
-        yFrom -= this.offsetY;
-        xTo += this.offsetX;
-        yTo -= this.offsetY;
+        xFrom += this.cameraOffset.x;
+        yFrom -= this.cameraOffset.y;
+        xTo += this.cameraOffset.x;
+        yTo -= this.cameraOffset.y;
 
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = color;
@@ -225,8 +225,8 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
 
     researchSwimLane(ctx: CanvasRenderingContext2D, x: number, y: number, height: number, radius: number, treeElement: TreeElement): Box {
         // adjust coordinates by mouse move
-        x += this.offsetX;
-        y -= this.offsetY;
+        x += this.cameraOffset.x;
+        y -= this.cameraOffset.y;
 
         ctx.font = "20px Georgia";
         const textWidth = ctx.measureText(treeElement.name).width;

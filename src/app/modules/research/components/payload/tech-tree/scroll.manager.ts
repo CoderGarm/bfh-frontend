@@ -4,44 +4,39 @@ export class ScrollManager extends SubscriptionManager {
 
     private drawMethod?: () => void;
 
-    mouseDown = false;
+    isDragging: boolean = false;
 
-    startX: any;
-    startY: any;
+    cameraOffset: { x: number, y: number } = {x: 0, y: 0};
+    dragStart: { x: number, y: number } = {x: 0, y: 0};
 
-    scrollLeft: any;
-    scrollTop: any;
+    /**
+     * flips the y-axis because upside-down computer logic
+     */
+    getEventLocation(e: MouseEvent): { x: number, y: number } {
+        return {x: e.clientX, y: -e.clientY}
+    }
 
-    offsetX: number = 0;
-    offsetY: number = 0;
-
-    setDrawMethod(drawTree: () => void) {
+    setDrawMethod(drawTree: () => void): void {
         this.drawMethod = drawTree;
     }
 
-    startDragging(e: MouseEvent, el: HTMLElement) {
-        this.mouseDown = true;
-        this.startX = e.pageX - el.offsetLeft;
-        this.startY = e.pageY - el.offsetTop;
-        this.scrollLeft = el.scrollLeft;
-        this.scrollTop = el.scrollTop;
+    startDragging(e: MouseEvent): void {
+        this.isDragging = true;
+        this.dragStart.x = this.getEventLocation(e).x - this.cameraOffset.x;
+        this.dragStart.y = this.getEventLocation(e).y - this.cameraOffset.y;
     }
 
-    stopDragging(e: MouseEvent) {
-        this.mouseDown = false;
+    stopDragging(): void {
+        this.isDragging = false;
     }
 
-    moveEvent(e: MouseEvent, el: HTMLElement) {
-        if (!this.mouseDown || !this.drawMethod) {
+    handleMouseDragMove(e: MouseEvent): void {
+        if (!this.isDragging || !this.drawMethod) {
             return;
         }
-        const x = e.pageX - el.offsetLeft;
-        const scrollX = x - this.startX;
-        this.offsetX = this.scrollLeft + scrollX;
 
-        const y = e.pageY - el.offsetTop;
-        const scrollY = y - this.startY;
-        this.offsetY = this.scrollTop - scrollY;
+        this.cameraOffset.x = this.getEventLocation(e).x - this.dragStart.x;
+        this.cameraOffset.y = this.getEventLocation(e).y - this.dragStart.y;
         this.drawMethod();
     }
 }
