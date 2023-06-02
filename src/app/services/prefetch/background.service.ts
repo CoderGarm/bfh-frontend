@@ -1,7 +1,7 @@
-import {EventEmitter, Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../../subscription.manager";
 import {ColonizationApiService, StarMapApiService, StarSystem, StarSystemColonization} from "../swagger";
-import {interval} from "rxjs";
+import {interval, ReplaySubject} from "rxjs";
 import {ModuleService} from "./module.service";
 
 /**
@@ -11,10 +11,10 @@ import {ModuleService} from "./module.service";
 export class BackgroundService extends SubscriptionManager {
 
     private starSystems: StarSystem[] = [];
-    private o1: EventEmitter<StarSystem[]> = new EventEmitter();
+    private o1: ReplaySubject<StarSystem[]> = new ReplaySubject();
 
     private colonizations: StarSystemColonization[] = [];
-    private o2: EventEmitter<StarSystemColonization[]> = new EventEmitter();
+    private o2: ReplaySubject<StarSystemColonization[]> = new ReplaySubject();
 
     constructor(private zone: NgZone,
                 private colonizationService: ColonizationApiService,
@@ -61,7 +61,7 @@ export class BackgroundService extends SubscriptionManager {
      * Strange idea:<br>
      * The subscriber has just to wait until the data is fetched. If the data is present it will be fired async 10 ms after subscribing.
      */
-    public getColonizationStarSystemsForUser(): EventEmitter<StarSystemColonization[]> {
+    public getColonizationStarSystemsForUser(): ReplaySubject<StarSystemColonization[]> {
         if (this.colonizations.length == 0) {
             const source = interval(100);
             let sub = source.subscribe(val => {
@@ -84,7 +84,7 @@ export class BackgroundService extends SubscriptionManager {
      * Strange idea:<br>
      * The subscriber has just to wait until the data is fetched. If the data is present it will be fired async 10 ms after subscribing.
      */
-    public getStarSystems(): EventEmitter<StarSystem[]> {
+    public getStarSystems(): ReplaySubject<StarSystem[]> {
         if (this.starSystems.length == 0) {
             const source = interval(100);
             let sub = source.subscribe(val => {
