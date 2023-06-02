@@ -39,7 +39,6 @@ import {TypeService} from "./services/type.service";
 import {NumberShortPipe} from "./services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "./services/pipes/number-thousand-separator.pipe";
 import {HttpCacheInterceptor} from "./services/interceptors/http-cache-interceptor";
-import {ResourceDisplayModule} from "./modules/display-elements/modules/resource-display/resource-display.module";
 import {WikiModule} from "./modules/wiki/wiki.module";
 import {MarkdownModule, MarkdownService} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
@@ -119,7 +118,6 @@ export let AppInjector: Injector;
         AuthenticationModule,
         SharedModuleModule,
         DisplayElementsModule,
-        ResourceDisplayModule,
         ChatModule,
         PlanetsModule,
         StarMapModule,

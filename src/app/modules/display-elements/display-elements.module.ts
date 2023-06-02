@@ -13,7 +13,6 @@ import {MiningFactorsDisplayComponent} from './mining-factors-display/mining-fac
 import {InterstellarFleetMovementEditComponent} from './interstellar-fleet-movement-edit/interstellar-fleet-movement-edit.component';
 import {JobListDisplayComponent} from './job-list-display/job-list-display.component';
 import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability-display-small/spacecraft-capability-display-small.component";
-import {ResourceDisplayModule} from "./modules/resource-display/resource-display.module";
 import {PopulationDevelopmentComponent} from './population-development/population-development.component';
 import {TransportationListDisplayComponent} from './transportation-list-display/transportation-list-display.component';
 import {ShipClassTonnagePerSectionDisplayComponent} from './construction-capacity-display/ship-class-tonnage-per-section-display.component';
@@ -32,10 +31,12 @@ import {WeaponsByTypeDisplayComponent} from './weapons-by-type-display/weapons-b
 import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignment-display/weapon-amount-by-alignment-display.component';
 import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/propulsion-capacity-display.component';
 import {TradeDeliveriesComponent} from './trade-deliveries/trade-deliveries.component';
+import {ResourceDisplayComponent} from "./resource-display/resource-display.component";
 
 @NgModule({
     declarations: [
         BaseModuleDisplayComponent,
+        ResourceDisplayComponent,
         ConstructionDisplayComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
@@ -69,10 +70,10 @@ import {TradeDeliveriesComponent} from './trade-deliveries/trade-deliveries.comp
     ],
     imports: [
         SharedModuleModule,
-        ResourceDisplayModule,
     ],
     exports: [
         BaseModuleDisplayComponent,
+        ResourceDisplayComponent,
         ConstructionDisplayComponent,
         BaseModuleSingleSelectorComponent,
         FleetDisplayComponent,
@@ -85,7 +86,6 @@ import {TradeDeliveriesComponent} from './trade-deliveries/trade-deliveries.comp
         MiningFactorsDisplayComponent,
         InterstellarFleetMovementEditComponent,
         JobListDisplayComponent,
-        ResourceDisplayModule,
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
         ShipClassTonnagePerSectionDisplayComponent,
