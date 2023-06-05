@@ -70,27 +70,32 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         this.fetchBaseData();
         let sub = this.backgroundService.getColonizationStarSystemsForUser()
             .subscribe(resp => {
-                this.starSystems = this.starSystems.concat(resp).sort((a, b) => {
-                    if (!this.reference) {
-                        return 1;
-                    }
-                    const dA = this.getDistance(a);
-                    const dB = this.getDistance(b);
-
-                    return dA - dB;
-                });
+                this.starSystems = resp;
                 this.dataSource.data = this.starSystems;
+                this.sortColonizations();
                 this.spinnerService.deactivateSpinner();
             });
         this.subscriptions.push(sub);
-        sub = this.planetApi.getMainPlanet().subscribe(resp => {
-            this.main = resp;
-            sub = this.resourceApi.getResourceDeposit(this.main.idPlanet)
-                .subscribe(resp => {
-                    this.resourceDeposit = resp
-                });
+        this.fetchMainPlanetsDeposit();
+    }
+
+    private fetchMainPlanetsDeposit() {
+        if (!!this.main) {
+            this.fetchDeposit(this.main);
+        } else {
+            let sub = this.planetApi.getMainPlanet().subscribe(resp => {
+                this.main = resp;
+                this.fetchDeposit(resp);
+            });
             this.subscriptions.push(sub);
-        });
+        }
+    }
+
+    private fetchDeposit(planet: Planet) {
+        let sub = this.resourceApi.getResourceDeposit(planet.idPlanet)
+            .subscribe(resp => {
+                this.resourceDeposit = resp
+            });
         this.subscriptions.push(sub);
     }
 
@@ -183,7 +188,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
     }
 
     colonizePlanet(planet: Planet) {
-        let sub = this.colonizationApi.startColonizingPlanet(planet).subscribe(() => {
+        let sub = this.colonizationApi.startColonizingPlanet(planet).subscribe(resp => {
             this.fetchData();
         });
         this.subscriptions.push(sub);

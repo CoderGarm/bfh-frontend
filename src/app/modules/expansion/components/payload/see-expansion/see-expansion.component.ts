@@ -35,15 +35,8 @@ export class SeeExpansionComponent extends ExpansionManager implements AfterView
         this.fetchBaseData();
         let sub = this.colonizationApi.getPendingColonizationsForUser()
             .subscribe(resp => {
-                this.starSystems = this.starSystems.concat(resp).sort((a, b) => {
-                    if (!this.reference) {
-                        return 1;
-                    }
-                    const dA = this.getDistance(a);
-                    const dB = this.getDistance(b);
-
-                    return dA - dB;
-                });
+                this.starSystems = resp;
+                this.sortColonizations();
                 this.dataSource.data = this.starSystems;
             });
         this.subscriptions.push(sub);

@@ -74,15 +74,41 @@ export class ExpansionManager extends SubscriptionManager {
     }
 
     fetchBaseData() {
+        this.fetchKnownStarSystems();
+        this.fetchHomeSystem();
+    }
+
+    private fetchKnownStarSystems() {
         let sub = this.colonizationApi.getKnownStarSystemsForUser()
             .subscribe(resp => this.knownSystems = resp);
         this.subscriptions.push(sub);
-        sub = this.colonizationApi.getHomeSystem()
+    }
+
+    private fetchHomeSystem() {
+        if (!!this.reference) {
+            return;
+        }
+        let sub = this.colonizationApi.getHomeSystem()
             .subscribe(resp => {
                 this.homeSystem = resp;
                 this.reference = this.homeSystem;
+                this.sortColonizations();
             });
         this.subscriptions.push(sub);
+    }
+
+
+    protected sortColonizations() {
+        this.starSystems = this.starSystems.sort((a, b) => {
+            if (!this.reference) {
+                return 1;
+            }
+            const dA = this.getDistance(a);
+            const dB = this.getDistance(b);
+
+            return dA - dB;
+        });
+        this.dataSource.data = this.starSystems;
     }
 
     checkIfInsideQuadrantSelection(orbit: Orbit): boolean {
