@@ -349,7 +349,8 @@
   "research": {
     "no-available": "There are currently no researches available.",
     "not-possible": "There is no laboratory or it is already in use.",
-    "title": "Research"
+    "title": "Research",
+    "level-details": "Details"
   },
   "resource-overlay": {
     "capacity": {

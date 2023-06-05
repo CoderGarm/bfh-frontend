@@ -20,4 +20,8 @@ export interface ResearchLevel {
      * The level of this research.
      */
     level: number;
+    /**
+     * The amount of ticks.
+     */
+    ticksToComplete?: number;
 }

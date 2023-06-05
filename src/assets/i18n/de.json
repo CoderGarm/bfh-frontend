@@ -349,7 +349,8 @@
   "research": {
     "no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
     "not-possible": "Es gibt kein Labor oder es wird bereits geforscht.",
-    "title": "Forschung"
+    "title": "Forschung",
+    "level-details": "Details"
   },
   "resource-overlay": {
     "capacity": {
