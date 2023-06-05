@@ -26,6 +26,9 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     capacity?: ResourceDeposit;
 
     @Input()
+    sumOfPops: number = Number.MAX_VALUE;
+
+    @Input()
     levelImprovementResources?: ResourceAmount;
 
     @Input()
@@ -268,7 +271,7 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         if (incoming === 0) {
             return Number.MAX_VALUE;
         }
-        const current = this.getResourceAmount(resource.resourceType, this.deposit);
+        const current = this.sumOfPops;
         const capacity = this.getResourceAmount(resource.resourceType, this.capacity);
         if ((capacity != 0 && !capacity) || (current != 0 && !current)) {
             throw new Error("There should be a capacity or a current if requested.");

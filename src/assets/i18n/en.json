@@ -268,7 +268,8 @@
         "not-possible": "Job running",
         "start-building": "Start job",
         "must-do-research": "Level capped by research",
-        "too-expensive": "Job too expensive"
+        "too-expensive": "Job too expensive",
+        "filter-expansive-constructions": "Ignore too expensive constructions"
       },
       "info": {
         "title": "Details"

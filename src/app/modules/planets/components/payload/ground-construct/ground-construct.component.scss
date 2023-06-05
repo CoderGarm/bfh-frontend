@@ -35,3 +35,9 @@
   width: 24px;
   margin-right: 15px;
 }
+
+
+.mat-expansion-panel-header {
+  // disabled headers are only 48 px high
+  height: 64px;
+}

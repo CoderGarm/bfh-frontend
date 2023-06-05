@@ -3,6 +3,7 @@
                           [costs]="costsToDisplay"
                           [income]="income"
                           [capacity]="capacity"
+                          [sumOfPops]="sumOfPops"
                           [levelImprovementResources]="levelImprovementResources"
                           [levelImprovementHumanResources]="levelImprovementHumanResources"></app-resource-display>
 </div>
@@ -50,13 +51,17 @@
 
 
 {{ 'planetary.constructions.title' | translate }}
+<mat-checkbox (change)="ignoreExpensiveConstructions = $event.checked">
+    {{ 'planetary.constructions.build.filter-expansive-constructions' | translate }}
+</mat-checkbox>
 <mat-accordion class="ugly-child-growth-fix">
     <mat-expansion-panel *ngFor="let construction of filteredConstructions"
                          class="margin-bottom"
                          (opened)="setOpened(construction)"
                          (closed)="setClosed(construction)"
                          (mouseover)="showCosts(construction)"
-                         (mouseout)="showCosts(null)">
+                         (mouseout)="showCosts(null)"
+                         [disabled]="checkIfTooExpensive(construction)">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <img mat-card-avatar class="avatar-image icon"

@@ -5,7 +5,6 @@ import {
     Construction,
     ConstructionApiService,
     EEducationType,
-    EnumValueDto,
     ERefinementSequence,
     EResourceType,
     HumanResourceAmount,
@@ -77,6 +76,10 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     selectedPlanetInput?: Planet;
     private selectedPlanetDefinition = "selectedPlanetInput";
 
+    sumOfPops: number = 0;
+
+    ignoreExpensiveConstructions: boolean = false;
+
     resourceDeposit?: ResourceDeposit;
     income?: ResourceDeposit;
     capacity?: ResourceDeposit;
@@ -115,9 +118,6 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
      */
     constructionPossible: boolean = false;
 
-    private readonly newConstruction = 'planetary.constructions.build.is-new';
-    private readonly hasConstruction = 'planetary.constructions.build.has-level';
-
     translations: Map<string, string> = new Map<string, string>();
 
     constructor(private constructionApi: ConstructionApiService,
@@ -133,14 +133,14 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         let subscription = planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.fetchPlanet());
         this.subscriptions.push(subscription);
 
-        this.translations.set(this.newConstruction, this.newConstruction);
+        this.translations.set('planetary.constructions.build.is-new', 'planetary.constructions.build.is-new');
         this.translate.get('planetary.constructions.build.is-new').subscribe((translated: string) => {
-            this.translations.set(this.newConstruction, translated);
+            this.translations.set('planetary.constructions.build.is-new', translated);
         });
 
-        this.translations.set(this.hasConstruction, this.hasConstruction);
+        this.translations.set('planetary.constructions.build.has-level', 'planetary.constructions.build.has-level');
         this.translate.get('planetary.constructions.build.has-level').subscribe((translated: string) => {
-            this.translations.set(this.hasConstruction, translated);
+            this.translations.set('planetary.constructions.build.has-level', translated);
         });
 
         this.eEducationTypes = typeService.educationTypes;
@@ -190,6 +190,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             let sub = this.constructionApi
                 .getPossibleConstructionsByPlanet(idPlanet).subscribe(resp => {
                     this.possibleConstructions = resp;
+                    resp.forEach(construction => this.fetchConstructionCosts(construction));
                     this.filterDisplayedConstructions();
                 });
             this.subscriptions.push(sub);
@@ -199,24 +200,15 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.subscriptions.push(sub);
 
             sub = this.resourceApi.getResourceDeposit(idPlanet)
-                .subscribe(deposit => {
-                    let sub = this.resourceApi.getResourceUtilization(this.selectedPlanetInput!.idPlanet).subscribe(utilization => {
-                        // unfunnily we must sum them up in order to calculate the capacity correctly
-                        utilization.humanResources.forEach(hr => {
-                            deposit?.humanResources.forEach(r => {
-                                if (r.resourceType.typeName === hr.resourceType.typeName) {
-                                    r.amount += hr.amount;
-                                    deposit.resources.filter(res => res.resourceType.typeName === EnumValueDto.EResourceTypeEnum.POPULATION)
-                                        .forEach(res => res.amount += hr.amount);
-                                }
-                            })
-                        });
-                        this.resourceDeposit = deposit;
-                    });
-                    this.subscriptions.push(sub);
+                .subscribe(resp => {
+                    this.resourceDeposit = resp;
+                    resp.humanResources.forEach(hr => this.sumOfPops += hr.amount);
                 });
             this.subscriptions.push(sub);
-
+            sub = this.resourceApi.getResourceUtilization(this.selectedPlanetInput!.idPlanet).subscribe(utilization => {
+                utilization.humanResources.forEach(hr => this.sumOfPops += hr.amount);
+            });
+            this.subscriptions.push(sub);
 
             sub = this.resourceApi.getPlanetaryIncome(idPlanet)
                 .subscribe(resp => {
@@ -229,6 +221,18 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 });
             this.subscriptions.push(sub);
         }
+    }
+
+    checkIfTooExpensive(construction: Construction): boolean {
+        if (!this.ignoreExpensiveConstructions) {
+            return false;
+        }
+        let key = this.getConstructionKey(construction);
+        if (!this.resourceDeposit || !this.knownCosts.has(key)) {
+            return true;
+        }
+        const costs = this.knownCosts.get(key)!;
+        return !ResourceHelper.canPayTheCollectableBill(costs, this.resourceDeposit);
     }
 
     /**
@@ -318,22 +322,26 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.activeConstructionKey = undefined;
             return;
         }
-        let c: PlannedConstruction = {
-            idBuilding: construction.building.idBuilding,
-            targetLevel: construction.level + 1
-        }
         let key = this.getConstructionKey(construction);
         this.activeConstructionKey = key;
         let costs: ResourceDeposit | undefined = this.knownCosts.get(key)
         if (!costs) {
-            let sub = this.resourceApi.getBuildingCosts(c)
-                .subscribe(resp => {
-                    costs = resp;
-                    this.knownCosts.set(key, resp);
-                });
-            this.subscriptions.push(sub);
+            this.fetchConstructionCosts(construction);
         }
         this.costsToDisplay = costs;
+    }
+
+    private fetchConstructionCosts(construction: Construction) {
+        let key = this.getConstructionKey(construction);
+        let c: PlannedConstruction = {
+            idBuilding: construction.building.idBuilding,
+            targetLevel: construction.level + 1
+        }
+        let sub = this.resourceApi.getBuildingCosts(c)
+            .subscribe(resp => {
+                this.knownCosts.set(key, resp);
+            });
+        this.subscriptions.push(sub);
     }
 
     setLevelImprovement(construction: Construction | null) {

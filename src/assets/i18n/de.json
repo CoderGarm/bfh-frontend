@@ -268,7 +268,8 @@
         "not-possible": "Es wird bereits gebaut",
         "start-building": "Starte den Bau",
         "must-do-research": "Muss erforscht werden",
-        "too-expensive": "Bau zu teuer"
+        "too-expensive": "Bau zu teuer",
+        "filter-expansive-constructions": "Ignoriere zu teure Gebäude"
       },
       "info": {
         "title": "Details"
