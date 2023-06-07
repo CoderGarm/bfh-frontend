@@ -18,10 +18,10 @@
                     <ul>
                         <li *ngFor="let entry of node.parent.tradesByTick">
                             <div mat-line
-                                 *ngIf="!!currentTickService.currentTick && (currentTickService.currentTick.tickNo - entry.tick.tickNo) > 0">{{ 'journal.trade.expected-arrival' | translate }}
+                                 *ngIf="!!currentTickService.currentTick && currentTickService.currentTick.tickNo < entry.tick.tickNo">{{ 'journal.trade.expected-arrival' | translate }}
                                 : {{ entry.tick.tickNo }}</div>
                             <div mat-line
-                                 *ngIf="!!currentTickService.currentTick && (currentTickService.currentTick.tickNo - entry.tick.tickNo) == 0">{{ 'journal.trade.arrival' | translate }}</div>
+                                 *ngIf="!!currentTickService.currentTick && currentTickService.currentTick.tickNo == entry.tick.tickNo">{{ 'journal.trade.arrival' | translate }}</div>
                             <ul>
                                 <li *ngFor="let trade of entry.trades">
                                     <div mat-line>{{ trade.resourceAmount.amount }}x
