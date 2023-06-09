@@ -1,4 +1,4 @@
-import {ChatApiService, ChatHistory, UserApiService, UserJson} from '../../../../services/swagger';
+import {ChatApiService, ChatHistory, Player, UserApiService} from '../../../../services/swagger';
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {interval, Subscription} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
@@ -17,12 +17,12 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
     /**
      * Holds every user which is not part of an active chat, not the logged in user but found by the search-by-username.
      */
-    foundPossibleChatPartners: UserJson[] = [];
+    foundPossibleChatPartners: Player[] = [];
 
     /**
      * Holds every partner who is part of an active chat.
      */
-    knownChatPartners: UserJson[] = [];
+    knownChatPartners: Player[] = [];
 
     /**
      * Holds every active chat.
@@ -38,7 +38,7 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
      * The user which was selected by the logged in user in order to chat with.
      */
     @Output()
-    selectedUserChatListOutput: EventEmitter<UserJson> = new EventEmitter<UserJson>();
+    selectedUserChatListOutput: EventEmitter<Player> = new EventEmitter<Player>();
 
     /**
      * Event which is fired if a new chat was started in order to update the list of active chats.
@@ -114,7 +114,7 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
         this.subscriptions.push(sub);
     }
 
-    private removeAlreadyKnownChatPartners(resp: UserJson[]): UserJson[] {
+    private removeAlreadyKnownChatPartners(resp: Player[]): Player[] {
         const knownIdUsers: number[] = this.knownChatPartners.map(user => user.idUser);
         const newIdUsers: number[] = resp.map(user => user.idUser);
         const idsToRemove: number[] = newIdUsers.filter(id => knownIdUsers.includes(id));
@@ -128,9 +128,9 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
         return resp;
     }
 
-    private removeLoggedInUserFromListOfChatPartners(resp: UserJson[]): UserJson[] {
+    private removeLoggedInUserFromListOfChatPartners(resp: Player[]): Player[] {
         let loggedInUserID = this.tokenStorage.getUserID();
-        let find: UserJson | undefined = resp.find(x => x.idUser == loggedInUserID);
+        let find: Player | undefined = resp.find(x => x.idUser == loggedInUserID);
         if (!!find) {
             resp.splice(resp.indexOf(find), 1);
         }
@@ -148,17 +148,17 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
                     return 1;
                 }
                 return 0;
-            }).filter(user => user!) as UserJson[];
+            }).filter(user => user!) as Player[];
     }
 
-    private getPartnerFromChat(chatHistory: ChatHistory): UserJson | undefined {
+    private getPartnerFromChat(chatHistory: ChatHistory): Player | undefined {
         if (!!this.myUserID) {
             return chatHistory.userOne.idUser === this.myUserID ? chatHistory.userTwo : chatHistory.userOne;
         }
         return undefined;
     }
 
-    displayChatHistoryBetweenMeAnd(chatPartner?: UserJson) {
+    displayChatHistoryBetweenMeAnd(chatPartner?: Player) {
         if (!!chatPartner) {
             this.selectedUserChatListOutput.emit(chatPartner!);
         }
@@ -168,7 +168,7 @@ export class ChatListComponent extends SubscriptionManager implements AfterViewI
         this.subscriptions?.forEach(subscription => subscription.unsubscribe());
     }
 
-    getChatPartner(chat: ChatHistory): UserJson {
+    getChatPartner(chat: ChatHistory): Player {
         let userOne = chat.userOne;
         let userTwo = chat.userTwo;
         return userOne.idUser != this.myUserID ? userOne : userTwo;

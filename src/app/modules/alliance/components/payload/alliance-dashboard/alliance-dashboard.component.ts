@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {Alliance, AllianceApiService, UserJson} from "../../../../../services/swagger";
+import {Alliance, AllianceApiService, Player} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
@@ -17,9 +17,9 @@ export class AllianceDashboardComponent extends SubscriptionManager implements O
 
     displayedColumns: string[] = ['name', 'grant-application', 'deny-application'];
 
-    applicants: UserJson[] = [];
+    applicants: Player[] = [];
 
-    dataSource = new MatTableDataSource<UserJson>(this.applicants);
+    dataSource = new MatTableDataSource<Player>(this.applicants);
 
     @ViewChild(MatPaginator) paginator?: MatPaginator;
     @ViewChild(MatSort, {static: false}) sort?: MatSort;
@@ -47,7 +47,7 @@ export class AllianceDashboardComponent extends SubscriptionManager implements O
         }
     }
 
-    grant(user: UserJson) {
+    grant(user: Player) {
         let sub = this.allianceApi.grantApplication(user.idUser).subscribe(resp => {
             if (resp) {
                 this.reload();
@@ -56,7 +56,7 @@ export class AllianceDashboardComponent extends SubscriptionManager implements O
         this.subscriptions.push(sub);
     }
 
-    deny(user: UserJson) {
+    deny(user: Player) {
         let sub = this.allianceApi.denyApplication(user.idUser).subscribe(resp => {
             if (resp) {
                 this.reload();

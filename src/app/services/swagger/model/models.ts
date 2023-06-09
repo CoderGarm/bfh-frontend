@@ -110,7 +110,7 @@ export * from './tradesByLocation';
 export * from './tradesByTick';
 export * from './translation';
 export * from './transportJob';
-export * from './userJson';
+export * from './player';
 export * from './userPoints';
 export * from './userReq';
 export * from './userSettings';

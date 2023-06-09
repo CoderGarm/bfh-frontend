@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Article, ArticlePlainContent, UserJson} from "../../../../services/swagger";
+import {Article, ArticlePlainContent, Player} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 
 @Component({
@@ -13,7 +13,7 @@ export class DisplayArticleComponent extends SubscriptionManager implements OnIn
     article?: Article;
 
     @Input()
-    author?: UserJson;
+    author?: Player;
 
     @Input()
     latestContent?: ArticlePlainContent;

@@ -18,7 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
-import { UserJson } from '../model/userJson';
+import { Player } from '../model/player';
 import { UserPoints } from '../model/userPoints';
 import { UserSettings } from '../model/userSettings';
 
@@ -151,9 +151,9 @@ export class UserApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUsers(observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
-    public getAllUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
-    public getAllUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+    public getAllUsers(observe?: 'body', reportProgress?: boolean): Observable<Array<Player>>;
+    public getAllUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Player>>>;
+    public getAllUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Player>>>;
     public getAllUsers(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -172,7 +172,7 @@ export class UserApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/user/`,
+        return this.httpClient.request<Array<Player>>('get',`${this.basePath}/api/private/user/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -226,9 +226,9 @@ export class UserApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSingleUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
-    public getSingleUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
-    public getSingleUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
+    public getSingleUser(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<Player>;
+    public getSingleUser(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Player>>;
+    public getSingleUser(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Player>>;
     public getSingleUser(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idUser === null || idUser === undefined) {
@@ -251,7 +251,7 @@ export class UserApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<UserJson>('get',`${this.basePath}/api/public/user/${encodeURIComponent(String(idUser))}`,
+        return this.httpClient.request<Player>('get',`${this.basePath}/api/public/user/${encodeURIComponent(String(idUser))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -268,9 +268,9 @@ export class UserApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsersByLikeUserName(username: string, observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
-    public getUsersByLikeUserName(username: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
-    public getUsersByLikeUserName(username: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+    public getUsersByLikeUserName(username: string, observe?: 'body', reportProgress?: boolean): Observable<Array<Player>>;
+    public getUsersByLikeUserName(username: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Player>>>;
+    public getUsersByLikeUserName(username: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Player>>>;
     public getUsersByLikeUserName(username: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (username === null || username === undefined) {
@@ -293,7 +293,7 @@ export class UserApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/user/byNameLike/${encodeURIComponent(String(username))}`,
+        return this.httpClient.request<Array<Player>>('get',`${this.basePath}/api/private/user/byNameLike/${encodeURIComponent(String(username))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

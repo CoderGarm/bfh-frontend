@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { Alliance } from '../model/alliance';
 import { FrontendError } from '../model/frontendError';
-import { UserJson } from '../model/userJson';
+import { Player } from '../model/player';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -432,9 +432,9 @@ export class AllianceApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationsForMembership(observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
-    public getApplicationsForMembership(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
-    public getApplicationsForMembership(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+    public getApplicationsForMembership(observe?: 'body', reportProgress?: boolean): Observable<Array<Player>>;
+    public getApplicationsForMembership(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Player>>>;
+    public getApplicationsForMembership(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Player>>>;
     public getApplicationsForMembership(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -453,7 +453,7 @@ export class AllianceApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/alliances/membership/application`,
+        return this.httpClient.request<Array<Player>>('get',`${this.basePath}/api/private/alliances/membership/application`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -470,9 +470,9 @@ export class AllianceApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getMembers(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<Array<UserJson>>;
-    public getMembers(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserJson>>>;
-    public getMembers(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserJson>>>;
+    public getMembers(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Player>>;
+    public getMembers(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Player>>>;
+    public getMembers(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Player>>>;
     public getMembers(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idAlliance === null || idAlliance === undefined) {
@@ -495,7 +495,7 @@ export class AllianceApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<UserJson>>('get',`${this.basePath}/api/private/alliances/members/${encodeURIComponent(String(idAlliance))}`,
+        return this.httpClient.request<Array<Player>>('get',`${this.basePath}/api/private/alliances/members/${encodeURIComponent(String(idAlliance))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

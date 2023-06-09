@@ -168,6 +168,7 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
             owner: {
                 idUser: userID,
                 role: role,
+                isNpc: false,
                 username: username
             },
             shipClassCapabilities: {

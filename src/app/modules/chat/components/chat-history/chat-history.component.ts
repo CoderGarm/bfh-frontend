@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
-import {ChatApiService, ChatHistory, ChatMessage, UserJson} from "../../../../services/swagger";
+import {ChatApiService, ChatHistory, ChatMessage, Player} from "../../../../services/swagger";
 import {interval, Subscription} from "rxjs";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {take} from "rxjs/operators";
@@ -26,7 +26,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
      * And their field name below - which must be the same in order to address the field.
      */
     @Input()
-    selectedUserChatHistoryInput?: UserJson;
+    selectedUserChatHistoryInput?: Player;
     private selectedUserDefinition: string = 'selectedUserChatHistoryInput';
 
     @Output()
@@ -172,7 +172,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
     }
 
     chooseStyleFromSender(message: ChatMessage): string {
-        let sender: UserJson = message.sender
+        let sender: Player = message.sender
         let userID: number = this.tokenStorage.getUserID();
         if (sender.idUser === userID) {
             return "chat-card set-right " + message.idUserMessage;
@@ -192,6 +192,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
             message: txt,
             sender: {
                 idUser: this.tokenStorage.getUserID(),
+                isNpc: false,
                 username: this.tokenStorage.getLogin(),
                 role: this.tokenStorage.getRole()
             },
@@ -209,6 +210,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 idChatHistory: idChatHistory,
                 userOne: {
                     idUser: this.tokenStorage.getUserID(),
+                    isNpc: false,
                     username: this.tokenStorage.getLogin(),
                     role: this.tokenStorage.getRole()
                 },
@@ -236,6 +238,7 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
             this.chatHistory = {
                 userOne: {
                     idUser: this.userId,
+                    isNpc: false,
                     username: this.tokenStorage.getLogin()
                 },
                 userTwo: this.selectedUserChatHistoryInput,

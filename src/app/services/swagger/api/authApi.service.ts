@@ -21,7 +21,7 @@ import { AuthRequest } from '../model/authRequest';
 import { ChangePassword } from '../model/changePassword';
 import { FrontendError } from '../model/frontendError';
 import { JWT } from '../model/jWT';
-import { UserJson } from '../model/userJson';
+import { Player } from '../model/player';
 import { UserReq } from '../model/userReq';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -152,9 +152,9 @@ export class AuthApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUser(body: UserReq, observe?: 'body', reportProgress?: boolean): Observable<UserJson>;
-    public createUser(body: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserJson>>;
-    public createUser(body: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserJson>>;
+    public createUser(body: UserReq, observe?: 'body', reportProgress?: boolean): Observable<Player>;
+    public createUser(body: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Player>>;
+    public createUser(body: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Player>>;
     public createUser(body: UserReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -182,7 +182,7 @@ export class AuthApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<UserJson>('post',`${this.basePath}/api/public/auth/create`,
+        return this.httpClient.request<Player>('post',`${this.basePath}/api/public/auth/create`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

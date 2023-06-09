@@ -13,11 +13,15 @@
 /**
  * .
  */
-export interface UserJson { 
+export interface Player {
     /**
      * The user's database id.
      */
     idUser: number;
+    /**
+     * If the player is NPC or human.
+     */
+    isNpc: boolean;
     /**
      * The user's name
      */

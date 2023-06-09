@@ -14,7 +14,7 @@ import { Move } from './move';
 import { SpacecraftCapabilities } from './spacecraftCapabilities';
 import { SpacecraftCapacityAreas } from './spacecraftCapacityAreas';
 import { StateBlock } from './stateBlock';
-import { UserJson } from './userJson';
+import { Player } from './player';
 import { WarShip } from './warShip';
 
 /**
@@ -29,7 +29,7 @@ export interface Fleet {
      * The name of the fleet
      */
     name: string;
-    owner: UserJson;
+    owner: Player;
     /**
      * The fleet's individual war ships.
      */

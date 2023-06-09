@@ -17,7 +17,7 @@ import { MissileMovement } from './missileMovement';
 import { MovementAction } from './movementAction';
 import { ReleasedVolley } from './releasedVolley';
 import { ShipKillerHit } from './shipKillerHit';
-import { UserJson } from './userJson';
+import { Player } from './player';
 
 /**
  * .
@@ -27,7 +27,7 @@ export interface BattleReport {
     /**
      * The participating users.
      */
-    participatingUsers: Array<UserJson>;
+    participatingUsers: Array<Player>;
     /**
      * The protagonists - and the antagonists.
      */

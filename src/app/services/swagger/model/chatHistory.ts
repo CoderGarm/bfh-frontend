@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { ChatMessage } from './chatMessage';
-import { UserJson } from './userJson';
+import { Player } from './player';
 
 /**
  * .
@@ -20,8 +20,8 @@ export interface ChatHistory {
      * The id of this chat history
      */
     idChatHistory?: number;
-    userOne: UserJson;
-    userTwo: UserJson;
+    userOne: Player;
+    userTwo: Player;
     /**
      * The amount of messages.
      */

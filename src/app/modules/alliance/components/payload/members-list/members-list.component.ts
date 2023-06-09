@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {Alliance, AllianceApiService, UserJson} from "../../../../../services/swagger";
+import {Alliance, AllianceApiService, Player} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
@@ -18,9 +18,9 @@ export class MembersListComponent extends SubscriptionManager implements OnInit,
 
     displayedColumns: string[] = ['name'];
 
-    members: UserJson[] = [];
+    members: Player[] = [];
 
-    dataSource = new MatTableDataSource<UserJson>(this.members);
+    dataSource = new MatTableDataSource<Player>(this.members);
 
     @ViewChild(MatPaginator) paginator?: MatPaginator;
     @ViewChild(MatSort, {static: false}) sort?: MatSort;

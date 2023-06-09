@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {UserApiService, UserJson, UserPoints} from "../../../services/swagger";
+import {Player, UserApiService, UserPoints} from "../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 
 export interface RankedUserPoints {
     rank: number;
-    user: UserJson;
+    user: Player;
     points: UserPoints;
 }
 
@@ -19,7 +19,7 @@ export interface RankedUserPoints {
 export class PlayerPointsListComponent extends SubscriptionManager implements AfterViewInit {
 
     static path: string = 'player';
-    private users: UserJson[] = [];
+    private users: Player[] = [];
     private points: UserPoints[] = [];
     private rankedUserPoints: RankedUserPoints[] = [];
 
@@ -42,7 +42,7 @@ export class PlayerPointsListComponent extends SubscriptionManager implements Af
         this.subscriptions.push(sub);
     }
 
-    private addData(users: UserJson[]) {
+    private addData(users: Player[]) {
         this.users = users;
         this.users.forEach(user => {
             const sub = this.userService.getUsersPoints(user.idUser).subscribe(resp => {

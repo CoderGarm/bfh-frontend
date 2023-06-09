@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Article, ArticleCreate, ArticleEdit, ArticlePlainContent, UserApiService, UserJson, WikiApiService} from "../../../../services/swagger";
+import {Article, ArticleCreate, ArticleEdit, ArticlePlainContent, Player, UserApiService, WikiApiService} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 
 @Component({
@@ -12,7 +12,7 @@ export class WikiMainComponent extends SubscriptionManager implements OnInit {
     static path: string = 'wiki';
 
     article?: Article;
-    author?: UserJson;
+    author?: Player;
     latestContent?: ArticlePlainContent;
 
     @Output()

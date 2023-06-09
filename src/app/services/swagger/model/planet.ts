@@ -11,7 +11,7 @@
  */
 import { EPlanetClassType } from './ePlanetClassType';
 import { Orbit } from './orbit';
-import { UserJson } from './userJson';
+import { Player } from './player';
 
 /**
  * .
@@ -21,7 +21,7 @@ export interface Planet {
      * The ID of this planet.
      */
     idPlanet: number;
-    owner?: UserJson;
+    owner?: Player;
     /**
      * If this planet is the main planet of the owner.
      */

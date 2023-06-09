@@ -9,7 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { UserJson } from './userJson';
+import { Player } from './player';
 
 /**
  * .
@@ -27,7 +27,7 @@ export interface Alliance {
      * The code of the alliance.
      */
     code: string;
-    founder: UserJson;
+    founder: Player;
     /**
      * The amount of members
      */

@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { Planet } from './planet';
-import { UserJson } from './userJson';
+import { Player } from './player';
 
 /**
  * .
@@ -20,7 +20,7 @@ export interface Colonization {
      * The id of the colonization.
      */
     idColonization: number;
-    user: UserJson;
+    user: Player;
     target: Planet;
     /**
      * The amount of ticks to complete colonization.

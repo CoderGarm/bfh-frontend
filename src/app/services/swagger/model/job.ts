@@ -15,7 +15,7 @@ import { EResourceType } from './eResourceType';
 import { Fleet } from './fleet';
 import { Planet } from './planet';
 import { Research } from './research';
-import { UserJson } from './userJson';
+import { Player } from './player';
 
 /**
  * .
@@ -25,7 +25,7 @@ export interface Job {
      * The id
      */
     idJob: number;
-    user: UserJson;
+    user: Player;
     facility: Construction;
     facilityPlanet: Planet;
     /**
