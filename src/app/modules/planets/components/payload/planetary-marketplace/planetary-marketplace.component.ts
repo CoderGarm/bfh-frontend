@@ -262,7 +262,7 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
         const resourceAmount = this.resourceDeposit.filter(r => r.resourceType.typeName === element.trade.resourceAmount.resourceType.typeName)[0];
         this.resourceToOffer = {resourceType: resourceAmount.resourceType, amount: resourceAmount.amount}
         this.theOffer = element.trade.resourceAmount;
-        this.thePrice.amount = element.trade.price;
+        this.thePrice.amount = element.trade.price / this.theOffer.amount;
         this.calcTotal();
     }
 }
