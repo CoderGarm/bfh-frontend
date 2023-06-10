@@ -15,26 +15,26 @@
   margin-right: 10px;
 }
 
-.transportation-tree {
+.tree {
   margin: 15px;
   padding: 15px;
 }
 
-.transportation-tree-invisible {
+.tree-invisible {
   display: none;
 }
 
-.transportation-tree ul,
-.transportation-tree li {
+.tree ul,
+.tree li {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.transportation-tree .mat-nested-tree-node div[role=group] {
+.tree .mat-nested-tree-node div[role=group] {
   padding-left: 40px;
 }
 
-.transportation-tree div[role=group] > .mat-tree-node {
+.tree div[role=group] > .mat-tree-node {
   padding-left: 40px;
 }
 
