@@ -1,61 +1,88 @@
 <div class="content-area">
 
+
+    <!-- spot offer block -->
+    <app-outlined titleValue="{{ 'planetary.marketplace.offer.spot.title' | translate }}">
+        <div class="offer-block">
+            <h4>{{ 'planetary.marketplace.offer.spot.prices' | translate }}</h4>
+            <div class="flex-items-container">
+                <div class="res-wrapper" *ngFor="let resourceType of tradableResourceTypes" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                    <button mat-raised-button
+                            (click)="displaySpotOffer(resourceType, trigger); $event.stopPropagation();"
+                            matTooltip="{{ 'planetary.marketplace.offer.spot.warning' | translate }}">
+                        <div class="img-container info-holder">
+                            <img class="icon" src="assets/{{resourceType.folder}}png24x/{{resourceType.iconName}}_c.png"
+                                 alt="{{resourceType.singularName}}"
+                                 matTooltip="{{resourceType.typeName}}">
+                        </div>
+                        <div>
+                            <app-number-short [input]="spotPriceByResourceType.get(resourceType.typeName)!"></app-number-short> <!-- fixme implement spot buy/sell dialog -->
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </app-outlined>
+    <!-- spot offer block -->
+
     <div echarts [options]="chartOption" [merge]="mergeOptions" [theme]="theme" class="price-history-chart"></div>
 
-    <div class="offer-block">
-        <h4>{{ 'planetary.marketplace.offer.create' | translate }}</h4>
+    <!-- trade offer block -->
+    <app-outlined titleValue="{{ 'planetary.marketplace.offer.market' | translate }}">
+        <div class="offer-block">
+            <h4>{{ 'planetary.marketplace.offer.create' | translate }}</h4>
 
-        <div class="flex-items-container">
-            <div class="res-wrapper" *ngFor="let resource of resourceDeposit" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-                <button mat-raised-button
-                        [disabled]="resource.amount <= 0"
-                        (click)="displayOfferCreation(resource, trigger); $event.stopPropagation();"
-                        matTooltip="{{ 'planetary.marketplace.offer.create-for' | translate }} {{ resource.resourceType.typeName }}">
-                    <div class="img-container info-holder">
-                        <img class="icon" src="assets/{{resource.resourceType.folder}}png24x/{{resource.resourceType.iconName}}_c.png"
-                             alt="{{resource.resourceType.singularName}}"
-                             matTooltip="{{resource.resourceType.typeName}}">
-                    </div>
-                    <div>
-                        <app-number-short [input]="resource.amount"></app-number-short>
-                    </div>
-                </button>
+            <div class="flex-items-container">
+                <div class="res-wrapper" *ngFor="let resource of resourceDeposit" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                    <button mat-raised-button
+                            [disabled]="resource.amount <= 0"
+                            (click)="displayOfferCreation(resource, trigger); $event.stopPropagation();"
+                            matTooltip="{{ 'planetary.marketplace.offer.create-for' | translate }} {{ resource.resourceType.typeName }}">
+                        <div class="img-container info-holder">
+                            <img class="icon" src="assets/{{resource.resourceType.folder}}png24x/{{resource.resourceType.iconName}}_c.png"
+                                 alt="{{resource.resourceType.singularName}}"
+                                 matTooltip="{{resource.resourceType.typeName}}">
+                        </div>
+                        <div>
+                            <app-number-short [input]="resource.amount"></app-number-short>
+                        </div>
+                    </button>
+                </div>
+                <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerCreateOffer" [cdkConnectedOverlayOpen]="isOpenCreateOffer">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-subtitle *ngIf="!theOffer">{{ 'planetary.marketplace.offer.create' | translate }}</mat-card-subtitle>
+                            <mat-card-subtitle *ngIf="!!theOffer">{{ 'planetary.marketplace.offer.create' | translate }}
+                                for {{ theOffer.amount }} {{ theOffer.resourceType.typeName }}
+                                about {{ theTotal.amount }} {{ theTotal.resourceType.typeName }}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content *ngIf="!!resourceToOffer">
+                            <app-resource-counter [resourceType]="resourceToOffer!.resourceType"
+                                                  [startAt]="0"
+                                                  [max]="resourceToOffer.amount"
+                                                  (numericEmitter)="setOffer($event)"
+                                                  caption="{{ 'planetary.marketplace.offer.chose-amount' | translate }}">
+                            </app-resource-counter>
+                            <app-resource-counter [resourceType]="credits"
+                                                  [startAt]="0"
+                                                  (numericEmitter)="setPrice($event.amount)"
+                                                  caption="{{ 'planetary.marketplace.offer.chose-price' | translate }}">
+                            </app-resource-counter>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-button color="accent" (click)="createOffer()"
+                                    [disabled]="!resourceToOffer || !theOffer || theOffer.amount > resourceToOffer.amount || theOffer.amount == 0 || thePrice.amount == 0">
+                                {{ 'planetary.marketplace.offer.action.release' | translate }}
+                            </button>
+                            <button mat-button color="accent"
+                                    (click)="closeOfferCreation(); $event.stopPropagation();">{{ 'planetary.marketplace.offer.action.abort' | translate }}</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-template>
             </div>
-            <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerCreateOffer" [cdkConnectedOverlayOpen]="isOpenCreateOffer">
-                <mat-card>
-                    <mat-card-header>
-                        <mat-card-subtitle *ngIf="!theOffer">{{ 'planetary.marketplace.offer.create' | translate }}</mat-card-subtitle>
-                        <mat-card-subtitle *ngIf="!!theOffer">{{ 'planetary.marketplace.offer.create' | translate }} for {{ theOffer.amount }} {{ theOffer.resourceType.typeName }}
-                            about {{ theTotal.amount }} {{ theTotal.resourceType.typeName }}</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content *ngIf="!!resourceToOffer">
-                        <app-resource-counter [resourceType]="resourceToOffer!.resourceType"
-                                              [startAt]="0"
-                                              [max]="resourceToOffer.amount"
-                                              (numericEmitter)="setOffer($event)"
-                                              caption="{{ 'planetary.marketplace.offer.chose-amount' | translate }}">
-                        </app-resource-counter>
-                        <app-resource-counter [resourceType]="credits"
-                                              [startAt]="0"
-                                              (numericEmitter)="setPrice($event.amount)"
-                                              caption="{{ 'planetary.marketplace.offer.chose-price' | translate }}">
-                        </app-resource-counter>
-                    </mat-card-content>
-                    <mat-card-actions align="end">
-                        <button mat-button color="accent" (click)="createOffer()"
-                                [disabled]="!resourceToOffer || !theOffer || theOffer.amount > resourceToOffer.amount || theOffer.amount == 0 || thePrice.amount == 0">
-                            {{ 'planetary.marketplace.offer.action.release' | translate }}
-                        </button>
-                        <button mat-button color="accent"
-                                (click)="closeOfferCreation(); $event.stopPropagation();">{{ 'planetary.marketplace.offer.action.abort' | translate }}</button>
-                    </mat-card-actions>
-                </mat-card>
-            </ng-template>
         </div>
-    </div>
 
-    <app-outlined titleValue="{{ 'planetary.marketplace.offer.release' | translate }}">
-        <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
+        <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC" class="resource-chip-box">
             <mat-chip-option
                     class="no-checkmark"
                     *ngFor="let eResourceType of tradableResourceTypes"
@@ -144,4 +171,5 @@
             </mat-card>
         </ng-template>
     </app-outlined>
+    <!-- trade offer block -->
 </div>

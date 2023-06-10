@@ -287,6 +287,12 @@
       },
       "offer": {
         "create": "Handelsangebot erstellen",
+        "spot": {
+          "title": "Spotmarkt",
+          "prices": "aktuelle Preise",
+          "warning": "Die Spotpreise ändern sich schnell. Bitte beachten Sie dies beim Handel auf dem Spotmarkt."
+        },
+        "market": "Angebotsmarkt",
         "edit": "Handelsangebot bearbeiten",
         "title": "verfügbare Angebote",
         "offer-taken": "Du hast das Angebot angenommen.",

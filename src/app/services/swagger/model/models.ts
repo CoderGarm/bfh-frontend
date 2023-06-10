@@ -97,6 +97,7 @@ export * from './shipyardConstructionSelection';
 export * from './sidewall';
 export * from './spacecraftCapabilities';
 export * from './spacecraftCapacityAreas';
+export * from './spotOffer';
 export * from './starSystem';
 export * from './starSystemColonization';
 export * from './stateBlock';

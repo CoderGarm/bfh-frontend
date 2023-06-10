@@ -287,6 +287,12 @@
       },
       "offer": {
         "create": "Create a trade offer",
+        "spot": {
+          "title": "Spot market",
+          "prices": "current prices",
+          "warning": "Spot prices are changing fast, please keep that in mind while trading at the spot market."
+        },
+        "market": "Offer market",
         "edit": "Edit the offer",
         "title": "Available offers",
         "offer-taken": "You accepted the offer.",

@@ -11,6 +11,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {CdkOverlayOrigin} from "@angular/cdk/overlay";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {interval} from "rxjs";
+import {AppComponent} from "../../../../../app.component";
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 @Component({
@@ -58,6 +60,8 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
     theTotal!: ResourceAmount;
     private idTradeOfferToEdit?: number;
 
+    spotPriceByResourceType: Map<string, number> = new Map<string, number>();
+
     constructor(private translate: TranslateService,
                 private tickService: CurrentTickService,
                 private typeService: TypeService,
@@ -92,6 +96,9 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
         if (!this.credits) {
             throw new Error("Yes but no. Repair me.")
         }
+        const source = interval(AppComponent.CHECK_MESSAGES_INTERVAL_IN_SECONDS);
+        sub = source.subscribe(() => this.fetchSpotPrices());
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit() {
@@ -125,6 +132,15 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
         this.tradableResourceTypes = this.tradableResourceTypes.filter(r => r.typeName != this.credits.typeName);
         this.thePrice = {amount: 0, resourceType: this.credits};
         this.theTotal = {amount: 0, resourceType: this.credits};
+        this.tradableResourceTypes.forEach(r => this.spotPriceByResourceType.set(r.typeName, 0));
+        this.fetchSpotPrices();
+    }
+
+    private fetchSpotPrices() {
+        this.tradableResourceTypes.forEach(r => {
+            let sub = this.marketService.getSpotPrice(r.typeName).subscribe(resp => this.spotPriceByResourceType.set(r.typeName, resp));
+            this.subscriptions.push(sub);
+        });
     }
 
     private fetchOffers() {
@@ -264,5 +280,9 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
         this.theOffer = element.trade.resourceAmount;
         this.thePrice.amount = element.trade.price / this.theOffer.amount;
         this.calcTotal();
+    }
+
+    displaySpotOffer(resourceType: EResourceType, trigger: CdkOverlayOrigin) {
+
     }
 }

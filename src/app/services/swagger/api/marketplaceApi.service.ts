@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { FrontendError } from '../model/frontendError';
+import { SpotOffer } from '../model/spotOffer';
 import { TakeOffer } from '../model/takeOffer';
 import { TradeContract } from '../model/tradeContract';
 import { TradeOffer } from '../model/tradeOffer';
@@ -64,6 +65,51 @@ export class MarketplaceApiService {
     /**
      * Get all EResourceTypes.
      * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public buyAtSpotMarket(body?: SpotOffer, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public buyAtSpotMarket(body?: SpotOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public buyAtSpotMarket(body?: SpotOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buyAtSpotMarket(body?: SpotOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            '*/*'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/trade/spot/buy`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EResourceTypes.
+     * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -89,6 +135,48 @@ export class MarketplaceApiService {
         ];
 
         return this.httpClient.request<Array<TradeOffer>>('get',`${this.basePath}/api/private/trade/offer`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EResourceTypes.
+     * 
+     * @param resourceType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSpotPrice(resourceType: string, observe?: 'body', reportProgress?: boolean): Observable<number>;
+    public getSpotPrice(resourceType: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
+    public getSpotPrice(resourceType: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
+    public getSpotPrice(resourceType: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (resourceType === null || resourceType === undefined) {
+            throw new Error('Required parameter resourceType was null or undefined when calling getSpotPrice.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<number>('get',`${this.basePath}/api/private/trade/spot/pricePerUnit/${encodeURIComponent(String(resourceType))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -169,6 +257,51 @@ export class MarketplaceApiService {
 
         return this.httpClient.request<Array<TradesByLocation>>('get',`${this.basePath}/api/private/trade/historyForUser`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EResourceTypes.
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sellAtSpotMarket(body?: SpotOffer, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public sellAtSpotMarket(body?: SpotOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public sellAtSpotMarket(body?: SpotOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public sellAtSpotMarket(body?: SpotOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            '*/*'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/trade/spot/sell`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
