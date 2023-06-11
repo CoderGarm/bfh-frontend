@@ -61,6 +61,7 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
     private idTradeOfferToEdit?: number;
 
     spotPriceByResourceType: Map<string, number> = new Map<string, number>();
+    activeSpotPriceUpdateByResourceType: Map<string, boolean> = new Map<string, boolean>();
 
     constructor(private translate: TranslateService,
                 private tickService: CurrentTickService,
@@ -138,7 +139,13 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
 
     private fetchSpotPrices() {
         this.tradableResourceTypes.forEach(r => {
-            let sub = this.marketService.getSpotPrice(r.typeName).subscribe(resp => this.spotPriceByResourceType.set(r.typeName, resp));
+            this.activeSpotPriceUpdateByResourceType.set(r.typeName, true);
+            let sub = this.marketService.getSpotPrice(r.typeName).subscribe(resp => {
+                this.spotPriceByResourceType.set(r.typeName, resp);
+                setTimeout(() => {
+                    this.activeSpotPriceUpdateByResourceType.set(r.typeName, false);
+                }, 3000);
+            });
             this.subscriptions.push(sub);
         });
     }

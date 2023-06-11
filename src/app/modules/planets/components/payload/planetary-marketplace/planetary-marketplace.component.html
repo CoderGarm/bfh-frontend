@@ -8,8 +8,10 @@
             <div class="flex-items-container">
                 <div class="res-wrapper" *ngFor="let resourceType of tradableResourceTypes" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
                     <button mat-raised-button
+                            [disabled]="activeSpotPriceUpdateByResourceType.get(resourceType.typeName)!"
                             (click)="displaySpotOffer(resourceType, trigger); $event.stopPropagation();"
                             matTooltip="{{ 'planetary.marketplace.offer.spot.warning' | translate }}">
+                        <mat-icon class="update-icon" *ngIf="activeSpotPriceUpdateByResourceType.get(resourceType.typeName)!">update</mat-icon>
                         <div class="img-container info-holder">
                             <img class="icon" src="assets/{{resourceType.folder}}png24x/{{resourceType.iconName}}_c.png"
                                  alt="{{resourceType.singularName}}"
