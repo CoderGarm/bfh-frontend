@@ -15,7 +15,7 @@ import { ResourceAmount } from './resourceAmount';
  * .
  */
 export interface SpotOffer { 
-    resourceAmount?: ResourceAmount;
+    resourceAmount: ResourceAmount;
     /**
      * The planet's id.
      */

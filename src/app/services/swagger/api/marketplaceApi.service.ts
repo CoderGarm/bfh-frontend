@@ -65,15 +65,18 @@ export class MarketplaceApiService {
     /**
      * Get all EResourceTypes.
      * 
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buyAtSpotMarket(body?: SpotOffer, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public buyAtSpotMarket(body?: SpotOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public buyAtSpotMarket(body?: SpotOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public buyAtSpotMarket(body?: SpotOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public buyAtSpotMarket(body: SpotOffer, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public buyAtSpotMarket(body: SpotOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public buyAtSpotMarket(body: SpotOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buyAtSpotMarket(body: SpotOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling buyAtSpotMarket.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -89,7 +92,7 @@ export class MarketplaceApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            '*/*'
+            'application/json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected != undefined) {
@@ -268,15 +271,18 @@ export class MarketplaceApiService {
     /**
      * Get all EResourceTypes.
      * 
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sellAtSpotMarket(body?: SpotOffer, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public sellAtSpotMarket(body?: SpotOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public sellAtSpotMarket(body?: SpotOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public sellAtSpotMarket(body?: SpotOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public sellAtSpotMarket(body: SpotOffer, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public sellAtSpotMarket(body: SpotOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public sellAtSpotMarket(body: SpotOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public sellAtSpotMarket(body: SpotOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling sellAtSpotMarket.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -292,7 +298,7 @@ export class MarketplaceApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            '*/*'
+            'application/json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected != undefined) {
@@ -361,15 +367,18 @@ export class MarketplaceApiService {
     /**
      * Get all EResourceTypes.
      * 
-     * @param body 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public takeOffer(body?: TakeOffer, observe?: 'body', reportProgress?: boolean): Observable<TradeContract>;
-    public takeOffer(body?: TakeOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TradeContract>>;
-    public takeOffer(body?: TakeOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TradeContract>>;
-    public takeOffer(body?: TakeOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public takeOffer(body: TakeOffer, observe?: 'body', reportProgress?: boolean): Observable<TradeContract>;
+    public takeOffer(body: TakeOffer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TradeContract>>;
+    public takeOffer(body: TakeOffer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TradeContract>>;
+    public takeOffer(body: TakeOffer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling takeOffer.');
+        }
 
         let headers = this.defaultHeaders;
 

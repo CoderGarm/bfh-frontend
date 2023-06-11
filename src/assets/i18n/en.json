@@ -287,9 +287,12 @@
       },
       "offer": {
         "create": "Create a trade offer",
+        "buy": "Buy",
+        "sell": "Sell",
         "spot": {
+          "create": "Accept a spot offer",
           "title": "Spot market",
-          "prices": "current prices",
+          "price": "Spot price for",
           "warning": "Spot prices are changing fast, please keep that in mind while trading at the spot market."
         },
         "market": "Offer market",
@@ -304,7 +307,8 @@
         },
         "create-for": "Create an offer about",
         "created-notif": "Offer released",
-        "chose-amount": "Amount to sell",
+        "chose-amount-sell": "Amount to sell",
+        "chose-amount-buy": "Amount to buy",
         "chose-price": "Price per unit"
       }
     },

@@ -287,9 +287,12 @@
       },
       "offer": {
         "create": "Handelsangebot erstellen",
+        "buy": "Kaufen",
+        "sell": "Verkaufen",
         "spot": {
+          "create": "Accept a spot offer",
           "title": "Spotmarkt",
-          "prices": "aktuelle Preise",
+          "price": "Spotpreis für",
           "warning": "Die Spotpreise ändern sich schnell. Bitte beachten Sie dies beim Handel auf dem Spotmarkt."
         },
         "market": "Angebotsmarkt",
@@ -304,7 +307,8 @@
         },
         "create-for": "Erstelle ein Angebot für",
         "created-notif": "Angebot erstellt",
-        "chose-amount": "Verkaufsmenge",
+        "chose-amount-sell": "Verkaufsmenge",
+        "chose-amount-buy": "Einkaufsmenge",
         "chose-price": "Preis pro Einheit"
       }
     },

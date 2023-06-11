@@ -11,6 +11,8 @@ import {PlanetaryDashboardComponent} from './components/payload/planetary-dashbo
 import {FleetsInOrbitComponent} from './components/payload/fleets-in-orbit/fleets-in-orbit.component';
 import {PlanetaryMarketplaceComponent} from './components/payload/planetary-marketplace/planetary-marketplace.component';
 import {NgxEchartsModule} from "ngx-echarts";
+import {OfferMarketComponent} from './components/payload/offer-market/offer-market.component';
+import {SpotMarketComponent} from './components/payload/spot-market/spot-market.component';
 
 @NgModule({
     declarations: [
@@ -22,6 +24,8 @@ import {NgxEchartsModule} from "ngx-echarts";
         PlanetaryDashboardComponent,
         FleetsInOrbitComponent,
         PlanetaryMarketplaceComponent,
+        OfferMarketComponent,
+        SpotMarketComponent,
     ],
     imports: [
         SharedModuleModule,

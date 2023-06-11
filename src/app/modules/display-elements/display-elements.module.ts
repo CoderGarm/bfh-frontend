@@ -32,6 +32,7 @@ import {WeaponAmountByAlignmentDisplayComponent} from './weapon-amount-by-alignm
 import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/propulsion-capacity-display.component';
 import {TradeDeliveriesComponent} from './trade-deliveries/trade-deliveries.component';
 import {ResourceDisplayComponent} from "./resource-display/resource-display.component";
+import {IconComponent} from './icon/icon.component';
 
 @NgModule({
     declarations: [
@@ -67,6 +68,7 @@ import {ResourceDisplayComponent} from "./resource-display/resource-display.comp
         WeaponAmountByAlignmentDisplayComponent,
         PropulsionCapacityDisplayComponent,
         TradeDeliveriesComponent,
+        IconComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -103,6 +105,7 @@ import {ResourceDisplayComponent} from "./resource-display/resource-display.comp
         PropulsionCapacityDisplayComponent,
         ModuleDisplayComponent,
         TradeDeliveriesComponent,
+        IconComponent,
     ]
 })
 export class DisplayElementsModule {

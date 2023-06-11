@@ -1,0 +1,63 @@
+<app-outlined titleValue="{{ 'planetary.marketplace.offer.spot.title' | translate }}">
+    <div class="offer-block">
+        <span matListItemLine>{{ 'planetary.marketplace.offer.spot.warning' | translate }}</span>
+        <div class="flex-items-container">
+            <div class="res-wrapper" *ngFor="let resourceType of tradableResourceTypes" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                <button mat-raised-button
+                        [disabled]="activeSpotPriceUpdateByResourceType.get(resourceType.typeName)!"
+                        (click)="displaySpotOffer(resourceType, trigger); $event.stopPropagation();"
+                        matTooltip="{{ 'planetary.marketplace.offer.spot.price' | translate }} {{ resourceType.typeName }}: {{ spotPriceByResourceType.get(resourceType.typeName)! }} creds">
+                    <mat-icon class="update-icon" *ngIf="activeSpotPriceUpdateByResourceType.get(resourceType.typeName)!">update</mat-icon>
+                    <div class="img-container info-holder">
+                        <app-icon png24px [icon]="resourceType" [altText]="resourceType.typeName" [toolTip]="resourceType.typeName"></app-icon>
+                    </div>
+                    <div>
+                        <app-number-short [input]="spotPriceByResourceType.get(resourceType.typeName)!"></app-number-short>
+                    </div>
+                </button>
+            </div>
+            <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerSpotOffer" [cdkConnectedOverlayOpen]="isOpenSpotOffer">
+                <!-- create spot offer overlay -->
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-subtitle *ngIf="!theOffer">{{ 'planetary.marketplace.offer.spot.create' | translate }}</mat-card-subtitle>
+                        <mat-card-subtitle *ngIf="!!theOffer">{{ 'planetary.marketplace.offer.spot.create' | translate }}
+                            for {{ theOffer.amount }}
+                            <app-icon [icon]="theOffer.resourceType" [altText]="theOffer.resourceType.typeName" [toolTip]="theOffer.resourceType.typeName"></app-icon>
+                            about {{ theTotal.amount }}
+                            <app-icon [icon]="theTotal.resourceType" [altText]="theTotal.resourceType.typeName" [toolTip]="theTotal.resourceType.typeName"></app-icon>
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-button-toggle-group [(ngModel)]="tradeMode" (valueChange)="clearOffer()">
+                            <mat-button-toggle value="sell">{{ 'planetary.marketplace.offer.sell' | translate }}</mat-button-toggle>
+                            <mat-button-toggle value="buy">{{ 'planetary.marketplace.offer.buy' | translate }}</mat-button-toggle>
+                        </mat-button-toggle-group>
+                        <app-resource-counter *ngIf="tradeMode === 'sell'"
+                                              [resourceType]="theOffer!.resourceType"
+                                              [startAt]="0"
+                                              [max]=" resourceToOffer!.amount "
+                                              (numericEmitter)="setSpotOffer($event)"
+                                              caption="{{ 'planetary.marketplace.offer.chose-amount-sell' | translate }}">
+                        </app-resource-counter>
+                        <app-resource-counter *ngIf="tradeMode === 'buy'"
+                                              [resourceType]="theOffer!.resourceType"
+                                              [startAt]="0"
+                                              [max]="maxToBuy"
+                                              (numericEmitter)="setSpotOffer($event)"
+                                              caption="{{ 'planetary.marketplace.offer.chose-amount-buy' | translate }}">
+                        </app-resource-counter>
+                        <span matListItemLine>{{ 'planetary.marketplace.offer.chose-price' | translate }}: {{ thePrice.amount}}</span>
+                    </mat-card-content>
+                    <mat-card-actions align="end">
+                        <button mat-button color="accent" (click)="createSpotOffer()">
+                            {{ 'planetary.marketplace.offer.action.release' | translate }}
+                        </button>
+                        <button mat-button color="accent"
+                                (click)="closeSpotOfferCreation(); $event.stopPropagation();">{{ 'planetary.marketplace.offer.action.abort' | translate }}</button>
+                    </mat-card-actions>
+                </mat-card>
+            </ng-template>
+        </div>
+    </div>
+</app-outlined>

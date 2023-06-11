@@ -36,4 +36,17 @@ export class PlanetsEventService {
     selectPlanet(planet?: Planet) {
         this.selectedPlanetEmitter.next(planet);
     }
+
+    /**
+     * communicates a created offer and therefore a changed deposit
+     */
+    private offerCreatedEmitter: ReplaySubject<any> = new ReplaySubject<any>();
+
+    getOfferCreatedEmitter() {
+        return this.offerCreatedEmitter;
+    }
+
+    fireOfferCrated() {
+        this.offerCreatedEmitter.next();
+    }
 }
