@@ -17,7 +17,7 @@ import { ResourceAmount } from './resourceAmount';
 export interface Trade { 
     resourceAmount: ResourceAmount;
     /**
-     * The price for the traded amount.
+     * The price per unit of the traded resource.
      */
-    price: number;
+    pricePerUnit: number;
 }

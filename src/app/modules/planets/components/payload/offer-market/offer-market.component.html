@@ -79,12 +79,12 @@
 
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
-            <td mat-cell *matCellDef="let element">{{element.trade.price}}</td>
+            <td mat-cell *matCellDef="let element">{{element.trade.pricePerUnit * element.trade.resourceAmount.amount}}</td>
         </ng-container>
 
         <ng-container matColumnDef="ppu">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Price per Unit</th>
-            <td mat-cell *matCellDef="let element">{{element.trade.price / element.trade.resourceAmount.amount}}</td>
+            <td mat-cell *matCellDef="let element">{{element.trade.pricePerUnit}}</td>
         </ng-container>
 
         <ng-container matColumnDef="take">

@@ -47,7 +47,6 @@ export class PriceChartHelper extends SubscriptionManager {
             series: resourceTypes.map(r => <SeriesOption>{
                 name: r.typeName,
                 type: 'line',
-                stack: 'Total',
                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             })
         };
@@ -59,14 +58,16 @@ export class PriceChartHelper extends SubscriptionManager {
 
                 const data: number[] = [];
                 history.sort((a, b) => a.tick.tickNo - b.tick.tickNo).forEach(h => {
-                    const resourceAmount = h.trades.filter(h => h.resourceAmount.resourceType.typeName === r.typeName)[0];
-                    data.push(!!resourceAmount ? resourceAmount.resourceAmount.amount : 0);
+                    const trades = h.trades.filter(h => h.resourceAmount.resourceType.typeName === r.typeName);
+                    const amount = trades.map(t => t.resourceAmount.amount).reduce((sum, current) => sum + current, 0);
+                    const pricePerUnit = trades.map(t => t.pricePerUnit).reduce((sum, current) => sum + current, 0);
+                    data.push(amount);
+                    //data.push(Math.floor(pricePerUnit / amount)); /* fixme set price history */
                 });
 
                 return <SeriesOption>{
                     name: r.typeName,
                     type: 'line',
-                    stack: 'Total',
                     data: data
                 }
             })

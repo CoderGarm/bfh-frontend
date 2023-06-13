@@ -106,8 +106,10 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
                 case "amount":
                     return item.trade.resourceAmount.amount;
                 case "price":
+                    return item.trade.pricePerUnit * item.trade.resourceAmount.amount;
+                case "ppu":
                 default:
-                    return item.trade.price;
+                    return item.trade.pricePerUnit;
             }
         };
         this.resourceTypeChipList._chips.forEach(chip => chip.select());
@@ -187,7 +189,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
             const offer: TradeOffer = {
                 trade: {
                     resourceAmount: this.theOffer,
-                    price: this.thePrice.amount * this.theOffer.amount
+                    pricePerUnit: this.thePrice.amount
                 },
                 origin: {
                     id: this.planet!.idPlanet,
@@ -234,7 +236,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
         const resourceAmount = this.resourceDeposit.filter(r => r.resourceType.typeName === element.trade.resourceAmount.resourceType.typeName)[0];
         this.resourceToOffer = {resourceType: resourceAmount.resourceType, amount: resourceAmount.amount}
         this.theOffer = element.trade.resourceAmount;
-        this.thePrice.amount = element.trade.price / this.theOffer.amount;
+        this.thePrice.amount = element.trade.pricePerUnit;
         this.calcTotal();
     }
 }

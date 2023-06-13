@@ -50,10 +50,17 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
 
         this.setUpTradableResources();
         this.createPriceChart(this.tradableResourceTypes, this.detectTicks());
-        this.plantNotifService.getOfferCreatedEmitter().subscribe(() => this.fetchDeposit());
+        this.plantNotifService.getOfferCreatedEmitter().subscribe(() => {
+            this.fetchDeposit();
+            this.fetchPriceHistory();
+        });
     }
 
     ngAfterViewInit() {
+        this.fetchPriceHistory();
+    }
+
+    private fetchPriceHistory() {
         let sub = this.marketService.getTrades(this.historizedTickAmount).subscribe(resp => this.setPriceHistory(this.tradableResourceTypes, resp));
         this.subscriptions.push(sub);
     }
