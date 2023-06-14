@@ -55,7 +55,10 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     showSendButton(message: ForumMessage) {
-        const timeframe = this.datePipe.transform(new Date(Date.parse(message.sentAt + '') + (1000 * 60 * 60)), 'dd.MM.yyyy HH:mm')!;
+        if (!this.selectedForumThread || !this.selectedForumThread.title.toLowerCase().includes('release')) {
+            return false;
+        }
+        const timeframe = this.datePipe.transform(new Date(Date.parse(message.sentAt + '') + (1000 * 60 * 30)), 'dd.MM.yyyy HH:mm')!;
         const indexOf = this.messagesInThread?.indexOf(message);
         return message.idForum == 1 && indexOf == 0 && this.isAdmin && this.now < timeframe;
     }
