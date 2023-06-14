@@ -77,7 +77,7 @@
         <app-construction-display
                 [construction]="construction"
                 [resourceDeposit]="resourceDeposit"
-                [costsToDisplay]="costsToDisplay"
+                [costsToDisplay]="getCosts(construction)"
                 [constructionPossible]="constructionPossible"
                 (constructionOutput)="startConstruction($event)"></app-construction-display>
     </mat-expansion-panel>

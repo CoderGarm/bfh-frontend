@@ -235,6 +235,11 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         return !ResourceHelper.canPayTheCollectableBill(costs, this.resourceDeposit);
     }
 
+    getCosts(construction: Construction): ResourceDeposit | undefined {
+        let key = this.getConstructionKey(construction);
+        return this.knownCosts.get(key);
+    }
+
     /**
      * this filters the displayed constructions by the selected filters
      * @private
