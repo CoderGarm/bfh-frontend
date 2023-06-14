@@ -29,3 +29,7 @@
 .right-side {
   float: right;
 }
+
+.delivery-spacer {
+  margin-bottom: 15px !important; /* todo make a component out of the tree structure and replace !important by design */
+}

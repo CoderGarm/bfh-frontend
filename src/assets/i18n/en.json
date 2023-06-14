@@ -206,7 +206,7 @@
       "nothing": "No deliveries",
       "present-title": "Current deliveries",
       "title": "Deliveries",
-      "expected-arrival": "Expected arrival to tick",
+      "expected-arrival": "Arrival at tick",
       "arrival": "Delivery arrived"
     },
     "commissioned-operationals": {

@@ -10,27 +10,39 @@
                         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                     </mat-icon>
                 </button>
-                <div mat-subheader *ngIf="!!node.parent.destination">To {{ node.parent.destination.name! }}</div>
-                <div mat-subheader *ngIf="!!node.parent.origin">From {{ node.parent.origin.name! }}</div>
+                <div mat-subheader *ngIf="!!node.parent.destination">{{ node.parent.destination.name! }}</div>
+                <div mat-subheader *ngIf="!!node.parent.origin">{{ node.parent.origin.name! }}</div>
             </div>
             <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="clearfix">
                 <div class="left-side" *ngIf="!!node.parent.tradesByTick.length">
                     <ul>
-                        <li *ngFor="let entry of node.parent.tradesByTick">
+                        <li *ngFor="let entry of node.parent.tradesByTick" class="delivery-spacer">
                             <div mat-line
                                  *ngIf="!!currentTickService.currentTick && currentTickService.currentTick.tickNo < entry.tick.tickNo">{{ 'journal.trade.expected-arrival' | translate }}
-                                : {{ entry.tick.tickNo }}</div>
+                                {{ entry.tick.tickNo }}</div>
                             <div mat-line
                                  *ngIf="!!currentTickService.currentTick && currentTickService.currentTick.tickNo == entry.tick.tickNo">{{ 'journal.trade.arrival' | translate }}</div>
                             <ul>
-                                <li *ngFor="let trade of entry.trades">
-                                    <div mat-line>{{ trade.resourceAmount.amount }}x
-                                        <img src="assets/{{trade.resourceAmount.resourceType.folder}}png16x/{{trade.resourceAmount.resourceType.iconName}}_c.png"
-                                             alt="{{trade.resourceAmount.resourceType.typeName}}" matTooltip="{{trade.resourceAmount.resourceType.typeName}}">
-                                        for
-                                        {{ trade.price }}x
-                                        <img *ngIf="!!credits" src="assets/{{credits.folder}}png16x/{{credits.iconName}}_c.png"
-                                             alt="{{credits.typeName}}" matTooltip="{{credits.typeName}}">
+                                <li *ngFor="let trade of entry.sales">
+                                    <div mat-line>
+                                        <app-number-short [input]="trade.pricePerUnit * trade.resourceAmount.amount"></app-number-short>&nbsp;
+                                        <app-icon [icon]="credits!" [altText]="credits!.typeName" [toolTip]="credits!.typeName"></app-icon>
+                                        &nbsp;for&nbsp;
+                                        <app-number-short [input]="trade.resourceAmount.amount"></app-number-short>&nbsp;
+                                        <app-icon [icon]="trade.resourceAmount.resourceType" [altText]="trade.resourceAmount.resourceType.typeName"
+                                                  [toolTip]="trade.resourceAmount.resourceType.typeName"></app-icon>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li *ngFor="let trade of entry.purchases">
+                                    <div mat-line>
+                                        <app-number-short [input]="trade.resourceAmount.amount"></app-number-short>&nbsp;
+                                        <app-icon [icon]="trade.resourceAmount.resourceType" [altText]="trade.resourceAmount.resourceType.typeName"
+                                                  [toolTip]="trade.resourceAmount.resourceType.typeName"></app-icon>
+                                        &nbsp;for&nbsp;
+                                        <app-number-short [input]="trade.pricePerUnit * trade.resourceAmount.amount"></app-number-short>&nbsp;
+                                        <app-icon [icon]="credits!" [altText]="credits!.typeName" [toolTip]="credits!.typeName"></app-icon>
                                     </div>
                                 </li>
                             </ul>

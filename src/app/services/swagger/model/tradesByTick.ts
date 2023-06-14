@@ -18,7 +18,15 @@ import { Trade } from './trade';
 export interface TradesByTick { 
     tick: Tick;
     /**
-     * The effective prices of the resources.
+     * The trades.
      */
     trades: Array<Trade>;
+    /**
+     * The sales.
+     */
+    sales: Array<Trade>;
+    /**
+     * The purchases.
+     */
+    purchases: Array<Trade>;
 }
