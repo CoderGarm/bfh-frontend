@@ -42,9 +42,15 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
                 private marketService: MarketplaceApiService) {
         super();
 
-        this.translations.set('planetary.marketplace.price-history.title', 'planetary.marketplace.price-history.title');
-        let sub = this.translate.get('planetary.marketplace.price-history.title').subscribe((translated: string) => {
-            this.translations.set('planetary.marketplace.price-history.title', translated);
+        this.translations.set('planetary.marketplace.history.price.title', 'planetary.marketplace.history.price.title');
+        let sub = this.translate.get('planetary.marketplace.history.price.title').subscribe((translated: string) => {
+            this.translations.set('planetary.marketplace.history.price.title', translated);
+        });
+        this.subscriptions.push(sub);
+
+        this.translations.set('planetary.marketplace.history.amount.title', 'planetary.marketplace.history.amount.title');
+        sub = this.translate.get('planetary.marketplace.history.amount.title').subscribe((translated: string) => {
+            this.translations.set('planetary.marketplace.history.amount.title', translated);
         });
         this.subscriptions.push(sub);
 

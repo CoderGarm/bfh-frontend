@@ -282,8 +282,13 @@
       "title": "Gebäude"
     },
     "marketplace": {
-      "price-history": {
-        "title": "Preisentwicklung"
+      "history": {
+        "price": {
+          "title": "Preisentwicklung"
+        },
+        "amount": {
+          "title": "Handelsmenge"
+        }
       },
       "offer": {
         "create": "Handelsangebot erstellen",

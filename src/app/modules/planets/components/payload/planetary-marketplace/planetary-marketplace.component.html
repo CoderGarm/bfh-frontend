@@ -4,7 +4,10 @@
                      [resourceDeposit]="resourceDeposit"
                      [presentMoney]="presentMoney"></app-spot-market>
 
-    <div echarts [options]="chartOption" [merge]="mergeOptions" [theme]="theme" class="price-history-chart"></div>
+    <div class="flex-items-container">
+        <div echarts [options]="amountHistoryOpt" [merge]="amountMergeOpt" [theme]="theme" class="history-chart"></div>
+        <div echarts [options]="priceHistoryOpt" [merge]="priceMergeOpt" [theme]="theme" class="history-chart"></div>
+    </div>
 
     <app-offer-market [planet]="planet"
                       [resourceDeposit]="resourceDeposit"

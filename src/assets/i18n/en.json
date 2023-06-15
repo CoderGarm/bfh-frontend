@@ -282,8 +282,13 @@
       "title": "Ground constructions"
     },
     "marketplace": {
-      "price-history": {
-        "title": "Price history"
+      "history": {
+        "price": {
+          "title": "Price history"
+        },
+        "amount": {
+          "title": "Traded amount"
+        }
       },
       "offer": {
         "create": "Create a trade offer",
