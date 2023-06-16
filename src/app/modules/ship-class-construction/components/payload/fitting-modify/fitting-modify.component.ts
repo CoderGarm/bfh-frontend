@@ -148,9 +148,9 @@ export class FittingModifyComponent extends SubscriptionManager implements After
     /**
      * deletes the stored ship class
      */
-    deleteClass() {
-        if (!!this.designedShipClass) {
-            let idShipClass = this.designedShipClass.idShipClass;
+    deleteClass(shipClass: ShipClass | undefined) {
+        if (!!shipClass) {
+            let idShipClass = shipClass.idShipClass;
             if (!idShipClass) {
                 return;
             }
