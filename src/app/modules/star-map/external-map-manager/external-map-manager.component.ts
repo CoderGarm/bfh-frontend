@@ -292,4 +292,6 @@ export class ExternalMapManagerComponent extends SubscriptionManager implements 
             });
         }
     }
+
+    protected readonly transferArrayItem = transferArrayItem;
 }

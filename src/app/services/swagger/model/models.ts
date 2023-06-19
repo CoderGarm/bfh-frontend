@@ -61,6 +61,7 @@ export * from './hitLog';
 export * from './humanResourceAmount';
 export * from './jWT';
 export * from './job';
+export * from './junction';
 export * from './launcher';
 export * from './lossRole';
 export * from './mass';

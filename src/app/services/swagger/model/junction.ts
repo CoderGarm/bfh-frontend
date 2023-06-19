@@ -9,13 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Coords } from './coords';
 
 /**
  * .
  */
-export interface FinishedColonization { 
+export interface Junction { 
+    position: Coords;
     /**
-     * The fresh colonized planet's name.
+     * All termini of the junction.
      */
-    colonizedPlanetName: string;
+    termini: Array<Coords>;
 }

@@ -34,7 +34,7 @@ export class ExternalMapComponent extends InterstellarViewHelper implements Afte
     radialGroups: RadialGroup[] = [];
 
     constructor(private route: ActivatedRoute,
-                private starMapService: PublicResourcesApiService,
+                private publicResourcesApiService: PublicResourcesApiService,
                 private translate: TranslateService) {
         super();
 
@@ -106,7 +106,7 @@ export class ExternalMapComponent extends InterstellarViewHelper implements Afte
     private createUniverseMap() {
         this.clearData();
 
-        let sub = this.starMapService.getAllSystemCoordinates().subscribe(resp => {
+        let sub = this.publicResourcesApiService.getAllSystemCoordinates().subscribe(resp => {
             this.coords = resp;
             const colors: Map<number, string> = new Map<number, string>();
             let id = this.coords.length;
@@ -140,6 +140,23 @@ export class ExternalMapComponent extends InterstellarViewHelper implements Afte
             let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForExternalStarMap(this.center, this.knownStarSystems, colors);
             this.drawRadialGroups(this.radialGroups);
             this.drawOrbits(orbitDefinitions);
+            this.drawJunctions();
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private drawJunctions() {
+        let sub = this.publicResourcesApiService.getAllWormholeJunctions().subscribe(junctions => {
+            junctions.forEach(junction => {
+                junction.termini.forEach(terminus => {
+                    const mainCelestialGroup = this.getOrCreateMainCelestialGroup();
+                    mainCelestialGroup
+                        .line(junction.position.x, junction.position.y, terminus.x, terminus.y)
+                        .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER)
+                        .addClass(BasicViewHelperData.WORMHOLE_MARKER)
+                        .stroke({width: 1, color: 'irrelevant'});
+                });
+            });
         });
         this.subscriptions.push(sub);
     }

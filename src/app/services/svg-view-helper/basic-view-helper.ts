@@ -288,6 +288,9 @@ export class BasicViewHelper extends BasicViewHelperData {
             if (c.classes().filter(c => c == BasicViewHelperData.ROUND_CAP_MARKER).length != 0) {
                 this.repositioningRoundCapMarker(c);
             }
+            if (c.classes().filter(c => c == BasicViewHelperData.WORMHOLE_MARKER).length != 0) {
+                c.stroke(this.zoomStroke({width: 1, color: 'irrelevant'}));
+            }
         });
     }
 
