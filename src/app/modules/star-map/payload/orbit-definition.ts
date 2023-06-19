@@ -15,6 +15,8 @@ export class OrbitDefinition {
 
     readonly isColonizedByOtherUser: boolean;
 
+    readonly isNpc: boolean;
+
     readonly isColonizable: boolean;
 
     readonly isMain: boolean;
@@ -24,6 +26,7 @@ export class OrbitDefinition {
     constructor(celestial: Planet | StarSystem,
                 isColonizedByLoggedInUser: boolean,
                 isColonizedByOtherUser: boolean,
+                isNpc: boolean,
                 isColonizable: boolean,
                 isMain: boolean,
                 color?: string) {
@@ -32,6 +35,7 @@ export class OrbitDefinition {
         this.orbit = celestial.orbit;
         this.isColonizedByLoggedInUser = isColonizedByLoggedInUser;
         this.isColonizedByOtherUser = isColonizedByOtherUser;
+        this.isNpc = isNpc;
         this.isColonizable = isColonizable;
         this.isMain = isMain;
         this.color = color;
@@ -43,8 +47,9 @@ export class OrbitDefinition {
             let isColonizedByLoggedInUser: boolean = false;
             let isColonizedByOtherUser: boolean = false;
             let isColonizable: boolean = false;
+            let isNpc: boolean = false;
             let isMain: boolean = system.name === center.name;
-            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isColonizable, isMain, colors.get(system.idStarSystem)));
+            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isColonizable, isMain, colors.get(system.idStarSystem)));
         });
         return od;
     }
@@ -54,6 +59,7 @@ export class OrbitDefinition {
         systems.forEach(system => {
             let isColonizedByLoggedInUser: boolean = false;
             let isColonizedByOtherUser: boolean = false;
+            let isNpc: boolean = false;
             let isColonizable: boolean = false;
             let isMain: boolean = false;
             system.planets.forEach(planet => {
@@ -63,6 +69,8 @@ export class OrbitDefinition {
                         if (planet.isMain) {
                             isMain = true;
                         }
+                    } else if (planet.owner.isNpc) {
+                        isNpc = true;
                     } else {
                         isColonizedByOtherUser = true;
                     }
@@ -70,7 +78,7 @@ export class OrbitDefinition {
                     isColonizable = true;
                 }
             });
-            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isColonizable, isMain));
+            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isColonizable, isMain));
         });
         return od;
     }
@@ -80,6 +88,7 @@ export class OrbitDefinition {
         planets.forEach(planet => {
             let isColonizedByLoggedInUser: boolean = false;
             let isColonizedByOtherUser: boolean = false;
+            let isNpc: boolean = false;
             let isColonizable: boolean = false;
             let isMain: boolean = false;
             if (!!planet.owner) {
@@ -88,13 +97,15 @@ export class OrbitDefinition {
                     if (planet.isMain) {
                         isMain = true
                     }
+                } else if (planet.owner.isNpc) {
+                    isNpc = true;
                 } else {
                     isColonizedByOtherUser = true;
                 }
             } else {
                 isColonizable = true;
             }
-            od.push(new OrbitDefinition(planet, isColonizedByLoggedInUser, isColonizedByOtherUser, isColonizable, isMain));
+            od.push(new OrbitDefinition(planet, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isColonizable, isMain));
         });
         return od;
     }
