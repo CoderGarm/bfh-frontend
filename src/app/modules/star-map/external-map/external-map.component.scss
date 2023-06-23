@@ -1,120 +1,15 @@
 @import "src/styles/variables";
 
+$bgColor: black;
+
 #external-map {
-  background-color: $background-color;
+  background-color: $bgColor;
   overflow: hidden;
 }
 
-.info-div {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50em;
-
-  & .mat-mdc-form-field {
-    margin: 15px 15px 0 0;
-  }
+.ext-coordCross {
+  stroke: red;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
 }
 
-#universe, #starsystem, #arena {
-  height: 100vh;
-  width: 100%;
-}
-
-#universe-canvas, #star-system-canvas, #combat-arena {
-  height: 100%;
-  width: 100%;
-  contain: paint;
-}
-
-.coordCross {
-  stroke: cadetblue;
-  stroke-width: 1;
-  opacity: 0.2;
-  filter: alpha(opacity=20);
-}
-
-.star {
-  opacity: 0.5;
-  fill: yellow;
-  filter: alpha(opacity=50);
-}
-
-.roundCap {
-  stroke-linecap: round;
-}
-
-.colonizable {
-  stroke: #306f91;
-  stroke-width: 1;
-}
-
-.colonized-by-others {
-  fill: #6f1585;
-}
-
-.colonized-by-user {
-  fill: darkolivegreen;
-}
-
-.not-colonized {
-  fill: darkgoldenrod;
-}
-
-.orbit {
-  stroke: cadetblue;
-  stroke-width: 1;
-}
-
-.hyper-limit {
-  stroke: darkblue;
-  stroke-width: 1;
-}
-
-.svg-text {
-  fill: cadetblue;
-}
-
-.notch-container {
-  position: fixed;
-  bottom: 25px;
-  margin: 0 auto;
-  left: 180px; // width of nav bar
-  right: 0;
-  z-index: 1000;
-  text-align: center;
-  pointer-events: none;
-}
-
-.coursePlot {
-  fill: transparent;
-  stroke: #000;
-  stroke-width: 1px;
-  stroke-opacity: 0.2;
-  stroke-dasharray: 0 20 28.284;
-  animation: infinite;
-}
-
-
-.circle-cycle {
-  animation: cycling-circle 5s infinite;
-  stroke-linecap: square;
-  animation-timing-function: linear;
-  transform-origin: center;
-  transform-box: fill-box;
-  fill: transparent;
-}
-
-@keyframes cycling-circle {
-  // animation for the selected object and subject
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.clickable {
-  cursor: pointer;
-}

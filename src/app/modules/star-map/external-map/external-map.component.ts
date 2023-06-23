@@ -51,9 +51,7 @@ export class ExternalMapComponent extends InterstellarViewHelper implements Afte
         const center = map.get(ExternalMapComponent.queryParam[2]);
         if (!!center) {
             this.radialGroups = JSON.parse(center);
-            this.radialGroups.forEach(rg => {
-                this.colorByCircle.set(ExternalMapComponent.getStarSystemCircleID(rg.coord), ExternalMapComponent.RADIAL_HIGHLIGHTING_COLOR);
-            })
+            this.radialGroups.forEach(rg => this.colorByCircle.set(ExternalMapComponent.getStarSystemCircleID(rg.coord), ExternalMapComponent.RADIAL_HIGHLIGHTING_COLOR));
         }
     }
 
@@ -79,9 +77,13 @@ export class ExternalMapComponent extends InterstellarViewHelper implements Afte
 
     ngAfterViewInit(): void {
         // unfortunately necessary in this constellation - ng destroy is called by ng template in tab view on tab switch
-        const canvas = this.createCanvas("universe-canvas", '#universe');
-        canvas.mouseover(this.mouseoverForCelestial).mouseout(this.mouseoutForCelestial);
-        this.createUniverseMap();
+        const length = document.getElementById('universe')!.childNodes.length;
+        if (length == 0) {
+            // called twice but never cleared why
+            const canvas = this.createCanvas("universe-canvas", '#universe', 'ext-');
+            canvas.mouseover(this.mouseoverForCelestial).mouseout(this.mouseoutForCelestial);
+            this.createUniverseMap();
+        }
     }
 
     static getStarSystemCircleID(orbit: SimpleCoord): string {
@@ -119,7 +121,7 @@ export class ExternalMapComponent extends InterstellarViewHelper implements Afte
                         yCoordinate: {coordinate: coord.y, distanceMetric: EDistanceMetricsEnum.LY}
                     },
                     planets: [],
-                    starClassType: {"typeName": "CLASS_G3", "iconName": "class_O_star", "folder": "icons/stars/", "spectralClass": "G3", "lightMinutesToHyperLimit": 20.68}
+                    starClassType: {typeName: "CLASS_G3", iconName: "class_O_star", folder: "icons/stars/", spectralClass: "G3", lightMinutesToHyperLimit: 20.68}
                 });
                 const color = this.colorByCircle.get(ExternalMapComponent.getStarSystemCircleID(coord))!;
                 colors.set(id, color);

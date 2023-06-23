@@ -70,6 +70,12 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected static readonly INVISIBLE_CLASS = "invisible";
 
+    /**
+     * If the map is used as external this prefix will be added to all necessary css selectors.
+     * Is an ugly idea, but it works until a full rework and separating the external map from the internal one.
+     */
+    private externalMapPrefix: string = '';
+
     protected aspectRatio: number = 1;
 
     protected zoomLevel: number = 1;
@@ -110,16 +116,9 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.clearFleetGroups();
     }
 
-    protected setCanvas(canvas: Svg) {
-        if (!canvas) {
-            throw new Error("The canvas isn't initialized.");
-        } else {
-            this.canvas = canvas;
-        }
-    }
-
-    createCanvas(id: string, parentCssId: string): Svg {
+    createCanvas(id: string, parentCssId: string, externalMapPrefix: string = ''): Svg {
         if (!this.canvas) {
+            this.externalMapPrefix = externalMapPrefix;
             this.canvas = SVG().id(id).addTo(parentCssId).panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
             this.canvas
                 .on('zoom', this.zoomModification)
@@ -789,7 +788,7 @@ export class BasicViewHelper extends BasicViewHelperData {
                 .y(yBase)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
                 .id(idPrefix + "-" + BasicViewHelper.COORD_CROSS + i)
-                .addClass(BasicViewHelper.COORD_CROSS)
+                .addClass(this.externalMapPrefix + BasicViewHelper.COORD_CROSS)
                 .radius(radiusSteps * i);
         }
         const degree = 12;
@@ -800,7 +799,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             const points: ArrayXY[] = [[xBase, yBase], [xBase + x, yBase + y]];
             group.line(points)
                 .id(idPrefix + "-" + BasicViewHelper.COORD_CROSS + "-line" + j)
-                .addClass(BasicViewHelper.COORD_CROSS)
+                .addClass(this.externalMapPrefix + BasicViewHelper.COORD_CROSS)
         }
     }
 
