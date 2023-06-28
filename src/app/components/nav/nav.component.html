@@ -7,6 +7,10 @@
             <mat-icon>menu_book</mat-icon>
             <span>{{ 'burger-menu.' + route.path | translate }}</span>
         </button>
+        <a mat-menu-item href="{{ honorverseMapPath }}" target="_blank">
+            <mat-icon>menu_book</mat-icon>
+            <span matListItemLine>{{ 'burger-menu.external-star-map-manager' | translate }}</span>
+        </a>
     </mat-menu>
     <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">Battle for Honor</button>
     <span class="spacer"></span>

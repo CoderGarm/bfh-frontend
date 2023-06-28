@@ -23,6 +23,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     applicationInfo?: ApplicationInfo;
 
     activeRoute?: Route;
+    honorverseMapPath: string;
 
     constructor(private router: Router,
                 private authenticationService: AuthenticationService,
@@ -30,6 +31,8 @@ export class NavComponent extends SubscriptionManager implements OnInit {
                 private adminApi: AdminApiService,
                 protected currentTickService: CurrentTickService) {
         super();
+
+        this.honorverseMapPath = 'https://map.battleforhonor.de/';
     }
 
     ngOnInit(): void {

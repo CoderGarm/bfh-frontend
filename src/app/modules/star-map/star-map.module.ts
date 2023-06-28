@@ -12,8 +12,6 @@ import {FleetNotchInfoComponent} from './payload/fleet-notch-info/fleet-notch-in
 import {FleetNotchMoveComponent} from './payload/fleet-notch-move/fleet-notch-move.component';
 import {FleetNotchMergeComponent} from './payload/fleet-notch-merge/fleet-notch-merge.component';
 import {FleetNotchTransportComponent} from './payload/fleet-notch-transport/fleet-notch-transport.component';
-import {ExternalMapComponent} from './external-map/external-map.component';
-import {ExternalMapManagerComponent} from './external-map-manager/external-map-manager.component';
 
 
 @NgModule({
@@ -29,8 +27,6 @@ import {ExternalMapManagerComponent} from './external-map-manager/external-map-m
         FleetNotchMoveComponent,
         FleetNotchMergeComponent,
         FleetNotchTransportComponent,
-        ExternalMapComponent,
-        ExternalMapManagerComponent
     ],
     imports: [
         SharedModuleModule,

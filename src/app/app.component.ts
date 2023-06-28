@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavigationStart, Route, Router, Routes} from '@angular/router';
+import {Route, Router, Routes} from '@angular/router';
 import {AuthenticationService} from './services/authentication';
 import {NavigationCreationService} from './services/navigation/navigation-creation.service';
 import {interval} from "rxjs";
@@ -46,8 +46,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         ChatComponent.path
     ];
 
-    isStandalone: boolean = false;
-
     constructor(private translate: TranslateService,
                 private router: Router,
                 public doNotScrollService: DoNotScrollService,
@@ -70,16 +68,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             translate.use(browserLang);
         }
 
-        const path = NavigationCreationService.getExternalRoutes().map(r => r.path);
-        this.router.events.subscribe((routerData) => {
-            path.forEach(path => {
-                if (routerData instanceof NavigationStart && routerData.url.includes('/' + path)) {
-                    this.isStandalone = true;
-                    this.notif.close();
-                }
-            });
-        });
-
         this.navService.getNavigationEmitter().subscribe(route => this.navigate(route));
 
         this.titleService.setTitle("Battle for Honor");
@@ -96,9 +84,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         let sub = this.doNotScrollService.getNoScrollEmitter().subscribe(noScroll => this.isNoScroll = noScroll);
         this.subscriptions.push(sub);
 
-        if (!this.isStandalone) {
-            this.showSeasonBadge();
-        }
+        this.showSeasonBadge();
     }
 
     showSeasonBadge() {
@@ -122,7 +108,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.subscriptions.push(sub);
 
         const source = interval(AppComponent.CHECK_MESSAGES_INTERVAL_IN_SECONDS);
-        sub = source.subscribe(val => {
+        sub = source.subscribe(() => {
             // and later again repetitive
             this.detectUnreadMessages();
         });
@@ -131,11 +117,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     private detectUnreadMessages() {
         if (this.isLoggedIn) {
-            let sub = this.chatApi.hasUserUnread().subscribe(resp => this.setUnread(resp, ChatComponent.path), error => {
-            });
+            let sub = this.chatApi.hasUserUnread().subscribe(resp => this.setUnread(resp, ChatComponent.path));
             this.subscriptions.push(sub);
-            sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.setUnread(resp, ForumsListComponent.path), error => {
-            });
+            sub = this.forumApi.hasUserUnreadMessages().subscribe(resp => this.setUnread(resp, ForumsListComponent.path));
             this.subscriptions.push(sub);
         }
     }
