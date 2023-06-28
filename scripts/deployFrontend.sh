@@ -15,7 +15,7 @@ echo 'frontend archived in ' + /home/karsten/archive/"$date"/frontend/"$time"_bf
 ## extract
 cd /home/karsten/uploadTarget/ || exit
 rm -rf /home/karsten/uploadTarget/dist/
-tar -xf /home/karsten/uploadTarget/dist.tar.gz -C /home/karsten/uploadTarget/
+tar -xf /home/karsten/uploadTarget/bfh-fe.tar.gz -C /home/karsten/uploadTarget/
 
 ## deploy
 sudo rm -r /var/www/html/bfh-fe/

@@ -2,9 +2,9 @@
 
 # run it on build system
 
-rm -f dist.tar.gz
-tar -czf dist.tar.gz dist/
-scp dist.tar.gz medusa:uploadTarget/
-scp scripts/htaccess medusa:uploadTarget/
+rm -f bfh-fe.tar.gz
+tar -czf bfh-fe.tar.gz dist/
+scp bfh-fe.tar.gz scripts/htaccess medusa:uploadTarget/
+scp scripts/deployFrontend.sh medusa:
 rm -rf dist/
-rm -f dist.tar.gz
+rm -f bfh-fe.tar.gz
