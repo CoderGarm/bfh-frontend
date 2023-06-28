@@ -72,12 +72,15 @@
                                     <div [hidden]="!checkIfPlanetIsAlreadyColonized(planet)">
                                         {{planet.name}} is already colonized
                                     </div>
-                                    <div [hidden]="checkIfPlanetIsAlreadyColonized(planet) || checkIfColonizationIsInProgress(colo, planet)">
+                                    <div [hidden]="checkIfPlanetIsAlreadyColonized(planet) || checkIfColonizationIsInProgress(colo, planet) || checkIfColonizationIsPlanned(colo, planet)">
                                         <mat-checkbox (change)="addToCosts($event.checked,colo, planet)" class="payBox">Show costs</mat-checkbox>
-                                        <button mat-raised-button color="secondary" (click)="colonizePlanet(planet)" [disabled]="!isPayPossible(colo, planet)">Colonize</button>
+                                        <button mat-raised-button color="secondary" (click)="colonizePlanet(planet)">Colonize</button>
                                     </div>
                                     <div [hidden]="!checkIfColonizationIsInProgress(colo, planet)">
                                         {{planet.name}} has a colonization in progress - Ticks left: {{getTicksLeft(colo, planet)}}
+                                    </div>
+                                    <div [hidden]="!checkIfColonizationIsPlanned(colo, planet)">
+                                        The colonization of {{planet.name}} is already in planning.
                                     </div>
                                 </mat-card-header>
                                 <mat-card-content>

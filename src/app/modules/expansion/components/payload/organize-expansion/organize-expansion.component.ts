@@ -165,14 +165,6 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         return colo.costsToColonization[planet.idPlanet];
     }
 
-    isPayPossible(colo: StarSystemColonization, planet: Planet) {
-        if (!this.costs || !this.resourceDeposit) {
-            return false;
-        }
-        const costs = this.getCostsToColonize(colo, planet);
-        return ResourceHelper.canPayTheBill(costs, this.resourceDeposit);
-    }
-
     addToCosts(checked: boolean, colo: StarSystemColonization, planet: Planet) {
         if (!this.costs) {
             return;
@@ -195,7 +187,13 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
     }
 
     checkIfColonizationIsInProgress(colo: StarSystemColonization, planet: Planet) {
-        return !!colo.colonizationsByPlanet[planet.idPlanet];
+        const colonization = colo.colonizationsByPlanet[planet.idPlanet];
+        return !!colonization && !colonization.isPlanned;
+    }
+
+    checkIfColonizationIsPlanned(colo: StarSystemColonization, planet: Planet) {
+        const colonization = colo.colonizationsByPlanet[planet.idPlanet];
+        return !!colonization && colonization.isPlanned;
     }
 
     checkIfPlanetIsAlreadyColonized(planet: Planet) {

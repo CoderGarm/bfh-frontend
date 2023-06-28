@@ -26,4 +26,8 @@ export interface Colonization {
      * The amount of ticks to complete colonization.
      */
     doneAtZero: number;
+    /**
+     * If the colonization is planned and not started.
+     */
+    isPlanned: boolean;
 }
