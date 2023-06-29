@@ -1,16 +1,12 @@
 <div class="fitting">
     <div class="flex-items-container">
-        <mat-form-field appearance="outline">
-            <mat-label>Ship class</mat-label>
-            <input matInput disabled
-                   [value]="shipClass?.name"
-                   matTooltip="The class name should contain of between 3 and 30 characters.">
-        </mat-form-field>
+        <app-outlined titleValue="Ship class">
+            {{ shipClass?.name }}
+        </app-outlined>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Ship role</mat-label>
-            <input matInput disabled value="{{ shipClass?.shipClassType?.type }} - {{ 'shipyard.hull.type.' + shipClass?.shipClassType?.typeName | translate }}">
-        </mat-form-field>
+        <app-outlined titleValue="Ship role">
+            {{ shipClass?.shipClassType?.type }} - {{ 'shipyard.hull.type.' + shipClass?.shipClassType?.typeName | translate }}
+        </app-outlined>
     </div>
 
     <div class="flex-items-container">
