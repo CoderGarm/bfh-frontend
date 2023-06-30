@@ -12,7 +12,7 @@ export class SpinnerService {
     constructor() {
     }
 
-    activateSpinner(spinnerMessage?: string) {
+    activateSpinner(spinnerMessage?: string) { /* fixme spinner didnt work? */
         this.displaySpinnerEmitter.emit(true);
         if (!!spinnerMessage) {
             this.spinnerMessageEmitter.emit(spinnerMessage);

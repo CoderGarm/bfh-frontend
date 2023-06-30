@@ -25,7 +25,7 @@
   height: 100%;
   width: 100%;
   contain: paint;
-  background-image: radial-gradient(black, $background-color);
+  background-image: radial-gradient(black, black, $background-color);
 }
 
 .coordCross {
@@ -107,7 +107,6 @@
   stroke-dasharray: 0 20 28.284;
   animation: infinite;
 }
-
 
 .circle-cycle {
   animation: cycling-circle 5s infinite;

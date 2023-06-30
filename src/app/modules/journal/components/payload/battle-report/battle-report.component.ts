@@ -94,7 +94,11 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     }
 
     ngAfterViewInit(): void {
-        let sub = this.reportApi.getReportsAmountWithUser().subscribe(resp => this.battleReportAmount = resp);
+        this.spinnerService.activateSpinner('Load battles...'); /* fixme should work, eh? */
+        let sub = this.reportApi.getReportsAmountWithUser().subscribe(resp => {
+            this.battleReportAmount = resp;
+            this.spinnerService.deactivateSpinner();
+        });
         this.subscriptions.push(sub);
         this.fetchByPagination({pageIndex: 0, pageSize: this.pageSize});
         this.dataSourceCombatStatistics.sortingDataAccessor = (item, property) => {
