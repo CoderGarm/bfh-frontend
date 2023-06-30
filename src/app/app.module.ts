@@ -69,6 +69,7 @@ import {MonitorInterceptor} from "./services/interceptors/monitor.interceptor";
 import {DoNotScrollService} from "./services/intercom/do-not-scroll.service";
 import {NgxEchartsModule} from "ngx-echarts";
 import {CurrentTickService} from "./services/intercom/current-tick.service";
+import {AssetsService} from "./services/assets/assets.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -170,6 +171,7 @@ export let AppInjector: Injector;
         SafePipe,
         MarkdownService,
         StarMapCommunicationService,
+        AssetsService,
     ],
     exports: [
         MarkdownModule,

@@ -1,10 +1,8 @@
-<div class="info-div" *ngIf="!starMapCommService.selectedStarSystem">
-    <mat-form-field appearance="outline">
-        <mat-label>Known star systems</mat-label>
-        <input matInput disabled value="{{knownStarSystems.length}}">
-    </mat-form-field>
-</div>
-<app-system-info class="info-div" [starSystem]="starMapCommService.selectedStarSystem"></app-system-info>
+<app-red-box titleValue="Known star systems" class="universe-info" *ngIf="!starMapCommService.selectedStarSystem">
+    {{ knownStarSystems.length }}
+</app-red-box>
+
+<app-system-info class="system-info-div" [starSystem]="starMapCommService.selectedStarSystem"></app-system-info>
 
 <div id="universe">
     <!-- svg elements will be created programmatically -->

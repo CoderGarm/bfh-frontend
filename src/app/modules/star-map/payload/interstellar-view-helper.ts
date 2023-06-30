@@ -1,6 +1,7 @@
 import {Distance, FleetMarker} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
 import {BasicViewHelper} from "../../../services/svg-view-helper/basic-view-helper";
+import {BasicViewHelperData} from "../../../services/svg-view-helper/basic-view-helper-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export class InterstellarViewHelper extends BasicViewHelper {
@@ -40,5 +41,21 @@ export class InterstellarViewHelper extends BasicViewHelper {
         this.setViewBox(homeDef.orbit, 0.2);
 
         orbits.forEach(orbitDefinition => this.drawCelestial(orbitDefinition));
+    }
+
+    drawJunctions() {
+        let sub = this.assetsService.getAllWormholeJunctions().subscribe(junctions => {
+            junctions.forEach(junction => {
+                junction.termini.forEach(terminus => {
+                    const mainCelestialGroup = this.getOrCreateMainCelestialGroup();
+                    mainCelestialGroup
+                        .line(junction.position.x, junction.position.y, terminus.x, terminus.y)
+                        .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER)
+                        .addClass(BasicViewHelperData.WORMHOLE_MARKER)
+                        .stroke({width: 1, color: 'irrelevant'});
+                });
+            });
+        });
+        this.subscriptions.push(sub);
     }
 }

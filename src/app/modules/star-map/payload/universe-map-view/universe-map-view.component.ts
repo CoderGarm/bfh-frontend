@@ -52,6 +52,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         let outerSub = this.backgroundService.getStarSystems().subscribe(resp => {
             this.knownStarSystems = resp;
             this.knownStarSystems.forEach((system) => this.setKnownStarSystemByOrbit(system));
+            this.drawJunctions();
             let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.userId, this.knownStarSystems);
             this.drawOrbits(orbitDefinitions);
             let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {

@@ -33,6 +33,7 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
 import {TradeDeliveriesComponent} from './trade-deliveries/trade-deliveries.component';
 import {ResourceDisplayComponent} from "./resource-display/resource-display.component";
 import {IconComponent} from './icon/icon.component';
+import {RedBoxComponent} from './red-box/red-box.component';
 
 @NgModule({
     declarations: [
@@ -69,6 +70,7 @@ import {IconComponent} from './icon/icon.component';
         PropulsionCapacityDisplayComponent,
         TradeDeliveriesComponent,
         IconComponent,
+        RedBoxComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -106,6 +108,7 @@ import {IconComponent} from './icon/icon.component';
         ModuleDisplayComponent,
         TradeDeliveriesComponent,
         IconComponent,
+        RedBoxComponent,
     ]
 })
 export class DisplayElementsModule {

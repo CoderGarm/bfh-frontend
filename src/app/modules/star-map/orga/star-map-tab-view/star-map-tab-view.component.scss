@@ -1,14 +1,19 @@
 @import "src/styles/variables";
 
-.info-div {
+.universe-info {
+  position: absolute;
+  left: 65px;
+  top: 25px;
+  z-index: 999;
+}
+
+.system-info-div {
   position: absolute;
   left: 50%;
+  top: 25px;
   transform: translateX(-50%);
   width: 50em;
-
-  & .mat-mdc-form-field {
-    margin: 15px 15px 0 0;
-  }
+  z-index: 999;
 }
 
 #universe, #starsystem, #arena {
@@ -20,7 +25,7 @@
   height: 100%;
   width: 100%;
   contain: paint;
-  background-color: black;
+  background-image: radial-gradient(black, $background-color);
 }
 
 .coordCross {
@@ -75,7 +80,7 @@
 }
 
 .hyper-limit {
-  stroke: darkblue;
+  stroke: darkorange;
   stroke-width: 1;
 }
 

@@ -1,0 +1,170 @@
+[
+  {
+    "position": {
+      "name": "Manticore",
+      "x": 214,
+      "y": -2037
+    },
+    "termini": [
+      {
+        "name": "Basilisk",
+        "x": 251,
+        "y": -2863
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Manticore",
+      "x": 214,
+      "y": -2037
+    },
+    "termini": [
+      {
+        "name": "Trevor’s Star",
+        "x": 911,
+        "y": -2331
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Manticore",
+      "x": 214,
+      "y": -2037
+    },
+    "termini": [
+      {
+        "name": "Hannessy",
+        "x": 2471,
+        "y": -261
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Manticore",
+      "x": 214,
+      "y": -2037
+    },
+    "termini": [
+      {
+        "name": "Beowulf",
+        "x": -12,
+        "y": -156
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Manticore",
+      "x": 214,
+      "y": -2037
+    },
+    "termini": [
+      {
+        "name": "Lynx B (Terminus)",
+        "x": -1153,
+        "y": -51
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Manticore",
+      "x": 214,
+      "y": -2037
+    },
+    "termini": [
+      {
+        "name": "Matapan",
+        "x": -1604,
+        "y": -1816
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Manticore",
+      "x": 214,
+      "y": -2037
+    },
+    "termini": [
+      {
+        "name": "Gregor",
+        "x": -425,
+        "y": -2218
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Erewhon",
+      "x": 1497,
+      "y": -1566
+    },
+    "termini": [
+      {
+        "name": "Terra Haute",
+        "x": 2498,
+        "y": -413
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Erewhon",
+      "x": 1497,
+      "y": -1566
+    },
+    "termini": [
+      {
+        "name": "Joshua",
+        "x": 476,
+        "y": 377
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Erewhon",
+      "x": 1497,
+      "y": -1566
+    },
+    "termini": [
+      {
+        "name": "Sasebo",
+        "x": -568,
+        "y": 88
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Asgard",
+      "x": -1088,
+      "y": -1479
+    },
+    "termini": [
+      {
+        "name": "Durandel",
+        "x": -597,
+        "y": -2182
+      }
+    ]
+  },
+  {
+    "position": {
+      "name": "Asgard",
+      "x": -1088,
+      "y": -1479
+    },
+    "termini": [
+      {
+        "name": "Midgard",
+        "x": -1458,
+        "y": -2512
+      }
+    ]
+  }
+]

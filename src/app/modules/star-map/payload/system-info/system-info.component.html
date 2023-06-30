@@ -1,28 +1,25 @@
-<div *ngIf="!!starSystem">
+<div class="flex-items-container" *ngIf="!!starSystem">
 
-    <mat-form-field appearance="outline">
-        <mat-label>System</mat-label>
-        <input matInput disabled value="{{starSystem!.name}}">
-    </mat-form-field>
+    <app-red-box titleValue="System">
+        {{ starSystem!.name }}
+    </app-red-box>
 
-    <mat-form-field appearance="outline" class="small-field">
-        <mat-label>Planet count</mat-label>
-        <input matInput disabled value="{{starSystem.planets.length}}">
-    </mat-form-field>
+    <app-red-box titleValue="Planet count">
+        {{ starSystem.planets.length }}
+    </app-red-box>
 
-    <mat-form-field appearance="outline" class="small-field">
-        <mat-label>X-Coordinate</mat-label>
-        <input matInput disabled value="{{starSystem!.orbit.xCoordinate.coordinate}} {{starSystem!.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
+    <app-red-box titleValue="X-Coordinate">
+        {{ starSystem!.orbit.xCoordinate.coordinate }} {{ starSystem!.orbit.xCoordinate.distanceMetric }}
+    </app-red-box>
 
-    <mat-form-field appearance="outline" class="small-field">
-        <mat-label>Y-Coordinate</mat-label>
-        <input matInput disabled value="{{starSystem!.orbit.yCoordinate.coordinate}} {{starSystem!.orbit.xCoordinate.distanceMetric}}">
-    </mat-form-field>
+    <app-red-box titleValue="Y-Coordinate">
+        {{ starSystem!.orbit.yCoordinate.coordinate }} {{ starSystem!.orbit.xCoordinate.distanceMetric }}
+    </app-red-box>
 
-    <mat-form-field appearance="outline" *ngIf="getColonized().length > 0">
-        <mat-label>Occupied planets</mat-label>
-        <input matInput disabled *ngFor="let planet of getColonized()" value="{{planet.name}} - {{planet.owner!.username}}">
-    </mat-form-field>
+    <app-red-box titleValue="Occupied planets" *ngIf="getColonized().length > 0">
+        <mat-label *ngFor="let planet of getColonized()">
+            {{planet.name}} - {{planet.owner!.username}}
+        </mat-label>
+    </app-red-box>
 
 </div>

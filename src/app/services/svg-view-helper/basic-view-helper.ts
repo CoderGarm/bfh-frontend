@@ -6,6 +6,7 @@ import {Component, HostListener} from "@angular/core";
 import {StarMapCommunicationService} from "../intercom/star-map-communication.service";
 import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
+import {AssetsService} from "../assets/assets.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 interface ElementToParent {
@@ -21,6 +22,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     protected canvas?: Svg;
 
     starMapCommService = AppInjector.get(StarMapCommunicationService);
+    assetsService: AssetsService = AppInjector.get(AssetsService);
 
     public static readonly PAN_ZOOM_OPTIONS = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
@@ -45,7 +47,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected static readonly STROKE_BLACK: StrokeData = {color: "black", width: 1};
     // noinspection CssConvertColorToRgbInspection
-    protected static readonly STROKE_CYCLING_CIRCLE: StrokeData = {color: "#B0B0B0", width: 3, dasharray: "15px"}; // $metal-glance in variables
+    protected static readonly STROKE_CYCLING_CIRCLE: StrokeData = {color: "orange", width: 3, dasharray: "15px"}; // $metal-glance in variables
 
     protected static readonly ROUND_CAP_MARKER_X_PIXEL_SHIFT: number = 9;
     protected static readonly ROUND_CAP_MARKER_Y_PIXEL_SHIFT: number = 8;
