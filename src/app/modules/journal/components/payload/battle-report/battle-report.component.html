@@ -86,11 +86,11 @@
     </mat-accordion>
 </div>
 
-<app-combat-arena
-        [starSystem]="starSystem"
-        [battleReport]="currentlyOpenedItem"
-        [combatArenaData]="combatArenaData"
-        [activeRound]="activeRound"></app-combat-arena>
+<app-combat-arena *ngIf="!!currentlyOpenedItem && !!combatArenaData && combatArenaData.combatRounds.length > 0"
+                  [starSystem]="starSystem"
+                  [battleReport]="currentlyOpenedItem"
+                  [combatArenaData]="combatArenaData"
+                  [activeRound]="activeRound"></app-combat-arena>
 
 <div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && !!combatArenaData && combatArenaData.combatRounds.length > 0">
 

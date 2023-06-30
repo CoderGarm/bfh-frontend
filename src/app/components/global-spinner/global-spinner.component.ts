@@ -17,14 +17,10 @@ export class GlobalSpinnerComponent extends SubscriptionManager implements OnIni
     constructor(private spinnerService: SpinnerService,
                 public translate: TranslateService) {
         super();
-        let sub = this.spinnerService.askSpinner().subscribe(event => {
-            this.inProgress = event;
-        });
+        let sub = this.spinnerService.askSpinner().subscribe(event => this.inProgress = event);
         this.subscriptions.push(sub);
 
-        sub = this.spinnerService.askSpinnerMessage().subscribe(message => {
-            this.message = message;
-        });
+        sub = this.spinnerService.askSpinnerMessage().subscribe(message => this.message = message);
         this.subscriptions.push(sub);
     }
 

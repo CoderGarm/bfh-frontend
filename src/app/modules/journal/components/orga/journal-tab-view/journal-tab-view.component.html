@@ -1,10 +1,10 @@
 <mat-tab-group animationDuration="500ms" class="bottom-spacer">
-    <mat-tab label="{{ 'tab.journal.dashboard' | translate }}">
+    <mat-tab label="{{ 'tab.journal.dashboard' | translate }}" bodyClass="no-pad">
         <ng-template matTabContent>
             <app-journal-dashboard></app-journal-dashboard>
         </ng-template>
     </mat-tab>
-    <mat-tab>
+    <mat-tab bodyClass="no-pad">
         <ng-template mat-tab-label>
             {{ 'tab.journal.battles' | translate }}
             <mat-icon *ngIf="hasNewReports" [inline]="true">mark_email_unread</mat-icon>

@@ -66,6 +66,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     }
 
     private createStarMap() {
+        this.ngAfterViewInit();
         if (!!this.starSystem) {
             this.drawOrbits(this.starSystem);
         } else {

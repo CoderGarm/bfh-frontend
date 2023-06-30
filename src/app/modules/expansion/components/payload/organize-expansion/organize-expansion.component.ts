@@ -180,7 +180,9 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
     }
 
     colonizePlanet(planet: Planet) {
+        this.spinnerService.activateSpinner('expansion.organize.spinner-message.wait');
         let sub = this.colonizationApi.startColonizingPlanet(planet).subscribe(resp => {
+            this.spinnerService.deactivateSpinner();
             this.fetchData();
         });
         this.subscriptions.push(sub);
