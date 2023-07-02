@@ -2,7 +2,7 @@
     <mat-card-header class="rename-element">
         <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="fleet-icon">
         <mat-card-title class="title-block" *ngIf="nameChangeAllowed">
-            <form [formGroup]="formGroup">
+            <form [formGroup]="formGroup" matTooltip="Double click to rename">
                 <mat-form-field appearance="outline"
                                 class="name-input rename-element"
                                 (dblclick)="enable()">

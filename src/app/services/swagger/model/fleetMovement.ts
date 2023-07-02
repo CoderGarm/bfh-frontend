@@ -23,14 +23,6 @@ export interface FleetMovement {
      */
     fleetOwnerName: string;
     /**
-     * The origin planet's name.
-     */
-    originPlanet?: string;
-    /**
-     * The origin systems's name.
-     */
-    originSystem: string;
-    /**
      * The designation planet's name.
      */
     destinationPlanet?: string;
