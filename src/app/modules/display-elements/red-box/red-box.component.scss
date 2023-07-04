@@ -10,7 +10,8 @@ $base-color: orange;
 
 $box-border-color: $base-color;
 $box-border-color2: rgba($box-border-color, 0.2);
-.box {
+.red-box {
+  position: relative;
   border-width: 1px;
   width: fit-content;
   height: fit-content;
@@ -19,32 +20,32 @@ $box-border-color2: rgba($box-border-color, 0.2);
   padding: 10px;
 }
 
-.box::before {
+.red-box::before {
   content: " ";
   width: calc(100% + 2px);
   position: absolute;
   border-width: 4px;
   border-style: solid;
   border-color: transparent $box-border-color;
-  bottom: -4px;
-  left: -1px;
-}
-
-.box::after {
-  content: " ";
-  width: calc(100% + 2px);
-  border-width: 4px;
-  border-style: solid;
-  border-color: transparent $box-border-color;
-  position: absolute;
   top: -4px;
   left: -1px;
 }
 
-.title {
+.red-box::after {
+  content: " ";
+  width: calc(100% + 2px);
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent $box-border-color;
+  position: absolute;
+  bottom: -4px;
+  left: -1px;
+}
+
+.red-box-title {
   border-bottom: 1px solid $box-border-color2;
 }
 
-.content {
+.red-box-content {
   padding-top: 5px;
 }
