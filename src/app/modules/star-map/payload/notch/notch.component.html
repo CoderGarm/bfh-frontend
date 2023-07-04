@@ -12,16 +12,14 @@
     <app-fleet-notch-transport *ngIf="displayTransport"></app-fleet-notch-transport>
 </div>
 
-<div id="notch-actions">
-    <mat-button-toggle-group class="pointer-events">
-        <mat-button-toggle (click)="toggleShowInfo()" [disabled]="showInfoDisabled()"
-                           [checked]="displayInfo">{{ 'star-map.notch.action.show-info' | translate }}</mat-button-toggle>
-        <mat-button-toggle (click)="toggleShowMove()" [disabled]="showMoveDisabled()"
-                           [checked]="displayMove">{{ 'star-map.notch.action.show-move' | translate }}</mat-button-toggle>
-        <mat-button-toggle (click)="toggleShowMerge()" [disabled]="showMergeDisabled()" *ngIf="stellarMode"
-                           [checked]="displayMerge">{{ 'star-map.notch.action.show-merge' | translate }}</mat-button-toggle>
-        <mat-button-toggle (click)="toggleShowTransport()" [disabled]="showTransportDisabled()" *ngIf="stellarMode"
-                           [checked]="displayMerge">{{ 'star-map.notch.action.show-transport' | translate }}</mat-button-toggle>
+<div id="notch-actions"> <!-- fixme check optics of all contents -->
+    <mat-button-toggle-group class="pointer-events" [(ngModel)]="notchType">
+        <mat-button-toggle value="info" (click)="toggleNotchElement()" [disabled]="showInfoDisabled()">{{ 'star-map.notch.action.show-info' | translate }}</mat-button-toggle>
+        <mat-button-toggle value="move" (click)="toggleNotchElement()" [disabled]="showMoveDisabled()">{{ 'star-map.notch.action.show-move' | translate }}</mat-button-toggle>
+        <mat-button-toggle value="merge" (click)="toggleNotchElement()" [disabled]="showMergeDisabled()"
+                           *ngIf="stellarMode">{{ 'star-map.notch.action.show-merge' | translate }}</mat-button-toggle>
+        <mat-button-toggle value="transport" (click)="toggleNotchElement()" [disabled]="showTransportDisabled()"
+                           *ngIf="stellarMode">{{ 'star-map.notch.action.show-transport' | translate }}</mat-button-toggle>
     </mat-button-toggle-group>
 
     <button mat-icon-button

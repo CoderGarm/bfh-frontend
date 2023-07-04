@@ -1,4 +1,4 @@
-<div class="content-area" *ngIf="!!left && !!right">
+<div class="content-area" [ngStyle]="{'background-color':( _transparent ? 'transparent' : '')}" *ngIf="!!left && !!right">
     <div class="clearfix">
         <div class="title-holder clearfix">
             <div class="the-left">
@@ -12,16 +12,13 @@
                 <mat-icon matListItemIcon class="margin-l-r" [inline]="true">keyboard_double_arrow_right</mat-icon>
             </div>
         </div>
+        <app-outlined titleValue="Fleet loading capacity">
+            <mat-progress-bar
+                    mode="determinate"
+                    value="{{ usedCapacity / initialFreeCargoCapacity }}"
+                    matTooltip="{{ usedCapacity | numberShort }} / {{ initialFreeCargoCapacity | numberShort }}"></mat-progress-bar>
+        </app-outlined>
     </div>
-
-    <mat-chip-listbox>
-        <mat-chip-option selected [selectable]="false" class="no-checkmark">
-            Fleet loading capacity indicator:
-            <app-number-short class="mar-both" [input]="usedCapacity"></app-number-short>
-            /
-            <app-number-short class="mar-both" [input]="initialFreeCargoCapacity"></app-number-short>
-        </mat-chip-option>
-    </mat-chip-listbox>
 
     <div class="clearfix payload" *ngIf="!!left && !!right">
         <div [ngClass]="{'the-left': floatingStyle}">

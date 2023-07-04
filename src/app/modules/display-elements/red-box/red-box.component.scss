@@ -6,9 +6,7 @@
   box-sizing: border-box;
 }
 
-$base-color: orange;
-
-$box-border-color: $base-color;
+$box-border-color: orange;
 $box-border-color2: rgba($box-border-color, 0.2);
 .red-box {
   position: relative;

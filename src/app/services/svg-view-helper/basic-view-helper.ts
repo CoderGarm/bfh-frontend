@@ -37,9 +37,16 @@ export class BasicViewHelper extends BasicViewHelperData {
 
         this.STANDARD_METRIC = standardDistanceMetric;
         const sub = this.starMapCommService.getDeselectEverythingEmitter().subscribe(() => {
-            const elements = this.canvas?.children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
+            if (!this.canvas) {
+                return;
+            }
+            let elements = this.canvas.children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
             if (!!elements && elements.length > 0) {
-                elements.forEach(elem => this.canvas?.removeElement(elem));
+                elements.forEach(elem => !!this.canvas ? this.canvas.removeElement(elem) : '');
+            }
+            elements = this.getOrCreateMainCelestialGroup().children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
+            if (!!elements && elements.length > 0) {
+                elements.forEach(elem => this.getOrCreateMainCelestialGroup().removeElement(elem));
             }
         });
         this.subscriptions.push(sub);
@@ -1139,7 +1146,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
 
         runner.animate({
-            duration: 2000 * (distance / 100),
+            duration: 2000 * (distance / 300),
             delay: 1000,
             when: 'now',
             swing: false,

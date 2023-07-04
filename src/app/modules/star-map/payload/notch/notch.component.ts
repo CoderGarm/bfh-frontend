@@ -3,6 +3,12 @@ import {StarMapCommunicationService} from "../../../../services/intercom/star-ma
 import {FleetApiService} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 
+enum NotchType {
+    info = 'info',
+    move = 'move',
+    merge = 'merge',
+    transport = 'transport'
+}
 
 @Component({
     selector: 'app-notch',
@@ -19,6 +25,7 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
     displayInfo: boolean = false;
     displayMerge: boolean = false;
     displayTransport: boolean = false;
+    notchType?: string = undefined;
 
     constructor(private fleetService: FleetApiService,
                 commService: StarMapCommunicationService) {
@@ -38,27 +45,39 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
 
     deselect() {
         this.commService.deselect();
-        this.displayInfo = false;
-        this.displayMove = false;
-        this.displayMerge = false;
-        this.displayTransport = false;
+        this.undisplayNotchElement(false, false, false, false);
     }
 
-    toggleShowMove() {
-        if (!this.showMoveDisabled()) {
-            this.displayMove = !this.displayMove;
-        }
+    private undisplayNotchElement(displayInfo: boolean, displayMove: boolean, displayMerge: boolean, displayTransport: boolean) {
+        this.displayInfo = displayInfo;
+        this.displayMove = displayMove;
+        this.displayMerge = displayMerge;
+        this.displayTransport = displayTransport;
     }
 
-    toggleShowMerge() {
-        if (!this.showMergeDisabled()) {
-            this.displayMerge = !this.displayMerge;
-        }
-    }
+    toggleNotchElement() {
+        if (!!this.notchType) {
+            let key: NotchType = NotchType[this.notchType as keyof typeof NotchType];
 
-    toggleShowTransport() {
-        if (!this.showTransportDisabled()) {
-            this.displayTransport = !this.displayTransport;
+            switch (key) {
+                case undefined:
+                    this.undisplayNotchElement(false, false, false, false);
+                    break;
+                case NotchType.info:
+                    this.undisplayNotchElement(!this.displayInfo, false, false, false);
+                    break;
+                case NotchType.move:
+                    this.undisplayNotchElement(false, !this.displayMove, false, false);
+                    break;
+                case NotchType.merge:
+                    this.undisplayNotchElement(false, false, !this.displayMerge, false);
+                    break;
+                case NotchType.transport:
+                    this.undisplayNotchElement(false, false, false, !this.displayTransport);
+                    break;
+                default:
+                    throw new Error("You missed something to implement!");
+            }
         }
     }
 
@@ -93,11 +112,5 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
 
     ngOnDestroy(): void {
         this.commService.clear();
-    }
-
-    toggleShowInfo() {
-        if (!this.showInfoDisabled()) {
-            this.displayInfo = !this.displayInfo;
-        }
     }
 }

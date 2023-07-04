@@ -24,3 +24,27 @@ app-fleet-notch-display {
   overflow-y: scroll;
 }
 
+
+$box-border-color: orange;
+$box-border-color2: rgba($box-border-color, 0.2);
+mat-card-actions {
+  position: relative;
+  border-width: 2px;
+  border-color: $box-border-color2 transparent transparent transparent;
+  border-style: solid;
+}
+
+mat-card-actions::before {
+  content: " ";
+  width: calc(100% - 2px);
+  position: absolute;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent $box-border-color;
+  top: -4px;
+  left: -1px;
+}
+
+mat-card-actions > button {
+  margin: 5px 15px;
+}

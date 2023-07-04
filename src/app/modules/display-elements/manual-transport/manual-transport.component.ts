@@ -61,6 +61,17 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
 
     result: ResourceTransfer[] = [];
 
+    // @formatter:off
+    @Input()
+    get transparent() { return this._transparent; }
+    set transparent(value: any) { this._transparent = this.coerceBooleanProperty(value); }
+    _transparent: boolean = false;
+    // @formatter:on
+
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
+    }
+
     constructor(private typeService: TypeService,
                 private resourceService: ResourcesApiService,
                 private planetService: PlanetApiService) {
