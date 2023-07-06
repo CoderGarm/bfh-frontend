@@ -3,7 +3,7 @@
         <mat-label>{{ 'wiki.article.create.title' | translate }}</mat-label>
         <input matInput type='text' [value]="title" disabled required autocomplete="off">
     </mat-form-field>
-    <mat-select [value]="langCode" class="mar-ri">
+    <mat-select [value]="langCode" class="mar-ri small">
         <mat-option [value]="langCode">
             {{langCode}}
         </mat-option>

@@ -18,25 +18,27 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
     createArticle: EventEmitter<ArticleCreate> = new EventEmitter<ArticleCreate>();
 
     possibleLanguages: string[] = [];
+    possibleTypes: ArticleCreate.WikiCategoryEnum[] = [ArticleCreate.WikiCategoryEnum.GAMEMECHANICS, ArticleCreate.WikiCategoryEnum.MISSIONTYPES];
 
     bsEditorInstance?: EditorInstance;
     editorOptions?: EditorOption;
     title?: string;
     langCode: string = TranslationEditorComponent.DEFAULT_LANGUAGE;
+    type?: ArticleCreate.WikiCategoryEnum;
 
     private template: string = "# I am the title\n"
         + "---\n"
-        + "## I am a sub headline\n"
+        + "### I am a sub headline\n"
         + "\n"
         + "**Lorem ipsum** dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n"
         + "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n"
         + "\n"
-        + "### I'm also important\n"
+        + "#### I'm also important\n"
         + "\n"
         + "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n"
         + "\n"
         + "---\n"
-        + "## Another sub headline\n"
+        + "### Another sub headline\n"
         + "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
     markdownText: string = this.template;
@@ -65,13 +67,13 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
     }
 
     submit() {
-        if (!this.title || !this.langCode) {
+        if (!this.title || !this.langCode || !this.type) {
             return;
         }
         const a: ArticleCreate = {
             title: this.title,
             langCode: this.langCode,
-            wikiCategory: "GAME_MECHANICS",
+            wikiCategory: this.type,
             content: this.markdownText
         }
         this.createArticle.emit(a);

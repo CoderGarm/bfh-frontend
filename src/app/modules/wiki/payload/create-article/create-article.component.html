@@ -3,8 +3,13 @@
         <mat-label>{{ 'wiki.article.create.title' | translate }}</mat-label>
         <input matInput type='text' [value]="title" disabled required autocomplete="off">
     </mat-form-field>
-    <mat-select [(value)]="langCode" class="mar-ri">
+    <mat-select [(value)]="langCode" class="mar-ri small">
         <mat-option *ngFor="let lang of possibleLanguages" [value]="lang">
+            {{lang}}
+        </mat-option>
+    </mat-select>
+    <mat-select [(value)]="type" class="mar-ri small">
+        <mat-option *ngFor="let lang of possibleTypes" [value]="lang">
             {{lang}}
         </mat-option>
     </mat-select>
