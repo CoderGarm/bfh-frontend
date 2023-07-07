@@ -20,7 +20,8 @@ import {Meta, Title} from "@angular/platform-browser";
 import {DoNotScrollService} from "./services/intercom/do-not-scroll.service";
 import {SnackbarNotificationService} from "./services/snackbar-notification.service";
 import {DatePipe} from "@angular/common";
-
+import {SpinnerService} from "./services/spinner.service";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
     selector: 'app-root',
@@ -46,7 +47,13 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         ChatComponent.path
     ];
 
-    constructor(private translate: TranslateService,
+    inProgress: boolean = false;
+
+    message?: string;
+
+    constructor(private spinnerService: SpinnerService,
+                private spinner: NgxSpinnerService,
+                private translate: TranslateService,
                 private router: Router,
                 public doNotScrollService: DoNotScrollService,
                 private meta: Meta,
@@ -85,6 +92,18 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.subscriptions.push(sub);
 
         this.showSeasonBadge();
+
+        sub = this.spinnerService.askSpinner().subscribe(event => {
+            if (event) {
+                this.spinner.show()
+            } else {
+                this.spinner.hide()
+            }
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.spinnerService.askSpinnerMessage().subscribe(message => this.message = message);
+        this.subscriptions.push(sub);
     }
 
     showSeasonBadge() {

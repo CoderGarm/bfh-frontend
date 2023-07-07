@@ -7,7 +7,7 @@
                             [afterLoginPath]="afterLoginPath"></app-nested-sidenav>
     </mat-drawer>
     <mat-drawer-content [ngStyle]="{'overflow':( isNoScroll ? 'hidden' : 'auto')}" id="main-content-area">
-        <app-global-spinner></app-global-spinner>
+        <ngx-spinner type="ball-scale-multiple" color="#375a7f">{{ message }}</ngx-spinner>
         <router-outlet></router-outlet>
         <app-home *ngIf="displayWelcome()"></app-home>
     </mat-drawer-content>

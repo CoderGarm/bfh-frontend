@@ -3,7 +3,7 @@ import {ErrorDialogComponent} from './components/error-dialog/error-dialog.compo
 import {CustomErrorHandler} from './services/custom-error-handler.service';
 import {PasswordEqualityValidatorDirective, PasswordPatternValidatorDirective} from './validators/password.validator';
 import {AuthenticationModule} from './services/authentication';
-import {ErrorHandler, Injector, NgModule, SecurityContext} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, Injector, NgModule, SecurityContext} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/user/login/login.component';
 import {RegisterComponent} from './components/user/register/register.component';
@@ -33,7 +33,6 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient} from "@angular/common/http";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
 import {DatePipe} from "@angular/common";
-import {GlobalSpinnerComponent} from './components/global-spinner/global-spinner.component';
 import {SpinnerService} from "./services/spinner.service";
 import {TypeService} from "./services/type.service";
 import {NumberShortPipe} from "./services/pipes/number-short.pipe";
@@ -70,6 +69,7 @@ import {DoNotScrollService} from "./services/intercom/do-not-scroll.service";
 import {NgxEchartsModule} from "ngx-echarts";
 import {CurrentTickService} from "./services/intercom/current-tick.service";
 import {AssetsService} from "./services/assets/assets.service";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -102,7 +102,6 @@ export let AppInjector: Injector;
         UsernamePatternValidatorDirective,
         EMailValidatorDirective,
         ConfirmDialogComponent,
-        GlobalSpinnerComponent,
         NestedSidenavComponent,
         ForgottenPasswordComponent,
     ],
@@ -141,7 +140,9 @@ export let AppInjector: Injector;
         ColorPickerModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
-        })
+        }),
+        NgxSpinnerModule,
+        NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'})
     ],
     providers: [
         NgxPermissionsModule,
@@ -179,7 +180,8 @@ export let AppInjector: Injector;
         ConfirmDialogComponent,
         ClipboardModule,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
     constructor(private injector: Injector) {
