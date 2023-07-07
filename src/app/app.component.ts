@@ -47,8 +47,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         ChatComponent.path
     ];
 
-    inProgress: boolean = false;
-
     message?: string;
 
     constructor(private spinnerService: SpinnerService,
@@ -94,15 +92,16 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.showSeasonBadge();
 
         sub = this.spinnerService.askSpinner().subscribe(event => {
-            if (event) {
-                this.spinner.show()
-            } else {
-                this.spinner.hide()
-            }
+            console.log(event)
+            setTimeout(() => {
+                if (event.showSpinner) {
+                    this.message = event.message;
+                    this.spinner.show()
+                } else {
+                    this.spinner.hide()
+                }
+            }, 100);
         });
-        this.subscriptions.push(sub);
-
-        sub = this.spinnerService.askSpinnerMessage().subscribe(message => this.message = message);
         this.subscriptions.push(sub);
     }
 

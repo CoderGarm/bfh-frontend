@@ -94,11 +94,8 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
     }
 
     ngAfterViewInit(): void {
-        this.spinnerService.activateSpinner('Load battles...'); /* fixme should work, eh? */
-        let sub = this.reportApi.getReportsAmountWithUser().subscribe(resp => {
-            this.battleReportAmount = resp;
-            this.spinnerService.deactivateSpinner();
-        });
+        this.spinnerService.activateSpinner('Loading battles...');
+        let sub = this.reportApi.getReportsAmountWithUser().subscribe(resp => this.battleReportAmount = resp);
         this.subscriptions.push(sub);
         this.fetchByPagination({pageIndex: 0, pageSize: this.pageSize});
         this.dataSourceCombatStatistics.sortingDataAccessor = (item, property) => {
@@ -238,6 +235,7 @@ export class BattleReportComponent extends SubscriptionManager implements AfterV
                 this.battleReports.forEach(report => {
                     this.fetchOrbitRepresentation(report.orbit);
                 });
+                this.spinnerService.deactivateSpinner();
             });
         this.subscriptions.push(sub);
     }

@@ -1,35 +1,41 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 
+
+export interface SpinnerMessage {
+    showSpinner: boolean,
+    message?: string
+}
+
 /**
  * Displays the spinner with or without a message.
  */
 @Injectable()
 export class SpinnerService {
 
-    private displaySpinnerEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
-    private spinnerMessageEmitter: EventEmitter<string> = new EventEmitter<string>();
+    private displaySpinnerEmitter: EventEmitter<SpinnerMessage> = new EventEmitter<SpinnerMessage>();
 
     constructor(private translate: TranslateService) {
     }
 
     activateSpinner(spinnerMessage?: string) {
-        this.displaySpinnerEmitter.emit(true);
-        this.spinnerMessageEmitter.emit(this.getMessage(spinnerMessage));
+        const message = this.getMessage(spinnerMessage);
+        this.displaySpinnerEmitter.emit({
+            showSpinner: true,
+            message: message
+        });
     }
 
     deactivateSpinner() {
-        this.displaySpinnerEmitter.emit(false);
-        this.spinnerMessageEmitter.emit();
+        this.displaySpinnerEmitter.emit({
+            showSpinner: false
+        });
     }
 
     askSpinner() {
         return this.displaySpinnerEmitter;
     }
 
-    askSpinnerMessage() {
-        return this.spinnerMessageEmitter;
-    }
 
     getMessage(message?: string) {
         if (!message) {
@@ -38,7 +44,9 @@ export class SpinnerService {
 
         let translation = message;
         this.translate.get(message).subscribe((translated: string) => {
-            translation = translated;
+            if (!!translated) {
+                translation = translated;
+            }
         });
         return translation;
     }
