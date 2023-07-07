@@ -1,55 +1,85 @@
-<mat-list id="job-list">
-    <div mat-subheader *ngIf="jobs.length == 0">{{ 'jobs.nothing.' + title_key | translate }}</div>
+<div mat-subheader *ngIf="jobs.length == 0">{{ 'jobs.nothing.' + title_key | translate }}</div>
+<div mat-subheader *ngIf="jobs.length > 0">{{ 'jobs.title.' + title_key | translate }}</div>
 
-    <div mat-subheader *ngIf="jobs.length > 0">{{ 'jobs.title.' + title_key | translate }}</div>
-    <mat-list-item *ngFor="let pJob of planetaryJobs" class="height-fit-content-forced">
-        <img matListItemAvatar src="assets/icons/planets/png24x/planet_c.png">
-        <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
+<mat-grid-list cols="4" rowHeight="50px" class="job-list" *ngIf="!_noHeader">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile class="header-item">
+        <div mat-subheader>{{ 'research.title' | translate }}</div>
+    </mat-grid-tile>
+    <mat-grid-tile class="header-item">
+        <div mat-subheader>{{ 'planetary.constructions.title' | translate }}</div>
+    </mat-grid-tile>
+    <mat-grid-tile class="header-item">
+        <div mat-subheader>{{ 'shipyard.constructions.title' | translate }}</div>
+    </mat-grid-tile>
+</mat-grid-list>
 
-        <div class="job-items-container">
-            <mat-list *ngIf="pJob.researches!.length > 0">
-                <div mat-subheader>{{ 'research.title' | translate }}</div>
-                <mat-list-item *ngFor="let job of pJob.researches" class="height-fit-content-forced">
-                    <img matListItemAvatar src="{{getLink(job)}}">
+<mat-list>
+    <mat-list-item *ngFor="let pJob of planetaryJobs" style="height: 100%;">
+        <mat-grid-list cols="4" rowHeight="250px" class="job-list">
+            <mat-grid-tile>
+                <img matListItemAvatar src="assets/icons/planets/png24x/planet_c.png" alt="planet icon">
+                <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
+            </mat-grid-tile>
+
+            <mat-grid-tile *ngIf="pJob.researches!.length == 0"></mat-grid-tile>
+            <mat-grid-tile *ngFor="let job of pJob.researches">
+                <mat-list-item style="height: 100%;">
+                    <img matListItemAvatar src="{{getLink(job)}}" alt="job type icon">
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
                             matTooltip="{{ 'jobs.cancel-btn' | translate }}">
                         <mat-icon>cancel</mat-icon>
+                    </button>
+                    <button mat-icon-button class="finished-btn"
+                            *ngIf="isFinishedJobsDisplay"
+                            matTooltip="{{ 'jobs.finished-icon' | translate }}">
+                        <mat-icon>check_circle_outline</mat-icon>
                     </button>
                     <div mat-line>{{job.researchTarget!.name}}</div>
                     <div mat-line>{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
                     <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
                     <div mat-line>{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
-            </mat-list>
+            </mat-grid-tile>
 
-            <mat-list *ngIf="pJob.constructions!.length > 0">
-                <div mat-subheader>{{ 'planetary.constructions.title' | translate }}</div>
-                <mat-list-item *ngFor="let job of pJob.constructions" class="height-fit-content-forced">
-                    <img matListItemAvatar src="{{getLink(job)}}">
+            <mat-grid-tile *ngIf="pJob.constructions!.length == 0"></mat-grid-tile>
+            <mat-grid-tile *ngFor="let job of pJob.constructions">
+                <mat-list-item style="height: 100%;">
+                    <img matListItemAvatar src="{{getLink(job)}}" alt="job type icon">
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
                             matTooltip="{{ 'jobs.cancel-btn' | translate }}">
                         <mat-icon>cancel</mat-icon>
                     </button>
+                    <button mat-icon-button class="finished-btn"
+                            *ngIf="isFinishedJobsDisplay"
+                            matTooltip="{{ 'jobs.finished-icon' | translate }}">
+                        <mat-icon>check_circle_outline</mat-icon>
+                    </button>
                     <div mat-line>{{job.buildingTarget!.name}}</div>
                     <div mat-line>{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
                     <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
                     <div mat-line>{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
-            </mat-list>
+            </mat-grid-tile>
 
-            <mat-list *ngIf="pJob.shipyard!.length > 0">
-                <div mat-subheader>{{ 'shipyard.constructions.title' | translate }}</div>
-                <mat-list-item *ngFor="let job of pJob.shipyard" class="height-fit-content-forced">
-                    <img matListItemAvatar src="{{getLink(job)}}">
+            <mat-grid-tile *ngIf="pJob.shipyard!.length == 0"></mat-grid-tile>
+            <mat-grid-tile *ngFor="let job of pJob.shipyard">
+                <mat-list-item style="height: 100%;">
+                    <img matListItemAvatar src="{{getLink(job)}}" alt="job type icon">
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
                             matTooltip="{{ 'jobs.cancel-btn' | translate }}">
                         <mat-icon>cancel</mat-icon>
+                    </button>
+                    <button mat-icon-button class="finished-btn"
+                            *ngIf="isFinishedJobsDisplay"
+                            matTooltip="{{ 'jobs.finished-icon' | translate }}">
+                        <mat-icon>check_circle_outline</mat-icon>
                     </button>
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{job.fleet.name}}</div>
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{getHullCount(job.fleet)}}</div>
@@ -58,8 +88,7 @@
                     <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
                     <div mat-line>{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
-            </mat-list>
-        </div>
+            </mat-grid-tile>
+        </mat-grid-list>
     </mat-list-item>
-
 </mat-list>

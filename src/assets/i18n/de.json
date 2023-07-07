@@ -179,6 +179,7 @@
   },
   "jobs": {
     "cancel-btn": "Auftrag abbrechen",
+    "finished-icon": "Auftrag fertig gestellt",
     "level": "Level",
     "title": {
       "active": "laufende Aufträge",

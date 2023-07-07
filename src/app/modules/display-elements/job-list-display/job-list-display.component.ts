@@ -33,6 +33,19 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
 
     translations: Map<string, string> = new Map<string, string>();
 
+    isFinishedJobsDisplay: boolean = false;
+
+    // @formatter:off
+    @Input()
+    get noHeader() { return this._noHeader; }
+    set noHeader(value: any) { this._noHeader = this.coerceBooleanProperty(value); }
+    _noHeader: boolean = false;
+    // @formatter:on
+
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
+    }
+
     constructor(private translate: TranslateService,
                 private jobService: JobApiService) {
         super();
@@ -69,6 +82,7 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
         if (changes[this.jobsDefinition]) {
             this.prepareData();
         }
+        this.isFinishedJobsDisplay = this.title_key === 'finished';
     }
 
     private prepareData() {

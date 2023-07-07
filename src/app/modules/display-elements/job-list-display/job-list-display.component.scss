@@ -6,20 +6,8 @@
   margin-right: 15px;
 }
 
-#job-list {
+.job-list {
   width: 90%;
-}
-
-.job-items-container {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-}
-
-.height-fit-content-forced {
-  height: -moz-fit-content !important;
-  height: fit-content !important;
 }
 
 .name-field {
@@ -30,4 +18,8 @@
 
 .cancel-btn {
   color: $warning-color;
+}
+
+.finished-btn {
+  color: $success;
 }

@@ -179,6 +179,7 @@
   },
   "jobs": {
     "cancel-btn": "Cancel the job",
+    "finished-icon": "Finished job",
     "level": "Level",
     "title": {
       "active": "Active jobs",

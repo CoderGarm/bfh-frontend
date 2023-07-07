@@ -313,3 +313,7 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
 .streamline-background {
   background-color: $background-color;
 }
+
+.header-item > .mat-grid-tile-content {
+  justify-content: start;
+}
