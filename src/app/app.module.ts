@@ -70,6 +70,7 @@ import {NgxEchartsModule} from "ngx-echarts";
 import {CurrentTickService} from "./services/intercom/current-tick.service";
 import {AssetsService} from "./services/assets/assets.service";
 import {NgxSpinnerModule} from "ngx-spinner";
+import {StrategicOperationsModule} from "./modules/strategic-operations/strategic-operations.module";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -142,7 +143,8 @@ export let AppInjector: Injector;
             echarts: () => import('echarts')
         }),
         NgxSpinnerModule,
-        NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'})
+        NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'}),
+        StrategicOperationsModule,
     ],
     providers: [
         NgxPermissionsModule,
