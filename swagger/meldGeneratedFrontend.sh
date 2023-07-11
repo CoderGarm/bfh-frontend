@@ -33,6 +33,12 @@ for filename in ./*; do
     sed -i 's/FORUMREAD/FORUM_READ/' $filename
     sed -i 's/FORUMWRITE/FORUM_WRITE/' $filename
   fi
+  if [[ $filename == './mission.ts' ]]; then
+      echo "replacing enum constants with camel case"
+      sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
+      sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
+      sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
+    fi
 done
 
 cd ../..

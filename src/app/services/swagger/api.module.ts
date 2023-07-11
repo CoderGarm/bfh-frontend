@@ -17,6 +17,7 @@ import { ForumApiService } from './api/forumApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { JournalApiService } from './api/journalApi.service';
 import { MarketplaceApiService } from './api/marketplaceApi.service';
+import { MissionApiService } from './api/missionApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
 import { ResearchApiService } from './api/researchApi.service';
@@ -46,6 +47,7 @@ import { WikiApiService } from './api/wikiApi.service';
     JobApiService,
     JournalApiService,
     MarketplaceApiService,
+    MissionApiService,
     ModuleApiService,
     PlanetApiService,
     ResearchApiService,

@@ -71,6 +71,7 @@ import {CurrentTickService} from "./services/intercom/current-tick.service";
 import {AssetsService} from "./services/assets/assets.service";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {StrategicOperationsModule} from "./modules/strategic-operations/strategic-operations.module";
+import {MissionCommunicationService} from "./services/intercom/mission-communication.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -175,6 +176,7 @@ export let AppInjector: Injector;
         MarkdownService,
         StarMapCommunicationService,
         AssetsService,
+        MissionCommunicationService,
     ],
     exports: [
         MarkdownModule,

@@ -572,7 +572,8 @@
       "universe-map": "Sternenkarte"
     },
     "stratOps": {
-      "mission-display": "Laufende Missionen"
+      "mission-administration": "Laufende Missionen",
+      "mission-overview": "Missionsüberblick"
     },
     "transportation": {
       "goods": "Waren",

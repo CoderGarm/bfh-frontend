@@ -23,8 +23,10 @@ import { FleetMarker } from '../model/fleetMarker';
 import { FleetMerge } from '../model/fleetMerge';
 import { FleetMergeResult } from '../model/fleetMergeResult';
 import { FleetMove } from '../model/fleetMove';
+import { FleetSplit } from '../model/fleetSplit';
 import { FrontendError } from '../model/frontendError';
 import { Move } from '../model/move';
+import { WarShip } from '../model/warShip';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -391,7 +393,44 @@ export class FleetApiService {
     }
 
     /**
-     * Merge two fleets of an owner.
+     * Renames a fleet.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPooledWarships(observe?: 'body', reportProgress?: boolean): Observable<Array<WarShip>>;
+    public getPooledWarships(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WarShip>>>;
+    public getPooledWarships(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WarShip>>>;
+    public getPooledWarships(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<WarShip>>('get',`${this.basePath}/api/private/fleet/pool`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Transfer the warships between existing fleets.
      * 
      * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -573,6 +612,92 @@ export class FleetApiService {
 
         return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/rename/${encodeURIComponent(String(idFleet))}/${encodeURIComponent(String(name))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Send ships to the pool
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sendWarshipsToPool(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public sendWarshipsToPool(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public sendWarshipsToPool(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public sendWarshipsToPool(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/pool`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Split an existing fleet into multiple fleets.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public splitFleets(body: FleetSplit, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
+    public splitFleets(body: FleetSplit, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
+    public splitFleets(body: FleetSplit, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
+    public splitFleets(body: FleetSplit, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling splitFleets.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Array<Fleet>>('post',`${this.basePath}/api/private/fleet/split`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
