@@ -1,4 +1,5 @@
 {
+  "": "",
   "action": {
     "clear": "Zurücksetzen",
     "submit": "Abschicken"
@@ -20,8 +21,8 @@
     "thousand": "1000"
   },
   "burger-menu": {
-    "wiki": "Wiki",
-    "external-star-map-manager": "Externe Sternenkarte"
+    "external-star-map-manager": "Externe Sternenkarte",
+    "wiki": "Wiki"
   },
   "chats": {
     "title": "Nachrichten"
@@ -47,17 +48,6 @@
         "BATTLE_ALIGNMENT": "Schlacht",
         "CHASE_ALIGNMENT": "Jagd"
       },
-      "weaponAlignment": {
-        "BOW": "Bug",
-        "BROADSIDE": "Breitseite",
-        "STERN": "Heck"
-      },
-      "weaponType": {
-        "BEAM": "DF",
-        "COUNTER_MISSILE": "AR",
-        "MISSILE": "R",
-        "POINT_DEFENSE": "NB"
-      },
       "hullType": {
         "AE": "AE",
         "AR": "AR",
@@ -76,12 +66,6 @@
         "SD": "SD",
         "SDP": "SD(P)",
         "VT": "VT"
-      }
-    },
-    "name": {
-      "alignmentType": {
-        "BATTLE_ALIGNMENT": "Schlachtbewaffnung",
-        "CHASE_ALIGNMENT": "Jagdbewaffnung"
       },
       "weaponAlignment": {
         "BOW": "Bug",
@@ -89,10 +73,16 @@
         "STERN": "Heck"
       },
       "weaponType": {
-        "BEAM": "Direktfeuer",
-        "COUNTER_MISSILE": "Anti-Rakete",
-        "MISSILE": "Rakete",
-        "POINT_DEFENSE": "Nahbereichsverteidigung"
+        "BEAM": "DF",
+        "COUNTER_MISSILE": "AR",
+        "MISSILE": "R",
+        "POINT_DEFENSE": "NB"
+      }
+    },
+    "name": {
+      "alignmentType": {
+        "BATTLE_ALIGNMENT": "Schlachtbewaffnung",
+        "CHASE_ALIGNMENT": "Jagdbewaffnung"
       },
       "hullType": {
         "AE": "Munitionsschiff",
@@ -112,6 +102,17 @@
         "SD": "Super Dreadnought",
         "SDP": "Super Dreadnought (Gondelleger)",
         "VT": "Korvette"
+      },
+      "weaponAlignment": {
+        "BOW": "Bug",
+        "BROADSIDE": "Breitseite",
+        "STERN": "Heck"
+      },
+      "weaponType": {
+        "BEAM": "Direktfeuer",
+        "COUNTER_MISSILE": "Anti-Rakete",
+        "MISSILE": "Rakete",
+        "POINT_DEFENSE": "Nahbereichsverteidigung"
       }
     }
   },
@@ -148,14 +149,14 @@
       "nothing": "Keine beendeten Flottenbewegungen",
       "title": "Beendete Flottenbewegungen"
     },
-    "ongoing-movement": {
-      "nothing": "Keine Flottenbewegungen",
-      "title": "Flottenbewegungen"
-    },
     "modules": {
       "ammunition-roster": {
         "title": "Raketenmunition"
       }
+    },
+    "ongoing-movement": {
+      "nothing": "Keine Flottenbewegungen",
+      "title": "Flottenbewegungen"
     }
   },
   "fleets": {
@@ -181,16 +182,16 @@
     "cancel-btn": "Auftrag abbrechen",
     "finished-icon": "Auftrag fertig gestellt",
     "level": "Level",
-    "title": {
-      "active": "laufende Aufträge",
-      "finished": "Beendete Aufträge"
-    },
     "nothing": {
       "active": "Keine laufenden Aufträge",
       "finished": "Keine beendeten Aufträge"
     },
     "priority": "Priorität",
     "ticks-left": "Ticks",
+    "title": {
+      "active": "laufende Aufträge",
+      "finished": "Beendete Aufträge"
+    },
     "transports": {
       "human-resources": {
         "title": "Personen"
@@ -203,13 +204,6 @@
     }
   },
   "journal": {
-    "trade": {
-      "nothing": "Keine Lieferungen",
-      "present-title": "Aktuelle Lieferungen",
-      "title": "Lieferungen",
-      "expected-arrival": "Ankunft zu Tick",
-      "arrival": "Lieferung angenommen"
-    },
     "commissioned-operationals": {
       "finished": {
         "nothing": "Keine Inbetriebnahmen",
@@ -219,6 +213,13 @@
         "constructions": "in Betrieb genommene Gebäude",
         "warships": "aktivierte Kriegsschiffe"
       }
+    },
+    "trade": {
+      "arrival": "Lieferung angenommen",
+      "expected-arrival": "Ankunft zu Tick",
+      "nothing": "Keine Lieferungen",
+      "present-title": "Aktuelle Lieferungen",
+      "title": "Lieferungen"
     }
   },
   "mining-factor": {
@@ -242,7 +243,6 @@
       "register": "Registrieren"
     },
     "menu": {
-      "player": "Imperien",
       "admin": "Spieladministration",
       "alliance": "Allianz",
       "chat": "Nachrichten",
@@ -253,6 +253,7 @@
       "journal": "Berichte",
       "login": "Anmelden",
       "planets": "Planeten",
+      "player": "Imperien",
       "profile": "Profil",
       "register": "Registrieren",
       "researches": "Forschungen",
@@ -265,13 +266,13 @@
   "planetary": {
     "constructions": {
       "build": {
+        "filter-expansive-constructions": "Ignoriere zu teure Gebäude",
         "has-level": "aktuelles Level",
         "is-new": "Neukonstruktion",
+        "must-do-research": "Muss erforscht werden",
         "not-possible": "Es wird bereits gebaut",
         "start-building": "Starte den Bau",
-        "must-do-research": "Muss erforscht werden",
-        "too-expensive": "Bau zu teuer",
-        "filter-expansive-constructions": "Ignoriere zu teure Gebäude"
+        "too-expensive": "Bau zu teuer"
       },
       "info": {
         "title": "Details"
@@ -282,42 +283,6 @@
         "title": "Gebäudelevel"
       },
       "title": "Gebäude"
-    },
-    "marketplace": {
-      "history": {
-        "price": {
-          "title": "Preisentwicklung"
-        },
-        "amount": {
-          "title": "Handelsmenge"
-        }
-      },
-      "offer": {
-        "create": "Handelsangebot erstellen",
-        "buy": "Kaufen",
-        "sell": "Verkaufen",
-        "spot": {
-          "create": "Accept a spot offer",
-          "title": "Spotmarkt",
-          "price": "Spotpreis für",
-          "warning": "Die Spotpreise ändern sich schnell. Bitte beachten Sie dies beim Handel auf dem Spotmarkt."
-        },
-        "market": "Angebotsmarkt",
-        "edit": "Handelsangebot bearbeiten",
-        "title": "verfügbare Angebote",
-        "offer-taken": "Du hast das Angebot angenommen.",
-        "action": {
-          "take": "Annehmen",
-          "edit": "Bearbeiten",
-          "release": "Handel anbieten",
-          "abort": "Abbrechen"
-        },
-        "create-for": "Erstelle ein Angebot für",
-        "created-notif": "Angebot erstellt",
-        "chose-amount-sell": "Verkaufsmenge",
-        "chose-amount-buy": "Einkaufsmenge",
-        "chose-price": "Preis pro Einheit"
-      }
     },
     "fleets-in-orbit": {
       "not-present": "Keine Flotten im Orbit",
@@ -331,6 +296,42 @@
       },
       "repair-job-started-message": "Die Flotte wurde in Dock beordert",
       "title": "Flotten im Orbit"
+    },
+    "marketplace": {
+      "history": {
+        "amount": {
+          "title": "Handelsmenge"
+        },
+        "price": {
+          "title": "Preisentwicklung"
+        }
+      },
+      "offer": {
+        "action": {
+          "abort": "Abbrechen",
+          "edit": "Bearbeiten",
+          "release": "Handel anbieten",
+          "take": "Annehmen"
+        },
+        "buy": "Kaufen",
+        "chose-amount-buy": "Einkaufsmenge",
+        "chose-amount-sell": "Verkaufsmenge",
+        "chose-price": "Preis pro Einheit",
+        "create": "Handelsangebot erstellen",
+        "create-for": "Erstelle ein Angebot für",
+        "created-notif": "Angebot erstellt",
+        "edit": "Handelsangebot bearbeiten",
+        "market": "Angebotsmarkt",
+        "offer-taken": "Du hast das Angebot angenommen.",
+        "sell": "Verkaufen",
+        "spot": {
+          "create": "Accept a spot offer",
+          "price": "Spotpreis für",
+          "title": "Spotmarkt",
+          "warning": "Die Spotpreise ändern sich schnell. Bitte beachten Sie dies beim Handel auf dem Spotmarkt."
+        },
+        "title": "verfügbare Angebote"
+      }
     },
     "mining-factors": {
       "title": "Mining factors"
@@ -364,10 +365,10 @@
     "spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
   },
   "research": {
+    "level-details": "Details",
     "no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
     "not-possible": "Es gibt kein Labor oder es wird bereits geforscht.",
-    "title": "Forschung",
-    "level-details": "Details"
+    "title": "Forschung"
   },
   "resource-overlay": {
     "capacity": {
@@ -551,9 +552,9 @@
     },
     "planetary": {
       "dashboard": "Übersicht",
-      "marketplace": "Marktplatz",
       "ground-constructions": "Gebäude",
       "jobs": "Jobs",
+      "marketplace": "Marktplatz",
       "shipyard": "Werft"
     },
     "research": {
@@ -569,6 +570,9 @@
     "star-map": {
       "star-map": "Karte des Sternensystems",
       "universe-map": "Sternenkarte"
+    },
+    "stratOps": {
+      "mission-display": "Laufende Missionen"
     },
     "transportation": {
       "goods": "Waren",

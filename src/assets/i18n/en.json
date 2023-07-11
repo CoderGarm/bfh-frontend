@@ -1,4 +1,5 @@
 {
+  "": "",
   "action": {
     "clear": "Clear",
     "submit": "Submit"
@@ -20,8 +21,8 @@
     "thousand": "1000"
   },
   "burger-menu": {
-    "wiki": "Wiki",
-    "external-star-map-manager": "External star map"
+    "external-star-map-manager": "External star map",
+    "wiki": "Wiki"
   },
   "chats": {
     "title": "Chats"
@@ -47,17 +48,6 @@
         "BATTLE_ALIGNMENT": "B ALIGN",
         "CHASE_ALIGNMENT": "C ALIGN"
       },
-      "weaponAlignment": {
-        "BOW": "Bow",
-        "BROADSIDE": "Broadside",
-        "STERN": "Stern"
-      },
-      "weaponType": {
-        "BEAM": "B",
-        "COUNTER_MISSILE": "CM",
-        "MISSILE": "M",
-        "POINT_DEFENSE": "PD"
-      },
       "hullType": {
         "AE": "AE",
         "AR": "AR",
@@ -76,12 +66,6 @@
         "SD": "SD",
         "SDP": "SD(P)",
         "VT": "VT"
-      }
-    },
-    "name": {
-      "alignmentType": {
-        "BATTLE_ALIGNMENT": "Battle alignment",
-        "CHASE_ALIGNMENT": "Chase alignment"
       },
       "weaponAlignment": {
         "BOW": "Bow",
@@ -89,10 +73,16 @@
         "STERN": "Stern"
       },
       "weaponType": {
-        "BEAM": "Beam",
-        "COUNTER_MISSILE": "Counter missile",
-        "MISSILE": "Missile",
-        "POINT_DEFENSE": "Point defense"
+        "BEAM": "B",
+        "COUNTER_MISSILE": "CM",
+        "MISSILE": "M",
+        "POINT_DEFENSE": "PD"
+      }
+    },
+    "name": {
+      "alignmentType": {
+        "BATTLE_ALIGNMENT": "Battle alignment",
+        "CHASE_ALIGNMENT": "Chase alignment"
       },
       "hullType": {
         "AE": "Ammunition Ship",
@@ -112,6 +102,17 @@
         "SD": "Super Dreadnought",
         "SDP": "Super Dreadnought (Podlayer)",
         "VT": "Corvette"
+      },
+      "weaponAlignment": {
+        "BOW": "Bow",
+        "BROADSIDE": "Broadside",
+        "STERN": "Stern"
+      },
+      "weaponType": {
+        "BEAM": "Beam",
+        "COUNTER_MISSILE": "Counter missile",
+        "MISSILE": "Missile",
+        "POINT_DEFENSE": "Point defense"
       }
     }
   },
@@ -148,14 +149,14 @@
       "nothing": "No finished movements",
       "title": "Finished movements"
     },
-    "ongoing-movement": {
-      "nothing": "No movements",
-      "title": "Arrivals"
-    },
     "modules": {
       "ammunition-roster": {
         "title": "Missile ammunition"
       }
+    },
+    "ongoing-movement": {
+      "nothing": "No movements",
+      "title": "Arrivals"
     }
   },
   "fleets": {
@@ -181,16 +182,16 @@
     "cancel-btn": "Cancel the job",
     "finished-icon": "Finished job",
     "level": "Level",
-    "title": {
-      "active": "Active jobs",
-      "finished": "Finished jobs"
-    },
     "nothing": {
       "active": "No active jobs",
       "finished": "No finished jobs"
     },
     "priority": "Priority",
     "ticks-left": "Ticks",
+    "title": {
+      "active": "Active jobs",
+      "finished": "Finished jobs"
+    },
     "transports": {
       "human-resources": {
         "title": "Humans"
@@ -203,13 +204,6 @@
     }
   },
   "journal": {
-    "trade": {
-      "nothing": "No deliveries",
-      "present-title": "Current deliveries",
-      "title": "Deliveries",
-      "expected-arrival": "Arrival at tick",
-      "arrival": "Delivery arrived"
-    },
     "commissioned-operationals": {
       "finished": {
         "nothing": "No activated operationals",
@@ -219,6 +213,13 @@
         "constructions": "Activated constructions",
         "warships": "Activated warships"
       }
+    },
+    "trade": {
+      "arrival": "Delivery arrived",
+      "expected-arrival": "Arrival at tick",
+      "nothing": "No deliveries",
+      "present-title": "Current deliveries",
+      "title": "Deliveries"
     }
   },
   "mining-factor": {
@@ -242,7 +243,6 @@
       "register": "Register"
     },
     "menu": {
-      "player": "Empires",
       "admin": "Admin Area",
       "alliance": "Alliance",
       "chat": "Chat",
@@ -253,6 +253,7 @@
       "journal": "Journal",
       "login": "Login",
       "planets": "Planets",
+      "player": "Empires",
       "profile": "Profile",
       "register": "Register",
       "researches": "Researches",
@@ -265,13 +266,13 @@
   "planetary": {
     "constructions": {
       "build": {
+        "filter-expansive-constructions": "Ignore too expensive constructions",
         "has-level": "current level",
         "is-new": "new construction",
+        "must-do-research": "Level capped by research",
         "not-possible": "Job running",
         "start-building": "Start job",
-        "must-do-research": "Level capped by research",
-        "too-expensive": "Job too expensive",
-        "filter-expansive-constructions": "Ignore too expensive constructions"
+        "too-expensive": "Job too expensive"
       },
       "info": {
         "title": "Details"
@@ -282,42 +283,6 @@
         "title": "Construction level"
       },
       "title": "Ground constructions"
-    },
-    "marketplace": {
-      "history": {
-        "price": {
-          "title": "Price history"
-        },
-        "amount": {
-          "title": "Traded amount"
-        }
-      },
-      "offer": {
-        "create": "Create a trade offer",
-        "buy": "Buy",
-        "sell": "Sell",
-        "spot": {
-          "create": "Accept a spot offer",
-          "title": "Spot market",
-          "price": "Spot price for",
-          "warning": "Spot prices are changing fast, please keep that in mind while trading at the spot market."
-        },
-        "market": "Offer market",
-        "edit": "Edit the offer",
-        "title": "Available offers",
-        "offer-taken": "You accepted the offer.",
-        "action": {
-          "take": "Take",
-          "edit": "Edit",
-          "release": "Release for market",
-          "abort": "Cancel"
-        },
-        "create-for": "Create an offer about",
-        "created-notif": "Offer released",
-        "chose-amount-sell": "Amount to sell",
-        "chose-amount-buy": "Amount to buy",
-        "chose-price": "Price per unit"
-      }
     },
     "fleets-in-orbit": {
       "not-present": "No fleets in orbit",
@@ -331,6 +296,42 @@
       },
       "repair-job-started-message": "The fleet was sent to the dock",
       "title": "Fleets in orbit"
+    },
+    "marketplace": {
+      "history": {
+        "amount": {
+          "title": "Traded amount"
+        },
+        "price": {
+          "title": "Price history"
+        }
+      },
+      "offer": {
+        "action": {
+          "abort": "Cancel",
+          "edit": "Edit",
+          "release": "Release for market",
+          "take": "Take"
+        },
+        "buy": "Buy",
+        "chose-amount-buy": "Amount to buy",
+        "chose-amount-sell": "Amount to sell",
+        "chose-price": "Price per unit",
+        "create": "Create a trade offer",
+        "create-for": "Create an offer about",
+        "created-notif": "Offer released",
+        "edit": "Edit the offer",
+        "market": "Offer market",
+        "offer-taken": "You accepted the offer.",
+        "sell": "Sell",
+        "spot": {
+          "create": "Accept a spot offer",
+          "price": "Spot price for",
+          "title": "Spot market",
+          "warning": "Spot prices are changing fast, please keep that in mind while trading at the spot market."
+        },
+        "title": "Available offers"
+      }
     },
     "mining-factors": {
       "title": "Mining factors"
@@ -364,10 +365,10 @@
     "spinner-message": "Please wait while you navy is fighting for you."
   },
   "research": {
+    "level-details": "Details",
     "no-available": "There are currently no researches available.",
     "not-possible": "There is no laboratory or it is already in use.",
-    "title": "Research",
-    "level-details": "Details"
+    "title": "Research"
   },
   "resource-overlay": {
     "capacity": {
@@ -551,9 +552,9 @@
     },
     "planetary": {
       "dashboard": "Dashboard",
-      "marketplace": "Marketplace",
       "ground-constructions": "Constructions",
       "jobs": "Jobs",
+      "marketplace": "Marketplace",
       "shipyard": "Shipyard"
     },
     "research": {
@@ -569,6 +570,9 @@
     "star-map": {
       "star-map": "Star system map",
       "universe-map": "Star map"
+    },
+    "stratOps": {
+      "mission-display": "Ongoing missions"
     },
     "transportation": {
       "goods": "Goods",
