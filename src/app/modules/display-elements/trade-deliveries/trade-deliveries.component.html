@@ -26,7 +26,7 @@
                                 <li *ngFor="let trade of entry.sales">
                                     <div mat-line>
                                         <app-number-short [input]="trade.pricePerUnit * trade.resourceAmount.amount"></app-number-short>&nbsp;
-                                        <app-icon [icon]="credits!" [altText]="credits!.typeName" [toolTip]="credits!.typeName"></app-icon>
+                                        <app-icon *ngIf="!!credits" [icon]="credits!" [altText]="credits!.typeName" [toolTip]="credits!.typeName"></app-icon>
                                         &nbsp;for&nbsp;
                                         <app-number-short [input]="trade.resourceAmount.amount"></app-number-short>&nbsp;
                                         <app-icon [icon]="trade.resourceAmount.resourceType" [altText]="trade.resourceAmount.resourceType.typeName"
@@ -42,7 +42,7 @@
                                                   [toolTip]="trade.resourceAmount.resourceType.typeName"></app-icon>
                                         &nbsp;for&nbsp;
                                         <app-number-short [input]="trade.pricePerUnit * trade.resourceAmount.amount"></app-number-short>&nbsp;
-                                        <app-icon [icon]="credits!" [altText]="credits!.typeName" [toolTip]="credits!.typeName"></app-icon>
+                                        <app-icon *ngIf="!!credits" [icon]="credits!" [altText]="credits!.typeName" [toolTip]="credits!.typeName"></app-icon>
                                     </div>
                                 </li>
                             </ul>

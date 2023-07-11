@@ -23,10 +23,12 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
 
     formGroup: UntypedFormGroup;
 
-    @Input()
-    nameChangeAllowed: boolean = false;
-
     // @formatter:off
+    @Input()
+    get nameChangeAllowed() { return this._nameChangeAllowed; }
+    set nameChangeAllowed(value: any) { this._nameChangeAllowed = this.coerceBooleanProperty(value); }
+    _nameChangeAllowed: boolean = false;
+
     @Input()
     get transparent() { return this._transparent; }
     set transparent(value: any) { this._transparent = this.coerceBooleanProperty(value); }

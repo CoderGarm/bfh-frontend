@@ -1,0 +1,137 @@
+@import "src/styles/variables";
+
+$min-height: 126px; // 3 * 42px
+$min-width: 150px;
+$max-width: 350px;
+
+.fleet-container {
+  margin: 5px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.warship-list {
+  border: solid 1px #ccc;
+  min-width: $min-width;
+  max-width: $max-width;
+  min-height: $min-height;
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
+}
+
+.warship-box.cdk-drag-disabled {
+  background: transparent;
+}
+
+.warship-box {
+  padding: 10px 10px;
+  border-bottom: solid 1px #ccc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: $primary-color;
+  cursor: move;
+  font-size: 14px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.warship-box:last-child {
+  border: none;
+}
+
+.warship-list.cdk-drop-list-dragging .warship-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.inner-list {
+  margin-top: 65px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.inner-list > * {
+  flex: 1 1 80px;
+}
+
+.fleet-container div .mat-mdc-subheader {
+  padding: 5px;
+}
+
+.fleet-name {
+  min-width: $min-width;
+  max-width: calc($max-width - 20px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-bottom: $metal-glance 2px solid;
+}
+
+.name-input {
+  cursor: text;
+  max-width: calc($max-width - 20px);
+}
+
+.fleet-box {
+  width: fit-content;
+  min-width: $min-width;
+  margin: auto;
+}
+
+.rel {
+  position: relative;
+}
+
+.flex-items-container {
+  margin-top: 25px;
+}
+
+.add-btn-with-name {
+  position: absolute;
+  top: 20px;
+  left: calc(100% - 20px);
+  z-index: 99;
+}
+
+.add-btn-without-name {
+  position: absolute;
+  top: 60px;
+  left: calc(100% - 20px);
+  z-index: 99;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 40px;
+  left: calc(100% - 5px);
+  z-index: 98;
+  width: 30px;
+  height: 30px;
+}
+
+.lock-btn {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  z-index: 99;
+  width: 30px;
+  height: 30px;
+}
+

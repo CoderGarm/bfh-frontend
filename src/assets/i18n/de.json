@@ -129,6 +129,18 @@
       "class": {
         "title": "Klasse"
       },
+      "detachment": {
+        "add": "Detachment erzeugen",
+        "hint": "Schiffe zuweisen",
+        "placeholder": "Flottennamen eingeben",
+        "remove": "Detachment entfernen",
+        "submit": {
+          "action": "Abschicken",
+          "disabled-hint": "Es müssen mind. zwei bestätigte Detachments existieren."
+        },
+        "title": "Detachiere Flottenteile",
+        "tooltip": "Erzeuge neues Detachment"
+      },
       "title": "Flottenzusammensetzung",
       "warShip-names": "Kriegsschiffe"
     },
@@ -542,7 +554,8 @@
       "view": "Expansion anzeigen"
     },
     "fleet": {
-      "dashboard": "Übersicht"
+      "dashboard": "Übersicht",
+      "split": "Detachment"
     },
     "journal": {
       "battles": "Kampfberichte",
