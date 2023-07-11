@@ -103,6 +103,17 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             }, 100);
         });
         this.subscriptions.push(sub);
+
+
+        if (window.innerWidth <= 800) {
+            this.message = 'The screen is too small. Use a bigger one.';
+            this.spinner.show('screen-size');
+        }
+    }
+
+    closeScreenSizeWarning() {
+        this.message = undefined;
+        this.spinner.hide('screen-size')
     }
 
     showSeasonBadge() {
