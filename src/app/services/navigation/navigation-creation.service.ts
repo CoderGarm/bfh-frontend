@@ -23,6 +23,7 @@ import {FleetTabViewComponent} from "../../modules/fleet/components/orga/fleet-t
 import {FittingCreateComponent} from "../../modules/ship-class-construction/components/payload/fitting-create/fitting-create.component";
 import {ForgottenPasswordComponent} from "../../components/user/forgotten-password/forgotten-password.component";
 import {PlayerPointsListComponent} from "../../modules/user-points/player-points-list/player-points-list.component";
+import {StratOpsTabViewComponent} from "../../modules/strategic-operations/orga/strat-ops-tab-view/strat-ops-tab-view.component";
 
 
 export class NavigationCreationService {
@@ -62,6 +63,7 @@ export class NavigationCreationService {
             {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
             NavigationCreationService.getShipYardRoute(),
             NavigationCreationService.getFleetRoute(),
+            {path: StratOpsTabViewComponent.path, component: StratOpsTabViewComponent, canActivate: [ProtectedGuard]},
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
             {path: TransportTabViewComponent.path, component: TransportTabViewComponent, canActivate: [ProtectedGuard]},
         ];
