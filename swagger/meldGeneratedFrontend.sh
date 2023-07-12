@@ -2,7 +2,7 @@
 
 rm -rf swaggerGenerated/
 
-java -jar swagger-codegen-cli-3.0.34.jar generate --additional-properties stringEnums=true ngVersion=13 -i /tmp/open-api3.json -o swaggerGenerated/ -l typescript-angular
+java -jar swagger-codegen-cli-3.0.34.jar generate --additional-properties stringEnums=true ngVersion=15 -i /tmp/open-api3.json -o swaggerGenerated/ -l typescript-angular
 
 echo 'inserting environment'
 cd swaggerGenerated/api/ || exit 1

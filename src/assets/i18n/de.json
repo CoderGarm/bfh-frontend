@@ -133,6 +133,10 @@
         "add": "Detachment erzeugen",
         "hint": "Schiffe zuweisen",
         "placeholder": "Flottennamen eingeben",
+        "pool": {
+          "name": "Reserveflotte",
+          "tooltip": "Eingemottete Schiffe können jederzeit einsatzbereit gemacht und reaktiviert werden."
+        },
         "remove": "Detachment entfernen",
         "submit": {
           "action": "Abschicken",

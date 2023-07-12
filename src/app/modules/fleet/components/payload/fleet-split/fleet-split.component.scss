@@ -71,6 +71,18 @@ $max-width: 350px;
   flex: 1 1 80px;
 }
 
+.inner-list > div:last-child {
+  flex: 0 1 100%;
+}
+
+.pool-item {
+  margin-top: 65px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-top: solid 1px;
+}
+
 .fleet-container div .mat-mdc-subheader {
   padding: 5px;
 }
@@ -130,6 +142,15 @@ $max-width: 350px;
   position: absolute;
   top: -20px;
   left: -20px;
+  z-index: 99;
+  width: 30px;
+  height: 30px;
+}
+
+.lock-reserve-btn {
+  position: absolute;
+  top: 45px;
+  left: -15px;
   z-index: 99;
   width: 30px;
   height: 30px;

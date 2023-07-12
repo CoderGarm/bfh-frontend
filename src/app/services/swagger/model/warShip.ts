@@ -29,7 +29,15 @@ export interface WarShip {
     /**
      * The fleet which this ship is part of.
      */
-    idFleet: number;
+    idFleet?: number;
+    /**
+     * The mission which this ship is part of.
+     */
+    idMission?: number;
+    /**
+     * If the ship is part of the reserve.
+     */
+    isPooled: boolean;
     shipClass: ShipClass;
     warshipHealthState: WarshipHealthState;
 }

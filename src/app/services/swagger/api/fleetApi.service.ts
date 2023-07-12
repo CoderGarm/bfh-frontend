@@ -623,13 +623,15 @@ export class FleetApiService {
     /**
      * Send ships to the pool
      * 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendWarshipsToPool(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public sendWarshipsToPool(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public sendWarshipsToPool(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public sendWarshipsToPool(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public sendWarshipsToPool(body?: Array<number>, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public sendWarshipsToPool(body?: Array<number>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public sendWarshipsToPool(body?: Array<number>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public sendWarshipsToPool(body?: Array<number>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
 
         let headers = this.defaultHeaders;
 
@@ -647,9 +649,14 @@ export class FleetApiService {
         const consumes: string[] = [
             'application/json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
         return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/pool`,
             {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

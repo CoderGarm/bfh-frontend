@@ -9,7 +9,16 @@ export class FleetEventService {
     /**
      * communicates the change of the fleets name
      */
-    nameChange: EventEmitter<FleetName> = new EventEmitter<FleetName>();
+    private nameChange: EventEmitter<FleetName> = new EventEmitter<FleetName>();
+
+
+    getNameChangeEmitter() {
+        return this.nameChange;
+    }
+
+    changeName(name: FleetName) {
+        this.nameChange.emit(name);
+    }
 
     /**
      * communicates a clicked fleet in the sidenav

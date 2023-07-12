@@ -17,10 +17,16 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
                 private fleetEventService: FleetEventService) {
         super(NavigationCreationService.getPlanetRoute());
 
-        const sub = this.fleetEventService.nameChange.subscribe(resp => {
+        const sub = this.fleetEventService.getNameChangeEmitter().subscribe(resp => {
             const filter = this.fleets.filter(f => f.id === resp.idFleet);
             if (filter.length == 1) {
                 filter[0].name = resp.name;
+            }
+            if (filter.length === 0) {
+                this.fleets.push({
+                    id: resp.idFleet,
+                    name: resp.name
+                });
             }
         });
         this.subscriptions.push(sub);

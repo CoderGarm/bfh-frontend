@@ -19,8 +19,6 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     @Input()
     fleet?: Fleet;
 
-    isOpen: boolean = false;
-
     formGroup: UntypedFormGroup;
 
     // @formatter:off
@@ -85,14 +83,6 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
         return "assets/icons/fleets/png32x/small_fleet_c.png";
     }
 
-    setOpened() {
-        this.isOpen = true;
-    }
-
-    setClosed() {
-        this.isOpen = false;
-    }
-
     enable() {
         const disabled = this.formGroup.controls.fleetName.disabled;
         if (disabled) {
@@ -109,7 +99,7 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
         const sub = this.fleetService.renameFleet(this.fleet.idFleet, name)
             .subscribe(resp => {
                 if (resp) {
-                    this.fleetChangeService.nameChange.emit({
+                    this.fleetChangeService.changeName({
                         idFleet: this.fleet!.idFleet,
                         name: name
                     })

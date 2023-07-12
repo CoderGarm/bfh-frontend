@@ -1,15 +1,17 @@
 <div class="content-area">
     <app-outlined titleValue="{{ 'fleet.composition.detachment.title' | translate }}">
         <div cdkDropListGroup class="clearfix inner-list">
-            <div *ngFor="let fleet of fleets" class="fleet-container">
+            <div *ngFor="let fleet of fleets | slice:1" class="fleet-container">
                 <div class="fleet-box">
                     <div *ngIf="locked.includes(fleet.idFleet)" class="rel">
-                        <button mat-mini-fab color="accent" aria-label="unlock input button" class="lock-btn" (click)="locked.splice(locked.indexOf(fleet.idFleet), 1)"
+                        <button mat-mini-fab color="accent" aria-label="unlock input button" class="lock-btn"
+                                (click)="locked.splice(locked.indexOf(fleet.idFleet), 1)"
                                 *ngIf="locked.includes(fleet.idFleet) && fleet.idFleet < 0">
                             <mat-icon>lock_open</mat-icon>
                         </button>
                         <div mat-subheader class="fleet-name" [matTooltip]="fleet.name">{{fleet.name}}</div>
-                        <button mat-mini-fab color="accent" aria-label="add a fleet detachment button" class="add-btn-with-name" (click)="addFleetContainer()"
+                        <button mat-mini-fab color="accent" aria-label="add a fleet detachment button" class="add-btn-with-name"
+                                (click)="addFleetContainer()"
                                 matTooltip="{{ 'fleet.composition.detachment.tooltip' | translate }}"
                                 *ngIf="fleets.indexOf(fleet) === fleets.length - 1">
                             <mat-icon>add_circle_outline</mat-icon>
@@ -17,7 +19,8 @@
                     </div>
 
                     <div *ngIf="!locked.includes(fleet.idFleet)" class="rel">
-                        <button mat-mini-fab color="accent" aria-label="lock input button" class="lock-btn" (click)="locked.push(fleet.idFleet)"
+                        <button mat-mini-fab color="accent" aria-label="lock input button" class="lock-btn"
+                                (click)="locked.push(fleet.idFleet)"
                                 *ngIf="!locked.includes(fleet.idFleet) && fleet.idFleet < 0" [disabled]="fleet.name.length <= 0 || fleet.ships.length == 0">
                             <mat-icon>lock</mat-icon>
                         </button>
@@ -29,14 +32,16 @@
                                    type='text'>
                             <mat-hint align="start">{{ 'fleet.composition.detachment.hint' | translate }}</mat-hint>
                         </mat-form-field>
-                        <button mat-mini-fab color="accent" aria-label="add a fleet detachment button" class="add-btn-without-name" (click)="addFleetContainer()"
+                        <button mat-mini-fab color="accent" aria-label="add a fleet detachment button" class="add-btn-without-name"
+                                (click)="addFleetContainer()"
                                 matTooltip="{{ 'fleet.composition.detachment.add' | translate }}"
                                 *ngIf="fleets.indexOf(fleet) === fleets.length - 1 && locked.includes(fleet.idFleet)">
                             <mat-icon>add_circle_outline</mat-icon>
                         </button>
-                        <button mat-mini-fab color="warn" aria-label="remove a fleet detachment button" class="remove-btn" (click)="removeFleetContainer()"
+                        <button mat-mini-fab color="primary" aria-label="remove a fleet detachment button" class="remove-btn"
+                                (click)="removeFleetContainer()"
                                 matTooltip="{{ 'fleet.composition.detachment.remove' | translate }}"
-                                *ngIf="fleets.indexOf(fleet) === fleets.length - 1 && fleets.indexOf(fleet) > 1"
+                                *ngIf="fleets.indexOf(fleet) === fleets.length - 1 && fleets.indexOf(fleet) > 2"
                                 [disabled]="locked.includes(fleet.idFleet) || fleet.ships.length > 0">
                             <mat-icon>remove_circle_outline</mat-icon>
                         </button>
@@ -47,20 +52,51 @@
                          class="warship-list"
                          (cdkDropListDropped)="drop($event)">
                         <div class="warship-box" *ngFor="let warship of fleet.ships" cdkDrag
-                             [cdkDragDisabled]="locked.includes(fleet.idFleet) && (fleet.idFleet < 0 || (fleet.idFleet > 0 && fleet.ships.length == 1))">{{warship.name}}</div>
+                             [cdkDragDisabled]="locked.includes(fleet.idFleet) && (fleet.idFleet < 0 || (fleet.idFleet > 0 && fleet.ships.length == 1))">
+                            {{ warship.name }}
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+            <div class="fleet-container pool-item">
+                <div *ngIf="fleets.length >= 1" class="rel">
+                    <button mat-mini-fab color="accent" aria-label="unlock input button" class="lock-reserve-btn"
+                            (click)="locked.splice(locked.indexOf(fleets[0].idFleet), 1)"
+                            *ngIf="locked.includes(fleets[0].idFleet)">
+                        <mat-icon>lock_open</mat-icon>
+                    </button>
+                    <button mat-mini-fab color="accent" aria-label="lock input button" class="lock-reserve-btn"
+                            (click)="locked.push(fleets[0].idFleet)"
+                            *ngIf="!locked.includes(fleets[0].idFleet)"
+                            [disabled]="fleets[0].name.length <= 0 || fleets[0].ships.length == 0">
+                        <mat-icon>lock</mat-icon>
+                    </button>
+                    <div mat-subheader class="fleet-name"
+                         matTooltip="{{ 'fleet.composition.detachment.pool.tooltip' | translate }}">{{ 'fleet.composition.detachment.pool.name' | translate }}</div>
+                    <div cdkDropList
+                         [cdkDropListData]="fleets[0].ships"
+                         class="warship-list"
+                         (cdkDropListDropped)="drop($event)">
+                        <div class="warship-box" *ngFor="let warship of fleets[0].ships" cdkDrag
+                             [cdkDragDisabled]="locked.includes(fleets[0].idFleet)">
+                            {{ warship.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="flex-items-container">
-            <div *ngIf="!(locked.length == fleets.length && fleets.length > 1)"
+            <div *ngIf="!allLocked()"
                  matTooltip="{{ 'fleet.composition.detachment.submit.disabled-hint' | translate }}">
                 <button mat-raised-button disabled color="primary">{{ 'fleet.composition.detachment.submit.action' | translate }}</button>
             </div>
 
             <button mat-raised-button color="primary"
                     (click)="submit()"
-                    *ngIf="locked.length == fleets.length && fleets.length > 1">{{ 'fleet.composition.detachment.submit.action' | translate }}</button>
+                    *ngIf="allLocked()">{{ 'fleet.composition.detachment.submit.action' | translate }}</button>
         </div>
     </app-outlined>
 </div>
