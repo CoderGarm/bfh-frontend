@@ -34,6 +34,7 @@ import {MassPipe} from "../../services/pipes/mass.pipe";
 import {SafePipe} from "../../services/pipes/safe.pipe";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {ColorPickerModule} from "ngx-color-picker";
+import {SafeUrlPipe} from "../../services/pipes/safe-url.pipe";
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import {ColorPickerModule} from "ngx-color-picker";
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
         SafePipe,
+        SafeUrlPipe,
         OutlinedComponent,
         ChipSelectorComponent,
         ResourceCounterComponent,
@@ -99,6 +101,7 @@ import {ColorPickerModule} from "ngx-color-picker";
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
         SafePipe,
+        SafeUrlPipe,
         OutlinedComponent,
         ChipSelectorComponent,
         MarkdownModule,

@@ -72,6 +72,7 @@ import {AssetsService} from "./services/assets/assets.service";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {StrategicOperationsModule} from "./modules/strategic-operations/strategic-operations.module";
 import {MissionCommunicationService} from "./services/intercom/mission-communication.service";
+import {SafeUrlPipe} from "./services/pipes/safe-url.pipe";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -173,6 +174,7 @@ export let AppInjector: Injector;
         NumberRomanPipe,
         NumberThousandSeparatorPipe,
         SafePipe,
+        SafeUrlPipe,
         MarkdownService,
         StarMapCommunicationService,
         AssetsService,

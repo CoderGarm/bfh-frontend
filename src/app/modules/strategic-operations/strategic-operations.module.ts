@@ -4,17 +4,19 @@ import {DisplayElementsModule} from "../display-elements/display-elements.module
 import {StratOpsTabViewComponent} from './orga/strat-ops-tab-view/strat-ops-tab-view.component';
 import {MissionAdministrationComponent} from './payload/mission-administration/mission-administration.component';
 import {MissionOverviewComponent} from './payload/mission-overview/mission-overview.component';
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
     declarations: [
         StratOpsTabViewComponent,
         MissionAdministrationComponent,
-        MissionOverviewComponent
+        MissionOverviewComponent,
     ],
     imports: [
         SharedModuleModule,
         DisplayElementsModule,
+        NgxSpinnerModule,
     ]
 })
 export class StrategicOperationsModule {

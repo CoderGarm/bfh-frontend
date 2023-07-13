@@ -18,5 +18,7 @@ export class StratOpsTabViewComponent extends SubscriptionManager implements Aft
     ngAfterViewInit(): void {
         this.missionCommService.fetchMissions();
         this.missionCommService.fetchPooledShips();
+        this.missionCommService.fetchPlanets();
+        this.missionCommService.fetchStarSystems();
     }
 }

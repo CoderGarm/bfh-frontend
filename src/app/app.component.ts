@@ -92,7 +92,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.showSeasonBadge();
 
         sub = this.spinnerService.askSpinner().subscribe(event => {
-            console.log(event)
             setTimeout(() => {
                 if (event.showSpinner) {
                     this.message = event.message;
