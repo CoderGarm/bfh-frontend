@@ -1,0 +1,28 @@
+@import "src/styles/variables";
+
+$bgColor: black;
+
+#external-map {
+  background-color: $bgColor;
+  overflow: hidden;
+  position: relative;
+}
+
+.ext-coordCross {
+  stroke: red;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+
+.info-btn {
+  color: $success;
+}
+
+.system-info-div {
+  position: absolute;
+  left: 50%;
+  top: 25px;
+  transform: translateX(-50%);
+  width: 50em;
+  z-index: 999;
+}

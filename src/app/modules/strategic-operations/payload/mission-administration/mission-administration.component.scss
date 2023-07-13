@@ -2,10 +2,12 @@
   width: 900px;
   height: 600px;
   position: relative;
+  overflow: hidden;
 }
 
 #mission-chips {
+  z-index: 99;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 25px;
+  right: 25px;
 }

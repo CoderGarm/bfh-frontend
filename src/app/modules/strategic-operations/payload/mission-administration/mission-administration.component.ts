@@ -1,10 +1,11 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, Predicate, ViewChild} from '@angular/core';
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {Mission, StarSystem} from "../../../../services/swagger";
 import {interval} from "rxjs";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {SafeUrl} from "@angular/platform-browser";
 import {NgxSpinnerService} from "ngx-spinner";
+import {MatChipListbox} from "@angular/material/chips";
 import MissionTypeEnum = Mission.MissionTypeEnum;
 
 export interface ColorGroup {
@@ -24,6 +25,9 @@ export interface Coords {
     name: string;
 }
 
+export interface CoordsBlob extends Array<Coords> {
+}
+
 @Component({
     selector: 'app-mission-administration',
     templateUrl: './mission-administration.component.html',
@@ -31,21 +35,19 @@ export interface Coords {
 })
 export class MissionAdministrationComponent extends SubscriptionManager implements AfterViewInit {
 
-    private static honorverseMapPath: string = 'https://map.battleforhonor.de';
-
-    private static path: string = 'external-star-map';
-
     url?: SafeUrl;
 
     colorGroups: ColorGroup[] = [];
 
     centerCoord?: Coords;
 
+    @ViewChild('chipList')
+    chipList!: MatChipListbox;
+
     message: string = 'loading mission map ...';
 
     constructor(protected missionCommService: MissionCommunicationService,
-                private spinner: NgxSpinnerService,
-                private sanitizer: DomSanitizer) {
+                private spinner: NgxSpinnerService) {
         super();
     }
 
@@ -58,36 +60,53 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
             // and later again repetitive
             if (this.missionCommService.planets.length != 0 && this.missionCommService.systems.length > 0) {
                 this.colorizeMissionMap();
+                this.spinner.hide('mission-map');
                 sub.unsubscribe();
             }
         });
         this.subscriptions.push(sub);
     }
 
-    private colorizeMissionMap() {
-        const mainStarSystemId: number = this.missionCommService.planets.filter(p => p.isMain).map(p => p.idStarSystem)[0];
-        this.centerCoord = this.getCoordFromSystem(mainStarSystemId);
+    private colorizeMissionMap(): void {
+        this.centerCoord = this.detectCenterByMainPlanet();
+        this.colorGroups = this.detectColorGroups();
+    }
 
-        const starSystemIDs: number[] = this.missionCommService.planets.map(p => p.idStarSystem);
-        const colonizedSystems: StarSystem[] = this.missionCommService.systems.filter(sys => sys.idStarSystem != mainStarSystemId && starSystemIDs.includes(sys.idStarSystem));
-        const colonized = colonizedSystems.map(sys => {
-            return <ColorGroup>{
-                color: 'green',
-                coords: this.getCoordsFromOrbit(sys),
-                simpleCoords: this.getCoordsFromOrbit(sys)
-            }
-        });
+    private detectColorGroups(predicate?: Predicate<Mission>) {
+        const colonized = this.getColonizedSystemsWithoutMainSystem();
+        const missions = this.detectMissionSystems(predicate);
+        return [...colonized, ...missions];
+    }
 
-        const missions = this.missionCommService.activeMissions.map(mission => {
+    private detectMissionSystems(predicate?: Predicate<Mission>): ColorGroup[] {
+        if (!predicate) {
+            predicate = f => !!f;
+        }
+        return this.missionCommService.activeMissions.filter(predicate).map(mission => {
             return <ColorGroup>{
                 color: this.getColor(mission.missionType),
                 coords: this.getSystemCoordsFromMission(mission),
                 simpleCoords: this.getSystemCoordsFromMission(mission)
             }
         });
+    }
 
-        this.colorGroups = [...colonized, ...missions];
-        this.buildURL();
+    private getColonizedSystemsWithoutMainSystem(): ColorGroup[] {
+        const mainStarSystemId: number = this.missionCommService.planets.filter(p => p.isMain).map(p => p.idStarSystem)[0];
+        const starSystemIDs: number[] = this.missionCommService.planets.map(p => p.idStarSystem);
+        const colonizedSystems: StarSystem[] = this.missionCommService.systems.filter(sys => sys.idStarSystem != mainStarSystemId && starSystemIDs.includes(sys.idStarSystem));
+        return colonizedSystems.map(sys => {
+            return <ColorGroup>{
+                color: 'green',
+                coords: this.getCoordsFromOrbit(sys),
+                simpleCoords: this.getCoordsFromOrbit(sys)
+            }
+        });
+    }
+
+    private detectCenterByMainPlanet(): Coords {
+        const mainStarSystemId: number = this.missionCommService.planets.filter(p => p.isMain).map(p => p.idStarSystem)[0];
+        return this.getCoordFromSystem(mainStarSystemId);
     }
 
     private getCoordFromSystem(mainStarSystemId: number): Coords {
@@ -97,27 +116,6 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
             y: mainSystem.orbit.yCoordinate.coordinate,
             name: mainSystem.name
         }
-    }
-
-    private buildURL() {
-        if (this.missionCommService.planets.length == 0) {
-            return;
-        }
-        let center = JSON.stringify(this.centerCoord, function (key, val) {
-            if (key !== "name")
-                return val;
-        });
-        let highlight = JSON.stringify(this.colorGroups, function (key, val) {
-            if (key !== "coords")
-                return val;
-        });
-        const urlString: string = MissionAdministrationComponent.honorverseMapPath + '/' + MissionAdministrationComponent.path + '?highlight=' + encodeURIComponent(highlight) + '&center=' + encodeURIComponent(center);
-        this.url = this.transform(urlString);
-        this.spinner.hide('mission-map');
-    }
-
-    private transform(url: string) {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
     }
 
     getColor(coord: MissionTypeEnum): string {
@@ -139,5 +137,14 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
     private getCoordsFromOrbit(system: StarSystem): Coords[] {
         const orbit = system.orbit;
         return [{x: orbit.xCoordinate.coordinate, y: orbit.yCoordinate.coordinate, name: system.name}];
+    }
+
+    missionTypeChange() {
+        const selectedMissionTypes = this.chipList._chips
+            .filter(chip => chip.selected)
+            .map(chip => <MissionTypeEnum>chip.value);
+
+        this.colorGroups = this.detectColorGroups(mission => selectedMissionTypes.includes(mission.missionType));
+
     }
 }

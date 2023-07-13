@@ -2,12 +2,17 @@
 
 
     <div id="map-box">
-        <mat-chip-listbox id="mission-chips"> <!-- fixme externer service, library oder neu implementieren? -->
-            <mat-chip-row *ngFor="let mission of missionCommService.missionTypes" cdkDrag [ngStyle]="{'background-color' :getColor(mission)}">
+        <mat-chip-listbox #chipList multiple id="mission-chips">
+            <mat-chip-option selected
+                             *ngFor="let mission of missionCommService.missionTypes"
+                             (selectionChange)="missionTypeChange()"
+                             [ngStyle]="{'background-color' :getColor(mission)}">
                 {{ mission }}
-            </mat-chip-row>
+            </mat-chip-option>
         </mat-chip-listbox>
         <ngx-spinner type="ball-scale-multiple" color="#375a7f" name="mission-map" [fullScreen]="false">{{ message }}</ngx-spinner>
-        <iframe *ngIf="!!url" width="900px" height="600px" [src]="url"></iframe>
+        <mission-map
+                [highlight]="colorGroups"
+                [highlightedCenter]="centerCoord"></mission-map>
     </div>
 </div>

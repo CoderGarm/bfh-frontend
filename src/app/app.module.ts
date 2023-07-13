@@ -73,6 +73,8 @@ import {NgxSpinnerModule} from "ngx-spinner";
 import {StrategicOperationsModule} from "./modules/strategic-operations/strategic-operations.module";
 import {MissionCommunicationService} from "./services/intercom/mission-communication.service";
 import {SafeUrlPipe} from "./services/pipes/safe-url.pipe";
+import {MapDataProvider} from "./modules/strategic-operations/payload/mission-map/map-data-provider.component";
+import {MapData} from "./modules/strategic-operations/payload/mission-map/map-data.component";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -107,6 +109,8 @@ export let AppInjector: Injector;
         ConfirmDialogComponent,
         NestedSidenavComponent,
         ForgottenPasswordComponent,
+        MapData,
+        MapDataProvider,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),

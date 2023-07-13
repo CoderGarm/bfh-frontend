@@ -1,0 +1,23 @@
+<div id="external-map">
+    <div class="flex-items-container system-info-div" *ngIf="!!starSystem">
+        <app-red-box titleValue="System">
+            {{ starSystem!.name }}
+        </app-red-box>
+
+        <app-red-box titleValue="Planet count">
+            {{ starSystem.planets.length }}
+        </app-red-box>
+
+        <app-red-box titleValue="X-Coordinate">
+            {{ starSystem!.orbit.xCoordinate.coordinate }} {{ starSystem!.orbit.xCoordinate.distanceMetric }}
+        </app-red-box>
+
+        <app-red-box titleValue="Y-Coordinate">
+            {{ starSystem!.orbit.yCoordinate.coordinate }} {{ starSystem!.orbit.xCoordinate.distanceMetric }}
+        </app-red-box>
+    </div>
+
+    <div id="universe">
+        <!-- svg elements will be created programmatically -->
+    </div>
+</div>
