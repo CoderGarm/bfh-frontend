@@ -53,7 +53,16 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
 
     @HostListener('window:resize', ['$event'])
     onResize(event?: any) {
+        this.resizeCanvas();
         this.drawTree();
+    }
+
+    private resizeCanvas() {
+        const canvas = document.querySelector('canvas');
+        if (!!canvas) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
     }
 
     constructor(private researchApi: ResearchApiService,
