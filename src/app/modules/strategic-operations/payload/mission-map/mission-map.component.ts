@@ -1,44 +1,44 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {MapElementDrawer} from "./map-element-drawer";
-import {ColorGroup, SimpleCoord} from "../mission-administration/mission-administration.component";
 import {AssetsService, Coords} from "../../../../services/assets/assets.service";
 import {MapData} from "./map-data.component";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 import {BackgroundService} from "../../../../services/prefetch/background.service";
-import {StarSystem} from "../../../../services/swagger";
+import {Mission, StarSystem} from "../../../../services/swagger";
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
 import {NgxSpinnerService} from "ngx-spinner";
+import {MapDataProvider} from "./map-data-provider.component";
+import MissionTypeEnum = Mission.MissionTypeEnum;
 
 
+// noinspection CssConvertColorToRgbInspection
 @Component({
     selector: 'mission-map',
     templateUrl: './mission-map.component.html',
     styleUrls: ['./mission-map.component.scss']
 })
-export class MissionMapComponent extends MapElementDrawer implements AfterViewInit, OnChanges {
+export class MissionMapComponent extends MapDataProvider implements AfterViewInit, OnChanges {
 
     public static readonly UN_FOCUSSED_COLOR: string = '#FB8C00';
-    public static readonly COLONIZED_COLOR: string = '#5e8c6a';
+    public static readonly COLONIZED_COLOR: string = '#556B2F';
+    public static readonly COLONIZED_BY_OTHERS_COLOR: string = '#6f1585';
+    public static readonly COLONIZED_BY_NPC_COLOR: string = '#8B0000';
     public static readonly PIRATE_HUNT_COLOR: string = '#375a7f';
     public static readonly CONVOY_PROTECTION_COLOR: string = '#6F64AA';
+    // noinspection JSUnusedGlobalSymbols
     public static readonly NO_MISSION_COLOR: string = '#FF3336';
+    // noinspection JSUnusedGlobalSymbols
     public static readonly MULTI_MISSION_COLOR: string = '#33F9FF';
 
     readonly message: string = 'loading mission map ...';
 
-    isSpinnerActive = false;
+    isSpinnerActive: boolean = false;
 
     @Input()
-    highlight: ColorGroup[] = [];
+    orbitDefinitions: LocalMapOrbitDefinition[] = [];
 
     @Input()
-    colonized: ColorGroup[] = [];
-
-    colorByCircle: Map<string, string> = new Map<string, string>();
-
-    @Input()
-    highlightedCenter?: SimpleCoord;
+    missionTypes: MissionTypeEnum[] = MissionCommunicationService.missionTypes;
 
     coords: Coords[] = [];
 
@@ -67,55 +67,9 @@ export class MissionMapComponent extends MapElementDrawer implements AfterViewIn
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-
-        const change = changes['highlight'];
-        if (!!change) {
-            this.detectHighlightedColors();
-
-            if (!change.isFirstChange() && this.buildHashFromHighlight(change.previousValue) != this.buildHashFromHighlight(change.currentValue)) {
-                this.drawMap();
-            }
-        }
-    }
-
-    private detectHighlightedColors() {
-        if (!!this.highlight) {
-            this.colorByCircle.clear();
-
-            this.colonized.forEach(cg => {
-                cg.simpleCoords.forEach(coord => {
-                    const id = MissionMapComponent.getStarSystemCircleID(coord);
-                    this.colorByCircle.set(id, cg.color);
-                });
-            });
-
-            this.highlight.forEach(cg => {
-                cg.simpleCoords.forEach(coord => {
-                    const id = MissionMapComponent.getStarSystemCircleID(coord); /* fixme reduce directly to orbit definition with color fields */
-                    const knownColor = this.colorByCircle.get(id);
-                    if (!!knownColor && (knownColor == MissionMapComponent.CONVOY_PROTECTION_COLOR || knownColor == MissionMapComponent.PIRATE_HUNT_COLOR)) {
-                        this.colorByCircle.set(id, MissionMapComponent.MULTI_MISSION_COLOR);
-                    } else if (!!knownColor && knownColor == MissionMapComponent.COLONIZED_COLOR) {
-                        this.colorByCircle.set(id, MissionMapComponent.NO_MISSION_COLOR);
-                    } else {
-                        this.colorByCircle.set(id, cg.color);
-                    }
-                });
-            });
-        }
-    }
-
-    private buildHashFromHighlight(colorGroups: ColorGroup[]) {
-        return colorGroups.map(cg => {
-            const xHash = cg.simpleCoords.map(sc => sc.x).reduce((sum, current) => sum + current, 0);
-            const yHash = cg.simpleCoords.map(sc => sc.y).reduce((sum, current) => sum + current, 0);
-            const colorHash = cg.color.split('').map(char => char.charCodeAt(0)).reduce((sum, current) => sum + current, 0);
-            return xHash + yHash + colorHash;
-        }).reduce((sum, current) => sum + current, 0);
-    }
-
-    static getStarSystemCircleID(orbit: SimpleCoord): string {
-        return MapData.CELESTIAL_BODY_SELECTOR_ID_PREFIX + "-" + orbit.x + "-" + orbit.y;
+        //if (changes['orbitDefinitions']) { fixme set up mission type change not as a redraw
+        this.drawMap();
+        //}
     }
 
     mouseoutForCelestial = () => {
@@ -162,25 +116,26 @@ export class MissionMapComponent extends MapElementDrawer implements AfterViewIn
         this.activateSpinner();
 
         this.clearData();
-        const colors: Map<string, string> = new Map<string, string>();
-        this.coords.forEach(coord => {
-            let id = MissionMapComponent.getStarSystemCircleID(coord);
-            const color = this.colorByCircle.has(id) ? this.colorByCircle.get(id) : MissionMapComponent.UN_FOCUSSED_COLOR;
-            colors.set(id, color!);
-        });
 
-        if (!!this.highlightedCenter) {
-            this.center = this.coords.filter(sys => MissionMapComponent.matches(this.highlightedCenter!, sys))[0];
-        } else {
-            this.center = this.coords.filter(sys => sys.name === 'Sol')[0];
+        if (this.orbitDefinitions.length == 0) {
+            return;
         }
+
+        this.center = this.orbitDefinitions.filter(sys => sys.isMain)[0].celestial;
         this.hoveredSystem = this.center;
 
-        let orbitDefinitions: LocalMapOrbitDefinition[] = LocalMapOrbitDefinition.getOrbitDefinitionsForExternalStarMap(this.center, this.coords, colors);
-        this.drawOrbits(orbitDefinitions);
+        this.drawOrbits(this.orbitDefinitions);
         this.drawJunctions();
         this.findStarSystemFromHover();
         this.deactivateSpinner();
+    }
+
+    drawOrbits(orbits: LocalMapOrbitDefinition[]) {
+        this.setOrbits(orbits);
+        const homeDef = orbits.filter(od => od.isMain)[0];
+        this.setViewBox(homeDef.celestial, 0.2);
+
+        orbits.forEach(orbitDefinition => this.drawCelestial(orbitDefinition, this.missionTypes));
     }
 
     private activateSpinner() {
@@ -193,10 +148,6 @@ export class MissionMapComponent extends MapElementDrawer implements AfterViewIn
     private deactivateSpinner() {
         this.spinner.hide('mission-map');
         this.isSpinnerActive = false;
-    }
-
-    static matches(o1: Coords | SimpleCoord, o2: Coords | SimpleCoord) {
-        return o1.x === o2.x && o1.y === o2.y;
     }
 
     private drawJunctions() {

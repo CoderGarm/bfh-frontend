@@ -11,7 +11,7 @@ export class MissionCommunicationService extends SubscriptionManager {
 
     pooledShips: WarShip[] = [];
 
-    missionTypes: MissionTypeEnum[] = [MissionTypeEnum.PIRATE_HUNT, MissionTypeEnum.CONVOY_PROTECTION];
+    static readonly missionTypes: MissionTypeEnum[] = [MissionTypeEnum.PIRATE_HUNT, MissionTypeEnum.CONVOY_PROTECTION];
 
     planets: Planet[] = [];
 

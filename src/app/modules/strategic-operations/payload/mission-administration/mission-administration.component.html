@@ -4,23 +4,23 @@
     <div id="map-box">
         <mat-chip-listbox #chipList multiple id="mission-chips">
             <mat-chip-option selected
-                             *ngFor="let mission of missionCommService.missionTypes"
+                             *ngFor="let mission of MissionCommunicationService.missionTypes"
                              (selectionChange)="missionTypeChange()"
                              [ngStyle]="{'background-color' :getColor(mission)}">
                 {{ mission }}
             </mat-chip-option>
         </mat-chip-listbox>
-        <mission-map
-                [highlight]="colorGroups"
-                [colonized]="colonized"
-                [highlightedCenter]="centerCoord"></mission-map>
+        <mission-map [orbitDefinitions]="orbitDefinitions"
+                     [missionTypes]="selectedMissionTypes"></mission-map>
         <div class="legend-box">
             <span>{{ 'mission.legend.title' | translate }}</span>
             <ul>
                 <li id="legend-highlighted">{{ 'mission.legend.highlighted' | translate }}</li>
-                <li id="legend-colonized">{{ 'mission.legend.colonized-systems' | translate }}</li>
                 <li id="legend-multi-mission">{{ 'mission.legend.multi-mission' | translate }}</li>
                 <li id="legend-no-mission">{{ 'mission.legend.no-mission' | translate }}</li>
+                <li id="legend-colonized">{{ 'mission.legend.colonized-systems' | translate }}</li>
+                <li id="legend-colonized-by-other">{{ 'mission.legend.colonized-systems-by-other' | translate }}</li>
+                <li id="legend-colonized-by-npc">{{ 'mission.legend.colonized-systems-by-npc' | translate }}</li>
             </ul>
         </div>
     </div>

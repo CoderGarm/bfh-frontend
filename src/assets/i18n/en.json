@@ -252,7 +252,9 @@
   },
   "mission": {
     "legend": {
-      "colonized-systems": "Colonized Systems",
+      "colonized-systems": "Own system",
+      "colonized-systems-by-npc": "Great power",
+      "colonized-systems-by-other": "Foreign system",
       "highlighted": "highlighted",
       "multi-mission": "Multiple ongoing mission",
       "no-mission": "No ongoing mission",

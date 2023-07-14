@@ -1,5 +1,6 @@
-import {MissionMapComponent} from "./mission-map.component";
 import {Coords} from "../../../../services/assets/assets.service";
+import {EnumValueDto} from "../../../../services/swagger";
+import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
 /**
  * just a container to hold the orbit information and if the specified orbit is colonized by someone
@@ -7,26 +8,23 @@ import {Coords} from "../../../../services/assets/assets.service";
 export class LocalMapOrbitDefinition {
 
     readonly celestial: Coords;
-
-    color: string;
-
     readonly isMain: boolean;
+    readonly isColonized: boolean;
+    readonly isColonizedByOther: boolean;
+    readonly isNpc: boolean;
+    readonly missionTypes: EMissionTypesEnum[];
 
     constructor(celestial: Coords,
                 isMain: boolean,
-                color: string) {
+                isColonized: boolean,
+                isColonizedByOther: boolean,
+                isNpc: boolean,
+                missionTypes: EMissionTypesEnum[]) {
         this.celestial = celestial;
-        this.color = color;
         this.isMain = isMain;
-    }
-
-    public static getOrbitDefinitionsForExternalStarMap(center: Coords, systems: Coords[], colors: Map<string, string>): LocalMapOrbitDefinition[] {
-        const od: LocalMapOrbitDefinition[] = [];
-        systems.forEach(system => {
-            let id = MissionMapComponent.getStarSystemCircleID(system);
-            let isMain: boolean = system.name === center.name;
-            od.push(new LocalMapOrbitDefinition(system, isMain, colors.get(id)!));
-        });
-        return od;
+        this.isColonized = isColonized;
+        this.isColonizedByOther = isColonizedByOther;
+        this.isNpc = isNpc;
+        this.missionTypes = missionTypes;
     }
 }

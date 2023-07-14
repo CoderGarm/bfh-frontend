@@ -41,19 +41,6 @@ export class OrbitDefinition {
         this.color = color;
     }
 
-    public static getOrbitDefinitionsForExternalStarMap(center: StarSystem, systems: StarSystem[], colors: Map<number, string>): OrbitDefinition[] {
-        const od: OrbitDefinition[] = [];
-        systems.forEach(system => {
-            let isColonizedByLoggedInUser: boolean = false;
-            let isColonizedByOtherUser: boolean = false;
-            let isColonizable: boolean = false;
-            let isNpc: boolean = false;
-            let isMain: boolean = system.name === center.name;
-            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isColonizable, isMain, colors.get(system.idStarSystem)));
-        });
-        return od;
-    }
-
     public static getOrbitDefinitionsForStarSystem(userId: number, systems: StarSystem[]): OrbitDefinition[] {
         const od: OrbitDefinition[] = [];
         systems.forEach(system => {

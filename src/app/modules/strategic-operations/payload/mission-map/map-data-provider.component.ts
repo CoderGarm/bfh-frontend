@@ -6,6 +6,8 @@ import '@svgdotjs/svg.filter.js'
 import {MissionMapComponent} from "./mission-map.component";
 import {Coords} from "../../../../services/assets/assets.service";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
+import {EnumValueDto} from "../../../../services/swagger";
+import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
 interface ElementToParent {
     parent: Dom;
@@ -209,7 +211,7 @@ export class MapDataProvider extends MapData {
         }
     }
 
-    protected drawCelestial(orbitDefinition: LocalMapOrbitDefinition) {
+    protected drawCelestial(orbitDefinition: LocalMapOrbitDefinition, missionTypesToDisplay: EMissionTypesEnum[]) {
         let mainGroup = this.getOrCreateMainCelestialGroup();
 
         const orbit: Coords = orbitDefinition.celestial;
@@ -219,36 +221,48 @@ export class MapDataProvider extends MapData {
 
         const x = orbit.x;
         const y = orbit.y;
-        if (orbitDefinition.color != MissionMapComponent.UN_FOCUSSED_COLOR) {
+        const missionTypes = orbitDefinition.missionTypes;
+        let celestialColor: string = MissionMapComponent.UN_FOCUSSED_COLOR;
 
+        if (orbitDefinition.isColonized) {
+            celestialColor = MissionMapComponent.COLONIZED_COLOR;
             let cssMarker: string = MapDataProvider.HIGHLIGHTED_SYSTEM_MARKER_CSS_CLASS;
-            switch (orbitDefinition.color) {
-                default:
-                case MissionMapComponent.PIRATE_HUNT_COLOR:
-                case MissionMapComponent.CONVOY_PROTECTION_COLOR:
-                case MissionMapComponent.COLONIZED_COLOR:
-                    break;
-                case MissionMapComponent.NO_MISSION_COLOR:
-                    orbitDefinition.color = MissionMapComponent.COLONIZED_COLOR;
-                    cssMarker = MapDataProvider.NO_MISSION_SYSTEM_MARKER_CSS_CLASS;
-                    break;
-                case MissionMapComponent.MULTI_MISSION_COLOR:
-                    orbitDefinition.color = MissionMapComponent.PIRATE_HUNT_COLOR;
-                    cssMarker = MapDataProvider.MULTI_MISSION_SYSTEM_MARKER_CSS_CLASS;
-                    break;
+            if (missionTypes.length == 0) {
+                cssMarker = MapDataProvider.NO_MISSION_SYSTEM_MARKER_CSS_CLASS;
+            } else if (missionTypes.length > 1) {
+                cssMarker = MapDataProvider.MULTI_MISSION_SYSTEM_MARKER_CSS_CLASS;
             }
-
-
             this.createRoundCapMarkerNorth(mainGroup, celestialBodyID, x, y, cssMarker);
+        } else if (orbitDefinition.isColonizedByOther) {
+            celestialColor = MissionMapComponent.COLONIZED_BY_OTHERS_COLOR;
+        } else if (orbitDefinition.isNpc) {
+            celestialColor = MissionMapComponent.COLONIZED_BY_NPC_COLOR;
+        }
+
+        if (missionTypes.length == 1) {
+            const missionType = missionTypes[0];
+            if (missionTypesToDisplay.includes(missionType)) {
+                switch (missionType) {
+                    default:
+                    case "PIRATE_RAID":
+                        break;
+                    case "PIRATE_HUNT":
+                        celestialColor = MissionMapComponent.PIRATE_HUNT_COLOR;
+                        break;
+                    case "CONVOY_PROTECTION":
+                        celestialColor = MissionMapComponent.CONVOY_PROTECTION_COLOR;
+                        break;
+                }
+            }
         }
 
         const circle = mainGroup.circle()
             .x(x)
             .y(y)
-            .fill(orbitDefinition.color)
+            .fill(celestialColor)
             .id(celestialBodyID);
 
-        if (orbitDefinition.color === MissionMapComponent.UN_FOCUSSED_COLOR) {
+        if (celestialColor === MissionMapComponent.UN_FOCUSSED_COLOR) {
             circle.addClass(MapDataProvider.OPAQUE_CSS_CLASS)
         }
 
