@@ -4,8 +4,8 @@ import {SubscriptionManager} from "../../../../subscription.manager";
 import {Mission, StarSystem} from "../../../../services/swagger";
 import {interval} from "rxjs";
 import {SafeUrl} from "@angular/platform-browser";
-import {NgxSpinnerService} from "ngx-spinner";
 import {MatChipListbox} from "@angular/material/chips";
+import {MissionMapComponent} from "../mission-map/mission-map.component";
 import MissionTypeEnum = Mission.MissionTypeEnum;
 
 export interface ColorGroup {
@@ -25,9 +25,6 @@ export interface Coords {
     name: string;
 }
 
-export interface CoordsBlob extends Array<Coords> {
-}
-
 @Component({
     selector: 'app-mission-administration',
     templateUrl: './mission-administration.component.html',
@@ -38,29 +35,23 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
     url?: SafeUrl;
 
     colorGroups: ColorGroup[] = [];
+    colonized: ColorGroup[] = [];
 
     centerCoord?: Coords;
 
     @ViewChild('chipList')
     chipList!: MatChipListbox;
 
-    message: string = 'loading mission map ...';
-
-    constructor(protected missionCommService: MissionCommunicationService,
-                private spinner: NgxSpinnerService) {
+    constructor(protected missionCommService: MissionCommunicationService) {
         super();
     }
 
     ngAfterViewInit(): void {
-
-        this.spinner.show('mission-map');
-
         const source = interval(100);
         let sub = source.subscribe(val => {
             // and later again repetitive
             if (this.missionCommService.planets.length != 0 && this.missionCommService.systems.length > 0) {
                 this.colorizeMissionMap();
-                this.spinner.hide('mission-map');
                 sub.unsubscribe();
             }
         });
@@ -69,13 +60,8 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
 
     private colorizeMissionMap(): void {
         this.centerCoord = this.detectCenterByMainPlanet();
-        this.colorGroups = this.detectColorGroups();
-    }
-
-    private detectColorGroups(predicate?: Predicate<Mission>) {
-        const colonized = this.getColonizedSystemsWithoutMainSystem();
-        const missions = this.detectMissionSystems(predicate);
-        return [...colonized, ...missions];
+        this.colonized = this.getColonizedSystems();
+        this.colorGroups = this.detectMissionSystems();
     }
 
     private detectMissionSystems(predicate?: Predicate<Mission>): ColorGroup[] {
@@ -91,13 +77,12 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
         });
     }
 
-    private getColonizedSystemsWithoutMainSystem(): ColorGroup[] {
-        const mainStarSystemId: number = this.missionCommService.planets.filter(p => p.isMain).map(p => p.idStarSystem)[0];
+    private getColonizedSystems(): ColorGroup[] {
         const starSystemIDs: number[] = this.missionCommService.planets.map(p => p.idStarSystem);
-        const colonizedSystems: StarSystem[] = this.missionCommService.systems.filter(sys => sys.idStarSystem != mainStarSystemId && starSystemIDs.includes(sys.idStarSystem));
+        const colonizedSystems: StarSystem[] = this.missionCommService.systems.filter(sys => starSystemIDs.includes(sys.idStarSystem));
         return colonizedSystems.map(sys => {
             return <ColorGroup>{
-                color: 'green',
+                color: MissionMapComponent.COLONIZED_COLOR,
                 coords: this.getCoordsFromOrbit(sys),
                 simpleCoords: this.getCoordsFromOrbit(sys)
             }
@@ -121,9 +106,9 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
     getColor(coord: MissionTypeEnum): string {
         switch (coord) {
             case "CONVOY_PROTECTION":
-                return 'blue';
+                return MissionMapComponent.CONVOY_PROTECTION_COLOR;
             case "PIRATE_HUNT":
-                return 'red';
+                return MissionMapComponent.PIRATE_HUNT_COLOR;
             default:
                 return '';
         }
@@ -144,7 +129,6 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
             .filter(chip => chip.selected)
             .map(chip => <MissionTypeEnum>chip.value);
 
-        this.colorGroups = this.detectColorGroups(mission => selectedMissionTypes.includes(mission.missionType));
-
+        this.colorGroups = this.detectMissionSystems(mission => selectedMissionTypes.includes(mission.missionType));
     }
 }

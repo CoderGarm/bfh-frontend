@@ -11,3 +11,27 @@
   bottom: 25px;
   right: 25px;
 }
+
+.legend-box {
+  z-index: 99;
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  font-size: small;
+}
+
+#legend-colonized {
+  color: #5e8c6a;
+}
+
+#legend-highlighted {
+  color: #306f91;
+}
+
+#legend-multi-mission {
+  color: #33F9FF;
+}
+
+#legend-no-mission {
+  color: #FF3336;
+}

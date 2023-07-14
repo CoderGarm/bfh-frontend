@@ -10,9 +10,18 @@
                 {{ mission }}
             </mat-chip-option>
         </mat-chip-listbox>
-        <ngx-spinner type="ball-scale-multiple" color="#375a7f" name="mission-map" [fullScreen]="false">{{ message }}</ngx-spinner>
         <mission-map
                 [highlight]="colorGroups"
+                [colonized]="colonized"
                 [highlightedCenter]="centerCoord"></mission-map>
+        <div class="legend-box">
+            <span>{{ 'mission.legend.title' | translate }}</span>
+            <ul>
+                <li id="legend-highlighted">{{ 'mission.legend.highlighted' | translate }}</li>
+                <li id="legend-colonized">{{ 'mission.legend.colonized-systems' | translate }}</li>
+                <li id="legend-multi-mission">{{ 'mission.legend.multi-mission' | translate }}</li>
+                <li id="legend-no-mission">{{ 'mission.legend.no-mission' | translate }}</li>
+            </ul>
+        </div>
     </div>
 </div>

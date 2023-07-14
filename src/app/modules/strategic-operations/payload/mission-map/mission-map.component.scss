@@ -8,12 +8,6 @@ $bgColor: black;
   position: relative;
 }
 
-.ext-coordCross {
-  stroke: red;
-  opacity: 0.4;
-  filter: alpha(opacity=40);
-}
-
 .info-btn {
   color: $success;
 }
@@ -25,4 +19,19 @@ $bgColor: black;
   transform: translateX(-50%);
   width: 50em;
   z-index: 999;
+}
+
+.highlighted {
+  stroke: #306f91;
+  stroke-width: 1;
+}
+
+.multi-mission {
+  stroke: #33F9FF;
+  stroke-width: 1;
+}
+
+.no-mission {
+  stroke: #de2839;
+  stroke-width: 1;
 }

@@ -8,7 +8,7 @@ export class LocalMapOrbitDefinition {
 
     readonly celestial: Coords;
 
-    readonly color: string;
+    color: string;
 
     readonly isMain: boolean;
 

@@ -250,6 +250,15 @@
       "research": "The ability of the planet to support the process of gaining knowledge."
     }
   },
+  "mission": {
+    "legend": {
+      "colonized-systems": "Colonized Systems",
+      "highlighted": "highlighted",
+      "multi-mission": "Multiple ongoing mission",
+      "no-mission": "No ongoing mission",
+      "title": "Legend"
+    }
+  },
   "path": {
     "button": {
       "admin": "Game admin area",

@@ -250,6 +250,15 @@
       "research": "Die Fähigkeit des Planeten, den Erkenntnisprozess zu unterstützen."
     }
   },
+  "mission": {
+    "legend": {
+      "colonized-systems": "Kolonisierte Systeme",
+      "highlighted": "markiert",
+      "multi-mission": "Mehrere laufende Missionen",
+      "no-mission": "Keine laufenden Missionen",
+      "title": "Legende"
+    }
+  },
   "path": {
     "button": {
       "admin": "Spieladministration",

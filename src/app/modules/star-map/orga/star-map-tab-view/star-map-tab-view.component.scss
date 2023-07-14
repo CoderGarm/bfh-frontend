@@ -16,12 +16,12 @@
   z-index: 999;
 }
 
-#universe, #starsystem, #arena {
+#universe, #starsystem, #arena, #mission-map {
   height: 100vh;
   width: 100%;
 }
 
-#universe-canvas, #star-system-canvas, #combat-arena {
+#universe-canvas, #star-system-canvas, #combat-arena, #mission-canvas {
   height: 100%;
   width: 100%;
   contain: paint;
@@ -29,10 +29,9 @@
 }
 
 .coordCross {
-  stroke: cadetblue;
-  stroke-width: 1;
-  opacity: 0.2;
-  filter: alpha(opacity=20);
+  stroke: red;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
 }
 
 .wormhole {

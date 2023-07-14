@@ -40,18 +40,14 @@ export class MapDataProvider extends MapData {
 
     private static readonly COORD_CROSS = "coordCross";
     protected static readonly HIGHLIGHTED_SYSTEM_MARKER_CSS_CLASS = "highlighted";
+    protected static readonly NO_MISSION_SYSTEM_MARKER_CSS_CLASS = "no-mission";
+    protected static readonly MULTI_MISSION_SYSTEM_MARKER_CSS_CLASS = "multi-mission";
 
     protected static readonly PLANET_RADIUS = 5;
     protected static readonly STAR_RADIUS = 5;
     protected static readonly STAR_RADIUS_IN_SYSTEM = 15;
 
     protected static readonly INVISIBLE_CLASS = "invisible";
-
-    /**
-     * If the map is used as external this prefix will be added to all necessary css selectors.
-     * Is an ugly idea, but it works until a full rework and separating the external map from the internal one.
-     */
-    private externalMapPrefix: string = '';
 
     protected aspectRatio: number = 1;
 
@@ -83,9 +79,8 @@ export class MapDataProvider extends MapData {
         }
     }
 
-    createCanvas(id: string, parentCssId: string, externalMapPrefix: string = ''): Svg {
+    createCanvas(id: string, parentCssId: string): Svg {
         if (!this.canvas) {
-            this.externalMapPrefix = externalMapPrefix;
             this.canvas = SVG().id(id).addTo(parentCssId).panZoom(MapDataProvider.PAN_ZOOM_OPTIONS);
             this.canvas
                 .on('zoom', this.zoomModification)
@@ -226,18 +221,25 @@ export class MapDataProvider extends MapData {
         const y = orbit.y;
         if (orbitDefinition.color != MissionMapComponent.UN_FOCUSSED_COLOR) {
 
-            const circle = mainGroup.circle()
-                .x(x)
-                .y(y)
-                .id('blob-' + celestialBodyID);
+            let cssMarker: string = MapDataProvider.HIGHLIGHTED_SYSTEM_MARKER_CSS_CLASS;
+            switch (orbitDefinition.color) {
+                default:
+                case MissionMapComponent.PIRATE_HUNT_COLOR:
+                case MissionMapComponent.CONVOY_PROTECTION_COLOR:
+                case MissionMapComponent.COLONIZED_COLOR:
+                    break;
+                case MissionMapComponent.NO_MISSION_COLOR:
+                    orbitDefinition.color = MissionMapComponent.COLONIZED_COLOR;
+                    cssMarker = MapDataProvider.NO_MISSION_SYSTEM_MARKER_CSS_CLASS;
+                    break;
+                case MissionMapComponent.MULTI_MISSION_COLOR:
+                    orbitDefinition.color = MissionMapComponent.PIRATE_HUNT_COLOR;
+                    cssMarker = MapDataProvider.MULTI_MISSION_SYSTEM_MARKER_CSS_CLASS;
+                    break;
+            }
 
-            /*circle.filterWith(add => { /!* fixme interesting stuff the fuckin filters *!/
-                //let gaussianBlur = add.gaussianBlur(x, y);
-                let diffuseLighting = add.diffuseLighting(2, 'yellow', 3, 4);
-                add.displacementMap(add.$source, diffuseLighting, 5, "R", "G");
-            });*/
 
-            this.createRoundCapMarkerNorth(mainGroup, celestialBodyID, x, y);
+            this.createRoundCapMarkerNorth(mainGroup, celestialBodyID, x, y, cssMarker);
         }
 
         const circle = mainGroup.circle()
@@ -245,21 +247,6 @@ export class MapDataProvider extends MapData {
             .y(y)
             .fill(orbitDefinition.color)
             .id(celestialBodyID);
-
-        if (orbitDefinition.color != MissionMapComponent.UN_FOCUSSED_COLOR) {
-            /*
-            let gaussianBlur = circle.filterer()?.gaussianBlur(x, y);
-            mainGroup.add(gaussianBlur!)
-            */
-
-
-            /*
-            circle.filterWith(add => {
-                var noise = add.turbulence(0.05, 1, 0, "stitch", "fractalNoise");
-                add.displacementMap(add.$source, noise, 5, "R", "G");
-            });
-            */
-        }
 
         if (orbitDefinition.color === MissionMapComponent.UN_FOCUSSED_COLOR) {
             circle.addClass(MapDataProvider.OPAQUE_CSS_CLASS)
@@ -299,12 +286,12 @@ export class MapDataProvider extends MapData {
         })
     }
 
-    createRoundCapMarkerNorth(mainGroup: G, id: string, x: number, y: number, xShifter?: number, yShifter?: number) {
-        let arr = this.createRoundCapMarkerNorthPoints(x, y, xShifter, yShifter);
+    createRoundCapMarkerNorth(mainGroup: G, id: string, x: number, y: number, cssMarker: string) {
+        let arr = this.createRoundCapMarkerNorthPoints(x, y, undefined, undefined);
         mainGroup.path(arr)
             .fill(MapDataProvider.NONE_FILL_COLOR)
             .id(id + MapData.ROUND_CAP_SUFFIX)
-            .addClass(MapDataProvider.HIGHLIGHTED_SYSTEM_MARKER_CSS_CLASS)
+            .addClass(cssMarker)
             .addClass(MapData.RESIZE_ON_ZOOM_MARKER)
             .addClass(MapData.ROUND_CAP_MARKER)
             .addClass(this.getCenterMarker(x, y));
@@ -532,7 +519,7 @@ export class MapDataProvider extends MapData {
                 .y(yBase)
                 .fill(MapDataProvider.NONE_FILL_COLOR)
                 .id(idPrefix + "-" + MapDataProvider.COORD_CROSS + i)
-                .addClass(this.externalMapPrefix + MapDataProvider.COORD_CROSS)
+                .addClass(MapDataProvider.COORD_CROSS)
                 .radius(radiusSteps * i);
         }
         const degree = 12;
@@ -543,7 +530,7 @@ export class MapDataProvider extends MapData {
             const points: ArrayXY[] = [[xBase, yBase], [xBase + x, yBase + y]];
             group.line(points)
                 .id(idPrefix + "-" + MapDataProvider.COORD_CROSS + "-line" + j)
-                .addClass(this.externalMapPrefix + MapDataProvider.COORD_CROSS)
+                .addClass(MapDataProvider.COORD_CROSS)
         }
     }
 
