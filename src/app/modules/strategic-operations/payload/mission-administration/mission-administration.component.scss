@@ -22,6 +22,10 @@
   font-size: small;
 }
 
+mat-form-field {
+  height: fit-content;
+}
+
 #legend-colonized {
   color: #5e8c6a;
 }
@@ -70,7 +74,6 @@
 }
 
 #mission-items {
-  min-height: 250px;
 }
 
 mat-list-item {

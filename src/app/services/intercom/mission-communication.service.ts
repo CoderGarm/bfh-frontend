@@ -24,6 +24,10 @@ export class MissionCommunicationService extends SubscriptionManager {
         super();
     }
 
+    createMission(mission: Mission) {
+        return this.missionService.setupMission(mission);
+    }
+
     fetchPlanets() {
         let sub = this.planetService.getPlanetByUsers().subscribe(resp => this.planets = resp);
         this.subscriptions.push(sub);

@@ -255,6 +255,15 @@
       "details": "Details",
       "title": "Mission"
     },
+    "create": {
+      "select": {
+        "planet": "Wähle das Aktionszentrum",
+        "ships": "Wähle die Schiffe",
+        "type": "Missionstyp wählen"
+      },
+      "submit": "Starte die Mission",
+      "toggle": "Missionsplanung"
+    },
     "legend": {
       "colonized-systems": "Own system",
       "colonized-systems-by-npc": "Great power",
@@ -262,6 +271,7 @@
       "highlighted": "highlighted",
       "multi-mission": "Multiple ongoing mission",
       "no-mission": "No ongoing mission",
+      "select-a-system": "Chose a system",
       "title": "Legend"
     }
   },

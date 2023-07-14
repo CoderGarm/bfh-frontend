@@ -1,11 +1,13 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
-import {EnumValueDto, Mission, StarSystem} from "../../../../services/swagger";
+import {EnumValueDto, Mission, Planet, StarSystem, WarShip} from "../../../../services/swagger";
 import {interval} from "rxjs";
 import {MatChipListbox} from "@angular/material/chips";
 import {MissionMapComponent} from "../mission-map/mission-map.component";
 import {LocalMapOrbitDefinition} from "../mission-map/local-map-orbit-definition";
+import {MatSelectionListChange} from "@angular/material/list";
+import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
 import MissionTypeEnum = Mission.MissionTypeEnum;
 import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
@@ -32,9 +34,15 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
     selectedSystem?: StarSystem;
     missions: Mission[] = [];
 
-    protected readonly MissionCommunicationService = MissionCommunicationService;
+    missionCreate: boolean = false;
 
-    constructor(protected missionCommService: MissionCommunicationService) {
+    protected readonly MissionCommunicationService = MissionCommunicationService;
+    selectedPlanet?: Planet;
+    selectedType?: MissionTypeEnum;
+    selectedWarships?: WarShip[];
+
+    constructor(protected missionCommService: MissionCommunicationService,
+                private notif: SnackbarNotificationService) {
         super();
     }
 
@@ -109,5 +117,37 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
         this.selectedMissionTypes = this.chipList._chips
             .filter(chip => chip.selected)
             .map(chip => <MissionTypeEnum>chip.value);
+    }
+
+    toggle() {
+        this.missionCreate = !this.missionCreate;
+    }
+
+    isMissionCreateValid() {
+        return !!this.selectedType && !!this.selectedPlanet && !!this.selectedWarships && this.selectedWarships.length > 0;
+    }
+
+    setShips(event: MatSelectionListChange) {
+        this.selectedWarships = event.options.filter(o => o.selected).map(o => o.value);
+    }
+
+    submit() {
+        if (this.isMissionCreateValid()) {
+            let sub = this.missionCommService.createMission({
+                venue: this.selectedPlanet!,
+                ships: [],
+                warShipIDs: this.selectedWarships!.map(w => w.idWarship),
+                missionType: this.selectedType!
+            }).subscribe(resp => {
+                this.missions.push(resp);
+                this.missionCommService.activeMissions.push(resp);
+                this.notif.open('Mission created');
+
+                this.selectedPlanet = undefined;
+                this.selectedType = undefined;
+                this.selectedWarships = undefined;
+            });
+            this.subscriptions.push(sub);
+        }
     }
 }

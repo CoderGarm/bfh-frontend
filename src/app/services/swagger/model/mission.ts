@@ -29,6 +29,10 @@ export interface Mission {
      * The mission's individual war ships.
      */
     ships: Array<WarShip>;
+    /**
+     * The mission's individual war ships.
+     */
+    warShipIDs: Array<number>;
 }
 export namespace Mission {
     export type MissionTypeEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION';
