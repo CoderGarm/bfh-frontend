@@ -1,7 +1,5 @@
 <div class="content-area">
-
-
-    <div id="map-box">
+    <div id="map-box" class="bottom-spacer">
         <mat-chip-listbox #chipList multiple id="mission-chips">
             <mat-chip-option selected
                              *ngFor="let mission of MissionCommunicationService.missionTypes"
@@ -11,7 +9,8 @@
             </mat-chip-option>
         </mat-chip-listbox>
         <mission-map [orbitDefinitions]="orbitDefinitions"
-                     [missionTypes]="selectedMissionTypes"></mission-map>
+                     [missionTypes]="selectedMissionTypes"
+                     (selectedSystem)="setSelectedSystem($event)"></mission-map>
         <div class="legend-box">
             <span>{{ 'mission.legend.title' | translate }}</span>
             <ul>
@@ -24,4 +23,35 @@
             </ul>
         </div>
     </div>
+
+
+    <mat-card appearance="outlined" id="mission-items">
+        <mat-card-title>{{ selectedSystem?.name }}</mat-card-title>
+        <mat-card-subtitle *ngIf="!!selectedSystem && missions.length == 0">{{ 'mission.legend.no-mission' | translate }}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="!!selectedSystem && missions.length == 1">{{ 'mission.card.title' | translate }}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="!!selectedSystem && missions.length > 1">{{ 'mission.legend.multi-mission' | translate }}</mat-card-subtitle>
+
+        <!-- fixme start mission stuff -->
+
+        <mat-card-content>
+            <mat-card appearance="outlined" *ngFor="let mission of missions" class="mission-card">
+                <mat-card-content>
+                    <app-outlined titleValue="{{ 'mission.card.title' | translate }}" class="floated">
+                        {{mission.missionType}}
+                    </app-outlined>
+                    <app-outlined titleValue="{{ 'mission.card.details' | translate }}" class="floated-right">
+                        {{ mission.venue.name }}
+                    </app-outlined>
+
+                    <mat-list-item *ngFor="let warShip of mission.ships">
+                        <span matListItemTitle>{{warShip.name}}</span>
+                        <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+                        <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
+                                                            [isWarship]="true"></app-spacecraft-state-block-display>
+                    </mat-list-item>
+                </mat-card-content>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
 </div>
+

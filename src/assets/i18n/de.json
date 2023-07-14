@@ -251,10 +251,14 @@
     }
   },
   "mission": {
+    "card": {
+      "details": "Details",
+      "title": "Mission"
+    },
     "legend": {
       "colonized-systems": "Eigenes System",
-      "colonized-systems-by-other": "Fremdes System",
       "colonized-systems-by-npc": "Großmacht",
+      "colonized-systems-by-other": "Fremdes System",
       "highlighted": "markiert",
       "multi-mission": "Mehrere laufende Missionen",
       "no-mission": "Keine laufenden Missionen",

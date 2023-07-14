@@ -15,14 +15,14 @@
   display: flex;
 }
 
-app-spacecraft-state-block-display {
-  float: left;
-  margin-right: 5px;
+mat-list-item {
+  position: relative;
 }
 
-.item {
-  margin: 0;
-  padding: 0;
+app-spacecraft-state-block-display {
+  position: absolute;
+  top: 15px;
+  right: 25px;
 }
 
 .icon {

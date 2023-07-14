@@ -25,7 +25,6 @@ export interface WarShip {
      * The name of this individual ship.
      */
     name: string;
-    shipyard: Planet;
     /**
      * The fleet which this ship is part of.
      */

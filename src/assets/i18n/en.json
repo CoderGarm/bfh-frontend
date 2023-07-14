@@ -251,6 +251,10 @@
     }
   },
   "mission": {
+    "card": {
+      "details": "Details",
+      "title": "Mission"
+    },
     "legend": {
       "colonized-systems": "Own system",
       "colonized-systems-by-npc": "Great power",

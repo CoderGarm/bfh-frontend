@@ -87,8 +87,7 @@ export class MapDataProvider extends MapData {
             this.canvas
                 .on('zoom', this.zoomModification)
                 .mouseover(this.mouseoverForText)
-                .mouseout(this.mouseoutForText)
-                .click(this.clickEventForCelestial)
+                .mouseout(this.mouseoutForText);
         }
         return this.canvas;
     }
@@ -263,12 +262,13 @@ export class MapDataProvider extends MapData {
             .id(celestialBodyID);
 
         if (celestialColor === MissionMapComponent.UN_FOCUSSED_COLOR) {
-            circle.addClass(MapDataProvider.OPAQUE_CSS_CLASS)
+            circle.addClass(MapDataProvider.OPAQUE_CSS_CLASS);
         }
 
-        circle.addClass(MapData.RESIZE_ON_ZOOM_MARKER);
-        circle.addClass(MapData.STAR_MARKER);
-        circle.radius(MapDataProvider.STAR_RADIUS);
+        circle.addClass(MapData.RESIZE_ON_ZOOM_MARKER)
+            .addClass(MapDataProvider.CLICKABLE_CSS_CLASS)
+            .addClass(MapData.STAR_MARKER)
+            .radius(MapDataProvider.STAR_RADIUS);
 
         this.setCelestialCircleById(celestialBodyID, circle);
         this.setCelestialOrbitById(celestialBodyID, orbit);
@@ -357,27 +357,6 @@ export class MapDataProvider extends MapData {
         return [Number.parseFloat(x), Number.parseFloat(y)];
     }
 
-    private clickEventForCelestial = (event: PointerEvent) => {
-        let id = this.getIdFromEvent(event);
-        if (!this.isCelestialId(id)) {
-            return;
-        }
-
-        const celestialCircle = this.getCelestialByEvent(event);
-        if (!celestialCircle) {
-            return;
-        }
-        // noinspection JSUnusedLocalSymbols
-        let x = celestialCircle.cx();
-        // noinspection JSUnusedLocalSymbols
-        let y = celestialCircle.cy();
-        const celestial = this.getCelestialObjectByID(id);
-        if (!celestial) {
-            return;
-        }
-    };
-
-
     // noinspection JSUnusedLocalSymbols
     private getRadius(element: Element, zoomFactor: number) {
         const box = element.bbox();
@@ -423,7 +402,7 @@ export class MapDataProvider extends MapData {
         }
     }
 
-    private drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
+    drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
         const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
 
         const elementToParent = this.findElementAndParentById(id);
@@ -449,7 +428,7 @@ export class MapDataProvider extends MapData {
         }
     }
 
-    private removeCyclingCircle(id: string) {
+    removeCyclingCircle(id: string) {
         if (!id.endsWith(MapData.CYCLING_CIRCLE_SUFFIX)) {
             id = this.getCyclingCircleId(id);
         }
@@ -460,6 +439,7 @@ export class MapDataProvider extends MapData {
         if (!!element) {
             parent.removeElement(element);
         }
+        return !!element;
     }
 
     private getStarSystemByEvent = (event: PointerEvent): Coords | undefined => {

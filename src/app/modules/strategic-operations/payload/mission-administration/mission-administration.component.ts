@@ -29,6 +29,9 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
     @ViewChild('chipList')
     chipList!: MatChipListbox;
 
+    selectedSystem?: StarSystem;
+    missions: Mission[] = [];
+
     protected readonly MissionCommunicationService = MissionCommunicationService;
 
     constructor(protected missionCommService: MissionCommunicationService) {
@@ -45,6 +48,11 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
             }
         });
         this.subscriptions.push(sub);
+    }
+
+    setSelectedSystem(selectedSystem: StarSystem | undefined) {
+        this.selectedSystem = selectedSystem;
+        this.missions = this.getMissionsBySystem(selectedSystem);
     }
 
     private getOrbitDefinitions(selectedMissionTypes?: MissionTypeEnum[]): LocalMapOrbitDefinition[] {
@@ -75,26 +83,15 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
         });
     }
 
-    private getMissionsBySystem(system: StarSystem, selectedMissionTypes?: MissionTypeEnum[]): Mission[] {
+    private getMissionsBySystem(system?: StarSystem, selectedMissionTypes?: MissionTypeEnum[]): Mission[] {
+        if (!system) {
+            return [];
+        }
         let missions: Mission[] = this.missionCommService.activeMissions;
         if (!!selectedMissionTypes) {
             missions = missions.filter(mission => selectedMissionTypes.includes(mission.missionType));
         }
         return missions.filter(m => m.venue.idStarSystem === system.idStarSystem);
-    }
-
-    private getColonizedSystems(): StarSystem[] {
-        const starSystemIDs: number[] = this.missionCommService.planets.map(p => p.idStarSystem);
-        return this.missionCommService.systems.filter(sys => starSystemIDs.includes(sys.idStarSystem));
-    }
-
-    private detectCenterByMainPlanet(): StarSystem {
-        const mainStarSystemId: number = this.missionCommService.planets.filter(p => p.isMain).map(p => p.idStarSystem)[0];
-        return this.getSystemById(mainStarSystemId);
-    }
-
-    private getSystemById(idStarSystem: number): StarSystem {
-        return this.missionCommService.systems.filter(sys => sys.idStarSystem == idStarSystem)[0];
     }
 
     getColor(coord: MissionTypeEnum): string {

@@ -14,11 +14,10 @@
                 </div>
 
                 <mat-list-item *ngFor="let warShip of entry.value">
-                    <div class="clearfix">
-                        <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
-                                                            [isWarship]="true"></app-spacecraft-state-block-display>
-                        <div mat-line class="item">{{warShip.name}}</div>
-                    </div>
+                    <span matListItemTitle>{{warShip.name}}</span>
+                    <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+                    <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
+                                                        [isWarship]="true"></app-spacecraft-state-block-display>
                 </mat-list-item>
             </mat-list>
         </div>
