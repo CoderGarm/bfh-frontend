@@ -34,11 +34,22 @@ for filename in ./*; do
     sed -i 's/FORUMWRITE/FORUM_WRITE/' $filename
   fi
   if [[ $filename == './mission.ts' ]]; then
-      echo "replacing enum constants with camel case"
-      sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
-      sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
-      sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
-    fi
+    echo "replacing enum constants with camel case"
+    sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
+    sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
+    sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
+  fi
+  if [[ $filename == './missionActionItemGroup.ts' ]]; then
+    echo "replacing enum constants with camel case"
+    sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
+    sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
+    sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
+  fi
+  if [[ $filename == './missionActionItem.ts' ]]; then
+    echo "replacing enum constants with camel case"
+    sed -i 's/LEAVEORBIT/LEAVE_ORBIT/' $filename
+    sed -i 's/NOBATTLE/NO_BATTLE/' $filename
+  fi
 done
 
 cd ../..

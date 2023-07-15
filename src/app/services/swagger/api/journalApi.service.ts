@@ -22,6 +22,7 @@ import { FinishedColonization } from '../model/finishedColonization';
 import { FleetMovement } from '../model/fleetMovement';
 import { FrontendError } from '../model/frontendError';
 import { Job } from '../model/job';
+import { MissionReport } from '../model/missionReport';
 import { TransportJob } from '../model/transportJob';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -163,6 +164,43 @@ export class JournalApiService {
         ];
 
         return this.httpClient.request<Array<FleetMovement>>('get',`${this.basePath}/api/private/journal/finishedMovement`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the today&#x27;s mission results.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getMissionResults(observe?: 'body', reportProgress?: boolean): Observable<MissionReport>;
+    public getMissionResults(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MissionReport>>;
+    public getMissionResults(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MissionReport>>;
+    public getMissionResults(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<MissionReport>('get',`${this.basePath}/api/private/journal/missions`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -230,6 +230,17 @@
         "warships": "Activated warships"
       }
     },
+    "missions": {
+      "title": "After action report"
+    },
+    "title": {
+      "content-area": {
+        "fleet": "Fleet report",
+        "infrastructure": "Infrastructure report",
+        "jobs": "Job Report",
+        "transportation-trade": "Trade report"
+      }
+    },
     "trade": {
       "arrival": "Delivery arrived",
       "expected-arrival": "Arrival at tick",
@@ -251,18 +262,43 @@
     }
   },
   "mission": {
+    "PIRATE_RAID": {
+      "detection-phrase": "is in trouble, Sir.",
+      "phase": {
+        "APPROACH": "They are approaching the planet.",
+        "BATTLE": "There was a combat.",
+        "LEAVE_ORBIT": "They left the orbit.",
+        "NO_BATTLE": "They were able to enter orbit without a fight.",
+        "RAID": "They took everything valuable with them.",
+        "SPAWN": "The sensor array recently caught a transition.",
+        "WAIT": "It seams, they are watching.",
+        "WITHDRAW": "We lost contact.",
+        "multi": {
+          "BATTLE-RAID": "It came to a fight and we were defeated. The looting was devastating.",
+          "BATTLE-RAID-LEAVE_ORBIT": "It came to a fight and we were defeated. The looting was devastating, they left afterwards.",
+          "NO_BATTLE-RAID": "Nobody stood in the way of the attackers. They plundered everything.",
+          "NO_BATTLE-RAID-LEAVE_ORBIT": "Nobody stood in the way of the attackers. They plundered everything and left without a shot.",
+          "SPAWN-APPROACH": "A transition has been caught, the ships are approaching the planet.",
+          "SPAWN-WAIT": "A transition has been caught, but they do nothing.",
+          "SPAWN-WITHDRAW": "A transition was caught, but after that we lost contact."
+        },
+        "we-lost": "Our forces have been destroyed.",
+        "we-won": "Our forces destroyed the attackers."
+      },
+      "title": "It looks like a raid from the"
+    },
     "card": {
       "details": "Details",
       "title": "Mission"
     },
     "create": {
       "select": {
-        "planet": "Wähle das Aktionszentrum",
-        "ships": "Wähle die Schiffe",
-        "type": "Missionstyp wählen"
+        "planet": "Chose a venue",
+        "ships": "Chose the ships",
+        "type": "Chose mission type"
       },
-      "submit": "Starte die Mission",
-      "toggle": "Missionsplanung"
+      "submit": "Start the mission",
+      "toggle": "Plan a mission"
     },
     "legend": {
       "colonized-systems": "Own system",
@@ -273,7 +309,12 @@
       "no-mission": "No ongoing mission",
       "select-a-system": "Chose a system",
       "title": "Legend"
-    }
+    },
+    "report": {
+      "nothing": "No incidents, sir."
+    },
+    "we-lost": "We lost all.",
+    "we-won": "We won."
   },
   "path": {
     "button": {

@@ -1,0 +1,20 @@
+<mat-list>
+    <div mat-subheader *ngIf="missionResults?.actionItemGroups?.length == 0">{{ 'mission.report.nothing' | translate }}</div>
+</mat-list>
+<mat-list>
+    <mat-list-item *ngFor="let actionGroup of missionResults?.actionItemGroups">
+        <mat-icon matListItemIcon>military_tech</mat-icon>
+        <span matListItemTitle><b>{{ actionGroup.venue.name }}</b> {{ 'mission.' + actionGroup.missionType + '.detection-phrase' | translate }}</span>
+        <span matListItemLine>{{ 'mission.' + actionGroup.missionType + '.title' | translate }} {{ actionGroup.actionItems[0].opponent.name }}</span>
+
+        <div *ngIf="!validPhases.includes(getTranslationKey(actionGroup))">
+            <span matListItemLine *ngFor="let item of actionGroup.actionItems">
+                {{ 'mission.' + actionGroup.missionType + '.phase.' + item.eMissionAction | translate }}
+                <span *ngIf="!!item.idBattleReport && item.userDefeated">{{ 'mission.we-lost' | translate }}</span>
+                <span *ngIf="!!item.idBattleReport && !item.userDefeated">{{ 'mission.we-won' | translate }}</span>
+            </span>
+        </div>
+
+        <span matListItemLine *ngIf="validPhases.includes(getTranslationKey(actionGroup))">{{ t(actionGroup) | async }}</span>
+    </mat-list-item>
+</mat-list>

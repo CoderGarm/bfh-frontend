@@ -1,34 +1,73 @@
 <div class="holder content-area">
-    <app-outlined titleValue="{{ 'tab.journal.jobs' | translate }}">
-        <app-job-list-display
-                [title_key]="'active'"
-                [jobs]="runningJobs"
-                [allowCancel]="true"></app-job-list-display>
+    <mat-stepper animationDuration="500ms" class="streamline-background">
+        <mat-step>
+            <ng-template matStepLabel>
+                <div>{{ 'journal.title.content-area.fleet' | translate }}</div>
+            </ng-template>
+            <ng-template matStepContent>
 
-        <app-job-list-display
-                noHeader
-                [title_key]="'finished'"
-                [jobs]="jobs"></app-job-list-display>
-    </app-outlined>
+                <app-outlined titleValue="{{ 'tab.journal.movements' | translate }}">
+                    <app-fleet-movement-journal></app-fleet-movement-journal>
+                    <app-finished-movements-list [finishedMovements]="movements"></app-finished-movements-list>
+                </app-outlined>
 
-    <app-outlined titleValue="{{ 'tab.journal.movements' | translate }}">
-        <app-fleet-movement-journal></app-fleet-movement-journal>
-        <app-finished-movements-list [finishedMovements]="movements"></app-finished-movements-list>
-    </app-outlined>
+                <app-outlined titleValue="{{ 'journal.missions.title' | translate }}">
+                    <app-mission-journal [missionResults]="missionResults"></app-mission-journal>
+                </app-outlined>
+            </ng-template>
+        </mat-step>
 
-    <app-outlined titleValue="{{ 'path.menu.transportation' | translate }}">
-        <app-transportation-list-display [transportJobs]="transportJobs"></app-transportation-list-display>
-    </app-outlined>
+        <mat-step>
+            <ng-template matStepLabel>
+                <div>{{ 'journal.title.content-area.jobs' | translate }}</div>
+            </ng-template>
+            <ng-template matStepContent>
 
-    <app-outlined titleValue="{{ 'journal.trade.title' | translate }}">
-        <app-trade-deliveries [trades]="trades"></app-trade-deliveries>
-    </app-outlined>
+                <app-outlined titleValue="{{ 'tab.journal.jobs' | translate }}">
+                    <app-job-list-display
+                            [title_key]="'active'"
+                            [jobs]="runningJobs"
+                            [allowCancel]="true"></app-job-list-display>
 
-    <app-outlined titleValue="{{ 'path.menu.colonization' | translate }}">
-        <app-finished-colonizations-list [finishedColonizations]="colonizations"></app-finished-colonizations-list>
-    </app-outlined>
+                    <app-job-list-display
+                            noHeader
+                            [title_key]="'finished'"
+                            [jobs]="jobs"></app-job-list-display>
+                </app-outlined>
+            </ng-template>
+        </mat-step>
 
-    <app-outlined titleValue="{{ 'journal.commissioned-operationals.finished.title' | translate }}">
-        <app-commissioned-operationals [commissionedOperationals]="operationals"></app-commissioned-operationals>
-    </app-outlined>
+        <mat-step>
+            <ng-template matStepLabel>
+                <div>{{ 'journal.title.content-area.transportation-trade' | translate }}</div>
+            </ng-template>
+            <ng-template matStepContent>
+
+                <app-outlined titleValue="{{ 'path.menu.transportation' | translate }}">
+                    <app-transportation-list-display [transportJobs]="transportJobs"></app-transportation-list-display>
+                </app-outlined>
+
+                <app-outlined titleValue="{{ 'journal.trade.title' | translate }}">
+                    <app-trade-deliveries [trades]="trades" class="streamline-background"></app-trade-deliveries>
+                </app-outlined>
+            </ng-template>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>
+                <div>{{ 'journal.title.content-area.infrastructure' | translate }}</div>
+            </ng-template>
+            <ng-template matStepContent>
+
+                <app-outlined titleValue="{{ 'path.menu.colonization' | translate }}">
+                    <app-finished-colonizations-list [finishedColonizations]="colonizations"></app-finished-colonizations-list>
+                </app-outlined>
+
+                <app-outlined titleValue="{{ 'journal.commissioned-operationals.finished.title' | translate }}">
+                    <app-commissioned-operationals [commissionedOperationals]="operationals"></app-commissioned-operationals>
+                </app-outlined>
+            </ng-template>
+        </mat-step>
+    </mat-stepper>
+
 </div>

@@ -8,6 +8,8 @@ import {CombatArenaComponent} from './components/payload/combat-arena/combat-are
 import {FleetMovementJournalComponent} from './components/payload/fleet-movement-journal/fleet-movement-journal.component';
 import {FleetRoundStateComponent} from './components/payload/fleet-round-state/fleet-round-state.component';
 import {JournalDashboardComponent} from './components/payload/dashboard-journal/journal-dashboard.component';
+import {NgOptimizedImage} from "@angular/common";
+import {MissionJournalComponent} from './components/payload/mission-journal/mission-journal.component';
 
 
 @NgModule({
@@ -18,11 +20,13 @@ import {JournalDashboardComponent} from './components/payload/dashboard-journal/
         CombatArenaComponent,
         FleetMovementJournalComponent,
         FleetRoundStateComponent,
-        JournalDashboardComponent
+        JournalDashboardComponent,
+        MissionJournalComponent
     ],
     imports: [
         SharedModuleModule,
         DisplayElementsModule,
+        NgOptimizedImage,
     ]
 })
 export class JournalModule {

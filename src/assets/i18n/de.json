@@ -230,6 +230,17 @@
         "warships": "aktivierte Kriegsschiffe"
       }
     },
+    "missions": {
+      "title": "Missionsnachbesprechung"
+    },
+    "title": {
+      "content-area": {
+        "fleet": "Flottenbericht",
+        "infrastructure": "Infrastrukturbericht",
+        "jobs": "Auftragsbericht",
+        "transportation-trade": "Handelsbericht"
+      }
+    },
     "trade": {
       "arrival": "Lieferung angenommen",
       "expected-arrival": "Ankunft zu Tick",
@@ -251,18 +262,43 @@
     }
   },
   "mission": {
+    "PIRATE_RAID": {
+      "detection-phrase": "ist in Schwierigkeiten, Sir.",
+      "phase": {
+        "APPROACH": "Sie nähern sich dem Planeten.",
+        "BATTLE": "Es kam zum Kampf.",
+        "LEAVE_ORBIT": "Sie haben den Orbit verlassen.",
+        "NO_BATTLE": "Sie konnten kampflos in die Umlaufbahn gelangen.",
+        "RAID": "Sie haben alles wertvolle mitgenommen.",
+        "SPAWN": "Das Sensornetz hat vor kurzem eine Transition aufgefangen.",
+        "WAIT": "Es scheint als würden sie beobachten.",
+        "WITHDRAW": "Wir haben den Kontakt verloren.",
+        "multi": {
+          "BATTLE-RAID": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend.",
+          "BATTLE-RAID-LEAVE_ORBIT": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend, bevor sie flohen.",
+          "NO_BATTLE-RAID": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles.",
+          "NO_BATTLE-RAID-LEAVE_ORBIT": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles und flohen.",
+          "SPAWN-APPROACH": "Eine Transition wurde aufgefangen, die Schiffe nähern sich dem Planeten.",
+          "SPAWN-WAIT": "Eine Transition wurde aufgefangen, aber sie scheinen auf irgendwas zu warten.",
+          "SPAWN-WITHDRAW": "Eine Transition wurde aufgefangen, danach haben wir allerdings den Kontakt verloren."
+        },
+        "we-lost": "Unsere Streitkräfte wurden vernichtet.",
+        "we-won": "Unsere Streitkräfte haben die Angreifer vernichtet."
+      },
+      "title": "Es sieht aus wie ein Überfall von"
+    },
     "card": {
       "details": "Details",
       "title": "Mission"
     },
     "create": {
       "select": {
-        "planet": "Chose a venue",
-        "ships": "Chose the ships",
-        "type": "Chose mission type"
+        "planet": "Wähle das Aktionszentrum",
+        "ships": "Wähle die Schiffe",
+        "type": "Mission wählen"
       },
-      "submit": "Start the mission",
-      "toggle": "Plan a mission"
+      "submit": "Starte die Mission",
+      "toggle": "Missionsplanung"
     },
     "legend": {
       "colonized-systems": "Eigenes System",
@@ -273,7 +309,12 @@
       "no-mission": "Keine laufenden Missionen",
       "select-a-system": "Wähle ein System",
       "title": "Legende"
-    }
+    },
+    "report": {
+      "nothing": "Keine Vorkommnisse, Sir."
+    },
+    "we-lost": "Wir verloren alles.",
+    "we-won": "Wir gewannen."
   },
   "path": {
     "button": {

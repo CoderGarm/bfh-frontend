@@ -23,9 +23,4 @@ export class FleetMovementJournalComponent extends SubscriptionManager implement
         let sub = this.fleetService.getMovingFleetsForUser().subscribe(resp => this.movingFleets = resp);
         this.subscriptions.push(sub);
     }
-
-    getLink(): string {
-        //todo amend fleet size icon
-        return "assets/icons/fleets/png64x/small_fleet_c.png";
-    }
 }
