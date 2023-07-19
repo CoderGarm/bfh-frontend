@@ -1,5 +1,5 @@
 import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ViewChild} from '@angular/core';
-import {EEducationType, EResourceType, Orbit, Planet, PlanetApiService, ResourceDeposit, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
+import {Colonization, EEducationType, EResourceType, Orbit, Planet, PlanetApiService, ResourceDeposit, StarSystem, StarSystemColonization} from "../../../../../services/swagger";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
@@ -65,18 +65,34 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         }
     }
 
-    private fetchData() {
+    private fetchData(colo?: Colonization) {
         this.spinnerService.activateSpinner('expansion.organize.spinner-message.wait');
         this.fetchBaseData();
         let sub = this.backgroundService.getColonizationStarSystemsForUser()
             .subscribe(resp => {
                 this.starSystems = resp;
+                this.updateWithFreshColonization(colo);
                 this.dataSource.data = this.starSystems;
                 this.sortColonizations();
                 this.spinnerService.deactivateSpinner();
             });
         this.subscriptions.push(sub);
         this.fetchMainPlanetsDeposit();
+    }
+
+    private updateWithFreshColonization(colo: Colonization | undefined) {
+        if (!!colo) {
+            const idStarSystem: number | undefined = colo?.target.idStarSystem;
+            const idPlanet = colo?.target.idPlanet;
+            this.starSystems.forEach(sys => {
+                if (!!idPlanet && sys.starSystem.idStarSystem === idStarSystem) {
+                    const colonizationsByPlanetElement = sys.colonizationsByPlanet[idPlanet];
+                    if (!colonizationsByPlanetElement) {
+                        sys.colonizationsByPlanet[idPlanet] = colo;
+                    }
+                }
+            });
+        }
     }
 
     private fetchMainPlanetsDeposit() {
@@ -183,7 +199,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         this.spinnerService.activateSpinner('expansion.organize.spinner-message.wait');
         let sub = this.colonizationApi.startColonizingPlanet(planet).subscribe(resp => {
             this.spinnerService.deactivateSpinner();
-            this.fetchData();
+            this.fetchData(resp);
         });
         this.subscriptions.push(sub);
     }
