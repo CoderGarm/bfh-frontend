@@ -20,8 +20,12 @@ import {SubscriptionManager} from "../../../../../subscription.manager";
 })
 export class JournalDashboardComponent extends SubscriptionManager implements OnInit {
 
-    jobs: Job[] = [];
+    finishedJobs: Job[] = [];
+    finishedResearch?: Job;
+
     runningJobs: Job[] = [];
+    runningResearch?: Job;
+
     transportJobs: TransportJob[] = [];
     movements: FleetMovement[] = [];
     colonizations: FinishedColonization[] = [];
@@ -36,10 +40,18 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     }
 
     ngOnInit(): void {
-        let sub = this.jobService.getJobsForEmpire().subscribe(resp => this.runningJobs = resp);
+        let sub = this.jobService.getJobsForEmpire().subscribe(resp => {
+            this.runningJobs = resp;
+            const jobs = resp.filter(j => j.isResearchJob);
+            this.runningResearch = jobs.length == 1 ? jobs[0] : undefined;
+        });
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getFinishedJobs().subscribe(resp => this.jobs = resp);
+        sub = this.journalService.getFinishedJobs().subscribe(resp => {
+            this.finishedJobs = resp;
+            const jobs = resp.filter(j => j.isResearchJob);
+            this.finishedResearch = jobs.length == 1 ? jobs[0] : undefined;
+        });
         this.subscriptions.push(sub);
 
         sub = this.journalService.getTransportJobs().subscribe(resp => this.transportJobs = resp);

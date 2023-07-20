@@ -6,6 +6,7 @@
 @import "src/app/modules/display-elements/red-box/red-box.component.scss";
 @import "src/styles/combat-arena";
 @import "src/styles/scrollbar";
+@import "src/styles/mat-button-customize";
 
 /** placed here because of css encapsulation in angular **/
 
@@ -319,26 +320,6 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
   justify-content: start;
 }
 
-
-.mdc-button.mat-success,
-.mat-mdc-stroked-button.mat-success {
-  color: $success;
-}
-
-.mat-mdc-unelevated-button.mat-success:hover,
-.mat-mdc-raised-button.mat-success:hover {
-  color: #f0fff3;
-  background-color: $success;
-}
-
-.mat-mdc-unelevated-button:not(:disabled, :hover).mat-success,
-.mat-mdc-raised-button.mat-success,
-.mat-mdc-fab.mat-success,
-.mat-mdc-mini-fab.mat-success {
-  color: #f0fff3;
-  background-color: $success;
-}
-
-.mat-mdc-icon-button.mat-success {
-  color: $success;
+mat-step-header {
+  border-radius: 80px;
 }

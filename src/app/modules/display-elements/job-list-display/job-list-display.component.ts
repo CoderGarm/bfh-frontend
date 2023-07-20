@@ -40,7 +40,19 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
     get noHeader() { return this._noHeader; }
     set noHeader(value: any) { this._noHeader = this.coerceBooleanProperty(value); }
     _noHeader: boolean = false;
+
+    @Input()
+    get displayNoResearch() { return this._displayNoResearch; }
+    set displayNoResearch(value: any) { this._displayNoResearch = this.coerceBooleanProperty(value); }
+    _displayNoResearch: boolean = false;
+
+    @Input()
+    get displayResearchOnlyWhenPresent() { return this._displayResearchOnlyWhenPresent; }
+    set displayResearchOnlyWhenPresent(value: any) { this._displayResearchOnlyWhenPresent = this.coerceBooleanProperty(value); }
+     _displayResearchOnlyWhenPresent: boolean = false;
     // @formatter:on
+
+    displayResearch: boolean = true;
 
     private coerceBooleanProperty(value: any): boolean {
         return value != null && `${value}` !== 'false';
@@ -83,6 +95,10 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
             this.prepareData();
         }
         this.isFinishedJobsDisplay = this.title_key === 'finished';
+
+        if (changes['displayNoResearch']) {
+            this.displayResearch = !this._displayNoResearch;
+        }
     }
 
     private prepareData() {
@@ -91,7 +107,9 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
     }
 
     private organizeJobsPerPlanet() {
+        let researchPresent: boolean = false;
         this.jobsPerIdPlanet.forEach((jobs, idPlanet) => {
+            researchPresent = jobs.filter(job => job.isResearchJob).length > 0 ? true : researchPresent;
             let facilityPlanet = jobs[0].facilityPlanet;
             const jobsPerPlanet: PlanetaryJobs = {
                 idPlanet: idPlanet,
@@ -102,6 +120,7 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
             }
             this.planetaryJobs.push(jobsPerPlanet);
         });
+        this.displayResearch = this._displayResearchOnlyWhenPresent && researchPresent;
     }
 
     private sortJobsByPlanet() {

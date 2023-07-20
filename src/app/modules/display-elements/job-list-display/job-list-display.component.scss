@@ -16,10 +16,24 @@
   overflow-wrap: anywhere;
 }
 
+.job-item {
+  position: relative;
+}
+
+.mat-line {
+  margin-left: 25px;
+}
+
 .cancel-btn {
   color: $warning-color;
+  position: absolute;
+  left: 50px;
+  top: 10px;
 }
 
 .finished-btn {
   color: $success;
+  position: absolute;
+  left: 50px;
+  top: 10px;
 }

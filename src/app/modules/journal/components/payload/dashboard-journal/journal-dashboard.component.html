@@ -24,15 +24,47 @@
             <ng-template matStepContent>
 
                 <app-outlined titleValue="{{ 'tab.journal.jobs' | translate }}">
-                    <app-job-list-display
-                            [title_key]="'active'"
-                            [jobs]="runningJobs"
-                            [allowCancel]="true"></app-job-list-display>
+
+                    <mat-list *ngIf="!!runningResearch || !!finishedResearch">
+                        <mat-grid-list cols="3" rowHeight="120px" class="job-list">
+                            <mat-grid-tile></mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-list-item style="height: 100%;" *ngIf="!!runningResearch">
+                                    <img matListItemAvatar
+                                         src="assets/{{runningResearch.facility.building.productionTarget.folder}}/png64x/{{runningResearch.facility.building.productionTarget.iconName}}_c.png"
+                                         alt="job type icon">
+                                    <div mat-line>{{runningResearch.researchTarget!.name}}</div>
+                                    <div mat-line>{{ 'jobs.level' | translate }}: {{runningResearch.targetLevel}}</div>
+                                    <div mat-line *ngIf="runningResearch.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{runningResearch.ticksLeft}}</div>
+                                </mat-list-item>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile> <!-- fixme sieht kacke aus-->
+                                <mat-list-item style="height: 100%;" *ngIf="!!finishedResearch">
+                                    <img matListItemAvatar
+                                         src="assets/{{finishedResearch.facility.building.productionTarget.folder}}/png64x/{{finishedResearch.facility.building.productionTarget.iconName}}_c.png"
+                                         alt="job type icon">
+                                    <button mat-icon-button class="finished-btn"
+                                            matTooltip="{{ 'jobs.finished-icon' | translate }}">
+                                        <mat-icon>check_circle_outline</mat-icon>
+                                    </button>
+                                    <div mat-line>{{finishedResearch.researchTarget!.name}}</div>
+                                    <div mat-line>{{ 'jobs.level' | translate }}: {{finishedResearch.targetLevel}}</div>
+                                    <div mat-line *ngIf="finishedResearch.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{finishedResearch.ticksLeft}}</div>
+                                </mat-list-item>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-list>
 
                     <app-job-list-display
-                            noHeader
+                            displayNoResearch
+                            [title_key]="'active'"
+                            [jobs]="runningJobs"></app-job-list-display>
+
+                    <app-job-list-display
+                            displayNoResearch
                             [title_key]="'finished'"
-                            [jobs]="jobs"></app-job-list-display>
+                            [jobs]="finishedJobs"></app-job-list-display>
                 </app-outlined>
             </ng-template>
         </mat-step>
