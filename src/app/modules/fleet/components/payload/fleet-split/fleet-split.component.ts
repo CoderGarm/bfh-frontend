@@ -33,6 +33,8 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
 
     runningInteger: number = -2;
 
+    changeHappened: boolean = false;
+
     private static readonly POOL_FLEET_NAME: string = 'POOL';
     private static readonly POOL_FLEET_ID: number = -Number.MAX_VALUE;
 
@@ -88,7 +90,10 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
         return this.pooledShips.filter(p => p.idWarship === w.idWarship).length > 0;
     }
 
-    drop(event: CdkDragDrop<WarShip[]>) {
+    drop(event: CdkDragDrop<WarShip[]>, isLocked: boolean) {
+        if (isLocked) {
+            return;
+        }
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
@@ -99,6 +104,7 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
                 event.currentIndex,
             );
         }
+        this.changeHappened = true;
     }
 
     addFleetContainer() {
@@ -160,11 +166,15 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
         }
     }
 
-    allLocked() {
+    allValid() {
+        if (!this.changeHappened) {
+            return false;
+        }
         const detachmentsWithShips = this.fleets.filter(f => f.ships.length > 0).length;
         const length = this.shipsForPool.length;
         const checksumFuturePool = this.shipsForPool.reduce((sum, current) => sum + current, 0);
         const checksumPool = this.pooledShips.map(w => w.idWarship).reduce((sum, current) => sum + current, 0);
-        return (detachmentsWithShips > 1 || checksumPool != checksumFuturePool || length > 0) && this.locked.length == detachmentsWithShips;
+        const noNamePresent = this.fleets.filter(f => this.locked.includes(f.idFleet)).filter(f => f.name.trim().length == 0).length > 0;
+        return !noNamePresent && (detachmentsWithShips > 1 || checksumPool != checksumFuturePool || length > 0) && this.locked.length == detachmentsWithShips;
     }
 }

@@ -131,7 +131,7 @@
       },
       "detachment": {
         "add": "Detachment erzeugen",
-        "hint": "Schiffe zuweisen",
+        "hint": "Schiffe und Flottennamen zuweisen",
         "placeholder": "Flottennamen eingeben",
         "pool": {
           "name": "Reserveflotte",

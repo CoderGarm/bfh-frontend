@@ -131,7 +131,7 @@
       },
       "detachment": {
         "add": "Add detachment",
-        "hint": "Add ships",
+        "hint": "Add ships and fleet name",
         "placeholder": "Type fleet name",
         "pool": {
           "name": "Reserve fleet",
