@@ -276,7 +276,8 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         if ((capacity != 0 && !capacity) || (current != 0 && !current)) {
             throw new Error("There should be a capacity or a current if requested.");
         }
-        return Math.round((capacity - current) / incoming);
+        const result = Math.round((capacity - current) / incoming);
+        return result >= 0 ? result : 0;
     }
 
     getCapacityWarningClass(resource: ResourceAmount) {
