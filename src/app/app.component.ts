@@ -22,6 +22,7 @@ import {SnackbarNotificationService} from "./services/snackbar-notification.serv
 import {DatePipe} from "@angular/common";
 import {SpinnerService} from "./services/spinner.service";
 import {NgxSpinnerService} from "ngx-spinner";
+import {TakeATourComponent} from "./components/take-a-tour/take-a-tour.component";
 
 @Component({
     selector: 'app-root',
@@ -180,6 +181,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             && !this.router.url.endsWith(HomeComponent.path)
             && !this.router.url.endsWith(RegisterComponent.path)
             && !this.router.url.includes(ForgottenPasswordComponent.path)
-            && !this.router.url.endsWith(WikiMainComponent.path);
+            && !this.router.url.endsWith(WikiMainComponent.path)
+            && !this.router.url.endsWith(TakeATourComponent.path)
+            ;
     }
 }

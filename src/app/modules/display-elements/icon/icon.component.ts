@@ -17,6 +17,9 @@ export class IconComponent implements OnChanges {
     @Input()
     toolTip: string = '';
 
+    @Input()
+    color: 'b' | 'w' | 'c' = 'c';
+
     // @formatter:off
     @Input()
     get png64px() { return this._png64px; }
@@ -32,9 +35,15 @@ export class IconComponent implements OnChanges {
     get png24px() { return this._png24px; }
     set png24px(value: any) { this._png24px = this.coerceBooleanProperty(value); }
     _png24px: boolean = false;
+
+    @Input()
+    get circleBorder() { return this._circleBorder; }
+    set circleBorder(value: any) { this._circleBorder = this.coerceBooleanProperty(value); }
+    _circleBorder: boolean = false;
     // @formatter:on
 
     sizeComplement: string = 'png16x';
+    backgroundColor: string = 'transparent';
 
     ngOnChanges(changes: SimpleChanges) {
         if (this.png64px) {
@@ -45,6 +54,18 @@ export class IconComponent implements OnChanges {
         }
         if (this.png24px) {
             this.sizeComplement = 'png24x';
+        }
+
+        switch (this.color) {
+            case "b":
+                this.backgroundColor = '#375a7f'//'whitesmoke';
+                break;
+            case "w":
+                this.backgroundColor = 'black';
+                break;
+            case "c":
+            default:
+                break;
         }
     }
 

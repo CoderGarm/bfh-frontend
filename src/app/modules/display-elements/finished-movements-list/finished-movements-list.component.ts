@@ -62,6 +62,7 @@ export class FinishedMovementsListComponent implements AfterViewInit, OnChanges 
                 arr.push(items);
             });
             this.dataSource.data = arr;
+            this.dataSource.data.forEach(node => this.treeControl.expandDescendants(node));
         }
     }
 

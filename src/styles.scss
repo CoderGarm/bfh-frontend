@@ -159,6 +159,11 @@ body {
   justify-content: space-around;
 }
 
+.flex-items-from-start-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
 .flex-end-items-container {
   display: flex;
   flex-flow: row nowrap;

@@ -15,6 +15,9 @@ import {MissionMapComponent} from "./payload/mission-map/mission-map.component";
         MissionAdministrationComponent,
         MissionOverviewComponent,
     ],
+    exports: [
+        StratOpsTabViewComponent
+    ],
     imports: [
         SharedModuleModule,
         DisplayElementsModule,

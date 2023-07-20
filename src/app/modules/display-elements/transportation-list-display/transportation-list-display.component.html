@@ -10,36 +10,43 @@
                         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                     </mat-icon>
                 </button>
-                <div mat-subheader>From: {{node.parent.from}} to: {{node.parent.to}}</div>
+                <div mat-subheader>To {{node.parent.to}}</div>
             </div>
-            <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="clearfix">
-                <div class="left-side" *ngIf="node.parent.resources.length > 0">
-                    <div mat-subheader>
-                        <mat-icon matListItemIcon class="mar-ri" [inline]="true">local_shipping</mat-icon>
-                        {{ 'jobs.transports.resources.title' | translate }}
-                    </div>
-                    <ul>
-                        <li *ngFor="let resource of node.parent.resources">
-                            <div mat-line>
-                                <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
-                                {{resource.amount}}
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="right-side" *ngIf="node.parent.humanResources.length > 0">
-                    <div mat-subheader>
-                        <mat-icon matListItemIcon class="mar-ri" [inline]="true">local_airport</mat-icon>
-                        {{ 'jobs.transports.human-resources.title' | translate }}
-                    </div>
-                    <ul>
-                        <li *ngFor="let resource of node.parent.humanResources">
-                            <div mat-line>
-                                <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
-                                {{resource.amount}}
-                            </div>
-                        </li>
-                    </ul>
+            <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="flex-items-from-start-container">
+                <div *ngFor="let what of node.parent.transportJobs" class="flex-items-container">
+
+
+                    <app-outlined titleValue="{{ what.resourceType.typeName }}">
+                        <div class="flex-items-from-start-container header-item">
+                            <app-icon [icon]="what.resourceType" [altText]="what.resourceType.typeName"
+                                      circleBorder color="b"
+                                      png24px [toolTip]="what.resourceType.typeName"></app-icon>
+                            <app-number-short [input]="what.total"></app-number-short>
+                        </div>
+                        <ul>
+                            <li *ngFor="let from of what.from | keyvalue" style="font-size: small">
+                                {{ $any(from.value) | numberShort }} from {{ from.key }}
+                            </li>
+                        </ul>
+                    </app-outlined>
+
+
+                    <!-- <mat-card>
+                         <mat-card-header>
+                             <app-icon mat-card-avatar [icon]="what.resourceType" [altText]="what.resourceType.typeName"
+                                       png24px [toolTip]="what.resourceType.typeName"></app-icon>
+                             <mat-card-title>
+                                 <app-number-short [input]="what.total"></app-number-short>
+                             </mat-card-title>
+                         </mat-card-header>
+                         <mat-card-content>
+                             <ul>
+                                 <li *ngFor="let from of what.from | keyvalue" style="font-size: small">
+                                     {{ $any(from.value) | numberShort }} from {{ from.key }}
+                                 </li>
+                             </ul>
+                         </mat-card-content>
+                     </mat-card>-->
                 </div>
             </div>
         </mat-nested-tree-node>

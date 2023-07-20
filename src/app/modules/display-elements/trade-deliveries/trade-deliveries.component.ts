@@ -43,6 +43,7 @@ export class TradeDeliveriesComponent implements AfterViewInit, OnChanges {
                 })
             })
             this.dataSource.data = arr;
+            this.dataSource.data.forEach(node => this.treeControl.expandDescendants(node));
             // ask as late as possible for the prefetched resource types to avoid implementing it by a subject
             this.credits = this.typeService.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
         }

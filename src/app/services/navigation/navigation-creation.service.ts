@@ -24,6 +24,7 @@ import {FittingCreateComponent} from "../../modules/ship-class-construction/comp
 import {ForgottenPasswordComponent} from "../../components/user/forgotten-password/forgotten-password.component";
 import {PlayerPointsListComponent} from "../../modules/user-points/player-points-list/player-points-list.component";
 import {StratOpsTabViewComponent} from "../../modules/strategic-operations/orga/strat-ops-tab-view/strat-ops-tab-view.component";
+import {TakeATourComponent} from "../../components/take-a-tour/take-a-tour.component";
 
 
 export class NavigationCreationService {
@@ -88,6 +89,7 @@ export class NavigationCreationService {
     static createBurgerMenuRoutes(): Routes {
         return [
             {path: WikiMainComponent.path, component: WikiMainComponent},
+            {path: TakeATourComponent.path, component: TakeATourComponent},
         ];
     }
 

@@ -1,14 +1,29 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {HumanResourceAmount, ResourceAmount, TransportJob} from "../../../services/swagger";
+import {EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, TransportJob} from "../../../services/swagger";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {MatTreeNestedDataSource} from "@angular/material/tree";
+import {TypeService} from "../../../services/type.service";
 
 
 interface TreeNode {
-    parent: TransportJob;
+    parent: Transports;
     children: TreeNode[];
 }
 
+interface Transports {
+    to: string;
+    transportJobs: What[];
+}
+
+interface Where {
+    [key: string]: number;
+}
+
+interface What {
+    resourceType: EResourceType | EEducationType;
+    total: number;
+    from: Where;
+}
 
 @Component({
     selector: 'app-transportation-list-display',
@@ -23,28 +38,60 @@ export class TransportationListDisplayComponent implements AfterViewInit, OnChan
     @Input()
     transportJobs: TransportJob[] = [];
 
-    constructor() {
+    constructor(private typeService: TypeService) {
+        this.typeService.educationTypes;
+        this.typeService.eResourceTypes;
     }
 
     ngAfterViewInit(): void {
     }
 
-    getLink(cap: ResourceAmount | HumanResourceAmount): string {
-        let folder = cap.resourceType.folder;
-        let iconName = cap.resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
-    }
-
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['transportJobs']) {
             const arr: TreeNode[] = [];
-            this.transportJobs.forEach(job => {
+
+            const jobsByDestination: Map<string, TransportJob[]> = new Map<string, TransportJob[]>();
+            this.transportJobs.forEach(t => {
+                let transports = jobsByDestination.get(t.to);
+                if (!transports) {
+                    transports = [];
+                }
+                transports.push(t);
+                jobsByDestination.set(t.to, transports);
+            });
+
+            jobsByDestination.forEach((jobs, to) => {
+                const jobsByPayload: Map<string, What> = new Map<string, What>();
+                jobs.forEach(transportJob => {
+                    const from = transportJob.from;
+                    const resources: (ResourceAmount | HumanResourceAmount)[] = transportJob.resources;
+                    resources.push(...transportJob.humanResources);
+                    resources.forEach(r => {
+                        let what = jobsByPayload.get(r.resourceType.typeName);
+                        if (!what) {
+                            what = {
+                                from: {},
+                                resourceType: r.resourceType,
+                                total: 0
+                            }
+                        }
+                        what.from[from] = r.amount;
+                        what.total += r.amount;
+                        jobsByPayload.set(r.resourceType.typeName, what);
+                    });
+                });
+                let transports: Transports = {
+                    to: to,
+                    transportJobs: Array.from(jobsByPayload.values())
+                }
                 arr.push({
-                    parent: job,
+                    parent: transports,
                     children: []
                 })
-            })
+            });
+            console.log(arr)
             this.dataSource.data = arr;
+            this.dataSource.data.forEach(node => this.treeControl.expandDescendants(node));
         }
     }
 }
