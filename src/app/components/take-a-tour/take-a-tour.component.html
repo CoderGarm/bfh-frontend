@@ -1,27 +1,83 @@
+<ngx-spinner type="none" name="fullscreen-image"
+             (click)="imgSrc = ''; imgAlt = ''; spinner.hide('fullscreen-image')">
+    <img src="{{ imgSrc }}" alt="{{ imgAlt }}" class='fullscreen-image'>
+</ngx-spinner>
 <div id="keen-box">
-    <div class="keen-slider" #sliderRef>
-        <div class="keen-slider__slide number-slide1">
 
+    <div id="journal-box">
+        <div class="navigation-wrapper">
+            <div class="keen-slider" #sliderRef>
+                <div class="keen-slider__slide">
+                    <div class="outer-box">
+                        <div class="header-box">Journal</div>
+                        <div class="right has-border caption-box">
+                            <img width="794" height="432"
+                                 ngSrc="assets/tour/journal/incoming-pirate-raid-mission.png"
+                                 alt="journal mission dashboard"
+                                 class="thumbnail-img"
+                                 (click)="imgSrc = 'assets/tour/journal/incoming-pirate-raid-mission.png'; imgAlt = 'journal mission dashboard'; spinner.show('fullscreen-image')">
+                            <br>
+                            React to pirates in your space and prepare for them.
+                        </div>
+                        <div class="left has-border caption-box">
+                            <img width="794" height="677"
+                                 ngSrc="assets/tour/journal/job-dashboard.png"
+                                 alt="journal job dashboard"
+                                 class="thumbnail-img"
+                                 (click)="imgSrc = 'assets/tour/journal/job-dashboard.png'; imgAlt = 'journal job dashboard'; spinner.show('fullscreen-image')">
+                            <br>
+                            Build everything you need and watch the progress.
+                        </div>
+                        <p>The journal dashboard provides an overview about everything new in it's segment. The dashboards itself are constantly changing in order to compress the
+                            displayed information.</p>
+                        <p>Due the »1 tick a day« policy every action delays it's result to midnight.</p>
+                        <p>This means, first of all, there is no need for a hurry and second that every journal item is current throughout the day.</p>
+                    </div>
+                </div>
+
+                <div class="keen-slider__slide">
+                    <div class="outer-box">
+                        <div class="header-box">Journal</div>
+                        <div class="right has-border caption-box">
+                            <img width="794"
+                                 height="629"
+                                 ngSrc="assets/tour/journal/transportation-dashboard.png"
+                                 alt="journal transport dashboard"
+                                 class="thumbnail-img"
+                                 (click)="imgSrc = 'assets/tour/journal/transportation-dashboard.png'; imgAlt = 'journal transport dashboard'; spinner.show('fullscreen-image')">
+                            <br>
+                            Review all trades and transportations.
+                        </div>
+                        <div class="left has-border caption-box">
+                            <img width="794"
+                                 height="570"
+                                 ngSrc="assets/tour/journal/operationals-dashboard.png"
+                                 alt="journal operationals dashboard"
+                                 class="thumbnail-img"
+                                 (click)="imgSrc = 'assets/tour/journal/operationals-dashboard.png'; imgAlt = 'journal operationals dashboard'; spinner.show('fullscreen-image')">
+                            <br>
+                            Review all new operational buildings and warships.
+                        </div>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                        into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+                        passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </div>
+                </div>
+            </div>
+            <svg [ngClass]=" 'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')" (click)="slider!.prev()" xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24">
+                <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/>
+            </svg>
+            <svg *ngIf="slider" [ngClass]=" 'arrow arrow--right ' + (slider.track.details.slides.length - 1 === currentSlide ? 'arrow--disabled' : '')" (click)="slider!.next()"
+                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/>
+            </svg>
         </div>
-
-        <div class="keen-slider__slide number-slide2">
-
-        </div>
-
-        <div class="keen-slider__slide number-slide3">
-
-        </div>
-
-        <div class="keen-slider__slide number-slide4">
-
-        </div>
-
-        <div class="keen-slider__slide number-slide5">
-
-        </div>
-
-        <div class="keen-slider__slide number-slide6">
-
+        <div class="dots">
+            <button (click)="slider!.moveToIdx(i)"
+                    *ngFor="let slide of dotHelper; let i = index"
+                    [class]="'dot ' + (i === currentSlide ? 'active' : '')"></button>
         </div>
     </div>
 </div>
@@ -29,17 +85,31 @@
 
 <!-- fixme
 
+libreOffice draw: 2,3 mm black border, white background
+
+- Journal Dashboard
+    - slides durch alle elemente mit kurzen sprechblasen "relevante infos für den heutigen tick"
 - Planetenausbau
+    - Dashboard: 1-2 sekunden pro segment mit sprechblasen am standbild, thema (SB1) "gewinne den überblick bei ..." und dann plopp (SB2) "population", (SB3) "jobs", (SB4) "flotten"
+    - constructions: gif mit gebäudebau nach benutzung vom filter, sprechblase (SB1) "baue was du brauchst um sidch zu verbessern" inkl "mauszeiger pointed auf niedrige ressource" mit (SB2) beim gefilterten gebäude, aufklappen und bauen "verbessere deine plannis"
+    - shipyard: gif mit nach superdreadnought filtern und bauen, begleicttext "verstärke die flotte"
+    - marketplace: kurzes gif wie sich die grafiken aufbauen und runter scrollen, (SB1) "versorge dich mit allem was dir fehlt"
 - Forschung
+    - techtree: gif mit zeigen eines popups, begleittext "14 miteinander verschränkte forschungen von Wonungen bis impellerangetriebene Rakete"
 - Sternenkarte
+    - universe map: gif mit spinner, ran zoomen, ins sternensystem, fliegende flotte markieren, begleittext tbd
 - Kolonisierung
-- Handel
+    - organize expansion: gif mit gucken nach unbekanntem system in dem eine Kolo ist, kaufen, planeten besiedeln, switch view expansion, open row, (SB1) "besiedle das universum"
 - Schiffbau
+    - display fitting: gif über vorhandende Klasse scrollen, switch zu modify fitting und irgendwas ändern, begleittext "erzeuge und verändere schiffsklassen nach aktuellem stand der forschung"
 - Flotten
+    - gif mit scroll über info, switch zu detach, begleittext "verwalte deine floten für maximale effizienz"
 - Missionen
+    - gif mit selecteter mission, begleittext "schütze deine handelskonvois usw usw"
 - Kampf
-- Transport
+    - gif für größeres flottengefecht, sprechblasen an zerstörten schiffen, zerstörten raketen und raketensalven
 - Forum / Chat / Wiki / Map Tool
+    - aufeinander folgende standbilder (slides im slide) mit begleittext "natürlich gibt es auch..." und dann speechbubbles mit "chat", "forum" ...
 
 Screens und GIFs
 Sprechblasen und Floating Text

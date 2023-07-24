@@ -1,5 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import KeenSlider, {KeenSliderInstance} from 'keen-slider'
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
     selector: 'app-take-a-tour',
@@ -20,9 +21,26 @@ export class TakeATourComponent {
 
     slider?: KeenSliderInstance;
 
+    currentSlide: number = 0;
+    dotHelper: number[] = [];
+
+    imgSrc: string = '';
+    imgAlt: string = '';
+
+    constructor(protected spinner: NgxSpinnerService) {
+    }
+
     ngAfterViewInit() {
-        this.slider = new KeenSlider(this.sliderRef!.nativeElement!, {
-            loop: true,
+        setTimeout(() => {
+            this.slider = new KeenSlider(this.sliderRef!.nativeElement, {
+                initial: this.currentSlide,
+                slideChanged: (s) => {
+                    this.currentSlide = s.track.details.rel
+                },
+            })
+            this.dotHelper = [
+                ...Array(this.slider.track.details.slides.length).keys(),
+            ]
         })
     }
 

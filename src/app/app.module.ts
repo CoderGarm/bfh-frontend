@@ -32,7 +32,7 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HTTP_INTERCEPTORS, HttpClient} from "@angular/common/http";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
-import {DatePipe} from "@angular/common";
+import {DatePipe, NgOptimizedImage} from "@angular/common";
 import {SpinnerService} from "./services/spinner.service";
 import {TypeService} from "./services/type.service";
 import {NumberShortPipe} from "./services/pipes/number-short.pipe";
@@ -153,6 +153,7 @@ export let AppInjector: Injector;
         NgxSpinnerModule,
         NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'}),
         StrategicOperationsModule,
+        NgOptimizedImage,
     ],
     providers: [
         NgxPermissionsModule,

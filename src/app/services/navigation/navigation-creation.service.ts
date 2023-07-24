@@ -89,8 +89,12 @@ export class NavigationCreationService {
     static createBurgerMenuRoutes(): Routes {
         return [
             {path: WikiMainComponent.path, component: WikiMainComponent},
-            {path: TakeATourComponent.path, component: TakeATourComponent},
+            this.getTakeATourRoute(),
         ];
+    }
+
+    static getTakeATourRoute(): Route {
+        return {path: TakeATourComponent.path, component: TakeATourComponent};
     }
 
     static createAllRoutes(): Routes {

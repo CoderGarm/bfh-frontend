@@ -4,6 +4,13 @@
 </div>
 <app-display-article [latestContent]="latestContent"></app-display-article>
 
+<div class="flex-items-container">
+    <button class="tour-btn" mat-flat-button color="primary" routerLink='/{{route.path}}'>
+        <mat-icon>search</mat-icon>
+        <span>{{ 'burger-menu.' + route.path | translate }}</span>
+    </button>
+</div>
+
 <div class="footer">
     <hr>
     Contact: webmaster [at] battleforhonor.de
