@@ -172,7 +172,7 @@
       }
     },
     "ongoing-movement": {
-      "nothing": "Keine Flottenbewegungen",
+      "nothing": "Keine Marschbefehle",
       "title": "Flottenbewegungen"
     }
   },

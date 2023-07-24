@@ -8,10 +8,14 @@
                                                      [baseFleetCapabilities]="fleet?.baseSpacecraftCapabilities"
                                                      [currentFleetCapabilities]="fleet?.spacecraftCapabilities"></app-spacecraft-capabilities-display>
 
-                <div body class="inner-list mar-to">
-                    <app-military-people [utilization]="utilization"></app-military-people>
+                <div body class="mar-to">
+                    <app-outlined titleValue="{{ 'fleet.display.population.title' | translate }}">
+                        <app-military-people [utilization]="utilization"></app-military-people>
+                    </app-outlined>
 
-                    <app-ammunition-roster [fleet]="fleet"></app-ammunition-roster>
+                    <app-outlined titleValue="{{ 'fleet.modules.ammunition-roster.title' | translate }}">
+                        <app-ammunition-roster noTitle [fleet]="fleet"></app-ammunition-roster>
+                    </app-outlined>
                 </div>
 
                 <app-manual-transport body class="mar-to" [fleet]="fleet"></app-manual-transport>

@@ -1,5 +1,4 @@
 <div *ngIf="isDisplayingPossible()">
-    <div mat-subheader>{{ 'fleet.display.population.title' | translate }}</div>
     <div class="flex-items-container">
         <div *ngFor="let resource of displayableResources">
             <img matListItemAvatar class="icon" src="assets/{{resource.resourceType.folder}}png24x/{{resource.resourceType.iconName}}_c.png"

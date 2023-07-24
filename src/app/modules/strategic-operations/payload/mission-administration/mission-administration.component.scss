@@ -1,5 +1,10 @@
 @import "src/styles/variables";
 
+
+.mat-mdc-list-item-line {
+  font-size: small;
+}
+
 #map-box {
   width: 900px;
   height: 600px;
@@ -73,7 +78,9 @@ mat-form-field {
   margin-top: 15px;
 }
 
-#mission-items {
+.mission-items {
+  width: fit-content;
+  min-width: 900px;
 }
 
 mat-list-item {

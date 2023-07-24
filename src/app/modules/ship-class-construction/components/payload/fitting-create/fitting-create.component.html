@@ -10,10 +10,10 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Designated ship role</mat-label>
-            <select matNativeControl required formControlName="scTypeName" (change)="setShipClass(shipClassMock)">
-                <option></option>
-                <option *ngFor="let type of shipClassTypes" [ngValue]="type">{{ type.type }} - {{ 'shipyard.hull.type.' + type.typeName | translate }}</option>
-            </select>
+            <mat-select required formControlName="scTypeName" (change)="setShipClass(shipClassMock)">
+                <mat-option></mat-option>
+                <mat-option *ngFor="let type of shipClassTypes" [value]="type">{{ type.type }} - {{ 'shipyard.hull.type.' + type.typeName | translate }}</mat-option>
+            </mat-select>
         </mat-form-field>
         <button mat-button
                 [disabled]="disabled"
@@ -32,9 +32,16 @@
 
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
-        <app-ship-class-tonnage-per-section-display [capacities]="capacities"></app-ship-class-tonnage-per-section-display>
+
+        <app-outlined titleValue="{{ 'shipyard.constructions.capacity.title' | translate }}">
+            <app-ship-class-tonnage-per-section-display [capacities]="capacities"></app-ship-class-tonnage-per-section-display>
+        </app-outlined>
+
+        <app-outlined titleValue="{{ 'fleet.display.population.title' | translate }}">
+            <app-military-people preSelect [utilization]="costs"></app-military-people>
+        </app-outlined>
+
         <app-weapon-amount-by-alignment-display [shipClass]="shipClassMock"></app-weapon-amount-by-alignment-display>
-        <app-military-people preSelect [utilization]="costs"></app-military-people>
     </div>
 
     <app-ship-class-fitting-create (shipClassMockEmitter)="setShipClass($event)"

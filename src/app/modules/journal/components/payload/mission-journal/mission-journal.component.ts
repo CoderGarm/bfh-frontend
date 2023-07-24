@@ -14,14 +14,14 @@ export class MissionJournalComponent {
     missionResults?: MissionReport;
 
     validPhases: string[] = [
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.APPROACH].join('.'),
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.WITHDRAW].join('.'),
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.WAIT].join('.'),
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.APPROACH].join('.'),
-        [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID].join('.'),
-        [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('.'),
-        [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID].join('.'),
-        [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('.'),
+        [EMissionActionEnum.SPAWN, EMissionActionEnum.APPROACH].join('-'),
+        [EMissionActionEnum.SPAWN, EMissionActionEnum.WITHDRAW].join('-'),
+        [EMissionActionEnum.SPAWN, EMissionActionEnum.WAIT].join('-'),
+        [EMissionActionEnum.SPAWN, EMissionActionEnum.APPROACH].join('-'),
+        [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID].join('-'),
+        [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('-'),
+        [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID].join('-'),
+        [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('-'),
     ]
 
     constructor(private translate: TranslateService) {

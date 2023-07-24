@@ -1,5 +1,5 @@
 <div *ngIf="ammo.length > 0">
-    <div mat-subheader>{{ 'fleet.modules.ammunition-roster.title' | translate }}</div>
+    <div mat-subheader *ngIf="!noTitle">{{ 'fleet.modules.ammunition-roster.title' | translate }}</div>
     <mat-list>
         <mat-list-item *ngFor="let a of ammo">
             <div mat-line>

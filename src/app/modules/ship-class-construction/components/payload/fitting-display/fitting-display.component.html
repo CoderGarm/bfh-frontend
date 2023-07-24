@@ -27,9 +27,19 @@
 
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="shipClass?.shipClassCapabilities"></app-spacecraft-capabilities-display>
-        <app-ship-class-tonnage-per-section-display [capacities]="shipClass?.spacecraftCapacityAreas"></app-ship-class-tonnage-per-section-display>
-        <app-military-people [utilization]="costs"></app-military-people>
-        <app-propulsion-capacity-display [shipClass]="shipClass" streamlineBackground></app-propulsion-capacity-display>
+
+        <app-outlined titleValue="{{ 'shipyard.constructions.capacity.title' | translate }}">
+            <app-ship-class-tonnage-per-section-display [capacities]="shipClass?.spacecraftCapacityAreas"></app-ship-class-tonnage-per-section-display>
+        </app-outlined>
+
+        <app-outlined titleValue="{{ 'fleet.display.population.title' | translate }}">
+            <app-military-people [utilization]="costs"></app-military-people>
+        </app-outlined>
+
+        <app-outlined titleValue="{{ 'shipyard.fitting.propulsion.title' | translate }}">
+            <app-propulsion-capacity-display [shipClass]="shipClass" streamlineBackground></app-propulsion-capacity-display>
+        </app-outlined>
+
         <app-weapon-amount-by-alignment-display [shipClass]="shipClass"></app-weapon-amount-by-alignment-display>
     </div>
 
@@ -56,8 +66,11 @@
     <div matSubheader *ngIf="shipClass?.supportFittings?.length == 0">No support modules</div>
 
     <mat-list aria-label="Module selection">
-        <mat-list-item *ngFor="let fitting of shipClass?.supportFittings">
-            <app-module-display [module]="fitting.passiveModule" matBadge="{{fitting.amount}}" matBadgePosition="above after"></app-module-display>
+        <mat-list-item *ngFor="let fitting of shipClass?.supportFittings" lines="5">
+            <span matListItemTitle>
+                {{ fitting.amount }}x {{ fitting.passiveModule.baseModule.name }} {{ fitting.passiveModule.baseModule.effectValue }}</span>
+            <span matListItemLine>Tonnage: {{ fitting.passiveModule.baseModule.tonnage | mass: 'T' }}</span>
+            <span matListItemLine>Intended for ship class: {{ fitting.passiveModule.baseModule.shipClassType!.typeName }}</span>
         </mat-list-item>
     </mat-list>
 </div>

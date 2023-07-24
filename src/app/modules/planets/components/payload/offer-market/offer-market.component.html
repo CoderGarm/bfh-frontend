@@ -62,7 +62,7 @@
         </mat-chip-option>
     </mat-chip-listbox>
 
-    <table mat-table [dataSource]="dataSource" matSort class="streamline-background">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="ppu" matSortDirection="asc" class="streamline-background">
 
         <ng-container matColumnDef="resourceType">
             <th mat-header-cell *matHeaderCellDef>Resource</th>

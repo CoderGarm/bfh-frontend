@@ -19,6 +19,13 @@ export class AmmunitionRosterComponent implements AfterViewInit, OnChanges {
 
     ammo: AmmunitionRoster[] = [];
 
+    // @formatter:off
+    @Input()
+    get noTitle() { return this._noTitle; }
+    set noTitle(value: any) { this._noTitle = this.coerceBooleanProperty(value); }
+    _noTitle: boolean = false;
+    // @formatter:on
+
     constructor() {
     }
 
@@ -32,6 +39,10 @@ export class AmmunitionRosterComponent implements AfterViewInit, OnChanges {
                 this.addMissilesToRoster(warship);
             });
         }
+    }
+
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
     }
 
     private addMissilesToRoster(warship: WarShip) {

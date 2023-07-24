@@ -28,6 +28,7 @@ import {TypeService} from "../../../../../services/type.service";
 import {WeaponsSelection} from "../../../../display-elements/weapon-per-alingment-counter/weapon-per-alignment-counter.component";
 import {ShipClassHelper} from "../ship-class.helper";
 import {ShipClassValidator} from "../ship-class.validator";
+import {CDK_TREE_NODE_OUTLET_NODE} from "@angular/cdk/tree";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
@@ -663,4 +664,6 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         const missileAmount = this.getMissileAmount(missile);
         return {coordinate: missile.baseModule.tonnage!.coordinate * missileAmount, massMetric: missile.baseModule.tonnage!.massMetric};
     }
+
+    protected readonly CDK_TREE_NODE_OUTLET_NODE = CDK_TREE_NODE_OUTLET_NODE;
 }

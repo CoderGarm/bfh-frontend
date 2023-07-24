@@ -83,18 +83,12 @@ export class FinishedMovementsListComponent implements AfterViewInit, OnChanges 
             key += m.destinationSystem + ', Hyperlimit';
         } else {
             key += m.destinationPlanet + ', ' + m.destinationSystem;
+            if (!!m.destinationPlanetOwner) {
+                key += ', ' + m.destinationPlanetOwner;
+            } else {
+                key += ', uncolonized';
+            }
         }
-        if (!!m.destinationPlanetOwner) {
-            key += ', ' + m.destinationPlanetOwner;
-        } else {
-            key += ', uncolonized';
-        }
-
         return key;
-    }
-
-    getLink(): string {
-        //todo amend fleet size icon
-        return "assets/icons/fleets/png64x/small_fleet_c.png";
     }
 }

@@ -257,7 +257,7 @@
             </mat-list>
 
 
-            <div id="ammunition-selection" *ngIf="getMissilesOfLoadout(shipClassMock).length > 0">
+            <div id="ammunition-selection" *ngIf="(selectedWeaponType === 'MISSILE' || selectedWeaponType === 'COUNTER_MISSILE') && getMissilesOfLoadout(shipClassMock).length > 0">
                 <p>{{ 'shipyard.fitting.ammunition.title' | translate }}</p>
                 <div class="flex-items-container">
                     <mat-card *ngFor="let missile of getMissilesOfLoadout(shipClassMock)" class="ammo-card">

@@ -34,11 +34,17 @@
                           [deposit]="resourceDeposit"
                           [costs]="costs"></app-resource-display>
 
-    <app-military-people [utilization]="costs"></app-military-people>
+    <app-outlined titleValue="{{ 'fleet.display.population.title' | translate }}">
+        <app-military-people [utilization]="costs"></app-military-people>
+    </app-outlined>
 
     <div class="middle">
         <app-spacecraft-capabilities-display [baseFleetCapabilities]="capabilities"></app-spacecraft-capabilities-display>
-        <app-ship-class-tonnage-per-section-display [capacities]="capacities"></app-ship-class-tonnage-per-section-display>
+
+        <app-outlined titleValue="{{ 'shipyard.constructions.capacity.title' | translate }}">
+            <app-ship-class-tonnage-per-section-display [capacities]="capacities"></app-ship-class-tonnage-per-section-display>
+        </app-outlined>
+
         <app-weapon-amount-by-alignment-display [shipClass]="shipClass"></app-weapon-amount-by-alignment-display>
     </div>
 
