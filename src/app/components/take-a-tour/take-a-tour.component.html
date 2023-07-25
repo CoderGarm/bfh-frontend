@@ -7,10 +7,11 @@
     <div id="journal-box">
         <div class="navigation-wrapper">
             <div class="keen-slider" #sliderRef>
-                <div class="keen-slider__slide">
-                    <div class="outer-box">
-                        <div class="header-box">Journal</div>
-                        <div class="right has-border caption-box" style="top: 25px;">
+
+                <div class="keen-slider__slide wrapper">
+                    <div class="header-box">Journal</div>
+                    <div class="outer-box box">
+                        <div class="has-border caption-box float right" style="top: 25px;">
                             <img width="794" height="432"
                                  ngSrc="assets/tour/journal/incoming-pirate-raid-mission.png"
                                  alt="journal mission dashboard"
@@ -36,8 +37,8 @@
                 </div>
 
                 <div class="keen-slider__slide">
+                    <div class="header-box">Journal</div>
                     <div class="outer-box">
-                        <div class="header-box">Journal</div>
                         <div class="right has-border caption-box">
                             <img width="794"
                                  height="629"
@@ -68,8 +69,8 @@
 
 
                 <div class="keen-slider__slide">
+                    <div class="header-box">Planets - Dashboard</div>
                     <div class="outer-box">
-                        <div class="header-box">Planets - Dashboard</div>
                         <div class="right has-border caption-box">
                             <img width="794"
                                  height="529"
@@ -89,8 +90,8 @@
                 </div>
 
                 <div class="keen-slider__slide">
+                    <div class="header-box">Planets - Ground Construction</div>
                     <div class="outer-box">
-                        <div class="header-box">Planets - Ground Construction</div>
                         <div class="right has-border caption-box">
                             <img width="1521"
                                  height="1125"
@@ -111,8 +112,8 @@
 
 
                 <div class="keen-slider__slide">
+                    <div class="header-box">Planets - Shipyard</div>
                     <div class="outer-box">
-                        <div class="header-box">Planets - Shipyard</div>
                         <div class="right has-border caption-box">
                             <img width="1521"
                                  height="1125"
@@ -133,11 +134,11 @@
 
 
                 <div class="keen-slider__slide">
+                    <div class="header-box">Planets - Marketplace</div>
                     <div class="outer-box">
-                        <div class="header-box">Planets - Marketplace</div>
                         <div class="left has-border caption-box">
-                            <img width="794"
-                                 height="570"
+                            <img width="1521"
+                                 height="1125"
                                  ngSrc="assets/tour/planet/market/planetary-marketplace.gif"
                                  alt="marketplace price graphics"
                                  class="thumbnail-img"
@@ -154,6 +155,28 @@
                                  (click)="imgSrc = 'assets/tour/planet/market/market-offer-table.png'; imgAlt = 'marketplace offer table'; spinner.show('fullscreen-image')">
                             <br>
                             The market offers can be made, edited or took.
+                        </div>
+                        <!-- fixme text -->
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                        into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+                        passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </div>
+                </div>
+
+
+                <div class="keen-slider__slide">
+                    <div class="header-box">Research - Tech Tree</div>
+                    <div class="outer-box">
+                        <div class="right has-border caption-box">
+                            <img width="1521"
+                                 height="1125"
+                                 ngSrc="assets/tour/research/tech-tree.gif"
+                                 alt="tech tree graphics"
+                                 class="thumbnail-img"
+                                 (click)="imgSrc = 'assets/tour/research/tech-tree.gif'; imgAlt = 'tech tree graphics'; spinner.show('fullscreen-image')">
+                            <br>
+                            14 intertwined researches, from housing to impeller powered rocket.
                         </div>
                         <!-- fixme text -->
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,

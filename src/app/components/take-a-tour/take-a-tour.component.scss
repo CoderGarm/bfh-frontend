@@ -1,5 +1,20 @@
 @import "src/styles/variables";
 
+.wrapper {
+  display: flex;
+}
+
+.box {
+  text-align: justify;
+}
+
+.float {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  shape-outside: inset(calc(30% - 50px) 0);
+}
+
 
 #keen-box {
   width: 80%;
@@ -64,7 +79,6 @@
 
 .header-box {
   position: absolute;
-  top: -60px;
   right: 10%;
   width: 80%;
   text-align: center;
