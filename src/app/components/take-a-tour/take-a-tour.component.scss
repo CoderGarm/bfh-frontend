@@ -50,6 +50,10 @@
 }
 
 .fullscreen-image {
+  max-width: calc(80vw);
+  min-width: calc(80vw);
+  width: auto;
+  height: auto;
 }
 
 .outer-box {

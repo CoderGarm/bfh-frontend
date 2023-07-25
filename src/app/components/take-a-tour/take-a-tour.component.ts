@@ -33,6 +33,7 @@ export class TakeATourComponent {
     ngAfterViewInit() {
         setTimeout(() => {
             this.slider = new KeenSlider(this.sliderRef!.nativeElement, {
+                loop: true,
                 initial: this.currentSlide,
                 slideChanged: (s) => {
                     this.currentSlide = s.track.details.rel
