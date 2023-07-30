@@ -2,6 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {
     AlignedFitting,
+    EnumValueDto,
     EShipClassType,
     ResourceDeposit,
     ResourcesApiService,
@@ -17,6 +18,7 @@ import {ShipClassTabViewComponent} from "../../orga/ship-class-tab-view/ship-cla
 import {ShipyardEventService} from "../../../shipyard-event.service";
 import {TypeService} from "../../../../../services/type.service";
 import {ShipClassValidator} from "../ship-class.validator";
+import EModuleTypesEnum = EnumValueDto.EModuleTypesEnum;
 
 @Component({
     selector: 'app-fitting-create',
@@ -77,7 +79,8 @@ export class FittingCreateComponent extends SubscriptionManager implements After
         super();
 
         const eModuleTypes = this.typeService.eModuleTypes;
-        eModuleTypes.forEach(eModuleTypes => this.defaultCapabilities.capabilities.push({value: 0, moduleType: eModuleTypes}));
+        eModuleTypes.filter(eModuleTypes => !eModuleTypes.typeName.includes(EModuleTypesEnum.PROPULSION))
+            .forEach(eModuleTypes => this.defaultCapabilities.capabilities.push({value: 0, moduleType: eModuleTypes}));
 
         this.capabilities = this.defaultCapabilities;
         this.capacities = this.defaultCapacities;
@@ -141,7 +144,12 @@ export class FittingCreateComponent extends SubscriptionManager implements After
             this.subscriptions.push(sub);
 
             sub = this.resourceApi.getShipClassCapabilities(this.shipClassMock)
-                .subscribe(resp => this.capabilities = resp);
+                .subscribe(resp => {
+                    const capabilityValues = resp.capabilities.filter(cap => !cap.moduleType.typeName.includes(EModuleTypesEnum.PROPULSION));
+                    this.capabilities = {
+                        capabilities: capabilityValues
+                    }
+                });
             this.subscriptions.push(sub);
 
             sub = this.resourceApi.getShipClassCapacities(this.shipClassMock)

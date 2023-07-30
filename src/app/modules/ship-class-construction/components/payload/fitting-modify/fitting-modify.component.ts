@@ -1,6 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {
     AlignedFitting,
+    EnumValueDto,
     ResourceDeposit,
     ResourcesApiService,
     ShipClass,
@@ -12,6 +13,7 @@ import {ShipClassComparator} from "../ship-class.comparator";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {ShipyardEventService} from "../../../shipyard-event.service";
 import {ShipClassValidator} from "../ship-class.validator";
+import EModuleTypesEnum = EnumValueDto.EModuleTypesEnum;
 
 @Component({
     selector: 'app-fitting-modify',
@@ -170,7 +172,12 @@ export class FittingModifyComponent extends SubscriptionManager implements After
             this.subscriptions.push(sub);
 
             sub = this.resourceApi.getShipClassCapabilities(this.designedShipClass)
-                .subscribe(resp => this.capabilities = resp);
+                .subscribe(resp => {
+                    const capabilityValues = resp.capabilities.filter(cap => !cap.moduleType.typeName.includes(EModuleTypesEnum.PROPULSION));
+                    this.capabilities = {
+                        capabilities: capabilityValues
+                    }
+                });
             this.subscriptions.push(sub);
 
             sub = this.resourceApi.getShipClassCapacities(this.designedShipClass)
