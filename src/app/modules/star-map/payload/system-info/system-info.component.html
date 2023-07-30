@@ -17,9 +17,9 @@
     </app-red-box>
 
     <app-red-box titleValue="Occupied planets" *ngIf="getColonized().length > 0">
-        <mat-label *ngFor="let planet of getColonized()">
+        <div *ngFor="let planet of getColonized()">
             {{planet.name}} - {{planet.owner!.username}}
-        </mat-label>
+        </div>
     </app-red-box>
 
 </div>

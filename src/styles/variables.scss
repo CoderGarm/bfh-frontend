@@ -6,12 +6,11 @@ $metal-glance: #B0B0B0;
 
 /* Text colors */
 $body-text-color: rgba(255, 255, 255, 1);
-$accent-text-color: rgba(255, 255, 255, 1);
+$accent-text-color: #D871DD; //rgba(255, 255, 255, 1);
 $secondary-text-color: rgba(255, 255, 255, 0.7);
 $disabled-text-color: rgba(255, 255, 255, 0.5);
 
 /* Primary colors */
-// old purple $primary-color: #7b1fa2;
 $primary-color: #375a7f;
 $primary-text-color: #b794f6;
 
@@ -21,7 +20,7 @@ $error-text-color: $error-color;
 
 /* Background colors */
 $purple-green-background-color: #383838;
-$new-background-color: #3E444C;
+$new-background-color: #25242F; // compare https://www.heise.de/imgs/18/4/2/7/5/6/1/5/wiz2a-927ce504043f8188.png
 
 $purple-green-secondary-background-color: #3b3b3b;
 $new-secondary-background-color: #2E3338;

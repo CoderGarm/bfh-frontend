@@ -180,6 +180,37 @@
                 </div>
             </div>
 
+            <div class="keen-slider__slide">
+                <div class="header-box">Star Map<br><span>- the empires spread -</span></div>
+                <div class="outer-box">
+                    <div class="has-border caption-box left">
+                        <img width="1521"
+                             height="1132"
+                             ngSrc="assets/tour/star-map/map.gif"
+                             alt="star map gif"
+                             class="thumbnail-img"
+                             (click)="imgSrc = 'assets/tour/star-map/map.gif'; imgAlt = 'star map gif'; spinner.show('fullscreen-image')">
+                        <br>
+                        Use the <b>star map</b> to navigate your fleets directly ...
+                    </div>
+                    <div class="has-border caption-box right">
+                        <img width="1521"
+                             height="1132"
+                             ngSrc="assets/tour/mission/mission-map.gif"
+                             alt="mission map gif"
+                             class="thumbnail-img"
+                             (click)="imgSrc = 'assets/tour/mission/mission-map.gif'; imgAlt = 'mission map gif'; spinner.show('fullscreen-image')">
+                        <br>
+                        ... or the <b>mission map</b> to express your wishes.
+                    </div>
+                    <!-- fixme text -->
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                    into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </div>
+            </div>
+
 
         </div>
         <svg [ngClass]=" 'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')" (click)="slider!.prev()" xmlns="http://www.w3.org/2000/svg"

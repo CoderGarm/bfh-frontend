@@ -1,7 +1,7 @@
 @use 'sass:map';
-@use 'palette-helper';
+@use './palette-helper';
 @use '@angular/material' as mat;
-@use "variables" as variables;
+@use "src/styles/variables" as variables;
 
 @include mat.core();
 

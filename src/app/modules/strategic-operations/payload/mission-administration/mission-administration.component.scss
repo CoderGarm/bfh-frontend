@@ -1,6 +1,5 @@
 @import "src/styles/variables";
 
-
 .mat-mdc-list-item-line {
   font-size: small;
 }
@@ -25,6 +24,9 @@
   bottom: 25px;
   left: 25px;
   font-size: small;
+  padding: 5px;
+  background: linear-gradient(-45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
+  border-radius: 0 0 5px;
 }
 
 mat-form-field {

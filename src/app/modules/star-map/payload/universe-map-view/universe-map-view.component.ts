@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ViewEncapsulation} from '@angular/core';
-import {FleetApiService, FleetMarker, FleetMove, StarMapApiService, StarSystem} from "../../../../services/swagger";
+import {FleetApiService, FleetMarker, FleetMove, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
@@ -22,8 +22,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     private bloodyHackButDoNotSubscribeMeTwice: Subscription[] = [];
     private distribution: FleetMarker[] = [];
 
-    constructor(private starMapService: StarMapApiService,
-                private fleetApi: FleetApiService,
+    constructor(private fleetApi: FleetApiService,
                 private spinnerService: SpinnerService,
                 private backgroundService: BackgroundService,
                 private translate: TranslateService) {
