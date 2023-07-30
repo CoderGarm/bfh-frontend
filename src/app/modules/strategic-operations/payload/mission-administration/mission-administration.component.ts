@@ -50,7 +50,7 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
         const source = interval(100);
         let sub = source.subscribe(val => {
             // and later again repetitive
-            if (this.missionCommService.planets.length != 0 && this.missionCommService.systems.length > 0) {
+            if (this.missionCommService.colonizedPlanets.length != 0 && this.missionCommService.systems.length > 0) {
                 this.orbitDefinitions = this.getOrbitDefinitions();
                 sub.unsubscribe();
             }

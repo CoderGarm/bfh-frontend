@@ -9,8 +9,11 @@ import {SubscriptionManager} from "../../../../subscription.manager";
 })
 export class MissionOverviewComponent extends SubscriptionManager {
 
-    constructor(private missionCommService: MissionCommunicationService) {
+    constructor(protected missionCommService: MissionCommunicationService) {
         super();
     }
 
+    toggle() {
+        throw new Error("please implement me") /* fixme hier weiter */
+    }
 }

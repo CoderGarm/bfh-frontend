@@ -1,1 +1,38 @@
-<p>mission-overview works!</p>
+<mat-list role="list">
+    <mat-list-item *ngFor="let planet of missionCommService.colonizedPlanets">
+        {{ planet.name }}
+    </mat-list-item>
+</mat-list>
+
+<div class="content-area flex-items-container">
+    <mat-card *ngFor="let planet of missionCommService.colonizedPlanets" appearance="outlined" class="mission-items">
+        <mat-card-title>{{ planet.name }}</mat-card-title>
+        <mat-card-subtitle *ngIf="missionCommService.activeMissionsByVenue.get(planet.idPlanet)?.length == 0">{{ 'mission.legend.no-mission' | translate }}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="missionCommService.activeMissionsByVenue.get(planet.idPlanet)?.length == 1">{{ 'mission.card.title' | translate }}</mat-card-subtitle>
+        <!-- fixme getter besser bestalten <mat-card-subtitle *ngIf="missionCommService.activeMissionsByVenue.get(planet.idPlanet)?.length > 1">{{ 'mission.legend.multi-mission' | translate }}</mat-card-subtitle>-->
+
+        <!-- fixme extract mission item display and add cancel button -->
+        <mat-card-content>
+            <mat-card appearance="outlined" *ngFor="let mission of missionCommService.activeMissionsByVenue.get(planet.idPlanet)" class="mission-card">
+                <mat-card-content>
+                    <app-outlined titleValue="{{ 'mission.card.title' | translate }}" class="floated">
+                        {{mission.missionType}}
+                    </app-outlined>
+                    <app-outlined titleValue="{{ 'mission.card.details' | translate }}" class="floated-right">
+                        {{ mission.venue.name }}
+                    </app-outlined>
+
+                    <mat-list-item *ngFor="let warShip of mission.ships">
+                        <span matListItemTitle>{{warShip.name}}</span>
+                        <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+                        <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
+                                                            [isWarship]="true"></app-spacecraft-state-block-display>
+                    </mat-list-item>
+                </mat-card-content>
+            </mat-card>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="toggle()">{{ 'mission.create.toggle' | translate }}</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

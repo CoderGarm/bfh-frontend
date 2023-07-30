@@ -9,11 +9,13 @@ export class MissionCommunicationService extends SubscriptionManager {
 
     activeMissions: Mission[] = [];
 
+    activeMissionsByVenue: Map<number, Mission[]> = new Map<number, Mission[]>();
+
     pooledShips: WarShip[] = [];
 
     static readonly missionTypes: MissionTypeEnum[] = [MissionTypeEnum.PIRATE_HUNT, MissionTypeEnum.CONVOY_PROTECTION];
 
-    planets: Planet[] = [];
+    colonizedPlanets: Planet[] = [];
 
     systems: StarSystem[] = [];
 
@@ -29,7 +31,7 @@ export class MissionCommunicationService extends SubscriptionManager {
     }
 
     fetchPlanets() {
-        let sub = this.planetService.getPlanetByUsers().subscribe(resp => this.planets = resp);
+        let sub = this.planetService.getPlanetByUsers().subscribe(resp => this.colonizedPlanets = resp);
         this.subscriptions.push(sub);
     }
 
@@ -39,7 +41,17 @@ export class MissionCommunicationService extends SubscriptionManager {
     }
 
     fetchMissions() {
-        let sub = this.missionService.getMissions().subscribe(resp => this.activeMissions = resp);
+        let sub = this.missionService.getMissions().subscribe(resp => {
+            this.activeMissions = resp;
+            resp.forEach(mission => {
+                let missions = this.activeMissionsByVenue.get(mission.venue.idPlanet);
+                if (!missions) {
+                    missions = [];
+                    this.activeMissionsByVenue.set(mission.venue.idPlanet, missions);
+                }
+                missions.push(mission);
+            });
+        });
         this.subscriptions.push(sub);
     }
 
