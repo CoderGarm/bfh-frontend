@@ -33,6 +33,7 @@ span {
 
 .keen-slider__slide {
   background-color: $secondary-background-color;
+  position: relative;
 }
 
 .thumbnail-img {
@@ -132,4 +133,65 @@ span {
 
 .arrow--disabled {
   fill: rgba(255, 255, 255, 0.5);
+}
+
+
+.comment-box-right {
+  position: absolute;
+  width: 350px;
+  z-index: 99;
+  text-align: center;
+  right: 50px;
+  top: 50px;
+}
+
+.comment-box-left {
+  position: absolute;
+  width: 350px;
+  z-index: 99;
+  text-align: center;
+  left: 50px;
+  top: 50px;
+}
+
+.stamp {
+  transform: rotate(12deg);
+  color: #555;
+  font-weight: 700;
+  border: 0.25rem solid #555;
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  text-transform: uppercase;
+  border-radius: 1rem;
+  font-family: 'Courier', serif;
+  -webkit-mask-size: 944px 604px;
+  mix-blend-mode: multiply;
+}
+
+.stamp > span {
+  font-size: small;
+}
+
+.is-nope {
+  color: #D23;
+  border: 0.5rem double #D23;
+  transform: rotate(3deg);
+  -webkit-mask-position: 2rem 3rem;
+}
+
+.is-approved {
+  color: #0A9928;
+  border: 0.5rem solid #0A9928;
+  -webkit-mask-position: 13rem 6rem;
+  transform: rotate(-14deg);
+  border-radius: 0;
+}
+
+.is-draft {
+  color: #C4C4C4;
+  border: 1rem double #C4C4C4;
+  transform: rotate(-5deg);
+  font-family: "Open sans", Helvetica, Arial, sans-serif;
+  border-radius: 0;
+  padding: 0.5rem;
 }
