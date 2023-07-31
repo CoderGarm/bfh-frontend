@@ -14,9 +14,11 @@ export class SubscriptionManager implements OnDestroy {
     tokenStorage = AppInjector.get(TokenStorage);
 
     readonly userId: number;
+    readonly userName: string;
 
     constructor() {
         this.userId = this.tokenStorage.getUserID();
+        this.userName = this.tokenStorage.getLogin();
     }
 
 

@@ -30,4 +30,8 @@ export interface UserSettings {
      * If the user does not want receive any mail.
      */
     noEMailWanted: boolean;
+    /**
+     * The profile pic name.
+     */
+    profilePic: string;
 }

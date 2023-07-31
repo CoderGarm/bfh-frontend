@@ -1,3 +1,5 @@
+@import "src/styles/variables";
+
 section {
   margin-top: 25px;
 }
@@ -5,4 +7,15 @@ section {
 ul {
   list-style-type: none;
   margin-top: 4px;
+}
+
+mat-card {
+  margin-top: 65px;
+}
+
+#icon-card {
+  padding: 5px 55px;
+  max-height: 30vh;
+  overflow-y: scroll;
+  background-color: $secondary-background-color;
 }

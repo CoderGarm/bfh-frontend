@@ -5,7 +5,7 @@
     <div id="message-container">
         <mat-card appearance="outlined" #chatCardList *ngFor="let message of messages" [className]="chooseStyleFromSender(message)">
             <mat-card-header>
-                <div mat-card-avatar class="avatar-image"></div>
+                <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.sender.profilePic }}.png">
                 <mat-card-title>
                     {{message.sender.username}}
                     <mat-icon *ngIf="!message.receivedAt && message.sender.idUser != userId">mark_email_unread</mat-icon>

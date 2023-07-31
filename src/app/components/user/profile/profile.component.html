@@ -1,22 +1,44 @@
 <div class="content-area">
-    <p>I am Groot.</p>
-    <p>But in {{role}}.</p>
+    <mat-card appearance="outlined" class="streamline-background">
+        <mat-card-header class="streamline-background">
+            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ selectedIcon }}" alt="{{ selectedIcon }}">
+            <mat-card-title>
+                I am Groot.
+            </mat-card-title>
+            <mat-card-subtitle>But in {{ role }}. And {{ userName }}</mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
 
-    <section [formGroup]="formGroup">
-        <span matListItemLine>eMail status</span>
-        <ul>
-            <li>
-                <mat-checkbox formControlName="eMailVerified">eMail is verified.</mat-checkbox>
-            </li>
-            <li>
-                <mat-checkbox formControlName="noEMailWanted">No eMail address provided.</mat-checkbox>
-            </li>
-        </ul>
-        <span matListItemLine>Change eMail settings</span>
-        <ul>
-            <li>
-                <mat-checkbox formControlName="receiveChangelogInfos">I want to receive mails about a new release.</mat-checkbox>
-            </li>
-        </ul>
-    </section>
+    <mat-card appearance="outlined" class="streamline-background">
+        <mat-card-content class="streamline-background">
+            <section [formGroup]="eMailFormGroup">
+                <span matListItemLine>eMail status</span>
+                <ul>
+                    <li>
+                        <mat-checkbox formControlName="eMailVerified">eMail is verified.</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox formControlName="noEMailWanted">No eMail address provided.</mat-checkbox>
+                    </li>
+                </ul>
+                <span matListItemLine>Change eMail settings</span>
+                <ul>
+                    <li>
+                        <mat-checkbox formControlName="receiveChangelogInfos">I want to receive mails about a new release.</mat-checkbox>
+                    </li>
+                </ul>
+            </section>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="streamline-background" id="icon-card">
+        <mat-card-content class="streamline-background">
+            <mat-selection-list #iconSelector [multiple]="false">
+                <mat-list-option *ngFor="let fileName of userIcons" [value]="fileName" [selected]="selectedIcon === fileName">
+                    <img matListItemAvatar src="assets/icons/user/{{ fileName }}" alt="{{ fileName }}">
+                    <h3 matListItemTitle>{{ fileName.split('.')[0] }}</h3>
+                </mat-list-option>
+            </mat-selection-list>
+        </mat-card-content>
+    </mat-card>
 </div>

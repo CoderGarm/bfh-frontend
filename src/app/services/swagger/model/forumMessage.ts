@@ -35,6 +35,10 @@ export interface ForumMessage {
      */
     author: string;
     /**
+     * The user's profile pic.
+     */
+    profilePic: string;
+    /**
      * The message itself.
      */
     message: string;

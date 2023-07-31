@@ -34,4 +34,8 @@ export interface Player {
      * The user's role.
      */
     role?: string;
+    /**
+     * The user's profile pic.
+     */
+    profilePic?: string;
 }

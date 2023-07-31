@@ -66,9 +66,9 @@ export class UserApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public changeSettings(body?: UserSettings, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public changeSettings(body?: UserSettings, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public changeSettings(body?: UserSettings, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public changeSettings(body?: UserSettings, observe?: 'body', reportProgress?: boolean): Observable<UserSettings>;
+    public changeSettings(body?: UserSettings, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSettings>>;
+    public changeSettings(body?: UserSettings, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSettings>>;
     public changeSettings(body?: UserSettings, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -93,7 +93,7 @@ export class UserApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/user/settings`,
+        return this.httpClient.request<UserSettings>('put',`${this.basePath}/api/private/user/settings`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
