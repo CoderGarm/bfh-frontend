@@ -299,7 +299,11 @@
         "type": "Mission wählen"
       },
       "submit": "Starte die Mission",
+      "title": "Missionsplanung",
       "toggle": "Missionsplanung"
+    },
+    "delete": {
+      "submit": "Mission abbrechen"
     },
     "legend": {
       "colonized-systems": "Eigenes System",

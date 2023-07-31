@@ -27,76 +27,24 @@
     </div>
 
     <div class="flex-items-container">
-        <mat-card *ngIf="!selectedSystem" appearance="outlined" class="mission-items">{{ 'mission.legend.select-a-system' | translate }}</mat-card>
+        <mat-card *ngIf="!selectedSystem" appearance="outlined" class="mission-item">{{ 'mission.legend.select-a-system' | translate }}</mat-card>
 
-        <mat-card *ngIf="!!selectedSystem" appearance="outlined" class="mission-items">
+        <mat-card *ngIf="!!selectedSystem" appearance="outlined" class="mission-item">
             <mat-card-title>{{ selectedSystem.name }}</mat-card-title>
             <mat-card-subtitle *ngIf="missions.length == 0">{{ 'mission.legend.no-mission' | translate }}</mat-card-subtitle>
             <mat-card-subtitle *ngIf="missions.length == 1">{{ 'mission.card.title' | translate }}</mat-card-subtitle>
             <mat-card-subtitle *ngIf="missions.length > 1">{{ 'mission.legend.multi-mission' | translate }}</mat-card-subtitle>
 
             <mat-card-content>
-                <mat-card appearance="outlined" *ngFor="let mission of missions" class="mission-card">
-                    <mat-card-content>
-                        <app-outlined titleValue="{{ 'mission.card.title' | translate }}" class="floated">
-                            {{mission.missionType}}
-                        </app-outlined>
-                        <app-outlined titleValue="{{ 'mission.card.details' | translate }}" class="floated-right">
-                            {{ mission.venue.name }}
-                        </app-outlined>
-
-                        <mat-list-item *ngFor="let warShip of mission.ships">
-                            <span matListItemTitle>{{warShip.name}}</span>
-                            <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
-                            <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
-                                                                [isWarship]="true"></app-spacecraft-state-block-display>
-                        </mat-list-item>
-                    </mat-card-content>
-                </mat-card>
+                <app-mission-display *ngFor="let mission of missions" [mission]="mission" class="mission-card"></app-mission-display>
             </mat-card-content>
             <mat-card-actions>
                 <button mat-raised-button (click)="toggle()">{{ 'mission.create.toggle' | translate }}</button>
             </mat-card-actions>
-
-            <mat-card *ngIf="missionCreate">
-                <mat-card-title></mat-card-title>
-                <mat-card-subtitle></mat-card-subtitle>
-
-                <mat-card-content>
-                    <div class="flex-items-container clearfix">
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>{{ 'mission.create.select.planet' | translate }}</mat-label>
-                            <mat-select [(ngModel)]="selectedPlanet">
-                                <mat-option *ngFor="let planet of selectedSystem.planets" [value]="planet">
-                                    {{ planet.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>{{ 'mission.create.select.type' | translate }}</mat-label>
-                            <mat-select [(ngModel)]="selectedType" name="food">
-                                <mat-option *ngFor="let type of MissionCommunicationService.missionTypes" [value]="type">
-                                    {{ type }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <mat-selection-list multiple (selectionChange)="setShips($event)">
-                        <mat-label>{{ 'mission.create.select.ships' | translate }}</mat-label>
-                        <mat-list-option *ngFor="let warShip of missionCommService.pooledShips" [value]="warShip">
-                            <span matListItemTitle>{{warShip.name}}</span>
-                            <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
-                        </mat-list-option>
-                    </mat-selection-list>
-
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-raised-button (click)="submit()" [disabled]="!isMissionCreateValid()">{{ 'mission.create.submit' | translate }}</button>
-                </mat-card-actions>
-            </mat-card>
+            <div *ngIf="missionCreate" class="flex-items-container mission-item">
+                <app-mission-create [planets]="selectedSystem.planets" [pooledWarships]="missionCommService.pooledShips"
+                                    (result)="missions.push($event); missionCreate = false;"></app-mission-create>
+            </div>
         </mat-card>
     </div>
 </div>

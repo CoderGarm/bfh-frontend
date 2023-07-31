@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
 
@@ -7,13 +7,14 @@ import {SubscriptionManager} from "../../../../subscription.manager";
     templateUrl: './mission-overview.component.html',
     styleUrls: ['./mission-overview.component.scss']
 })
-export class MissionOverviewComponent extends SubscriptionManager {
+export class MissionOverviewComponent extends SubscriptionManager implements AfterViewInit {
 
     constructor(protected missionCommService: MissionCommunicationService) {
         super();
     }
 
-    toggle() {
-        throw new Error("please implement me") /* fixme hier weiter */
+    ngAfterViewInit(): void {
+
     }
+
 }

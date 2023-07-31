@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
 import {AssetsService, Coords} from "../../../../services/assets/assets.service";
 import {MapData} from "./map-data.component";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
@@ -46,13 +45,13 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
 
     hoveredSystem?: Coords;
 
-    starSystem?: StarSystem;
+    hoveredStarSystem?: StarSystem;
+    selectedStarSystem?: StarSystem;
 
     @Output()
     selectedSystem: EventEmitter<StarSystem | undefined> = new EventEmitter<StarSystem | undefined>();
 
-    constructor(private route: ActivatedRoute,
-                private spinner: NgxSpinnerService,
+    constructor(private spinner: NgxSpinnerService,
                 private systemService: BackgroundService,
                 private publicResourcesApiService: AssetsService,
                 protected missionCommService: MissionCommunicationService) {
@@ -89,22 +88,29 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
         let x = celestialCircle.cx();
         let y = celestialCircle.cy();
         const celestial = this.getCelestialObjectByID(id);
-        if (!celestial || !this.starSystem) {
+        if (!celestial) {
             return;
         }
-        this.handleClickedStarSystem(this.starSystem, x, y, id);
+        this.handleClickedStarSystem(x, y, id);
     };
 
-    private handleClickedStarSystem(celestial: StarSystem, x: number, y: number, id: string) {
+    private handleClickedStarSystem(x: number, y: number, id: string) {
+
         const selectionRemoved = this.removeCyclingCircle(id);
         if (selectionRemoved) {
             this.selectedSystem.emit(undefined);
+            this.selectedStarSystem = undefined;
+            return;
+        }
+
+        if (!!this.selectedStarSystem) {
             return;
         }
 
         // add selected system
         this.drawCyclingCircle(x, y, id, false);
-        this.selectedSystem.emit(this.starSystem);
+        this.selectedSystem.emit(this.hoveredStarSystem);
+        this.selectedStarSystem = this.hoveredStarSystem;
     }
 
     mouseoutForCelestial = () => {
@@ -130,10 +136,10 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
             const y = coords.y;
             const systems = this.missionCommService.systems.filter(sys => sys.orbit.xCoordinate.coordinate === x && sys.orbit.yCoordinate.coordinate === y);
             if (systems.length > 0) {
-                this.starSystem = systems[0];
+                this.hoveredStarSystem = systems[0];
             }
         } else {
-            this.starSystem = undefined;
+            this.hoveredStarSystem = undefined;
         }
     }
 

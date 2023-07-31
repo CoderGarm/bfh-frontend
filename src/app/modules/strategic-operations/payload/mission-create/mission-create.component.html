@@ -1,0 +1,40 @@
+<mat-card *ngIf="planets.length > 0" class="mission-item">
+    <mat-card-header>
+        <mat-card-title>{{ 'mission.create.title' | translate }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="flex-items-container clearfix">
+
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'mission.create.select.planet' | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedPlanet">
+                    <mat-option *ngFor="let planet of planets" [value]="planet">
+                        {{ planet.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>{{ 'mission.create.select.type' | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedType" name="food">
+                    <mat-option *ngFor="let type of availableMissionTypes" [value]="type">
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <mat-selection-list multiple (selectionChange)="setShips($event)">
+            <mat-label>{{ 'mission.create.select.ships' | translate }}</mat-label>
+            <mat-list-option *ngFor="let warShip of pooledWarships" [value]="warShip">
+                <span matListItemTitle>{{warShip.name}}</span>
+                <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+            </mat-list-option>
+        </mat-selection-list>
+
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button (click)="submit()" [disabled]="!isMissionCreateValid()">{{ 'mission.create.submit' | translate }}</button>
+    </mat-card-actions>
+</mat-card>

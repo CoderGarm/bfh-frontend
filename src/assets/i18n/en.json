@@ -299,7 +299,11 @@
         "type": "Chose mission type"
       },
       "submit": "Start the mission",
+      "title": "Mission Setup",
       "toggle": "Plan a mission"
+    },
+    "delete": {
+      "submit": "Stop mission"
     },
     "legend": {
       "colonized-systems": "Own system",

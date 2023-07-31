@@ -6,6 +6,8 @@ import {MissionAdministrationComponent} from './payload/mission-administration/m
 import {MissionOverviewComponent} from './payload/mission-overview/mission-overview.component';
 import {NgxSpinnerModule} from "ngx-spinner";
 import {MissionMapComponent} from "./payload/mission-map/mission-map.component";
+import {MissionDisplayComponent} from './payload/mission-display/mission-display.component';
+import {MissionCreateComponent} from './payload/mission-create/mission-create.component';
 
 
 @NgModule({
@@ -14,6 +16,8 @@ import {MissionMapComponent} from "./payload/mission-map/mission-map.component";
         MissionMapComponent,
         MissionAdministrationComponent,
         MissionOverviewComponent,
+        MissionDisplayComponent,
+        MissionCreateComponent,
     ],
     exports: [
         StratOpsTabViewComponent

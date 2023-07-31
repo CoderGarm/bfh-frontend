@@ -33,7 +33,7 @@ export class MapDataProvider extends MapData {
     }
 
     // noinspection CssConvertColorToRgbInspection
-    protected static readonly STROKE_CYCLING_CIRCLE: StrokeData = {color: "#B0B0B0", width: 3, dasharray: "15px"}; // $metal-glance in variables
+    protected static readonly STROKE_CYCLING_CIRCLE: StrokeData = {color: "orange", width: 3, dasharray: "15px"}; // $metal-glance in variables
 
     protected static readonly ROUND_CAP_MARKER_X_PIXEL_SHIFT: number = 9;
     protected static readonly ROUND_CAP_MARKER_Y_PIXEL_SHIFT: number = 8;

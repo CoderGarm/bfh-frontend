@@ -1,23 +1,23 @@
 <div id="external-map">
-    <div class="flex-items-container system-info-div" *ngIf="!!starSystem">
+    <div class="flex-items-container system-info-div" *ngIf="!!hoveredStarSystem">
         <app-red-box titleValue="System">
-            {{ starSystem!.name }}
+            {{ hoveredStarSystem!.name }}
         </app-red-box>
 
         <app-red-box titleValue="Planet count">
-            {{ starSystem.planets.length }}
+            {{ hoveredStarSystem.planets.length }}
         </app-red-box>
 
         <app-red-box titleValue="X-Coordinate">
-            {{ starSystem!.orbit.xCoordinate.coordinate }} {{ starSystem!.orbit.xCoordinate.distanceMetric }}
+            {{ hoveredStarSystem!.orbit.xCoordinate.coordinate }} {{ hoveredStarSystem!.orbit.xCoordinate.distanceMetric }}
         </app-red-box>
 
         <app-red-box titleValue="Y-Coordinate">
-            {{ starSystem!.orbit.yCoordinate.coordinate }} {{ starSystem!.orbit.xCoordinate.distanceMetric }}
+            {{ hoveredStarSystem!.orbit.yCoordinate.coordinate }} {{ hoveredStarSystem!.orbit.xCoordinate.distanceMetric }}
         </app-red-box>
 
-        <app-red-box titleValue="Occupied planets" *ngIf="starSystem.planets.length > 0">
-            <div *ngFor="let planet of starSystem.planets">
+        <app-red-box titleValue="Occupied planets" *ngIf="hoveredStarSystem.planets.length > 0">
+            <div *ngFor="let planet of hoveredStarSystem.planets">
                 <mat-label *ngIf="!!planet.owner">{{planet.name}} - {{planet.owner.username}}</mat-label>
                 <mat-label *ngIf="!planet.owner">{{planet.name}}</mat-label>
             </div>

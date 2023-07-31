@@ -17,6 +17,8 @@ export class MissionCommunicationService extends SubscriptionManager {
 
     colonizedPlanets: Planet[] = [];
 
+    planetsWithoutMissions: Planet[] = [];
+
     systems: StarSystem[] = [];
 
     constructor(private missionService: MissionApiService,
@@ -30,8 +32,15 @@ export class MissionCommunicationService extends SubscriptionManager {
         return this.missionService.setupMission(mission);
     }
 
+    stopMission(idMission: number) {
+        return this.missionService.stopMission(idMission);
+    }
+
     fetchPlanets() {
-        let sub = this.planetService.getPlanetByUsers().subscribe(resp => this.colonizedPlanets = resp);
+        let sub = this.planetService.getPlanetByUsers().subscribe(resp => {
+            this.colonizedPlanets = resp;
+            this.buildPlanetsWithoutMission();
+        });
         this.subscriptions.push(sub);
     }
 
@@ -43,6 +52,7 @@ export class MissionCommunicationService extends SubscriptionManager {
     fetchMissions() {
         let sub = this.missionService.getMissions().subscribe(resp => {
             this.activeMissions = resp;
+            this.buildPlanetsWithoutMission();
             resp.forEach(mission => {
                 let missions = this.activeMissionsByVenue.get(mission.venue.idPlanet);
                 if (!missions) {
@@ -60,5 +70,22 @@ export class MissionCommunicationService extends SubscriptionManager {
             this.pooledShips = resp
         );
         this.subscriptions.push(sub);
+    }
+
+    dropMission(idMission: number) {
+
+        const missions = this.activeMissions.filter(m => m.idMission === idMission);
+        if (missions.length === 1) {
+            const toRemove = missions[0];
+            const indexOf = this.activeMissions.indexOf(toRemove);
+            this.activeMissions.splice(indexOf, 1);
+            this.pooledShips.push(...(toRemove.ships));
+            this.buildPlanetsWithoutMission();
+        }
+    }
+
+    private buildPlanetsWithoutMission() {
+        const idPlanetsWithMissions = this.activeMissions.map(m => m.venue.idPlanet);
+        this.planetsWithoutMissions.push(...this.colonizedPlanets.filter(p => !idPlanetsWithMissions.includes(p.idPlanet)));
     }
 }

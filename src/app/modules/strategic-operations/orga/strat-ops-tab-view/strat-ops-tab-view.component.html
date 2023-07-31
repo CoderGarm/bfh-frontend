@@ -1,8 +1,12 @@
 <mat-tab-group>
     <mat-tab label="{{ 'tab.stratOps.mission-administration' | translate }}">
-        <app-mission-administration></app-mission-administration>
+        <ng-template matTabContent>
+            <app-mission-administration></app-mission-administration>
+        </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.stratOps.mission-overview' | translate }}">
-        <app-mission-overview></app-mission-overview>
+        <ng-template matTabContent>
+            <app-mission-overview></app-mission-overview>
+        </ng-template>
     </mat-tab>
 </mat-tab-group>
