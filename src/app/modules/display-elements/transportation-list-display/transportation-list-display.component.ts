@@ -89,7 +89,6 @@ export class TransportationListDisplayComponent implements AfterViewInit, OnChan
                     children: []
                 })
             });
-            console.log(arr)
             this.dataSource.data = arr;
             this.dataSource.data.forEach(node => this.treeControl.expandDescendants(node));
         }

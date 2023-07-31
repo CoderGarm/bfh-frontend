@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Inject, Input, Optional} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {EResourceType, MiningFactors, ResourceAmount} from "../../../services/swagger";
+import {EResourceType, MiningFactors} from "../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
@@ -80,16 +80,6 @@ export class MiningFactorsDisplayComponent extends SubscriptionManager implement
             return "";
         }
         return translation;
-    }
-
-    /**
-     * constructs and returns the url to the icon
-     * @param cap
-     */
-    getLink(cap: ResourceAmount): string {
-        let folder = cap.resourceType.folder;
-        let iconName = cap.resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
     getAsString(amount: number) {

@@ -35,6 +35,7 @@ import {SafePipe} from "../../services/pipes/safe.pipe";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {ColorPickerModule} from "ngx-color-picker";
 import {SafeUrlPipe} from "../../services/pipes/safe-url.pipe";
+import {IconComponent} from "./components/icon/icon.component";
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import {SafeUrlPipe} from "../../services/pipes/safe-url.pipe";
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,
+        IconComponent,
     ],
     imports: [
         CommonModule,
@@ -116,6 +118,7 @@ import {SafeUrlPipe} from "../../services/pipes/safe-url.pipe";
         MarkdownEditorComponent,
         ClipboardModule,
         ColorPickerModule,
+        IconComponent,
     ]
 })
 export class SharedModuleModule {

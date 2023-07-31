@@ -1,13 +1,11 @@
 <mat-list class="fleet-round-state-list" [ngClass]="clickedFleetClass()">
     <div mat-subheader class="fleet-round-state-title">{{getTitle()}}</div>
     <mat-list-item *ngFor="let warShip of warShips" class="fleet-round-state-list-item" [ngClass]="hoveredWarshipClass(warShip)">
-        <img matListItemAvatar
-             class="fleet-round-state-icon"
-             [matTooltip]="getShipIconTooltip(warShip)"
-             [ngClass]="getStateClass(getCurrentWarshipState(warShip))"
-             src="{{getLink(warShip.shipClass.shipClassType.typeName)}}"
-             alt="{{warShip.shipClass.shipClassType.typeName}}-icon">
-
+        <app-icon matListItemAvatar class="fleet-round-state-icon" png24px
+                  [icon]="warShip.shipClass.shipClassType"
+                  [altText]="warShip.shipClass.shipClassType.typeName"
+                  [matTooltip]="getShipIconTooltip(warShip)"
+                  [ngClass]="getStateClass(getCurrentWarshipState(warShip))"></app-icon>
         <div mat-subheader>{{warShip.name}}</div>
 
         <app-spacecraft-capability-display-small

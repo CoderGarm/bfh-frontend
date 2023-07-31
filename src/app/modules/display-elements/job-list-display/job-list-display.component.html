@@ -25,9 +25,10 @@
             <mat-grid-tile *ngIf="displayResearch && pJob.researches!.length == 0"></mat-grid-tile>
             <mat-grid-tile *ngIf="displayResearch && !!pJob && !!pJob.researches && !!pJob.researches[0]">
                 <mat-list-item style="height: 100%;" class="job-item">
-                    <img matListItemAvatar
-                         src="assets/{{pJob.researches![0].facility.building.productionTarget.folder}}/png64x/{{pJob.researches![0].facility.building.productionTarget.iconName}}_c.png"
-                         alt="job type icon">
+                    <app-icon matListItemAvatar
+                              [icon]="pJob.researches![0].facility.building.productionTarget"
+                              [altText]="pJob.researches![0].facility.building.productionTarget.typeName"
+                              png64px [toolTip]="pJob.researches![0].facility.building.productionTarget.typeName"></app-icon>
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(pJob.researches![0])"
                             *ngIf="allowCancel"
@@ -49,7 +50,10 @@
             <mat-grid-tile *ngIf="pJob.constructions!.length == 0"></mat-grid-tile>
             <mat-grid-tile *ngFor="let job of pJob.constructions">
                 <mat-list-item style="height: 100%;" class="job-item">
-                    <img matListItemAvatar src="{{getLink(job)}}" alt="job type icon">
+                    <app-icon matListItemAvatar
+                              [icon]="job.facility.building.productionTarget"
+                              [altText]="job.facility.building.productionTarget.typeName"
+                              png64px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
@@ -71,7 +75,10 @@
             <mat-grid-tile *ngIf="pJob.shipyard!.length == 0"></mat-grid-tile>
             <mat-grid-tile *ngFor="let job of pJob.shipyard">
                 <mat-list-item style="height: 100%;" class="job-item">
-                    <img matListItemAvatar src="{{getLink(job)}}" alt="job type icon">
+                    <app-icon matListItemAvatar
+                              [icon]="job.facility.building.productionTarget"
+                              [altText]="job.facility.building.productionTarget.typeName"
+                              png64px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"

@@ -29,12 +29,6 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    getLink(cap: CapabilityValue): any {
-        let iconName = cap.moduleType.iconName;
-        let folder = cap.moduleType.folder;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
-    }
-
     getPercentage(cap: CapabilityValue) {
         let moduleType = cap.moduleType;
         if (!this.currentFleetState || !this.baseFleetCapabilities) {

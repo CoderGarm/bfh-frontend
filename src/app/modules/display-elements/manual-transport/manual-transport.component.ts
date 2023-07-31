@@ -152,12 +152,6 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
         return array.reduce((sum: number, current: ResourceAmount | HumanResourceAmount) => sum + current.amount, 0);
     }
 
-    getLink(resourceType: EResourceType | EEducationType): string {
-        let folder = resourceType.folder;
-        let iconName = resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
-    }
-
     setAmount(amount: number, resource: EResourceType | EEducationType) {
 
         const toFleet: boolean = amount < 0;

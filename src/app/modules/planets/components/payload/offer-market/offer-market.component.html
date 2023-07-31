@@ -7,9 +7,10 @@
                         (click)="displayOfferCreation(resource, trigger); $event.stopPropagation();"
                         matTooltip="{{ 'planetary.marketplace.offer.create-for' | translate }} {{ resource.resourceType.typeName }}">
                     <div class="img-container info-holder">
-                        <img class="icon" src="assets/{{resource.resourceType.folder}}png24x/{{resource.resourceType.iconName}}_c.png"
-                             alt="{{resource.resourceType.singularName}}"
-                             matTooltip="{{resource.resourceType.typeName}}">
+                        <app-icon class="icon"
+                                  [icon]="resource.resourceType"
+                                  [altText]="resource.resourceType.typeName"
+                                  png24px [toolTip]="resource.resourceType.typeName"></app-icon>
                     </div>
                     <div>
                         <app-number-short [input]="resource.amount"></app-number-short>
@@ -57,7 +58,10 @@
                 *ngFor="let eResourceType of tradableResourceTypes"
                 [value]="eResourceType.typeName"
                 (click)="setResourceTypesToFilterOffers(); $event.stopPropagation();">
-            <img matChipTrailingIcon src="assets/{{eResourceType.folder}}png24x/{{eResourceType.iconName}}_c.png" alt="{{eResourceType.typeName}}">
+            <app-icon matChipTrailingIcon
+                      [icon]="eResourceType"
+                      [altText]="eResourceType.typeName"
+                      png24px [toolTip]="eResourceType.typeName"></app-icon>
             {{eResourceType.typeName}}
         </mat-chip-option>
     </mat-chip-listbox>
@@ -67,8 +71,9 @@
         <ng-container matColumnDef="resourceType">
             <th mat-header-cell *matHeaderCellDef>Resource</th>
             <td mat-cell *matCellDef="let element;">
-                <img src="assets/{{element.trade.resourceAmount.resourceType.folder}}png24x/{{element.trade.resourceAmount.resourceType.iconName}}_c.png"
-                     alt="{{element.trade.resourceAmount.resourceType.typeName}}" matTooltip="{{element.trade.resourceAmount.resourceType.typeName}}">
+                <app-icon [icon]="element.trade.resourceAmount.resourceType"
+                          [altText]="element.trade.resourceAmount.resourceType.typeName"
+                          png32px [toolTip]="element.trade.resourceAmount.resourceType.typeName"></app-icon>
             </td>
         </ng-container>
 

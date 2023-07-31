@@ -2,10 +2,10 @@
     <div *ngFor="let resource of miningFactors.resources" class="box">
         <div class="res-wrapper">
             <div class="img-container">
-                <img class="icon"
-                     src="{{getLink(resource)}}"
-                     alt="{{resource.resourceType.singularName}}"
-                     matTooltip="{{getTooltip(resource.resourceType)}}">
+                <app-icon class="icon"
+                          [icon]="resource.resourceType"
+                          [altText]="resource.resourceType.singularName"
+                          png24px [toolTip]="getTooltip(resource.resourceType)"></app-icon>
             </div>
             <label class="amount-present">
                 {{getAsString(resource.amount)}}

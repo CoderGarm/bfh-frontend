@@ -76,6 +76,7 @@ import {SafeUrlPipe} from "./services/pipes/safe-url.pipe";
 import {MapDataProvider} from "./modules/strategic-operations/payload/mission-map/map-data-provider.component";
 import {MapData} from "./modules/strategic-operations/payload/mission-map/map-data.component";
 import {TakeATourComponent} from './components/take-a-tour/take-a-tour.component';
+import {ContributeCreditsComponent} from './components/contribute-credits/contribute-credits.component';
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -113,6 +114,7 @@ export let AppInjector: Injector;
         MapData,
         MapDataProvider,
         TakeATourComponent,
+        ContributeCreditsComponent,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),

@@ -1,12 +1,18 @@
 <div *ngIf="!!resourceType">
     <div class="clearfix">
         <div class="the-left vert-center">
-            <img class="icon" src="{{getLink(resourceType)}}" alt="{{resourceType.typeName}}" matTooltip="{{resourceType.typeName}}">
+            <app-icon class="icon"
+                      [icon]="resourceType"
+                      [altText]="resourceType.typeName"
+                      [toolTip]="resourceType.typeName"></app-icon>
             <app-number-short [input]="left"></app-number-short>
         </div>
 
         <div class="the-right vert-center">
-            <img class="icon" src="{{getLink(resourceType)}}" alt="{{resourceType.typeName}}" matTooltip="{{resourceType.typeName}}">
+            <app-icon class="icon"
+                      [icon]="resourceType"
+                      [altText]="resourceType.typeName"
+                      [toolTip]="resourceType.typeName"></app-icon>
             <app-number-short [input]="right"></app-number-short>
         </div>
 

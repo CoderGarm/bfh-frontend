@@ -7,8 +7,10 @@
         <mat-card-header>
             <mat-card-title>
                 <div class="flex-items-container">
-                    <img mat-card-avatar class="avatar-image icon"
-                         src="{{getLink(researchResult.hasIcon)}}" alt="research-icon">
+                    <app-icon mat-card-avatar class="avatar-image icon"
+                              [icon]="researchResult.hasIcon"
+                              [altText]="researchResult.name"
+                              png24px [toolTip]="researchResult.name"></app-icon>
                     <span matListItemTitle>{{ researchResult.name }}</span>
                 </div>
             </mat-card-title>

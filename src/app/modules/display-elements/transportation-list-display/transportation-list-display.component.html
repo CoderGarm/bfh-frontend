@@ -18,9 +18,10 @@
 
                     <app-outlined titleValue="{{ what.resourceType.typeName }}">
                         <div class="flex-items-from-start-container header-item">
-                            <app-icon [icon]="what.resourceType" [altText]="what.resourceType.typeName"
-                                      circleBorder color="b"
-                                      png24px [toolTip]="what.resourceType.typeName"></app-icon>
+                            <app-icon [icon]="what.resourceType"
+                                      [altText]="what.resourceType.typeName"
+                                      circleBorder
+                                      png32px [toolTip]="what.resourceType.typeName"></app-icon>
                             <app-number-short [input]="what.total"></app-number-short>
                         </div>
                         <ul>

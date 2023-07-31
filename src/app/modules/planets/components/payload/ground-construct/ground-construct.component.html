@@ -29,7 +29,10 @@
                     *ngFor="let sequence of eRefinementSequences"
                     [value]="sequence.typeName"
                     (click)="filterDisplayedConstructions(); $event.stopPropagation();">
-                <img matChipTrailingIcon src="{{getLink(sequence.product)}}" alt="{{sequence.typeName}}">
+                <app-icon matChipTrailingIcon
+                          [icon]="sequence.product"
+                          [altText]="sequence.product.typeName"
+                          [toolTip]="sequence.product.typeName"></app-icon>
                 {{sequence.typeName}}
             </mat-chip-option>
         </mat-chip-listbox>
@@ -42,7 +45,10 @@
                     *ngFor="let eResourceType of eResourceTypes"
                     [value]="eResourceType.typeName"
                     (click)="filterDisplayedConstructions(); $event.stopPropagation();">
-                <img matChipTrailingIcon src="{{getLink(eResourceType)}}" alt="{{eResourceType.typeName}}">
+                <app-icon matChipTrailingIcon
+                          [icon]="eResourceType"
+                          [altText]="eResourceType.typeName"
+                          [toolTip]="eResourceType.typeName"></app-icon>
                 {{eResourceType.typeName}}
             </mat-chip-option>
         </mat-chip-listbox>
@@ -64,10 +70,11 @@
                          [disabled]="checkIfTooExpensive(construction)">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                <img mat-card-avatar class="avatar-image icon"
-                     src="{{getLink(construction)}}"
-                     [ngClass]="getInvisibility(construction)"
-                     alt="construction">
+                <app-icon matCardAvatar class="avatar-image icon"
+                          [ngClass]="getInvisibility(construction)"
+                          [icon]="construction.building.productionTarget"
+                          [altText]="construction.building.productionTarget.typeName"
+                          png24px [toolTip]="construction.building.productionTarget.typeName"></app-icon>
                 {{construction.building.name}} ({{ construction.operationalLevel }} / {{ construction.level }})
             </mat-panel-title>
             <mat-panel-description *ngIf="showDescription(construction)">

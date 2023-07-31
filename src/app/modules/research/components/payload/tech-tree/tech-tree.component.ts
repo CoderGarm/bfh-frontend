@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ElementRef, HostListener, ViewChild} from '@angular/core';
-import {EResourceType, Research, ResearchApiService, ResearchLevel, ResearchResult, ResearchTree, ResearchTreeChain, ResearchTreeElement} from "../../../../../services/swagger";
-import {TypeService} from "../../../../../services/type.service";
+import {Research, ResearchApiService, ResearchLevel, ResearchResult, ResearchTree, ResearchTreeChain, ResearchTreeElement} from "../../../../../services/swagger";
 import {ScrollManager} from "./scroll.manager";
 import {Box} from "./box";
 import {ConnectionPositionPair} from "@angular/cdk/overlay";
@@ -36,8 +35,6 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
 
     private tree?: ResearchTree;
     private researchMap: Map<number, Research> = new Map<number, Research>();
-    private readonly researchType: EResourceType;
-    private readonly fallback: string;
     private completedResearches: ResearchLevel[] = [];
 
     @ViewChild('canvas', {static: true})
@@ -65,12 +62,9 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
         }
     }
 
-    constructor(private researchApi: ResearchApiService,
-                private typeService: TypeService) {
+    constructor(private researchApi: ResearchApiService) {
         super();
 
-        this.researchType = this.typeService.eResourceTypes.filter(type => type.typeName == 'RESEARCH')[0];
-        this.fallback = "assets/" + this.researchType.folder + "/png16x/" + this.researchType.iconName + "_c.png";
         this.setDrawMethod(this.drawTree);
     }
 
@@ -313,25 +307,6 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
             levelCompleted: this.getCompletedLevel(research.idResearch)
         }
         return [elem];
-    }
-
-
-    getResearch(idResearch: number): Research | undefined {
-        return this.researchMap.get(idResearch);
-    }
-
-    getLink(idResearch: number): string {
-        let research = this.getResearch(idResearch);
-        if (!research) {
-            return this.fallback;
-        }
-        let hasIcon = research.hasIcon;
-        if (!hasIcon) {
-            return this.fallback;
-        }
-        let folder = hasIcon.folder;
-        let iconName = hasIcon.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
     getCompletedLevel(idResearch: number): number {

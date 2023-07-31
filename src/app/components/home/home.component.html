@@ -13,7 +13,21 @@
 
 <div class="footer">
     <hr>
-    Contact: webmaster [at] battleforhonor.de
+    <span>Contact: webmaster [at] battleforhonor.de</span>
+
+    <button mat-mini-fab color="primary" id="credits-btn" matTooltip="Credits to contributors"
+            (click)="isOpen = !isOpen"
+            cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+        <mat-icon>help_outline</mat-icon>
+    </button>
+
+    <ng-template
+            cdkConnectedOverlay
+            [cdkConnectedOverlayOrigin]="trigger"
+            [cdkConnectedOverlayOpen]="isOpen">
+        <app-contribute-credits></app-contribute-credits>
+    </ng-template>
+
     <hr>
 </div>
 

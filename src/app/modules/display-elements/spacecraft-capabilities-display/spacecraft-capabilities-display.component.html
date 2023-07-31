@@ -1,8 +1,9 @@
 <div class="flex-items-container container" *ngIf="!fleet || (!!fleet && isOwnFleet(fleet))">
     <app-outlined *ngFor="let cap of baseFleetCapabilities?.capabilities" [titleValue]="cap.moduleType.typeName">
-        <img class="icon" src="assets/{{cap.moduleType.folder}}png24x/{{cap.moduleType.iconName}}_c.png"
-             alt="{{cap.moduleType}}"
-             matTooltip="{{cap.moduleType.typeName}}">
+        <app-icon class="icon"
+                  [icon]="cap.moduleType"
+                  [altText]="cap.moduleType.typeName"
+                  png24px [toolTip]="cap.moduleType.typeName"></app-icon>
         <div>
             <div *ngIf="!ngClass">{{getCapValueInShort(cap)}}</div>
             <mat-progress-bar

@@ -63,14 +63,4 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
         }
         return "";
     }
-
-    /**
-     * constructs and returns the url to the icon
-     */
-    getLink(typeName: string): string {
-        const hullType = this.hullTypes.get(typeName);
-        let folder = hullType!.folder;
-        let iconName = hullType!.iconName;
-        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
-    }
 }

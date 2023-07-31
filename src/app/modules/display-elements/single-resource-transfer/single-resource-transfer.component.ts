@@ -94,12 +94,6 @@ export class SingleResourceTransferComponent implements OnInit, OnChanges {
         return !leftVal ? rightVal : !rightVal ? -leftVal : 0;
     }
 
-    getLink(resourceType: EResourceType | EEducationType): string {
-        let folder = resourceType.folder;
-        let iconName = resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
-    }
-
     private getResourceAmount(resource: EResourceType, deposit?: ResourceDeposit): number {
         if (!deposit) {
             return 0;

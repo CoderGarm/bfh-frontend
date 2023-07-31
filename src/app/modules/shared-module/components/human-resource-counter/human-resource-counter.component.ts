@@ -60,10 +60,4 @@ export class HumanResourceCounterComponent implements OnInit {
         }
         this.numericEmitter.emit(r)
     }
-
-    getLink(resourceType: EEducationType): string {
-        let folder = resourceType.folder;
-        let iconName = resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
-    }
 }

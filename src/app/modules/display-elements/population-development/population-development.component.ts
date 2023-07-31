@@ -38,17 +38,11 @@ export class PopulationDevelopmentComponent extends SubscriptionManager implemen
     constructor(private typeService: TypeService) {
         super();
 
-        this.resourceTypes = typeService.eResourceTypes;
-        this.educationTypes = typeService.educationTypes;
+        this.resourceTypes = this.typeService.eResourceTypes;
+        this.educationTypes = this.typeService.educationTypes;
     }
 
     ngOnInit(): void {
-    }
-
-    getLink(cap: HumanResourceAmount): string {
-        let folder = cap.resourceType.folder;
-        let iconName = cap.resourceType.iconName;
-        return "assets/" + folder + "/png16x/" + iconName + "_c.png";
     }
 
     getHumans(resource: EEducationType, costs?: ResourceDeposit): number {

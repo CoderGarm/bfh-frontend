@@ -20,7 +20,10 @@
         <div *ngFor="let resource of getDisplayableResources()!" class="box">
             <div class="res-wrapper">
                 <div class="img-container">
-                    <img class="icon" src="{{getLink(resource)}}" alt="{{resource.resourceType.typeName}}" matTooltip="{{resource.resourceType.typeName}}">
+                    <app-icon class="icon"
+                              [icon]="resource.resourceType"
+                              [altText]="resource.resourceType.typeName"
+                              png24px [toolTip]="resource.resourceType.typeName"></app-icon>
                 </div>
                 <div class="amount-present" *ngIf="isPresent(utilization)">
                     <app-number-short [input]="getHumans(resource.resourceType, utilization)"></app-number-short>

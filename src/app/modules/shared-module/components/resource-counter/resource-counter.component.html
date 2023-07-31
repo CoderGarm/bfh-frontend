@@ -1,8 +1,8 @@
 <div *ngIf="!!resourceType">
-    <img class="icon"
-         src="{{getLink(resourceType)}}"
-         alt="{{resourceType.singularName}}"
-         matTooltip="{{resourceType.typeName}}">
+    <app-icon class="icon"
+              [icon]="resourceType"
+              [altText]="resourceType.typeName"
+              png32px [toolTip]="resourceType.typeName"></app-icon>
     <app-numeric-counter [inputDisabled]="false"
                          ngClass="big"
                          [startAt]="startAt"

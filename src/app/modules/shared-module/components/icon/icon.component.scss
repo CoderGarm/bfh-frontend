@@ -1,0 +1,12 @@
+@import "src/styles/variables";
+
+.circurlar-border {
+  display: inline-block;
+  border: 1px solid white;
+  border-radius: 50%;
+  background-color: $background-color;
+}
+
+.centered {
+  margin: 5px;
+}

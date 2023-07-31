@@ -1,6 +1,5 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {CdkOverlayOrigin, ConnectionPositionPair} from "@angular/cdk/overlay";
-import {HasIcon} from "../../../../../services/swagger";
 import {BoxWithContext} from "../tech-tree/tech-tree.component";
 
 @Component({
@@ -31,18 +30,6 @@ export class ResearchResultOverlayComponent implements OnInit {
     }
 
     ngOnInit(): void {
-    }
-
-    /**
-     * constructs and returns the url to the icon
-     */
-    getLink(hasIcon?: HasIcon): string {
-        if (!hasIcon) {
-            return '';
-        }
-        let folder = hasIcon.folder;
-        let iconName = hasIcon.iconName;
-        return "assets/" + folder + "/png32x/" + iconName + "_c.png";
     }
 
     @HostListener('window:resize', ['$event'])

@@ -139,12 +139,6 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
         });
     }
 
-    getLink(job: Job): string {
-        let folder = job.facility.building.productionTarget.folder;
-        let iconName = job.facility.building.productionTarget.iconName;
-        return "assets/" + folder + "/png64x/" + iconName + "_c.png";
-    }
-
     getPercentage(fleet: Fleet) {
         let max = 0;
         fleet.spacecraftCapabilities.capabilities.forEach(value => max += value.value);

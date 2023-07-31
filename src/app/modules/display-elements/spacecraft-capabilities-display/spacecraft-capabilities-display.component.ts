@@ -46,12 +46,6 @@ export class SpacecraftCapabilitiesDisplayComponent extends SubscriptionManager 
         }
     }
 
-    getLink(cap: CapabilityValue): any {
-        let iconName = cap.moduleType.iconName;
-        let folder = cap.moduleType.folder;
-        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
-    }
-
     getPercentage(cap: CapabilityValue) {
         let moduleType = cap.moduleType;
         if (!this.currentFleetCapabilities || !this.baseFleetCapabilities) {

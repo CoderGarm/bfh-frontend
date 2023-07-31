@@ -43,18 +43,6 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
         this.constructionOutput.emit(this.construction);
     }
 
-    /**
-     * constructs and returns the url to the icon
-     */
-    getLink(): string {
-        if (!!this.construction) {
-            let folder = this.construction.building.productionTarget.folder;
-            let iconName = this.construction.building.productionTarget.iconName;
-            return "assets/" + folder + "/png24x/" + iconName + "_c.png";
-        }
-        return "";
-    }
-
     getRefinementDescription() {
         const refSeq = this.construction.building.refinementSequence;
         return refSeq!.educt.typeName + " to " + refSeq!.product.typeName;

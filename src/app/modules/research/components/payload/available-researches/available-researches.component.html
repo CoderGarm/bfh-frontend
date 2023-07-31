@@ -7,9 +7,11 @@
     <mat-card appearance="outlined" *ngFor="let research of availableResearches">
         <mat-card-content>
             <app-outlined titleValue="{{ 'research.title' | translate }}" class="floated">
-                <img mat-card-avatar class="avatar-image icon" *ngIf="!!research.research.hasIcon"
-                     src="assets/{{research.research.hasIcon.folder}}png24x/{{research.research.hasIcon.iconName}}_c.png"
-                     [ngClass]="getInvisibility(research)" alt="research-icon">
+                <app-icon mat-card-avatar class="avatar-image icon"
+                          [ngClass]="getInvisibility(research)"
+                          [icon]="research.research.hasIcon"
+                          [altText]="research.research.name"
+                          png24px [toolTip]="research.research.name"></app-icon>
                 {{research.research.name}}
             </app-outlined>
             <app-outlined titleValue="{{ 'research.level-details' | translate }}" class="floated-right">

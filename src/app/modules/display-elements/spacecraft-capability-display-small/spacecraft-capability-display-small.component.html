@@ -3,10 +3,11 @@
     <div *ngFor="let cap of baseFleetCapabilities?.capabilities"
          class="flex-items-container-value"
          [matTooltip]="getCapValue(cap)">
-        <img class="icon"
-             [ngClass]="getCss(cap)"
-             src="{{getLink(cap)}}"
-             alt="{{cap.moduleType}}">
+        <app-icon class="icon"
+                  [ngClass]="getCss(cap)"
+                  [icon]="cap.moduleType"
+                  [altText]="cap.moduleType.typeName"
+                  [toolTip]="cap.moduleType.typeName"></app-icon>
         <mat-progress-bar
                 mode="determinate"
                 [value]="getPercentage(cap)"></mat-progress-bar>

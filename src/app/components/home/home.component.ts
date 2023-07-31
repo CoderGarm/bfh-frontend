@@ -17,6 +17,8 @@ export class HomeComponent extends SubscriptionManager implements OnInit {
 
     latestContent?: ArticlePlainContent;
 
+    isOpen: boolean = false;
+
     constructor(private wikiService: WikiApiService) {
         super();
     }

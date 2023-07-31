@@ -5,11 +5,11 @@
         <div *ngFor="let entry of warShipsByType  | keyvalue" class="flex-container">
             <mat-list class="ship-list">
                 <div mat-subheader>
-                    <img matListItemAvatar
-                         class="icon"
-                         src="{{getLink(entry.value[0].shipClass.shipClassType.typeName)}}"
-                         [matTooltip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"
-                         alt="hull-icon">
+                    <app-icon matListItemAvatar class="icon"
+                              [icon]="entry.value[0].shipClass.shipClassType"
+                              [altText]="entry.value[0].shipClass.shipClassType.typeName"
+                              png24px [toolTip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"></app-icon>
+
                     {{entry.value[0].shipClass.name}} {{ 'fleet.composition.class.title' | translate }}
                 </div>
 

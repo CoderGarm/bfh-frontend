@@ -1,0 +1,10 @@
+<span [ngClass]="{'circurlar-border': _circleBorder}">
+    <img *ngIf="!!icon" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/{{icon.folder}}{{icon.iconName}}.png"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
+         alt="{{altText}}"
+         matTooltip="{{toolTip}}">
+</span>
+
+<!-- fixme find population icons -->
+<!-- fixme find ship class icons -->
+<!-- fixme name icon source as licensed -->
