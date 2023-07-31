@@ -25,13 +25,12 @@ $new-background-color: #25242F; // compare https://www.heise.de/imgs/18/4/2/7/5/
 $purple-green-secondary-background-color: #3b3b3b;
 $new-secondary-background-color: #2E3338;
 
-$background-color: $purple-green-background-color;
-$secondary-background-color: $purple-green-secondary-background-color;
-// todo define useful color set
+$background-color: $new-background-color;
+$secondary-background-color: $new-secondary-background-color;
 
 $tertiary-background-color: hsla(214, 90%, 52%, 0.1);
 $disabled-color: rgba(255, 255, 255, 0.3);
-$element-background-color: rgb(66, 66, 66);
+$element-background-color: $secondary-background-color;
 
 $divider-color: rgba(255, 255, 255, 0.12);
 

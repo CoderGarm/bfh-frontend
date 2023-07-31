@@ -10,6 +10,10 @@
 
 /** placed here because of css encapsulation in angular **/
 
+.mat-drawer {
+  background-color: $secondary-background-color;
+}
+
 .clearfix:after {
   content: ".";
   display: block;
@@ -271,6 +275,7 @@ body {
 
 .mat-expansion-panel {
   width: $page-width;
+  background-color: $secondary-background-color;
 }
 
 app-tech-tree-display {
@@ -318,7 +323,7 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
 }
 
 .streamline-background {
-  background-color: $background-color;
+  background-color: $secondary-background-color;
 }
 
 .header-item > .mat-grid-tile-content {
