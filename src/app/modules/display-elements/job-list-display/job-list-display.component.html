@@ -18,7 +18,7 @@
     <mat-list-item *ngFor="let pJob of planetaryJobs" style="height: 100%;">
         <mat-grid-list [cols]="displayResearch ? 4 : 3" rowHeight="120px" class="job-list">
             <mat-grid-tile>
-                <img matListItemAvatar src="assets/icons/planets/png24x/planet_c.png" alt="planet icon">
+                <app-icon matListItemAvatar png64px planet></app-icon>
                 <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
             </mat-grid-tile>
 

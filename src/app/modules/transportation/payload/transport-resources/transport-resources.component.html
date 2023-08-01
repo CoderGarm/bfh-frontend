@@ -3,7 +3,7 @@
         <mat-expansion-panel *ngFor="let planet of planets" class="margin-bottom">
             <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="{{ 'transportation.resources.help' | translate }}">
-                    <img matListItemAvatar src="assets/icons/planets/png24x/planet_c.png" alt="planet icon">
+                    <app-icon matListItemAvatar png24px planet></app-icon>
                     {{planet.name}}
                 </mat-panel-title>
                 <mat-panel-description>

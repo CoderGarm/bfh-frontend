@@ -15,7 +15,7 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
     baseFleetCapabilities?: SpacecraftCapabilities;
 
     @Input()
-    currentFleetState?: SpacecraftCapabilities;
+    currentFleetCapabilities?: SpacecraftCapabilities;
 
     @Input()
     fightingCapable?: boolean;
@@ -31,7 +31,7 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
 
     getPercentage(cap: CapabilityValue) {
         let moduleType = cap.moduleType;
-        if (!this.currentFleetState || !this.baseFleetCapabilities) {
+        if (!this.currentFleetCapabilities || !this.baseFleetCapabilities) {
             return 100;
         }
 
@@ -40,7 +40,7 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
             return 100;
         }
 
-        let currentCapValues = this.currentFleetState.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        let currentCapValues = this.currentFleetCapabilities.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!currentCapValues || currentCapValues.length != 1) {
             return 100;
         }
@@ -74,7 +74,7 @@ export class SpacecraftCapabilityDisplaySmallComponent implements OnInit {
 
     private getCurrentCapValue(moduleType: EModuleType) {
         let currentValue = -1;
-        let currentCapValues = this.currentFleetState?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
+        let currentCapValues = this.currentFleetCapabilities?.capabilities.filter(cap => cap.moduleType.typeName === moduleType.typeName);
         if (!!currentCapValues && currentCapValues.length == 1) {
             currentValue = currentCapValues[0].value;
         }

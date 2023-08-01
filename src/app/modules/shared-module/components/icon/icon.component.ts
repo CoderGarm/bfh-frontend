@@ -19,6 +19,11 @@ export class IconComponent implements OnChanges {
 
     // @formatter:off
     @Input()
+    get planet() { return this._planet; }
+    set planet(value: any) { this._planet = this.coerceBooleanProperty(value); }
+    _planet: boolean = false;
+
+    @Input()
     get png64px() { return this._png64px; }
     set png64px(value: any) { this._png64px = this.coerceBooleanProperty(value); }
     _png64px: boolean = false;

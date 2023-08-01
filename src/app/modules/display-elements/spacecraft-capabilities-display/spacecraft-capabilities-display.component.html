@@ -1,15 +1,14 @@
 <div class="flex-items-container container" *ngIf="!fleet || (!!fleet && isOwnFleet(fleet))">
     <app-outlined *ngFor="let cap of baseFleetCapabilities?.capabilities" [titleValue]="cap.moduleType.typeName">
-        <app-icon class="icon"
-                  [icon]="cap.moduleType"
+        <app-icon [icon]="cap.moduleType"
                   [altText]="cap.moduleType.typeName"
                   png24px [toolTip]="cap.moduleType.typeName"></app-icon>
-        <div>
-            <div *ngIf="!ngClass">{{getCapValueInShort(cap)}}</div>
+        <span>
+            <span *ngIf="!ngClass" class="value-text">{{getCapValueInShort(cap)}}</span>
             <mat-progress-bar
                     mode="determinate"
                     [value]="getPercentage(cap)"
                     [matTooltip]="getCapValue(cap)"></mat-progress-bar>
-        </div>
+        </span>
     </app-outlined>
 </div>

@@ -3,6 +3,12 @@
          [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
          alt="{{altText}}"
          matTooltip="{{toolTip}}">
+
+    <img *ngIf="!icon" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/planets/planet.png"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
+         alt="{{altText}}"
+         matTooltip="{{toolTip}}">
+
 </span>
 
 <!-- fixme find population icons -->

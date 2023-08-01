@@ -3,7 +3,7 @@
 
 <mat-list *ngIf="finishedColonizations.length > 0">
     <mat-list-item *ngFor="let colo of finishedColonizations">
-        <img matListItemAvatar src="assets/icons/planets/png24x/planet_c.png">
+        <app-icon matListItemAvatar png24px planet></app-icon>
         <div mat-subheader>{{colo.colonizedPlanetName}}</div>
     </mat-list-item>
 </mat-list>
