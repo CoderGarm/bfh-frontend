@@ -195,3 +195,44 @@ span {
   border-radius: 0;
   padding: 0.5rem;
 }
+
+.icon {
+  position: absolute;
+  z-index: 99;
+  width: 128px;
+  height: 128px;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+}
+
+.icon:hover {
+  opacity: 0.2;
+}
+
+.icon-mid-top {
+  top: 50px;
+  left: 350px;
+  transform: rotate(-22deg);
+}
+
+.icon-ri-mid {
+  top: 60%;
+  right: 50px;
+  transform: rotate(25deg);
+}
+
+.icon-mid-mid {
+  top: 60%;
+  right: 50%;
+}
+
+.icon-le-mid {
+  top: 60%;
+  left: 20%;
+  transform: rotate(-22deg);
+}
+
