@@ -296,6 +296,7 @@
       "title": "Mission"
     },
     "create": {
+      "no-pooled-ships": "There are no more ships in the reserve fleet.",
       "select": {
         "planet": "Chose a venue",
         "ships": "Chose the ships",

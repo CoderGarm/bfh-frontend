@@ -1,1 +1,10 @@
 @import "../mission-administration/mission-administration.component";
+
+.outer {
+  display: flex;
+  flex-direction: column;
+}
+
+app-mission-create {
+  margin: auto;
+}

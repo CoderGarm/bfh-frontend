@@ -1,6 +1,7 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
+import {Mission} from "../../../../services/swagger";
 
 @Component({
     selector: 'app-mission-overview',
@@ -17,4 +18,10 @@ export class MissionOverviewComponent extends SubscriptionManager implements Aft
 
     }
 
+    getMissions(): Mission[] {
+        if (!!this.missionCommService.selectedPlanet) {
+            return this.missionCommService.activeMissions.filter(m => m.venue.idPlanet === this.missionCommService.selectedPlanet!.idPlanet);
+        }
+        return this.missionCommService.activeMissions;
+    }
 }

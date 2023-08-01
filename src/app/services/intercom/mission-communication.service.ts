@@ -21,6 +21,8 @@ export class MissionCommunicationService extends SubscriptionManager {
 
     systems: StarSystem[] = [];
 
+    selectedPlanet?: Planet;
+
     constructor(private missionService: MissionApiService,
                 private planetService: PlanetApiService,
                 private systemService: BackgroundService,
@@ -86,6 +88,6 @@ export class MissionCommunicationService extends SubscriptionManager {
 
     private buildPlanetsWithoutMission() {
         const idPlanetsWithMissions = this.activeMissions.map(m => m.venue.idPlanet);
-        this.planetsWithoutMissions.push(...this.colonizedPlanets.filter(p => !idPlanetsWithMissions.includes(p.idPlanet)));
+        this.planetsWithoutMissions = this.colonizedPlanets.filter(p => !idPlanetsWithMissions.includes(p.idPlanet));
     }
 }

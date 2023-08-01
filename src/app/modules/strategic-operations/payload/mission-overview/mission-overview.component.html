@@ -1,7 +1,7 @@
-<div class="content-area">
-    <app-mission-create [planets]="missionCommService.planetsWithoutMissions" [pooledWarships]="missionCommService.pooledShips"></app-mission-create>
+<div class="content-area outer">
+    <app-mission-create [planets]="missionCommService.colonizedPlanets" [pooledWarships]="missionCommService.pooledShips"></app-mission-create>
 
     <div class="content-area flex-items-container">
-        <app-mission-display *ngFor="let mission of missionCommService.activeMissions" [mission]="mission"></app-mission-display>
+        <app-mission-display *ngFor="let mission of getMissions()" [mission]="mission"></app-mission-display>
     </div>
 </div>

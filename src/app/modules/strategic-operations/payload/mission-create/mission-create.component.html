@@ -1,14 +1,15 @@
-<mat-card *ngIf="planets.length > 0" class="mission-item">
+<mat-card class="mission-item">
     <mat-card-header>
         <mat-card-title>{{ 'mission.create.title' | translate }}</mat-card-title>
     </mat-card-header>
 
-    <mat-card-content>
+    <mat-card-content *ngIf="planets.length > 0">
         <div class="flex-items-container clearfix">
 
             <mat-form-field appearance="outline">
                 <mat-label>{{ 'mission.create.select.planet' | translate }}</mat-label>
-                <mat-select [(ngModel)]="selectedPlanet">
+                <mat-select [(ngModel)]="missionCommService.selectedPlanet">
+                    <mat-option>none</mat-option>
                     <mat-option *ngFor="let planet of planets" [value]="planet">
                         {{ planet.name }}
                     </mat-option>
@@ -17,7 +18,7 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>{{ 'mission.create.select.type' | translate }}</mat-label>
-                <mat-select [(ngModel)]="selectedType" name="food">
+                <mat-select [(ngModel)]="selectedType" name="missionType">
                     <mat-option *ngFor="let type of availableMissionTypes" [value]="type">
                         {{ type }}
                     </mat-option>
@@ -31,6 +32,7 @@
                 <span matListItemTitle>{{warShip.name}}</span>
                 <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
             </mat-list-option>
+            <mat-hint *ngIf="pooledWarships.length == 0"><br>{{ 'mission.create.no-pooled-ships' | translate }}</mat-hint>
         </mat-selection-list>
 
     </mat-card-content>

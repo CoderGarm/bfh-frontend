@@ -18,7 +18,6 @@ export class MissionCreateComponent extends SubscriptionManager {
     @Input()
     pooledWarships: WarShip[] = [];
 
-    selectedPlanet?: Planet;
     selectedType?: MissionTypeEnum;
     selectedWarships?: WarShip[];
 
@@ -27,12 +26,12 @@ export class MissionCreateComponent extends SubscriptionManager {
     @Output()
     result: EventEmitter<Mission> = new EventEmitter<Mission>();
 
-    constructor(private missionCommService: MissionCommunicationService) {
+    constructor(protected missionCommService: MissionCommunicationService) {
         super();
     }
 
     isMissionCreateValid() {
-        return !!this.selectedType && !!this.selectedPlanet && !!this.selectedWarships && this.selectedWarships.length > 0;
+        return !!this.selectedType && !!this.missionCommService.selectedPlanet && !!this.selectedWarships && this.selectedWarships.length > 0;
     }
 
     setShips(event: MatSelectionListChange) {
@@ -43,13 +42,13 @@ export class MissionCreateComponent extends SubscriptionManager {
         if (this.isMissionCreateValid()) {
             const warShipIDs = this.selectedWarships!.map(w => w.idWarship);
             let sub = this.missionCommService.createMission({
-                venue: this.selectedPlanet!,
+                venue: this.missionCommService.selectedPlanet!,
                 ships: [],
                 warShipIDs: warShipIDs,
                 missionType: this.selectedType!
             }).subscribe(resp => {
                 this.missionCommService.activeMissions.push(resp);
-                this.selectedPlanet = undefined;
+                this.missionCommService.selectedPlanet = undefined;
                 this.selectedType = undefined;
                 this.selectedWarships = undefined;
                 this.pooledWarships = this.pooledWarships.filter(s => !warShipIDs.includes(s.idWarship));
