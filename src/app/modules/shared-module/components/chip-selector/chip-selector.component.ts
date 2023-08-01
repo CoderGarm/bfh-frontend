@@ -1,12 +1,12 @@
 import {AfterContentInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
 import {MatChipListbox} from "@angular/material/chips";
-import {MatIcon} from "@angular/material/icon";
+import {HasIcon} from "../../../../services/swagger";
 
 export interface ChipSelectorValue {
     value: string;
-    trailingIcon?: string | MatIcon;
-    leadingIcon?: string | MatIcon;
+    trailingIcon?: HasIcon;
+    leadingIcon?: HasIcon;
 }
 
 export interface ChipSelectorValueResult {
@@ -52,9 +52,6 @@ export class ChipSelectorComponent implements AfterContentInit, OnChanges {
     set preSelect(value: any) { this._preSelect = this.coerceBooleanProperty(value); }
     _preSelect: boolean = false;
     // @formatter:on
-
-    @Input()
-    trailingIcon?: string;
 
     @ViewChild('chipList')
     chipList!: MatChipListbox;

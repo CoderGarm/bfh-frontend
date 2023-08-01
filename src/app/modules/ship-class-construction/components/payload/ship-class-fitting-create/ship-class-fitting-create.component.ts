@@ -143,11 +143,14 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         this.alignmentAreas = this.typeService.alignmentAreas;
         this.weaponTypes = this.typeService.weaponTypes;
         this.weaponAlignmentTypes = this.typeService.weaponAlignmentTypes;
-        this.typeService.shipClassTypes.map(type => ({value: type.type})).forEach(ht => {
+
+        this.eHullTypeChipValues.push(...this.typeService.shipClassTypes.map((type: EShipClassType) => ({value: type.type, trailingIcon: type})));
+
+        /*this.typeService.shipClassTypes.map(type => ({value: type.type})).forEach(ht => {
             if (this.eHullTypeChipValues.filter(t => t.value === ht.value).length === 0) {
                 this.eHullTypeChipValues.push(ht);
             }
-        });
+        });*/
         this.fetchBaseData();
     }
 

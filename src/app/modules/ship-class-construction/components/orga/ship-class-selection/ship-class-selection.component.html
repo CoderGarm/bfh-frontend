@@ -4,6 +4,10 @@
                      (click)="selectClass(shipClass)"
                      [selected]="isSelected(shipClass.idShipClass!)"
                      class="sidenav-item">
-        {{ 'enum.abbrev.hullType.' + shipClass.shipClassType.typeName | translate }} - {{shipClass.name}}
+        <app-icon matListItemAvatar
+                  [icon]="shipClass.shipClassType"
+                  [altText]="shipClass.shipClassType.typeName"
+                  [toolTip]="shipClass.shipClassType.typeName"></app-icon>
+        {{shipClass.name}}
     </mat-list-option>
 </mat-selection-list>

@@ -6,8 +6,14 @@
                 [value]="chipValue.value"
                 (click)="sendOutput(); $event.stopPropagation();">
             {{chipValue.value}}
+
+            <app-icon matChipTrailingIcon
+                      *ngIf="!!chipValue.trailingIcon"
+                      [icon]="chipValue.trailingIcon"
+                      [altText]="chipValue.trailingIcon.typeName"
+                      [toolTip]="chipValue.trailingIcon.typeName"></app-icon>
+
+            <!--<mat-icon *ngIf="!!leadingicon" matChipTrailingIcon aria-hidden="false" [attr.aria-label]="chipValue" [fontIcon]="leadingicon"></mat-icon>-->
         </mat-chip-option>
-        <!--<mat-icon *ngIf="!!trailingIcon" matChipTrailingIcon aria-hidden="false" [attr.aria-label]="chipValue" [fontIcon]="trailingIcon"></mat-icon>-->
-        <!--<mat-icon *ngIf="!!leadingicon" matChipTrailingIcon aria-hidden="false" [attr.aria-label]="chipValue" [fontIcon]="leadingicon"></mat-icon>-->
     </mat-chip-listbox>
 </app-outlined>
