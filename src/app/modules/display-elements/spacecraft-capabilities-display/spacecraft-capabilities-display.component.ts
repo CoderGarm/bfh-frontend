@@ -3,6 +3,7 @@ import {CapabilityValue, Fleet, SpacecraftCapabilities} from "../../../services/
 import {SubscriptionManager} from "../../../subscription.manager";
 import {NumberShortPipe} from "../../../services/pipes/number-short.pipe";
 import {NumberThousandSeparatorPipe} from "../../../services/pipes/number-thousand-separator.pipe";
+import {FittingHelper} from "../../../services/helper/fitting.helper";
 
 @Component({
     selector: 'app-spacecraft-capabilities-display',
@@ -43,6 +44,12 @@ export class SpacecraftCapabilitiesDisplayComponent extends SubscriptionManager 
                 this.baseFleetCapabilities = undefined;
                 this.currentFleetCapabilities = undefined;
             }
+        }
+        if (!!this.baseFleetCapabilities) {
+            this.baseFleetCapabilities.capabilities = FittingHelper.getSanitizedSpaceCraftCapabilities(this.baseFleetCapabilities);
+        }
+        if (!!this.currentFleetCapabilities) {
+            this.currentFleetCapabilities.capabilities = FittingHelper.getSanitizedSpaceCraftCapabilities(this.currentFleetCapabilities);
         }
     }
 

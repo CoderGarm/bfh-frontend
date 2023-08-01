@@ -1,5 +1,6 @@
-import {AlignedFitting, Launcher, Missile, PassiveModule, Weapon} from "../swagger";
+import {AlignedFitting, CapabilityValue, EnumValueDto, Launcher, Missile, PassiveModule, SpacecraftCapabilities, Weapon} from "../swagger";
 import {WeaponHelper} from "./weapon.helper";
+import EModuleTypesEnum = EnumValueDto.EModuleTypesEnum;
 
 export class FittingHelper {
 
@@ -58,5 +59,12 @@ export class FittingHelper {
      */
     public static getPassiveMapKey(passive: PassiveModule): string {
         return passive.baseModule.idModule + "-passive";
+    }
+
+    /**
+     * Removes all propulsion related values.
+     */
+    public static getSanitizedSpaceCraftCapabilities(spacecraftCapabilities: SpacecraftCapabilities): CapabilityValue[] {
+        return spacecraftCapabilities.capabilities.filter(cap => !cap.moduleType.typeName.includes(EModuleTypesEnum.PROPULSION));
     }
 }

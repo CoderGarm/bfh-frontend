@@ -143,17 +143,10 @@ export class FittingCreateComponent extends SubscriptionManager implements After
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapabilities(this.shipClassMock)
-                .subscribe(resp => {
-                    const capabilityValues = resp.capabilities.filter(cap => !cap.moduleType.typeName.includes(EModuleTypesEnum.PROPULSION));
-                    this.capabilities = {
-                        capabilities: capabilityValues
-                    }
-                });
+            sub = this.resourceApi.getShipClassCapabilities(this.shipClassMock).subscribe(resp => this.capabilities = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapacities(this.shipClassMock)
-                .subscribe(resp => this.capacities = resp);
+            sub = this.resourceApi.getShipClassCapacities(this.shipClassMock).subscribe(resp => this.capacities = resp);
             this.subscriptions.push(sub);
         } else if (!this.shipClassMock) {
             this.costs = undefined;

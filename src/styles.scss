@@ -322,8 +322,13 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
   position: relative;
 }
 
-.streamline-background, .mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical {
+.streamline-background, .mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal {
   background-color: $secondary-background-color;
+}
+
+.mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal {
+  border-radius: 20px;
+  padding: 5px;
 }
 
 .header-item > .mat-grid-tile-content {
