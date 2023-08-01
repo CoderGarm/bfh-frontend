@@ -70,7 +70,7 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        //if (changes['orbitDefinitions']) { fixme set up mission type change not as a redraw
+        //if (changes['orbitDefinitions']) { todo set up mission type change not as a redraw
         this.drawMap();
         //}
     }
