@@ -185,6 +185,9 @@
       },
       "select-for-move": {
         "checkbox": "Select for flight",
+        "no-ftl": {
+          "title": "Not every ship has a Warshawski sail installed"
+        },
         "title": "Select the fleet which should move to"
       }
     }

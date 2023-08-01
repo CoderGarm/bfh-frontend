@@ -185,6 +185,9 @@
       },
       "select-for-move": {
         "checkbox": "Wähle für Flug",
+        "no-ftl": {
+          "title": "Nicht auf jedem Schiff ist ein Warshawski-Segel installiert"
+        },
         "title": "Wähle Flotten für den Flug aus, Ziel:"
       }
     }

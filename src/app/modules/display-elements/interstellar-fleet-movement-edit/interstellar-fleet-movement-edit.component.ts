@@ -30,6 +30,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     destinationDefinition: string = "destination";
 
     plannedMovements: Move[] = [];
+    nonFtlFleets: number[] = [];
 
     constructor(private fleetService: FleetApiService,
                 private commService: StarMapCommunicationService) {
@@ -107,19 +108,24 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         }
 
         let hyperLimitPosition = this.createRandomPointOnHyperLimit();
-        let fleetMoves = this.fleets.filter(f => !f.move).map(fleet => {
-            const fm: FleetMove = {
-                idFleetToMove: fleet.idFleet,
-                idDestinationSystem: this.destination!.idStarSystem,
-                destinationOrbit: hyperLimitPosition
-            }
-            return fm;
-        });
+        let fleetMoves = this.fleets
+            .filter(f => !f.move)
+            .filter(f => f.isFTLCapable)
+            .map(fleet => {
+                const fm: FleetMove = {
+                    idFleetToMove: fleet.idFleet,
+                    idDestinationSystem: this.destination!.idStarSystem,
+                    destinationOrbit: hyperLimitPosition
+                }
+                return fm;
+            });
+        this.nonFtlFleets = this.fleets.filter(f => !f.move).filter(f => !f.isFTLCapable).map(f => f.idFleet);
+
         if (fleetMoves.length < 1) {
             return;
         }
         let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
-            this.plannedMovements = resp;
+            this.plannedMovements.push(...resp);
         });
         this.subscriptions.push(sub);
     }
