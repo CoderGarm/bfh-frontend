@@ -1,6 +1,6 @@
 <mat-card style="background-color: transparent;" *ngIf="!!fleet">
     <mat-card-header>
-        <img mat-card-avatar class="avatar-image icon" src="{{getLink()}}" alt="fleet-icon" [ngClass]="getCssMarker()">
+        <app-icon matCardAvatar png32px [fleetSize]="fleet.ships.length" [ngClass]="getCssMarker()"></app-icon>
         <mat-card-title>
             {{fleet.name}}
         </mat-card-title>

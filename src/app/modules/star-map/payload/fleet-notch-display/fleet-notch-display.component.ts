@@ -39,14 +39,6 @@ export class FleetNotchDisplayComponent extends SubscriptionManager implements O
         return !this.fleet || this.fleet.owner.idUser == this.userId;
     }
 
-    /**
-     * constructs and returns the url to the icon
-     */
-    getLink(): string {
-        //todo amend fleet size icon
-        return "assets/icons/fleets/png64x/small_fleet_c.png";
-    }
-
     ngOnChanges(changes: SimpleChanges): void {
         this.fetchDestination();
         this.fetchPosition();

@@ -17,6 +17,11 @@ export class IconComponent implements OnChanges {
     @Input()
     toolTip: string = '';
 
+    @Input()
+    fleetSize?: number;
+
+    fleetIcon?: string;
+
     // @formatter:off
     @Input()
     get planet() { return this._planet; }
@@ -56,6 +61,7 @@ export class IconComponent implements OnChanges {
         if (this.png24px) {
             this.sizeComplement = '24px';
         }
+        this.fleetIcon = !this.fleetSize ? undefined : this.fleetSize <= 5 ? 'rank-1' : this.fleetSize <= 15 ? 'rank-2' : 'rank-3';
     }
 
     private coerceBooleanProperty(value: any): boolean {

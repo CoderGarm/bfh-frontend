@@ -3,7 +3,7 @@
     <div mat-subheader *ngIf="movingFleets.length > 0">{{ 'fleet.ongoing-movement.title' | translate }}</div>
 
     <mat-list-item *ngFor="let fleet of movingFleets" lines="3">
-        <img matListItemAvatar class="icon" ngSrc="assets/icons/fleets/png64x/small_fleet_c.png" alt="fleet-icon" height="64" width="64">
+        <app-icon matListItemAvatar png32px [fleetSize]="fleet.ships.length"></app-icon>
         <div matListItemTitle>
             {{ fleet.name }}
         </div>

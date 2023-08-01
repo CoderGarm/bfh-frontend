@@ -76,13 +76,6 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
         }
     }
 
-    /**
-     * constructs and returns the url to the icon
-     */
-    getLink(): string {
-        return "assets/icons/fleets/png32x/small_fleet_c.png";
-    }
-
     enable() {
         const disabled = this.formGroup.controls.fleetName.disabled;
         if (disabled) {

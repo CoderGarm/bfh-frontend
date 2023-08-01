@@ -39,6 +39,10 @@ export interface FleetMovement {
      */
     duration: number;
     /**
+     * The size of the moving fleet.
+     */
+    fleetSize: number;
+    /**
      * If the incoming fleet is from a foreign empire.
      */
     isForeignFleet: boolean;

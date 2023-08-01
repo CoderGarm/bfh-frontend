@@ -20,7 +20,7 @@
             <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group">
                 <div *ngIf="node.children.length > 0">
                     <div mat-subheader *ngFor="let childNode of node.children">
-                        <img class="icon" src="assets/icons/fleets/png64x/small_fleet_c.png" alt="fleet-icon">
+                        <app-icon png32px [fleetSize]="childNode.finishedMovement.fleetSize"></app-icon>
                         <mat-icon class="foreign-fleet" *ngIf="childNode.finishedMovement.isForeignFleet">warning_amber</mat-icon>
                         {{childNode.finishedMovement.fleetName}} of {{childNode.finishedMovement.fleetOwnerName}}
                     </div>
