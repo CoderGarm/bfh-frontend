@@ -331,6 +331,12 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
   padding: 5px;
 }
 
+.mat-mdc-table {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-collapse: inherit;
+}
+
 .header-item > .mat-grid-tile-content {
   justify-content: start;
 }
