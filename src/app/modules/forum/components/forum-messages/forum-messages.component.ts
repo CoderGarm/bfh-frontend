@@ -3,7 +3,6 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CreateForumThreadMessage, EnumValueDto, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {tap} from "rxjs/operators";
-import {MarkdownService} from "ngx-markdown";
 import {DatePipe} from "@angular/common";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
 
@@ -36,16 +35,15 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     isAdmin: boolean = false;
     noSendAllowed: boolean = false;
 
-    now: string;
+    now: number;
 
-    constructor(private markdownService: MarkdownService,
-                private datePipe: DatePipe,
+    constructor(private datePipe: DatePipe,
                 private notif: SnackbarNotificationService,
                 private forumApi: ForumApiService) {
         super();
 
         this.isAdmin = this.tokenStorage.getRole() === EnumValueDto.EWebUserRolesEnum.ADMIN;
-        this.now = this.datePipe.transform(new Date(), 'dd.MM.yyyy HH:mm')!;
+        this.now = new Date().getTime();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -58,7 +56,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         if (!this.selectedForumThread || !this.selectedForumThread.title.toLowerCase().includes('release')) {
             return false;
         }
-        const timeframe = this.datePipe.transform(new Date(Date.parse(message.sentAt + '') + (1000 * 60 * 30)), 'dd.MM.yyyy HH:mm')!;
+        const timeframe = new Date(Date.parse(message.sentAt + '') + (1000 * 60 * 30)).getTime();
         const indexOf = this.messagesInThread?.indexOf(message);
         return message.idForum == 1 && indexOf == 0 && this.isAdmin && this.now < timeframe;
     }
