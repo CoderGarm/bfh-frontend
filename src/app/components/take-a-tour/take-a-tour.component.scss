@@ -166,6 +166,28 @@ span {
   font-family: 'Courier', serif;
   -webkit-mask-size: 944px 604px;
   mix-blend-mode: multiply;
+
+
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+}
+
+.stamp:hover {
+  transform: rotate(0deg) scale(2);
+  background-color: lightcyan;
+  mix-blend-mode: color-burn;
+  opacity: 1;
+}
+
+.comment-box-left:hover {
+  transform: translateY(calc(100%)) translateX(calc(50%));
+}
+
+.comment-box-right:hover {
+  transform: translateY(calc(100%)) translateX(calc(-50%));
 }
 
 .stamp > span {
