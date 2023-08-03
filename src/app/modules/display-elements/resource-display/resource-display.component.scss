@@ -73,7 +73,7 @@
 }
 
 .uprising {
-  color: red;
+  color: $warning-color;
 }
 
 .warning {
@@ -81,7 +81,7 @@
 }
 
 .fine {
-  color: darkgreen;
+  color: $success;
 }
 
 .height-reduced {

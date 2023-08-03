@@ -91,14 +91,12 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.jobsDefinition]) {
-            this.prepareData();
-        }
         this.isFinishedJobsDisplay = this.title_key === 'finished';
 
         if (changes['displayNoResearch']) {
             this.displayResearch = !this._displayNoResearch;
         }
+        this.prepareData();
     }
 
     private prepareData() {
@@ -118,7 +116,11 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
                 researches: jobs.filter(job => job.isResearchJob),
                 shipyard: jobs.filter(job => job.isShipyardJob)
             }
-            this.planetaryJobs.push(jobsPerPlanet);
+            const researchPresentButIgnore = !this.displayResearch && researchPresent;
+            if (!researchPresentButIgnore || jobsPerPlanet.shipyard!.length > 0 || jobsPerPlanet.constructions!.length > 0) {
+                // not the best variable naming - just ignore research-only planets when don't displaying researches
+                this.planetaryJobs.push(jobsPerPlanet);
+            }
         });
         this.displayResearch = this._displayResearchOnlyWhenPresent && researchPresent;
     }

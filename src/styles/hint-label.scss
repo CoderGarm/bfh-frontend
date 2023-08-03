@@ -1,0 +1,36 @@
+@import "src/styles/variables";
+
+
+:has(warning-hint-animated) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.warning-hint {
+  color: $warning-color;
+  background-color: $bright-background-color;
+  padding: 0 5px;
+  border-radius: 5px;
+  outline: 1px solid black;
+}
+
+.warning-hint-animated {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  position: relative;
+  animation: 3s linear 0s 1 alternate move;
+}
+
+@keyframes move {
+  0%,
+  25% {
+    transform: translateX(0%);
+    left: 0;
+  }
+  75%,
+  100% {
+    transform: translateX(-100%);
+    left: 100%;
+  }
+}

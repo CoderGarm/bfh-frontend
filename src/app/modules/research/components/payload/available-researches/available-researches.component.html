@@ -1,7 +1,5 @@
 <div class="side-nav-open-change-area-fixed"></div>
 
-<label *ngIf="availableResearches.length == 0">{{ 'research.no-available' | translate }}</label>
-<label *ngIf="!researchPossible">{{ 'research.not-possible' | translate }}</label>
 
 <div class="bottom-spacer content-area">
     <mat-card appearance="outlined" *ngFor="let research of availableResearches">
@@ -22,5 +20,9 @@
         <mat-card-actions>
             <button mat-button [disabled]="!isResearchPossible(research)" (click)="runResearch(research)">Start research</button>
         </mat-card-actions>
+        <mat-card-footer *ngIf="availableResearches.length == 0 || !researchPossible">
+            <label class="warning-hint warning-hint-animated" *ngIf="availableResearches.length == 0">{{ 'research.no-available' | translate }}</label>
+            <label class="warning-hint warning-hint-animated" *ngIf="!researchPossible">{{ 'research.not-possible' | translate }}</label>
+        </mat-card-footer>
     </mat-card>
 </div>
