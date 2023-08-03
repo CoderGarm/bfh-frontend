@@ -49,6 +49,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     ];
 
     message?: string;
+    rememberIgnoreScreenWarning: boolean;
 
     constructor(private spinnerService: SpinnerService,
                 private spinner: NgxSpinnerService,
@@ -64,6 +65,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
                 private chatApi: ChatApiService,
                 private forumApi: ForumApiService) {
         super();
+
+        this.rememberIgnoreScreenWarning = this.tokenStorage.getRememberScreenWarning();
 
         // this language will be used as a fallback when a translation isn't found in the current language
         translate.setDefaultLang(TranslationEditorComponent.DEFAULT_LANGUAGE);
@@ -105,7 +108,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.subscriptions.push(sub);
 
 
-        if (window.innerWidth <= 800) {
+        if (!this.rememberIgnoreScreenWarning && window.innerWidth <= 800) {
             this.message = 'The screen is too small. Use a bigger one.';
             this.spinner.show('screen-size');
         }
@@ -113,7 +116,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     closeScreenSizeWarning() {
         this.message = undefined;
-        this.spinner.hide('screen-size')
+        this.spinner.hide('screen-size');
+
+        this.tokenStorage.rememberScreenWarning(this.rememberIgnoreScreenWarning);
     }
 
     showSeasonBadge() {

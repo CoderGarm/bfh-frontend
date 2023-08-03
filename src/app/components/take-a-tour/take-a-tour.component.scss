@@ -183,11 +183,11 @@ span {
 }
 
 .comment-box-left:hover {
-  transform: translateY(calc(100%)) translateX(calc(50%));
+  transform: translateY(calc(10%)) translateX(calc(5%));
 }
 
 .comment-box-right:hover {
-  transform: translateY(calc(100%)) translateX(calc(-50%));
+  transform: translateY(calc(10%)) translateX(calc(-5%));
 }
 
 .stamp > span {

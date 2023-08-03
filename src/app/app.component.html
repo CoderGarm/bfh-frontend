@@ -10,10 +10,19 @@
         <ngx-spinner type="ball-scale-multiple" color="#375a7f">{{ message }}</ngx-spinner>
         <ngx-spinner type="ball-scale-multiple" color="#375a7f" name="screen-size">
             <div class="screen-size-warning">
-                <div>{{ message }}</div>
-                <button mat-mini-fab color="primary" aria-label="Close button" matTooltip="Close" (click)="closeScreenSizeWarning()">
-                    <mat-icon>close_fullscreen</mat-icon>
-                </button>
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>{{ message }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-checkbox [(ngModel)]="rememberIgnoreScreenWarning">{{ 'screen-size-warning.remember' | translate }}</mat-checkbox>
+                    </mat-card-content>
+                    <mat-card-actions align="end">
+                        <button mat-raised-button color="primary" aria-label="Close button" matTooltip="Close" (click)="closeScreenSizeWarning()">
+                            {{ 'screen-size-warning.close' | translate }}
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
             </div>
         </ngx-spinner>
         <router-outlet></router-outlet>

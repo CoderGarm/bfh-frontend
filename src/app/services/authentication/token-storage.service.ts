@@ -166,4 +166,13 @@ export class TokenStorage {
     rememberSystems(systems: StarSystem[]) {
         localStorage.setItem(this.systems, JSON.stringify(systems));
     }
+
+    rememberScreenWarning(rememberScreenWarning: boolean) {
+        localStorage.setItem('screenSizeWarning', JSON.stringify(rememberScreenWarning));
+    }
+
+    getRememberScreenWarning() {
+        const stringValue = localStorage.getItem('screenSizeWarning');
+        return (stringValue == "true");
+    }
 }

@@ -493,6 +493,10 @@
     },
     "ticks-to-done": "benötigte Ticks"
   },
+  "screen-size-warning": {
+    "close": "Schließen",
+    "remember": "Einstellung merken"
+  },
   "shipyard": {
     "constructions": {
       "build": {
