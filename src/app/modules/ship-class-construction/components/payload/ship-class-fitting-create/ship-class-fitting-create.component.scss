@@ -16,7 +16,7 @@
 .ammo-card {
   width: fit-content;
   height: fit-content;
-  flex: 2 1 auto;
+  border-radius: 20px;
 
   & .mat-mdc-card-content {
     margin-top: 15px
