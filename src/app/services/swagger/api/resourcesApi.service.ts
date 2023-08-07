@@ -273,6 +273,43 @@ export class ResourcesApiService {
     }
 
     /**
+     * Returns the income of the user.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getIncomeForUser(observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getIncomeForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getIncomeForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getIncomeForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/income`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get the mining factors of the planet.
      * 
      * @param idPlanet 
@@ -441,6 +478,43 @@ export class ResourcesApiService {
     }
 
     /**
+     * Returns the demand of the user.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getResourceDemandForUser(observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getResourceDemandForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getResourceDemandForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getResourceDemandForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/demand`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Returns the deposit of the planet.
      * 
      * @param idPlanet 
@@ -594,6 +668,43 @@ export class ResourcesApiService {
         ];
 
         return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/utilization/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns the used population of the user.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getResourceUtilizationForUser(observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getResourceUtilizationForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getResourceUtilizationForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getResourceUtilizationForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/utilization`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -8,6 +8,8 @@ import {
     JournalApiService,
     MarketplaceApiService,
     MissionReport,
+    ResourceDeposit,
+    ResourcesApiService,
     TradesByLocation,
     TransportJob
 } from "../../../../../services/swagger";
@@ -34,8 +36,15 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     trades: TradesByLocation[] = [];
     missionResults?: MissionReport;
 
+
+    deposit?: ResourceDeposit;
+    demand?: ResourceDeposit;
+    utilization?: ResourceDeposit;
+    income?: ResourceDeposit;
+
     constructor(private jobService: JobApiService,
                 private journalService: JournalApiService,
+                private resourceService: ResourcesApiService,
                 private marketService: MarketplaceApiService) {
         super();
     }
@@ -59,6 +68,18 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
         this.subscriptions.push(sub);
 
         sub = this.journalService.getFinishedMovements().subscribe(resp => this.movements = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceService.getResourceDepositForUser().subscribe(resp => this.deposit = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceService.getResourceDemandForUser().subscribe(resp => this.demand = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceService.getResourceUtilizationForUser().subscribe(resp => this.utilization = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceService.getIncomeForUser().subscribe(resp => this.income = resp);
         this.subscriptions.push(sub);
 
         sub = this.journalService.getFinishedColonizations().subscribe(resp => this.colonizations = resp);

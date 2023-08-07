@@ -93,6 +93,13 @@
             </ng-template>
             <ng-template matStepContent>
 
+                <app-outlined titleValue="{{ 'planetary.population-development.title' | translate }}">
+                    <app-population-development [deposit]="deposit"
+                                                [utilization]="utilization"
+                                                [income]="income"
+                                                [demand]="demand"></app-population-development>
+                </app-outlined>
+
                 <app-outlined titleValue="{{ 'path.menu.colonization' | translate }}">
                     <app-finished-colonizations-list [finishedColonizations]="colonizations"></app-finished-colonizations-list>
                 </app-outlined>
