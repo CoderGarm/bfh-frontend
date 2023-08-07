@@ -12,7 +12,7 @@
                 </button>
                 <div mat-subheader>To {{node.parent.to}}</div>
             </div>
-            <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="flex-items-from-start-container">
+            <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="flex-items-container">
                 <div *ngFor="let what of node.parent.transportJobs" class="flex-items-container">
 
 

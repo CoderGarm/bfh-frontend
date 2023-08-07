@@ -98,7 +98,11 @@
                 </app-outlined>
 
                 <app-outlined titleValue="{{ 'journal.commissioned-operationals.finished.title' | translate }}">
-                    <app-commissioned-operationals [commissionedOperationals]="operationals"></app-commissioned-operationals>
+                    <app-commissioned-operationals [title_key]="'finished'" [commissionedOperationals]="operationals"></app-commissioned-operationals>
+                </app-outlined>
+
+                <app-outlined titleValue="{{ 'journal.commissioned-operationals.pending.title' | translate }}">
+                    <app-commissioned-operationals [title_key]="'pending'" [commissionedOperationals]="pending"></app-commissioned-operationals>
                 </app-outlined>
             </ng-template>
         </mat-step>

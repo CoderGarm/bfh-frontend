@@ -16,6 +16,9 @@ interface TreeNode {
 })
 export class CommissionedOperationalsComponent implements OnInit, OnChanges {
 
+    @Input()
+    title_key: string = 'finished';
+
     treeControl = new NestedTreeControl<TreeNode>(node => node.children);
     dataSource = new MatTreeNestedDataSource<TreeNode>();
 

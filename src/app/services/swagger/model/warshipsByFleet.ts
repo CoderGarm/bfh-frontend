@@ -9,9 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { WarShip } from './warShip';
 
 /**
- * The activated warships to their fleet.
+ * .
  */
 export interface WarshipsByFleet { 
     /**
@@ -21,5 +22,5 @@ export interface WarshipsByFleet {
     /**
      * The activated warships to their fleet.
      */
-    warships: Array<string>;
+    warships: Array<WarShip>;
 }

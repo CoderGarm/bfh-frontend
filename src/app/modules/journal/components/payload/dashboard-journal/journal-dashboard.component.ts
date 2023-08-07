@@ -30,6 +30,7 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     movements: FleetMovement[] = [];
     colonizations: FinishedColonization[] = [];
     operationals: Commissioning[] = [];
+    pending: Commissioning[] = [];
     trades: TradesByLocation[] = [];
     missionResults?: MissionReport;
 
@@ -64,6 +65,9 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
         this.subscriptions.push(sub);
 
         sub = this.journalService.getNewlyActiveOperationals().subscribe(resp => this.operationals = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.journalService.getOperationalsWaitingForActivation().subscribe(resp => this.pending = resp);
         this.subscriptions.push(sub);
 
         sub = this.marketService.getTradesForUser().subscribe(resp => this.trades = resp);

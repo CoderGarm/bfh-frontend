@@ -229,9 +229,12 @@
         "nothing": "Keine Inbetriebnahmen",
         "title": "Inbetriebnahmen"
       },
+      "pending": {
+        "title": "Inbetriebnahme erwartet"
+      },
       "title": {
-        "constructions": "in Betrieb genommene Gebäude",
-        "warships": "aktivierte Kriegsschiffe"
+        "constructions": "Gebäude",
+        "warships": "Kriegsschiffe"
       }
     },
     "missions": {

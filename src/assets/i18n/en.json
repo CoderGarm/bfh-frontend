@@ -229,9 +229,13 @@
         "nothing": "No activated operationals",
         "title": "Activated operationals"
       },
+      "pending": {
+        "nothing": "No pending operationals",
+        "title": "Awaiting activation"
+      },
       "title": {
-        "constructions": "Activated constructions",
-        "warships": "Activated warships"
+        "constructions": "Constructions",
+        "warships": "Warships"
       }
     },
     "missions": {

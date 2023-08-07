@@ -1,5 +1,5 @@
-<div mat-subheader *ngIf="commissionedOperationals.length == 0">{{ 'journal.commissioned-operationals.finished.nothing' | translate }}</div>
-<div mat-subheader *ngIf="commissionedOperationals.length > 0">{{ 'journal.commissioned-operationals.finished.title' | translate }}</div>
+<div mat-subheader *ngIf="commissionedOperationals.length == 0">{{ 'journal.commissioned-operationals.' + title_key + '.nothing' | translate }}</div>
+<div mat-subheader *ngIf="commissionedOperationals.length > 0">{{ 'journal.commissioned-operationals.' + title_key + '.title' | translate }}</div>
 
 <div *ngIf="commissionedOperationals.length > 0">
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree streamline-background">
@@ -12,27 +12,40 @@
                 </button>
                 <div mat-subheader>At {{node.parent.planet}} in {{node.parent.system}}</div>
             </div>
-            <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="clearfix">
-                <div class="left-side" *ngIf="!!node.parent.warships.length">
-                    <div mat-subheader>{{ 'journal.commissioned-operationals.title.warships' | translate }}</div>
-                    <ul>
-                        <li *ngFor="let entry of node.parent.warships">
-                            <div mat-line>{{entry.fleet}}</div>
-                            <ul>
-                                <li *ngFor="let warshipName of entry.warships">
-                                    <div mat-line>{{warshipName}}</div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+            <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="flex-items-container">
+                <div *ngIf="!!node.parent.warships.length">
+                    <div *ngFor="let entry of node.parent.warships">
+                        <app-outlined titleValue="{{ 'journal.commissioned-operationals.title.warships' | translate }}: {{ entry.fleet }}">
+                            <app-icon [fleetSize]="entry.warships.length"
+                                      circleBorder
+                                      png24px [toolTip]="entry.fleet"></app-icon>
+                            <div class="flex-items-container">
+                                <mat-list role="list">
+                                    <mat-list-item *ngFor="let warship of entry.warships" style="font-size: small; height: fit-content;" role="listitem">
+                                        {{ warship.name }}
+                                        <app-icon matListItemAvatar
+                                                  [icon]="warship.shipClass.shipClassType"
+                                                  [altText]="warship.shipClass.shipClassType.typeName"
+                                                  [toolTip]="warship.shipClass.shipClassType.typeName"></app-icon>
+                                    </mat-list-item>
+                                </mat-list>
+                            </div>
+                        </app-outlined>
+                    </div>
                 </div>
-                <div class="right-side" *ngIf="node.parent.constructions.length > 0">
-                    <div mat-subheader>{{ 'journal.commissioned-operationals.title.constructions' | translate }}</div>
-                    <ul>
-                        <li *ngFor="let c of node.parent.constructions">
-                            <div mat-line>{{c.building.name}} to {{c.operationalLevel}}</div>
-                        </li>
-                    </ul>
+                <div *ngIf="node.parent.constructions.length > 0">
+
+                    <app-outlined titleValue="{{ 'journal.commissioned-operationals.title.constructions' | translate }}">
+                        <mat-list role="list">
+                            <mat-list-item *ngFor="let c of node.parent.constructions" style="font-size: small; height: fit-content; margin: 5px;" role="listitem">
+                                <app-icon [icon]="c.building.productionTarget"
+                                          matListItemAvatar
+                                          circleBorder
+                                          png24px [toolTip]="c.building.name"></app-icon>
+                                from {{ c.level }} to {{ c.operationalLevel }}
+                            </mat-list-item>
+                        </mat-list>
+                    </app-outlined>
                 </div>
             </div>
         </mat-nested-tree-node>

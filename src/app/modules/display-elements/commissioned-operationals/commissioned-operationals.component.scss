@@ -22,10 +22,6 @@
   padding-left: 40px;
 }
 
-.left-side {
-  float: left;
-}
-
-.right-side {
-  float: right;
+.mat-mdc-list-item-avatar, .mdc-list-item {
+  height: fit-content;
 }
