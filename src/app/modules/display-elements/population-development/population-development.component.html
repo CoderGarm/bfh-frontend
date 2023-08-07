@@ -3,16 +3,16 @@
         <div class="box">
             <div class="res-wrapper">
                 <div class="img-container hasSize"></div>
-                <div *ngIf="isPresent(utilization)">
+                <div class="height-reduced" *ngIf="isPresent(utilization)">
                     <mat-icon [inline]="true" matTooltip="{{ 'population-development.utilization.toolTip' | translate }}">{{getIcon(utilization!)}}</mat-icon>
                 </div>
-                <div *ngIf="isPresent(deposit)">
+                <div class="height-reduced-3" *ngIf="isPresent(deposit)">
                     <mat-icon [inline]="true" matTooltip="{{ 'population-development.deposit.toolTip' | translate }}">{{getIcon(deposit!)}}</mat-icon>
                 </div>
-                <div *ngIf="isPresent(demand)">
+                <div class="height-reduced-3 needed" *ngIf="isPresent(demand)">
                     <mat-icon [inline]="true" matTooltip="{{ 'population-development.demand.toolTip' | translate }}">{{getIcon(demand!)}}</mat-icon>
                 </div>
-                <div *ngIf="isPresent(income)">
+                <div class="height-reduced-3 income" *ngIf="isPresent(income)">
                     <mat-icon [inline]="true" matTooltip="{{ 'population-development.income.toolTip' | translate }}">{{getIcon(income!)}}</mat-icon>
                 </div>
             </div>
@@ -32,10 +32,10 @@
                     <app-number-short [input]="getHumans(resource.resourceType, deposit)"></app-number-short>
                 </div>
                 <div class="amount-present" *ngIf="isPresent(demand)">
-                    <app-number-short [input]="getHumans(resource.resourceType, demand)"></app-number-short>
+                    <app-number-short color="darkorange" [input]="getHumans(resource.resourceType, demand)"></app-number-short>
                 </div>
                 <div class="amount-present" *ngIf="isPresent(income)">
-                    <app-number-short [input]="getHumans(resource.resourceType, income)"></app-number-short>
+                    <app-number-short color="#46a35e" [input]="getHumans(resource.resourceType, income)"></app-number-short>
                 </div>
             </div>
         </div>
