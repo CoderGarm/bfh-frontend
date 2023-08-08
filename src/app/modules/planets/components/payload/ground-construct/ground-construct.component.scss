@@ -1,17 +1,9 @@
 @import "src/styles/variables";
+@import "src/app/modules/display-elements/slider-wheel/slider-wheel.component";
 
 .app-resource-display {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 15;
-  background-color: $background-color;
   width: $page-width;
-}
-
-.ugly-child-growth-fix {
-  height: 120%;
-  display: block;
+  margin-top: 15px;
 }
 
 .mat-mdc-chip {
@@ -27,7 +19,9 @@
 
 .filter {
   display: block;
-  width: $page-width;
+  width: 60%;
+  float: left;
+  margin-right: 55px;
 }
 
 .icon {
@@ -36,8 +30,26 @@
   margin-right: 15px;
 }
 
+.small-txt {
+  font-size: small;
+}
 
-.mat-expansion-panel-header {
-  // disabled headers are only 48 px high
-  height: 64px;
+.selector-container {
+  width: fit-content;
+  display: block;
+  float: left;
+
+  & mat-selection-list {
+
+  }
+}
+
+.mdc-list-item {
+  border-radius: 20px;
+  padding: 5px 5px 5px 15px;
+}
+
+mat-card, app-construction-display {
+  left: 15px;
+  position: relative;
 }

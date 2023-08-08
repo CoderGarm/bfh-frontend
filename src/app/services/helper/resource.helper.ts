@@ -9,7 +9,24 @@ export class ResourceHelper {
         if (!construction) {
             return 0;
         }
-        let level = construction.level;
+        return this.calculateOutputAtLevel(construction, construction.level);
+    }
+
+    static calculateCurrentOutput(construction: Construction | undefined): number {
+        if (!construction) {
+            return 0;
+        }
+        return this.calculateOutputAtLevel(construction, construction.operationalLevel);
+    }
+
+    static calculateNextOutput(construction: Construction | undefined): number {
+        if (!construction) {
+            return 0;
+        }
+        return this.calculateOutputAtLevel(construction, construction.level + 1);
+    }
+
+    private static calculateOutputAtLevel(construction: Construction, level: number) {
         let baseValue = construction.building.baseValue;
         let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
         let valueAtLevel;

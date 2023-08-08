@@ -33,6 +33,7 @@ import {PropulsionCapacityDisplayComponent} from './propulsion-capacity-display/
 import {TradeDeliveriesComponent} from './trade-deliveries/trade-deliveries.component';
 import {ResourceDisplayComponent} from "./resource-display/resource-display.component";
 import {RedBoxComponent} from './red-box/red-box.component';
+import {SliderWheelComponent} from './slider-wheel/slider-wheel.component';
 
 @NgModule({
     declarations: [
@@ -69,6 +70,7 @@ import {RedBoxComponent} from './red-box/red-box.component';
         PropulsionCapacityDisplayComponent,
         TradeDeliveriesComponent,
         RedBoxComponent,
+        SliderWheelComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -106,6 +108,7 @@ import {RedBoxComponent} from './red-box/red-box.component';
         ModuleDisplayComponent,
         TradeDeliveriesComponent,
         RedBoxComponent,
+        SliderWheelComponent,
     ]
 })
 export class DisplayElementsModule {

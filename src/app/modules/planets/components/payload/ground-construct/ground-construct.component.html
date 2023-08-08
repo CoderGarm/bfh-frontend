@@ -9,83 +9,76 @@
 </div>
 
 <div>
-    <app-outlined titleValue="Product category" class="filter" (click)="toggle('productCategoryChipList')">
-        <mat-chip-listbox #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
-            <mat-chip-option
-                    class="no-checkmark"
-                    *ngFor="let category of eProductionCategories as string"
-                    [value]="category"
-                    (click)="filterDisplayedConstructions(); $event.stopPropagation();">
-                <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="category" fontIcon="precision_manufacturing"></mat-icon>
-                {{category}}
-            </mat-chip-option>
-        </mat-chip-listbox>
-    </app-outlined>
+    <div class="filter">
+        <app-outlined titleValue="Product category" (click)="toggle('productCategoryChipList')">
+            <mat-chip-listbox #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
+                <mat-chip-option
+                        class="no-checkmark"
+                        *ngFor="let category of eProductionCategories as string"
+                        [value]="category"
+                        (click)="filterDisplayedConstructions(); $event.stopPropagation();">
+                    <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="category" fontIcon="precision_manufacturing"></mat-icon>
+                    {{category}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </app-outlined>
 
-    <app-outlined titleValue="Refinement sequence" class="filter" (click)="toggle('refinementSequenceChipList')">
-        <mat-chip-listbox #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
-            <mat-chip-option
-                    class="no-checkmark"
-                    *ngFor="let sequence of eRefinementSequences"
-                    [value]="sequence.typeName"
-                    (click)="filterDisplayedConstructions(); $event.stopPropagation();">
-                <app-icon matChipTrailingIcon
-                          [icon]="sequence.product"
-                          [altText]="sequence.product.typeName"
-                          [toolTip]="sequence.product.typeName"></app-icon>
-                {{sequence.typeName}}
-            </mat-chip-option>
-        </mat-chip-listbox>
-    </app-outlined>
+        <app-outlined titleValue="Refinement sequence" (click)="toggle('refinementSequenceChipList')">
+            <mat-chip-listbox #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
+                <mat-chip-option
+                        class="no-checkmark"
+                        *ngFor="let sequence of eRefinementSequences"
+                        [value]="sequence.typeName"
+                        (click)="filterDisplayedConstructions(); $event.stopPropagation();">
+                    <app-icon matChipTrailingIcon
+                              [icon]="sequence.product"
+                              [altText]="sequence.product.typeName"
+                              [toolTip]="sequence.product.typeName"></app-icon>
+                    {{sequence.typeName}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </app-outlined>
 
-    <app-outlined titleValue="Resource types" class="filter" (click)="toggle('resourceTypeChipList')">
-        <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
-            <mat-chip-option
-                    class="no-checkmark"
-                    *ngFor="let eResourceType of eResourceTypes"
-                    [value]="eResourceType.typeName"
-                    (click)="filterDisplayedConstructions(); $event.stopPropagation();">
-                <app-icon matChipTrailingIcon
-                          [icon]="eResourceType"
-                          [altText]="eResourceType.typeName"
-                          [toolTip]="eResourceType.typeName"></app-icon>
-                {{eResourceType.typeName}}
-            </mat-chip-option>
-        </mat-chip-listbox>
+        <app-outlined titleValue="Resource types" (click)="toggle('resourceTypeChipList')">
+            <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
+                <mat-chip-option
+                        class="no-checkmark"
+                        *ngFor="let eResourceType of eResourceTypes"
+                        [value]="eResourceType.typeName"
+                        (click)="filterDisplayedConstructions(); $event.stopPropagation();">
+                    <app-icon matChipTrailingIcon
+                              [icon]="eResourceType"
+                              [altText]="eResourceType.typeName"
+                              [toolTip]="eResourceType.typeName"></app-icon>
+                    {{eResourceType.typeName}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </app-outlined>
+
+        <mat-card appearance="outlined" class="margin-bottom" *ngIf="!construction">
+            <mat-card-content>
+                {{ 'planetary.constructions.build.nothing-to-show' | translate }}
+            </mat-card-content>
+        </mat-card>
+        <app-construction-display [construction]="construction"
+                                  [resourceDeposit]="resourceDeposit"
+                                  [costsToDisplay]="getCosts()"
+                                  [isYardFree]="constructionPossible"
+                                  (constructionOutput)="startConstruction($event)">
+        </app-construction-display>
+    </div>
+
+    <app-outlined titleValue="{{ 'planetary.constructions.title' | translate }}" class="selector-container">
+        <mat-checkbox (change)="ignoreExpensiveConstructions = $event.checked">
+            <span class="small-txt">{{ 'planetary.constructions.build.filter-expansive-constructions' | translate }}</span>
+        </mat-checkbox>
+
+        <mat-selection-list #constructions [multiple]="false" hideSingleSelectionIndicator
+                            (click)="setConstruction(constructions.selectedOptions.hasValue() ? constructions.selectedOptions.selected[0].value : undefined)">
+            <mat-list-option *ngFor="let construction of filteredConstructions" [value]="construction" [disabled]="checkIfTooExpensive()">
+                {{ construction.building.name }}
+            </mat-list-option>
+        </mat-selection-list>
     </app-outlined>
 </div>
 
-
-{{ 'planetary.constructions.title' | translate }}
-<mat-checkbox (change)="ignoreExpensiveConstructions = $event.checked">
-    {{ 'planetary.constructions.build.filter-expansive-constructions' | translate }}
-</mat-checkbox>
-<mat-accordion class="ugly-child-growth-fix">
-    <mat-expansion-panel *ngFor="let construction of filteredConstructions"
-                         class="margin-bottom"
-                         (opened)="setOpened(construction)"
-                         (closed)="setClosed(construction)"
-                         (mouseover)="showCosts(construction)"
-                         (mouseout)="showCosts(null)"
-                         [disabled]="checkIfTooExpensive(construction)">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                <app-icon matCardAvatar class="avatar-image icon"
-                          [ngClass]="getInvisibility(construction)"
-                          [icon]="construction.building.productionTarget"
-                          [altText]="construction.building.productionTarget.typeName"
-                          png24px [toolTip]="construction.building.productionTarget.typeName"></app-icon>
-                {{construction.building.name}} ({{ construction.operationalLevel }} / {{ construction.level }})
-            </mat-panel-title>
-            <mat-panel-description *ngIf="showDescription(construction)">
-                {{construction.building.description}}
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <app-construction-display
-                [construction]="construction"
-                [resourceDeposit]="resourceDeposit"
-                [costsToDisplay]="getCosts(construction)"
-                [constructionPossible]="constructionPossible"
-                (constructionOutput)="startConstruction($event)"></app-construction-display>
-    </mat-expansion-panel>
-</mat-accordion>

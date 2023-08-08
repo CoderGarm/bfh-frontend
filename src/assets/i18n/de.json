@@ -365,8 +365,24 @@
         "is-new": "Neukonstruktion",
         "must-do-research": "Muss erforscht werden",
         "not-possible": "Es wird bereits gebaut",
+        "nothing-to-show": "Keine Auswahl",
         "start-building": "Starte den Bau",
         "too-expensive": "Bau zu teuer"
+      },
+      "building": {
+        "CAPACITY": {
+          "POPULATION": "NAME stellt Wohnraum für AMOUNT Menschen bereit."
+        },
+        "PRODUCE": {
+          "CONSTRUCTION": "Der Bauhof erzeugt AMOUNT Industriepunkte.",
+          "ORBITAL_CONSTRUCTION": "Die Werft generiert orbitale AMOUNT Industriepunkte.",
+          "POPULATION": "Das Krankenhaus verbessert die Gesundheitsversorgung und Lebenserwartung deiner Bevölkerung. Statistische Betrachtungen zeigen, dass AMOUNT Menschen versorgt werden können.",
+          "RESEARCH": "Das Labor erzeugt AMOUNT Forschungspunkte.",
+          "RESOURCE": "NAME erzeugt AMOUNT Einheiten WHAT."
+        },
+        "REFINEMENT": {
+          "POPULATION": "NAME bildet bis zu AMOUNT PRODUCT aus. Die Anwärter sollten bereits eine Ausbildung als EDUCT mitbringen."
+        }
       },
       "info": {
         "title": "Details"
@@ -432,6 +448,9 @@
     },
     "population-development": {
       "title": "Bevölkerungsentwicklung"
+    },
+    "resource-development": {
+      "title": "Ressourcenentwicklung"
     }
   },
   "population-development": {

@@ -6,3 +6,9 @@
   top: -65px;
   z-index: 999;
 }
+
+
+app-resource-display {
+  height: 1px; // ist must just made be clear that it should be small
+  display: block;
+}

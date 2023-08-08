@@ -9,7 +9,7 @@
                 <div class="height-reduced-2 income-display" *ngIf="!!income">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.toolTip' | translate }}">{{getIcon(income!)}}</mat-icon>
                 </div>
-                <div class="diffAmount" *ngIf="!!costs">
+                <div class="diffAmount needed" *ngIf="!!costs">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.costs.toolTip' | translate }}">{{getIcon(costs!)}}</mat-icon>
                 </div>
             </div>
@@ -25,12 +25,13 @@
                 <div class="height-reduced-2 income-display" *ngIf="!!income">
                     <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.tick' | translate }}">all_inclusive</mat-icon>
                 </div>
-                <div class="diffAmount">
+                <div class="diffAmount needed">
                     {{getTicksNeeded()}}
                 </div>
             </div>
         </div>
-        <div *ngFor="let resource of getBase()!.resources" class="box" [ngStyle]="{'display':( (_onlyResources && resource.resourceType.typeName == 'POPULATION') ? 'none' : '')}">
+        <div *ngFor="let resource of getBase()!.resources" class="box"
+             [ngStyle]="{'display':( ((_onlyResources || _onlyCollectables) && resource.resourceType.typeName == 'POPULATION') ? 'none' : '')}">
             <div class="res-wrapper">
                 <div class="img-container info-holder">
                     <app-icon class="icon"
@@ -61,13 +62,13 @@
                             </div>
                         </div>
                         <div *ngIf="!!costs" class="diffAmount" matTooltip="{{getTooltip(costs!.subType, resource.resourceType)}}">
-                            <app-number-short [input]="getResourceAmount(resource.resourceType, costs)"></app-number-short>
+                            <app-number-short color="darkorange" [input]="getResourceAmount(resource.resourceType, costs)"></app-number-short>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div *ngFor="let resource of getBase()!.humanResources" class="box" [ngStyle]="{'display':( _onlyResources ? 'none' : '')}">
+        <div *ngFor="let resource of getBase()!.humanResources" class="box" [ngStyle]="{'display':( (_onlyResources || _onlyCollectables) ? 'none' : '')}">
             <div class="res-wrapper">
                 <div class="img-container">
                     <app-icon class="icon"
@@ -92,7 +93,7 @@
                             </div>
                         </div>
                         <div *ngIf="!!costs" class="diffAmount">
-                            <app-number-short [input]="getHumans(resource.resourceType, costs)"></app-number-short>
+                            <app-number-short color="darkorange" [input]="getHumans(resource.resourceType, costs)"></app-number-short>
                         </div>
                     </div>
                 </div>

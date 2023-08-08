@@ -1,5 +1,6 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" class="margin-bottom" *ngIf="!!construction">
     <mat-card-header>
+
         <app-icon matCardAvatar class="icon"
                   [icon]="construction.building.productionTarget"
                   [altText]="construction.building.productionTarget.typeName"
@@ -8,50 +9,29 @@
         <mat-card-subtitle>{{construction.building.description}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <div mat-subheader>{{ 'planetary.constructions.level.title' | translate }}</div>
-        <div class="flex-items-container">
-            <mat-form-field appearance="outline" class="short-field">
-                <mat-label>{{ 'planetary.constructions.level.operational' | translate }}</mat-label>
-                <input matInput disabled value="{{construction.operationalLevel}}">
-            </mat-form-field>
+        <app-outlined titleValue="{{ 'planetary.constructions.info.title' | translate }}">
+            {{ descriptionText }}
+            <mat-list>
+                <mat-list-item>
+                    <span matListItemTitle>Production Target:
+                        <app-icon [icon]="construction.building.productionTarget"></app-icon>
+                    </span>
+                    <span matListItemLine>Maximum output after build: {{ outputAfterBuild }}</span>
+                    <span matListItemLine>{{ 'planetary.constructions.level.title' | translate }}: {{ construction.operationalLevel }} / {{ construction.level }}</span>
 
-            <mat-form-field appearance="outline" class="short-field">
-                <mat-label>{{ 'planetary.constructions.level.current' | translate }}</mat-label>
-                <input matInput disabled value="{{construction.level}}">
-            </mat-form-field>
-        </div>
-
-        <div mat-subheader>{{ 'planetary.constructions.info.title' | translate }}</div>
-        <div class="flex-items-container">
-            <mat-form-field appearance="outline">
-                <mat-label>Output after build</mat-label>
-                <input matInput disabled value="{{getOutput()}}">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Production Target</mat-label>
-                <input matInput disabled value="{{construction.building.productionTarget.typeName}}">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Production Category</mat-label>
-                <input matInput disabled value="{{construction.building.productionCategory}}">
-            </mat-form-field>
-
-            <mat-form-field *ngIf="!!construction.building.refinementSequence" appearance="outline">
-                <mat-label>Refinement Sequence</mat-label>
-                <input matInput disabled value="{{getRefinementDescription()}}">
-            </mat-form-field>
-        </div>
+                    <span matListItemLine *ngIf="!!construction.building.refinementSequence">Refinement Sequence:
+                    <app-icon [icon]="construction.building.refinementSequence.educt"></app-icon>
+                        to
+                    <app-icon [icon]="construction.building.refinementSequence.product"></app-icon>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+        </app-outlined>
     </mat-card-content>
-    <mat-card-actions>
-        <button mat-button disabled *ngIf="!constructionPossible && !jobTooExpensive">{{ 'planetary.constructions.build.not-possible' | translate }}</button>
-        <button mat-button disabled *ngIf="jobTooExpensive && constructionPossible">{{ 'planetary.constructions.build.too-expensive' | translate }}</button>
-        <div [matTooltip]="construction.building.unlockedThrough"
-             *ngIf="!construction.nextLevel && !(!constructionPossible && !jobTooExpensive) && !(jobTooExpensive && constructionPossible)">
-            <button mat-button disabled>{{ 'planetary.constructions.build.must-do-research' | translate }}</button>
+    <mat-card-actions align="end">
+        <div [matTooltip]="disabledMessage" *ngIf="isDisabled">
+            <button mat-button disabled>{{ 'planetary.constructions.build.start-building' | translate }}</button>
         </div>
-        <button mat-button *ngIf="construction.nextLevel && constructionPossible && !jobTooExpensive"
-                (click)="buildConstruction()">{{ 'planetary.constructions.build.start-building' | translate }}</button>
+        <button mat-button *ngIf="!isDisabled" (click)="buildConstruction()">{{ 'planetary.constructions.build.start-building' | translate }}</button>
     </mat-card-actions>
 </mat-card>

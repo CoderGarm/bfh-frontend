@@ -42,6 +42,11 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     get onlyResources() { return this._onlyResources; }
     set onlyResources(value: any) { this._onlyResources = this.coerceBooleanProperty(value); }
     _onlyResources: boolean = false;
+
+    @Input()
+    get onlyCollectables() { return this._onlyCollectables; }
+    set onlyCollectables(value: any) { this._onlyCollectables = this.coerceBooleanProperty(value); }
+    _onlyCollectables: boolean = false;
     // @formatter:on
 
     resourceTypes: EResourceType[];
@@ -192,16 +197,18 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     }
 
     getBase(): ResourceDeposit | undefined {
+        let result: ResourceDeposit | undefined = undefined;
         if (!!this.deposit) {
-            return this.deposit;
+            result = this.deposit;
+        } else if (!!this.costs) {
+            result = this.costs;
+        } else if (!!this.income) {
+            result = this.income;
         }
-        if (!!this.costs) {
-            return this.costs;
+        if (!!result && this._onlyCollectables) {
+            result.resources = result.resources.filter(c => c.resourceType.collectableType == CollectableTypeEnum.COLLECTABLE);
         }
-        if (!!this.income) {
-            return this.income;
-        }
-        return undefined;
+        return result;
     }
 
     isDisplayingPossible() {

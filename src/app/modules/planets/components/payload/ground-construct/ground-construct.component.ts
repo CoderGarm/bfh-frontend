@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {
     Building,
-    BuildingApiService,
     Construction,
     ConstructionApiService,
     EEducationType,
@@ -31,12 +30,6 @@ import ProductionCategoryEnum = Building.ProductionCategoryEnum;
     styleUrls: ['./ground-construct.component.scss']
 })
 export class GroundConstructComponent extends SubscriptionManager implements OnChanges, AfterViewInit {
-
-    /**
-     * the displayed construction
-     */
-    currentlyOpenedItemIndex?: Construction;
-    activeConstructionKey?: string;
 
     /**
      * all possible construction which could be build
@@ -120,8 +113,9 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     translations: Map<string, string> = new Map<string, string>();
 
+    construction?: Construction;
+
     constructor(private constructionApi: ConstructionApiService,
-                private buildingApi: BuildingApiService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
                 private typeService: TypeService,
@@ -143,10 +137,10 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.translations.set('planetary.constructions.build.has-level', translated);
         });
 
-        this.eEducationTypes = typeService.educationTypes;
-        this.eResourceTypes = typeService.eResourceTypes;
-        this.eRefinementSequences = typeService.eRefinementSequences;
-        this.eProductionCategories = typeService.eProductionCategories;
+        this.eEducationTypes = this.typeService.educationTypes;
+        this.eResourceTypes = this.typeService.eResourceTypes;
+        this.eRefinementSequences = this.typeService.eRefinementSequences;
+        this.eProductionCategories = this.typeService.eProductionCategories;
         this.eProductionCategoryFC.setValue(this.eProductionCategories);
         this.setResourceTypeFormControlData()
         this.setRefinementSequenceFormControlData()
@@ -158,6 +152,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedPlanetDefinition]) {
+            this.setConstruction(undefined);
             this.fetchPlanet();
         }
     }
@@ -223,11 +218,11 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         }
     }
 
-    checkIfTooExpensive(construction: Construction): boolean {
-        if (!this.ignoreExpensiveConstructions) {
+    checkIfTooExpensive(): boolean {
+        if (!this.ignoreExpensiveConstructions || !this.construction) {
             return false;
         }
-        let key = this.getConstructionKey(construction);
+        let key = this.getConstructionKey(this.construction);
         if (!this.resourceDeposit || !this.knownCosts.has(key)) {
             return true;
         }
@@ -235,8 +230,11 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         return !ResourceHelper.canPayTheCollectableBill(costs, this.resourceDeposit);
     }
 
-    getCosts(construction: Construction): ResourceDeposit | undefined {
-        let key = this.getConstructionKey(construction);
+    getCosts(): ResourceDeposit | undefined {
+        if (!this.construction) {
+            return undefined;
+        }
+        let key = this.getConstructionKey(this.construction);
         return this.knownCosts.get(key);
     }
 
@@ -258,7 +256,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 includesSequence = selectedRefinementSequence.includes(building.refinementSequence.typeName);
             }
             return includesResourceType && includesCategory && includesSequence;
-        });
+        }).sort((a, b) => a.building.name.replace(' ', '') < b.building.name.replace(' ', '') ? -1 : 1);
     }
 
     /**
@@ -274,32 +272,6 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             selectedResourceTypes.push(MatChipListbox.value);
         }
         return selectedResourceTypes;
-    }
-
-    /**
-     * sets the {@link currentlyOpenedItemIndex} for the opened item
-     * @param itemIndex
-     */
-    setOpened(itemIndex: Construction) {
-        this.currentlyOpenedItemIndex = itemIndex;
-    }
-
-    /**
-     * sets the {@link currentlyOpenedItemIndex} for the closed item
-     * @param itemIndex
-     */
-    setClosed(itemIndex: Construction) {
-        if (this.currentlyOpenedItemIndex === itemIndex) {
-            this.currentlyOpenedItemIndex = undefined;
-        }
-    }
-
-    /**
-     * returns true if the description should be displayed, false otherwise
-     * @param construction
-     */
-    showDescription(construction: Construction): boolean {
-        return this.currentlyOpenedItemIndex != construction;
     }
 
     /**
@@ -320,18 +292,16 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         this.subscriptions.push(sub);
     }
 
-    showCosts(construction: Construction | null) {
-        this.setLevelImprovement(construction)
-        if (!construction) {
+    showCosts() {
+        this.setLevelImprovement()
+        if (!this.construction) {
             this.costsToDisplay = undefined;
-            this.activeConstructionKey = undefined;
             return;
         }
-        let key = this.getConstructionKey(construction);
-        this.activeConstructionKey = key;
+        let key = this.getConstructionKey(this.construction);
         let costs: ResourceDeposit | undefined = this.knownCosts.get(key)
         if (!costs) {
-            this.fetchConstructionCosts(construction);
+            this.fetchConstructionCosts(this.construction);
         }
         this.costsToDisplay = costs;
     }
@@ -349,16 +319,16 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         this.subscriptions.push(sub);
     }
 
-    setLevelImprovement(construction: Construction | null) {
-        if (!construction) {
+    setLevelImprovement() {
+        if (!this.construction) {
             this.levelImprovementResources = undefined;
             this.levelImprovementHumanResources = undefined;
             return;
         }
 
-        let valueAtLevel = ResourceHelper.calculateLevelOutput(construction);
-        let productionTarget = construction.building.productionTarget;
-        let productionCategory = construction.building.productionCategory;
+        let valueAtLevel = ResourceHelper.calculateLevelOutput(this.construction);
+        let productionTarget = this.construction.building.productionTarget;
+        let productionCategory = this.construction.building.productionCategory;
         switch (productionCategory) {
             case ProductionCategoryEnum.CAPACITY:
                 // do not display capacity because the value is shown by a tooltip
@@ -370,7 +340,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 }
                 break;
             case ProductionCategoryEnum.REFINEMENT:
-                let refinementSequence = construction.building.refinementSequence;
+                let refinementSequence = this.construction.building.refinementSequence;
                 let product = refinementSequence!.product;
                 this.levelImprovementHumanResources = {
                     resourceType: product,
@@ -411,7 +381,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         }
     }
 
-    getInvisibility(construction: Construction) {
-        return this.currentlyOpenedItemIndex === construction ? 'invisible' : '';
+    setConstruction(construction?: Construction) {
+        this.construction = construction;
+        this.showCosts();
     }
 }

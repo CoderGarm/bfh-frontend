@@ -366,14 +366,30 @@
         "is-new": "new construction",
         "must-do-research": "Level capped by research",
         "not-possible": "Job running",
+        "nothing-to-show": "Nothing selected",
         "start-building": "Start job",
         "too-expensive": "Job too expensive"
+      },
+      "building": {
+        "CAPACITY": {
+          "POPULATION": "NAME provides housing for AMOUNT people."
+        },
+        "PRODUCE": {
+          "CONSTRUCTION": "The construction yard generates AMOUNT industry points.",
+          "ORBITAL_CONSTRUCTION": "The shipyard generates AMOUNT orbital industry points.",
+          "POPULATION": "The hospital improves the health care and life expectancy of your population. Statistical considerations show that AMOUNT people can be cared for.",
+          "RESEARCH": "The laboratory generates AMOUNT research points.",
+          "RESOURCE": "NAME creates AMOUNT units WHAT."
+        },
+        "REFINEMENT": {
+          "POPULATION": "NAME trains up to AMOUNT PRODUCT. The candidates should already have completed training as an EDUCT."
+        }
       },
       "info": {
         "title": "Details"
       },
       "level": {
-        "current": "current",
+        "current": "build",
         "operational": "active",
         "title": "Construction level"
       },
@@ -433,6 +449,9 @@
     },
     "population-development": {
       "title": "Population development"
+    },
+    "resource-development": {
+      "title": "Resource development"
     }
   },
   "population-development": {

@@ -49,7 +49,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
 
     indexChanged(event: number) {
         if (event == 1 || event == 2) {
-            this.noScrollService.setNoScroll();
+            // fixme why no scroll? this.noScrollService.setNoScroll();
         } else {
             this.noScrollService.clearScrolling();
         }

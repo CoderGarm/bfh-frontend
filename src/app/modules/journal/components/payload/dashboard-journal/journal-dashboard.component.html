@@ -93,6 +93,12 @@
             </ng-template>
             <ng-template matStepContent>
 
+                <app-outlined titleValue="{{ 'planetary.resource-development.title' | translate }}">
+                    <app-resource-display onlyCollectables [showTick]="false"
+                                          [deposit]="deposit" [income]="income"></app-resource-display>
+                </app-outlined>
+
+
                 <app-outlined titleValue="{{ 'planetary.population-development.title' | translate }}">
                     <app-population-development [deposit]="deposit"
                                                 [utilization]="utilization"
