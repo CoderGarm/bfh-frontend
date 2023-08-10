@@ -34,6 +34,7 @@ import {TradeDeliveriesComponent} from './trade-deliveries/trade-deliveries.comp
 import {ResourceDisplayComponent} from "./resource-display/resource-display.component";
 import {RedBoxComponent} from './red-box/red-box.component';
 import {SliderWheelComponent} from './slider-wheel/slider-wheel.component';
+import {BlueCardComponent} from './blue-card/blue-card.component';
 
 @NgModule({
     declarations: [
@@ -71,6 +72,7 @@ import {SliderWheelComponent} from './slider-wheel/slider-wheel.component';
         TradeDeliveriesComponent,
         RedBoxComponent,
         SliderWheelComponent,
+        BlueCardComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -109,6 +111,7 @@ import {SliderWheelComponent} from './slider-wheel/slider-wheel.component';
         TradeDeliveriesComponent,
         RedBoxComponent,
         SliderWheelComponent,
+        BlueCardComponent,
     ]
 })
 export class DisplayElementsModule {

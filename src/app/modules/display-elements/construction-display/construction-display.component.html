@@ -1,6 +1,7 @@
-<mat-card appearance="outlined" class="margin-bottom" *ngIf="!!construction">
+<mat-card *ngIf="!!construction"
+          style="background-color: transparent;"
+          class="margin-bottom blue-card">
     <mat-card-header>
-
         <app-icon matCardAvatar class="icon"
                   [icon]="construction.building.productionTarget"
                   [altText]="construction.building.productionTarget.typeName"

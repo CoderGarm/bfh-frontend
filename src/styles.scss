@@ -8,6 +8,7 @@
 @import "src/styles/scrollbar";
 @import "src/styles/mat-button-customize";
 @import "src/styles/hint-label";
+@import "src/app/modules/display-elements/blue-card/blue-card.component";
 
 /** placed here because of css encapsulation in angular **/
 
@@ -346,4 +347,3 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
 mat-step-header {
   border-radius: 80px;
 }
-

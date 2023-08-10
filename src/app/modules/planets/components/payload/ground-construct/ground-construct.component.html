@@ -55,11 +55,11 @@
             </mat-chip-listbox>
         </app-outlined>
 
-        <mat-card appearance="outlined" class="margin-bottom" *ngIf="!construction">
-            <mat-card-content>
+        <app-blue-card class="margin-bottom" *ngIf="!construction">
+            <span body>
                 {{ 'planetary.constructions.build.nothing-to-show' | translate }}
-            </mat-card-content>
-        </mat-card>
+            </span>
+        </app-blue-card>
         <app-construction-display [construction]="construction"
                                   [resourceDeposit]="resourceDeposit"
                                   [costsToDisplay]="getCosts()"

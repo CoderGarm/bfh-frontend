@@ -1,4 +1,6 @@
-<mat-card [appearance]="_transparent ? 'raised' : 'outlined'" [ngStyle]="{'background-color':( _transparent ? 'transparent' : '')}" *ngIf="!!fleet">
+<mat-card *ngIf="!!fleet"
+          [appearance]="_transparent ? 'raised' : 'outlined'"
+          [ngStyle]="{'background-color':( _transparent ? 'transparent' : '')}" class="blue-card">
     <mat-card-header class="rename-element">
         <app-icon matCardAvatar png32px [fleetSize]="fleet.ships.length"></app-icon>
         <mat-card-title class="title-block" *ngIf="_nameChangeAllowed">

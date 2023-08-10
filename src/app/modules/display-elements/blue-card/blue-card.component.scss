@@ -1,0 +1,9 @@
+@import "src/styles/variables";
+
+.blue-card {
+  padding: 15px;
+  border: solid $secondary-background-color 2px;
+  font-size: smaller;
+  background: linear-gradient(45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
+  border-radius: 0 0 0 5px;
+}
