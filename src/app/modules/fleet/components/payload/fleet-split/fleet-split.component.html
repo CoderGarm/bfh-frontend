@@ -51,7 +51,9 @@
                          [cdkDropListData]="fleet.ships"
                          class="warship-list"
                          (cdkDropListDropped)="drop($event, locked.includes(fleet.idFleet))">
-                        <div class="warship-box" *ngFor="let warship of fleet.ships" cdkDrag
+                        <div class="warship-box" *ngFor="let warship of fleet.ships"
+                             [ngStyle]="{'cursor':( !locked.includes(fleet.idFleet) ? 'move' : '')}"
+                             cdkDrag
                              [cdkDragDisabled]="locked.includes(fleet.idFleet) && (fleet.idFleet < 0 || (fleet.idFleet > 0 && fleet.ships.length == 1))">
                             {{ warship.name }}
                         </div>
@@ -79,7 +81,9 @@
                          [cdkDropListData]="fleets[0].ships"
                          class="warship-list"
                          (cdkDropListDropped)="drop($event, locked.includes(fleets[0].idFleet))">
-                        <div class="warship-box" *ngFor="let warship of fleets[0].ships" cdkDrag
+                        <div class="warship-box" *ngFor="let warship of fleets[0].ships"
+                             [ngStyle]="{'cursor':( !locked.includes(fleets[0].idFleet) ? 'move' : '')}"
+                             cdkDrag
                              [cdkDragDisabled]="locked.includes(fleets[0].idFleet)">
                             {{ warship.name }}
                         </div>

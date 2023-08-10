@@ -1,4 +1,4 @@
-<mat-tab-group animationDuration="500ms" class="bottom-spacer">
+<mat-tab-group animationDuration="500ms" class="bottom-spacer" *ngIf="!!fleet">
     <mat-tab label="{{ 'tab.fleet.dashboard' | translate }}">
         <div class="holder">
             <app-fleet-display [fleet]="fleet" nameChangeAllowed retireAllowed transparent>

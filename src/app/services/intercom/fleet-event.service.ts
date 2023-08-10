@@ -39,6 +39,7 @@ export class FleetEventService {
 
     retireFleet(fleet: AbstractId) {
         this.retireFleetEmitter.next(fleet);
+        this.selectFleet(undefined);
     }
 
     getRetireFleetEmitter(): ReplaySubject<AbstractId> {

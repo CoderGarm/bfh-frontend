@@ -24,7 +24,7 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
 
     fleets: FleetContainer[] = [];
 
-    fleetSplit: FleetSplit = {fleetConstellations: {}};
+    fleetSplit: FleetSplit = {fleetConstellations: {}, orbit: {}};
     shipsForPool: number[] = [];
 
     pooledShips: WarShip[] = [];
@@ -122,7 +122,7 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
     }
 
     submit() {
-        this.fleetSplit = {fleetConstellations: {}};
+        this.fleetSplit = {fleetConstellations: {}, orbit: this.fleet!.orbit!};
         this.shipsForPool = [];
         this.fleets.forEach(fleet => {
             if (fleet.idFleet === FleetSplitComponent.POOL_FLEET_ID) {
@@ -154,6 +154,7 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
                 }));
                 this.notif.open('Fleets detached');
                 this.reFetchFleet();
+                this.fetchPooledShips();
             });
             this.subscriptions.push(sub);
         }
