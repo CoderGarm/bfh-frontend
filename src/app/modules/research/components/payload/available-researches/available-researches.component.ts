@@ -58,7 +58,7 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
         if (!this.researchPossible) {
             return false;
         }
-        return researchLevel.level < researchLevel.research.levelCap;
+        return researchLevel.level <= researchLevel.research.levelCap;
     }
 
     getInvisibility(researchLevel: ResearchLevel) {
