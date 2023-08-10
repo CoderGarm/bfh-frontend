@@ -33,7 +33,7 @@ export class FleetEventService {
     }
 
     /**
-     * communicates a clicked fleet in the sidenav
+     * communicates a retired fleet in the sidenav
      */
     private retireFleetEmitter: ReplaySubject<AbstractId> = new ReplaySubject<AbstractId>();
 

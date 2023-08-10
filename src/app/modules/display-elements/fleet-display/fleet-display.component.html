@@ -19,7 +19,7 @@
                     <mat-icon matSuffix (click)="save()" class="name-input disabled">save_alt</mat-icon>
                 </mat-form-field>
             </form>
-            <button mat-icon-button class="retire-btn"
+            <button mat-mini-fab class="retire-btn"
                     (click)="retireFleet()"
                     *ngIf="_retireAllowed"
                     matTooltip="{{ 'fleet.retire.submit' | translate }}">

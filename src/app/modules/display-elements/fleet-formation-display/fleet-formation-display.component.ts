@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EShipClassType, Fleet, WarShip} from "../../../services/swagger";
+import {EShipClassType, Fleet, FleetApiService, WarShip} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 
 @Component({
@@ -9,9 +9,6 @@ import {SubscriptionManager} from "../../../subscription.manager";
 })
 export class FleetFormationDisplay extends SubscriptionManager implements OnInit, OnChanges {
 
-    /**
-     * the fleet to display
-     */
     @Input()
     fleet?: Fleet;
     fleetInputDefinition: string = "fleet";
@@ -20,7 +17,18 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
     hullsByType: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
 
-    constructor() {
+    // @formatter:off
+    @Input()
+    get retireAllowed() { return this._retireAllowed; }
+    set retireAllowed(value: any) { this._retireAllowed = this.coerceBooleanProperty(value); }
+    _retireAllowed: boolean = false;
+    // @formatter:on
+
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
+    }
+
+    constructor(private fleetService: FleetApiService) {
         super();
     }
 
@@ -62,5 +70,26 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
             return hull.typeName + ' - ' + hull.description;
         }
         return "";
+    }
+
+    retireShip(warShip: WarShip) {
+        let sub = this.fleetService.retireWarship(warShip.idWarship).subscribe(resp => {
+            if (resp) {
+                const ship = this.fleet!.ships.filter(s => s.idWarship === warShip.idWarship);
+                if (ship.length == 1) {
+                    const indexOf = this.fleet!.ships.indexOf(ship[0]);
+                    this.fleet!.ships.splice(indexOf, 1);
+
+                    this.warShipsByType.forEach((ships, className) => {
+                        const ship = ships.filter(s => s.idWarship === warShip.idWarship);
+                        if (ship.length == 1) {
+                            const indexOf = ships.indexOf(ship[0]);
+                            ships.splice(indexOf, 1);
+                        }
+                    });
+                }
+            }
+        });
+        this.subscriptions.push(sub);
     }
 }

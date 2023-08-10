@@ -147,7 +147,13 @@
         "tooltip": "Add next detachment"
       },
       "title": "Fleet composition",
-      "warShip-names": "Warships"
+      "warShip-names": "Warships",
+      "warship": {
+        "retire": {
+          "submit": "Retire warship"
+        },
+        "title": "Warship"
+      }
     },
     "display": {
       "move": {

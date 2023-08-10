@@ -34,3 +34,10 @@ app-spacecraft-state-block-display {
   width: 24px;
   margin-right: 15px;
 }
+
+.retire-btn {
+  color: $warning-color;
+  position: absolute;
+  top: calc(100% - 20px);
+  z-index: 99;
+}

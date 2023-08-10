@@ -147,7 +147,13 @@
         "tooltip": "Erzeuge neues Detachment"
       },
       "title": "Flottenzusammensetzung",
-      "warShip-names": "Kriegsschiffe"
+      "warShip-names": "Kriegsschiffe",
+      "warship": {
+        "retire": {
+          "submit": "Kriegsschiff deaktivieren"
+        },
+        "title": "Kriegsschiff"
+      }
     },
     "display": {
       "move": {

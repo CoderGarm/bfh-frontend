@@ -1,4 +1,5 @@
-<mat-card style="background-color: transparent;" class="blue-card">
+<mat-card style="background-color: transparent;"
+          [ngClass]="{'right-blue-card': _rightBlueCard, 'blue-card': !_rightBlueCard}">
     <!-- yeah, transparent background make it looks good -->
     <mat-card-header>
         <ng-content select="[header]"></ng-content>

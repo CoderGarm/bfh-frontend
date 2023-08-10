@@ -9,8 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { FleetOrbit } from './fleetOrbit';
 
-import {FleetOrbit} from "./fleetOrbit"; /**
+/**
  * .
  */
 export interface FleetSplit { 
@@ -18,5 +19,5 @@ export interface FleetSplit {
      * The first are the fleet names. Warship IDs to Fleet name.
      */
     fleetConstellations: { [key: string]: Array<number>; };
-    orbit:FleetOrbit;
+    orbit: FleetOrbit;
 }
