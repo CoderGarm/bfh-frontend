@@ -2,7 +2,9 @@
     <table mat-table [dataSource]="dataSource" matSort class="max-width">
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+            <td mat-cell *matCellDef="let user">
+                <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ user.profilePic }}.png" alt="member icon">
+                {{user.username}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
