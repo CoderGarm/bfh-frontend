@@ -1,5 +1,4 @@
 import {EventEmitter, Injectable} from "@angular/core";
-import {FleetName} from "../../modules/display-elements/fleet-display/fleet-display.component";
 import {ReplaySubject} from "rxjs";
 import {AbstractId} from "../swagger";
 
@@ -9,14 +8,14 @@ export class FleetEventService {
     /**
      * communicates the change of the fleets name
      */
-    private nameChange: EventEmitter<FleetName> = new EventEmitter<FleetName>();
+    private nameChange: EventEmitter<AbstractId> = new EventEmitter<AbstractId>();
 
 
     getNameChangeEmitter() {
         return this.nameChange;
     }
 
-    changeName(name: FleetName) {
+    changeName(name: AbstractId) {
         this.nameChange.emit(name);
     }
 
@@ -31,5 +30,18 @@ export class FleetEventService {
 
     selectFleet(fleet?: AbstractId) {
         this.selectedFleetEmitter.next(fleet);
+    }
+
+    /**
+     * communicates a clicked fleet in the sidenav
+     */
+    private retireFleetEmitter: ReplaySubject<AbstractId> = new ReplaySubject<AbstractId>();
+
+    retireFleet(fleet: AbstractId) {
+        this.retireFleetEmitter.next(fleet);
+    }
+
+    getRetireFleetEmitter(): ReplaySubject<AbstractId> {
+        return this.retireFleetEmitter;
     }
 }

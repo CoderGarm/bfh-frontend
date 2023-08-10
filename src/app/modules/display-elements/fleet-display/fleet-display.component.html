@@ -2,9 +2,12 @@
           [appearance]="_transparent ? 'raised' : 'outlined'"
           [ngStyle]="{'background-color':( _transparent ? 'transparent' : '')}" class="blue-card">
     <mat-card-header class="rename-element">
-        <app-icon matCardAvatar png32px [fleetSize]="fleet.ships.length"></app-icon>
+        <app-icon matCardAvatar
+                  [png64px]="_nameChangeAllowed"
+                  [png32px]="!_nameChangeAllowed"
+                  [fleetSize]="fleet.ships.length"></app-icon>
         <mat-card-title class="title-block" *ngIf="_nameChangeAllowed">
-            <form [formGroup]="formGroup" matTooltip="Double click to rename">
+            <form [formGroup]="formGroup" matTooltip="Double click to rename" class="clickable">
                 <mat-form-field appearance="outline"
                                 class="name-input rename-element"
                                 (dblclick)="enable()">
@@ -16,6 +19,12 @@
                     <mat-icon matSuffix (click)="save()" class="name-input disabled">save_alt</mat-icon>
                 </mat-form-field>
             </form>
+            <button mat-icon-button class="retire-btn"
+                    (click)="retireFleet()"
+                    *ngIf="_retireAllowed"
+                    matTooltip="{{ 'fleet.retire.submit' | translate }}">
+                <mat-icon>cancel</mat-icon>
+            </button>
         </mat-card-title>
         <mat-card-title *ngIf="!_nameChangeAllowed">
             {{fleet.name}}

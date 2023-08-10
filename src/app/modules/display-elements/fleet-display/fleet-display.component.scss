@@ -1,5 +1,9 @@
 @import "src/styles/variables";
 
+.title-block {
+  position: relative;
+}
+
 .name-input {
   cursor: text;
 }
@@ -32,4 +36,12 @@
 
 app-spacecraft-state-block-display {
   margin-left: 25px;
+}
+
+.retire-btn {
+  color: $warning-color;
+  position: absolute;
+  top: -30px;
+  right: -40px;
+  z-index: 99;
 }

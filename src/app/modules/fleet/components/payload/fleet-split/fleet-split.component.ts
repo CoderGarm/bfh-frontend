@@ -149,7 +149,7 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
                     name: f.name
                 });
                 separatedFleets.forEach(sf => this.fleetCommService.changeName({
-                    idFleet: sf.id,
+                    id: sf.id,
                     name: sf.name!
                 }));
                 this.notif.open('Fleets detached');

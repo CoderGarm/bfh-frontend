@@ -4,11 +4,6 @@ import {SubscriptionManager} from "../../../subscription.manager";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {FleetEventService} from "../../../services/intercom/fleet-event.service";
 
-export interface FleetName {
-    idFleet: number;
-    name: string;
-}
-
 @Component({
     selector: 'app-fleet-display',
     templateUrl: './fleet-display.component.html',
@@ -26,6 +21,11 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     get nameChangeAllowed() { return this._nameChangeAllowed; }
     set nameChangeAllowed(value: any) { this._nameChangeAllowed = this.coerceBooleanProperty(value); }
     _nameChangeAllowed: boolean = false;
+
+    @Input()
+    get retireAllowed() { return this._retireAllowed; }
+    set retireAllowed(value: any) { this._retireAllowed = this.coerceBooleanProperty(value); }
+    _retireAllowed: boolean = false;
 
     @Input()
     get transparent() { return this._transparent; }
@@ -93,9 +93,24 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
             .subscribe(resp => {
                 if (resp) {
                     this.fleetChangeService.changeName({
-                        idFleet: this.fleet!.idFleet,
+                        id: this.fleet!.idFleet,
                         name: name
-                    })
+                    });
+                }
+            });
+        this.subscriptions.push(sub);
+    }
+
+    retireFleet() {
+        if (!this.fleet) {
+            return;
+        }
+        const sub = this.fleetService.retireFleet(this.fleet.idFleet)
+            .subscribe(resp => {
+                if (resp) {
+                    this.fleetChangeService.retireFleet({
+                        id: this.fleet!.idFleet
+                    });
                 }
             });
         this.subscriptions.push(sub);
