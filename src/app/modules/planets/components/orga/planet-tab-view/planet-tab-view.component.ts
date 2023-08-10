@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
 import {Planet, PlanetApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {PlanetsEventService} from "../../../planets-event.service";
-import {DoNotScrollService} from "../../../../../services/intercom/do-not-scroll.service";
 
 @Component({
     selector: 'app-planet-tab-view',
@@ -18,16 +17,12 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     shipyardJobPossible: boolean = false;
     shipyardExists: boolean = false;
 
+    index = 1;
+
     constructor(private planetApi: PlanetApiService,
-                private noScrollService: DoNotScrollService,
                 private planetsNotificationService: PlanetsEventService,
                 private change: ChangeDetectorRef) {
         super();
-    }
-
-    ngOnDestroy() {
-        this.noScrollService.clearScrolling();
-        super.ngOnDestroy();
     }
 
     ngAfterViewInit(): void {
@@ -43,15 +38,12 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
         this.subscriptions.push(subscription);
 
         subscription = this.planetApi.isShipyardExistsOnPlanet(this.selectedPlanet!.idPlanet)
-            .subscribe(resp => this.shipyardExists = resp);
+            .subscribe(resp => {
+                this.shipyardExists = resp;
+                if (!this.shipyardExists) {
+                    this.index = 0;
+                }
+            });
         this.subscriptions.push(subscription);
-    }
-
-    indexChanged(event: number) {
-        if (event == 1 || event == 2) {
-            // fixme why no scroll? this.noScrollService.setNoScroll();
-        } else {
-            this.noScrollService.clearScrolling();
-        }
     }
 }
