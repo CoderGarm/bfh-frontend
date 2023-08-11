@@ -1,5 +1,5 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild} from '@angular/core';
-import {EnumValueDto, EResourceType, MarketplaceApiService, Planet, ResourceAmount, TradeOffer} from "../../../../../services/swagger";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {EnumValueDto, EResourceType, MarketplaceApiService, Planet, ResourceAmount, StarSystem, TradeOffer} from "../../../../../services/swagger";
 import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {UntypedFormControl} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
@@ -11,14 +11,17 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
 import {CdkOverlayOrigin} from "@angular/cdk/overlay";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {PlanetsEventService} from "../../../planets-event.service";
+import {BackgroundService} from "../../../../../services/prefetch/background.service";
+import {NavigationCalculator} from "../../../../../services/helper/navigation-calculator.helper";
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
+import EDistanceMetricsEnum = EnumValueDto.EDistanceMetricsEnum;
 
 @Component({
     selector: 'app-offer-market',
     templateUrl: './offer-market.component.html',
     styleUrls: ['./offer-market.component.scss']
 })
-export class OfferMarketComponent extends SubscriptionManager implements AfterViewInit {
+export class OfferMarketComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @Input()
     planet?: Planet;
@@ -39,7 +42,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
     selectedResourceTypes: EResourceType[] = [];
 
     private tradeOffers: TradeOffer[] = [];
-    displayedColumns: string[] = ['resourceType', 'amount', 'price', 'ppu', 'take'];
+    displayedColumns: string[] = ['resourceType', 'amount', 'price', 'ppu', 'distance', 'take'];
     dataSource = new MatTableDataSource<TradeOffer>(this.tradeOffers);
 
     @ViewChild(MatPaginator)
@@ -63,12 +66,15 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
     private idTradeOfferToEdit?: number;
 
     translations: Map<string, string> = new Map<string, string>();
+    distanceMap: Map<number, number> = new Map<number, number>();
+    private starSystem?: StarSystem;
 
     constructor(private translate: TranslateService,
                 private plantNotifService: PlanetsEventService,
                 private typeService: TypeService,
                 private change: ChangeDetectorRef,
                 private notif: SnackbarNotificationService,
+                private backgroundService: BackgroundService,
                 private marketService: MarketplaceApiService) {
         super();
 
@@ -96,6 +102,18 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
         this.setDatasource();
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!!this.planet) {
+            const idStarSystem = this.planet.idStarSystem;
+            let sub = this.backgroundService.getStarSystems().subscribe(systems => {
+                this.starSystem = systems.filter(sys => sys.idStarSystem === idStarSystem)[0];
+                this.setupDistanceMap();
+            });
+            this.subscriptions.push(sub);
+        }
+    }
+
+
     private setDatasource() {
         this.dataSource.data = this.tradeOffers;
         this.dataSource.paginator = this.paginator;
@@ -107,13 +125,32 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
                     return item.trade.resourceAmount.amount;
                 case "price":
                     return item.trade.pricePerUnit * item.trade.resourceAmount.amount;
+                case 'distance':
+                    const systemOrbit = this.starSystem!.orbit;
+                    const originOrbit = item.originOrbit;
+                    return NavigationCalculator.calculateDistanceOfOrbits(systemOrbit, originOrbit, EDistanceMetricsEnum.LY);
                 case "ppu":
                 default:
                     return item.trade.pricePerUnit;
             }
         };
         this.resourceTypeChipList._chips.forEach(chip => chip.select());
+
+        this.setupDistanceMap();
+
         this.change.detectChanges();
+    }
+
+    private setupDistanceMap() {
+        if (!this.starSystem || this.tradeOffers.length == 0) {
+            return;
+        }
+        this.tradeOffers.forEach(offer => {
+            const systemOrbit = this.starSystem!.orbit;
+            const originOrbit = offer.originOrbit;
+            const distance = NavigationCalculator.calculateDistanceOfOrbits(systemOrbit, originOrbit, EDistanceMetricsEnum.LY);
+            this.distanceMap.set(offer.idTradeOffer!, distance);
+        });
     }
 
     private setUpTradableResources() {
@@ -194,7 +231,8 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
                 origin: {
                     id: this.planet!.idPlanet,
                     name: this.planet!.name
-                }
+                },
+                originOrbit: this.planet!.orbit /* fixme system orbit */
             }
             if (!!this.idTradeOfferToEdit) {
                 // we are editing an offer

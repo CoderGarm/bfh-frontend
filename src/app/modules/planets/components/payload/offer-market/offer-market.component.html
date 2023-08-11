@@ -79,17 +79,22 @@
 
         <ng-container matColumnDef="amount">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
-            <td mat-cell *matCellDef="let element">{{element.trade.resourceAmount.amount}}</td>
+            <td mat-cell *matCellDef="let element">{{ element.trade.resourceAmount.amount }}</td>
         </ng-container>
 
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
-            <td mat-cell *matCellDef="let element">{{element.trade.pricePerUnit * element.trade.resourceAmount.amount}}</td>
+            <td mat-cell *matCellDef="let element">{{ element.trade.pricePerUnit * element.trade.resourceAmount.amount }}</td>
         </ng-container>
 
         <ng-container matColumnDef="ppu">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Price per Unit</th>
-            <td mat-cell *matCellDef="let element">{{element.trade.pricePerUnit}}</td>
+            <td mat-cell *matCellDef="let element">{{ element.trade.pricePerUnit }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="distance">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Distance</th>
+            <td mat-cell *matCellDef="let element">{{ distanceMap.get(element.idTradeOffer!)! | numberShort }} ly</td>
         </ng-container>
 
         <ng-container matColumnDef="take">

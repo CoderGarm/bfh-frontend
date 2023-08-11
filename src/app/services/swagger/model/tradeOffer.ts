@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { AbstractId } from './abstractId';
+import { Orbit } from './orbit';
 import { Trade } from './trade';
 
 /**
@@ -22,5 +23,6 @@ export interface TradeOffer {
     idTradeOffer?: number;
     seller?: AbstractId;
     origin: AbstractId;
+    originOrbit: Orbit;
     trade: Trade;
 }
