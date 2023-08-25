@@ -12,6 +12,7 @@ export class TokenStorage {
     private readonly gameRoles = 'game_role';
     private readonly login = 'login';
     private readonly userID = 'userID';
+    private readonly profilePic = 'profilePic';
     private readonly allianceID = 'allianceID';
     private readonly refreshToken = 'refreshToken';
     private readonly interruptedURL = 'interruptedURL';
@@ -114,6 +115,11 @@ export class TokenStorage {
         return this;
     }
 
+    setProfilePic(profilePic: string): TokenStorage {
+        localStorage.setItem(this.profilePic, profilePic);
+        return this;
+    }
+
     setAllianceID(idAlliance: number | undefined): TokenStorage {
         if (!!idAlliance) {
             localStorage.setItem(this.allianceID, String(idAlliance));
@@ -145,6 +151,7 @@ export class TokenStorage {
         localStorage.removeItem(this.refreshToken);
         localStorage.removeItem(this.login);
         localStorage.removeItem(this.role);
+        localStorage.removeItem(this.profilePic);
         localStorage.removeItem(this.gameRoles);
         localStorage.removeItem(this.userID);
         localStorage.removeItem(this.allianceID);
@@ -174,5 +181,9 @@ export class TokenStorage {
     getRememberScreenWarning() {
         const stringValue = localStorage.getItem('screenSizeWarning');
         return (stringValue == "true");
+    }
+
+    getProfilePic() {
+        return <string>localStorage.getItem(this.profilePic);
     }
 }

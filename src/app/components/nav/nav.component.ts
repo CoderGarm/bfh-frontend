@@ -24,6 +24,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
 
     activeRoute?: Route;
     honorverseMapPath: string;
+    profilePic: string;
 
     constructor(private router: Router,
                 private authenticationService: AuthenticationService,
@@ -33,6 +34,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
         super();
 
         this.honorverseMapPath = 'https://map.battleforhonor.de/';
+        this.profilePic = 'perspective-dice-six-faces-random';
     }
 
     ngOnInit(): void {
@@ -40,6 +42,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
             this.isLoggedIn = !!jwt;
             if (this.isLoggedIn && !this.tokenStorage.getInterruptedURL()) {
                 this.isAdmin = jwt.role === RoleEnum.ADMIN;
+                this.profilePic = jwt.profilePic;
                 this.router.navigateByUrl(NavigationCreationService.AFTER_LOGIN_ROUTE).then(() => {
                 });
             }

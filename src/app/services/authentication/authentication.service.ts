@@ -148,6 +148,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
             .setRole(token.role)
             .setGameRoles(token.gameUserRoles)
             .setUserID(token.idUser)
+            .setProfilePic(token.profilePic)
             .setAllianceID(token.idAlliance);
 
         this.setAccessData(token);

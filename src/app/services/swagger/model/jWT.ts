@@ -27,6 +27,10 @@ export interface JWT {
      */
     username: string;
     /**
+     * The user's icon.
+     */
+    profilePic: string;
+    /**
      * The user's ID.
      */
     idUser: number;
