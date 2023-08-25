@@ -198,7 +198,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
             this.notif.open(this.translations.get('planetary.marketplace.offer.offer-taken')!)
         });
         this.subscriptions.push(sub);
-        this.plantNotifService.fireOfferCrated();
+        this.plantNotifService.fireOfferCreated();
     }
 
     displayOfferCreation(resource: ResourceAmount, trigger: CdkOverlayOrigin) {
@@ -242,7 +242,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
                 this.notif.short(this.translations.get('planetary.marketplace.offer.created-notif')!);
                 this.closeOfferCreation();
                 this.fetchOffers();
-                this.plantNotifService.fireOfferCrated();
+                this.plantNotifService.fireOfferCreated();
                 this.closeOfferCreation();
             });
             this.subscriptions.push(sub);

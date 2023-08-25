@@ -26,7 +26,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     }
 
     ngAfterViewInit(): void {
-        let sub = this.planetsNotificationService.getSelectedPlanetEmitter().subscribe(selected => this.fetchData(selected));
+        let sub = this.planetsNotificationService.getSelectedPlanetEmitter().subscribe(selected => this.fetchData(selected!));
         this.subscriptions.push(sub);
         this.change.detectChanges();
     }

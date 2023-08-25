@@ -8,7 +8,7 @@ export class ShipyardEventService {
     /**
      * communicates a clicked ship class in the shipyard section of the sidenav
      */
-    private selectedShipClassEmitter: ReplaySubject<ShipClass> = new ReplaySubject<ShipClass>();
+    private selectedShipClassEmitter: ReplaySubject<ShipClass | undefined> = new ReplaySubject<ShipClass | undefined>();
 
     getSelectedShipClassEmitter() {
         return this.selectedShipClassEmitter;

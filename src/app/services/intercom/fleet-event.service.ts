@@ -22,7 +22,7 @@ export class FleetEventService {
     /**
      * communicates a clicked fleet in the sidenav
      */
-    private selectedFleetEmitter: ReplaySubject<AbstractId> = new ReplaySubject<AbstractId>();
+    private selectedFleetEmitter: ReplaySubject<AbstractId | undefined> = new ReplaySubject<AbstractId | undefined>();
 
     getSelectedFleetEmitter() {
         return this.selectedFleetEmitter;

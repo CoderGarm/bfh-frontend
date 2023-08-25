@@ -24,7 +24,10 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
         super();
     }
 
-    private subjectAccessData = new Subject<JWT>();
+    /**
+     * Will only be undefined after deliberate logout but never before.
+     */
+    private subjectAccessData: Subject<JWT | undefined> = new Subject<JWT | undefined>();
 
     setAccessData(access: JWT) {
         this.setPermissionsByRole(access.role);
@@ -32,10 +35,11 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
     }
 
     clearAccessData() {
-        this.subjectAccessData.next();
+        this.subjectAccessData.next(undefined);
     }
 
     getAccessData(): Observable<JWT> {
+        // @ts-ignore
         return this.subjectAccessData.asObservable();
     }
 
@@ -65,7 +69,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
      * can execute pending requests or retry original one
      * @returns {Observable<any>}
      */
-    refreshToken(): Observable<JWT> {
+    refreshToken(): Observable<JWT | undefined> {
         this.subscriptions.push(this.tokenStorage.getRefreshToken().subscribe(refreshToken => {
             this.subscriptions.push(this.authService.refresh(refreshToken).subscribe(resp => {
                 this.tokenStorage.setInterruptedURL("true")
@@ -119,6 +123,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
             return of();
         });
         this.subscriptions.push(sub);
+        // @ts-ignore
         return this.getAccessData();
     }
 

@@ -4,7 +4,6 @@ import {ProfileComponent} from '../../components/user/profile/profile.component'
 import {LoginComponent} from '../../components/user/login/login.component';
 import {RegisterComponent} from '../../components/user/register/register.component';
 import {Route, Routes} from '@angular/router';
-import {ProtectedGuard} from 'ngx-auth';
 import {StarMapTabViewComponent} from "../../modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 import {ResearchTabViewComponent} from "../../modules/research/components/orga/research-tab-view/research-tab-view.component";
 import {ExpansionTabViewComponent} from "../../modules/expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
@@ -25,6 +24,7 @@ import {ForgottenPasswordComponent} from "../../components/user/forgotten-passwo
 import {PlayerPointsListComponent} from "../../modules/user-points/player-points-list/player-points-list.component";
 import {StratOpsTabViewComponent} from "../../modules/strategic-operations/orga/strat-ops-tab-view/strat-ops-tab-view.component";
 import {TakeATourComponent} from "../../components/take-a-tour/take-a-tour.component";
+import {protectedGuard} from "ngx-auth";
 
 
 export class NavigationCreationService {
@@ -42,48 +42,48 @@ export class NavigationCreationService {
             {path: LoginComponent.path, component: LoginComponent},
             {path: ForgottenPasswordComponent.path, component: ForgottenPasswordComponent},
             {path: ForgottenPasswordComponent.paramPath, component: ForgottenPasswordComponent},
-            {path: ProfileComponent.path, component: ProfileComponent, canActivate: [ProtectedGuard]},
+            {path: ProfileComponent.path, component: ProfileComponent, canActivate: [protectedGuard]},
         ];
     }
 
     static createAdminRoutes(): Routes {
         return [
-            {path: AdminTabViewComponent.path, component: AdminTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: AdminTabViewComponent.path, component: AdminTabViewComponent, canActivate: [protectedGuard]},
         ];
     }
 
     static createSidenavRoutes(): Routes {
         return [
-            {path: PlayerPointsListComponent.path, component: PlayerPointsListComponent, canActivate: [ProtectedGuard]},
-            {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [ProtectedGuard]},
-            {path: ChatComponent.path, component: ChatComponent, canActivate: [ProtectedGuard]},
-            {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [ProtectedGuard]},
-            {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: PlayerPointsListComponent.path, component: PlayerPointsListComponent, canActivate: [protectedGuard]},
+            {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [protectedGuard]},
+            {path: ChatComponent.path, component: ChatComponent, canActivate: [protectedGuard]},
+            {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [protectedGuard]},
+            {path: JournalTabViewComponent.path, component: JournalTabViewComponent, canActivate: [protectedGuard]},
             NavigationCreationService.getPlanetRoute(),
-            {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [ProtectedGuard]},
-            {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: StarMapTabViewComponent.path, component: StarMapTabViewComponent, canActivate: [protectedGuard]},
+            {path: ResearchTabViewComponent.path, component: ResearchTabViewComponent, canActivate: [protectedGuard]},
             NavigationCreationService.getShipYardRoute(),
             NavigationCreationService.getFleetRoute(),
-            {path: StratOpsTabViewComponent.path, component: StratOpsTabViewComponent, canActivate: [ProtectedGuard]},
-            {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [ProtectedGuard]},
-            {path: TransportTabViewComponent.path, component: TransportTabViewComponent, canActivate: [ProtectedGuard]},
+            {path: StratOpsTabViewComponent.path, component: StratOpsTabViewComponent, canActivate: [protectedGuard]},
+            {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [protectedGuard]},
+            {path: TransportTabViewComponent.path, component: TransportTabViewComponent, canActivate: [protectedGuard]},
         ];
     }
 
     static getFleetRoute() {
-        return {path: FleetTabViewComponent.path, component: FleetTabViewComponent, canActivate: [ProtectedGuard], data: {'sidenav': FleetSelectionComponent}};
+        return {path: FleetTabViewComponent.path, component: FleetTabViewComponent, canActivate: [protectedGuard], data: {'sidenav': FleetSelectionComponent}};
     }
 
     static getPlanetRoute() {
-        return {path: PlanetTabViewComponent.path, component: PlanetTabViewComponent, canActivate: [ProtectedGuard], data: {'sidenav': PlanetSelectionComponent}};
+        return {path: PlanetTabViewComponent.path, component: PlanetTabViewComponent, canActivate: [protectedGuard], data: {'sidenav': PlanetSelectionComponent}};
     }
 
     static getShipYardRoute() {
-        return {path: ShipClassTabViewComponent.path, component: ShipClassTabViewComponent, canActivate: [ProtectedGuard], data: {'sidenav': ShipClassSelectionComponent}};
+        return {path: ShipClassTabViewComponent.path, component: ShipClassTabViewComponent, canActivate: [protectedGuard], data: {'sidenav': ShipClassSelectionComponent}};
     }
 
     static getShipYardCreateRoute() {
-        return {path: FittingCreateComponent.path, component: FittingCreateComponent, canActivate: [ProtectedGuard]};
+        return {path: FittingCreateComponent.path, component: FittingCreateComponent, canActivate: [protectedGuard]};
     }
 
     static createBurgerMenuRoutes(): Routes {

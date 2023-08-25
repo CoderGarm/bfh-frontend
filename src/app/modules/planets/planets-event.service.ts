@@ -27,7 +27,7 @@ export class PlanetsEventService {
     /**
      * communicates a clicked planet in the shipyard section of the sidenav
      */
-    private selectedPlanetEmitter: ReplaySubject<Planet> = new ReplaySubject<Planet>();
+    private selectedPlanetEmitter: ReplaySubject<Planet | undefined> = new ReplaySubject<Planet | undefined>();
 
     getSelectedPlanetEmitter() {
         return this.selectedPlanetEmitter;
@@ -46,7 +46,7 @@ export class PlanetsEventService {
         return this.offerCreatedEmitter;
     }
 
-    fireOfferCrated() {
-        this.offerCreatedEmitter.next();
+    fireOfferCreated() {
+        this.offerCreatedEmitter.next(true);
     }
 }

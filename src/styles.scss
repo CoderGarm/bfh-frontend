@@ -12,10 +12,6 @@
 
 /** placed here because of css encapsulation in angular **/
 
-.mat-drawer {
-  background-color: $secondary-background-color;
-}
-
 .clearfix:after {
   content: ".";
   display: block;
@@ -278,7 +274,6 @@ body {
 
 .mat-expansion-panel {
   width: $page-width;
-  background-color: $secondary-background-color;
 }
 
 app-tech-tree-display {
@@ -325,8 +320,8 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
   position: relative;
 }
 
-.streamline-background, .mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal {
-  background-color: $secondary-background-color;
+.streamline-background, .mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel, .mat-drawer {
+  background-color: $secondary-background-color !important;
 }
 
 .mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal {

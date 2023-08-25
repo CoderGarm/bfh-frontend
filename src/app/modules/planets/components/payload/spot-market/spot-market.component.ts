@@ -127,12 +127,12 @@ export class SpotMarketComponent extends SubscriptionManager {
 
         if (this.tradeMode === 'sell') {
             sub = this.marketService.sellAtSpotMarket(spotOffer).subscribe(() => {
-                this.plantNotifService.fireOfferCrated();
+                this.plantNotifService.fireOfferCreated();
                 this.closeSpotOfferCreation();
             });
         } else {
             sub = this.marketService.buyAtSpotMarket(spotOffer).subscribe(() => {
-                this.plantNotifService.fireOfferCrated();
+                this.plantNotifService.fireOfferCreated();
                 this.closeSpotOfferCreation();
             });
         }

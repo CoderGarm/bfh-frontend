@@ -31,7 +31,7 @@ $bright-background-color: lightslategrey;
 
 $tertiary-background-color: hsla(214, 90%, 52%, 0.1);
 $disabled-color: rgba(255, 255, 255, 0.3);
-$element-background-color: $secondary-background-color;
+$element-background-color: $secondary-background-color; /* fixme remove after upgrade */
 
 $divider-color: rgba(255, 255, 255, 0.12);
 
