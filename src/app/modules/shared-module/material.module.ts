@@ -33,6 +33,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTreeModule} from "@angular/material/tree";
 import {MatBadgeModule} from "@angular/material/badge";
+import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
 
 @NgModule({
 
@@ -73,6 +74,7 @@ import {MatBadgeModule} from "@angular/material/badge";
         DragDropModule,
         MatButtonToggleModule,
         MatBadgeModule,
+        MatBottomSheetModule,
     ],
     exports: [
         MatButtonModule,
@@ -110,6 +112,7 @@ import {MatBadgeModule} from "@angular/material/badge";
         DragDropModule,
         MatButtonToggleModule,
         MatBadgeModule,
+        MatBottomSheetModule,
     ],
     providers: []
 })

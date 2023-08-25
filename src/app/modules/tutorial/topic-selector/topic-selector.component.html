@@ -1,0 +1,6 @@
+<mat-nav-list>
+    <a mat-list-item *ngFor="let topic of scopeService.topics" (click)="openDialog(topic)">
+        <span matListItemTitle>{{ topic.title }}</span>
+        <span matLine>{{ topic.subTitle }}</span>
+    </a>
+</mat-nav-list>

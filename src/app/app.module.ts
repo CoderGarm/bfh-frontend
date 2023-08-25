@@ -77,6 +77,8 @@ import {MapDataProvider} from "./modules/strategic-operations/payload/mission-ma
 import {MapData} from "./modules/strategic-operations/payload/mission-map/map-data.component";
 import {TakeATourComponent} from './components/take-a-tour/take-a-tour.component';
 import {ContributeCreditsComponent} from './components/contribute-credits/contribute-credits.component';
+import {TutorialScopeService} from "./modules/tutorial/TutorialScopeService";
+import {TutorialModule} from "./modules/tutorial/tutorial.module";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -147,6 +149,7 @@ export let AppInjector: Injector;
         AngularMarkdownEditorModule.forRoot(),
         WikiModule,
         TransportationModule,
+        TutorialModule,
         ClipboardModule,
         ColorPickerModule,
         NgxEchartsModule.forRoot({
@@ -163,6 +166,7 @@ export let AppInjector: Injector;
         {provide: HTTP_INTERCEPTORS, useClass: HttpCacheInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: MonitorInterceptor, multi: true},
         NavigationCommunicationService,
+        TutorialScopeService,
         SnackbarNotificationService,
         SpinnerService,
         DoNotScrollService,

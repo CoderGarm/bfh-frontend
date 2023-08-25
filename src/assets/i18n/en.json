@@ -751,6 +751,11 @@
       "help": "Select the demand and the possibility to deliver of every planet"
     }
   },
+  "tutorial": {
+    "trigger": {
+      "scope-selector": "Tutorial"
+    }
+  },
   "wiki": {
     "article": {
       "create": {

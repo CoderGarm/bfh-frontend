@@ -26,7 +26,10 @@
             </div>
         </ngx-spinner>
         <router-outlet></router-outlet>
-        <button mat-icon-button class="tutorial-btn" *ngIf="isLoggedIn" matTooltip="{{ 'path.button.profile' | translate }}">
+        <button mat-icon-button class="tutorial-btn"
+                *ngIf="isLoggedIn && tutorialScope.hasTutorial"
+                (click)="openBottomSheet()"
+                matTooltip="{{ 'tutorial.trigger.scope-selector' | translate }}">
             <img mat-card-avatar class="avatar-image" src="assets/icons/misc/uncertainty.png" alt="tutorial icon">
         </button>
         <app-home *ngIf="displayWelcome()"></app-home>

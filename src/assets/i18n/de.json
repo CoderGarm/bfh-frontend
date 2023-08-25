@@ -750,6 +750,11 @@
       "help": "Wähle den Bedarf und die Liefermöglichkeiten je Planet"
     }
   },
+  "tutorial": {
+    "trigger": {
+      "scope-selector": "Tutorial"
+    }
+  },
   "wiki": {
     "article": {
       "create": {

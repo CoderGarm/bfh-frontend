@@ -23,6 +23,9 @@ import {DatePipe} from "@angular/common";
 import {SpinnerService} from "./services/spinner.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {TakeATourComponent} from "./components/take-a-tour/take-a-tour.component";
+import {MatBottomSheet} from "@angular/material/bottom-sheet";
+import {TopicSelectorComponent} from "./modules/tutorial/topic-selector/topic-selector.component";
+import {TutorialScopeService} from "./modules/tutorial/TutorialScopeService";
 
 @Component({
     selector: 'app-root',
@@ -54,6 +57,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     constructor(private spinnerService: SpinnerService,
                 private spinner: NgxSpinnerService,
                 private translate: TranslateService,
+                private bottomSheet: MatBottomSheet,
+                protected tutorialScope: TutorialScopeService,
                 private router: Router,
                 public doNotScrollService: DoNotScrollService,
                 private meta: Meta,
@@ -112,6 +117,10 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             this.message = 'The screen is too small. Use a bigger one.';
             this.spinner.show('screen-size');
         }
+    }
+
+    openBottomSheet(): void {
+        this.bottomSheet.open(TopicSelectorComponent);
     }
 
     closeScreenSizeWarning() {
