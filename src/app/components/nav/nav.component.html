@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="More...">
-        <mat-icon>menu</mat-icon>
+        <mat-icon mat-card-avatar>menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
         <button mat-menu-item *ngFor="let route of routes" (click)="navigate(route)">
@@ -32,6 +32,6 @@
         <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ profilePic }}.png" alt="member icon">
     </button>
     <button mat-icon-button (click)='logout()' *ngIf='isLoggedIn' matTooltip="{{ 'path.button.logout' | translate }}">
-        <mat-icon>logout</mat-icon>
+        <mat-icon mat-card-avatar>logout</mat-icon>
     </button>
 </mat-toolbar>
