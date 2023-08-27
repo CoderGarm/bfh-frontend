@@ -17,7 +17,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     shipyardJobPossible: boolean = false;
     shipyardExists: boolean = false;
 
-    index = 1;
+    index = 0;
 
     constructor(private planetApi: PlanetApiService,
                 private planetsNotificationService: PlanetsEventService,

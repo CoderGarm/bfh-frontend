@@ -218,11 +218,11 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         }
     }
 
-    checkIfTooExpensive(): boolean {
-        if (!this.ignoreExpensiveConstructions || !this.construction) {
+    checkIfTooExpensive(construction: Construction): boolean {
+        if (!this.ignoreExpensiveConstructions) {
             return false;
         }
-        let key = this.getConstructionKey(this.construction);
+        let key = this.getConstructionKey(construction);
         if (!this.resourceDeposit || !this.knownCosts.has(key)) {
             return true;
         }
@@ -257,6 +257,13 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             }
             return includesResourceType && includesCategory && includesSequence;
         }).sort((a, b) => a.building.name.replace(' ', '') < b.building.name.replace(' ', '') ? -1 : 1);
+
+        if (this.filteredConstructions.length === 0) {
+            this.setConstruction(undefined);
+        }
+        if (this.filteredConstructions.length === 1) {
+            this.setConstruction(this.filteredConstructions[0]);
+        }
     }
 
     /**

@@ -75,8 +75,13 @@
 
         <mat-selection-list #constructions [multiple]="false" hideSingleSelectionIndicator
                             (click)="setConstruction(constructions.selectedOptions.hasValue() ? constructions.selectedOptions.selected[0].value : undefined)">
-            <mat-list-option *ngFor="let construction of filteredConstructions" [value]="construction" [disabled]="checkIfTooExpensive()">
-                {{ construction.building.name }}
+            <mat-list-option *ngFor="let construction of filteredConstructions" [value]="construction" [disabled]="checkIfTooExpensive(construction)">
+                <span matListItemTitle
+                      *ngIf="construction.level === 0" class="lvl-0">{{ construction.building.name }}</span>
+                <span matListItemTitle
+                      *ngIf="construction.level > 0 && construction.operationalLevel === construction.level" class="full-op">{{ construction.building.name }}</span>
+                <span matListItemTitle
+                      *ngIf="construction.level > 0 && construction.operationalLevel != construction.level">{{ construction.building.name }}</span>
             </mat-list-option>
         </mat-selection-list>
     </app-outlined>
