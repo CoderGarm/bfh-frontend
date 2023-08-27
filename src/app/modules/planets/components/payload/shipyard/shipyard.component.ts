@@ -20,6 +20,7 @@ import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../subscription.manager";
+import {ModuleService} from "../../../../../services/prefetch/module.service";
 import ECapacityAreaTypesEnum = EnumValueDto.ECapacityAreaTypesEnum;
 
 @Component({
@@ -90,6 +91,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
 
     constructor(private shipyardApi: ShipyardApiService,
                 private typeService: TypeService,
+                private moduleService: ModuleService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
@@ -132,7 +134,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
         if (changes[this.selectedPlanetDefinition]) {
             if (this.selectedPlanetInput) {
                 let subscription = this.shipyardApi.getShipClassesByUser().subscribe(resp => {
-                    this.possibleShipClasses = resp;
+                    this.possibleShipClasses = resp.filter(s => !(s.name === 'Songbird' && s.mark === 1));
                     this.filterDisplayedShipClasses();
                 });
                 this.subscriptions.push(subscription);
