@@ -1,0 +1,12 @@
+<div *ngIf="scopeService.openTopic?.uuid === uuid">
+    <p>Select an amount of ships to build.</p>
+
+    <h5>Fleet integration</h5>
+    <p>While building the ships will be assigned to a 'virtual fleet'.
+        If there is a real fleet in orbit while finishing all the ships of a job at once, they will be assigned to the biggest fleet.
+    </p>
+
+    <h5>Operationals</h5>
+    <p>Please keep in mind that ships will be constructed, no matter if there are enough crew to man it.
+        The finished ships without a crew will stay inoperational until the crew has arrived or is educated.</p>
+</div>

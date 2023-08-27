@@ -1,4 +1,14 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 <mat-dialog-content class="mat-typography">
-    <app-fleet-dash *ngIf="data.uuid === FleetDashComponent.UUID"></app-fleet-dash>
+    <!-- journal -->
+    <tut-fleet-dash></tut-fleet-dash>
+    <tut-job-dash></tut-job-dash>
+    <tut-trade-dash></tut-trade-dash>
+    <tut-infra-dash></tut-infra-dash>
+    <tut-battle-dash></tut-battle-dash>
+    <!-- planets -->
+    <tut-planet-dash></tut-planet-dash>
+    <tut-planet-constructions></tut-planet-constructions>
+    <tut-planet-shipyard></tut-planet-shipyard>
+    <tut-planetary-market></tut-planetary-market>
 </mat-dialog-content>

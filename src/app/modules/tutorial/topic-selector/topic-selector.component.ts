@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Topic, TutorialScopeService} from "../TutorialScopeService";
+import {Topic, TutorialScopeService} from "../tutorial-scope.service";
 import {MatDialog} from "@angular/material/dialog";
 import {TutorialDisplayComponent} from "../tutorial-display/tutorial-display.component";
 
@@ -19,9 +19,11 @@ export class TopicSelectorComponent {
             {
                 data: topic
             });
+        this.scopeService.setOpenTopic(topic);
 
         dialogRef.afterClosed().subscribe(result => {
             this.dialog.closeAll();
+            this.scopeService.setOpenTopic(undefined);
         });
     }
 

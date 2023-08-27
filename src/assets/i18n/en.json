@@ -255,7 +255,7 @@
         "fleet": "Fleet report",
         "infrastructure": "Infrastructure report",
         "jobs": "Job Report",
-        "transportation-trade": "Trade report"
+        "transportation-trade": "Carrier report"
       }
     },
     "trade": {

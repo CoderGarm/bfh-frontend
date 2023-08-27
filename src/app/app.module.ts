@@ -77,7 +77,7 @@ import {MapDataProvider} from "./modules/strategic-operations/payload/mission-ma
 import {MapData} from "./modules/strategic-operations/payload/mission-map/map-data.component";
 import {TakeATourComponent} from './components/take-a-tour/take-a-tour.component';
 import {ContributeCreditsComponent} from './components/contribute-credits/contribute-credits.component';
-import {TutorialScopeService} from "./modules/tutorial/TutorialScopeService";
+import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
 import {TutorialModule} from "./modules/tutorial/tutorial.module";
 
 // AoT requires an exported function for factories

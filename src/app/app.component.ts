@@ -25,7 +25,7 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {TakeATourComponent} from "./components/take-a-tour/take-a-tour.component";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {TopicSelectorComponent} from "./modules/tutorial/topic-selector/topic-selector.component";
-import {TutorialScopeService} from "./modules/tutorial/TutorialScopeService";
+import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
 
 @Component({
     selector: 'app-root',
