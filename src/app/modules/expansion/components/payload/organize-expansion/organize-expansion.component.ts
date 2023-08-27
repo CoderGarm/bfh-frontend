@@ -82,7 +82,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
 
     private updateWithFreshColonization(colo: Colonization | undefined) {
         if (!!colo) {
-            const idStarSystem: number | undefined = colo?.target.idStarSystem;
+            const idStarSystem: number | undefined = colo?.target.starSystem.id;
             const idPlanet = colo?.target.idPlanet;
             this.starSystems.forEach(sys => {
                 if (!!idPlanet && sys.starSystem.idStarSystem === idStarSystem) {

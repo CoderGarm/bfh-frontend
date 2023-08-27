@@ -4,10 +4,12 @@
                      (click)="selectClass(shipClass)"
                      [selected]="isSelected(shipClass.idShipClass!)"
                      class="sidenav-item">
+        <span matListItemTitle>
         <app-icon matListItemAvatar
                   [icon]="shipClass.shipClassType"
                   [altText]="shipClass.shipClassType.typeName"
                   [toolTip]="shipClass.shipClassType.typeName"></app-icon>
-        {{shipClass.name}}
+            {{shipClass.name}}
+        </span>
     </mat-list-option>
 </mat-selection-list>

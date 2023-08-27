@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {Planet, PlanetApiService} from "../../../../../services/swagger";
+import {AbstractId, Planet, PlanetApiService} from "../../../../../services/swagger";
 import {PlanetsEventService} from "../../../planets-event.service";
 import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
 import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
@@ -11,7 +11,10 @@ import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager"
 })
 export class PlanetSelectionComponent extends SidenavSelectionManager implements AfterViewInit {
 
-    planets: Planet[] = [];
+
+    planetsBySystem: Map<number, number[]> = new Map<number, number[]>();
+
+    planets: Map<AbstractId, Planet[]> = new Map<AbstractId, Planet[]>();
 
     constructor(private planetApi: PlanetApiService,
                 private planetsNotificationService: PlanetsEventService) {
@@ -19,7 +22,24 @@ export class PlanetSelectionComponent extends SidenavSelectionManager implements
     }
 
     ngAfterViewInit(): void {
-        let sub = this.planetApi.getPlanetByUsers().subscribe(resp => this.planets = resp);
+        let sub = this.planetApi.getPlanetByUsers().subscribe(resp => {
+            resp.forEach(p => {
+                const idStarSystem = p.starSystem.id;
+                const idPlanet = p.idPlanet;
+                let planets = this.planetsBySystem.get(idStarSystem);
+                if (!planets) {
+                    planets = [];
+                }
+                planets.push(idPlanet);
+                this.planetsBySystem.set(idStarSystem, planets);
+            });
+
+            this.planetsBySystem.forEach((planetIDs, idStarSystem) => {
+                const planets = resp.filter(p => planetIDs.includes(p.idPlanet));
+                const starSystem = planets[0].starSystem;
+                this.planets.set(starSystem, planets);
+            });
+        });
         this.subscriptions.push(sub);
     }
 

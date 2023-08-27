@@ -329,6 +329,14 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
   padding: 5px;
 }
 
+.mat-mdc-list-item {
+  border-radius: 20px !important;
+}
+
+.nav-element > mat-divider {
+  margin: 0 25px;
+}
+
 .mat-mdc-table {
   margin-bottom: 25px;
   padding-bottom: 15px;

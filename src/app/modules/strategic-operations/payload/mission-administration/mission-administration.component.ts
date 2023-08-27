@@ -99,7 +99,7 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
         if (!!selectedMissionTypes) {
             missions = missions.filter(mission => selectedMissionTypes.includes(mission.missionType));
         }
-        return missions.filter(m => m.venue.idStarSystem === system.idStarSystem);
+        return missions.filter(m => m.venue.starSystem.id === system.idStarSystem);
     }
 
     getColor(coord: MissionTypeEnum): string {

@@ -104,7 +104,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!!this.planet) {
-            const idStarSystem = this.planet.idStarSystem;
+            const idStarSystem = this.planet.starSystem.id;
             let sub = this.backgroundService.getStarSystems().subscribe(systems => {
                 this.starSystem = systems.filter(sys => sys.idStarSystem === idStarSystem)[0];
                 this.setupDistanceMap();

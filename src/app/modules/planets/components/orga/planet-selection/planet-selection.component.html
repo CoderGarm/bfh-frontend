@@ -1,9 +1,14 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-    <mat-list-option *ngFor="let planet of planets"
-                     (click)="chosePlanet(planet)"
-                     [selected]="isSelected(planet.idPlanet)"
-                     matTooltip="{{planet.name}}"
-                     class="sidenav-item">
-        {{planet.name}}
-    </mat-list-option>
+    <div *ngFor="let pair of planets | keyvalue">
+        <div class="system-name">{{ pair.key.name }}</div>
+        <mat-list-option *ngFor="let planet of pair.value"
+                         (click)="chosePlanet(planet)"
+                         [selected]="isSelected(planet.idPlanet)"
+                         class="sidenav-item">
+            <span matListItemTitle>
+                <app-icon matListItemAvatar
+                          [icon]="planet.planetType"></app-icon>
+                {{ planet.name }}</span>
+        </mat-list-option>
+    </div>
 </mat-selection-list>

@@ -66,7 +66,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         let fleetMoves = this.fleets.filter(f => !f.move).map(fleet => {
             const fm: FleetMove = {
                 idFleetToMove: fleet.idFleet,
-                idDestinationSystem: this.destination!.idStarSystem,
+                idDestinationSystem: this.destination!.starSystem.id,
                 destinationOrbit: this.destination!.orbit
             }
             return fm;

@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { EPlanetClassType } from './ePlanetClassType';
 import { Orbit } from './orbit';
 import { Player } from './player';
@@ -30,10 +31,7 @@ export interface Planet {
      * The name of this planet.
      */
     name: string;
-    /**
-     * The star system ID which this planet is part of.
-     */
-    idStarSystem: number;
+    starSystem: AbstractId;
     orbit: Orbit;
     /**
      * The timestamp when this planet was colonized first.
