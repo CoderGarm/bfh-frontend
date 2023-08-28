@@ -333,7 +333,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             return;
         }
 
-        let valueAtLevel = ResourceHelper.calculateLevelOutput(this.construction);
+        let valueAtLevel = ResourceHelper.calculateNextOutput(this.construction);
         let productionTarget = this.construction.building.productionTarget;
         let productionCategory = this.construction.building.productionCategory;
         switch (productionCategory) {
@@ -341,6 +341,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 // do not display capacity because the value is shown by a tooltip
                 break;
             case ProductionCategoryEnum.PRODUCE:
+                this.levelImprovementHumanResources = undefined;
                 this.levelImprovementResources = {
                     resourceType: productionTarget,
                     amount: valueAtLevel
@@ -349,6 +350,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             case ProductionCategoryEnum.REFINEMENT:
                 let refinementSequence = this.construction.building.refinementSequence;
                 let product = refinementSequence!.product;
+                this.levelImprovementResources = undefined;
                 this.levelImprovementHumanResources = {
                     resourceType: product,
                     amount: valueAtLevel

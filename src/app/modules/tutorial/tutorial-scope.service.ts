@@ -58,7 +58,9 @@ export class TutorialScopeService extends SubscriptionManager {
     }
 
     private setScope(route: string) {
-        console.log(route)
+        if (this.tokenStorage.isLocalhost()) {
+            console.log(route);
+        }
         this.active = route;
         this.hasTutorial = TutorialScopeService.TUTORIALS.includes(this.active);
         this.topics = TutorialScopeService.topicsByRoute.has(this.active) ? TutorialScopeService.topicsByRoute.get(this.active)! : [];
