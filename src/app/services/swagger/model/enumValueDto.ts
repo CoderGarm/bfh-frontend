@@ -58,8 +58,8 @@ export namespace EnumValueDto {
         COSTS: 'COSTS' as EDepositTypeEnum,
         INCOME: 'INCOME' as EDepositTypeEnum,
         CAPACITY: 'CAPACITY' as EDepositTypeEnum,
-        TRANSPORTATIONDEMAND: 'TRANSPORTATION_DEMAND' as EDepositTypeEnum,
-        TRANSPORTATIONDELIVERY: 'TRANSPORTATION_DELIVERY' as EDepositTypeEnum
+        TRANSPORTATION_DEMAND: 'TRANSPORTATION_DEMAND' as EDepositTypeEnum,
+        TRANSPORTATION_DELIVERY: 'TRANSPORTATION_DELIVERY' as EDepositTypeEnum
     };
     export type EResourceTypeEnum = 'CONSTRUCTION' | 'ORBITAL_CONSTRUCTION' | 'RESEARCH' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION';
     export const EResourceTypeEnum = {

@@ -69,6 +69,23 @@ export class NumericCounterComponent implements OnInit, OnChanges {
     ngOnInit(): void {
     }
 
+    handleKeyboardEvent(event: KeyboardEvent) {
+
+        const key = event.key;
+        switch (key) {
+            case '+':
+                event.preventDefault();
+                this.add();
+                break;
+            case '-':
+                event.preventDefault();
+                this.sub();
+                break;
+            default:
+                break;
+        }
+    }
+
     sub() {
         if (this.internalAmount - this.step >= this.min) {
             this.internalAmount -= this.step;

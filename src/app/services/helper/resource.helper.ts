@@ -1,6 +1,5 @@
 import {Construction, EEducationType, EnumValueDto, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../swagger";
-import {PlanetaryResourceTransportation} from "../../modules/transportation/payload/components/transportation-resource-demand/transportation-resource-demand.component";
-import {PlanetaryHumanTransportation} from "../../modules/transportation/payload/components/transportation-humans-demand/transportation-humans-demand.component";
+import {CarrierAmount} from "../../modules/transportation/payload/components/transport-resources/transport-resources.component";
 import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
 import EEducationTypeEnum = EnumValueDto.EEducationTypeEnum;
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
@@ -222,9 +221,9 @@ export class ResourceHelper {
         };
     }
 
-    static transformHumanTransportationToDeposit(event: PlanetaryHumanTransportation): ResourceDeposit {
+    static transformHumanTransportationToDeposit(event: CarrierAmount): ResourceDeposit {
         return {
-            subType: {typeName: EDepositTypeEnum.TRANSPORTATIONDEMAND},
+            subType: {typeName: EDepositTypeEnum.TRANSPORTATION_DEMAND},
             humanResources: event.transportations.map(t => {
                 return {
                     amount: t.amount,
@@ -235,9 +234,9 @@ export class ResourceHelper {
         };
     }
 
-    static transformResourceTransportationToDeposit(event: PlanetaryResourceTransportation): ResourceDeposit {
+    static transformResourceTransportationToDeposit(event: CarrierAmount): ResourceDeposit {
         return {
-            subType: {typeName: EDepositTypeEnum.TRANSPORTATIONDEMAND},
+            subType: {typeName: EDepositTypeEnum.TRANSPORTATION_DEMAND},
             humanResources: [],
             resources: event.transportations.map(t => {
                 return {
@@ -302,7 +301,7 @@ export class ResourceHelper {
             return undefined;
         }
 
-        const r: ResourceDeposit = {
+        return {
             subType: deposit.subType,
             resources: deposit.resources.filter(r => {
                 if (!!resourceTypes) {
@@ -328,7 +327,6 @@ export class ResourceHelper {
                 }
                 return rv;
             })
-        }
-        return r;
+        };
     }
 }

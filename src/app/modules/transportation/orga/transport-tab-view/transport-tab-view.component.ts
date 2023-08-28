@@ -46,10 +46,10 @@ export class TransportTabViewComponent extends SubscriptionManager implements On
         this.planets.forEach(planet => {
             let sub = this.resourceService.getResourceDeposit(planet.idPlanet)
                 .subscribe(resp => {
-                    let copy = ResourceHelper.copy(resp, this.resourceTypes, []);
+                    let copy = ResourceHelper.copy(resp, this.resourceTypes, [])!;
                     this.depositsResources.set(planet.idPlanet, copy!);
 
-                    copy = ResourceHelper.copy(resp, [], this.educationTypes);
+                    copy = ResourceHelper.copy(resp, [], this.educationTypes)!;
                     this.depositsPopulation.set(planet.idPlanet, copy!);
                 });
             this.subscriptions.push(sub);

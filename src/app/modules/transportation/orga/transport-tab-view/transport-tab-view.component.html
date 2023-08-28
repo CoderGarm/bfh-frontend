@@ -1,17 +1,1 @@
-<mat-tab-group animationDuration="500ms" class="bottom-spacer">
-    <mat-tab label="{{ 'tab.transportation.resources' | translate }}">
-        <ng-template matTabContent>
-            <app-transport-resources [planets]="planets" [deposits]="depositsResources"></app-transport-resources>
-        </ng-template>
-    </mat-tab>
-    <mat-tab label="{{ 'tab.transportation.humans' | translate }}">
-        <ng-template matTabContent>
-            <app-transport-humans [planets]="planets" [deposits]="depositsPopulation"></app-transport-humans>
-        </ng-template>
-    </mat-tab>
-    <mat-tab label="{{ 'tab.transportation.goods' | translate }}">
-        <ng-template matTabContent>
-            <h6>Unfortunately this is not implemented yet.</h6>
-        </ng-template>
-    </mat-tab>
-</mat-tab-group>
+<app-transport-resources [planets]="planets" [depositsResources]="depositsResources" [depositsPopulation]="depositsPopulation"></app-transport-resources>

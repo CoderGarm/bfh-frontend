@@ -13,7 +13,8 @@
            (click)="$event.stopPropagation();"
            autocomplete="off"
            [(ngModel)]="internalAmount"
-           (ngModelChange)="change()">
+           (ngModelChange)="change()"
+           (keydown)="handleKeyboardEvent($event)">
     <mat-icon *ngIf="disabled" matSuffix class="disabled">add</mat-icon>
     <mat-icon *ngIf="!disabled" matSuffix (click)="add(); $event.stopPropagation();">add</mat-icon>
 </mat-form-field>

@@ -1,4 +1,12 @@
-<div class="bottom-spacer content-area height-fit-content-forced">
+<div class="bottom-spacer content-area ">
+
+    <mat-button-toggle-group [(ngModel)]="carriageType" (valueChange)="change()">
+        <mat-button-toggle *ngFor="let type of carriageTypes" value="{{ type }}">
+            <span mat-subheader *ngIf="type === 'Resources'">{{ 'tab.transportation.resources' | translate }}</span>
+            <span mat-subheader *ngIf="type === 'Personnel'">{{ 'tab.transportation.humans' | translate }}</span>
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+
     <mat-accordion multi>
         <mat-expansion-panel *ngFor="let planet of planets" class="margin-bottom">
             <mat-expansion-panel-header>
@@ -11,12 +19,27 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <app-resource-display [deposit]="deposits.get(planet.idPlanet)" [showTick]="false"></app-resource-display>
+            <mat-stepper #stepper class="transportation-stepper">
+                <mat-step>
+                    <app-resource-display [deposit]="depositsResources.get(planet.idPlanet)" [showTick]="false"></app-resource-display>
+                    <div class="flex-items-container">
+                        <app-resource-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DEMAND', planet: planet }"
+                                              (change)="setDemand($event)"></app-resource-carrier>
+                        <app-resource-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DELIVERY', planet: planet }"
+                                              (change)="setDelivery($event)"></app-resource-carrier>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <app-resource-display [deposit]="depositsPopulation.get(planet.idPlanet)" [showTick]="false"></app-resource-display>
+                    <div class="flex-items-container">
+                        <app-humans-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DEMAND', planet: planet }"
+                                            (change)="setHumanDemand($event)"></app-humans-carrier>
+                        <app-humans-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DELIVERY', planet: planet }"
+                                            (change)="setHumanDelivery($event)"></app-humans-carrier>
+                    </div>
+                </mat-step>
+            </mat-stepper>
 
-            <div class="flex-items-container">
-                <app-transportation-resource-demand [planet]="planet" (demandEmitter)="setDemand($event)"></app-transportation-resource-demand>
-                <app-transportation-resource-delivery [planet]="planet" (deliveryEmitter)="setDelivery($event)"></app-transportation-resource-delivery>
-            </div>
         </mat-expansion-panel>
     </mat-accordion>
 </div>

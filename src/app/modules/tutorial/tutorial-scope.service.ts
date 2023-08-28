@@ -12,6 +12,8 @@ import {TutorialPlanetDashComponent} from "./topics/planetTabView/dash/tutorial-
 import {TutorialPlanetConstructionsComponent} from "./topics/planetTabView/constructions/tutorial-planet-constructions.component";
 import {TutorialMarketplaceComponent} from "./topics/planetTabView/market/tutorial-marketplace.component";
 import {TutorialPlanetShipyardComponent} from "./topics/planetTabView/shipyard/tutorial-planet-shipyard.component";
+import {TransportTabViewComponent} from "../transportation/orga/transport-tab-view/transport-tab-view.component";
+import {TutorialInnerEmpireTransportationComponent} from "./topics/tutorial-inner-empire-transportation/tutorial-inner-empire-transportation.component";
 
 export interface Topic {
     uuid: string,
@@ -28,7 +30,8 @@ export class TutorialScopeService extends SubscriptionManager {
 
     private static readonly TUTORIALS: string[] = [
         JournalTabViewComponent.name,
-        PlanetTabViewComponent.name
+        PlanetTabViewComponent.name,
+        TransportTabViewComponent.name,
     ];
 
     private static topicsByRoute: Map<string, Topic[]> = new Map<string, Topic[]>();
@@ -45,6 +48,9 @@ export class TutorialScopeService extends SubscriptionManager {
             TutorialPlanetConstructionsComponent.TOPIC,
             TutorialPlanetShipyardComponent.TOPIC,
             TutorialMarketplaceComponent.TOPIC
+        ]);
+        this.topicsByRoute.set(TransportTabViewComponent.name, [
+            TutorialInnerEmpireTransportationComponent.TOPIC,
         ]);
     }
 

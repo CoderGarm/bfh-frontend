@@ -1,0 +1,12 @@
+<div *ngIf="!!resourceFetchOrder" class="clearfix">
+    <div class="the-left">
+        <div *ngFor="let resource of militaries" class="counter-element">
+            <app-resource-counter
+                    [resourceType]="resource"
+                    [startAt]="amounts.get(resource.typeName)!"
+                    (numericEmitter)="amounts.set($event.resourceType.typeName, $event.amount); submit();"
+                    caption="{{ 'transportation.amount.' + titleKey + '.caption' | translate }}">
+            </app-resource-counter>
+        </div>
+    </div>
+</div>
