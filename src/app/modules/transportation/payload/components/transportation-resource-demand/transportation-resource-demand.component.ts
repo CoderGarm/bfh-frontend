@@ -30,7 +30,7 @@ export class TransportationResourceDemandComponent extends SubscriptionManager i
     constructor(private typeService: TypeService,
                 private planetService: PlanetApiService) {
         super();
-        this.resources = typeService.eResourceTypes;
+        this.resources = this.typeService.eResourceTypes;
         this.resources.forEach(resource => {
             if (resource.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
                 this.collectables.push(resource);

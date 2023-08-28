@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Planet, PlanetApiService, ResourceDeposit} from "../../../../services/swagger";
-import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
-import {ResourceHelper} from "../../../../services/helper/resource.helper";
-import {SubscriptionManager} from "../../../../subscription.manager";
-import {PlanetaryHumanTransportation} from "../components/transportation-humans-demand/transportation-humans-demand.component";
+import {Planet, PlanetApiService, ResourceDeposit} from "../../../../../services/swagger";
+import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {ResourceHelper} from "../../../../../services/helper/resource.helper";
+import {SubscriptionManager} from "../../../../../subscription.manager";
+import {PlanetaryHumanTransportation} from "../transportation-humans-demand/transportation-humans-demand.component";
 
 @Component({
     selector: 'app-transport-humans',

@@ -1,14 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SubscriptionManager} from "../../../../subscription.manager";
-import {Planet, PlanetApiService, ResourceDeposit} from "../../../../services/swagger";
-import {PlanetaryResourceTransportation} from "../components/transportation-resource-demand/transportation-resource-demand.component";
-import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
-import {ResourceHelper} from "../../../../services/helper/resource.helper";
-
-interface DepositHolder {
-    idPlanet: number
-    resourceDeposit: ResourceDeposit;
-}
+import {SubscriptionManager} from "../../../../../subscription.manager";
+import {Planet, PlanetApiService, ResourceDeposit} from "../../../../../services/swagger";
+import {PlanetaryResourceTransportation} from "../transportation-resource-demand/transportation-resource-demand.component";
+import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 
 @Component({
     selector: 'app-transport-resources',

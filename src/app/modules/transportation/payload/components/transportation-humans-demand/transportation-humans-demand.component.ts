@@ -30,7 +30,7 @@ export class TransportationHumansDemandComponent extends SubscriptionManager imp
     constructor(private typeService: TypeService,
                 private planetService: PlanetApiService) {
         super();
-        this.resources = typeService.educationTypes;
+        this.resources = this.typeService.educationTypes;
         this.resources.forEach(resource => {
             if (resource.isMilitary) {
                 this.militaries.push(resource);
