@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {EnumValueDto, EResourceType, MarketplaceApiService, Planet, ResourceAmount, StarSystem, TradeOffer} from "../../../../../services/swagger";
+import {EnumValueDto, EResourceType, HumanResourceAmount, MarketplaceApiService, Planet, ResourceAmount, StarSystem, TradeOffer} from "../../../../../services/swagger";
 import {MatChip, MatChipListbox} from "@angular/material/chips";
 import {UntypedFormControl} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
@@ -249,8 +249,8 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
         }
     }
 
-    setOffer(event: ResourceAmount) {
-        this.theOffer = event;
+    setOffer(event: ResourceAmount | HumanResourceAmount) {
+        this.theOffer = <ResourceAmount>event;
         this.calcTotal();
     }
 

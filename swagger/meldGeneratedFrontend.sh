@@ -2,7 +2,7 @@
 
 rm -rf swaggerGenerated/
 
-java -jar swagger-codegen-cli-3.0.34.jar generate --additional-properties stringEnums=true ngVersion=15 -i /tmp/open-api3.json -o swaggerGenerated/ -l typescript-angular
+java -jar swagger-codegen-cli-3.0.34.jar generate --additional-properties stringEnums=true ngVersion=16 -i /tmp/open-api3.json -o swaggerGenerated/ -l typescript-angular
 
 echo 'inserting environment'
 cd swaggerGenerated/api/ || exit 1
@@ -26,30 +26,26 @@ for filename in ./*; do
       sed -i "$cmd$cmd2" $filename
     fi
   fi
-  if [[ $filename == './jWT.ts' ]]; then
-    echo "replacing enum constants with camel case"
-    sed -i 's/ALLIANCEADMIN/ALLIANCE_ADMIN/' $filename
-    sed -i 's/WIKIADMIN/WIKI_ADMIN/' $filename
-    sed -i 's/FORUMREAD/FORUM_READ/' $filename
-    sed -i 's/FORUMWRITE/FORUM_WRITE/' $filename
-  fi
-  if [[ $filename == './mission.ts' ]]; then
-    echo "replacing enum constants with camel case"
-    sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
-    sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
-    sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
-  fi
-  if [[ $filename == './missionActionItemGroup.ts' ]]; then
-    echo "replacing enum constants with camel case"
-    sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
-    sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
-    sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
-  fi
-  if [[ $filename == './missionActionItem.ts' ]]; then
-    echo "replacing enum constants with camel case"
-    sed -i 's/LEAVEORBIT/LEAVE_ORBIT/' $filename
-    sed -i 's/NOBATTLE/NO_BATTLE/' $filename
-  fi
+  echo "replacing enum constants with camel case"
+  sed -i 's/ALLIANCEADMIN/ALLIANCE_ADMIN/' $filename
+  sed -i 's/WIKIADMIN/WIKI_ADMIN/' $filename
+  sed -i 's/FORUMREAD/FORUM_READ/' $filename
+  sed -i 's/FORUMWRITE/FORUM_WRITE/' $filename
+  sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
+  sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
+  sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
+  sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
+  sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
+  sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
+  sed -i 's/LEAVEORBIT/LEAVE_ORBIT/' $filename
+  sed -i 's/NOBATTLE/NO_BATTLE/' $filename
+  sed -i 's/RAREELEMENTS/RARE_ELEMENTS/' $filename
+  sed -i 's/HEAVYMETALS/HEAVY_METALS/' $filename
+  sed -i 's/ORBITALCONSTRUCTION/ORBITAL_CONSTRUCTION/' $filename
+  sed -i 's/RAREELEMENTS/RARE_ELEMENTS/' $filename
+  sed -i 's/HEAVYMETALS/HEAVY_METALS/' $filename
+  sed -i 's/ORBITALCONSTRUCTION/ORBITAL_CONSTRUCTION/' $filename
+  sed -i 's/ELECTRONICWARFARE/ELECTRONIC_WARFARE/' $filename
 done
 
 cd ../..

@@ -47,7 +47,7 @@ export namespace Translation {
         MISSILE: 'MISSILE' as TranslationTargetEnum,
         LAUNCHER: 'LAUNCHER' as TranslationTargetEnum,
         ARMOR: 'ARMOR' as TranslationTargetEnum,
-        ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as TranslationTargetEnum,
+        ELECTRONIC_WARFARE: 'ELECTRONIC_WARFARE' as TranslationTargetEnum,
         PROPULSION: 'PROPULSION' as TranslationTargetEnum,
         WEAPON: 'WEAPON' as TranslationTargetEnum,
         PASSIVEMODULE: 'PASSIVE_MODULE' as TranslationTargetEnum,

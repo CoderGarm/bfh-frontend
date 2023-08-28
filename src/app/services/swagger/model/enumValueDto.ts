@@ -48,7 +48,7 @@ export namespace EnumValueDto {
         SIDEWALL: 'SIDEWALL' as EModuleTypesEnum,
         PROPULSION: 'PROPULSION' as EModuleTypesEnum,
         FTLPROPULSION: 'FTLPROPULSION' as EModuleTypesEnum,
-        ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as EModuleTypesEnum
+        ELECTRONIC_WARFARE: 'ELECTRONIC_WARFARE' as EModuleTypesEnum
     };
     export type EDepositTypeEnum = 'DEPOSITS' | 'DEMAND' | 'UTILIZATION' | 'COSTS' | 'INCOME' | 'CAPACITY' | 'TRANSPORTATION_DEMAND' | 'TRANSPORTATION_DELIVERY';
     export const EDepositTypeEnum = {
@@ -64,12 +64,12 @@ export namespace EnumValueDto {
     export type EResourceTypeEnum = 'CONSTRUCTION' | 'ORBITAL_CONSTRUCTION' | 'RESEARCH' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION';
     export const EResourceTypeEnum = {
         CONSTRUCTION: 'CONSTRUCTION' as EResourceTypeEnum,
-        ORBITALCONSTRUCTION: 'ORBITAL_CONSTRUCTION' as EResourceTypeEnum,
+        ORBITAL_CONSTRUCTION: 'ORBITAL_CONSTRUCTION' as EResourceTypeEnum,
         RESEARCH: 'RESEARCH' as EResourceTypeEnum,
         CREDITS: 'CREDITS' as EResourceTypeEnum,
         METALORE: 'METALORE' as EResourceTypeEnum,
-        RAREELEMENTS: 'RARE_ELEMENTS' as EResourceTypeEnum,
-        HEAVYMETALS: 'HEAVY_METALS' as EResourceTypeEnum,
+        RARE_ELEMENTS: 'RARE_ELEMENTS' as EResourceTypeEnum,
+        HEAVY_METALS: 'HEAVY_METALS' as EResourceTypeEnum,
         POPULATION: 'POPULATION' as EResourceTypeEnum
     };
     export type EEducationTypeEnum = 'NONE' | 'SCHOOL' | 'COLLEGE' | 'UNIVERSITY' | 'ENLISTED' | 'OFFICER';
@@ -147,11 +147,11 @@ export namespace EnumValueDto {
         SIDEWALL: 'SIDEWALL' as ESupportTypeEnum,
         PROPULSION: 'PROPULSION' as ESupportTypeEnum,
         FTLPROPULSION: 'FTLPROPULSION' as ESupportTypeEnum,
-        ELECTRONICWARFARE: 'ELECTRONIC_WARFARE' as ESupportTypeEnum,
+        ELECTRONIC_WARFARE: 'ELECTRONIC_WARFARE' as ESupportTypeEnum,
         CREDITS: 'CREDITS' as ESupportTypeEnum,
         METALORE: 'METALORE' as ESupportTypeEnum,
-        RAREELEMENTS: 'RARE_ELEMENTS' as ESupportTypeEnum,
-        HEAVYMETALS: 'HEAVY_METALS' as ESupportTypeEnum,
+        RARE_ELEMENTS: 'RARE_ELEMENTS' as ESupportTypeEnum,
+        HEAVY_METALS: 'HEAVY_METALS' as ESupportTypeEnum,
         POPULATION: 'POPULATION' as ESupportTypeEnum,
         PASSENGER: 'PASSENGER' as ESupportTypeEnum,
         FREIGHT: 'FREIGHT' as ESupportTypeEnum
@@ -184,9 +184,9 @@ export namespace EnumValueDto {
     };
     export type EMissionTypesEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION';
     export const EMissionTypesEnum = {
-        PIRATERAID: 'PIRATE_RAID' as EMissionTypesEnum,
-        PIRATEHUNT: 'PIRATE_HUNT' as EMissionTypesEnum,
-        CONVOYPROTECTION: 'CONVOY_PROTECTION' as EMissionTypesEnum
+        PIRATE_RAID: 'PIRATE_RAID' as EMissionTypesEnum,
+        PIRATE_HUNT: 'PIRATE_HUNT' as EMissionTypesEnum,
+        CONVOY_PROTECTION: 'CONVOY_PROTECTION' as EMissionTypesEnum
     };
     export type ECapacityAreaTypesEnum = 'OVERALL' | 'STERN' | 'BROADSIDE' | 'BOW' | 'MODULE';
     export const ECapacityAreaTypesEnum = {

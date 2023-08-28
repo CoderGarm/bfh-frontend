@@ -119,7 +119,7 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
                 case EResourceTypeEnum.CONSTRUCTION:
                     this.translate.get('planetary.constructions.building.PRODUCE.CONSTRUCTION').subscribe(tr => desc = tr);
                     break;
-                case EResourceTypeEnum.ORBITALCONSTRUCTION:
+                case EResourceTypeEnum.ORBITAL_CONSTRUCTION:
                     this.translate.get('planetary.constructions.building.PRODUCE.ORBITAL_CONSTRUCTION').subscribe(tr => desc = tr);
                     break;
                 case EResourceTypeEnum.RESEARCH:
@@ -127,8 +127,8 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
                     break;
                 case EResourceTypeEnum.CREDITS:
                 case EResourceTypeEnum.METALORE:
-                case EResourceTypeEnum.RAREELEMENTS:
-                case EResourceTypeEnum.HEAVYMETALS:
+                case EResourceTypeEnum.RARE_ELEMENTS:
+                case EResourceTypeEnum.HEAVY_METALS:
                     this.translate.get('planetary.constructions.building.PRODUCE.RESOURCE').subscribe(tr => desc = tr);
                     break;
                 case EResourceTypeEnum.POPULATION:
@@ -158,7 +158,7 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
         const output = ResourceHelper.calculateCurrentOutput(this.construction);
         desc = desc.replace('NAME', building.name);
         desc = desc.replace('AMOUNT', '' + output);
-        desc = desc.replace('WHAT', output == 1 ? productionTarget.singularName : productionTarget.pluralName);
+        desc = desc.replace('WHAT', productionTarget.typeName);
 
         this.descriptionText = desc;
     }

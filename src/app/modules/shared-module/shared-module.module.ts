@@ -17,7 +17,6 @@ import {NumberShortComponent} from "./components/number-short/number-short.compo
 import {MarkdownModule} from "ngx-markdown";
 import {AngularMarkdownEditorModule} from "angular-markdown-editor";
 import {ResourceCounterComponent} from "./components/resource-counter/resource-counter.component";
-import {HumanResourceCounterComponent} from './components/human-resource-counter/human-resource-counter.component';
 import {NumericSliderCounterComponent} from "./components/numeric-slider-counter/numeric-slider-counter.component";
 import {AmountShifterComponent} from "./components/amount-shifter/amount-shifter.component";
 import {NumberRomanPipe} from "../../services/pipes/number-roman.pipe";
@@ -56,7 +55,6 @@ import {IconComponent} from "./components/icon/icon.component";
         OutlinedComponent,
         ChipSelectorComponent,
         ResourceCounterComponent,
-        HumanResourceCounterComponent,
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,
@@ -112,7 +110,6 @@ import {IconComponent} from "./components/icon/icon.component";
         NumericCounterComponent,
         NumberShortComponent,
         ResourceCounterComponent,
-        HumanResourceCounterComponent,
         NumericSliderCounterComponent,
         AmountShifterComponent,
         MarkdownEditorComponent,

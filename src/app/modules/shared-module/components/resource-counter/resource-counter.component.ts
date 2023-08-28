@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {EResourceType, ResourceAmount} from "../../../../services/swagger";
+import {EEducationType, EResourceType, HumanResourceAmount, ResourceAmount} from "../../../../services/swagger";
 
 @Component({
     selector: 'app-resource-counter',
@@ -9,10 +9,10 @@ import {EResourceType, ResourceAmount} from "../../../../services/swagger";
 export class ResourceCounterComponent implements OnInit {
 
     @Input()
-    resourceType?: EResourceType;
+    resourceType?: EResourceType | EEducationType;
 
     @Output()
-    numericEmitter: EventEmitter<ResourceAmount> = new EventEmitter();
+    numericEmitter: EventEmitter<ResourceAmount | HumanResourceAmount> = new EventEmitter();
 
     /**
      * the base start amount if not changes
@@ -54,7 +54,8 @@ export class ResourceCounterComponent implements OnInit {
         if (!this.resourceType) {
             return;
         }
-        const r: ResourceAmount = {
+        // @ts-ignore
+        let r: ResourceAmount | HumanResourceAmount = {
             amount: event,
             resourceType: this.resourceType
         }

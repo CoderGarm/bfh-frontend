@@ -2,6 +2,9 @@ import {Construction, EEducationType, EnumValueDto, EResourceType, HumanResource
 import {PlanetaryResourceTransportation} from "../../modules/transportation/payload/components/transportation-resource-demand/transportation-resource-demand.component";
 import {PlanetaryHumanTransportation} from "../../modules/transportation/payload/components/transportation-humans-demand/transportation-humans-demand.component";
 import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
+import EEducationTypeEnum = EnumValueDto.EEducationTypeEnum;
+import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
+import ECollectableTypeEnum = EnumValueDto.ECollectableTypeEnum;
 
 export class ResourceHelper {
 
@@ -222,7 +225,12 @@ export class ResourceHelper {
     static transformHumanTransportationToDeposit(event: PlanetaryHumanTransportation): ResourceDeposit {
         return {
             subType: {typeName: EDepositTypeEnum.TRANSPORTATIONDEMAND},
-            humanResources: event.transportations,
+            humanResources: event.transportations.map(t => {
+                return {
+                    amount: t.amount,
+                    resourceType: ResourceHelper.getEducationType(t.resourceType)
+                }
+            }),
             resources: []
         };
     }
@@ -231,8 +239,62 @@ export class ResourceHelper {
         return {
             subType: {typeName: EDepositTypeEnum.TRANSPORTATIONDEMAND},
             humanResources: [],
-            resources: event.transportations
+            resources: event.transportations.map(t => {
+                return {
+                    amount: t.amount,
+                    resourceType: ResourceHelper.getResourceType(t.resourceType)
+                }
+            })
         };
+    }
+
+    static getEducationType(typeName: string): EEducationType {
+        switch (typeName) {
+            case EEducationTypeEnum.NONE:
+            case EEducationTypeEnum.SCHOOL:
+            case EEducationTypeEnum.COLLEGE:
+            case EEducationTypeEnum.UNIVERSITY:
+            case EEducationTypeEnum.ENLISTED:
+            case EEducationTypeEnum.OFFICER:
+                return {
+                    typeName: typeName,
+                    iconName: typeName,
+                    folder: "icons/crew/",
+                    isMilitary: [EEducationTypeEnum.ENLISTED, EEducationTypeEnum.OFFICER].includes(typeName),
+                    isWorkforce: [EEducationTypeEnum.ENLISTED, EEducationTypeEnum.OFFICER, EEducationTypeEnum.SCHOOL, EEducationTypeEnum.COLLEGE, EEducationTypeEnum.UNIVERSITY].includes(typeName)
+                }
+            default:
+                throw new Error("Please implement '" + typeName + "'");
+        }
+    }
+
+    static getResourceType(typeName: string): EResourceType {
+
+        let collectableType: EResourceType.CollectableTypeEnum;
+        switch (typeName) {
+            case EResourceTypeEnum.CONSTRUCTION:
+            case EResourceTypeEnum.ORBITAL_CONSTRUCTION:
+            case EResourceTypeEnum.RESEARCH:
+                collectableType = ECollectableTypeEnum.FORFEITABLE;
+                break;
+            case EResourceTypeEnum.CREDITS:
+            case EResourceTypeEnum.METALORE:
+            case EResourceTypeEnum.RARE_ELEMENTS:
+            case EResourceTypeEnum.HEAVY_METALS:
+                collectableType = ECollectableTypeEnum.COLLECTABLE;
+                break;
+            case EResourceTypeEnum.POPULATION:
+                collectableType = ECollectableTypeEnum.VIABLE;
+                break;
+            default:
+                throw new Error("Please implement '" + typeName + "'");
+        }
+        return {
+            typeName: typeName,
+            iconName: typeName,
+            folder: "icons/resources/",
+            collectableType: collectableType
+        }
     }
 
     static copy(deposit?: ResourceDeposit, resourceTypes?: EResourceType[], educationTypes?: EEducationType[]): ResourceDeposit | undefined {

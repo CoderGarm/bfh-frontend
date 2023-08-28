@@ -84,7 +84,7 @@ export class SingleResourceTransferComponent implements OnInit, OnChanges {
 
         let leftVal: number;
         let rightVal: number;
-        if ('singularName' in this.resourceType) {
+        if ('collectableType' in this.resourceType) {
             leftVal = this.getResourceAmount(this.resourceType, this.leftDeposit);
             rightVal = this.getResourceAmount(this.resourceType, this.rightDeposit);
         } else {
@@ -122,7 +122,7 @@ export class SingleResourceTransferComponent implements OnInit, OnChanges {
         if (!this.resourceType) {
             return 0;
         }
-        if ('singularName' in this.resourceType) {
+        if ('collectableType' in this.resourceType) {
             return this.getResourceAmount(this.resourceType, deposit);
         } else {
             return this.getHumans(this.resourceType, deposit);

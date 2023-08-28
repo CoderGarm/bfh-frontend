@@ -1,11 +1,16 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {EResourceType, Planet, PlanetApiService, ResourceAmount} from "../../../../../services/swagger";
+import {EResourceType, HumanResourceAmount, Planet, PlanetApiService, ResourceAmount} from "../../../../../services/swagger";
 import {TypeService} from "../../../../../services/type.service";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 
 export interface PlanetaryResourceTransportation {
     idPlanet: number;
-    transportations: ResourceAmount[];
+    transportations: Amount[];
+}
+
+export interface Amount {
+    resourceType: string;
+    amount: number;
 }
 
 @Component({
@@ -25,7 +30,7 @@ export class TransportationResourceDemandComponent extends SubscriptionManager i
 
     collectables: EResourceType[] = [];
 
-    amounts: ResourceAmount[] = [];
+    amounts: Amount[] = [];
 
     constructor(private typeService: TypeService,
                 private planetService: PlanetApiService) {
@@ -59,20 +64,24 @@ export class TransportationResourceDemandComponent extends SubscriptionManager i
         }
     }
 
-    setAmount(event: ResourceAmount) {
-        const exists = this.amounts.filter(r => r.resourceType.typeName == event.resourceType.typeName);
+    setAmount(event: ResourceAmount | HumanResourceAmount) {
+        const exists = this.amounts.filter((r: Amount) => r.resourceType == event.resourceType.typeName);
+        const item = {
+            amount: event.amount,
+            resourceType: event.resourceType.typeName
+        };
         if (exists.length != 0) {
             const indexOf = this.amounts.indexOf(exists[0]);
             if (indexOf != -1) {
-                this.amounts.splice(indexOf, 1, event);
+                this.amounts.splice(indexOf, 1, item);
             }
         } else {
-            this.amounts.push(event);
+            this.amounts.push(item);
         }
     }
 
     getStartAt(resource: EResourceType) {
-        const exists = this.amounts.filter(r => r.resourceType.typeName === resource.typeName);
+        const exists = this.amounts.filter(r => r.resourceType === resource.typeName);
         if (exists.length != 0) {
             return exists[0].amount;
         }

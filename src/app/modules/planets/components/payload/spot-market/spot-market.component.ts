@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {EnumValueDto, EResourceType, MarketplaceApiService, Planet, ResourceAmount, SpotOffer} from "../../../../../services/swagger";
+import {EnumValueDto, EResourceType, HumanResourceAmount, MarketplaceApiService, Planet, ResourceAmount, SpotOffer} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {CdkOverlayOrigin} from "@angular/cdk/overlay";
 import {TranslateService} from "@ngx-translate/core";
@@ -112,8 +112,8 @@ export class SpotMarketComponent extends SubscriptionManager {
         this.thePrice.amount = 0;
     }
 
-    setSpotOffer(event: ResourceAmount) {
-        this.theOffer = event;
+    setSpotOffer(event: ResourceAmount | HumanResourceAmount) {
+        this.theOffer = <ResourceAmount>event;
         this.calcTotal();
     }
 

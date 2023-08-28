@@ -27,14 +27,6 @@ export interface EResourceType {
      */
     folder: string;
     /**
-     * The singular name of this resource.
-     */
-    singularName: string;
-    /**
-     * The plural name of this resource.
-     */
-    pluralName: string;
-    /**
      * The collectable type of this resource.
      */
     collectableType: EResourceType.CollectableTypeEnum;
