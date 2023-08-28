@@ -2,6 +2,30 @@
     {{ knownStarSystems.length }}
 </app-red-box>
 
+<form class="search-box">
+    <mat-form-field class="center-field" appearance="fill">
+        <mat-label>Search for system</mat-label>
+        <input matInput
+               placeholder="Search..."
+               #centerInput
+               [formControl]="centerFormControl"
+               matAutocompletePosition="above"
+               [matAutocomplete]="auto1"/>
+        <mat-icon matSuffix (click)="selectedCenter(undefined); $event.stopPropagation();">clear</mat-icon>
+        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectedCenter($event)">
+            <mat-option *ngFor="let coord of filteredCenter | async" [value]="coord">
+                {{coord.name}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button mat-mini-fab color="primary" (click)="zoomTo()"
+            [disabled]="!starMapCommService.selectedStarSystem"
+            matTooltip="Zoom to target"
+            class="zoom-btn">
+        <mat-icon>zoom_in_map</mat-icon>
+    </button>
+</form>
+
 <app-system-info class="system-info-div" [starSystem]="starMapCommService.selectedStarSystem"></app-system-info>
 
 <div id="universe">
