@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
-import {Planet, PlanetApiService} from "../../../../../services/swagger";
+import {Fleet, FleetApiService, Planet, PlanetApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {PlanetsEventService} from "../../../planets-event.service";
 
@@ -13,6 +13,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     static path: string = 'planets';
 
     selectedPlanet?: Planet;
+    fleetsInOrbit?: Fleet[];
 
     shipyardJobPossible: boolean = false;
     shipyardExists: boolean = false;
@@ -21,18 +22,27 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
 
     constructor(private planetApi: PlanetApiService,
                 private planetsNotificationService: PlanetsEventService,
+                private fleetApi: FleetApiService,
                 private change: ChangeDetectorRef) {
         super();
     }
 
     ngAfterViewInit(): void {
-        let sub = this.planetsNotificationService.getSelectedPlanetEmitter().subscribe(selected => this.fetchData(selected!));
+        let sub = this.planetsNotificationService.getSelectedPlanetEmitter().subscribe(selected => {
+            this.selectedPlanet = selected;
+            this.fetchData();
+            this.fetchFleetsInOrbit();
+        });
         this.subscriptions.push(sub);
         this.change.detectChanges();
     }
 
-    fetchData(planet: Planet) {
-        this.selectedPlanet = planet;
+    private fetchFleetsInOrbit() {
+        const sub = this.fleetApi.getFleetsByPlanet(this.selectedPlanet!.idPlanet).subscribe(resp => this.fleetsInOrbit = resp);
+        this.subscriptions.push(sub);
+    }
+
+    fetchData() {
         let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanet!.idPlanet)
             .subscribe(resp => this.shipyardJobPossible = resp);
         this.subscriptions.push(subscription);

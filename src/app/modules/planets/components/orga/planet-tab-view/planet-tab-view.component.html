@@ -1,7 +1,10 @@
 <mat-tab-group animationDuration="500ms" class="bottom-spacer planetary-tab-group" [selectedIndex]="index" (selectedIndexChange)="index = $event">
     <mat-tab label="{{ 'tab.planetary.dashboard' | translate }}">
         <ng-template matTabContent>
-            <app-planetary-dashboard [planet]="selectedPlanet" [shipyardJobPossible]="shipyardJobPossible" [shipyardExists]="shipyardExists"></app-planetary-dashboard>
+            <app-planetary-dashboard [planet]="selectedPlanet"
+                                     [fleetsInOrbit]="fleetsInOrbit"
+                                     [shipyardJobPossible]="shipyardJobPossible"
+                                     [shipyardExists]="shipyardExists"></app-planetary-dashboard>
         </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.ground-constructions' | translate }}">
@@ -11,7 +14,8 @@
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.shipyard' | translate }}" [disabled]="!shipyardExists">
         <ng-template matTabContent>
-            <app-shipyard [selectedPlanetInput]="selectedPlanet"></app-shipyard>
+            <app-shipyard [selectedPlanet]="selectedPlanet"
+                          [fleetsInOrbit]="fleetsInOrbit"></app-shipyard>
         </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.marketplace' | translate }}">

@@ -1,41 +1,48 @@
-<div class="app-resource-display">
-    <app-resource-display [deposit]="resourceDeposit"
-                          [costs]="costsToDisplay"
-                          [income]="income"></app-resource-display>
-</div>
+<div class="holder content-area">
+    <div class="app-resource-display">
+        <app-resource-display [deposit]="resourceDeposit"
+                              [costs]="costsToDisplay"
+                              [income]="income"></app-resource-display>
+    </div>
 
-<div>
-    <app-outlined titleValue="Hull types" class="filter" (click)="toggle()">
-        <mat-chip-listbox #hullTypeChipList multiple [formControl]="eHullTypeFC">
-            <mat-chip-option
-                    *ngFor="let eHullType of eHullTypes"
-                    [value]="eHullType.typeName"
-                    matTooltip="{{ 'shipyard.hull.type.' + eHullType.typeName | translate }}"
-                    (click)="filterDisplayedShipClasses(); $event.stopPropagation();">
-                {{eHullType.type}} <!-- todo hull icons -->
-            </mat-chip-option>
-        </mat-chip-listbox>
+    <app-outlined titleValue="{{ 'planetary.fleets-in-orbit.title' | translate }}">
+        <app-fleets-at-yard [planet]="selectedPlanet" [fleetsInOrbit]="fleetsInOrbit" showYardActions [shipyardJobPossible]="shipyardJobPossible"
+                            shipyardExists></app-fleets-at-yard>
     </app-outlined>
+
+    <div>
+        <app-outlined titleValue="Hull types" class="filter" (click)="toggle()">
+            <mat-chip-listbox #hullTypeChipList multiple [formControl]="eHullTypeFC">
+                <mat-chip-option
+                        *ngFor="let eHullType of eHullTypes"
+                        [value]="eHullType.typeName"
+                        matTooltip="{{ 'shipyard.hull.type.' + eHullType.typeName | translate }}"
+                        (click)="filterDisplayedShipClasses(); $event.stopPropagation();">
+                    {{eHullType.type}} <!-- todo hull icons -->
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </app-outlined>
+    </div>
+
+    <div>{{ 'shipyard.constructions.title' | translate }}</div>
+
+    <div [matTooltip]="getJobButtonText()" class="tooltip-container">
+        <button mat-raised-button color="secondary"
+                (click)="buildConstruction()"
+                [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
+    </div>
+
+    <mat-card *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
+        <mat-card-header>
+            <div>
+                <mat-card-title>{{shipClass.name}}</mat-card-title>
+                <mat-card-subtitle>{{shipClass.shipClassType.typeName}} - {{ getMass(shipClass) | mass: 'T' }} </mat-card-subtitle>
+            </div>
+            <div class="right-block">
+                <app-numeric-counter [inputDisabled]="false"
+                                     caption="Amount"
+                                     (amount)="setAmount($event, shipClass)"></app-numeric-counter>
+            </div>
+        </mat-card-header>
+    </mat-card>
 </div>
-
-<div>{{ 'shipyard.constructions.title' | translate }}</div>
-
-<div [matTooltip]="getJobButtonText()" class="tooltip-container">
-    <button mat-raised-button color="secondary"
-            (click)="buildConstruction()"
-            [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
-</div>
-
-<mat-card *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
-    <mat-card-header>
-        <div>
-            <mat-card-title>{{shipClass.name}}</mat-card-title>
-            <mat-card-subtitle>{{shipClass.shipClassType.typeName}} - {{ getMass(shipClass) | mass: 'T' }} </mat-card-subtitle>
-        </div>
-        <div class="right-block">
-            <app-numeric-counter [inputDisabled]="false"
-                                 caption="Amount"
-                                 (amount)="setAmount($event, shipClass)"></app-numeric-counter>
-        </div>
-    </mat-card-header>
-</mat-card>

@@ -1,6 +1,4 @@
 <div class="holder content-area">
-
-
     <app-outlined titleValue="{{ 'planetary.mining-factors.title' | translate }}">
         <p>{{ '' | translate }}</p>
         <app-mining-factors-display [miningFactors]="miningFactors"></app-mining-factors-display>
@@ -21,10 +19,6 @@
 
 
     <app-outlined titleValue="{{ 'planetary.fleets-in-orbit.title' | translate }}">
-        <app-fleets-in-orbit [planet]="planet"
-                             [fleetsInOrbit]="fleetsInOrbit"
-                             [shipyardJobPossible]="shipyardJobPossible"
-                             [shipyardExists]="shipyardExists"></app-fleets-in-orbit>
+        <app-fleets-in-orbit [planet]="planet" [fleetsInOrbit]="fleetsInOrbit"></app-fleets-in-orbit>
     </app-outlined>
-
 </div>

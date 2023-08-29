@@ -1,0 +1,28 @@
+@import "src/app/modules/fleet/components/orga/fleet-tab-view/fleet-tab-view.component";
+
+.readiness-progress-bar {
+  width: 150px;
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  margin-right: 25px;
+}
+
+.tooltip-container {
+  width: 100%;
+  margin-left: 25px;
+}
+
+.btn-container {
+  margin-top: 15px;
+  width: fit-content;
+  width: -moz-fit-content;
+}
+
+mat-icon, app-icon {
+  margin-right: 15px;
+}
+
+mat-expansion-panel {
+  width: 100%;
+}

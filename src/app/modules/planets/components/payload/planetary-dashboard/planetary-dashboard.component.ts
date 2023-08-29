@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, MiningFactors, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
+import {Fleet, MiningFactors, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
@@ -23,17 +23,17 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     @Input()
     shipyardExists: boolean = false;
 
+    @Input()
+    fleetsInOrbit?: Fleet[];
+
     deposit?: ResourceDeposit;
     income?: ResourceDeposit;
     demand?: ResourceDeposit;
     utilization?: ResourceDeposit;
     capacity?: ResourceDeposit;
     miningFactors?: MiningFactors;
-    fleetsInOrbit?: Fleet[];
 
-    constructor(private resourceService: ResourcesApiService,
-                private planetApi: PlanetApiService,
-                private fleetApi: FleetApiService) {
+    constructor(private resourceService: ResourcesApiService) {
         super();
     }
 
@@ -43,17 +43,9 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.planetDefinition]) {
             this.fetchData();
-            this.fetchFleetsInOrbit();
         }
     }
 
-    private fetchFleetsInOrbit() {
-        if (!this.planet) {
-            return;
-        }
-        const sub = this.fleetApi.getFleetsByPlanet(this.planet?.idPlanet).subscribe(resp => this.fleetsInOrbit = resp);
-        this.subscriptions.push(sub);
-    }
 
     /**
      * fetches the mining factors if needed

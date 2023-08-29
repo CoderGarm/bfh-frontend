@@ -46,15 +46,6 @@
                     </div>
                 </app-blue-card>
             </div>
-
-            <div actions class="tooltip-container">
-                <mat-divider></mat-divider>
-                <div class="btn-container" [matTooltip]="getRepairJobButtonText(fleet)">
-                    <button mat-raised-button color="secondary"
-                            (click)="repair(fleet)"
-                            [disabled]="!repairPossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
-                </div>
-            </div>
         </app-fleet-display>
     </mat-expansion-panel>
 </mat-accordion>

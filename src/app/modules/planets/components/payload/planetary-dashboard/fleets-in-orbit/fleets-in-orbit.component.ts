@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, JobApiService, Planet, PlanetApiService} from "../../../../../services/swagger";
+import {Fleet, JobApiService, Planet, PlanetApiService} from "../../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
-import {SubscriptionManager} from "../../../../../subscription.manager";
-import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {SubscriptionManager} from "../../../../../../subscription.manager";
+import {SnackbarNotificationService} from "../../../../../../services/snackbar-notification.service";
 
 @Component({
     selector: 'app-fleets-in-orbit',
@@ -17,12 +17,6 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
     @Input()
     fleetsInOrbit?: Fleet[];
     fleetsInOrbitDef: string = 'fleetsInOrbit';
-
-    @Input()
-    shipyardJobPossible: boolean = false;
-
-    @Input()
-    shipyardExists: boolean = false;
 
     translations: Map<string, string> = new Map<string, string>();
 
@@ -99,13 +93,6 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
     ngOnInit(): void {
     }
 
-    repairPossible(fleet: Fleet) {
-        if (this.isInRepair(fleet)) {
-            return false;
-        }
-        return fleet.state.needsRepair && this.shipyardJobPossible;
-    }
-
     isInRepair(fleet: Fleet) {
         return this.fleetsInRepair.indexOf(fleet.idFleet) != -1;
     }
@@ -144,13 +131,7 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
         if (this.isInRepair(fleet)) {
             return this.translations.get('planetary.fleets-in-orbit.repair-btn.is-in-repair')!;
         }
-        if (!this.shipyardExists) {
-            return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-shipyard')!;
-        }
-        if (!this.shipyardJobPossible) {
-            return this.translations.get('planetary.fleets-in-orbit.repair-btn.already-in-use')!;
-        }
-        return this.translations.get('planetary.fleets-in-orbit.repair-btn.start-job')!;
+        return '';
     }
 
     isInoperational(fleet: Fleet) {

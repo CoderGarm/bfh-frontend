@@ -2,6 +2,7 @@ import {AfterContentInit, Component, Input, OnChanges, SimpleChanges, ViewChild}
 import {
     EnumValueDto,
     EShipClassType,
+    Fleet,
     Mass,
     Planet,
     PlanetApiService,
@@ -45,11 +46,14 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
      * and it's field name
      */
     @Input()
-    selectedPlanetInput?: Planet;
-    private selectedPlanetDefinition = "selectedPlanetInput";
+    selectedPlanet?: Planet;
+    private selectedPlanetDefinition = "selectedPlanet";
 
     resourceDeposit?: ResourceDeposit;
     income?: ResourceDeposit;
+
+    @Input()
+    fleetsInOrbit?: Fleet[];
 
     /**
      * all EResourceType enum elements
@@ -132,7 +136,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedPlanetDefinition]) {
-            if (this.selectedPlanetInput) {
+            if (this.selectedPlanet) {
                 let subscription = this.shipyardApi.getShipClassesByUser().subscribe(resp => {
                     this.possibleShipClasses = resp.filter(s => !(s.name === 'Songbird' && s.mark === 1));
                     this.filterDisplayedShipClasses();
@@ -140,13 +144,13 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                 this.subscriptions.push(subscription);
             }
 
-            if (!!this.selectedPlanetInput && !!this.selectedPlanetInput.idPlanet) {
-                let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanetInput!.idPlanet)
+            if (!!this.selectedPlanet && !!this.selectedPlanet.idPlanet) {
+                let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanet!.idPlanet)
                     .subscribe(resp => this.shipyardJobPossible = resp);
                 this.subscriptions.push(subscription);
 
                 this.order = {
-                    idPlanet: this.selectedPlanetInput!.idPlanet,
+                    idPlanet: this.selectedPlanet!.idPlanet,
                     shipJobPayload: []
                 }
                 this.updateDepositsAndIncome();
@@ -157,7 +161,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
             // fetch change in ship class build selection and set it into overall selection
             if (!this.order) {
                 this.order = {
-                    idPlanet: this.selectedPlanetInput!.idPlanet,
+                    idPlanet: this.selectedPlanet!.idPlanet,
                     shipJobPayload: []
                 }
             }
@@ -165,15 +169,15 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
     }
 
     private updateDepositsAndIncome() {
-        if (!this.selectedPlanetInput) {
+        if (!this.selectedPlanet) {
             return;
         }
-        let sub = this.resourceApi.getResourceDeposit(this.selectedPlanetInput.idPlanet)
+        let sub = this.resourceApi.getResourceDeposit(this.selectedPlanet.idPlanet)
             .subscribe(resp => {
                 this.resourceDeposit = resp;
             });
         this.subscriptions.push(sub);
-        sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanetInput.idPlanet)
+        sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanet.idPlanet)
             .subscribe(resp => {
                 this.income = resp;
             });

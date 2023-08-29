@@ -8,11 +8,12 @@ import {ShipyardComponent} from './components/payload/shipyard/shipyard.componen
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {PlanetsEventService} from "./planets-event.service";
 import {PlanetaryDashboardComponent} from './components/payload/planetary-dashboard/planetary-dashboard.component';
-import {FleetsInOrbitComponent} from './components/payload/fleets-in-orbit/fleets-in-orbit.component';
+import {FleetsInOrbitComponent} from './components/payload/planetary-dashboard/fleets-in-orbit/fleets-in-orbit.component';
 import {PlanetaryMarketplaceComponent} from './components/payload/planetary-marketplace/planetary-marketplace.component';
 import {NgxEchartsModule} from "ngx-echarts";
 import {OfferMarketComponent} from './components/payload/offer-market/offer-market.component';
 import {SpotMarketComponent} from './components/payload/spot-market/spot-market.component';
+import {FleetsAtYardComponent} from "./components/payload/shipyard/fleets-at-yard/fleets-at-yard.component";
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import {SpotMarketComponent} from './components/payload/spot-market/spot-market.
         ShipyardComponent,
         PlanetaryDashboardComponent,
         FleetsInOrbitComponent,
+        FleetsAtYardComponent,
         PlanetaryMarketplaceComponent,
         OfferMarketComponent,
         SpotMarketComponent,
