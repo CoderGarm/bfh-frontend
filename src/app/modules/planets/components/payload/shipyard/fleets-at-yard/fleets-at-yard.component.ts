@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, JobApiService, Planet, PlanetApiService} from "../../../../../../services/swagger";
+import {Fleet, JobApiService, Planet, PlanetApiService, ShipClass} from "../../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../../../../services/snackbar-notification.service";
@@ -18,6 +18,9 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     fleetsInOrbit?: Fleet[];
     fleetsInOrbitDef: string = 'fleetsInOrbit';
 
+    @Input()
+    possibleShipClasses: ShipClass[] = [];
+
     // @formatter:off
     @Input()
     get shipyardJobPossible() { return this._shipyardJobPossible; }
@@ -28,11 +31,6 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     get shipyardExists() { return this._shipyardExists; }
     set shipyardExists(value: any) { this._shipyardExists = this.coerceBooleanProperty(value); }
     _shipyardExists: boolean = false;
-
-    @Input()
-    get showYardActions() { return this._showYardActions; }
-    set showYardActions(value: any) { this._showYardActions = this.coerceBooleanProperty(value); }
-    _showYardActions: boolean = false;
     // @formatter:on
 
     translations: Map<string, string> = new Map<string, string>();
@@ -170,5 +168,16 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
 
     isInoperational(fleet: Fleet) {
         return !fleet.state.isOperational;
+    }
+
+    upgradeAll(fleet: Fleet) {
+
+    }
+
+    upgradePossible(fleet: Fleet) {
+
+        //fleet.ships.map(w => w.shipClass.i)
+
+        return false;
     }
 }

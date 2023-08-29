@@ -17,7 +17,7 @@
                 </div>
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <app-fleet-display [fleet]="fleet" transparent *ngIf="_showYardActions">
+        <app-fleet-display [fleet]="fleet" transparent>
             <div class="fleet-info-container" body>
                 <div class="main-display">
                     <app-blue-card rightBlueCard class="cap-display">
@@ -44,36 +44,11 @@
                             (click)="repair(fleet)"
                             [disabled]="!repairPossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
                 </div>
-            </div>
-        </app-fleet-display>
-        <app-fleet-display [fleet]="fleet" transparent *ngIf="!_showYardActions">
-            <div class="fleet-info-container" body>
-                <div class="main-display">
-                    <app-fleet-formation-display class="mar-to" [fleet]="fleet"></app-fleet-formation-display>
+                <div class="btn-container" [matTooltip]="getRepairJobButtonText(fleet)">
+                    <button mat-raised-button color="secondary"
+                            (click)="upgradeAll(fleet)"
+                            [disabled]="!upgradePossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
                 </div>
-
-                <app-blue-card class="cap-display">
-                    <app-spacecraft-capabilities-display body
-                                                         [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
-                                                         [currentFleetCapabilities]="fleet.spacecraftCapabilities">
-                    </app-spacecraft-capabilities-display>
-                </app-blue-card>
-            </div>
-
-            <div body class="bottom-spacer"></div>
-
-            <div class="fleet-info-container" body>
-                <div class="main-display">
-                    <app-manual-transport [fleet]="fleet"></app-manual-transport>
-                </div>
-
-                <app-blue-card class="cap-display">
-                    <div body>
-                        <app-outlined titleValue="{{ 'fleet.modules.ammunition-roster.title' | translate }}">
-                            <app-ammunition-roster noTitle [fleet]="fleet"></app-ammunition-roster>
-                        </app-outlined>
-                    </div>
-                </app-blue-card>
             </div>
         </app-fleet-display>
     </mat-expansion-panel>

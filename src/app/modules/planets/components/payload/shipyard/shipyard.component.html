@@ -6,7 +6,10 @@
     </div>
 
     <app-outlined titleValue="{{ 'planetary.fleets-in-orbit.title' | translate }}">
-        <app-fleets-at-yard [planet]="selectedPlanet" [fleetsInOrbit]="fleetsInOrbit" showYardActions [shipyardJobPossible]="shipyardJobPossible"
+        <app-fleets-at-yard [planet]="selectedPlanet"
+                            [fleetsInOrbit]="fleetsInOrbit"
+                            [possibleShipClasses]="possibleShipClasses"
+                            [shipyardJobPossible]="shipyardJobPossible"
                             shipyardExists></app-fleets-at-yard>
     </app-outlined>
 
@@ -15,10 +18,15 @@
             <mat-chip-listbox #hullTypeChipList multiple [formControl]="eHullTypeFC">
                 <mat-chip-option
                         *ngFor="let eHullType of eHullTypes"
+                        class="no-checkmark"
                         [value]="eHullType.typeName"
                         matTooltip="{{ 'shipyard.hull.type.' + eHullType.typeName | translate }}"
                         (click)="filterDisplayedShipClasses(); $event.stopPropagation();">
-                    {{eHullType.type}} <!-- todo hull icons -->
+                    {{eHullType.type}}
+                    <app-icon matChipTrailingIcon
+                              [icon]="eHullType"
+                              [altText]="eHullType.typeName"
+                              [toolTip]="eHullType.typeName"></app-icon>
                 </mat-chip-option>
             </mat-chip-listbox>
         </app-outlined>
@@ -32,17 +40,22 @@
                 [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
     </div>
 
-    <mat-card *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
-        <mat-card-header>
-            <div>
-                <mat-card-title>{{shipClass.name}}</mat-card-title>
-                <mat-card-subtitle>{{shipClass.shipClassType.typeName}} - {{ getMass(shipClass) | mass: 'T' }} </mat-card-subtitle>
-            </div>
-            <div class="right-block">
-                <app-numeric-counter [inputDisabled]="false"
+    <app-outlined titleValue="Fleet setup">
+
+        <div class="flex-items-container">
+            <app-blue-card *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
+                <mat-card-header header>
+                    <app-icon matCardAvatar png32px
+                              [icon]="shipClass.shipClassType"
+                              [altText]="shipClass.shipClassType.typeName"
+                              [toolTip]="shipClass.shipClassType.typeName"></app-icon>
+                    <span matCardTitle>{{ shipClass.name }} Flt. {{ shipClass.mark }}</span>
+                    <span matCardSubtitle>{{ shipClass.shipClassType.typeName }} - {{ getMass(shipClass) | mass: 'T' }}</span>
+                </mat-card-header>
+                <app-numeric-counter actions [inputDisabled]="false"
                                      caption="Amount"
                                      (amount)="setAmount($event, shipClass)"></app-numeric-counter>
-            </div>
-        </mat-card-header>
-    </mat-card>
+            </app-blue-card>
+        </div>
+    </app-outlined>
 </div>

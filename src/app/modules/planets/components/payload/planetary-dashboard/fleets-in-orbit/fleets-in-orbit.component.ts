@@ -73,7 +73,6 @@ export class FleetsInOrbitComponent extends SubscriptionManager implements OnIni
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.fleetsInOrbitDef]) {
-            this.fleetsInRepair = [];
             this.fleetsInOrbit?.forEach(fleet => {
                 let sub = this.jobApi.jobRunningForFleet(fleet.idFleet).subscribe(resp => {
                     if (resp) {

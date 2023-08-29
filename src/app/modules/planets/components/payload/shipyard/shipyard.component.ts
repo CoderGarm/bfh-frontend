@@ -137,11 +137,11 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedPlanetDefinition]) {
             if (this.selectedPlanet) {
-                let subscription = this.shipyardApi.getShipClassesByUser().subscribe(resp => {
+                let sub = this.shipyardApi.getShipClassesByUser().subscribe(resp => {
                     this.possibleShipClasses = resp.filter(s => !(s.name === 'Songbird' && s.mark === 1));
                     this.filterDisplayedShipClasses();
                 });
-                this.subscriptions.push(subscription);
+                this.subscriptions.push(sub);
             }
 
             if (!!this.selectedPlanet && !!this.selectedPlanet.idPlanet) {
