@@ -1,8 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, JobApiService, Planet, PlanetApiService, ShipClass} from "../../../../../../services/swagger";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {EnumValueDto, Fleet, JobApiService, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../../../../services/snackbar-notification.service";
+import EJobTypesEnum = EnumValueDto.EJobTypesEnum;
 
 @Component({
     selector: 'app-fleets-at-yard',
@@ -21,16 +22,16 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     @Input()
     possibleShipClasses: ShipClass[] = [];
 
+    @Output()
+    costs: EventEmitter<ResourceDeposit> = new EventEmitter<ResourceDeposit>()
+    knownCosts: Map<string, ResourceDeposit> = new Map<string, ResourceDeposit>();
+    knownUtilizations: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
+
     // @formatter:off
     @Input()
     get shipyardJobPossible() { return this._shipyardJobPossible; }
     set shipyardJobPossible(value: any) { this._shipyardJobPossible = this.coerceBooleanProperty(value); }
     _shipyardJobPossible: boolean = false;
-
-    @Input()
-    get shipyardExists() { return this._shipyardExists; }
-    set shipyardExists(value: any) { this._shipyardExists = this.coerceBooleanProperty(value); }
-    _shipyardExists: boolean = false;
     // @formatter:on
 
     translations: Map<string, string> = new Map<string, string>();
@@ -39,6 +40,7 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
 
     constructor(private translate: TranslateService,
                 private planetApi: PlanetApiService,
+                private resourceService: ResourcesApiService,
                 private jobApi: JobApiService,
                 private snackbar: SnackbarNotificationService) {
         super();
@@ -84,6 +86,18 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
             this.translations.set('planetary.fleets-in-orbit.repair-btn.is-in-repair', translated);
         });
         this.subscriptions.push(sub);
+
+        this.translations.set('planetary.fleets-in-orbit.upgrade-btn.not-needed', 'planetary.fleets-in-orbit.upgrade-btn.not-needed');
+        sub = this.translate.get('planetary.fleets-in-orbit.upgrade-btn.not-needed').subscribe((translated: string) => {
+            this.translations.set('planetary.fleets-in-orbit.upgrade-btn.not-needed', translated);
+        });
+        this.subscriptions.push(sub);
+
+        this.translations.set('planetary.fleets-in-orbit.upgrade-job-started-message', 'planetary.fleets-in-orbit.upgrade-job-started-message');
+        sub = this.translate.get('planetary.fleets-in-orbit.upgrade-job-started-message').subscribe((translated: string) => {
+            this.translations.set('planetary.fleets-in-orbit.upgrade-job-started-message', translated);
+        });
+        this.subscriptions.push(sub);
     }
 
     private coerceBooleanProperty(value: any): boolean {
@@ -116,7 +130,12 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
         if (this.isInRepair(fleet)) {
             return false;
         }
-        return fleet.state.needsRepair && this.shipyardJobPossible;
+        return fleet.state.needsRepair && this._shipyardJobPossible;
+    }
+
+    upgradePossible(fleet: Fleet) {
+        const upgradePossible = fleet.ships.filter(w => !!w.shipClass.idSuccessor).length > 0;
+        return upgradePossible && this._shipyardJobPossible;
     }
 
     isInRepair(fleet: Fleet) {
@@ -151,19 +170,29 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     }
 
     getRepairJobButtonText(fleet: Fleet) {
-        if (!fleet.state.needsRepair) {
-            return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-repair-needed')!;
-        }
         if (this.isInRepair(fleet)) {
             return this.translations.get('planetary.fleets-in-orbit.repair-btn.is-in-repair')!;
         }
-        if (!this.shipyardExists) {
-            return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-shipyard')!;
+        if (!fleet.state.needsRepair) {
+            return this.translations.get('planetary.fleets-in-orbit.repair-btn.no-repair-needed')!;
         }
-        if (!this.shipyardJobPossible) {
+        if (!this._shipyardJobPossible) {
             return this.translations.get('planetary.fleets-in-orbit.repair-btn.already-in-use')!;
         }
         return this.translations.get('planetary.fleets-in-orbit.repair-btn.start-job')!;
+    }
+
+    getUpgradeJobButtonText(fleet: Fleet) {
+        if (this.isInRepair(fleet)) {
+            return this.translations.get('planetary.fleets-in-orbit.repair-btn.is-in-repair')!;
+        }
+        if (!this._shipyardJobPossible) {
+            return this.translations.get('planetary.fleets-in-orbit.repair-btn.already-in-use')!;
+        }
+        if (!this.upgradePossible(fleet)) {
+            return this.translations.get('planetary.fleets-in-orbit.upgrade-btn.not-needed')!;
+        }
+        return this.translations.get('planetary.fleets-in-orbit.upgrade-btn.start-job')!;
     }
 
     isInoperational(fleet: Fleet) {
@@ -171,13 +200,37 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     }
 
     upgradeAll(fleet: Fleet) {
-
+        let sub = this.planetApi.upgradeFleets(fleet.idFleet).subscribe(resp => {
+            if (resp) {
+                this.snackbar.open(this.translations.get('planetary.fleets-in-orbit.upgrade-job-started-message')!);
+            }
+        });
+        this.subscriptions.push(sub);
     }
 
-    upgradePossible(fleet: Fleet) {
+    getCosts(fleet: Fleet, jobType: EJobTypesEnum) {
+        const costs = this.knownCosts.get(fleet.idFleet + '-' + jobType);
+        if (!!costs) {
+            this.costs.emit(costs);
+            return;
+        }
+        let sub = this.resourceService.getShipyardCosts(fleet.idFleet, jobType)
+            .subscribe(resp => {
+                this.knownCosts.set(fleet.idFleet + '-' + jobType, resp);
+                this.costs.emit(resp);
+            });
+        this.subscriptions.push(sub);
+    }
 
-        //fleet.ships.map(w => w.shipClass.i)
+    loadFleet(fleet: Fleet) {
+        this.fetchCosts(fleet);
+    }
 
-        return false;
+    private fetchCosts(fleet: Fleet) {
+        let sub = this.resourceService.getCostsForFleet(fleet.idFleet).subscribe(resp => {
+            resp.subType.typeName = EnumValueDto.EDepositTypeEnum.UTILIZATION
+            this.knownUtilizations.set(fleet.idFleet, resp);
+        });
+        this.subscriptions.push(sub);
     }
 }

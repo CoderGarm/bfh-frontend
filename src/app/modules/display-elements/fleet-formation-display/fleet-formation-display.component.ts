@@ -16,8 +16,14 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
     private hullTypes: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     hullsByType: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
+    warShipsByTypeAndFlight: Map<string, WarShip[]> = new Map<string, WarShip[]>();
 
     // @formatter:off
+    @Input()
+    get smallDisplay() { return this._smallDisplay; }
+    set smallDisplay(value: any) { this._smallDisplay = this.coerceBooleanProperty(value); }
+    _smallDisplay: boolean = false;
+
     @Input()
     get retireAllowed() { return this._retireAllowed; }
     set retireAllowed(value: any) { this._retireAllowed = this.coerceBooleanProperty(value); }
@@ -40,6 +46,7 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
             this.hullTypes.clear();
             this.hullsByType.clear();
             this.warShipsByType.clear();
+            this.warShipsByTypeAndFlight.clear();
             this.sortWarshipsByHull();
         }
     }
@@ -48,20 +55,32 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
         if (!!this.fleet) {
             let warShips: WarShip[] = this.fleet.ships;
             warShips.forEach(warShip => {
-                let hullType = warShip.shipClass.shipClassType;
-                const typeName = hullType.typeName;
-                this.hullTypes.set(typeName, hullType);
-
-                let warShips: WarShip[] | undefined = this.warShipsByType.get(warShip.shipClass.name);
-                if (!warShips) {
-                    this.hullsByType.set(typeName, warShip.shipClass.shipClassType);
-                    warShips = [warShip];
-                } else {
-                    warShips.push(warShip);
-                }
-                this.warShipsByType.set(warShip.shipClass.name, warShips);
+                this.hullTypes.set(warShip.shipClass.shipClassType.typeName, warShip.shipClass.shipClassType);
+                this.addToTypeList(warShip);
+                this.addToTypeAndFlightList(warShip);
             });
         }
+    }
+
+    private addToTypeAndFlightList(warShip: WarShip) {
+        const key = warShip.shipClass.name + 'm' + warShip.shipClass.mark;
+        let warShips: WarShip[] | undefined = this.warShipsByTypeAndFlight.get(key);
+        if (!warShips) {
+            warShips = [warShip];
+        } else {
+            warShips.push(warShip);
+        }
+        this.warShipsByTypeAndFlight.set(key, warShips);
+    }
+
+    private addToTypeList(warShip: WarShip) {
+        let warShips: WarShip[] | undefined = this.warShipsByType.get(warShip.shipClass.name);
+        if (!warShips) {
+            warShips = [warShip];
+        } else {
+            warShips.push(warShip);
+        }
+        this.warShipsByType.set(warShip.shipClass.name, warShips);
     }
 
     getHullDescription(typeName: string): string {

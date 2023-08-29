@@ -861,6 +861,53 @@ export class ResourcesApiService {
     /**
      * Get the costs of the given shipyard order.
      * 
+     * @param idFleet 
+     * @param jobType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getShipyardCosts(idFleet: number, jobType: string, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipyardCosts(idFleet: number, jobType: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipyardCosts(idFleet: number, jobType: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipyardCosts(idFleet: number, jobType: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idFleet === null || idFleet === undefined) {
+            throw new Error('Required parameter idFleet was null or undefined when calling getShipyardCosts.');
+        }
+
+        if (jobType === null || jobType === undefined) {
+            throw new Error('Required parameter jobType was null or undefined when calling getShipyardCosts.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipyard/${encodeURIComponent(String(idFleet))}/${encodeURIComponent(String(jobType))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
      * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

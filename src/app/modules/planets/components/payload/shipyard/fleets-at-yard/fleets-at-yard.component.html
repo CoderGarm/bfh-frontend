@@ -1,6 +1,6 @@
 <div mat-subheader *ngIf="!!fleetsInOrbit && fleetsInOrbit.length == 0">{{ 'planetary.fleets-in-orbit.not-present' | translate }}</div>
 <mat-accordion>
-    <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit" class="margin-bottom">
+    <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit" class="margin-bottom" (opened)="loadFleet(fleet)">
         <mat-expansion-panel-header [matTooltip]="getPercentageString(fleet)">
             <mat-panel-title class="align-center">
                 <mat-icon *ngIf="!isInoperational(fleet) && !isInRepair(fleet)" matTooltip="{{ 'combat-arena.tooltip.warship-state.active' | translate }}">military_tech</mat-icon>
@@ -20,13 +20,35 @@
         <app-fleet-display [fleet]="fleet" transparent>
             <div class="fleet-info-container" body>
                 <div class="main-display">
-                    <app-blue-card rightBlueCard class="cap-display">
+                    <app-blue-card class="cap-display">
                         <div body>
-                            <app-outlined titleValue="{{ 'fleet.modules.ammunition-roster.title' | translate }}">
-                                <app-ammunition-roster noTitle [fleet]="fleet"></app-ammunition-roster>
+                            <div class="flex-items-container">
+                                <app-outlined fitContent titleValue="{{ 'fleet.display.population.title' | translate }}">
+                                    <app-military-people [utilization]="knownUtilizations.get(fleet.idFleet!)!"></app-military-people>
+                                </app-outlined>
+
+                                <app-outlined fitContent titleValue="{{ 'fleet.modules.ammunition-roster.title' | translate }}">
+                                    <app-ammunition-roster noTitle [fleet]="fleet"></app-ammunition-roster>
+                                </app-outlined>
+                            </div>
+
+                            <app-outlined titleValue="{{ 'fleet.composition.title' | translate }}">
+                                <app-fleet-formation-display smallDisplay [fleet]="fleet"></app-fleet-formation-display>
                             </app-outlined>
                         </div>
                     </app-blue-card>
+                    <div class="flex-items-container">
+                        <div class="btn-container" [matTooltip]="getRepairJobButtonText(fleet)" (mouseover)="getCosts(fleet, 'REPAIR')">
+                            <button mat-raised-button color="secondary"
+                                    (click)="repair(fleet)"
+                                    [disabled]="!repairPossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
+                        </div>
+                        <div class="btn-container" [matTooltip]="getUpgradeJobButtonText(fleet)" (mouseover)="getCosts(fleet, 'UPGRADE')">
+                            <button mat-raised-button color="secondary"
+                                    (click)="upgradeAll(fleet)"
+                                    [disabled]="!upgradePossible(fleet)">{{ 'planetary.fleets-in-orbit.upgrade-btn.start-job' | translate }}</button>
+                        </div>
+                    </div>
                 </div>
 
                 <app-blue-card class="cap-display">
@@ -35,20 +57,6 @@
                                                          [currentFleetCapabilities]="fleet.spacecraftCapabilities">
                     </app-spacecraft-capabilities-display>
                 </app-blue-card>
-            </div>
-
-            <div actions class="tooltip-container">
-                <mat-divider></mat-divider>
-                <div class="btn-container" [matTooltip]="getRepairJobButtonText(fleet)">
-                    <button mat-raised-button color="secondary"
-                            (click)="repair(fleet)"
-                            [disabled]="!repairPossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
-                </div>
-                <div class="btn-container" [matTooltip]="getRepairJobButtonText(fleet)">
-                    <button mat-raised-button color="secondary"
-                            (click)="upgradeAll(fleet)"
-                            [disabled]="!upgradePossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
-                </div>
             </div>
         </app-fleet-display>
     </mat-expansion-panel>

@@ -8,9 +8,9 @@
     <app-outlined titleValue="{{ 'planetary.fleets-in-orbit.title' | translate }}">
         <app-fleets-at-yard [planet]="selectedPlanet"
                             [fleetsInOrbit]="fleetsInOrbit"
+                            (costs)="costsToDisplay = $event"
                             [possibleShipClasses]="possibleShipClasses"
-                            [shipyardJobPossible]="shipyardJobPossible"
-                            shipyardExists></app-fleets-at-yard>
+                            [shipyardJobPossible]="shipyardJobPossible"></app-fleets-at-yard>
     </app-outlined>
 
     <div>
@@ -43,7 +43,7 @@
     <app-outlined titleValue="Fleet setup">
 
         <div class="flex-items-container">
-            <app-blue-card *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
+            <app-blue-card rightBlueCard *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
                 <mat-card-header header>
                     <app-icon matCardAvatar png32px
                               [icon]="shipClass.shipClassType"

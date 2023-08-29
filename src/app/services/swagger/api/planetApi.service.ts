@@ -640,4 +640,46 @@ export class PlanetApiService {
         );
     }
 
+    /**
+     * Upgrades the fleet to the last successor classes.
+     * 
+     * @param idFleet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public upgradeFleets(idFleet: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public upgradeFleets(idFleet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public upgradeFleets(idFleet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public upgradeFleets(idFleet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idFleet === null || idFleet === undefined) {
+            throw new Error('Required parameter idFleet was null or undefined when calling upgradeFleets.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/planet/shipyardConstructionBuild/upgrade/${encodeURIComponent(String(idFleet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
 }

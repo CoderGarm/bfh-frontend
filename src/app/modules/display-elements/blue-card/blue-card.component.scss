@@ -15,3 +15,9 @@
   background: linear-gradient(-45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
   border-radius: 0 0 5px 0;
 }
+
+mat-card-actions {
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}

@@ -415,7 +415,12 @@
         "start-job": "Start repair job"
       },
       "repair-job-started-message": "The fleet was sent to the dock",
-      "title": "Fleets in orbit"
+      "title": "Fleets in orbit",
+      "upgrade-btn": {
+        "not-needed": "Upgrade not necessary",
+        "start-job": "Upgrade ships to new flight"
+      },
+      "upgrade-job-started-message": "Upgrade to latest flights started"
     },
     "marketplace": {
       "history": {

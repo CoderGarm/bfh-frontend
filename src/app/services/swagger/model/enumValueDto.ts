@@ -39,6 +39,7 @@ export interface EnumValueDto {
     eMassMetrics?: Array<EnumValueDto.EMassMetricsEnum>;
     eTimeMetrics?: Array<EnumValueDto.ETimeMetricsEnum>;
     eWebUserRoles?: Array<EnumValueDto.EWebUserRolesEnum>;
+    eJobTypes?: Array<EnumValueDto.EJobTypesEnum>;
 }
 export namespace EnumValueDto {
     export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
@@ -252,5 +253,11 @@ export namespace EnumValueDto {
     export const EWebUserRolesEnum = {
         USER: 'USER' as EWebUserRolesEnum,
         ADMIN: 'ADMIN' as EWebUserRolesEnum
+    };
+    export type EJobTypesEnum = 'CONSTRUCTION' | 'REPAIR' | 'UPGRADE';
+    export const EJobTypesEnum = {
+        CONSTRUCTION: 'CONSTRUCTION' as EJobTypesEnum,
+        REPAIR: 'REPAIR' as EJobTypesEnum,
+        UPGRADE: 'UPGRADE' as EJobTypesEnum
     };
 }

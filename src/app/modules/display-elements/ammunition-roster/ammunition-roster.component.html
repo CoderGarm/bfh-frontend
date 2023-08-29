@@ -1,7 +1,7 @@
 <div *ngIf="ammo.length > 0">
     <div mat-subheader *ngIf="!noTitle">{{ 'fleet.modules.ammunition-roster.title' | translate }}</div>
     <mat-list>
-        <mat-list-item *ngFor="let a of ammo">
+        <mat-list-item *ngFor="let a of ammo" class="height-fit-content-forced">
             <div mat-line>
                 {{a.missile.baseModule.technicalTypeName}}: {{a.amount}} / {{a.capacity}}
             </div>

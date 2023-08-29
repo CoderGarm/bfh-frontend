@@ -16,7 +16,7 @@
             </div>
             <div class="mdc-notched-outline__trailing"></div>
         </div>
-        <div class="mat-mdc-form-field-infix">
+        <div class="mat-mdc-form-field-infix" [ngClass]="{'width-fit-content-forced': _fitContent}">
             <div _ngcontent-vpd-c362 class="direct-input">
                 <ng-content
                         class="mat-mdc-input-element ng-untouched ng-pristine ng-valid mat-mdc-form-field-input-control mdc-text-field__input cdk-text-field-autofill-monitored width-fit-content height-fit-content"></ng-content>

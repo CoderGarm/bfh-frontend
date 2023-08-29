@@ -414,7 +414,12 @@
         "start-job": "Starte Reparaturauftrag"
       },
       "repair-job-started-message": "Die Flotte wurde in Dock beordert",
-      "title": "Flotten im Orbit"
+      "title": "Flotten im Orbit",
+      "upgrade-btn": {
+        "not-needed": "Ausrüstung nicht nötig",
+        "start-job": "Schiffe auf neuste Version nachrüsten"
+      },
+      "upgrade-job-started-message": "Aufrüstung zu neusten Klassen gestartet"
     },
     "marketplace": {
       "history": {

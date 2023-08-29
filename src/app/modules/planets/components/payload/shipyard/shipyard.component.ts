@@ -21,7 +21,6 @@ import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {ModuleService} from "../../../../../services/prefetch/module.service";
 import ECapacityAreaTypesEnum = EnumValueDto.ECapacityAreaTypesEnum;
 
 @Component({
@@ -95,7 +94,6 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
 
     constructor(private shipyardApi: ShipyardApiService,
                 private typeService: TypeService,
-                private moduleService: ModuleService,
                 private planetApi: PlanetApiService,
                 private resourceApi: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
@@ -103,7 +101,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                 private translate: TranslateService) {
         super();
 
-        this.eHullTypes = typeService.shipClassTypes;
+        this.eHullTypes = this.typeService.shipClassTypes;
 
         this.translations.set('shipyard.constructions.build.already-in-use', 'shipyard.constructions.build.already-in-use');
         let sub = this.translate.get('shipyard.constructions.build.already-in-use').subscribe((translated: string) => {
@@ -320,4 +318,6 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
     getMass(shipClass: ShipClass): Mass {
         return shipClass.spacecraftCapacityAreas.capacityValues.filter(c => c.capacityArea === ECapacityAreaTypesEnum.OVERALL)[0].tonnage;
     }
+
+    protected readonly eval = eval;
 }
