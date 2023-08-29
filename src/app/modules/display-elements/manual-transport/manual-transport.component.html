@@ -48,9 +48,12 @@
         <div class="the-right spacer" *ngIf="floatingStyle">
         </div>
     </div>
-    <div actions matTooltip="{{ 'transport.manual.transfer-btn.tooltip' | translate }}" class="tooltip-container">
-        <button mat-raised-button color="secondary"
-                (click)="transfer()"
-                [disabled]="!transferSelected()">{{ 'transport.manual.transfer-btn.title' | translate }}</button>
+    <div class="tooltip-container">
+        <mat-divider></mat-divider>
+        <div matTooltip="{{ 'transport.manual.transfer-btn.tooltip' | translate }}" class="btn-container">
+            <button mat-raised-button color="secondary"
+                    (click)="transfer()"
+                    [disabled]="!transferSelected()">{{ 'transport.manual.transfer-btn.title' | translate }}</button>
+        </div>
     </div>
 </div>

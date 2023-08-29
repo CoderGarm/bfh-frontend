@@ -7,11 +7,18 @@
             </app-fleet-display>
 
             <app-fleet-display transparent [fleet]="fleet" *ngIf="isOwnFleet(fleet)">
-                <app-spacecraft-capabilities-display body [fleet]="fleet"></app-spacecraft-capabilities-display>
+                <div class="fleet-info-container" body>
+                    <div class="main-display">
+                        <app-fleet-formation-display class="mar-to" [fleet]="fleet"></app-fleet-formation-display>
+                    </div>
 
-                <app-ammunition-roster body [fleet]="fleet"></app-ammunition-roster>
-
-                <app-fleet-formation-display body [fleet]="fleet"></app-fleet-formation-display>
+                    <app-blue-card class="cap-display">
+                        <app-spacecraft-capabilities-display body
+                                                             [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
+                                                             [currentFleetCapabilities]="fleet.spacecraftCapabilities">
+                        </app-spacecraft-capabilities-display>
+                    </app-blue-card>
+                </div>
             </app-fleet-display>
         </div>
     </mat-card-content>

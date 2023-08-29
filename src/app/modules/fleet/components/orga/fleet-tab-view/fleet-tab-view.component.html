@@ -2,34 +2,40 @@
     <mat-tab label="{{ 'tab.fleet.dashboard' | translate }}">
         <div class="holder">
             <app-fleet-display [fleet]="fleet" nameChangeAllowed retireAllowed transparent>
-                <app-fleet-move-display body [fleet]="fleet"></app-fleet-move-display>
+                <div class="fleet-info-container" body>
+                    <div class="main-display">
+                        <app-fleet-move-display [fleet]="fleet"></app-fleet-move-display>
 
-                <app-blue-card body rightBlueCard>
-                    <app-spacecraft-capabilities-display body
-                                                         [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
-                                                         [currentFleetCapabilities]="fleet.spacecraftCapabilities">
-                    </app-spacecraft-capabilities-display>
-                </app-blue-card>
+                        <app-fleet-formation-display retireAllowed class="mar-to" [fleet]="fleet"></app-fleet-formation-display>
+                    </div>
+
+                    <app-blue-card class="cap-display">
+                        <app-spacecraft-capabilities-display body
+                                                             [baseFleetCapabilities]="fleet.baseSpacecraftCapabilities"
+                                                             [currentFleetCapabilities]="fleet.spacecraftCapabilities">
+                        </app-spacecraft-capabilities-display>
+                    </app-blue-card>
+                </div>
 
                 <div body class="bottom-spacer"></div>
 
-                <app-blue-card body rightBlueCard>
-                    <div body>
-                        <app-outlined titleValue="{{ 'fleet.display.population.title' | translate }}">
-                            <app-military-people [utilization]="utilization"></app-military-people>
-                        </app-outlined>
-
-                        <app-outlined titleValue="{{ 'fleet.modules.ammunition-roster.title' | translate }}">
-                            <app-ammunition-roster noTitle [fleet]="fleet"></app-ammunition-roster>
-                        </app-outlined>
+                <div class="fleet-info-container" body>
+                    <div class="main-display">
+                        <app-manual-transport [fleet]="fleet"></app-manual-transport>
                     </div>
-                </app-blue-card>
 
-                <app-fleet-formation-display body retireAllowed class="mar-to" [fleet]="fleet"></app-fleet-formation-display>
+                    <app-blue-card class="cap-display">
+                        <div body>
+                            <app-outlined titleValue="{{ 'fleet.display.population.title' | translate }}">
+                                <app-military-people [utilization]="utilization"></app-military-people>
+                            </app-outlined>
 
-                <app-blue-card body rightBlueCard>
-                    <app-manual-transport body [fleet]="fleet"></app-manual-transport>
-                </app-blue-card>
+                            <app-outlined titleValue="{{ 'fleet.modules.ammunition-roster.title' | translate }}">
+                                <app-ammunition-roster noTitle [fleet]="fleet"></app-ammunition-roster>
+                            </app-outlined>
+                        </div>
+                    </app-blue-card>
+                </div>
             </app-fleet-display>
         </div>
     </mat-tab>

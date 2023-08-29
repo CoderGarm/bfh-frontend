@@ -1,3 +1,5 @@
+@import "src/app/modules/fleet/components/orga/fleet-tab-view/fleet-tab-view.component.scss";
+
 .readiness-progress-bar {
   width: 150px;
   max-width: 50%;
@@ -7,10 +9,17 @@
 }
 
 .tooltip-container {
-  width: fit-content;
+  width: 100%;
+  margin-left: 25px;
 }
 
-mat-icon {
+.btn-container {
+  margin-top: 15px;
+  width: fit-content;
+  width: -moz-fit-content;
+}
+
+mat-icon, app-icon {
   margin-right: 15px;
 }
 

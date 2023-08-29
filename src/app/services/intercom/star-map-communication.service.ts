@@ -293,7 +293,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     infoDisabled() {
-        return this.selectedFleets.filter(f => f.owner.idUser == this.userId).length == 0;
+        return this.selectedFleets.length == 0;
     }
 
     stellarMove() {
