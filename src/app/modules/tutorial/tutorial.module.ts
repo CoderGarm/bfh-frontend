@@ -13,6 +13,8 @@ import {TutorialPlanetConstructionsComponent} from "./topics/planetTabView/const
 import {TutorialPlanetShipyardComponent} from "./topics/planetTabView/shipyard/tutorial-planet-shipyard.component";
 import {TutorialMarketplaceComponent} from "./topics/planetTabView/market/tutorial-marketplace.component";
 import {TutorialInnerEmpireTransportationComponent} from './topics/tutorial-inner-empire-transportation/tutorial-inner-empire-transportation.component';
+import {TutorialUniverseMapComponent} from './topics/starMapTabView/tutorial-universe-map/tutorial-universe-map.component';
+import {TutorialStarMapComponent} from './topics/starMapTabView/tutorial-star-map/tutorial-star-map.component';
 
 
 @NgModule({
@@ -29,6 +31,8 @@ import {TutorialInnerEmpireTransportationComponent} from './topics/tutorial-inne
         TutorialPlanetShipyardComponent,
         TutorialMarketplaceComponent,
         TutorialInnerEmpireTransportationComponent,
+        TutorialUniverseMapComponent,
+        TutorialStarMapComponent,
     ],
     imports: [
         SharedModuleModule,

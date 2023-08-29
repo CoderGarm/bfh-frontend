@@ -1,0 +1,20 @@
+<div *ngIf="scopeService.openTopic?.uuid === uuid">
+    <p>The shown system details are displaying next to the amount of planets in the system also the cartesian coordinates in the galaxy.</p>
+
+    <h5>Fleets on the map</h5>
+    <p>A fleet which enters a star system from the hyperspace will stay at the <span style="color: orange;">hyper limit</span>.<br>
+        It's kind of a gravitational barrier which doesn't allow transitions from or to hyper bands.</p>
+    <p>If a fleet has entered the system you can select it by clicking on them and select a movement target, too.<br>
+        Currently only planets can be a movement target.</p>
+
+    <h3>Fleet actions</h3>
+    <p>Fleet can be execute several actions beside their function as police forces in case of pirate attacks.</p>
+
+    <h5>Transports</h5>
+    <p>A fleet with cargo space or room for passengers can move their 'load' everywhere. Use the <b>transport dialog</b> to fill the remaining space and move the fleet to their
+        destination.</p>
+
+    <h5>Split and merge fleets</h5>
+    <p>Fleet can be merged by selecting multiple fleets in the same orbit and opening the <b>Transfer dialog</b>. There the single ships can be dragged between fleets.</p>
+    <p>Splitting a fleet is currently only possible in the <b>fleet menu -> Detachment</b>.</p>
+</div>
