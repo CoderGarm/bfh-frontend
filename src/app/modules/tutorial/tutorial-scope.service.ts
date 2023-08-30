@@ -32,31 +32,31 @@ export class TutorialScopeService extends SubscriptionManager {
     openTopic?: Topic;
 
     private static readonly TUTORIALS: string[] = [
-        JournalTabViewComponent.name,
-        PlanetTabViewComponent.name,
-        TransportTabViewComponent.name,
-        StarMapTabViewComponent.name,
+        JournalTabViewComponent.path,
+        PlanetTabViewComponent.path,
+        TransportTabViewComponent.path,
+        StarMapTabViewComponent.path,
     ];
 
     private static topicsByRoute: Map<string, Topic[]> = new Map<string, Topic[]>();
     static {
-        this.topicsByRoute.set(JournalTabViewComponent.name, [
+        this.topicsByRoute.set(JournalTabViewComponent.path, [
             TutorialFleetDashComponent.TOPIC,
             TutorialJobDashComponent.TOPIC,
             TutorialTradeDashComponent.TOPIC,
             TutorialInfraDashComponent.TOPIC,
             TutorialBattleDashComponent.TOPIC
         ]);
-        this.topicsByRoute.set(PlanetTabViewComponent.name, [
+        this.topicsByRoute.set(PlanetTabViewComponent.path, [
             TutorialPlanetDashComponent.TOPIC,
             TutorialPlanetConstructionsComponent.TOPIC,
             TutorialPlanetShipyardComponent.TOPIC,
             TutorialMarketplaceComponent.TOPIC
         ]);
-        this.topicsByRoute.set(TransportTabViewComponent.name, [
+        this.topicsByRoute.set(TransportTabViewComponent.path, [
             TutorialInnerEmpireTransportationComponent.TOPIC,
         ]);
-        this.topicsByRoute.set(StarMapTabViewComponent.name, [
+        this.topicsByRoute.set(StarMapTabViewComponent.path, [
             TutorialUniverseMapComponent.TOPIC,
             TutorialStarMapComponent.TOPIC,
         ]);
@@ -67,8 +67,8 @@ export class TutorialScopeService extends SubscriptionManager {
     constructor(protected navigationCommunicationService: NavigationCommunicationService) {
         super();
 
-        this.setScope(JournalTabViewComponent.name);
-        this.navigationCommunicationService.getNavigationEmitter().subscribe(route => this.setScope(route.component!.name));
+        this.setScope(JournalTabViewComponent.path);
+        this.navigationCommunicationService.getNavigationEmitter().subscribe(route => this.setScope(route.path!));
     }
 
     private setScope(route: string) {
