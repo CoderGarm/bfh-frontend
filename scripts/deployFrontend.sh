@@ -21,5 +21,6 @@ tar -xf /home/karsten/uploadTarget/bfh-fe.tar.gz -C /home/karsten/uploadTarget/
 sudo rm -r /var/www/html/bfh-fe/
 sudo cp -r /home/karsten/uploadTarget/dist/bfh-fe/ /var/www/html/
 sudo cp /home/karsten/uploadTarget/htaccess /var/www/html/bfh-fe/.htaccess
+sudo cp /home/karsten/uploadTarget/google2cbaff394ce44864.html /var/www/html/bfh-fe/
 sudo chown -R www-data:www-data /var/www/html/bfh-fe/
 echo 'deployment of frontend done'
