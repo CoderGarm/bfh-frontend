@@ -7,6 +7,56 @@
     <div class="navigation-wrapper">
         <div class="keen-slider" #sliderRef>
             <div class="keen-slider__slide">
+                <img class="icon icon-ri-mid" src="assets/tour/eye-catcher/more-pirates.png">
+                <img class="icon icon-mid-mid" src="assets/tour/eye-catcher/explosions.png">
+                <div class="comment-box-right stamp is-approved">Constant game development<br>-<br>around 2 releases a month<br><span>- Webmaster</span>
+                </div>
+                <div class="header-box">Fleet management<br><span>- the empires tool -</span></div>
+                <div class="outer-box">
+                    <div class="has-border caption-box left" style="width: 15%; position: relative; top: -40px;">
+                        <img width="1480"
+                             height="1156"
+                             ngSrc="assets/tour/fleet/fleet.png"
+                             alt="fleet info image"
+                             class="thumbnail-img"
+                             (click)="imgSrc = 'assets/tour/fleet/fleet.png'; imgAlt = 'fleet info image'; spinner.show('fullscreen-image')">
+                        <br>
+                        A <b>general overview</b> about the fleet ...
+                    </div>
+                    <div class="has-border caption-box left" style="width: 25%; position: relative; top: -75px;">
+                        <img width="1491"
+                             height="1156"
+                             ngSrc="assets/tour/fleet/detach-fleet.png"
+                             alt="detach fleet gif"
+                             class="thumbnail-img"
+                             (click)="imgSrc = 'assets/tour/fleet/detach-fleet.png'; imgAlt = 'detach fleet gif'; spinner.show('fullscreen-image')">
+                        <br>
+                        ... with the ability to <b>detach</b> it into smaller forces ...
+                    </div>
+                    <div class="has-border caption-box left">
+                        <img width="1521"
+                             height="1132"
+                             ngSrc="assets/tour/fleet/fight.gif"
+                             alt="fighting fleet gif"
+                             class="thumbnail-img"
+                             (click)="imgSrc = 'assets/tour/fleet/fight.gif'; imgAlt = 'fighting fleet gif'; spinner.show('fullscreen-image')">
+                        <br>
+                        ... and use the fitted launchers to sature the missile defense and express your wishes.
+                    </div>
+                    <div class="has-border caption-box left" style="width: 25%; position: absolute; bottom: 0;">
+                        <img width="1489"
+                             height="1088"
+                             ngSrc="assets/tour/star-map/map.png"
+                             alt="star map img"
+                             class="thumbnail-img"
+                             (click)="imgSrc = 'assets/tour/star-map/map.png'; imgAlt = 'star map img'; spinner.show('fullscreen-image')">
+                        <br>
+                        Nearly 1000 star systems with several thousand planets to colonize!
+                    </div>
+                </div>
+            </div>
+
+            <div class="keen-slider__slide">
                 <img class="icon icon-mid-top" src="assets/tour/eye-catcher/explosions.png">
                 <img class="icon icon-ri-mid" src="assets/tour/eye-catcher/pirates.png">
                 <div class="comment-box-right stamp">The best game ever seen!<br><span>- Stephanie H.</span></div>
@@ -221,48 +271,6 @@
                     fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </div>
             </div>
-
-            <div class="keen-slider__slide">
-                <img class="icon icon-ri-mid" src="assets/tour/eye-catcher/more-pirates.png">
-                <img class="icon icon-mid-mid" src="assets/tour/eye-catcher/and-colonizations.png">
-                <div class="comment-box-right stamp is-approved">There is also a lot of multiplayer-stuff like chats and forums, alliances and so on! And a Wiki!<br><span>- Webmaster</span>
-                </div>
-                <div class="header-box">Fleet management<br><span>- the empires tool -</span></div>
-                <div class="outer-box">
-                    <div class="has-border caption-box left" style="width: 15%;">
-                        <img width="1518"
-                             height="1068"
-                             ngSrc="assets/tour/fleet/info.png"
-                             alt="fleet info image"
-                             class="thumbnail-img"
-                             (click)="imgSrc = 'assets/tour/fleet/info.png'; imgAlt = 'fleet info image'; spinner.show('fullscreen-image')">
-                        <br>
-                        A <b>general overview</b> about the fleet ...
-                    </div>
-                    <div class="has-border caption-box left" style="width: 25%;">
-                        <img width="1521"
-                             height="1132"
-                             ngSrc="assets/tour/fleet/detach-fleet.gif"
-                             alt="detach fleet gif"
-                             class="thumbnail-img"
-                             (click)="imgSrc = 'assets/tour/fleet/detach-fleet.gif'; imgAlt = 'detach fleet gif'; spinner.show('fullscreen-image')">
-                        <br>
-                        ... with the ability to <b>detach</b> it into smaller forces ...
-                    </div>
-                    <div class="has-border caption-box left">
-                        <img width="1521"
-                             height="1132"
-                             ngSrc="assets/tour/fleet/fight.gif"
-                             alt="fighting fleet gif"
-                             class="thumbnail-img"
-                             (click)="imgSrc = 'assets/tour/fleet/fight.gif'; imgAlt = 'fighting fleet gif'; spinner.show('fullscreen-image')">
-                        <br>
-                        ... and use the fitted launchers to sature the missile defense and express your wishes.
-                    </div>
-                </div>
-            </div>
-
-
         </div>
         <svg [ngClass]=" 'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')" (click)="slider!.prev()" xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 24 24">
