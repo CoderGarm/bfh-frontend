@@ -1,20 +1,29 @@
-<mat-card *ngIf="!!mission" appearance="outlined" class="mission-card">
-    <mat-card-content>
-        <app-outlined titleValue="{{ 'mission.card.title' | translate }}" class="floated">
-            {{mission.missionType}}
-        </app-outlined>
-        <app-outlined titleValue="{{ 'mission.card.details' | translate }}" class="floated-right">
-            {{ mission.venue.name }}
-        </app-outlined>
-
+<app-blue-card *ngIf="!!mission">
+    <mat-card-title-group header>
+        <mat-card-title>{{ 'mission.card.title' | translate }} {{ mission.missionType }}</mat-card-title>
+        <mat-card-subtitle *ngIf="!!mission.venue">{{ 'mission.card.details' | translate }}: {{ mission.venue.name }}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="!!mission.tradeContract">{{ 'mission.card.details' | translate }}
+            : {{ 'mission.convoy.title' | translate }} {{ mission.tradeContract.idTradedResource }}<br>
+            <app-number-short [input]="mission.tradeContract.offer.trade.resourceAmount.amount"></app-number-short>
+            &nbsp;
+            <app-icon [icon]="mission.tradeContract.offer.trade.resourceAmount.resourceType"></app-icon>
+            &nbsp;for&nbsp;
+            <app-number-short [input]="mission.tradeContract.offer.trade.pricePerUnit * mission.tradeContract.offer.trade.resourceAmount.amount"></app-number-short>
+            &nbsp;
+            <app-icon credits></app-icon>
+        </mat-card-subtitle>
+        <mat-card-subtitle>{{ 'mission.card.started' | translate }} {{ mission.started.tickNo }}</mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content body>
         <mat-list-item *ngFor="let warShip of mission!.ships">
             <span matListItemTitle>{{warShip.name}}</span>
             <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+            <span matListItemLine>FTL: {{ warShip.warshipHealthState.state.isFTLCapable }}</span>
             <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
                                                 [isWarship]="true"></app-spacecraft-state-block-display>
         </mat-list-item>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions actions>
         <button mat-raised-button (click)="submit()" [disabled]="!mission || !mission.idMission">{{ 'mission.delete.submit' | translate }}</button>
     </mat-card-actions>
-</mat-card>
+</app-blue-card>

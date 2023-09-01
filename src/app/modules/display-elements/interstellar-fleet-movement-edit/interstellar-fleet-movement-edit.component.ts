@@ -110,7 +110,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         let hyperLimitPosition = this.createRandomPointOnHyperLimit();
         let fleetMoves = this.fleets
             .filter(f => !f.move)
-            .filter(f => f.isFTLCapable)
+            .filter(f => f.state.isFTLCapable)
             .map(fleet => {
                 const fm: FleetMove = {
                     idFleetToMove: fleet.idFleet,
@@ -119,7 +119,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
                 }
                 return fm;
             });
-        this.nonFtlFleets = this.fleets.filter(f => !f.move).filter(f => !f.isFTLCapable).map(f => f.idFleet);
+        this.nonFtlFleets = this.fleets.filter(f => !f.move).filter(f => !f.state.isFTLCapable).map(f => f.idFleet);
 
         if (fleetMoves.length < 1) {
             return;

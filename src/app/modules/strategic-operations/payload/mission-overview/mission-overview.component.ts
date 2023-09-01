@@ -19,9 +19,13 @@ export class MissionOverviewComponent extends SubscriptionManager implements Aft
     }
 
     getMissions(): Mission[] {
+        let result: Mission[] = this.missionCommService.activeMissions;
         if (!!this.missionCommService.selectedPlanet) {
-            return this.missionCommService.activeMissions.filter(m => m.venue.idPlanet === this.missionCommService.selectedPlanet!.idPlanet);
+            result = result.filter(m => m.venue?.idPlanet === this.missionCommService.selectedPlanet!.idPlanet);
         }
-        return this.missionCommService.activeMissions;
+        if (!!this.missionCommService.selectedType) {
+            result = result.filter(m => m.missionType === this.missionCommService.selectedType);
+        }
+        return result;
     }
 }

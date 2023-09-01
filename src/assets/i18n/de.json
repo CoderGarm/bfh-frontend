@@ -305,9 +305,14 @@
     },
     "card": {
       "details": "Details",
+      "started": "Gestartet in Tick",
       "title": "Mission"
     },
+    "convoy": {
+      "title": "Konvoi"
+    },
     "create": {
+      "no-ftl-ships": "Es befinden sich keine überlichtfähigen Schiffe mehr in der Reserveflotte.",
       "no-pooled-ships": "Es befinden sich keine Schiffe mehr in der Reserveflotte.",
       "select": {
         "planet": "Wähle das Aktionszentrum",

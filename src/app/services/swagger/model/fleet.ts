@@ -39,9 +39,5 @@ export interface Fleet {
     spacecraftCapabilities: SpacecraftCapabilities;
     baseSpacecraftCapabilities: SpacecraftCapabilities;
     spacecraftCapacityAreas: SpacecraftCapacityAreas;
-    /**
-     * If the fleet can run interstellar movements.
-     */
-    isFTLCapable: boolean;
     state: StateBlock;
 }

@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
-import {FleetApiService, Mission, MissionApiService, Planet, PlanetApiService, StarSystem, WarShip} from "../swagger";
+import {EnumValueDto, FleetApiService, MarketplaceApiService, Mission, MissionApiService, Planet, PlanetApiService, StarSystem, TradeContract, WarShip} from "../swagger";
 import {SubscriptionManager} from "../../subscription.manager";
 import {BackgroundService} from "../prefetch/background.service";
 import MissionTypeEnum = Mission.MissionTypeEnum;
+import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
 @Injectable()
 export class MissionCommunicationService extends SubscriptionManager {
@@ -21,10 +22,14 @@ export class MissionCommunicationService extends SubscriptionManager {
 
     systems: StarSystem[] = [];
 
+    selectedType?: MissionTypeEnum;
     selectedPlanet?: Planet;
+    selectedTrade?: TradeContract;
+    activeTrades: TradeContract[] = [];
 
     constructor(private missionService: MissionApiService,
                 private planetService: PlanetApiService,
+                private marketService: MarketplaceApiService,
                 private systemService: BackgroundService,
                 private fleetService: FleetApiService) {
         super();
@@ -46,6 +51,13 @@ export class MissionCommunicationService extends SubscriptionManager {
         this.subscriptions.push(sub);
     }
 
+    fetchTrades() {
+        let sub = this.marketService.getFreshTradesForUser().subscribe(resp => {
+            this.activeTrades = resp;
+        });
+        this.subscriptions.push(sub);
+    }
+
     fetchStarSystems() {
         let sub = this.systemService.getStarSystems().subscribe(resp => this.systems = resp);
         this.subscriptions.push(sub);
@@ -56,12 +68,14 @@ export class MissionCommunicationService extends SubscriptionManager {
             this.activeMissions = resp;
             this.buildPlanetsWithoutMission();
             resp.forEach(mission => {
-                let missions = this.activeMissionsByVenue.get(mission.venue.idPlanet);
-                if (!missions) {
-                    missions = [];
-                    this.activeMissionsByVenue.set(mission.venue.idPlanet, missions);
+                if (mission.missionType === EMissionTypesEnum.PIRATE_HUNT && !!mission.venue) {
+                    let missions = this.activeMissionsByVenue.get(mission.venue.idPlanet);
+                    if (!missions) {
+                        missions = [];
+                        this.activeMissionsByVenue.set(mission.venue.idPlanet, missions);
+                    }
+                    missions.push(mission);
                 }
-                missions.push(mission);
             });
         });
         this.subscriptions.push(sub);
@@ -87,7 +101,7 @@ export class MissionCommunicationService extends SubscriptionManager {
     }
 
     private buildPlanetsWithoutMission() {
-        const idPlanetsWithMissions = this.activeMissions.map(m => m.venue.idPlanet);
+        const idPlanetsWithMissions = this.activeMissions.map(m => m.venue?.idPlanet);
         this.planetsWithoutMissions = this.colonizedPlanets.filter(p => !idPlanetsWithMissions.includes(p.idPlanet));
     }
 }

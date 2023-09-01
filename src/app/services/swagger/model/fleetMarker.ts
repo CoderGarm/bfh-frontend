@@ -30,9 +30,5 @@ export interface FleetMarker {
     ships: Array<AbstractId>;
     orbit?: FleetOrbit;
     move?: Move;
-    /**
-     * If the fleet can run interstellar movements.
-     */
-    isFTLCapable: boolean;
     state: StateBlock;
 }

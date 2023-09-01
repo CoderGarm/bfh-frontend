@@ -9,7 +9,7 @@
                                 *ngIf="locked.includes(fleet.idFleet) && fleet.idFleet < 0">
                             <mat-icon>lock</mat-icon>
                         </button>
-                        <div mat-subheader class="fleet-name" [matTooltip]="fleet.name">{{fleet.name}}</div>
+                        <div mat-subheader class="fleet-name" [matTooltip]="fleet.name">{{ fleet.name }}</div>
                         <button mat-mini-fab color="accent" aria-label="add a fleet detachment button" class="add-btn-with-name"
                                 (click)="addFleetContainer()"
                                 matTooltip="{{ 'fleet.composition.detachment.tooltip' | translate }}"
@@ -55,7 +55,10 @@
                              [ngStyle]="{'cursor':( !locked.includes(fleet.idFleet) ? 'move' : '')}"
                              cdkDrag
                              [cdkDragDisabled]="locked.includes(fleet.idFleet) && (fleet.idFleet < 0 || (fleet.idFleet > 0 && fleet.ships.length == 1))">
-                            {{ warship.name }}
+                            <div>
+                                <span class="warship-title">{{ warship.name }}</span><br>
+                                <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,7 +88,10 @@
                              [ngStyle]="{'cursor':( !locked.includes(fleets[0].idFleet) ? 'move' : '')}"
                              cdkDrag
                              [cdkDragDisabled]="locked.includes(fleets[0].idFleet)">
-                            {{ warship.name }}
+                            <div>
+                                <span class="warship-title">{{ warship.name }}</span><br>
+                                <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -306,9 +306,14 @@
     },
     "card": {
       "details": "Details",
+      "started": "Started in tick",
       "title": "Mission"
     },
+    "convoy": {
+      "title": "Convoy"
+    },
     "create": {
+      "no-ftl-ships": "There are no more FTL ships in the reserve fleet.",
       "no-pooled-ships": "There are no more ships in the reserve fleet.",
       "select": {
         "planet": "Chose a venue",

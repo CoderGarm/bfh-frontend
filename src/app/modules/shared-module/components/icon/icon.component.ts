@@ -1,5 +1,7 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {HasIcon} from "../../../../services/swagger";
+import {EnumValueDto, HasIcon} from "../../../../services/swagger";
+import {ResourceHelper} from "../../../../services/helper/resource.helper";
+import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 @Component({
     selector: 'app-icon',
@@ -27,6 +29,11 @@ export class IconComponent implements OnChanges {
     get planet() { return this._planet; }
     set planet(value: any) { this._planet = this.coerceBooleanProperty(value); }
     _planet: boolean = false;
+
+    @Input()
+    get credits() { return this._credits; }
+    set credits(value: any) { this._credits = this.coerceBooleanProperty(value); }
+    _credits: boolean = false;
 
     @Input()
     get png64px() { return this._png64px; }
@@ -62,6 +69,9 @@ export class IconComponent implements OnChanges {
             this.sizeComplement = '24px';
         }
         this.fleetIcon = !this.fleetSize ? undefined : this.fleetSize <= 5 ? 'rank-1' : this.fleetSize <= 15 ? 'rank-2' : 'rank-3';
+        if (this._credits) {
+            this.icon = ResourceHelper.getResourceType(EResourceTypeEnum.CREDITS);
+        }
     }
 
     private coerceBooleanProperty(value: any): boolean {

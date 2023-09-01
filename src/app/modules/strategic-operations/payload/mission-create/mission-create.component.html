@@ -1,42 +1,87 @@
-<mat-card class="mission-item">
-    <mat-card-header>
+<app-blue-card rightBlueCard>
+    <mat-card-header header>
         <mat-card-title>{{ 'mission.create.title' | translate }}</mat-card-title>
     </mat-card-header>
 
-    <mat-card-content *ngIf="planets.length > 0">
-        <div class="flex-items-container clearfix">
+    <mat-card-content body>
+        <mat-stepper animationDuration="500ms">
+            <mat-step>
+                <ng-template matStepLabel>
+                    <div>{{ 'mission.create.select.type' | translate }}</div>
+                </ng-template>
+                <ng-template matStepContent>
+                    <app-outlined titleValue="{{ 'mission.create.select.type' | translate }}">
+                        <mat-selection-list [multiple]="false" (selectionChange)="setType($event)">
+                            <mat-list-option *ngFor="let type of availableMissionTypes" [value]="type">
+                                {{ type }}
+                            </mat-list-option>
+                        </mat-selection-list>
+                    </app-outlined>
+                </ng-template>
+            </mat-step>
 
-            <mat-form-field appearance="outline">
-                <mat-label>{{ 'mission.create.select.planet' | translate }}</mat-label>
-                <mat-select [(ngModel)]="missionCommService.selectedPlanet">
-                    <mat-option>none</mat-option>
-                    <mat-option *ngFor="let planet of planets" [value]="planet">
-                        {{ planet.name }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+            <mat-step>
+                <ng-template matStepLabel>
+                    <div>{{ 'mission.create.select.planet' | translate }}</div>
+                </ng-template>
+                <ng-template matStepContent>
 
-            <mat-form-field appearance="outline">
-                <mat-label>{{ 'mission.create.select.type' | translate }}</mat-label>
-                <mat-select [(ngModel)]="selectedType" name="missionType">
-                    <mat-option *ngFor="let type of availableMissionTypes" [value]="type">
-                        {{ type }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+                    <app-outlined titleValue="{{ 'mission.create.select.planet' | translate }}" *ngIf="missionCommService.selectedType === 'PIRATE_HUNT'">
+                        <mat-selection-list (selectionChange)="setVenue($event)" [multiple]="false">
+                            <mat-list-option>none</mat-list-option>
+                            <mat-list-option *ngFor="let planet of planets" [value]="planet">
+                                {{ planet.name }}
+                            </mat-list-option>
+                        </mat-selection-list>
 
-        <mat-selection-list multiple (selectionChange)="setShips($event)">
-            <mat-label>{{ 'mission.create.select.ships' | translate }}</mat-label>
-            <mat-list-option *ngFor="let warShip of pooledWarships" [value]="warShip">
-                <span matListItemTitle>{{warShip.name}}</span>
-                <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
-            </mat-list-option>
-            <mat-hint *ngIf="pooledWarships.length == 0"><br>{{ 'mission.create.no-pooled-ships' | translate }}</mat-hint>
-        </mat-selection-list>
+                    </app-outlined>
+
+                    <app-outlined titleValue="{{ 'mission.create.select.planet' | translate }}" *ngIf="missionCommService.selectedType === 'CONVOY_PROTECTION'">
+                        <mat-selection-list (selectionChange)="setTrade($event)" [multiple]="false">
+                            <mat-list-option *ngFor="let trade of missionCommService.activeTrades" [value]="trade">
+                                <span matListItemTitle>{{ 'mission.convoy.title' | translate }} {{ trade.idTradedResource }}<br>
+                                    {{ trade.offer.origin.name }}, {{ trade.offer.seller!.name }} to {{ trade.destination.name }}, {{ trade.buyer.name }}
+                                </span>
+                                <span matListItemLine>
+                                    <app-number-short [input]="trade.offer.trade.resourceAmount.amount"></app-number-short>
+                                    &nbsp;
+                                    <app-icon [icon]="trade.offer.trade.resourceAmount.resourceType"></app-icon>
+                                    &nbsp;for&nbsp;
+                                    <app-number-short [input]="trade.offer.trade.pricePerUnit * trade.offer.trade.resourceAmount.amount"></app-number-short>
+                                    &nbsp;
+                                    <app-icon credits></app-icon>
+                                </span>
+                            </mat-list-option>
+                        </mat-selection-list>
+
+                    </app-outlined>
+
+                </ng-template>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>
+                    <div>{{ 'mission.create.select.ships' | translate }}</div>
+                </ng-template>
+                <ng-template matStepContent>
+                    <mat-selection-list multiple (selectionChange)="setShips($event)">
+                        <mat-label>{{ 'mission.create.select.ships' | translate }}</mat-label>
+                        <mat-list-option *ngFor="let warShip of filteredWarships" [value]="warShip">
+                            <span matListItemTitle>{{warShip.name}}</span>
+                            <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+                            <span matListItemLine>FTL: {{ warShip.warshipHealthState.state.isFTLCapable }}</span>
+                        </mat-list-option>
+                        <mat-hint *ngIf="filteredWarships.length == 0 && missionCommService.selectedType === 'CONVOY_PROTECTION'">
+                            <br>{{ 'mission.create.no-ftl-ships' | translate }}</mat-hint>
+                        <mat-hint *ngIf="filteredWarships.length == 0 && missionCommService.selectedType != 'CONVOY_PROTECTION'">
+                            <br>{{ 'mission.create.no-pooled-ships' | translate }}</mat-hint>
+                    </mat-selection-list>
+                </ng-template>
+            </mat-step>
+        </mat-stepper>
+
 
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions actions>
         <button mat-raised-button (click)="submit()" [disabled]="!isMissionCreateValid()">{{ 'mission.create.submit' | translate }}</button>
     </mat-card-actions>
-</mat-card>
+</app-blue-card>

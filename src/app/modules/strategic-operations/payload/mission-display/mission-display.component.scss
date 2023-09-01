@@ -1,2 +1,10 @@
 @import "../mission-administration/mission-administration.component";
 
+
+.mat-mdc-card-content {
+  width: 250px;
+}
+
+.mat-mdc-list-item {
+  width: fit-content;
+}

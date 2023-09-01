@@ -99,7 +99,7 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
         if (!!selectedMissionTypes) {
             missions = missions.filter(mission => selectedMissionTypes.includes(mission.missionType));
         }
-        return missions.filter(m => m.venue.starSystem.id === system.idStarSystem);
+        return missions.filter(m => m.venue?.starSystem.id === system.idStarSystem);
     }
 
     getColor(coord: MissionTypeEnum): string {
@@ -136,6 +136,11 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
             let sub = this.missionCommService.createMission({
                 venue: this.selectedPlanet!,
                 ships: [],
+                started: {
+                    tickStarts: new Date(),
+                    tickEnds: new Date(),
+                    tickNo: 0,
+                },
                 warShipIDs: this.selectedWarships!.map(w => w.idWarship),
                 missionType: this.selectedType!
             }).subscribe(resp => {

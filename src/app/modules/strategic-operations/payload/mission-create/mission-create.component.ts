@@ -1,16 +1,17 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
-import {Mission, Planet, WarShip} from "../../../../services/swagger";
+import {EnumValueDto, Mission, Planet, TradeContract, WarShip} from "../../../../services/swagger";
 import {MatSelectionListChange} from "@angular/material/list";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import MissionTypeEnum = Mission.MissionTypeEnum;
+import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
 @Component({
     selector: 'app-mission-create',
     templateUrl: './mission-create.component.html',
     styleUrls: ['./mission-create.component.scss']
 })
-export class MissionCreateComponent extends SubscriptionManager {
+export class MissionCreateComponent extends SubscriptionManager implements OnChanges {
 
     @Input()
     planets: Planet[] = [];
@@ -18,7 +19,8 @@ export class MissionCreateComponent extends SubscriptionManager {
     @Input()
     pooledWarships: WarShip[] = [];
 
-    selectedType?: MissionTypeEnum;
+    filteredWarships: WarShip[] = [];
+
     selectedWarships?: WarShip[];
 
     availableMissionTypes: MissionTypeEnum[] = MissionCommunicationService.missionTypes;
@@ -30,31 +32,70 @@ export class MissionCreateComponent extends SubscriptionManager {
         super();
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.pooledWarships.length > 0) {
+            const isConvoyProtection = this.missionCommService.selectedType === EMissionTypesEnum.CONVOY_PROTECTION;
+            this.filteredWarships = this.pooledWarships.filter(w => isConvoyProtection ? w.warshipHealthState.state.isFTLCapable : true);
+        }
+    }
+
     isMissionCreateValid() {
-        return !!this.selectedType && !!this.missionCommService.selectedPlanet && !!this.selectedWarships && this.selectedWarships.length > 0;
+        return !!this.missionCommService.selectedType
+            && (!!this.missionCommService.selectedPlanet || !!this.missionCommService.selectedTrade)
+            && !!this.selectedWarships && this.selectedWarships.length > 0;
     }
 
     setShips(event: MatSelectionListChange) {
-        this.selectedWarships = event.options.filter(o => o.selected).map(o => o.value);
+        const selected = event.source.selectedOptions.selected.map(o => <WarShip>o.value);
+        const isConvoyProtection = this.missionCommService.selectedType === EMissionTypesEnum.CONVOY_PROTECTION;
+        this.selectedWarships = selected.filter(w => isConvoyProtection ? w.warshipHealthState.state.isFTLCapable : true);
+        console.log(this.selectedWarships)
     }
 
     submit() {
         if (this.isMissionCreateValid()) {
-            const warShipIDs = this.selectedWarships!.map(w => w.idWarship);
+            const isConvoyProtection = this.missionCommService.selectedType === EMissionTypesEnum.CONVOY_PROTECTION;
+            const warShipIDs = this.selectedWarships!
+                .filter(w => isConvoyProtection ? w.warshipHealthState.state.isFTLCapable : true)
+                .map(w => w.idWarship);
             let sub = this.missionCommService.createMission({
-                venue: this.missionCommService.selectedPlanet!,
+                venue: this.missionCommService.selectedPlanet,
+                idTradedResource: this.missionCommService.selectedTrade?.idTradedResource,
                 ships: [],
+                started: {
+                    tickStarts: new Date(),
+                    tickEnds: new Date(),
+                    tickNo: 0,
+                },
                 warShipIDs: warShipIDs,
-                missionType: this.selectedType!
+                missionType: this.missionCommService.selectedType!
             }).subscribe(resp => {
                 this.missionCommService.activeMissions.push(resp);
                 this.missionCommService.selectedPlanet = undefined;
-                this.selectedType = undefined;
+                this.missionCommService.selectedType = undefined;
                 this.selectedWarships = undefined;
-                this.pooledWarships = this.pooledWarships.filter(s => !warShipIDs.includes(s.idWarship));
+                this.filteredWarships = this.filteredWarships.filter(s => !warShipIDs.includes(s.idWarship));
                 this.result.emit(resp);
             });
             this.subscriptions.push(sub);
         }
+    }
+
+    setType(event: MatSelectionListChange) {
+        this.missionCommService.selectedType = <MissionTypeEnum>event.source!._value![0];
+        const isConvoyProtection = this.missionCommService.selectedType === EMissionTypesEnum.CONVOY_PROTECTION;
+        this.filteredWarships = this.pooledWarships.filter(w => isConvoyProtection ? w.warshipHealthState.state.isFTLCapable : true);
+        if (isConvoyProtection) {
+            this.missionCommService.selectedPlanet = undefined;
+        }
+    }
+
+    setVenue(event: MatSelectionListChange) {
+        this.missionCommService.selectedPlanet = <Planet><unknown>event.source!._value![0];
+        this.missionCommService.selectedTrade = undefined;
+    }
+
+    setTrade(event: MatSelectionListChange) {
+        this.missionCommService.selectedTrade = <TradeContract><unknown>event.source!._value![0];
     }
 }

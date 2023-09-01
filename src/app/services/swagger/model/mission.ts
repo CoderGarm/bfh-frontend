@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 import { Planet } from './planet';
+import { Tick } from './tick';
+import { TradeContract } from './tradeContract';
 import { WarShip } from './warShip';
 
 /**
@@ -24,7 +26,13 @@ export interface Mission {
      * The type of the mission.
      */
     missionType: Mission.MissionTypeEnum;
-    venue: Planet;
+    started: Tick;
+    venue?: Planet;
+    /**
+     * The target when this mission is a convoy protection.
+     */
+    idTradedResource?: number;
+    tradeContract?: TradeContract;
     /**
      * The mission's individual war ships.
      */

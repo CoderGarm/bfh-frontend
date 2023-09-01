@@ -16,6 +16,10 @@ import { TradeOffer } from './tradeOffer';
  * .
  */
 export interface TradeContract { 
+    /**
+     * The database id.
+     */
+    idTradedResource: number;
     offer: TradeOffer;
     buyer: AbstractId;
     destination: AbstractId;

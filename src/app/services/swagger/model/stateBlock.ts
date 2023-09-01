@@ -27,6 +27,10 @@ export interface StateBlock {
      */
     isActive: boolean;
     /**
+     * If the fleet can run interstellar movements.
+     */
+    isFTLCapable: boolean;
+    /**
      * If the spacecraft is able to fight.
      */
     isFightingCapable: boolean;

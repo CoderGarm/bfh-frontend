@@ -111,6 +111,43 @@ export class MarketplaceApiService {
     }
 
     /**
+     * Get all today contracted trades.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFreshTradesForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<TradeContract>>;
+    public getFreshTradesForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TradeContract>>>;
+    public getFreshTradesForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TradeContract>>>;
+    public getFreshTradesForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<TradeContract>>('get',`${this.basePath}/api/private/trade/historyForUser/fresh`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all EResourceTypes.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -232,7 +269,7 @@ export class MarketplaceApiService {
     }
 
     /**
-     * Get all EResourceTypes.
+     * Get all today relevant trades.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
