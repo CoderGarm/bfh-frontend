@@ -341,6 +341,7 @@
   "path": {
     "button": {
       "admin": "Game admin area",
+      "imprint": "Imprint",
       "login": "Login",
       "logout": "Logout",
       "profile": "Profile",

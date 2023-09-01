@@ -79,6 +79,7 @@ import {TakeATourComponent} from './components/take-a-tour/take-a-tour.component
 import {ContributeCreditsComponent} from './components/contribute-credits/contribute-credits.component';
 import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
 import {TutorialModule} from "./modules/tutorial/tutorial.module";
+import {ImprintComponent} from './components/imprint/imprint.component';
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -117,6 +118,7 @@ export let AppInjector: Injector;
         MapDataProvider,
         TakeATourComponent,
         ContributeCreditsComponent,
+        ImprintComponent,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),

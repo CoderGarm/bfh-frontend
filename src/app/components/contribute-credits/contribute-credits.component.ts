@@ -7,4 +7,6 @@ import {Component} from '@angular/core';
 })
 export class ContributeCreditsComponent {
 
+  showImprint: boolean = false;
+
 }

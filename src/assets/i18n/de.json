@@ -340,6 +340,7 @@
   "path": {
     "button": {
       "admin": "Spieladministration",
+      "imprint": "Impressum",
       "login": "Anmelden",
       "logout": "Abmelden",
       "profile": "Profil",

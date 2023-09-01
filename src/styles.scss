@@ -351,3 +351,11 @@ mat-step-header {
   border-radius: 80px;
 }
 
+.contact-info > * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

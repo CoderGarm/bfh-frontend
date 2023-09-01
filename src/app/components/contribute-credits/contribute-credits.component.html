@@ -1,6 +1,6 @@
 <div class="content-area" [class.mat-elevation-z0]="true">
 
-
+    <div *ngIf="!showImprint">
     <h4>In order to credit all contributors to the page I want to present and thank everyone who was part of the following.</h4>
     <h5>For everyone I missed to mention: please contact me!</h5>
 
@@ -71,11 +71,13 @@
         -->
         <!--// @formatter:on-->
     </div>
-
+    </div>
+    <app-imprint *ngIf="showImprint"></app-imprint>
 
     <mat-divider></mat-divider>
 
     <h5>About</h5>
     <h6>software developer with too much time and a penchant for sci fi and fantasy | rock enthusiast - the mountain thing in the music</h6>
 
+    <h6 (click)="showImprint = !showImprint" id="imprint-btn" class="width-fit-content-forced">{{ 'path.button.imprint' | translate }}</h6>
 </div>
