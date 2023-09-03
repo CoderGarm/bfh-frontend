@@ -279,6 +279,9 @@
     }
   },
   "mission": {
+    "CONVOY_PROTECTION": {
+      "title": "Convoy protection"
+    },
     "PIRATE_RAID": {
       "detection-phrase": "is in trouble, Sir.",
       "phase": {

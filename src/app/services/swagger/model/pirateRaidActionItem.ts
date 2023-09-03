@@ -14,12 +14,12 @@ import { Fleet } from './fleet';
 /**
  * .
  */
-export interface MissionActionItem { 
+export interface PirateRaidActionItem { 
     opponent: Fleet;
     /**
      * The action to report.
      */
-    eMissionAction: MissionActionItem.EMissionActionEnum;
+    eMissionAction: PirateRaidActionItem.EMissionActionEnum;
     /**
      * If the user was defeated by the other.
      */
@@ -29,10 +29,11 @@ export interface MissionActionItem {
      */
     idBattleReport?: number;
 }
-export namespace MissionActionItem {
-    export type EMissionActionEnum = 'SPAWN' | 'END_OF_MISSION' | 'WAIT' | 'APPROACH' | 'WITHDRAW' | 'LEAVE_ORBIT' | 'RAID' | 'BATTLE' | 'NO_BATTLE';
+export namespace PirateRaidActionItem {
+    export type EMissionActionEnum = 'SPAWN' | 'BEGIN_OF_MISSION' | 'END_OF_MISSION' | 'WAIT' | 'APPROACH' | 'WITHDRAW' | 'LEAVE_ORBIT' | 'RAID' | 'BATTLE' | 'NO_BATTLE';
     export const EMissionActionEnum = {
         SPAWN: 'SPAWN' as EMissionActionEnum,
+        BEGINOFMISSION: 'BEGIN_OF_MISSION' as EMissionActionEnum,
         ENDOFMISSION: 'END_OF_MISSION' as EMissionActionEnum,
         WAIT: 'WAIT' as EMissionActionEnum,
         APPROACH: 'APPROACH' as EMissionActionEnum,

@@ -9,28 +9,29 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MissionActionItem } from './missionActionItem';
+import { PirateRaidActionItem } from './pirateRaidActionItem';
 import { Planet } from './planet';
 
 /**
  * .
  */
-export interface MissionActionItemGroup { 
+export interface PirateRaidActionItemGroup { 
     /**
      * What happens.
      */
-    missionType: MissionActionItemGroup.MissionTypeEnum;
+    missionType: PirateRaidActionItemGroup.MissionTypeEnum;
     venue: Planet;
     /**
      * The actions to report.
      */
-    actionItems: Array<MissionActionItem>;
+    actionItems: Array<PirateRaidActionItem>;
 }
-export namespace MissionActionItemGroup {
-    export type MissionTypeEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION';
+export namespace PirateRaidActionItemGroup {
+    export type MissionTypeEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION' | 'CONVOY_RAID';
     export const MissionTypeEnum = {
         PIRATE_RAID: 'PIRATE_RAID' as MissionTypeEnum,
         PIRATE_HUNT: 'PIRATE_HUNT' as MissionTypeEnum,
-        CONVOY_PROTECTION: 'CONVOY_PROTECTION' as MissionTypeEnum
+        CONVOY_PROTECTION: 'CONVOY_PROTECTION' as MissionTypeEnum,
+        CONVOY_RAID: 'CONVOY_RAID' as MissionTypeEnum
     };
 }

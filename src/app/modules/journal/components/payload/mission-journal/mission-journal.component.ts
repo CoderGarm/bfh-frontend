@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {MissionActionItem, MissionActionItemGroup, MissionReport} from "../../../../../services/swagger";
+import {MissionReport, PirateRaidActionItem, PirateRaidActionItemGroup} from "../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
-import EMissionActionEnum = MissionActionItem.EMissionActionEnum;
+import EMissionActionEnum = PirateRaidActionItem.EMissionActionEnum;
 
 @Component({
     selector: 'app-mission-journal',
@@ -48,11 +48,11 @@ export class MissionJournalComponent {
         this.translate.get('mission.PIRATE_RAID.phase.multi.NO_BATTLE-RAID-LEAVE_ORBIT')
     }
 
-    getTranslationKey(actionGroup: MissionActionItemGroup) {
+    getTranslationKey(actionGroup: PirateRaidActionItemGroup) {
         return actionGroup.actionItems.map(i => i.eMissionAction).join('-');
     }
 
-    t(actionGroup: MissionActionItemGroup) {
+    t(actionGroup: PirateRaidActionItemGroup) {
         const key = this.getTranslationKey(actionGroup);
         return this.translate.get('mission.PIRATE_RAID.phase.multi.' + key);
     }

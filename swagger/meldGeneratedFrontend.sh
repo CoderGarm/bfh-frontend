@@ -37,6 +37,7 @@ for filename in ./*; do
   sed -i 's/PIRATERAID/PIRATE_RAID/' $filename
   sed -i 's/PIRATEHUNT/PIRATE_HUNT/' $filename
   sed -i 's/CONVOYPROTECTION/CONVOY_PROTECTION/' $filename
+  sed -i 's/CONVOYRAID/CONVOY_RAID/' $filename
   sed -i 's/LEAVEORBIT/LEAVE_ORBIT/' $filename
   sed -i 's/NOBATTLE/NO_BATTLE/' $filename
   sed -i 's/RAREELEMENTS/RARE_ELEMENTS/' $filename

@@ -9,7 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MissionActionItemGroup } from './missionActionItemGroup';
+import { ConvoyRaidActionItemGroup } from './convoyRaidActionItemGroup';
+import { PirateRaidActionItemGroup } from './pirateRaidActionItemGroup';
 
 /**
  * .
@@ -18,5 +19,9 @@ export interface MissionReport {
     /**
      * The by-venue grouped results.
      */
-    actionItemGroups: Array<MissionActionItemGroup>;
+    actionItemGroups: Array<PirateRaidActionItemGroup>;
+    /**
+     * The by-trade grouped results.
+     */
+    convoyActionItemGroups: Array<ConvoyRaidActionItemGroup>;
 }

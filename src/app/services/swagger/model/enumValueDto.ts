@@ -183,11 +183,12 @@ export namespace EnumValueDto {
         MISSIONTYPES: 'MISSION_TYPES' as EWikiCategoriesEnum,
         GAMEMECHANICS: 'GAME_MECHANICS' as EWikiCategoriesEnum
     };
-    export type EMissionTypesEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION';
+    export type EMissionTypesEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION' | 'CONVOY_RAID';
     export const EMissionTypesEnum = {
         PIRATE_RAID: 'PIRATE_RAID' as EMissionTypesEnum,
         PIRATE_HUNT: 'PIRATE_HUNT' as EMissionTypesEnum,
-        CONVOY_PROTECTION: 'CONVOY_PROTECTION' as EMissionTypesEnum
+        CONVOY_PROTECTION: 'CONVOY_PROTECTION' as EMissionTypesEnum,
+        CONVOY_RAID: 'CONVOY_RAID' as EMissionTypesEnum
     };
     export type ECapacityAreaTypesEnum = 'OVERALL' | 'STERN' | 'BROADSIDE' | 'BOW' | 'MODULE';
     export const ECapacityAreaTypesEnum = {
