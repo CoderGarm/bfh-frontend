@@ -9,13 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Tick } from './tick';
 
 /**
  * .
  */
 export interface ConvoyRaidActionItem { 
+    happenedAt: Tick;
     /**
-     * When the action happened.
+     * In which phase of the mission the action happened.
      */
     affectedPhase: ConvoyRaidActionItem.AffectedPhaseEnum;
     /**
@@ -39,8 +41,8 @@ export namespace ConvoyRaidActionItem {
     export type AffectedPhaseEnum = 'SPAWN' | 'BEGIN_OF_MISSION' | 'END_OF_MISSION' | 'WAIT' | 'APPROACH' | 'WITHDRAW' | 'LEAVE_ORBIT' | 'RAID' | 'BATTLE' | 'NO_BATTLE';
     export const AffectedPhaseEnum = {
         SPAWN: 'SPAWN' as AffectedPhaseEnum,
-        BEGINOFMISSION: 'BEGIN_OF_MISSION' as AffectedPhaseEnum,
-        ENDOFMISSION: 'END_OF_MISSION' as AffectedPhaseEnum,
+        BEGIN_OF_MISSION: 'BEGIN_OF_MISSION' as AffectedPhaseEnum,
+        END_OF_MISSION: 'END_OF_MISSION' as AffectedPhaseEnum,
         WAIT: 'WAIT' as AffectedPhaseEnum,
         APPROACH: 'APPROACH' as AffectedPhaseEnum,
         WITHDRAW: 'WITHDRAW' as AffectedPhaseEnum,

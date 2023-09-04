@@ -27,25 +27,28 @@ export class MissionJournalComponent {
     constructor(private translate: TranslateService) {
 
         // make sure they are part of the translation
-        this.translate.get('mission.PIRATE_RAID.title')
-        this.translate.get('mission.PIRATE_RAID.detection-phrase')
-        this.translate.get('mission.PIRATE_RAID.phase.SPAWN')
-        this.translate.get('mission.PIRATE_RAID.phase.APPROACH')
-        this.translate.get('mission.PIRATE_RAID.phase.WITHDRAW')
-        this.translate.get('mission.PIRATE_RAID.phase.LEAVE_ORBIT')
-        this.translate.get('mission.PIRATE_RAID.phase.RAID')
-        this.translate.get('mission.PIRATE_RAID.phase.BATTLE')
-        this.translate.get('mission.PIRATE_RAID.phase.WAIT')
-        this.translate.get('mission.PIRATE_RAID.phase.NO_BATTLE')
+        this.translate.get('mission.PIRATE_RAID.title');
+        this.translate.get('mission.PIRATE_RAID.detection-phrase');
+        this.translate.get('mission.PIRATE_RAID.phase.SPAWN');
+        this.translate.get('mission.PIRATE_RAID.phase.APPROACH');
+        this.translate.get('mission.PIRATE_RAID.phase.WITHDRAW');
+        this.translate.get('mission.PIRATE_RAID.phase.LEAVE_ORBIT');
+        this.translate.get('mission.PIRATE_RAID.phase.RAID');
+        this.translate.get('mission.PIRATE_RAID.phase.BATTLE');
+        this.translate.get('mission.PIRATE_RAID.phase.WAIT');
+        this.translate.get('mission.PIRATE_RAID.phase.NO_BATTLE');
 
-        this.translate.get('mission.PIRATE_RAID.phase.multi.SPAWN-APPROACH')
-        this.translate.get('mission.PIRATE_RAID.phase.multi.SPAWN-WITHDRAW')
-        this.translate.get('mission.PIRATE_RAID.phase.multi.SPAWN-WAIT')
+        this.translate.get('mission.PIRATE_RAID.phase.multi.SPAWN-APPROACH');
+        this.translate.get('mission.PIRATE_RAID.phase.multi.SPAWN-WITHDRAW');
+        this.translate.get('mission.PIRATE_RAID.phase.multi.SPAWN-WAIT');
 
-        this.translate.get('mission.PIRATE_RAID.phase.multi.BATTLE-RAID')
-        this.translate.get('mission.PIRATE_RAID.phase.multi.BATTLE-RAID-LEAVE_ORBIT')
-        this.translate.get('mission.PIRATE_RAID.phase.multi.NO_BATTLE-RAID')
-        this.translate.get('mission.PIRATE_RAID.phase.multi.NO_BATTLE-RAID-LEAVE_ORBIT')
+        this.translate.get('mission.PIRATE_RAID.phase.multi.BATTLE-RAID');
+        this.translate.get('mission.PIRATE_RAID.phase.multi.BATTLE-RAID-LEAVE_ORBIT');
+        this.translate.get('mission.PIRATE_RAID.phase.multi.NO_BATTLE-RAID');
+        this.translate.get('mission.PIRATE_RAID.phase.multi.NO_BATTLE-RAID-LEAVE_ORBIT');
+
+        this.translate.get('mission.convoy.attack.predicate.BEGIN_OF_MISSION');
+        this.translate.get('mission.convoy.attack.predicate.END_OF_MISSION');
     }
 
     getTranslationKey(actionGroup: PirateRaidActionItemGroup) {

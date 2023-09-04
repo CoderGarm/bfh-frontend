@@ -312,6 +312,25 @@
       "title": "Mission"
     },
     "convoy": {
+      "attack": {
+        "predicate": {
+          "BEGIN_OF_MISSION": "Die Frachtschiffe wurden zu Beginn ihrer Reise angegriffen.",
+          "END_OF_MISSION": "Die Frachtschiffe wurden zum Ende ihrer Reise angegriffen."
+        }
+      },
+      "text": {
+        "percentOfCargoLost": {
+          "no-ransom": "Die Annahme von Lösegeld wurde verweigert, es sind Menschen gestorben und Schiffe wurden beschädigt.",
+          "predicate": {
+            "lossPercentage": "Prozent des Wertes der Ladung sind verloren."
+          },
+          "ransom": "Deine Regierung hat Lösegeld gezahlt um die Schiffe und Crews zu schützen."
+        },
+        "withdraw": {
+          "on-contact": "Sie wollten es versuchen, haben dann aber die Flucht ergriffen.",
+          "on-sight": "Sie haben bei Anblick der Eskorte die Flucht ergriffen."
+        }
+      },
       "title": "Konvoi"
     },
     "create": {
@@ -722,7 +741,8 @@
     }
   },
   "tick": {
-    "current": "Aktueller Tick"
+    "current": "Aktueller Tick",
+    "title": "Tick"
   },
   "translation": {
     "designated": {

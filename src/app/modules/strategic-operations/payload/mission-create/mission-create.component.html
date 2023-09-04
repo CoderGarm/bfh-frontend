@@ -38,19 +38,8 @@
 
                     <app-outlined titleValue="{{ 'mission.create.select.planet' | translate }}" *ngIf="missionCommService.selectedType === 'CONVOY_PROTECTION'">
                         <mat-selection-list (selectionChange)="setTrade($event)" [multiple]="false">
-                            <mat-list-option *ngFor="let trade of missionCommService.activeTrades" [value]="trade">
-                                <span matListItemTitle>{{ 'mission.convoy.title' | translate }} {{ trade.idTradedResource }}<br>
-                                    {{ trade.offer.origin.name }}, {{ trade.offer.seller!.name }} to {{ trade.destination.name }}, {{ trade.buyer.name }}
-                                </span>
-                                <span matListItemLine>
-                                    <app-number-short [input]="trade.offer.trade.resourceAmount.amount"></app-number-short>
-                                    &nbsp;
-                                    <app-icon [icon]="trade.offer.trade.resourceAmount.resourceType"></app-icon>
-                                    &nbsp;for&nbsp;
-                                    <app-number-short [input]="trade.offer.trade.pricePerUnit * trade.offer.trade.resourceAmount.amount"></app-number-short>
-                                    &nbsp;
-                                    <app-icon credits></app-icon>
-                                </span>
+                            <mat-list-option *ngFor="let trade of missionCommService.activeTrades" [value]="trade" class="height-fit-content-forced">
+                                <app-trade-display [trade]="trade"></app-trade-display>
                             </mat-list-option>
                         </mat-selection-list>
 

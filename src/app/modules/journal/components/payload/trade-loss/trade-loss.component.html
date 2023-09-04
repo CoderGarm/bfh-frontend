@@ -1,0 +1,15 @@
+<mat-list *ngFor="let item of loss?.actionItems">
+    <mat-list-item class="height-fit-content-forced">
+        <span matListItemTitle>{{ 'tick.title' | translate }} {{ item.happenedAt.tickNo }}</span>
+        <span matListItemLine>{{ 'mission.convoy.attack.predicate.' + item.affectedPhase | translate }}</span>
+        <span matListItemLine>
+            <span *ngIf="!!item.percentOfCargoLost">
+                <app-number-short [input]="item.percentOfCargoLost"></app-number-short>&nbsp;{{ 'mission.convoy.text.percentOfCargoLost.predicate.lossPercentage' | translate }}
+                <span *ngIf="item.isRansomPayment">{{ 'mission.convoy.text.percentOfCargoLost.ransom' | translate }}</span>
+                <span *ngIf="!item.isRansomPayment">{{ 'mission.convoy.text.percentOfCargoLost.no-ransom' | translate }}</span>
+            </span>
+            <span *ngIf="item.piratedWithdraw">{{ 'mission.convoy.text.withdraw.on-sight' | translate }}</span>
+            <span *ngIf="item.piratedWithdrawAfterApproach">{{ 'mission.convoy.text.withdraw.on-contact' | translate }}</span>
+    </span>
+    </mat-list-item>
+</mat-list>

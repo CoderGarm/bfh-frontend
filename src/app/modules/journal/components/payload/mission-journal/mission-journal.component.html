@@ -1,5 +1,6 @@
 <mat-list>
-    <div mat-subheader *ngIf="missionResults?.actionItemGroups?.length == 0 && missionResults?.convoyActionItemGroups?.length == 0">{{ 'mission.report.nothing' | translate }}</div>
+    <div mat-subheader
+         *ngIf="!!missionResults && missionResults.actionItemGroups.length == 0 && missionResults.convoyActionItemGroups.length == 0">{{ 'mission.report.nothing' | translate }}</div>
 </mat-list>
 <mat-list *ngIf="!!missionResults?.actionItemGroups">
     <mat-list-item *ngFor="let actionGroup of missionResults?.actionItemGroups">
@@ -18,23 +19,11 @@
         <span matListItemLine *ngIf="validPhases.includes(getTranslationKey(actionGroup))">{{ t(actionGroup) | async }}</span>
     </mat-list-item>
 </mat-list>
+
 <mat-list *ngIf="!!missionResults?.convoyActionItemGroups">
-    <mat-list-item *ngFor="let actionGroup of missionResults?.convoyActionItemGroups">
-        <!-- fixme make it pretty -->
-        <div matListItemTitle>{{ 'mission.' + actionGroup.missionType + '.title' | translate }}
-            <mat-icon matListItemIcon>local_shipping</mat-icon>
-            <span matListItemLine>{{ 'mission.convoy.title' | translate }} {{ actionGroup.affectedTrade.idTradedResource }}<br>
-                {{ actionGroup.affectedTrade.offer.origin.name }},{{ actionGroup.affectedTrade.offer.seller!.name }}
-                to {{ actionGroup.affectedTrade.destination.name }},{{ actionGroup.affectedTrade.buyer.name }}</span>
-        </div>
-        <div matListItemLine>
-            <app-number-short [input]="actionGroup.affectedTrade.offer.trade.resourceAmount.amount"></app-number-short>
-            &nbsp;
-            <app-icon [icon]="actionGroup.affectedTrade.offer.trade.resourceAmount.resourceType"></app-icon>
-            &nbsp;for&nbsp;
-            <app-number-short [input]="actionGroup.affectedTrade.offer.trade.pricePerUnit * actionGroup.affectedTrade.offer.trade.resourceAmount.amount"></app-number-short>
-            &nbsp;
-            <app-icon credits></app-icon>
-        </div>
+    <mat-list-item *ngFor="let actionGroup of missionResults?.convoyActionItemGroups" class="height-fit-content-forced">
+        <mat-icon matListItemIcon matTooltip="{{ 'mission.CONVOY_PROTECTION.title' | translate }}">local_shipping</mat-icon>
+        <app-trade-display [trade]="actionGroup.affectedTrade"></app-trade-display>
+        <app-trade-loss [loss]="actionGroup"></app-trade-loss>
     </mat-list-item>
 </mat-list>

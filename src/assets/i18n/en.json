@@ -313,6 +313,25 @@
       "title": "Mission"
     },
     "convoy": {
+      "attack": {
+        "predicate": {
+          "BEGIN_OF_MISSION": "The cargo ships were attacked at the beginning of their journey.",
+          "END_OF_MISSION": "The cargo ships were attacked at the end of their journey."
+        }
+      },
+      "text": {
+        "percentOfCargoLost": {
+          "no-ransom": "Ransoms have been refused, people have died and ships have been damaged.",
+          "predicate": {
+            "lossPercentage": "percent of the value of the charge is lost."
+          },
+          "ransom": "Your government has paid ransom to save the ships and the crews."
+        },
+        "withdraw": {
+          "on-contact": "They wanted to try, but then fled.",
+          "on-sight": "They fled at the sight of the escort."
+        }
+      },
       "title": "Convoy"
     },
     "create": {
@@ -723,7 +742,8 @@
     }
   },
   "tick": {
-    "current": "Current tick"
+    "current": "Current tick",
+    "title": "Tick"
   },
   "translation": {
     "designated": {

@@ -10,6 +10,7 @@ import {FleetRoundStateComponent} from './components/payload/fleet-round-state/f
 import {JournalDashboardComponent} from './components/payload/dashboard-journal/journal-dashboard.component';
 import {NgOptimizedImage} from "@angular/common";
 import {MissionJournalComponent} from './components/payload/mission-journal/mission-journal.component';
+import {TradeLossComponent} from './components/payload/trade-loss/trade-loss.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {MissionJournalComponent} from './components/payload/mission-journal/miss
         FleetMovementJournalComponent,
         FleetRoundStateComponent,
         JournalDashboardComponent,
-        MissionJournalComponent
+        MissionJournalComponent,
+        TradeLossComponent
     ],
     imports: [
         SharedModuleModule,

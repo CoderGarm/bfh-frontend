@@ -33,8 +33,8 @@ export namespace PirateRaidActionItem {
     export type EMissionActionEnum = 'SPAWN' | 'BEGIN_OF_MISSION' | 'END_OF_MISSION' | 'WAIT' | 'APPROACH' | 'WITHDRAW' | 'LEAVE_ORBIT' | 'RAID' | 'BATTLE' | 'NO_BATTLE';
     export const EMissionActionEnum = {
         SPAWN: 'SPAWN' as EMissionActionEnum,
-        BEGINOFMISSION: 'BEGIN_OF_MISSION' as EMissionActionEnum,
-        ENDOFMISSION: 'END_OF_MISSION' as EMissionActionEnum,
+        BEGIN_OF_MISSION: 'BEGIN_OF_MISSION' as EMissionActionEnum,
+        END_OF_MISSION: 'END_OF_MISSION' as EMissionActionEnum,
         WAIT: 'WAIT' as EMissionActionEnum,
         APPROACH: 'APPROACH' as EMissionActionEnum,
         WITHDRAW: 'WITHDRAW' as EMissionActionEnum,
