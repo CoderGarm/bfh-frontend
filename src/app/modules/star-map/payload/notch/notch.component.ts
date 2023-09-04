@@ -95,7 +95,7 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
     }
 
     showTransportDisabled() {
-        return !this.stellarMode || this.commService.showTransportDisabled();
+        return !this.stellarMode && this.commService.showTransportDisabled();
     }
 
     foreignSelected() {

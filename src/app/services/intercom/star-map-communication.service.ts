@@ -63,7 +63,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
         this.selectedFleets = [];
         this.fleetOrbit = undefined;
         this.selectedPlanet = undefined;
-        if (tabIndex != 1) {
+        if (!!tabIndex && tabIndex == 0) {
             // if changed to system map do not delete the displayed system
             this.displayedStarSystem = undefined;
         }
@@ -285,7 +285,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     showTransportDisabled() {
-        return this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => f.state.isOperational).length < 1 || this.isStarSystemDisplayed();
+        return !(this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => f.state.isOperational).length > 0 && this.isStarSystemDisplayed());
     }
 
     deselectDisabled() {

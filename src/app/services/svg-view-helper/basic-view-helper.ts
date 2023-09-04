@@ -513,7 +513,7 @@ export class BasicViewHelper extends BasicViewHelperData {
         if (!celestial) {
             return;
         }
-        if ('idPlanet' in celestial && 'idStarSystem' in celestial) {
+        if ('idPlanet' in celestial) {
             this.handleClickedPlanet(celestial, x, y, id);
         }
         if ('idStarSystem' in celestial && !('idPlanet' in celestial)) {
