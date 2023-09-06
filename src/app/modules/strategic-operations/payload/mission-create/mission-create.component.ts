@@ -71,8 +71,6 @@ export class MissionCreateComponent extends SubscriptionManager implements OnCha
                 missionType: this.missionCommService.selectedType!
             }).subscribe(resp => {
                 this.missionCommService.activeMissions.push(resp);
-                this.missionCommService.selectedPlanet = undefined;
-                this.missionCommService.selectedType = undefined;
                 this.selectedWarships = undefined;
                 this.filteredWarships = this.filteredWarships.filter(s => !warShipIDs.includes(s.idWarship));
                 this.result.emit(resp);
