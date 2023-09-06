@@ -283,6 +283,7 @@
     },
     "PIRATE_RAID": {
       "detection-phrase": "ist in Schwierigkeiten, Sir.",
+      "entry-phrase": "Es sieht aus wie ein Überfall von",
       "phase": {
         "APPROACH": "Sie nähern sich dem Planeten.",
         "BATTLE": "Es kam zum Kampf.",
@@ -304,8 +305,7 @@
         "we-lost": "Unsere Streitkräfte wurden vernichtet.",
         "we-won": "Unsere Streitkräfte haben die Angreifer vernichtet."
       },
-      "title": "Überfall",
-      "entry-phrase": "Es sieht aus wie ein Überfall von"
+      "title": "Überfall"
     },
     "card": {
       "details": "Details",
@@ -320,9 +320,15 @@
         }
       },
       "text": {
+        "content": {
+          "predicate": {
+            "has-load": "Mit einer Ladung von"
+          }
+        },
         "percentOfCargoLost": {
           "no-ransom": "Die Annahme von Lösegeld wurde verweigert, es sind Menschen gestorben und Schiffe wurden beschädigt.",
           "predicate": {
+            "loss": "Bei einem Verlust von",
             "lossPercentage": "Prozent des Wertes der Ladung sind verloren."
           },
           "ransom": "Deine Regierung hat Lösegeld gezahlt um die Schiffe und Crews zu schützen."

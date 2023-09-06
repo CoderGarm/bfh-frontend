@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { AbstractId } from './abstractId';
+import { ConvoyRaidActionItem } from './convoyRaidActionItem';
 import { TradeOffer } from './tradeOffer';
 
 /**
@@ -20,7 +21,15 @@ export interface TradeContract {
      * The database id.
      */
     idTradedResource: number;
+    /**
+     * If the contract has finished.
+     */
+    isFinished: boolean;
     offer: TradeOffer;
     buyer: AbstractId;
     destination: AbstractId;
+    /**
+     * The actions to report.
+     */
+    actionItems: Array<ConvoyRaidActionItem>;
 }

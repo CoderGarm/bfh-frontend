@@ -10,23 +10,15 @@
  * Do not edit the class manually.
  */
 import { Tick } from './tick';
-import { TradeContract } from './tradeContract';
+import { Trade } from './trade';
 
 /**
  * .
  */
-export interface TradesByTick { 
+export interface ValueTradesByTick { 
     tick: Tick;
     /**
      * The trades.
      */
-    trades: Array<TradeContract>;
-    /**
-     * The sales.
-     */
-    sales: Array<TradeContract>;
-    /**
-     * The purchases.
-     */
-    purchases: Array<TradeContract>;
+    trades: Array<Trade>;
 }

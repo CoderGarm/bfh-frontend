@@ -23,7 +23,7 @@ import { TakeOffer } from '../model/takeOffer';
 import { TradeContract } from '../model/tradeContract';
 import { TradeOffer } from '../model/tradeOffer';
 import { TradesByLocation } from '../model/tradesByLocation';
-import { TradesByTick } from '../model/tradesByTick';
+import { ValueTradesByTick } from '../model/valueTradesByTick';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -233,9 +233,9 @@ export class MarketplaceApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTrades(pastTicks: number, observe?: 'body', reportProgress?: boolean): Observable<Array<TradesByTick>>;
-    public getTrades(pastTicks: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TradesByTick>>>;
-    public getTrades(pastTicks: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TradesByTick>>>;
+    public getTrades(pastTicks: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ValueTradesByTick>>;
+    public getTrades(pastTicks: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ValueTradesByTick>>>;
+    public getTrades(pastTicks: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ValueTradesByTick>>>;
     public getTrades(pastTicks: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (pastTicks === null || pastTicks === undefined) {
@@ -258,7 +258,7 @@ export class MarketplaceApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<TradesByTick>>('get',`${this.basePath}/api/private/trade/history/${encodeURIComponent(String(pastTicks))}`,
+        return this.httpClient.request<Array<ValueTradesByTick>>('get',`${this.basePath}/api/private/trade/history/${encodeURIComponent(String(pastTicks))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

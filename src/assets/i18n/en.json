@@ -284,6 +284,7 @@
     },
     "PIRATE_RAID": {
       "detection-phrase": "is in trouble, Sir.",
+      "entry-phrase": "It looks like a raid from the",
       "phase": {
         "APPROACH": "They are approaching the planet.",
         "BATTLE": "There was a combat.",
@@ -305,8 +306,7 @@
         "we-lost": "Our forces have been destroyed.",
         "we-won": "Our forces destroyed the attackers."
       },
-      "title": "Raid",
-      "entry-phrase": "It looks like a raid from the"
+      "title": "Raid"
     },
     "card": {
       "details": "Details",
@@ -321,9 +321,15 @@
         }
       },
       "text": {
+        "content": {
+          "predicate": {
+            "has-load": "With a load of"
+          }
+        },
         "percentOfCargoLost": {
           "no-ransom": "Ransoms have been refused, people have died and ships have been damaged.",
           "predicate": {
+            "loss": "With a loss of",
             "lossPercentage": "percent of the value of the charge is lost."
           },
           "ransom": "Your government has paid ransom to save the ships and the crews."

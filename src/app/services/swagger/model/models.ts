@@ -119,6 +119,7 @@ export * from './userPoints';
 export * from './userReq';
 export * from './userSettings';
 export * from './validationResult';
+export * from './valueTradesByTick';
 export * from './velocity';
 export * from './warShip';
 export * from './warhead';

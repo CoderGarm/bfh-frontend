@@ -1,7 +1,7 @@
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {EChartsOption, SeriesOption} from "echarts";
 import {ThemeOption} from "ngx-echarts";
-import {EResourceType, TradesByTick} from "../../../../../services/swagger";
+import {EResourceType, ValueTradesByTick} from "../../../../../services/swagger";
 
 export class PriceChartHelper extends SubscriptionManager {
 
@@ -85,7 +85,7 @@ export class PriceChartHelper extends SubscriptionManager {
     }
 
     protected setPriceHistory(resourceTypes: EResourceType[],
-                              history: TradesByTick[]) {
+                              history: ValueTradesByTick[]) {
 
         this.amountMergeOpt.series = resourceTypes.map(r => {
             const data: number[] = [];
