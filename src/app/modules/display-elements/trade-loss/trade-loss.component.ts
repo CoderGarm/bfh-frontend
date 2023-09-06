@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ConvoyRaidActionItemGroup} from "../../../../../services/swagger";
+import {ConvoyRaidActionItemGroup} from "../../../services/swagger";
 
 @Component({
     selector: 'app-trade-loss',

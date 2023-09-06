@@ -10,4 +10,6 @@ export class TradeDisplayComponent {
 
     @Input()
     trade?: TradeContract;
+
+    isOpen: boolean = false;
 }

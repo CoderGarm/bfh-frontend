@@ -2,7 +2,7 @@
 
 
 <div class="bottom-spacer content-area">
-    <mat-card appearance="outlined" *ngFor="let research of availableResearches">
+    <mat-card style="background-color: transparent;" class="right-blue-card" *ngFor="let research of availableResearches">
         <mat-card-content>
             <app-outlined titleValue="{{ 'research.title' | translate }}" class="floated">
                 <app-icon mat-card-avatar class="avatar-image icon"

@@ -1,28 +1,19 @@
-import {Component, Input} from '@angular/core';
-import {MissionReport, PirateRaidActionItem, PirateRaidActionItemGroup} from "../../../../../services/swagger";
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {ConvoyRaidActionItemGroup, MissionReport, PirateRaidActionItem, PirateRaidActionItemGroup} from "../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
-import EMissionActionEnum = PirateRaidActionItem.EMissionActionEnum;
+
 
 @Component({
     selector: 'app-mission-journal',
     templateUrl: './mission-journal.component.html',
     styleUrls: ['./mission-journal.component.scss']
 })
-export class MissionJournalComponent {
+export class MissionJournalComponent implements OnChanges {
 
     @Input()
     missionResults?: MissionReport;
 
-    validPhases: string[] = [
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.APPROACH].join('-'),
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.WITHDRAW].join('-'),
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.WAIT].join('-'),
-        [EMissionActionEnum.SPAWN, EMissionActionEnum.APPROACH].join('-'),
-        [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID].join('-'),
-        [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('-'),
-        [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID].join('-'),
-        [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('-'),
-    ]
+    missionItems: (ConvoyRaidActionItemGroup | PirateRaidActionItemGroup)[] = [];
 
     constructor(private translate: TranslateService) {
 
@@ -51,12 +42,8 @@ export class MissionJournalComponent {
         this.translate.get('mission.convoy.attack.predicate.END_OF_MISSION');
     }
 
-    getTranslationKey(actionGroup: PirateRaidActionItemGroup) {
-        return actionGroup.actionItems.map(i => i.eMissionAction).join('-');
-    }
-
-    t(actionGroup: PirateRaidActionItemGroup) {
-        const key = this.getTranslationKey(actionGroup);
-        return this.translate.get('mission.PIRATE_RAID.phase.multi.' + key);
+    ngOnChanges(changes: SimpleChanges) {
+        this.missionResults?.actionItemGroups.forEach(item => this.missionItems.push(item));
+        this.missionResults?.convoyActionItemGroups.forEach(item => this.missionItems.push(item));
     }
 }

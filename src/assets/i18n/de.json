@@ -304,7 +304,8 @@
         "we-lost": "Unsere Streitkräfte wurden vernichtet.",
         "we-won": "Unsere Streitkräfte haben die Angreifer vernichtet."
       },
-      "title": "Es sieht aus wie ein Überfall von"
+      "title": "Überfall",
+      "entry-phrase": "Es sieht aus wie ein Überfall von"
     },
     "card": {
       "details": "Details",

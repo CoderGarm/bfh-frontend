@@ -1,15 +1,12 @@
 <mat-list *ngIf="!!trade">
     <mat-list-item class="height-fit-content-forced">
-    <span matListItemTitle>{{ 'mission.convoy.title' | translate }} {{ trade.idTradedResource }}<br>
+    <span matListItemTitle>{{ 'mission.convoy.title' | translate }} {{ trade.idTradedResource }} -
         {{ trade.offer.origin.name }}, {{ trade.offer.seller!.name }} to {{ trade.destination.name }}, {{ trade.buyer.name }}
     </span>
         <span matListItemLine>
-        <app-number-short [input]="trade.offer.trade.resourceAmount.amount"></app-number-short>
-        &nbsp;
-        <app-icon [icon]="trade.offer.trade.resourceAmount.resourceType"></app-icon>
-        &nbsp;for&nbsp;
-        <app-number-short [input]="trade.offer.trade.pricePerUnit * trade.offer.trade.resourceAmount.amount"></app-number-short>
-        &nbsp;
+        <app-number-short [input]="trade.offer.trade.resourceAmount.amount"></app-number-short>&nbsp;
+        <app-icon [icon]="trade.offer.trade.resourceAmount.resourceType"></app-icon>&nbsp;for&nbsp;
+        <app-number-short [input]="trade.offer.trade.pricePerUnit * trade.offer.trade.resourceAmount.amount"></app-number-short>&nbsp;
         <app-icon credits></app-icon>
     </span>
     </mat-list-item>

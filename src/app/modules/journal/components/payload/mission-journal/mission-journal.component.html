@@ -1,29 +1,7 @@
 <mat-list>
-    <div mat-subheader
-         *ngIf="!!missionResults && missionResults.actionItemGroups.length == 0 && missionResults.convoyActionItemGroups.length == 0">{{ 'mission.report.nothing' | translate }}</div>
-</mat-list>
-<mat-list *ngIf="!!missionResults?.actionItemGroups">
-    <mat-list-item *ngFor="let actionGroup of missionResults?.actionItemGroups">
-        <mat-icon matListItemIcon>military_tech</mat-icon>
-        <span matListItemTitle><b>{{ actionGroup.venue.name }}</b> {{ 'mission.' + actionGroup.missionType + '.detection-phrase' | translate }}</span>
-        <span matListItemLine>{{ 'mission.' + actionGroup.missionType + '.title' | translate }} {{ actionGroup.actionItems[0].opponent.name }}</span>
-
-        <div *ngIf="!validPhases.includes(getTranslationKey(actionGroup))">
-            <span matListItemLine *ngFor="let item of actionGroup.actionItems">
-                {{ 'mission.' + actionGroup.missionType + '.phase.' + item.eMissionAction | translate }}
-                <span *ngIf="!!item.idBattleReport && item.userDefeated">{{ 'mission.we-lost' | translate }}</span>
-                <span *ngIf="!!item.idBattleReport && !item.userDefeated">{{ 'mission.we-won' | translate }}</span>
-            </span>
-        </div>
-
-        <span matListItemLine *ngIf="validPhases.includes(getTranslationKey(actionGroup))">{{ t(actionGroup) | async }}</span>
-    </mat-list-item>
+    <div mat-subheader *ngIf="missionItems.length == 0">{{ 'mission.report.nothing' | translate }}</div>
 </mat-list>
 
-<mat-list *ngIf="!!missionResults?.convoyActionItemGroups">
-    <mat-list-item *ngFor="let actionGroup of missionResults?.convoyActionItemGroups" class="height-fit-content-forced">
-        <mat-icon matListItemIcon matTooltip="{{ 'mission.CONVOY_PROTECTION.title' | translate }}">local_shipping</mat-icon>
-        <app-trade-display [trade]="actionGroup.affectedTrade"></app-trade-display>
-        <app-trade-loss [loss]="actionGroup"></app-trade-loss>
-    </mat-list-item>
-</mat-list>
+<div *ngIf="!!missionResults?.convoyActionItemGroups" class="flex-items-container">
+    <app-mission-result *ngFor="let actionGroup of missionItems" [actionGroup]="actionGroup"></app-mission-result>
+</div>

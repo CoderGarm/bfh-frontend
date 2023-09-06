@@ -305,7 +305,8 @@
         "we-lost": "Our forces have been destroyed.",
         "we-won": "Our forces destroyed the attackers."
       },
-      "title": "It looks like a raid from the"
+      "title": "Raid",
+      "entry-phrase": "It looks like a raid from the"
     },
     "card": {
       "details": "Details",

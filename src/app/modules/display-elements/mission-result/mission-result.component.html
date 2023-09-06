@@ -1,0 +1,42 @@
+<div class="bottom-spacer content-area" *ngIf="!!convoyProtection">
+    <mat-card style="background-color: transparent;" class="width-fit-content right-blue-card">
+        <mat-card-header>
+            <mat-card-title>
+                {{ 'mission.CONVOY_PROTECTION.title' | translate }}
+            </mat-card-title>
+            <mat-icon matCardAvatar>local_shipping</mat-icon>
+        </mat-card-header>
+        <mat-card-content>
+            <app-trade-display [trade]="convoyProtection.affectedTrade"></app-trade-display>
+            <app-trade-loss [loss]="convoyProtection"></app-trade-loss>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+
+<div class="bottom-spacer content-area" *ngIf="!!pirateRaid">
+    <mat-card style="background-color: transparent;" class="width-fit-content right-blue-card">
+        <mat-card-header>
+            <mat-card-title>
+                {{ 'mission.PIRATE_RAID.title' | translate }}
+            </mat-card-title>
+            <mat-icon matCardAvatar>military_tech</mat-icon>
+        </mat-card-header>
+        <mat-card-content>
+            <span matListItemTitle><b>{{ pirateRaid.venue.name }}</b> {{ 'mission.' + pirateRaid.missionType + '.detection-phrase' | translate }}</span>
+            <span matListItemLine>{{ 'mission.' + pirateRaid.missionType + '.entry-phrase' | translate }} {{ pirateRaid.actionItems[0].opponent.name }}</span>
+
+            <div *ngIf="!validPhases.includes(getTranslationKey(pirateRaid))">
+            <span matListItemLine *ngFor="let item of pirateRaid.actionItems">
+                {{ 'mission.' + pirateRaid.missionType + '.phase.' + item.eMissionAction | translate }}
+                <span *ngIf="!!item.idBattleReport && item.userDefeated">{{ 'mission.we-lost' | translate }}</span>
+                <span *ngIf="!!item.idBattleReport && !item.userDefeated">{{ 'mission.we-won' | translate }}</span>
+            </span>
+            </div>
+
+            <span matListItemLine *ngIf="validPhases.includes(getTranslationKey(pirateRaid))">{{ t(pirateRaid) | async }}</span>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+
