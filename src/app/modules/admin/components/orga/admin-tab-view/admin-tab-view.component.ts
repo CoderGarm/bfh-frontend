@@ -17,11 +17,14 @@ export class AdminTabViewComponent extends SubscriptionManager implements OnInit
 
     isLoggedIn: boolean = false;
     isAdmin: boolean = false;
+    isLocalhost: boolean = false;
 
     constructor(private router: Router,
                 private adminApi: AdminApiService,
                 private authenticationService: AuthenticationService) {
         super();
+
+        this.isLocalhost = this.tokenStorage.isLocalhost();
     }
 
     ngOnInit(): void {

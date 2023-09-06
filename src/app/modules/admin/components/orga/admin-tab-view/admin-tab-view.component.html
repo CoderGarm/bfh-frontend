@@ -6,7 +6,7 @@
                     <span>Game Admin Area - don't fuck around!</span>
                 </mat-toolbar-row>
                 <mat-toolbar-row>
-                    <button mat-flat-button color="primary" (click)='doTick()' *ngIf='isLoggedIn && isAdmin'>
+                    <button mat-flat-button color="primary" (click)='doTick()' *ngIf='isLoggedIn && isAdmin' [disabled]="!isLocalhost">
                         Do tick
                     </button>
                 </mat-toolbar-row>
