@@ -2,6 +2,7 @@
   "": "",
   "action": {
     "clear": "Clear",
+    "filter": "Filter",
     "submit": "Submit"
   },
   "alliance": {

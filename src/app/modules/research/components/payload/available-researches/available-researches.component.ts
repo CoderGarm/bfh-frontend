@@ -21,6 +21,8 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
      */
     researchPossible: boolean = false;
 
+    filterValue: string = '';
+
     constructor(private researchApi: ResearchApiService) {
         super();
     }

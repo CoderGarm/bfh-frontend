@@ -1,28 +1,41 @@
-<div class="side-nav-open-change-area-fixed"></div>
-
-
 <div class="bottom-spacer content-area">
-    <mat-card style="background-color: transparent;" class="right-blue-card" *ngFor="let research of availableResearches">
-        <mat-card-content>
-            <app-outlined titleValue="{{ 'research.title' | translate }}" class="floated">
-                <app-icon mat-card-avatar class="avatar-image icon"
-                          [ngClass]="getInvisibility(research)"
-                          [icon]="research.research.hasIcon"
-                          [altText]="research.research.name"
-                          png24px [toolTip]="research.research.name"></app-icon>
-                {{research.research.name}}
-            </app-outlined>
-            <app-outlined titleValue="{{ 'research.level-details' | translate }}" class="floated-right">
-                lvl {{ research.level }} / {{ research.ticksToComplete }} ticks
-            </app-outlined>
-            {{ research.research.description }}
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-button [disabled]="!isResearchPossible(research)" (click)="runResearch(research)">Start research</button>
-        </mat-card-actions>
-        <mat-card-footer *ngIf="availableResearches.length == 0 || !researchPossible">
-            <label class="warning-hint warning-hint-animated" *ngIf="availableResearches.length == 0">{{ 'research.no-available' | translate }}</label>
-            <label class="warning-hint warning-hint-animated" *ngIf="!researchPossible">{{ 'research.not-possible' | translate }}</label>
-        </mat-card-footer>
-    </mat-card>
+    <div id="content-container">
+        <ng-container *ngFor="let research of availableResearches">
+            <mat-card style="background-color: transparent;" class="right-blue-card"
+                      *ngIf="research.research.name.includes(filterValue)|| research.research.description.includes(filterValue)">
+                <mat-card-content>
+                    <app-outlined titleValue="{{ 'research.title' | translate }}" class="floated">
+                        <app-icon mat-card-avatar class="avatar-image icon"
+                                  [ngClass]="getInvisibility(research)"
+                                  [icon]="research.research.hasIcon"
+                                  [altText]="research.research.name"
+                                  png24px [toolTip]="research.research.name"></app-icon>
+                        {{research.research.name}}
+                    </app-outlined>
+                    <app-outlined titleValue="{{ 'research.level-details' | translate }}" class="floated-right">
+                        lvl {{ research.level }} / {{ research.ticksToComplete }} ticks
+                    </app-outlined>
+                    {{ research.research.description }}
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button [disabled]="!isResearchPossible(research)" (click)="runResearch(research)">Start research</button>
+                </mat-card-actions>
+                <mat-card-footer *ngIf="availableResearches.length == 0 || !researchPossible">
+                    <label class="warning-hint warning-hint-animated" *ngIf="availableResearches.length == 0">{{ 'research.no-available' | translate }}</label>
+                    <label class="warning-hint warning-hint-animated" *ngIf="!researchPossible">{{ 'research.not-possible' | translate }}</label>
+                </mat-card-footer>
+            </mat-card>
+        </ng-container>
+    </div>
+
+    <div id="search-field">
+        <mat-form-field appearance="outline">
+            <mat-label>{{ 'action.filter' | translate }}</mat-label>
+            <input matInput type="text" [(ngModel)]="filterValue">
+            <button matSuffix mat-icon-button (click)="filterValue = ''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+
+    </div>
 </div>

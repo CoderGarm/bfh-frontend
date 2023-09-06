@@ -2,6 +2,7 @@
   "": "",
   "action": {
     "clear": "Zurücksetzen",
+    "filter": "Filtern",
     "submit": "Abschicken"
   },
   "alliance": {

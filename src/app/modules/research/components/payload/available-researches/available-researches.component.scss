@@ -23,3 +23,13 @@
   width: 150px;
   margin: 0 0 15px 5px;
 }
+
+#content-container {
+  height: 75vh;
+  overflow-y: scroll;
+}
+
+#search-field {
+  position: fixed;
+  bottom: 0;
+}
