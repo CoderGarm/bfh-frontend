@@ -160,7 +160,7 @@ export let AppInjector: Injector;
             echarts: () => import('echarts')
         }),
         NgxSpinnerModule,
-        NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'}),
+        NgxSpinnerModule.forRoot({type: 'ball-clip-rotate-multiple'}),
         StrategicOperationsModule,
         NgOptimizedImage,
     ],

@@ -21,8 +21,9 @@
     <mat-icon *ngIf="drawer.opened">switch_right</mat-icon>
     <mat-icon *ngIf="!drawer.opened">switch_left</mat-icon>
 </button>
-<ngx-spinner type="ball-scale-multiple" color="#375a7f" name="screen-size">
+<ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="misc-spinner">{{ message }}</ngx-spinner>
+<ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="universe-map">{{ 'star-map.universe-map.loading-spinner-message' | translate }}</ngx-spinner>
+<ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="mission-map">{{ 'mission.spinner.wait-to-load' | translate }}</ngx-spinner>
+<ngx-spinner color="#375a7f" name="screen-size">
     <app-screen-size-warning></app-screen-size-warning>
 </ngx-spinner>
-<ngx-spinner type="ball-scale-multiple" color="#375a7f" name="universe-map">{{ 'star-map.universe-map.loading-spinner-message' | translate }}</ngx-spinner>
-<ngx-spinner type="ball-scale-multiple" color="#375a7f" name="mission-map">{{ 'mission.spinner.wait-to-load' | translate }}</ngx-spinner>

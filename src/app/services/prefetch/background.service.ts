@@ -32,20 +32,8 @@ export class BackgroundService extends SubscriptionManager {
             this.subscriptions.push(sub);
             sub = this.assetService.getAllWormholeJunctions().subscribe(resp => this.junctions = resp)
             this.subscriptions.push(sub);
-        });
-
-        this.zone.run(() => {
-            let systems: StarSystem[] | undefined = this.tokenStorage.getSystems()
-            if (!systems) {
-                let sub = this.mapService.getStarSystems()
-                    .subscribe(resp => {
-                        this.starSystems = resp;
-                        this.tokenStorage.rememberSystems(resp);
-                    });
-                this.subscriptions.push(sub);
-            } else {
-                this.starSystems = systems;
-            }
+            sub = this.mapService.getStarSystems().subscribe(resp => this.starSystems = resp);
+            this.subscriptions.push(sub);
         });
     }
 

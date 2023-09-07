@@ -35,7 +35,7 @@
             "styles": [
               "src/styles/theme.scss",
               "src/styles.scss",
-              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css",
               "node_modules/prismjs/themes/prism-okaidia.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
               "node_modules/bootstrap-dark-5/dist/css/bootstrap.css",

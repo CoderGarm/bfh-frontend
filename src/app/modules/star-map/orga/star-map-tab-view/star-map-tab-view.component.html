@@ -1,4 +1,4 @@
-<mat-tab-group #tabGroup [(selectedIndex)]="index" animationDuration="500ms" class="bottom-spacer">
+<mat-tab-group [(selectedIndex)]="index" animationDuration="500ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.star-map.universe-map' | translate }}" bodyClass="no-pad">
         <ng-template matTabContent>
             <app-universe-map-view></app-universe-map-view>

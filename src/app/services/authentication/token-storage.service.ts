@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {JWT, StarSystem} from "../swagger";
+import {JWT} from "../swagger";
 import {environment} from "../../../environments/environment";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
@@ -16,7 +16,6 @@ export class TokenStorage {
     private readonly allianceID = 'allianceID';
     private readonly refreshToken = 'refreshToken';
     private readonly interruptedURL = 'interruptedURL';
-    private readonly systems = 'systems';
 
     protected basePath = environment.backendServer;
 
@@ -156,22 +155,6 @@ export class TokenStorage {
         localStorage.removeItem(this.userID);
         localStorage.removeItem(this.allianceID);
         localStorage.removeItem(this.interruptedURL);
-        localStorage.removeItem(this.systems);
-    }
-
-    getSystems(): StarSystem[] | undefined {
-        const json = localStorage.getItem('systems');
-        if (!!json) {
-            return JSON.parse(json);
-        }
-        return undefined;
-    }
-
-    /**
-     * Just an idea to store the star map locally in a browsers tab storage
-     */
-    rememberSystems(systems: StarSystem[]) {
-        localStorage.setItem(this.systems, JSON.stringify(systems));
     }
 
     rememberScreenWarning(rememberScreenWarning: boolean) {

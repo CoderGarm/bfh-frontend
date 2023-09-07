@@ -5,8 +5,8 @@ import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 import {BackgroundService} from "../../../../services/prefetch/background.service";
 import {Mission, StarSystem} from "../../../../services/swagger";
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
-import {NgxSpinnerService} from "ngx-spinner";
 import {MapDataProvider} from "./map-data-provider.component";
+import {SpinnerService} from "../../../../services/spinner.service";
 import MissionTypeEnum = Mission.MissionTypeEnum;
 
 
@@ -49,7 +49,7 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     @Output()
     selectedSystem: EventEmitter<StarSystem | undefined> = new EventEmitter<StarSystem | undefined>();
 
-    constructor(private spinner: NgxSpinnerService,
+    constructor(private spinner: SpinnerService,
                 private backgroundService: BackgroundService,
                 protected missionCommService: MissionCommunicationService) {
         super();

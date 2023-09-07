@@ -1,6 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {StarSystem} from "../../../../services/swagger";
-import {MatTabGroup} from "@angular/material/tabs";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {StarMapCommunicationService} from "../../../../services/intercom/star-map-communication.service";
 
@@ -9,15 +8,11 @@ import {StarMapCommunicationService} from "../../../../services/intercom/star-ma
     templateUrl: './star-map-tab-view.component.html',
     styleUrls: ['./star-map-tab-view.component.scss']
 })
-export class StarMapTabViewComponent extends SubscriptionManager implements OnInit {
+export class StarMapTabViewComponent extends SubscriptionManager {
 
     static path: string = 'star-map';
 
-
     starSystemSelectionInput?: StarSystem;
-
-    @ViewChild("tabGroup", {static: false})
-    tabGroup?: MatTabGroup;
 
     index?: number;
 
@@ -26,9 +21,6 @@ export class StarMapTabViewComponent extends SubscriptionManager implements OnIn
 
         let sub = this.starMapCommService.getDisplaySystemEmitter().subscribe(resp => this.setSystemAndSwitchTab(resp));
         this.subscriptions.push(sub);
-    }
-
-    ngOnInit(): void {
     }
 
     setSystemAndSwitchTab(event: StarSystem) {

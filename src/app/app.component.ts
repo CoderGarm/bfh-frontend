@@ -104,9 +104,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             setTimeout(() => {
                 if (event.showSpinner) {
                     this.message = event.message;
-                    this.spinner.show()
+                    this.spinner.show('misc-spinner')
                 } else {
-                    this.spinner.hide()
+                    this.spinner.hide('misc-spinner')
                 }
             }, 100);
         });
