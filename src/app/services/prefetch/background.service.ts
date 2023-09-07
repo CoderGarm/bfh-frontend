@@ -102,4 +102,8 @@ export class BackgroundService extends SubscriptionManager {
         }
         return this.o1;
     }
+
+    public getStarSystemsAsArray(): StarSystem[] {
+        return this.starSystems;
+    }
 }

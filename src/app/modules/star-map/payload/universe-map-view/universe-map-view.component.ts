@@ -7,7 +7,7 @@ import {InterstellarViewHelper} from "../interstellar-view-helper";
 import {SpinnerService} from "../../../../services/spinner.service";
 import {TranslateService} from "@ngx-translate/core";
 import {BackgroundService} from "../../../../services/prefetch/background.service";
-import {Observable, startWith, Subscription} from "rxjs";
+import {Observable, startWith} from "rxjs";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {FormControl} from "@angular/forms";
 import {map} from "rxjs/operators";
@@ -23,10 +23,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     knownStarSystems: StarSystem[] = [];
 
     filteredCenter: Observable<StarSystem[]>;
-    centerCoord?: StarSystem;
     coords: StarSystem[] = [];
 
-    private bloodyHackButDoNotSubscribeMeTwice: Subscription[] = [];
     private distribution: FleetMarker[] = [];
 
     @ViewChild('centerInput')
@@ -97,23 +95,30 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.starMapCommService.clear();
         this.starMapCommService.deselect();
         this.clearData();
-        this.bloodyHackButDoNotSubscribeMeTwice.forEach(sub => sub.unsubscribe())
 
-        let outerSub = this.backgroundService.getStarSystems().subscribe(resp => {
-            this.knownStarSystems = resp;
-            this.knownStarSystems.forEach((system) => this.setKnownStarSystemByOrbit(system));
-            this.drawJunctions();
-            let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.userId, this.knownStarSystems);
-            this.drawOrbits(orbitDefinitions);
-            let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
-                this.distribution = resp;
-                this.setFleets(this.distribution);
-            });
-            this.subscriptions.push(sub);
-            this.spinnerService.deactivateSpinner();
+        if (this.backgroundService.getStarSystemsAsArray().length > 0) {
+            this.setUpMap(this.backgroundService.getStarSystemsAsArray());
+            return;
+        }
+
+        let sub = this.backgroundService.getStarSystems().subscribe(resp => {
+            this.setUpMap(resp);
         });
-        this.bloodyHackButDoNotSubscribeMeTwice.push(outerSub)
-        this.subscriptions.push(outerSub);
+        this.subscriptions.push(sub);
+    }
+
+    private setUpMap(starSystems: StarSystem[]) {
+        this.knownStarSystems = starSystems;
+        this.knownStarSystems.forEach((system) => this.setKnownStarSystemByOrbit(system));
+        this.drawJunctions();
+        let orbitDefinitions: OrbitDefinition[] = OrbitDefinition.getOrbitDefinitionsForStarSystem(this.userId, this.knownStarSystems);
+        this.drawOrbits(orbitDefinitions);
+        let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
+            this.distribution = resp;
+            this.setFleets(this.distribution);
+        });
+        this.subscriptions.push(sub);
+        this.spinnerService.deactivateSpinner();
     }
 
     private moveFleet(plannedMoves: FleetMove[]) {
