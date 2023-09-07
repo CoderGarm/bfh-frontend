@@ -13,11 +13,11 @@ interface FleetContainer {
 
 
 @Component({
-    selector: 'app-fleet-split',
-    templateUrl: './fleet-split.component.html',
-    styleUrls: ['./fleet-split.component.scss']
+    selector: 'app-fleet-detachment',
+    templateUrl: './fleet-detachment.component.html',
+    styleUrls: ['./fleet-detachment.component.scss']
 })
-export class FleetSplitComponent extends SubscriptionManager implements AfterViewInit {
+export class FleetDetachmentComponent extends SubscriptionManager implements AfterViewInit {
 
     @Input()
     fleet?: Fleet;
@@ -51,9 +51,9 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
     private fetchPooledShips() {
         let sub = this.fleetService.getPooledWarships().subscribe(resp => {
             this.pooledShips = resp
-            this.fleets.filter(f => f.idFleet === FleetSplitComponent.POOL_FLEET_ID).forEach(f => f.ships = this.pooledShips.map(w => w));
+            this.fleets.filter(f => f.idFleet === FleetDetachmentComponent.POOL_FLEET_ID).forEach(f => f.ships = this.pooledShips.map(w => w));
             if (this.pooledShips.length > 0) {
-                this.locked.push(FleetSplitComponent.POOL_FLEET_ID)
+                this.locked.push(FleetDetachmentComponent.POOL_FLEET_ID)
             }
         });
         this.subscriptions.push(sub);
@@ -80,8 +80,8 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
 
     private createPoolFleet() {
         this.fleets.push({
-            idFleet: FleetSplitComponent.POOL_FLEET_ID,
-            name: FleetSplitComponent.POOL_FLEET_NAME,
+            idFleet: FleetDetachmentComponent.POOL_FLEET_ID,
+            name: FleetDetachmentComponent.POOL_FLEET_NAME,
             ships: this.pooledShips.map(w => w)
         });
     }
@@ -125,7 +125,7 @@ export class FleetSplitComponent extends SubscriptionManager implements AfterVie
         this.fleetSplit = {fleetConstellations: {}, orbit: this.fleet!.orbit!};
         this.shipsForPool = [];
         this.fleets.forEach(fleet => {
-            if (fleet.idFleet === FleetSplitComponent.POOL_FLEET_ID) {
+            if (fleet.idFleet === FleetDetachmentComponent.POOL_FLEET_ID) {
                 this.shipsForPool = fleet.ships.filter(s => !this.isPooledShip(s)).map(s => s.idWarship);
             } else {
                 if (fleet.idFleet < 0 && fleet.ships.length > 0) {

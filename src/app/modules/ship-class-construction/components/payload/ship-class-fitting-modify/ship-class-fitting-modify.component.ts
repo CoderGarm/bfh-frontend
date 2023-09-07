@@ -53,6 +53,8 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
             this.chooseArmor(shipClass.armor);
             this.chooseEloka(shipClass.electronicWarfare);
             this.choosePropulsion(shipClass.propulsion);
+            this.selectedHyperband = this.propulsionSelection!.hyperBand;
+            this.selectedTechnologyType = this.propulsionSelection!.technologyType;
             this.chooseSidewall(shipClass.sidewall);
 
             // set ammunition fittings

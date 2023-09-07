@@ -130,12 +130,11 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
         if (this.isInRepair(fleet)) {
             return false;
         }
-        return fleet.state.needsRepair && this._shipyardJobPossible;
+        return fleet.state.needsRepair;
     }
 
     upgradePossible(fleet: Fleet) {
-        const upgradePossible = fleet.ships.filter(w => !!w.shipClass.idSuccessor).length > 0;
-        return upgradePossible && this._shipyardJobPossible;
+        return fleet.ships.filter(w => !!w.shipClass.idSuccessor).length > 0;
     }
 
     isInRepair(fleet: Fleet) {
