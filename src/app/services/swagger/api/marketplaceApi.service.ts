@@ -111,6 +111,48 @@ export class MarketplaceApiService {
     }
 
     /**
+     * Deletes an trade offer.
+     * 
+     * @param idTradeOffer 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteOffer(idTradeOffer: number, observe?: 'body', reportProgress?: boolean): Observable<Array<boolean>>;
+    public deleteOffer(idTradeOffer: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<boolean>>>;
+    public deleteOffer(idTradeOffer: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<boolean>>>;
+    public deleteOffer(idTradeOffer: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idTradeOffer === null || idTradeOffer === undefined) {
+            throw new Error('Required parameter idTradeOffer was null or undefined when calling deleteOffer.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<boolean>>('delete',`${this.basePath}/api/private/trade/offer/${encodeURIComponent(String(idTradeOffer))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all today contracted trades.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

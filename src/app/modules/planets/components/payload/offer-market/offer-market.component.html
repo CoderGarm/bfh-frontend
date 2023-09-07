@@ -115,6 +115,12 @@
                         cdkOverlayOrigin #trigger="cdkOverlayOrigin">
                     <mat-icon>edit</mat-icon>
                 </button>
+                <button mat-icon-button
+                        *ngIf="element.seller.id == userId"
+                        (click)="deleteOffer(element);"
+                        matTooltip="{{ 'planetary.marketplace.offer.action.delete' | translate }}">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </td>
         </ng-container>
 

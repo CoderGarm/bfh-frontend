@@ -196,9 +196,10 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
     takeOffer(idTradeOffer: number) {
         let sub = this.marketService.takeOffer({idTradeOffer: idTradeOffer, idDestination: this.planet!.idPlanet}).subscribe(() => {
             this.notif.open(this.translations.get('planetary.marketplace.offer.offer-taken')!)
+            this.removeFromList(idTradeOffer);
+            this.plantNotifService.fireOfferCreated();
         });
         this.subscriptions.push(sub);
-        this.plantNotifService.fireOfferCreated();
     }
 
     displayOfferCreation(resource: ResourceAmount, trigger: CdkOverlayOrigin) {
@@ -276,5 +277,20 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
         this.theOffer = element.trade.resourceAmount;
         this.thePrice.amount = element.trade.pricePerUnit;
         this.calcTotal();
+    }
+
+    deleteOffer(element: TradeOffer) {
+        const idTradeOffer = element.idTradeOffer!;
+        let sub = this.marketService.deleteOffer(idTradeOffer).subscribe(resp => {
+            this.removeFromList(idTradeOffer);
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private removeFromList(idTradeOffer: number) {
+        const tradeOffer = this.tradeOffers.filter(t => t.idTradeOffer == idTradeOffer)[0];
+        const indexOf = this.tradeOffers.indexOf(tradeOffer);
+        this.tradeOffers.splice(indexOf, 1);
+        this.setDatasource();
     }
 }
