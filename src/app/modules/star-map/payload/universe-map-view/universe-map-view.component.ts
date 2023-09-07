@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {FleetApiService, FleetMarker, FleetMove, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
@@ -35,7 +35,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     constructor(private fleetApi: FleetApiService,
                 private spinnerService: SpinnerService,
                 private backgroundService: BackgroundService,
-                private translate: TranslateService) {
+                private translate: TranslateService,
+                private change: ChangeDetectorRef) {
         super();
 
         // just make sure that the key exists
@@ -91,9 +92,10 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     }
 
     private createUniverseMap() {
-        this.spinnerService.activateSpinner('star-map.universe-map.loading-spinner-message');
+        this.spinnerService.show('universe-map');
         this.starMapCommService.clear();
         this.starMapCommService.deselect();
+        this.starMapCommService.displayedStarSystem = undefined;
         this.clearData();
 
         if (this.backgroundService.getStarSystemsAsArray().length > 0) {
@@ -116,9 +118,10 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
             this.distribution = resp;
             this.setFleets(this.distribution);
+            this.spinnerService.hide('universe-map');
         });
         this.subscriptions.push(sub);
-        this.spinnerService.deactivateSpinner();
+        this.change.detectChanges();
     }
 
     private moveFleet(plannedMoves: FleetMove[]) {

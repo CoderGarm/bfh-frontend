@@ -1,5 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
+import {NgxSpinnerService} from "ngx-spinner";
 
 
 export interface SpinnerMessage {
@@ -15,7 +16,8 @@ export class SpinnerService {
 
     private displaySpinnerEmitter: EventEmitter<SpinnerMessage> = new EventEmitter<SpinnerMessage>();
 
-    constructor(private translate: TranslateService) {
+    constructor(private translate: TranslateService,
+                private spinner: NgxSpinnerService) {
     }
 
     activateSpinner(spinnerMessage?: string) {
@@ -49,5 +51,15 @@ export class SpinnerService {
             }
         });
         return translation;
+    }
+
+    show(spinnerName: string) {
+        console.log("show", spinnerName)
+        this.spinner.show(spinnerName);
+    }
+
+    hide(spinnerName: string) {
+        console.log("hide", spinnerName)
+        this.spinner.hide(spinnerName);
     }
 }

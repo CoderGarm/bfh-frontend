@@ -21,7 +21,6 @@ export class StarMapTabViewComponent extends SubscriptionManager implements OnIn
     tabGroup?: MatTabGroup;
 
     index?: number;
-    private blockTab: boolean = false;
 
     constructor(private starMapCommService: StarMapCommunicationService) {
         super();
@@ -43,18 +42,6 @@ export class StarMapTabViewComponent extends SubscriptionManager implements OnIn
 
     setSystemAndSwitchTab(event: StarSystem) {
         this.starSystemSelectionInput = event;
-        this.blockTab = true;
         this.index = 1;
-    }
-
-    indexChanged(event: number) {
-        if (this.blockTab) {
-            this.blockTab = false;
-            return;
-        }
-        if (event != 1) {
-            this.starSystemSelectionInput = undefined;
-        }
-        this.starMapCommService.clear(event);
     }
 }

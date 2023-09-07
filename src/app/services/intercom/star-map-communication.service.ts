@@ -58,15 +58,11 @@ export class StarMapCommunicationService extends SubscriptionManager {
         super();
     }
 
-    clear(tabIndex?: number) {
+    clear() {
         this.selectedStarSystem = undefined;
         this.selectedFleets = [];
         this.fleetOrbit = undefined;
         this.selectedPlanet = undefined;
-        if (!!tabIndex && tabIndex == 0) {
-            // if changed to system map do not delete the displayed system
-            this.displayedStarSystem = undefined;
-        }
         this.selectedFleetMarker = [];
         this.plannedInterstellarMoves = [];
         this.fleetsToCancelMovement = [];

@@ -97,7 +97,7 @@ export class StarMapViewComponent extends SystemViewHelper implements OnInit, On
     }
 
     private createStarMap() {
-        this.starMapCommService.clear(1);
+        this.starMapCommService.clear();
         this.starMapCommService.deselect();
         this.clearData();
         if (!!this.starSystem) {

@@ -12,6 +12,7 @@ import {FleetNotchInfoComponent} from './payload/fleet-notch-info/fleet-notch-in
 import {FleetNotchMoveComponent} from './payload/fleet-notch-move/fleet-notch-move.component';
 import {FleetNotchMergeComponent} from './payload/fleet-notch-merge/fleet-notch-merge.component';
 import {FleetNotchTransportComponent} from './payload/fleet-notch-transport/fleet-notch-transport.component';
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {FleetNotchTransportComponent} from './payload/fleet-notch-transport/flee
     ],
     imports: [
         SharedModuleModule,
-        DisplayElementsModule
+        DisplayElementsModule,
+        NgxSpinnerModule
     ]
 })
 export class StarMapModule {

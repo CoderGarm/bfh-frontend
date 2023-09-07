@@ -7,24 +7,6 @@
                             [afterLoginPath]="afterLoginPath"></app-nested-sidenav>
     </mat-drawer>
     <mat-drawer-content [ngStyle]="{'overflow':( isNoScroll ? 'hidden' : 'auto')}" id="main-content-area">
-        <ngx-spinner type="ball-scale-multiple" color="#375a7f">{{ message }}</ngx-spinner>
-        <ngx-spinner type="ball-scale-multiple" color="#375a7f" name="screen-size">
-            <div class="screen-size-warning">
-                <mat-card style="background-color: transparent;" class="blue-card">
-                    <mat-card-header>
-                        <mat-card-title>{{ message }}</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <mat-checkbox [(ngModel)]="rememberIgnoreScreenWarning">{{ 'screen-size-warning.remember' | translate }}</mat-checkbox>
-                    </mat-card-content>
-                    <mat-card-actions align="end">
-                        <button mat-raised-button color="primary" aria-label="Close button" matTooltip="Close" (click)="closeScreenSizeWarning()">
-                            {{ 'screen-size-warning.close' | translate }}
-                        </button>
-                    </mat-card-actions>
-                </mat-card>
-            </div>
-        </ngx-spinner>
         <router-outlet></router-outlet>
         <button mat-icon-button class="tutorial-btn"
                 *ngIf="isLoggedIn && tutorialScope.hasTutorial"
@@ -39,3 +21,8 @@
     <mat-icon *ngIf="drawer.opened">switch_right</mat-icon>
     <mat-icon *ngIf="!drawer.opened">switch_left</mat-icon>
 </button>
+<ngx-spinner type="ball-scale-multiple" color="#375a7f" name="screen-size">
+    <app-screen-size-warning></app-screen-size-warning>
+</ngx-spinner>
+<ngx-spinner type="ball-scale-multiple" color="#375a7f" name="universe-map">{{ 'star-map.universe-map.loading-spinner-message' | translate }}</ngx-spinner>
+<ngx-spinner type="ball-scale-multiple" color="#375a7f" name="mission-map">{{ 'mission.spinner.wait-to-load' | translate }}</ngx-spinner>

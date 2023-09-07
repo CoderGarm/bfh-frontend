@@ -29,8 +29,6 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     // noinspection JSUnusedGlobalSymbols
     public static readonly MULTI_MISSION_COLOR: string = '#33F9FF';
 
-    readonly message: string = 'loading mission map ...';
-
     isSpinnerActive: boolean = false;
 
     @Input()

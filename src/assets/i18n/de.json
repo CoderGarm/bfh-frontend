@@ -1,834 +1,838 @@
 {
-  "": "",
-  "action": {
-    "clear": "Zurücksetzen",
-    "filter": "Filtern",
-    "submit": "Abschicken"
-  },
-  "alliance": {
-    "create": {
-      "code": "Allianztag",
-      "name": "Allianzname",
-      "submit": "Gründe",
-      "title": "Gründe eine Allianz"
-    },
-    "founder": "Gründer",
-    "members": "Mitglieder",
-    "no-applicants": "Keine Anwärter."
-  },
-  "amount-shifter": {
-    "all": "Alles",
-    "hundred": "100",
-    "thousand": "1000"
-  },
-  "burger-menu": {
-    "external-star-map-manager": "Externe Sternenkarte",
-    "take-a-tour": "Take a tour",
-    "wiki": "Wiki"
-  },
-  "chats": {
-    "title": "Nachrichten"
-  },
-  "colonizations": {
-    "finished": {
-      "nothing": "Keine fertiggestellten Kolonisierungen",
-      "title": "Fertiggestellte Kolonisierungen"
-    }
-  },
-  "combat-arena": {
-    "tooltip": {
-      "warship-state": {
-        "active": "Kampfbereit",
-        "destroyed": "Zerstört",
-        "incapacitated": "Kampfunfähig"
-      }
-    }
-  },
-  "enum": {
-    "abbrev": {
-      "alignmentType": {
-        "BATTLE_ALIGNMENT": "Schlacht",
-        "CHASE_ALIGNMENT": "Jagd"
-      },
-      "hullType": {
-        "AE": "AE",
-        "AR": "AR",
-        "BB": "BB",
-        "BC": "BC",
-        "BCP": "BC(P)",
-        "CA": "CA",
-        "CL": "CL",
-        "CLAC": "CLAC",
-        "DD": "DD",
-        "DN": "DN",
-        "FAT": "FAT",
-        "FG": "FG",
-        "FR": "FR",
-        "LAC": "LAC",
-        "SD": "SD",
-        "SDP": "SD(P)",
-        "VT": "VT"
-      },
-      "weaponAlignment": {
-        "BOW": "Bug",
-        "BROADSIDE": "Breitseite",
-        "STERN": "Heck"
-      },
-      "weaponType": {
-        "BEAM": "DF",
-        "COUNTER_MISSILE": "AR",
-        "MISSILE": "R",
-        "POINT_DEFENSE": "NB"
-      }
-    },
-    "name": {
-      "alignmentType": {
-        "BATTLE_ALIGNMENT": "Schlachtbewaffnung",
-        "CHASE_ALIGNMENT": "Jagdbewaffnung"
-      },
-      "hullType": {
-        "AE": "Munitionsschiff",
-        "AR": "Werkstattschiff",
-        "BB": "Schlachtschiff",
-        "BC": "Schlachtkreuzer",
-        "BCP": "Schlachtkreuzer (Gondelleger)",
-        "CA": "Schwerer Kreuzer",
-        "CL": "Leichter Kreuzer",
-        "CLAC": "LAC Träger",
-        "DD": "Zerstörer",
-        "DN": "Dreadnought",
-        "FAT": "Schneller Angriffstransporter",
-        "FG": "Fregatte",
-        "FR": "Frachter",
-        "LAC": "Leichtes Angriffsboot",
-        "SD": "Super Dreadnought",
-        "SDP": "Super Dreadnought (Gondelleger)",
-        "VT": "Korvette"
-      },
-      "weaponAlignment": {
-        "BOW": "Bug",
-        "BROADSIDE": "Breitseite",
-        "STERN": "Heck"
-      },
-      "weaponType": {
-        "BEAM": "Direktfeuer",
-        "COUNTER_MISSILE": "Anti-Rakete",
-        "MISSILE": "Rakete",
-        "POINT_DEFENSE": "Nahbereichsverteidigung"
-      }
-    }
-  },
-  "expansion": {
-    "organize": {
-      "spinner-message": {
-        "wait": "Lade Sternensysteme"
-      }
-    }
-  },
-  "filter": "Filter",
-  "fleet": {
-    "composition": {
-      "class": {
-        "title": "Klasse"
-      },
-      "detachment": {
-        "add": "Detachment erzeugen",
-        "hint": "Schiffe und Flottennamen zuweisen",
-        "placeholder": "Flottennamen eingeben",
-        "pool": {
-          "name": "Reserveflotte",
-          "tooltip": "Eingemottete Schiffe können jederzeit einsatzbereit gemacht und reaktiviert werden."
-        },
-        "remove": "Detachment entfernen",
-        "submit": {
-          "action": "Abschicken",
-          "disabled-hint": "Es müssen mind. zwei bestätigte Detachments existieren."
-        },
-        "title": "Detachiere Flottenteile",
-        "tooltip": "Erzeuge neues Detachment"
-      },
-      "title": "Flottenzusammensetzung",
-      "warShip-names": "Kriegsschiffe",
-      "warship": {
-        "retire": {
-          "submit": "Kriegsschiff deaktivieren"
-        },
-        "title": "Kriegsschiff"
-      }
-    },
-    "display": {
-      "move": {
-        "movement": {
-          "title": "Flottenbewegung"
-        },
-        "orbit": {
-          "title": "Ankerplatz"
-        }
-      },
-      "population": {
-        "title": "Crew"
-      }
-    },
-    "finished-movement": {
-      "nothing": "Keine beendeten Flottenbewegungen",
-      "title": "Beendete Flottenbewegungen"
-    },
-    "modules": {
-      "ammunition-roster": {
-        "title": "Raketenmunition"
-      }
-    },
-    "ongoing-movement": {
-      "nothing": "Keine Marschbefehle",
-      "title": "Flottenbewegungen"
-    },
-    "retire": {
-      "submit": "Flotte deaktivieren"
-    }
-  },
-  "fleets": {
-    "movement": {
-      "no-ftl-present": "Kein Flotte mit Warshawski-Segel verfügbar.",
-      "select-for-cancel": {
-        "checkbox": "Wähle für den Rückflug",
-        "title": "Flug abbrechen"
-      },
-      "select-for-move": {
-        "checkbox": "Wähle für Flug",
-        "no-ftl": {
-          "title": "Nicht auf jedem Schiff ist ein Warshawski-Segel installiert"
-        },
-        "title": "Wähle Flotten für den Flug aus, Ziel:"
-      }
-    }
-  },
-  "forum": {
-    "thread": {
-      "in-forum": "Beiträge im Forum",
-      "messages-in-thread": "Nachrichten im Faden"
-    }
-  },
-  "jobs": {
-    "cancel-btn": "Auftrag abbrechen",
-    "finished-icon": "Auftrag fertig gestellt",
-    "level": "Level",
-    "nothing": {
-      "active": "Keine laufenden Aufträge",
-      "finished": "Keine beendeten Aufträge"
-    },
-    "priority": "Priorität",
-    "ticks-left": "Ticks",
-    "title": {
-      "active": "laufende Aufträge",
-      "finished": "Beendete Aufträge"
-    },
-    "transports": {
-      "human-resources": {
-        "title": "Personen"
-      },
-      "nothing": "Keine Transporte",
-      "resources": {
-        "title": "Ressourcen"
-      },
-      "title": "Transporte"
-    }
-  },
-  "journal": {
-    "commissioned-operationals": {
-      "finished": {
-        "nothing": "Keine Inbetriebnahmen",
-        "title": "Inbetriebnahmen"
-      },
-      "pending": {
-        "title": "Inbetriebnahme erwartet"
-      },
-      "title": {
-        "constructions": "Gebäude",
-        "warships": "Kriegsschiffe"
-      }
-    },
-    "missions": {
-      "title": "Missionsnachbesprechung"
-    },
-    "title": {
-      "content-area": {
-        "fleet": "Flottenbericht",
-        "infrastructure": "Infrastrukturbericht",
-        "jobs": "Auftragsbericht",
-        "transportation-trade": "Handelsbericht"
-      }
-    },
-    "trade": {
-      "arrival": "Lieferung angenommen",
-      "expected-arrival": "Ankunft zu Tick",
-      "nothing": "Keine Lieferungen",
-      "present-title": "Aktuelle Lieferungen",
-      "title": "Lieferungen"
-    }
-  },
-  "mining-factor": {
-    "tooltip": {
-      "construction": "Beschreibt die Schwierigkeiten des Gebäudebaus, z.B. die Festigkeit des Bodens.",
-      "credits": "Die allgemeine Fähigkeit des Planeten, ein positives Bruttoinlandsprodukt zu schaffen.",
-      "heavy_metals": "Die Möglichkeit des Planeten, schwerere Materialien abzubauen.",
-      "metalore": "Die Möglichkeit des Planeten, grundlegende Erze abzubauen.",
-      "orbital_construction": "Die Fähigkeit des Planeten, orbitale Werften zu unterstützen.",
-      "population": "Die Fähigkeit des Planeten, Menschen zu ernähren.",
-      "rare_elements": "Die Möglichkeit des Planeten, radioaktive und Seltenerdelemente abzubauen.",
-      "research": "Die Fähigkeit des Planeten, den Erkenntnisprozess zu unterstützen."
-    }
-  },
-  "mission": {
-    "CONVOY_PROTECTION": {
-      "title": "Konvoischutz"
-    },
-    "PIRATE_RAID": {
-      "detection-phrase": "ist in Schwierigkeiten, Sir.",
-      "entry-phrase": "Es sieht aus wie ein Überfall von",
-      "phase": {
-        "APPROACH": "Sie nähern sich dem Planeten.",
-        "BATTLE": "Es kam zum Kampf.",
-        "LEAVE_ORBIT": "Sie haben den Orbit verlassen.",
-        "NO_BATTLE": "Sie konnten kampflos in die Umlaufbahn gelangen.",
-        "RAID": "Sie haben alles wertvolle mitgenommen.",
-        "SPAWN": "Das Sensornetz hat vor kurzem eine Transition aufgefangen.",
-        "WAIT": "Es scheint als würden sie beobachten.",
-        "WITHDRAW": "Wir haben den Kontakt verloren.",
-        "multi": {
-          "BATTLE-RAID": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend.",
-          "BATTLE-RAID-LEAVE_ORBIT": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend, bevor sie flohen.",
-          "NO_BATTLE-RAID": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles.",
-          "NO_BATTLE-RAID-LEAVE_ORBIT": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles und flohen.",
-          "SPAWN-APPROACH": "Eine Transition wurde aufgefangen, die Schiffe nähern sich dem Planeten.",
-          "SPAWN-WAIT": "Eine Transition wurde aufgefangen, aber sie scheinen auf irgendwas zu warten.",
-          "SPAWN-WITHDRAW": "Eine Transition wurde aufgefangen, danach haben wir allerdings den Kontakt verloren."
-        },
-        "we-lost": "Unsere Streitkräfte wurden vernichtet.",
-        "we-won": "Unsere Streitkräfte haben die Angreifer vernichtet."
-      },
-      "title": "Überfall"
-    },
-    "card": {
-      "details": "Details",
-      "started": "Gestartet in Tick",
-      "title": "Mission"
-    },
-    "convoy": {
-      "attack": {
-        "predicate": {
-          "BEGIN_OF_MISSION": "Die Frachtschiffe wurden zu Beginn ihrer Reise angegriffen.",
-          "END_OF_MISSION": "Die Frachtschiffe wurden zum Ende ihrer Reise angegriffen."
-        }
-      },
-      "text": {
-        "content": {
-          "predicate": {
-            "has-load": "Mit einer Ladung von"
-          }
-        },
-        "percentOfCargoLost": {
-          "no-ransom": "Die Annahme von Lösegeld wurde verweigert, es sind Menschen gestorben und Schiffe wurden beschädigt.",
-          "predicate": {
-            "loss": "Bei einem Verlust von",
-            "lossPercentage": "Prozent des Wertes der Ladung sind verloren.",
-            "without-loss": "Keine Verluste zu beklagen."
-          },
-          "ransom": "Deine Regierung hat Lösegeld gezahlt um die Schiffe und Crews zu schützen."
-        },
-        "withdraw": {
-          "on-contact": "Sie wollten es versuchen, haben dann aber die Flucht ergriffen.",
-          "on-sight": "Sie haben bei Anblick der Eskorte die Flucht ergriffen."
-        }
-      },
-      "title": "Konvoi"
-    },
-    "create": {
-      "no-ftl-ships": "Es befinden sich keine überlichtfähigen Schiffe mehr in der Reserveflotte.",
-      "no-pooled-ships": "Es befinden sich keine Schiffe mehr in der Reserveflotte.",
-      "select": {
-        "planet": "Wähle das Aktionszentrum",
-        "ships": "Wähle die Schiffe",
-        "type": "Mission wählen"
-      },
-      "submit": "Starte die Mission",
-      "title": "Missionsplanung",
-      "toggle": "Missionsplanung"
-    },
-    "delete": {
-      "submit": "Mission abbrechen"
-    },
-    "legend": {
-      "colonized-systems": "Eigenes System",
-      "colonized-systems-by-npc": "Großmacht",
-      "colonized-systems-by-other": "Fremdes System",
-      "highlighted": "markiert",
-      "multi-mission": "Mehrere laufende Missionen",
-      "no-mission": "Keine laufenden Missionen",
-      "select-a-system": "Wähle ein System",
-      "title": "Legende"
-    },
-    "report": {
-      "nothing": "Keine Vorkommnisse, Sir."
-    },
-    "we-lost": "Wir verloren alles.",
-    "we-won": "Wir gewannen."
-  },
-  "path": {
-    "button": {
-      "admin": "Spieladministration",
-      "imprint": "Impressum",
-      "login": "Anmelden",
-      "logout": "Abmelden",
-      "profile": "Profil",
-      "register": "Registrieren"
-    },
-    "menu": {
-      "admin": "Spieladministration",
-      "alliance": "Allianz",
-      "chat": "Nachrichten",
-      "colonization": "Kolonisierungen",
-      "fleet": "Flotten",
-      "forum": "Forum",
-      "home": "Startseite",
-      "journal": "Berichte",
-      "login": "Anmelden",
-      "planets": "Planeten",
-      "player": "Imperien",
-      "profile": "Profil",
-      "register": "Registrieren",
-      "researches": "Forschungen",
-      "ship-classes": "Werft",
-      "star-map": "Sternenkarte",
-      "stratOps": "Strategische Operationen",
-      "transportation": "Transport"
-    }
-  },
-  "planetary": {
-    "constructions": {
-      "build": {
-        "filter-expansive-constructions": "Ignoriere zu teure Gebäude",
-        "has-level": "aktuelles Level",
-        "is-new": "Neukonstruktion",
-        "must-do-research": "Muss erforscht werden",
-        "not-possible": "Es wird bereits gebaut",
-        "nothing-to-show": "Keine Auswahl",
-        "start-building": "Starte den Bau",
-        "too-expensive": "Bau zu teuer"
-      },
-      "building": {
-        "CAPACITY": {
-          "POPULATION": "NAME stellt Wohnraum für AMOUNT Menschen bereit."
-        },
-        "PRODUCE": {
-          "CONSTRUCTION": "Der Bauhof erzeugt AMOUNT Industriepunkte.",
-          "ORBITAL_CONSTRUCTION": "Die Werft generiert orbitale AMOUNT Industriepunkte.",
-          "POPULATION": "Das Krankenhaus verbessert die Gesundheitsversorgung und Lebenserwartung deiner Bevölkerung. Statistische Betrachtungen zeigen, dass AMOUNT Menschen versorgt werden können.",
-          "RESEARCH": "Das Labor erzeugt AMOUNT Forschungspunkte.",
-          "RESOURCE": "NAME erzeugt AMOUNT Einheiten WHAT."
-        },
-        "REFINEMENT": {
-          "POPULATION": "NAME bildet bis zu AMOUNT PRODUCT aus. Die Anwärter sollten bereits eine Ausbildung als EDUCT mitbringen."
-        }
-      },
-      "info": {
-        "title": "Details"
-      },
-      "level": {
-        "current": "gebaut",
-        "operational": "aktiv",
-        "title": "Gebäudelevel"
-      },
-      "title": "Gebäude"
-    },
-    "fleets-in-orbit": {
-      "not-present": "Keine Flotten im Orbit",
-      "percentage-message": "Kampfbereitschaft",
-      "repair-btn": {
-        "already-in-use": "Es wird bereits gebaut",
-        "is-in-repair": "Wird repariert",
-        "no-repair-needed": "Flotte unbeschädigt",
-        "no-shipyard": "Kein Werft vor Ort",
-        "start-job": "Starte Reparaturauftrag"
-      },
-      "repair-job-started-message": "Die Flotte wurde in Dock beordert",
-      "title": "Flotten im Orbit",
-      "upgrade-btn": {
-        "not-needed": "Ausrüstung nicht nötig",
-        "start-job": "Schiffe auf neuste Version nachrüsten"
-      },
-      "upgrade-job-started-message": "Aufrüstung zu neusten Klassen gestartet"
-    },
-    "marketplace": {
-      "history": {
-        "amount": {
-          "title": "Handelsmenge"
-        },
-        "price": {
-          "title": "Preisentwicklung"
-        }
-      },
-      "offer": {
-        "action": {
-          "abort": "Abbrechen",
-          "edit": "Bearbeiten",
-          "release": "Handel anbieten",
-          "take": "Annehmen"
-        },
-        "buy": "Kaufen",
-        "chose-amount-buy": "Einkaufsmenge",
-        "chose-amount-sell": "Verkaufsmenge",
-        "chose-price": "Preis pro Einheit",
-        "create": "Handelsangebot erstellen",
-        "create-for": "Erstelle ein Angebot für",
-        "created-notif": "Angebot erstellt",
-        "edit": "Handelsangebot bearbeiten",
-        "market": "Angebotsmarkt",
-        "offer-taken": "Du hast das Angebot angenommen.",
-        "sell": "Verkaufen",
-        "spot": {
-          "create": "Accept a spot offer",
-          "price": "Spotpreis für",
-          "title": "Spotmarkt",
-          "warning": "Die Spotpreise ändern sich schnell. Bitte beachten Sie dies beim Handel auf dem Spotmarkt."
-        },
-        "title": "verfügbare Angebote"
-      }
-    },
-    "mining-factors": {
-      "title": "Mining factors"
-    },
-    "population-development": {
-      "title": "Bevölkerungsentwicklung"
-    },
-    "resource-development": {
-      "title": "Ressourcenentwicklung"
-    }
-  },
-  "population-development": {
-    "demand": {
-      "toolTip": "Die benötigte Bevölkerung"
-    },
-    "deposit": {
-      "toolTip": "Die verfügbare Bevölkerung"
-    },
-    "income": {
-      "toolTip": "Das prognostizierte Wachstum"
-    },
-    "utilization": {
-      "toolTip": "Die eingesetzte Bevölkerung"
-    }
-  },
-  "register": {
-    "email": {
-      "info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet.",
-      "will-not-provide": {
-        "message": "Ich möchte meine eMail Adresse nicht angeben.",
-        "tooltip": "Wählst du diese Option, kannst du dein Passwort nicht ändern."
-      }
-    },
-    "spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
-  },
-  "research": {
-    "level-details": "Details",
-    "no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
-    "not-possible": "Es gibt kein Labor oder es wird bereits geforscht.",
-    "title": "Forschung"
-  },
-  "resource-overlay": {
-    "capacity": {
-      "info": {
-        "population": "Der Wohnraum für AMOUNT Menschen wird noch TICKS Ticks ausreichen",
-        "population-growth-warning": "Die Bevölkerung hat den Wohnraum ausgeschöpft.",
-        "resource": "Der Lagerplatz für AMOUNT RESOURCE_NAME wird noch TICKS Ticks ausreichen"
-      }
-    },
-    "costs": {
-      "population": "Die Anzahl der benötigten Arbeitskräfte.",
-      "toolTip": "Die Kosten"
-    },
-    "deposit": {
-      "population": "Die Gesamtbevölkerung.",
-      "tick": "Die Zeit wird von dir nicht beeinflusst.",
-      "toolTip": "Die gelagerten Ressourcen"
-    },
-    "income": {
-      "population": "Wenn der Wert negativ ist, benötigt deine Bevölkerung mehr Wohnraum.",
-      "tick": "Die Zeit wird von dir nicht beeinflusst.",
-      "toolTip": "Das Einkommen"
-    }
-  },
-  "resources": {
-    "manpower": {
-      "title": "Mitarbeiter"
-    },
-    "materials": {
-      "title": "Materialien"
-    },
-    "ticks-to-done": "benötigte Ticks"
-  },
-  "screen-size-warning": {
-    "close": "Schließen",
-    "remember": "Einstellung merken"
-  },
-  "shipyard": {
-    "constructions": {
-      "build": {
-        "already-in-use": "Es wird bereits gebaut",
-        "nothing-to-do": "Keine Schiffe ausgewählt",
-        "start-building": "Baue die Flotte",
-        "too-expensive": "Auftrag zu teuer"
-      },
-      "capacity": {
-        "title": "Tonnage"
-      },
-      "fleet-state": "Flottenstatus",
-      "fleet-to-repair": "Flotte im Dock",
-      "title": "Schiffsbau",
-      "weapon-amount-by-alignment": {
-        "title": "Bewaffnung"
-      }
-    },
-    "create-new-class": "Neue Klasse erzeugen",
-    "fitting": {
-      "ammunition": {
-        "remember": "Wähle Munition für die Werfer aus.",
-        "title": "Munition"
-      },
-      "armor": {
-        "title": "Panzerung"
-      },
-      "electronic-warfare": {
-        "title": "Elektronische Kampfführung"
-      },
-      "hull": {
-        "title": "Rumpf"
-      },
-      "not-selected": {
-        "mandatory": {
-          "hull": "Wähle einen Rumpf.",
-          "propulsion": "Wähle einen Antrieb."
-        },
-        "warship-needs": {
-          "ammunition": "Vergiss nicht die Munition für ein Kriegsschiff.",
-          "armor": "Vergiss nicht die Panzerung für ein Kriegsschiff.",
-          "eloka": "Vergiss nicht die Eloka für ein Kriegsschiff.",
-          "sidewall": "Vergiss nicht die Seitenschilde für ein Kriegsschiff.",
-          "support": "Vergiss nicht die Unterstützungsmodule für ein Kriegsschiff.",
-          "weapons": "Vergiss nicht die Waffensysteme für ein Kriegsschiff."
-        }
-      },
-      "offensive": {
-        "title": "Waffensysteme"
-      },
-      "propulsion": {
-        "title": "Antrieb"
-      },
-      "sidewall": {
-        "title": "Seitenschild"
-      },
-      "singular-module": {
-        "title": "Basismodule"
-      },
-      "support": {
-        "title": "Unterstützungsmodule"
-      },
-      "weapon-for": {
-        "weaponType": {
-          "BEAM": "Gun",
-          "COUNTER_MISSILE": "Launcher",
-          "MISSILE": "Launcher",
-          "POINT_DEFENSE": "Gun"
-        }
-      }
-    },
-    "hull-capacities": "Rumpfkapazität",
-    "hull": {
-      "type": {
-        "AE": "Munitionsschiff",
-        "AR": "Werkstattschiff",
-        "BB": "Schlachtschiff",
-        "BC": "Schlachtkreuzer",
-        "BCP": "Schlachtkreuzer (Gondelleger)",
-        "CA": "Schwerer Kreuzer",
-        "CL": "Leichter Kreuzer",
-        "CLAC": "LAC Träger",
-        "DD": "Zerstörer",
-        "DN": "Dreadnought",
-        "FAT": "Schneller Angriffstransporter",
-        "FG": "Fregatte",
-        "FR": "Frachter",
-        "LAC": "Leichtes Angriffsboot",
-        "SD": "Super Dreadnought",
-        "SDP": "Super Dreadnought (Gondelleger)",
-        "VT": "Korvette"
-      }
-    }
-  },
-  "spacecraft": {
-    "state": {
-      "msg": {
-        "needs-ammunition": "Munition benötigt",
-        "needs-repair": "Reparatur benötigt",
-        "not-active": "Inaktiv",
-        "not-operational": "Nicht betriebsbereit"
-      },
-      "title": {
-        "fleet": "Flotte",
-        "warShip": "Kriegsschiff"
-      }
-    }
-  },
-  "star-map": {
-    "notch": {
-      "action": {
-        "show-info": "Info",
-        "show-merge": "Transferiere Schiffe",
-        "show-move": "Flotten bewegen",
-        "show-transport": "Transport"
-      },
-      "deselect": "Auswahl aufheben"
-    },
-    "universe-map": {
-      "loading-spinner-message": "Lade Sternenkarte..."
-    }
-  },
-  "tab": {
-    "admin": {
-      "do-tick": "Tick",
-      "statistics": "Statistische Daten",
-      "translations": "Übersetzungen"
-    },
-    "alliance": {
-      "create": "Gründe eine Allianz",
-      "dashboard": "Übersicht",
-      "forum": "Forum",
-      "list": "Allianzliste",
-      "members-list": "Mitglieder"
-    },
-    "expansion": {
-      "organize": "Expansion planen",
-      "view": "Expansion anzeigen"
-    },
-    "fleet": {
-      "dashboard": "Übersicht",
-      "split": "Detachment"
-    },
-    "journal": {
-      "battles": "Kampfberichte",
-      "dashboard": "Übersicht",
-      "jobs": "Jobberichte",
-      "movements": "Flottenbewegungen"
-    },
-    "planetary": {
-      "dashboard": "Übersicht",
-      "ground-constructions": "Gebäude",
-      "jobs": "Jobs",
-      "marketplace": "Marktplatz",
-      "shipyard": "Werft"
-    },
-    "research": {
-      "available": "Verfügbare Forschungen",
-      "tech-tree": "Tech tree"
-    },
-    "shipyard": {
-      "fitting": {
-        "modify": "Ausrüstung bearbeiten",
-        "view": "Ausrüstung anzeigen"
-      }
-    },
-    "star-map": {
-      "star-map": "Karte des Sternensystems",
-      "universe-map": "Sternenkarte"
-    },
-    "stratOps": {
-      "mission-administration": "Missionsplanung",
-      "mission-overview": "Missionsüberblick"
-    },
-    "transportation": {
-      "humans": "Bevölkerung",
-      "resources": "Ressourcen"
-    }
-  },
-  "tick": {
-    "current": "Aktueller Tick",
-    "title": "Tick"
-  },
-  "translation": {
-    "designated": {
-      "language": "designierte Sprache"
-    },
-    "idTranslatable": "idTranslatable",
-    "no-change-reference-translation": "Die Übersetzung in der Referenzsprache kann nicht angepasst werden",
-    "reference": {
-      "language": "Referenzsprache"
-    },
-    "target": "Übersetzungsziel",
-    "text": {
-      "title": "Übersetzter Text"
-    },
-    "type": "Art"
-  },
-  "transport": {
-    "manual": {
-      "transfer-btn": {
-        "title": "Transferiere Ressourcen",
-        "tooltip": "Transferiere die ausgewählten Ressourcen"
-      }
-    }
-  },
-  "transportation": {
-    "amount": {
-      "delivery": {
-        "caption": "Lieferung"
-      },
-      "demand": {
-        "caption": "Bedarf"
-      }
-    },
-    "human-resources": {
-      "help": "Wähle den Bedarf und die Liefermöglichkeiten je Planet"
-    },
-    "resources": {
-      "help": "Wähle den Bedarf und die Liefermöglichkeiten je Planet"
-    }
-  },
-  "tutorial": {
-    "trigger": {
-      "scope-selector": "Tutorial"
-    }
-  },
-  "wiki": {
-    "article": {
-      "create": {
-        "button": "Speichern",
-        "menu-entry": "Erstelle neuen Artikel",
-        "title": "Titel"
-      },
-      "display": {
-        "author": "Autor",
-        "menu-entry": "Lesen",
-        "revision": "Revision"
-      },
-      "edit": {
-        "button": "Speichern",
-        "menu-entry": "Bearbeiten"
-      }
-    },
-    "header": {
-      "search-wiki": {
-        "label": "Wiki durchsuchen"
-      }
-    },
-    "home": {
-      "menu-entry": "Hauptseite"
-    },
-    "selection": {
-      "content": {
-        "menu-entry": "Artikel"
-      },
-      "orga": {
-        "menu-entry": "Orga"
-      }
-    }
-  }
+	"": "",
+	"action": {
+		"clear": "Zurücksetzen",
+		"filter": "Filtern",
+		"submit": "Abschicken"
+	},
+	"alliance": {
+		"create": {
+			"code": "Allianztag",
+			"name": "Allianzname",
+			"submit": "Gründe",
+			"title": "Gründe eine Allianz"
+		},
+		"founder": "Gründer",
+		"members": "Mitglieder",
+		"no-applicants": "Keine Anwärter."
+	},
+	"amount-shifter": {
+		"all": "Alles",
+		"hundred": "100",
+		"thousand": "1000"
+	},
+	"burger-menu": {
+		"external-star-map-manager": "Externe Sternenkarte",
+		"take-a-tour": "Take a tour",
+		"wiki": "Wiki"
+	},
+	"chats": {
+		"title": "Nachrichten"
+	},
+	"colonizations": {
+		"finished": {
+			"nothing": "Keine fertiggestellten Kolonisierungen",
+			"title": "Fertiggestellte Kolonisierungen"
+		}
+	},
+	"combat-arena": {
+		"tooltip": {
+			"warship-state": {
+				"active": "Kampfbereit",
+				"destroyed": "Zerstört",
+				"incapacitated": "Kampfunfähig"
+			}
+		}
+	},
+	"enum": {
+		"abbrev": {
+			"alignmentType": {
+				"BATTLE_ALIGNMENT": "Schlacht",
+				"CHASE_ALIGNMENT": "Jagd"
+			},
+			"hullType": {
+				"AE": "AE",
+				"AR": "AR",
+				"BB": "BB",
+				"BC": "BC",
+				"BCP": "BC(P)",
+				"CA": "CA",
+				"CL": "CL",
+				"CLAC": "CLAC",
+				"DD": "DD",
+				"DN": "DN",
+				"FAT": "FAT",
+				"FG": "FG",
+				"FR": "FR",
+				"LAC": "LAC",
+				"SD": "SD",
+				"SDP": "SD(P)",
+				"VT": "VT"
+			},
+			"weaponAlignment": {
+				"BOW": "Bug",
+				"BROADSIDE": "Breitseite",
+				"STERN": "Heck"
+			},
+			"weaponType": {
+				"BEAM": "DF",
+				"COUNTER_MISSILE": "AR",
+				"MISSILE": "R",
+				"POINT_DEFENSE": "NB"
+			}
+		},
+		"name": {
+			"alignmentType": {
+				"BATTLE_ALIGNMENT": "Schlachtbewaffnung",
+				"CHASE_ALIGNMENT": "Jagdbewaffnung"
+			},
+			"hullType": {
+				"AE": "Munitionsschiff",
+				"AR": "Werkstattschiff",
+				"BB": "Schlachtschiff",
+				"BC": "Schlachtkreuzer",
+				"BCP": "Schlachtkreuzer (Gondelleger)",
+				"CA": "Schwerer Kreuzer",
+				"CL": "Leichter Kreuzer",
+				"CLAC": "LAC Träger",
+				"DD": "Zerstörer",
+				"DN": "Dreadnought",
+				"FAT": "Schneller Angriffstransporter",
+				"FG": "Fregatte",
+				"FR": "Frachter",
+				"LAC": "Leichtes Angriffsboot",
+				"SD": "Super Dreadnought",
+				"SDP": "Super Dreadnought (Gondelleger)",
+				"VT": "Korvette"
+			},
+			"weaponAlignment": {
+				"BOW": "Bug",
+				"BROADSIDE": "Breitseite",
+				"STERN": "Heck"
+			},
+			"weaponType": {
+				"BEAM": "Direktfeuer",
+				"COUNTER_MISSILE": "Anti-Rakete",
+				"MISSILE": "Rakete",
+				"POINT_DEFENSE": "Nahbereichsverteidigung"
+			}
+		}
+	},
+	"expansion": {
+		"organize": {
+			"spinner-message": {
+				"wait": "Lade Sternensysteme"
+			}
+		}
+	},
+	"filter": "Filter",
+	"fleet": {
+		"composition": {
+			"class": {
+				"title": "Klasse"
+			},
+			"detachment": {
+				"add": "Detachment erzeugen",
+				"hint": "Schiffe und Flottennamen zuweisen",
+				"placeholder": "Flottennamen eingeben",
+				"pool": {
+					"name": "Reserveflotte",
+					"tooltip": "Eingemottete Schiffe können jederzeit einsatzbereit gemacht und reaktiviert werden."
+				},
+				"remove": "Detachment entfernen",
+				"submit": {
+					"action": "Abschicken",
+					"disabled-hint": "Es müssen mind. zwei bestätigte Detachments existieren."
+				},
+				"title": "Detachiere Flottenteile",
+				"tooltip": "Erzeuge neues Detachment"
+			},
+			"title": "Flottenzusammensetzung",
+			"warShip-names": "Kriegsschiffe",
+			"warship": {
+				"retire": {
+					"submit": "Kriegsschiff deaktivieren"
+				},
+				"title": "Kriegsschiff"
+			}
+		},
+		"display": {
+			"move": {
+				"movement": {
+					"title": "Flottenbewegung"
+				},
+				"orbit": {
+					"title": "Ankerplatz"
+				}
+			},
+			"population": {
+				"title": "Crew"
+			}
+		},
+		"finished-movement": {
+			"nothing": "Keine beendeten Flottenbewegungen",
+			"title": "Beendete Flottenbewegungen"
+		},
+		"modules": {
+			"ammunition-roster": {
+				"title": "Raketenmunition"
+			}
+		},
+		"ongoing-movement": {
+			"nothing": "Keine Marschbefehle",
+			"title": "Flottenbewegungen"
+		},
+		"retire": {
+			"submit": "Flotte deaktivieren"
+		}
+	},
+	"fleets": {
+		"movement": {
+			"no-ftl-present": "Kein Flotte mit Warshawski-Segel verfügbar.",
+			"select-for-cancel": {
+				"checkbox": "Wähle für den Rückflug",
+				"title": "Flug abbrechen"
+			},
+			"select-for-move": {
+				"checkbox": "Wähle für Flug",
+				"no-ftl": {
+					"title": "Nicht auf jedem Schiff ist ein Warshawski-Segel installiert"
+				},
+				"title": "Wähle Flotten für den Flug aus, Ziel:"
+			}
+		}
+	},
+	"forum": {
+		"thread": {
+			"in-forum": "Beiträge im Forum",
+			"messages-in-thread": "Nachrichten im Faden"
+		}
+	},
+	"jobs": {
+		"cancel-btn": "Auftrag abbrechen",
+		"finished-icon": "Auftrag fertig gestellt",
+		"level": "Level",
+		"nothing": {
+			"active": "Keine laufenden Aufträge",
+			"finished": "Keine beendeten Aufträge"
+		},
+		"priority": "Priorität",
+		"ticks-left": "Ticks",
+		"title": {
+			"active": "laufende Aufträge",
+			"finished": "Beendete Aufträge"
+		},
+		"transports": {
+			"human-resources": {
+				"title": "Personen"
+			},
+			"nothing": "Keine Transporte",
+			"resources": {
+				"title": "Ressourcen"
+			},
+			"title": "Transporte"
+		}
+	},
+	"journal": {
+		"commissioned-operationals": {
+			"finished": {
+				"nothing": "Keine Inbetriebnahmen",
+				"title": "Inbetriebnahmen"
+			},
+			"pending": {
+				"title": "Inbetriebnahme erwartet"
+			},
+			"title": {
+				"constructions": "Gebäude",
+				"warships": "Kriegsschiffe"
+			}
+		},
+		"missions": {
+			"title": "Missionsnachbesprechung"
+		},
+		"title": {
+			"content-area": {
+				"fleet": "Flottenbericht",
+				"infrastructure": "Infrastrukturbericht",
+				"jobs": "Auftragsbericht",
+				"transportation-trade": "Handelsbericht"
+			}
+		},
+		"trade": {
+			"arrival": "Lieferung angenommen",
+			"expected-arrival": "Ankunft zu Tick",
+			"nothing": "Keine Lieferungen",
+			"present-title": "Aktuelle Lieferungen",
+			"title": "Lieferungen"
+		}
+	},
+	"mining-factor": {
+		"tooltip": {
+			"construction": "Beschreibt die Schwierigkeiten des Gebäudebaus, z.B. die Festigkeit des Bodens.",
+			"credits": "Die allgemeine Fähigkeit des Planeten, ein positives Bruttoinlandsprodukt zu schaffen.",
+			"heavy_metals": "Die Möglichkeit des Planeten, schwerere Materialien abzubauen.",
+			"metalore": "Die Möglichkeit des Planeten, grundlegende Erze abzubauen.",
+			"orbital_construction": "Die Fähigkeit des Planeten, orbitale Werften zu unterstützen.",
+			"population": "Die Fähigkeit des Planeten, Menschen zu ernähren.",
+			"rare_elements": "Die Möglichkeit des Planeten, radioaktive und Seltenerdelemente abzubauen.",
+			"research": "Die Fähigkeit des Planeten, den Erkenntnisprozess zu unterstützen."
+		}
+	},
+	"mission": {
+		"CONVOY_PROTECTION": {
+			"title": "Konvoischutz"
+		},
+		"PIRATE_RAID": {
+			"detection-phrase": "ist in Schwierigkeiten, Sir.",
+			"entry-phrase": "Es sieht aus wie ein Überfall von",
+			"phase": {
+				"APPROACH": "Sie nähern sich dem Planeten.",
+				"BATTLE": "Es kam zum Kampf.",
+				"LEAVE_ORBIT": "Sie haben den Orbit verlassen.",
+				"NO_BATTLE": "Sie konnten kampflos in die Umlaufbahn gelangen.",
+				"RAID": "Sie haben alles wertvolle mitgenommen.",
+				"SPAWN": "Das Sensornetz hat vor kurzem eine Transition aufgefangen.",
+				"WAIT": "Es scheint als würden sie beobachten.",
+				"WITHDRAW": "Wir haben den Kontakt verloren.",
+				"multi": {
+					"BATTLE-RAID": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend.",
+					"BATTLE-RAID-LEAVE_ORBIT": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend, bevor sie flohen.",
+					"NO_BATTLE-RAID": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles.",
+					"NO_BATTLE-RAID-LEAVE_ORBIT": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles und flohen.",
+					"SPAWN-APPROACH": "Eine Transition wurde aufgefangen, die Schiffe nähern sich dem Planeten.",
+					"SPAWN-WAIT": "Eine Transition wurde aufgefangen, aber sie scheinen auf irgendwas zu warten.",
+					"SPAWN-WITHDRAW": "Eine Transition wurde aufgefangen, danach haben wir allerdings den Kontakt verloren."
+				},
+				"we-lost": "Unsere Streitkräfte wurden vernichtet.",
+				"we-won": "Unsere Streitkräfte haben die Angreifer vernichtet."
+			},
+			"title": "Überfall"
+		},
+		"card": {
+			"details": "Details",
+			"started": "Gestartet in Tick",
+			"title": "Mission"
+		},
+		"convoy": {
+			"attack": {
+				"predicate": {
+					"BEGIN_OF_MISSION": "Die Frachtschiffe wurden zu Beginn ihrer Reise angegriffen.",
+					"END_OF_MISSION": "Die Frachtschiffe wurden zum Ende ihrer Reise angegriffen."
+				}
+			},
+			"text": {
+				"content": {
+					"predicate": {
+						"has-load": "Mit einer Ladung von"
+					}
+				},
+				"percentOfCargoLost": {
+					"no-ransom": "Die Annahme von Lösegeld wurde verweigert, es sind Menschen gestorben und Schiffe wurden beschädigt.",
+					"predicate": {
+						"loss": "Bei einem Verlust von",
+						"lossPercentage": "Prozent des Wertes der Ladung sind verloren.",
+						"without-loss": "Keine Verluste zu beklagen."
+					},
+					"ransom": "Deine Regierung hat Lösegeld gezahlt um die Schiffe und Crews zu schützen."
+				},
+				"withdraw": {
+					"on-contact": "Sie wollten es versuchen, haben dann aber die Flucht ergriffen.",
+					"on-sight": "Sie haben bei Anblick der Eskorte die Flucht ergriffen."
+				}
+			},
+			"title": "Konvoi"
+		},
+		"create": {
+			"no-ftl-ships": "Es befinden sich keine überlichtfähigen Schiffe mehr in der Reserveflotte.",
+			"no-pooled-ships": "Es befinden sich keine Schiffe mehr in der Reserveflotte.",
+			"select": {
+				"planet": "Wähle das Aktionszentrum",
+				"ships": "Wähle die Schiffe",
+				"type": "Mission wählen"
+			},
+			"submit": "Starte die Mission",
+			"title": "Missionsplanung",
+			"toggle": "Missionsplanung"
+		},
+		"delete": {
+			"submit": "Mission abbrechen"
+		},
+		"legend": {
+			"colonized-systems": "Eigenes System",
+			"colonized-systems-by-npc": "Großmacht",
+			"colonized-systems-by-other": "Fremdes System",
+			"highlighted": "markiert",
+			"multi-mission": "Mehrere laufende Missionen",
+			"no-mission": "Keine laufenden Missionen",
+			"select-a-system": "Wähle ein System",
+			"title": "Legende"
+		},
+		"report": {
+			"nothing": "Keine Vorkommnisse, Sir."
+		},
+		"spinner": {
+			"wait-to-load": "Missionskarte wird geladen."
+		},
+		"we-lost": "Wir verloren alles.",
+		"we-won": "Wir gewannen."
+	},
+	"path": {
+		"button": {
+			"admin": "Spieladministration",
+			"imprint": "Impressum",
+			"login": "Anmelden",
+			"logout": "Abmelden",
+			"profile": "Profil",
+			"register": "Registrieren"
+		},
+		"menu": {
+			"admin": "Spieladministration",
+			"alliance": "Allianz",
+			"chat": "Nachrichten",
+			"colonization": "Kolonisierungen",
+			"fleet": "Flotten",
+			"forum": "Forum",
+			"home": "Startseite",
+			"journal": "Berichte",
+			"login": "Anmelden",
+			"planets": "Planeten",
+			"player": "Imperien",
+			"profile": "Profil",
+			"register": "Registrieren",
+			"researches": "Forschungen",
+			"ship-classes": "Werft",
+			"star-map": "Sternenkarte",
+			"stratOps": "Strategische Operationen",
+			"transportation": "Transport"
+		}
+	},
+	"planetary": {
+		"constructions": {
+			"build": {
+				"filter-expansive-constructions": "Ignoriere zu teure Gebäude",
+				"has-level": "aktuelles Level",
+				"is-new": "Neukonstruktion",
+				"must-do-research": "Muss erforscht werden",
+				"not-possible": "Es wird bereits gebaut",
+				"nothing-to-show": "Keine Auswahl",
+				"start-building": "Starte den Bau",
+				"too-expensive": "Bau zu teuer"
+			},
+			"building": {
+				"CAPACITY": {
+					"POPULATION": "NAME stellt Wohnraum für AMOUNT Menschen bereit."
+				},
+				"PRODUCE": {
+					"CONSTRUCTION": "Der Bauhof erzeugt AMOUNT Industriepunkte.",
+					"ORBITAL_CONSTRUCTION": "Die Werft generiert orbitale AMOUNT Industriepunkte.",
+					"POPULATION": "Das Krankenhaus verbessert die Gesundheitsversorgung und Lebenserwartung deiner Bevölkerung. Statistische Betrachtungen zeigen, dass AMOUNT Menschen versorgt werden können.",
+					"RESEARCH": "Das Labor erzeugt AMOUNT Forschungspunkte.",
+					"RESOURCE": "NAME erzeugt AMOUNT Einheiten WHAT."
+				},
+				"REFINEMENT": {
+					"POPULATION": "NAME bildet bis zu AMOUNT PRODUCT aus. Die Anwärter sollten bereits eine Ausbildung als EDUCT mitbringen."
+				}
+			},
+			"info": {
+				"title": "Details"
+			},
+			"level": {
+				"current": "gebaut",
+				"operational": "aktiv",
+				"title": "Gebäudelevel"
+			},
+			"title": "Gebäude"
+		},
+		"fleets-in-orbit": {
+			"not-present": "Keine Flotten im Orbit",
+			"percentage-message": "Kampfbereitschaft",
+			"repair-btn": {
+				"already-in-use": "Es wird bereits gebaut",
+				"is-in-repair": "Wird repariert",
+				"no-repair-needed": "Flotte unbeschädigt",
+				"no-shipyard": "Kein Werft vor Ort",
+				"start-job": "Starte Reparaturauftrag"
+			},
+			"repair-job-started-message": "Die Flotte wurde in Dock beordert",
+			"title": "Flotten im Orbit",
+			"upgrade-btn": {
+				"not-needed": "Ausrüstung nicht nötig",
+				"start-job": "Schiffe auf neuste Version nachrüsten"
+			},
+			"upgrade-job-started-message": "Aufrüstung zu neusten Klassen gestartet"
+		},
+		"marketplace": {
+			"history": {
+				"amount": {
+					"title": "Handelsmenge"
+				},
+				"price": {
+					"title": "Preisentwicklung"
+				}
+			},
+			"offer": {
+				"action": {
+					"abort": "Abbrechen",
+					"edit": "Bearbeiten",
+					"release": "Handel anbieten",
+					"take": "Annehmen"
+				},
+				"buy": "Kaufen",
+				"chose-amount-buy": "Einkaufsmenge",
+				"chose-amount-sell": "Verkaufsmenge",
+				"chose-price": "Preis pro Einheit",
+				"create": "Handelsangebot erstellen",
+				"create-for": "Erstelle ein Angebot für",
+				"created-notif": "Angebot erstellt",
+				"edit": "Handelsangebot bearbeiten",
+				"market": "Angebotsmarkt",
+				"offer-taken": "Du hast das Angebot angenommen.",
+				"sell": "Verkaufen",
+				"spot": {
+					"create": "Accept a spot offer",
+					"price": "Spotpreis für",
+					"title": "Spotmarkt",
+					"warning": "Die Spotpreise ändern sich schnell. Bitte beachten Sie dies beim Handel auf dem Spotmarkt."
+				},
+				"title": "verfügbare Angebote"
+			}
+		},
+		"mining-factors": {
+			"title": "Mining factors"
+		},
+		"population-development": {
+			"title": "Bevölkerungsentwicklung"
+		},
+		"resource-development": {
+			"title": "Ressourcenentwicklung"
+		}
+	},
+	"population-development": {
+		"demand": {
+			"toolTip": "Die benötigte Bevölkerung"
+		},
+		"deposit": {
+			"toolTip": "Die verfügbare Bevölkerung"
+		},
+		"income": {
+			"toolTip": "Das prognostizierte Wachstum"
+		},
+		"utilization": {
+			"toolTip": "Die eingesetzte Bevölkerung"
+		}
+	},
+	"register": {
+		"email": {
+			"info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet.",
+			"will-not-provide": {
+				"message": "Ich möchte meine eMail Adresse nicht angeben.",
+				"tooltip": "Wählst du diese Option, kannst du dein Passwort nicht ändern."
+			}
+		},
+		"spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
+	},
+	"research": {
+		"level-details": "Details",
+		"no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
+		"not-possible": "Es gibt kein Labor oder es wird bereits geforscht.",
+		"title": "Forschung"
+	},
+	"resource-overlay": {
+		"capacity": {
+			"info": {
+				"population": "Der Wohnraum für AMOUNT Menschen wird noch TICKS Ticks ausreichen",
+				"population-growth-warning": "Die Bevölkerung hat den Wohnraum ausgeschöpft.",
+				"resource": "Der Lagerplatz für AMOUNT RESOURCE_NAME wird noch TICKS Ticks ausreichen"
+			}
+		},
+		"costs": {
+			"population": "Die Anzahl der benötigten Arbeitskräfte.",
+			"toolTip": "Die Kosten"
+		},
+		"deposit": {
+			"population": "Die Gesamtbevölkerung.",
+			"tick": "Die Zeit wird von dir nicht beeinflusst.",
+			"toolTip": "Die gelagerten Ressourcen"
+		},
+		"income": {
+			"population": "Wenn der Wert negativ ist, benötigt deine Bevölkerung mehr Wohnraum.",
+			"tick": "Die Zeit wird von dir nicht beeinflusst.",
+			"toolTip": "Das Einkommen"
+		}
+	},
+	"resources": {
+		"manpower": {
+			"title": "Mitarbeiter"
+		},
+		"materials": {
+			"title": "Materialien"
+		},
+		"ticks-to-done": "benötigte Ticks"
+	},
+	"screen-size-warning": {
+		"close": "Schließen",
+		"message": "",
+		"remember": "Einstellung merken"
+	},
+	"shipyard": {
+		"constructions": {
+			"build": {
+				"already-in-use": "Es wird bereits gebaut",
+				"nothing-to-do": "Keine Schiffe ausgewählt",
+				"start-building": "Baue die Flotte",
+				"too-expensive": "Auftrag zu teuer"
+			},
+			"capacity": {
+				"title": "Tonnage"
+			},
+			"fleet-state": "Flottenstatus",
+			"fleet-to-repair": "Flotte im Dock",
+			"title": "Schiffsbau",
+			"weapon-amount-by-alignment": {
+				"title": "Bewaffnung"
+			}
+		},
+		"create-new-class": "Neue Klasse erzeugen",
+		"fitting": {
+			"ammunition": {
+				"remember": "Wähle Munition für die Werfer aus.",
+				"title": "Munition"
+			},
+			"armor": {
+				"title": "Panzerung"
+			},
+			"electronic-warfare": {
+				"title": "Elektronische Kampfführung"
+			},
+			"hull": {
+				"title": "Rumpf"
+			},
+			"not-selected": {
+				"mandatory": {
+					"hull": "Wähle einen Rumpf.",
+					"propulsion": "Wähle einen Antrieb."
+				},
+				"warship-needs": {
+					"ammunition": "Vergiss nicht die Munition für ein Kriegsschiff.",
+					"armor": "Vergiss nicht die Panzerung für ein Kriegsschiff.",
+					"eloka": "Vergiss nicht die Eloka für ein Kriegsschiff.",
+					"sidewall": "Vergiss nicht die Seitenschilde für ein Kriegsschiff.",
+					"support": "Vergiss nicht die Unterstützungsmodule für ein Kriegsschiff.",
+					"weapons": "Vergiss nicht die Waffensysteme für ein Kriegsschiff."
+				}
+			},
+			"offensive": {
+				"title": "Waffensysteme"
+			},
+			"propulsion": {
+				"title": "Antrieb"
+			},
+			"sidewall": {
+				"title": "Seitenschild"
+			},
+			"singular-module": {
+				"title": "Basismodule"
+			},
+			"support": {
+				"title": "Unterstützungsmodule"
+			},
+			"weapon-for": {
+				"weaponType": {
+					"BEAM": "Gun",
+					"COUNTER_MISSILE": "Launcher",
+					"MISSILE": "Launcher",
+					"POINT_DEFENSE": "Gun"
+				}
+			}
+		},
+		"hull-capacities": "Rumpfkapazität",
+		"hull": {
+			"type": {
+				"AE": "Munitionsschiff",
+				"AR": "Werkstattschiff",
+				"BB": "Schlachtschiff",
+				"BC": "Schlachtkreuzer",
+				"BCP": "Schlachtkreuzer (Gondelleger)",
+				"CA": "Schwerer Kreuzer",
+				"CL": "Leichter Kreuzer",
+				"CLAC": "LAC Träger",
+				"DD": "Zerstörer",
+				"DN": "Dreadnought",
+				"FAT": "Schneller Angriffstransporter",
+				"FG": "Fregatte",
+				"FR": "Frachter",
+				"LAC": "Leichtes Angriffsboot",
+				"SD": "Super Dreadnought",
+				"SDP": "Super Dreadnought (Gondelleger)",
+				"VT": "Korvette"
+			}
+		}
+	},
+	"spacecraft": {
+		"state": {
+			"msg": {
+				"needs-ammunition": "Munition benötigt",
+				"needs-repair": "Reparatur benötigt",
+				"not-active": "Inaktiv",
+				"not-operational": "Nicht betriebsbereit"
+			},
+			"title": {
+				"fleet": "Flotte",
+				"warShip": "Kriegsschiff"
+			}
+		}
+	},
+	"star-map": {
+		"notch": {
+			"action": {
+				"show-info": "Info",
+				"show-merge": "Transferiere Schiffe",
+				"show-move": "Flotten bewegen",
+				"show-transport": "Transport"
+			},
+			"deselect": "Auswahl aufheben"
+		},
+		"universe-map": {
+			"loading-spinner-message": "Lade Sternenkarte..."
+		}
+	},
+	"tab": {
+		"admin": {
+			"do-tick": "Tick",
+			"statistics": "Statistische Daten",
+			"translations": "Übersetzungen"
+		},
+		"alliance": {
+			"create": "Gründe eine Allianz",
+			"dashboard": "Übersicht",
+			"forum": "Forum",
+			"list": "Allianzliste",
+			"members-list": "Mitglieder"
+		},
+		"expansion": {
+			"organize": "Expansion planen",
+			"view": "Expansion anzeigen"
+		},
+		"fleet": {
+			"dashboard": "Übersicht",
+			"split": "Detachment"
+		},
+		"journal": {
+			"battles": "Kampfberichte",
+			"dashboard": "Übersicht",
+			"jobs": "Jobberichte",
+			"movements": "Flottenbewegungen"
+		},
+		"planetary": {
+			"dashboard": "Übersicht",
+			"ground-constructions": "Gebäude",
+			"jobs": "Jobs",
+			"marketplace": "Marktplatz",
+			"shipyard": "Werft"
+		},
+		"research": {
+			"available": "Verfügbare Forschungen",
+			"tech-tree": "Tech tree"
+		},
+		"shipyard": {
+			"fitting": {
+				"modify": "Ausrüstung bearbeiten",
+				"view": "Ausrüstung anzeigen"
+			}
+		},
+		"star-map": {
+			"star-map": "Karte des Sternensystems",
+			"universe-map": "Sternenkarte"
+		},
+		"stratOps": {
+			"mission-administration": "Missionsplanung",
+			"mission-overview": "Missionsüberblick"
+		},
+		"transportation": {
+			"humans": "Bevölkerung",
+			"resources": "Ressourcen"
+		}
+	},
+	"tick": {
+		"current": "Aktueller Tick",
+		"title": "Tick"
+	},
+	"translation": {
+		"designated": {
+			"language": "designierte Sprache"
+		},
+		"idTranslatable": "idTranslatable",
+		"no-change-reference-translation": "Die Übersetzung in der Referenzsprache kann nicht angepasst werden",
+		"reference": {
+			"language": "Referenzsprache"
+		},
+		"target": "Übersetzungsziel",
+		"text": {
+			"title": "Übersetzter Text"
+		},
+		"type": "Art"
+	},
+	"transport": {
+		"manual": {
+			"transfer-btn": {
+				"title": "Transferiere Ressourcen",
+				"tooltip": "Transferiere die ausgewählten Ressourcen"
+			}
+		}
+	},
+	"transportation": {
+		"amount": {
+			"delivery": {
+				"caption": "Lieferung"
+			},
+			"demand": {
+				"caption": "Bedarf"
+			}
+		},
+		"human-resources": {
+			"help": "Wähle den Bedarf und die Liefermöglichkeiten je Planet"
+		},
+		"resources": {
+			"help": "Wähle den Bedarf und die Liefermöglichkeiten je Planet"
+		}
+	},
+	"tutorial": {
+		"trigger": {
+			"scope-selector": "Tutorial"
+		}
+	},
+	"wiki": {
+		"article": {
+			"create": {
+				"button": "Speichern",
+				"menu-entry": "Erstelle neuen Artikel",
+				"title": "Titel"
+			},
+			"display": {
+				"author": "Autor",
+				"menu-entry": "Lesen",
+				"revision": "Revision"
+			},
+			"edit": {
+				"button": "Speichern",
+				"menu-entry": "Bearbeiten"
+			}
+		},
+		"header": {
+			"search-wiki": {
+				"label": "Wiki durchsuchen"
+			}
+		},
+		"home": {
+			"menu-entry": "Hauptseite"
+		},
+		"selection": {
+			"content": {
+				"menu-entry": "Artikel"
+			},
+			"orga": {
+				"menu-entry": "Orga"
+			}
+		}
+	}
 }

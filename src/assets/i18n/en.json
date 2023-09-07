@@ -1,835 +1,839 @@
 {
-  "": "",
-  "action": {
-    "clear": "Clear",
-    "filter": "Filter",
-    "submit": "Submit"
-  },
-  "alliance": {
-    "create": {
-      "code": "Alliance tag",
-      "name": "Alliance name",
-      "submit": "Found",
-      "title": "Found an alliance"
-    },
-    "founder": "Founder",
-    "members": "Members",
-    "no-applicants": "No applicants"
-  },
-  "amount-shifter": {
-    "all": "All",
-    "hundred": "100",
-    "thousand": "1000"
-  },
-  "burger-menu": {
-    "external-star-map-manager": "External star map",
-    "take-a-tour": "Take a tour",
-    "wiki": "Wiki"
-  },
-  "chats": {
-    "title": "Chats"
-  },
-  "colonizations": {
-    "finished": {
-      "nothing": "No finished colonizations",
-      "title": "Finished colonizations"
-    }
-  },
-  "combat-arena": {
-    "tooltip": {
-      "warship-state": {
-        "active": "Combative",
-        "destroyed": "Destroyed",
-        "incapacitated": "Incapacitated"
-      }
-    }
-  },
-  "enum": {
-    "abbrev": {
-      "alignmentType": {
-        "BATTLE_ALIGNMENT": "B ALIGN",
-        "CHASE_ALIGNMENT": "C ALIGN"
-      },
-      "hullType": {
-        "AE": "AE",
-        "AR": "AR",
-        "BB": "BB",
-        "BC": "BC",
-        "BCP": "BC(P)",
-        "CA": "CA",
-        "CL": "CL",
-        "CLAC": "CLAC",
-        "DD": "DD",
-        "DN": "DN",
-        "FAT": "FAT",
-        "FG": "FG",
-        "FR": "FR",
-        "LAC": "LAC",
-        "SD": "SD",
-        "SDP": "SD(P)",
-        "VT": "VT"
-      },
-      "weaponAlignment": {
-        "BOW": "Bow",
-        "BROADSIDE": "Broadside",
-        "STERN": "Stern"
-      },
-      "weaponType": {
-        "BEAM": "B",
-        "COUNTER_MISSILE": "CM",
-        "MISSILE": "M",
-        "POINT_DEFENSE": "PD"
-      }
-    },
-    "name": {
-      "alignmentType": {
-        "BATTLE_ALIGNMENT": "Battle alignment",
-        "CHASE_ALIGNMENT": "Chase alignment"
-      },
-      "hullType": {
-        "AE": "Ammunition Ship",
-        "AR": "Repair Ship",
-        "BB": "Battleship",
-        "BC": "Battlecruiser",
-        "BCP": "Battlecruiser (Podlayer)",
-        "CA": "Heavy Cruiser",
-        "CL": "Light Cruiser",
-        "CLAC": "LAC Carrier",
-        "DD": "Destroyer",
-        "DN": "Dreadnought",
-        "FAT": "Fast attack Transport",
-        "FG": "Frigate",
-        "FR": "Freighter",
-        "LAC": "Light Attack Craft",
-        "SD": "Super Dreadnought",
-        "SDP": "Super Dreadnought (Podlayer)",
-        "VT": "Corvette"
-      },
-      "weaponAlignment": {
-        "BOW": "Bow",
-        "BROADSIDE": "Broadside",
-        "STERN": "Stern"
-      },
-      "weaponType": {
-        "BEAM": "Beam",
-        "COUNTER_MISSILE": "Counter missile",
-        "MISSILE": "Missile",
-        "POINT_DEFENSE": "Point defense"
-      }
-    }
-  },
-  "expansion": {
-    "organize": {
-      "spinner-message": {
-        "wait": "Gathering star systems..."
-      }
-    }
-  },
-  "filter": "Filter",
-  "fleet": {
-    "composition": {
-      "class": {
-        "title": "Class"
-      },
-      "detachment": {
-        "add": "Add detachment",
-        "hint": "Add ships and fleet name",
-        "placeholder": "Type fleet name",
-        "pool": {
-          "name": "Reserve fleet",
-          "tooltip": "Mothballed ships can be made operational and reactivated at any time."
-        },
-        "remove": "Remove detachment",
-        "submit": {
-          "action": "Submit",
-          "disabled-hint": "There must be at least two locked detachments."
-        },
-        "title": "Create detachments",
-        "tooltip": "Add next detachment"
-      },
-      "title": "Fleet composition",
-      "warShip-names": "Warships",
-      "warship": {
-        "retire": {
-          "submit": "Retire warship"
-        },
-        "title": "Warship"
-      }
-    },
-    "display": {
-      "move": {
-        "movement": {
-          "title": "Fleet movement"
-        },
-        "orbit": {
-          "title": "Fleet anchorage"
-        }
-      },
-      "population": {
-        "title": "Crew"
-      }
-    },
-    "finished-movement": {
-      "nothing": "No finished movements",
-      "title": "Finished movements"
-    },
-    "modules": {
-      "ammunition-roster": {
-        "title": "Missile ammunition"
-      }
-    },
-    "ongoing-movement": {
-      "nothing": "No marching orders",
-      "title": "Arrivals"
-    },
-    "retire": {
-      "submit": "Retire fleet"
-    }
-  },
-  "fleets": {
-    "movement": {
-      "no-ftl-present": "No fleets with Warshawski sail present.",
-      "select-for-cancel": {
-        "checkbox": "Select for flight back",
-        "title": "Cancel flight"
-      },
-      "select-for-move": {
-        "checkbox": "Select for flight",
-        "no-ftl": {
-          "title": "Not every ship has a Warshawski sail installed"
-        },
-        "title": "Select the fleet which should move to"
-      }
-    }
-  },
-  "forum": {
-    "thread": {
-      "in-forum": "Threads in forum",
-      "messages-in-thread": "Messages in thread"
-    }
-  },
-  "jobs": {
-    "cancel-btn": "Cancel the job",
-    "finished-icon": "Finished job",
-    "level": "Level",
-    "nothing": {
-      "active": "No active jobs",
-      "finished": "No finished jobs"
-    },
-    "priority": "Priority",
-    "ticks-left": "Ticks",
-    "title": {
-      "active": "Active jobs",
-      "finished": "Finished jobs"
-    },
-    "transports": {
-      "human-resources": {
-        "title": "Humans"
-      },
-      "nothing": "No transports",
-      "resources": {
-        "title": "Resources"
-      },
-      "title": "Transportation"
-    }
-  },
-  "journal": {
-    "commissioned-operationals": {
-      "finished": {
-        "nothing": "No activated operationals",
-        "title": "Activated operationals"
-      },
-      "pending": {
-        "nothing": "No pending operationals",
-        "title": "Awaiting activation"
-      },
-      "title": {
-        "constructions": "Constructions",
-        "warships": "Warships"
-      }
-    },
-    "missions": {
-      "title": "After action report"
-    },
-    "title": {
-      "content-area": {
-        "fleet": "Fleet report",
-        "infrastructure": "Infrastructure report",
-        "jobs": "Job Report",
-        "transportation-trade": "Carrier report"
-      }
-    },
-    "trade": {
-      "arrival": "Delivery arrived",
-      "expected-arrival": "Arrival at tick",
-      "nothing": "No deliveries",
-      "present-title": "Current deliveries",
-      "title": "Deliveries"
-    }
-  },
-  "mining-factor": {
-    "tooltip": {
-      "construction": "Describes the difficulties of building construction, e.g. the strength of the soil.",
-      "credits": "The general ability of the planet to create positive gross domestic product.",
-      "heavy_metals": "The possibility of the planet to mine heavier materials.",
-      "metalore": "The possibility of the planet to mine basic ores.",
-      "orbital_construction": "The ability of the planet to support orbital shipyards.",
-      "population": "The ability of the planet to feed humans.",
-      "rare_elements": "The possibility of the planet to mine radioactive and rare-earth elements.",
-      "research": "The ability of the planet to support the process of gaining knowledge."
-    }
-  },
-  "mission": {
-    "CONVOY_PROTECTION": {
-      "title": "Convoy protection"
-    },
-    "PIRATE_RAID": {
-      "detection-phrase": "is in trouble, Sir.",
-      "entry-phrase": "It looks like a raid from the",
-      "phase": {
-        "APPROACH": "They are approaching the planet.",
-        "BATTLE": "There was a combat.",
-        "LEAVE_ORBIT": "They left the orbit.",
-        "NO_BATTLE": "They were able to enter orbit without a fight.",
-        "RAID": "They took everything valuable with them.",
-        "SPAWN": "The sensor array recently caught a transition.",
-        "WAIT": "It seams, they are watching.",
-        "WITHDRAW": "We lost contact.",
-        "multi": {
-          "BATTLE-RAID": "It came to a fight and we were defeated. The looting was devastating.",
-          "BATTLE-RAID-LEAVE_ORBIT": "It came to a fight and we were defeated. The looting was devastating, they left afterwards.",
-          "NO_BATTLE-RAID": "Nobody stood in the way of the attackers. They plundered everything.",
-          "NO_BATTLE-RAID-LEAVE_ORBIT": "Nobody stood in the way of the attackers. They plundered everything and left without a shot.",
-          "SPAWN-APPROACH": "A transition has been caught, the ships are approaching the planet.",
-          "SPAWN-WAIT": "A transition has been caught, but they do nothing.",
-          "SPAWN-WITHDRAW": "A transition was caught, but after that we lost contact."
-        },
-        "we-lost": "Our forces have been destroyed.",
-        "we-won": "Our forces destroyed the attackers."
-      },
-      "title": "Raid"
-    },
-    "card": {
-      "details": "Details",
-      "started": "Started in tick",
-      "title": "Mission"
-    },
-    "convoy": {
-      "attack": {
-        "predicate": {
-          "BEGIN_OF_MISSION": "The cargo ships were attacked at the beginning of their journey.",
-          "END_OF_MISSION": "The cargo ships were attacked at the end of their journey."
-        }
-      },
-      "text": {
-        "content": {
-          "predicate": {
-            "has-load": "With a load of"
-          }
-        },
-        "percentOfCargoLost": {
-          "no-ransom": "Ransoms have been refused, people have died and ships have been damaged.",
-          "predicate": {
-            "loss": "With a loss of",
-            "lossPercentage": "percent of the value of the charge is lost.",
-            "without-loss": "No losses to complain about."
-          },
-          "ransom": "Your government has paid ransom to save the ships and the crews."
-        },
-        "withdraw": {
-          "on-contact": "They wanted to try, but then fled.",
-          "on-sight": "They fled at the sight of the escort."
-        }
-      },
-      "title": "Convoy"
-    },
-    "create": {
-      "no-ftl-ships": "There are no more FTL ships in the reserve fleet.",
-      "no-pooled-ships": "There are no more ships in the reserve fleet.",
-      "select": {
-        "planet": "Chose a venue",
-        "ships": "Chose the ships",
-        "type": "Chose mission type"
-      },
-      "submit": "Start the mission",
-      "title": "Mission Setup",
-      "toggle": "Plan a mission"
-    },
-    "delete": {
-      "submit": "Stop mission"
-    },
-    "legend": {
-      "colonized-systems": "Own system",
-      "colonized-systems-by-npc": "Great power",
-      "colonized-systems-by-other": "Foreign system",
-      "highlighted": "highlighted",
-      "multi-mission": "Multiple ongoing mission",
-      "no-mission": "No ongoing mission",
-      "select-a-system": "Chose a system",
-      "title": "Legend"
-    },
-    "report": {
-      "nothing": "No incidents, sir."
-    },
-    "we-lost": "We lost all.",
-    "we-won": "We won."
-  },
-  "path": {
-    "button": {
-      "admin": "Game admin area",
-      "imprint": "Imprint",
-      "login": "Login",
-      "logout": "Logout",
-      "profile": "Profile",
-      "register": "Register"
-    },
-    "menu": {
-      "admin": "Admin Area",
-      "alliance": "Alliance",
-      "chat": "Chat",
-      "colonization": "Colonizations",
-      "fleet": "Fleets",
-      "forum": "Forum",
-      "home": "Home",
-      "journal": "Journal",
-      "login": "Login",
-      "planets": "Planets",
-      "player": "Empires",
-      "profile": "Profile",
-      "register": "Register",
-      "researches": "Researches",
-      "ship-classes": "Ship yard",
-      "star-map": "Star map",
-      "stratOps": "Strategic Operations",
-      "transportation": "Transportation"
-    }
-  },
-  "planetary": {
-    "constructions": {
-      "build": {
-        "filter-expansive-constructions": "Ignore too expensive constructions",
-        "has-level": "current level",
-        "is-new": "new construction",
-        "must-do-research": "Level capped by research",
-        "not-possible": "Job running",
-        "nothing-to-show": "Nothing selected",
-        "start-building": "Start job",
-        "too-expensive": "Job too expensive"
-      },
-      "building": {
-        "CAPACITY": {
-          "POPULATION": "NAME provides housing for AMOUNT people."
-        },
-        "PRODUCE": {
-          "CONSTRUCTION": "The construction yard generates AMOUNT industry points.",
-          "ORBITAL_CONSTRUCTION": "The shipyard generates AMOUNT orbital industry points.",
-          "POPULATION": "The hospital improves the health care and life expectancy of your population. Statistical considerations show that AMOUNT people can be cared for.",
-          "RESEARCH": "The laboratory generates AMOUNT research points.",
-          "RESOURCE": "NAME creates AMOUNT units WHAT."
-        },
-        "REFINEMENT": {
-          "POPULATION": "NAME trains up to AMOUNT PRODUCT. The candidates should already have completed training as an EDUCT."
-        }
-      },
-      "info": {
-        "title": "Details"
-      },
-      "level": {
-        "current": "build",
-        "operational": "active",
-        "title": "Construction level"
-      },
-      "title": "Ground constructions"
-    },
-    "fleets-in-orbit": {
-      "not-present": "No fleets in orbit",
-      "percentage-message": "Combat readiness",
-      "repair-btn": {
-        "already-in-use": "Shipyard already in use",
-        "is-in-repair": "Under construction",
-        "no-repair-needed": "No need of repair",
-        "no-shipyard": "No shipyard on site",
-        "start-job": "Start repair job"
-      },
-      "repair-job-started-message": "The fleet was sent to the dock",
-      "title": "Fleets in orbit",
-      "upgrade-btn": {
-        "not-needed": "Upgrade not necessary",
-        "start-job": "Upgrade ships to new flight"
-      },
-      "upgrade-job-started-message": "Upgrade to latest flights started"
-    },
-    "marketplace": {
-      "history": {
-        "amount": {
-          "title": "Traded amount"
-        },
-        "price": {
-          "title": "Price history"
-        }
-      },
-      "offer": {
-        "action": {
-          "abort": "Cancel",
-          "edit": "Edit",
-          "release": "Release for market",
-          "take": "Take"
-        },
-        "buy": "Buy",
-        "chose-amount-buy": "Amount to buy",
-        "chose-amount-sell": "Amount to sell",
-        "chose-price": "Price per unit",
-        "create": "Create a trade offer",
-        "create-for": "Create an offer about",
-        "created-notif": "Offer released",
-        "edit": "Edit the offer",
-        "market": "Offer market",
-        "offer-taken": "You accepted the offer.",
-        "sell": "Sell",
-        "spot": {
-          "create": "Accept a spot offer",
-          "price": "Spot price for",
-          "title": "Spot market",
-          "warning": "Spot prices are changing fast, please keep that in mind while trading at the spot market."
-        },
-        "title": "Available offers"
-      }
-    },
-    "mining-factors": {
-      "title": "Mining factors"
-    },
-    "population-development": {
-      "title": "Population development"
-    },
-    "resource-development": {
-      "title": "Resource development"
-    }
-  },
-  "population-development": {
-    "demand": {
-      "toolTip": "The needed people"
-    },
-    "deposit": {
-      "toolTip": "The available people"
-    },
-    "income": {
-      "toolTip": "The projected growth"
-    },
-    "utilization": {
-      "toolTip": "The deployed population"
-    }
-  },
-  "register": {
-    "email": {
-      "info": "Your eMail address will be used only for resetting the password.",
-      "will-not-provide": {
-        "message": "I don't want to provide my eMail address.",
-        "tooltip": "If you chose this option, you can't change the password later."
-      }
-    },
-    "spinner-message": "Please wait while you navy is fighting for you."
-  },
-  "research": {
-    "level-details": "Details",
-    "no-available": "There are currently no researches available.",
-    "not-possible": "There is no laboratory or it is already in use.",
-    "title": "Research"
-  },
-  "resource-overlay": {
-    "capacity": {
-      "info": {
-        "population": "The living space for AMOUNT people will be enough for TICKS ticks",
-        "population-growth-warning": "The population is at the limit of the living space and will not growth.",
-        "resource": "The storage space for AMOUNT RESOURCE_NAME will still be enough for TICKS ticks"
-      }
-    },
-    "costs": {
-      "population": "The amount of workers which are needed.",
-      "toolTip": "The costs"
-    },
-    "deposit": {
-      "population": "The total population.",
-      "tick": "The time flows independently from you.",
-      "toolTip": "The deposit"
-    },
-    "income": {
-      "population": "If this is below zero, your population needs more housings.",
-      "tick": "The time flows independently from you.",
-      "toolTip": "The income"
-    }
-  },
-  "resources": {
-    "manpower": {
-      "title": "Manpower"
-    },
-    "materials": {
-      "title": "Materials"
-    },
-    "ticks-to-done": "Ticks needed"
-  },
-  "screen-size-warning": {
-    "close": "Close",
-    "remember": "Remember setting"
-  },
-  "shipyard": {
-    "constructions": {
-      "build": {
-        "already-in-use": "Shipyard already in use",
-        "nothing-to-do": "No ships selected",
-        "start-building": "Start construction of warships",
-        "too-expensive": "Job is too expensive"
-      },
-      "capacity": {
-        "title": "Tonnage"
-      },
-      "fleet-state": "Fleet state",
-      "fleet-to-repair": "Fleet in dock",
-      "title": "Shipyard constructions",
-      "weapon-amount-by-alignment": {
-        "title": "Weaponry"
-      }
-    },
-    "create-new-class": "Create new class",
-    "fitting": {
-      "ammunition": {
-        "remember": "Set up ammunition for launchers.",
-        "title": "Ammunition loadout"
-      },
-      "armor": {
-        "title": "Armor"
-      },
-      "electronic-warfare": {
-        "title": "Electronic warfare"
-      },
-      "hull": {
-        "title": "Hull"
-      },
-      "not-selected": {
-        "mandatory": {
-          "hull": "Select a hull.",
-          "propulsion": "Select a propulsion."
-        },
-        "warship-needs": {
-          "ammunition": "If you are creating a warship don't forget the ammunition.",
-          "armor": "If you are creating a warship don't forget the armor.",
-          "eloka": "If you are creating a warship don't forget the electronic warfare.",
-          "sidewall": "If you are creating a warship don't forget the sidewall.",
-          "support": "If you are creating a warship don't forget support modules.",
-          "weapons": "If you are creating a warship don't forget weapons."
-        }
-      },
-      "offensive": {
-        "title": "Offensive loadout"
-      },
-      "propulsion": {
-        "title": "Propulsion"
-      },
-      "sidewall": {
-        "title": "Sidewall"
-      },
-      "singular-module": {
-        "title": "Basic modules"
-      },
-      "support": {
-        "title": "Support loadout"
-      },
-      "weapon-for": {
-        "weaponType": {
-          "BEAM": "Gun",
-          "COUNTER_MISSILE": "Launcher",
-          "MISSILE": "Launcher",
-          "POINT_DEFENSE": "Gun"
-        }
-      }
-    },
-    "hull-capacities": "Construction capacities",
-    "hull": {
-      "type": {
-        "AE": "Ammunition Ship",
-        "AR": "Repair Ship",
-        "BB": "Battleship",
-        "BC": "Battlecruiser",
-        "BCP": "Battlecruiser (Podlayer)",
-        "CA": "Heavy Cruiser",
-        "CL": "Light Cruiser",
-        "CLAC": "LAC Carrier",
-        "DD": "Destroyer",
-        "DN": "Dreadnought",
-        "FAT": "Fast attack Transport",
-        "FG": "Frigate",
-        "FR": "Freighter",
-        "LAC": "Light Attack Craft",
-        "SD": "Super Dreadnought",
-        "SDP": "Super Dreadnought (Podlayer)",
-        "VT": "Corvette"
-      }
-    }
-  },
-  "spacecraft": {
-    "state": {
-      "msg": {
-        "needs-ammunition": "Ammunition needed",
-        "needs-repair": "Repair needed",
-        "not-active": "Inactive",
-        "not-operational": "Inoperational"
-      },
-      "title": {
-        "fleet": "Fleet",
-        "warShip": "Warship"
-      }
-    }
-  },
-  "star-map": {
-    "notch": {
-      "action": {
-        "show-info": "Info",
-        "show-merge": "Transfer ships",
-        "show-move": "Move fleets",
-        "show-transport": "Transport"
-      },
-      "deselect": "Deselect"
-    },
-    "universe-map": {
-      "loading-spinner-message": "Gather information for star map..."
-    }
-  },
-  "tab": {
-    "admin": {
-      "do-tick": "Tick",
-      "statistics": "Statistics",
-      "translations": "Translations"
-    },
-    "alliance": {
-      "create": "Found an alliance",
-      "dashboard": "Dashboard",
-      "forum": "Forum",
-      "list": "Alliance list",
-      "members-list": "Members"
-    },
-    "expansion": {
-      "organize": "Organize expansion",
-      "view": "View expansion"
-    },
-    "fleet": {
-      "dashboard": "Dashboard",
-      "split": "Detachment"
-    },
-    "journal": {
-      "battles": "Battle reports",
-      "dashboard": "Dashboard",
-      "jobs": "Job reports",
-      "movements": "Fleet movement reports"
-    },
-    "planetary": {
-      "dashboard": "Dashboard",
-      "ground-constructions": "Constructions",
-      "jobs": "Jobs",
-      "marketplace": "Marketplace",
-      "shipyard": "Shipyard"
-    },
-    "research": {
-      "available": "Available researches",
-      "tech-tree": "Tech tree"
-    },
-    "shipyard": {
-      "fitting": {
-        "modify": "Modify fitting",
-        "view": "Display fitting"
-      }
-    },
-    "star-map": {
-      "star-map": "Star system map",
-      "universe-map": "Star map"
-    },
-    "stratOps": {
-      "mission-administration": "Mission planning",
-      "mission-overview": "Mission overview"
-    },
-    "transportation": {
-      "humans": "People",
-      "resources": "Resources"
-    }
-  },
-  "tick": {
-    "current": "Current tick",
-    "title": "Tick"
-  },
-  "translation": {
-    "designated": {
-      "language": "Designated language"
-    },
-    "idTranslatable": "idTranslatable",
-    "no-change-reference-translation": "You cannot change the reference translation",
-    "reference": {
-      "language": "Reference language"
-    },
-    "target": "translation target",
-    "text": {
-      "title": "Translated text"
-    },
-    "type": "kind of"
-  },
-  "transport": {
-    "manual": {
-      "transfer-btn": {
-        "title": "Transfer resources",
-        "tooltip": "Transfer the selected resources"
-      }
-    }
-  },
-  "transportation": {
-    "amount": {
-      "delivery": {
-        "caption": "Delivery"
-      },
-      "demand": {
-        "caption": "Demand"
-      }
-    },
-    "human-resources": {
-      "help": "Select the demand and the possibility to deliver of every planet"
-    },
-    "resources": {
-      "help": "Select the demand and the possibility to deliver of every planet"
-    }
-  },
-  "tutorial": {
-    "trigger": {
-      "scope-selector": "Tutorial"
-    }
-  },
-  "wiki": {
-    "article": {
-      "create": {
-        "button": "Create article",
-        "menu-entry": "Create article",
-        "title": "Title"
-      },
-      "display": {
-        "author": "Author",
-        "menu-entry": "Read article",
-        "revision": "Revision"
-      },
-      "edit": {
-        "button": "Edit article",
-        "menu-entry": "Edit article"
-      }
-    },
-    "header": {
-      "search-wiki": {
-        "label": "Search in wiki"
-      }
-    },
-    "home": {
-      "menu-entry": "Home"
-    },
-    "selection": {
-      "content": {
-        "menu-entry": "Articles"
-      },
-      "orga": {
-        "menu-entry": "Orga"
-      }
-    }
-  }
+	"": "",
+	"action": {
+		"clear": "Clear",
+		"filter": "Filter",
+		"submit": "Submit"
+	},
+	"alliance": {
+		"create": {
+			"code": "Alliance tag",
+			"name": "Alliance name",
+			"submit": "Found",
+			"title": "Found an alliance"
+		},
+		"founder": "Founder",
+		"members": "Members",
+		"no-applicants": "No applicants"
+	},
+	"amount-shifter": {
+		"all": "All",
+		"hundred": "100",
+		"thousand": "1000"
+	},
+	"burger-menu": {
+		"external-star-map-manager": "External star map",
+		"take-a-tour": "Take a tour",
+		"wiki": "Wiki"
+	},
+	"chats": {
+		"title": "Chats"
+	},
+	"colonizations": {
+		"finished": {
+			"nothing": "No finished colonizations",
+			"title": "Finished colonizations"
+		}
+	},
+	"combat-arena": {
+		"tooltip": {
+			"warship-state": {
+				"active": "Combative",
+				"destroyed": "Destroyed",
+				"incapacitated": "Incapacitated"
+			}
+		}
+	},
+	"enum": {
+		"abbrev": {
+			"alignmentType": {
+				"BATTLE_ALIGNMENT": "B ALIGN",
+				"CHASE_ALIGNMENT": "C ALIGN"
+			},
+			"hullType": {
+				"AE": "AE",
+				"AR": "AR",
+				"BB": "BB",
+				"BC": "BC",
+				"BCP": "BC(P)",
+				"CA": "CA",
+				"CL": "CL",
+				"CLAC": "CLAC",
+				"DD": "DD",
+				"DN": "DN",
+				"FAT": "FAT",
+				"FG": "FG",
+				"FR": "FR",
+				"LAC": "LAC",
+				"SD": "SD",
+				"SDP": "SD(P)",
+				"VT": "VT"
+			},
+			"weaponAlignment": {
+				"BOW": "Bow",
+				"BROADSIDE": "Broadside",
+				"STERN": "Stern"
+			},
+			"weaponType": {
+				"BEAM": "B",
+				"COUNTER_MISSILE": "CM",
+				"MISSILE": "M",
+				"POINT_DEFENSE": "PD"
+			}
+		},
+		"name": {
+			"alignmentType": {
+				"BATTLE_ALIGNMENT": "Battle alignment",
+				"CHASE_ALIGNMENT": "Chase alignment"
+			},
+			"hullType": {
+				"AE": "Ammunition Ship",
+				"AR": "Repair Ship",
+				"BB": "Battleship",
+				"BC": "Battlecruiser",
+				"BCP": "Battlecruiser (Podlayer)",
+				"CA": "Heavy Cruiser",
+				"CL": "Light Cruiser",
+				"CLAC": "LAC Carrier",
+				"DD": "Destroyer",
+				"DN": "Dreadnought",
+				"FAT": "Fast attack Transport",
+				"FG": "Frigate",
+				"FR": "Freighter",
+				"LAC": "Light Attack Craft",
+				"SD": "Super Dreadnought",
+				"SDP": "Super Dreadnought (Podlayer)",
+				"VT": "Corvette"
+			},
+			"weaponAlignment": {
+				"BOW": "Bow",
+				"BROADSIDE": "Broadside",
+				"STERN": "Stern"
+			},
+			"weaponType": {
+				"BEAM": "Beam",
+				"COUNTER_MISSILE": "Counter missile",
+				"MISSILE": "Missile",
+				"POINT_DEFENSE": "Point defense"
+			}
+		}
+	},
+	"expansion": {
+		"organize": {
+			"spinner-message": {
+				"wait": "Gathering star systems..."
+			}
+		}
+	},
+	"filter": "Filter",
+	"fleet": {
+		"composition": {
+			"class": {
+				"title": "Class"
+			},
+			"detachment": {
+				"add": "Add detachment",
+				"hint": "Add ships and fleet name",
+				"placeholder": "Type fleet name",
+				"pool": {
+					"name": "Reserve fleet",
+					"tooltip": "Mothballed ships can be made operational and reactivated at any time."
+				},
+				"remove": "Remove detachment",
+				"submit": {
+					"action": "Submit",
+					"disabled-hint": "There must be at least two locked detachments."
+				},
+				"title": "Create detachments",
+				"tooltip": "Add next detachment"
+			},
+			"title": "Fleet composition",
+			"warShip-names": "Warships",
+			"warship": {
+				"retire": {
+					"submit": "Retire warship"
+				},
+				"title": "Warship"
+			}
+		},
+		"display": {
+			"move": {
+				"movement": {
+					"title": "Fleet movement"
+				},
+				"orbit": {
+					"title": "Fleet anchorage"
+				}
+			},
+			"population": {
+				"title": "Crew"
+			}
+		},
+		"finished-movement": {
+			"nothing": "No finished movements",
+			"title": "Finished movements"
+		},
+		"modules": {
+			"ammunition-roster": {
+				"title": "Missile ammunition"
+			}
+		},
+		"ongoing-movement": {
+			"nothing": "No marching orders",
+			"title": "Arrivals"
+		},
+		"retire": {
+			"submit": "Retire fleet"
+		}
+	},
+	"fleets": {
+		"movement": {
+			"no-ftl-present": "No fleets with Warshawski sail present.",
+			"select-for-cancel": {
+				"checkbox": "Select for flight back",
+				"title": "Cancel flight"
+			},
+			"select-for-move": {
+				"checkbox": "Select for flight",
+				"no-ftl": {
+					"title": "Not every ship has a Warshawski sail installed"
+				},
+				"title": "Select the fleet which should move to"
+			}
+		}
+	},
+	"forum": {
+		"thread": {
+			"in-forum": "Threads in forum",
+			"messages-in-thread": "Messages in thread"
+		}
+	},
+	"jobs": {
+		"cancel-btn": "Cancel the job",
+		"finished-icon": "Finished job",
+		"level": "Level",
+		"nothing": {
+			"active": "No active jobs",
+			"finished": "No finished jobs"
+		},
+		"priority": "Priority",
+		"ticks-left": "Ticks",
+		"title": {
+			"active": "Active jobs",
+			"finished": "Finished jobs"
+		},
+		"transports": {
+			"human-resources": {
+				"title": "Humans"
+			},
+			"nothing": "No transports",
+			"resources": {
+				"title": "Resources"
+			},
+			"title": "Transportation"
+		}
+	},
+	"journal": {
+		"commissioned-operationals": {
+			"finished": {
+				"nothing": "No activated operationals",
+				"title": "Activated operationals"
+			},
+			"pending": {
+				"nothing": "No pending operationals",
+				"title": "Awaiting activation"
+			},
+			"title": {
+				"constructions": "Constructions",
+				"warships": "Warships"
+			}
+		},
+		"missions": {
+			"title": "After action report"
+		},
+		"title": {
+			"content-area": {
+				"fleet": "Fleet report",
+				"infrastructure": "Infrastructure report",
+				"jobs": "Job Report",
+				"transportation-trade": "Carrier report"
+			}
+		},
+		"trade": {
+			"arrival": "Delivery arrived",
+			"expected-arrival": "Arrival at tick",
+			"nothing": "No deliveries",
+			"present-title": "Current deliveries",
+			"title": "Deliveries"
+		}
+	},
+	"mining-factor": {
+		"tooltip": {
+			"construction": "Describes the difficulties of building construction, e.g. the strength of the soil.",
+			"credits": "The general ability of the planet to create positive gross domestic product.",
+			"heavy_metals": "The possibility of the planet to mine heavier materials.",
+			"metalore": "The possibility of the planet to mine basic ores.",
+			"orbital_construction": "The ability of the planet to support orbital shipyards.",
+			"population": "The ability of the planet to feed humans.",
+			"rare_elements": "The possibility of the planet to mine radioactive and rare-earth elements.",
+			"research": "The ability of the planet to support the process of gaining knowledge."
+		}
+	},
+	"mission": {
+		"CONVOY_PROTECTION": {
+			"title": "Convoy protection"
+		},
+		"PIRATE_RAID": {
+			"detection-phrase": "is in trouble, Sir.",
+			"entry-phrase": "It looks like a raid from the",
+			"phase": {
+				"APPROACH": "They are approaching the planet.",
+				"BATTLE": "There was a combat.",
+				"LEAVE_ORBIT": "They left the orbit.",
+				"NO_BATTLE": "They were able to enter orbit without a fight.",
+				"RAID": "They took everything valuable with them.",
+				"SPAWN": "The sensor array recently caught a transition.",
+				"WAIT": "It seams, they are watching.",
+				"WITHDRAW": "We lost contact.",
+				"multi": {
+					"BATTLE-RAID": "It came to a fight and we were defeated. The looting was devastating.",
+					"BATTLE-RAID-LEAVE_ORBIT": "It came to a fight and we were defeated. The looting was devastating, they left afterwards.",
+					"NO_BATTLE-RAID": "Nobody stood in the way of the attackers. They plundered everything.",
+					"NO_BATTLE-RAID-LEAVE_ORBIT": "Nobody stood in the way of the attackers. They plundered everything and left without a shot.",
+					"SPAWN-APPROACH": "A transition has been caught, the ships are approaching the planet.",
+					"SPAWN-WAIT": "A transition has been caught, but they do nothing.",
+					"SPAWN-WITHDRAW": "A transition was caught, but after that we lost contact."
+				},
+				"we-lost": "Our forces have been destroyed.",
+				"we-won": "Our forces destroyed the attackers."
+			},
+			"title": "Raid"
+		},
+		"card": {
+			"details": "Details",
+			"started": "Started in tick",
+			"title": "Mission"
+		},
+		"convoy": {
+			"attack": {
+				"predicate": {
+					"BEGIN_OF_MISSION": "The cargo ships were attacked at the beginning of their journey.",
+					"END_OF_MISSION": "The cargo ships were attacked at the end of their journey."
+				}
+			},
+			"text": {
+				"content": {
+					"predicate": {
+						"has-load": "With a load of"
+					}
+				},
+				"percentOfCargoLost": {
+					"no-ransom": "Ransoms have been refused, people have died and ships have been damaged.",
+					"predicate": {
+						"loss": "With a loss of",
+						"lossPercentage": "percent of the value of the charge is lost.",
+						"without-loss": "No losses to complain about."
+					},
+					"ransom": "Your government has paid ransom to save the ships and the crews."
+				},
+				"withdraw": {
+					"on-contact": "They wanted to try, but then fled.",
+					"on-sight": "They fled at the sight of the escort."
+				}
+			},
+			"title": "Convoy"
+		},
+		"create": {
+			"no-ftl-ships": "There are no more FTL ships in the reserve fleet.",
+			"no-pooled-ships": "There are no more ships in the reserve fleet.",
+			"select": {
+				"planet": "Chose a venue",
+				"ships": "Chose the ships",
+				"type": "Chose mission type"
+			},
+			"submit": "Start the mission",
+			"title": "Mission Setup",
+			"toggle": "Plan a mission"
+		},
+		"delete": {
+			"submit": "Stop mission"
+		},
+		"legend": {
+			"colonized-systems": "Own system",
+			"colonized-systems-by-npc": "Great power",
+			"colonized-systems-by-other": "Foreign system",
+			"highlighted": "highlighted",
+			"multi-mission": "Multiple ongoing mission",
+			"no-mission": "No ongoing mission",
+			"select-a-system": "Chose a system",
+			"title": "Legend"
+		},
+		"report": {
+			"nothing": "No incidents, sir."
+		},
+		"spinner": {
+			"wait-to-load": "Mission map will be load."
+		},
+		"we-lost": "We lost all.",
+		"we-won": "We won."
+	},
+	"path": {
+		"button": {
+			"admin": "Game admin area",
+			"imprint": "Imprint",
+			"login": "Login",
+			"logout": "Logout",
+			"profile": "Profile",
+			"register": "Register"
+		},
+		"menu": {
+			"admin": "Admin Area",
+			"alliance": "Alliance",
+			"chat": "Chat",
+			"colonization": "Colonizations",
+			"fleet": "Fleets",
+			"forum": "Forum",
+			"home": "Home",
+			"journal": "Journal",
+			"login": "Login",
+			"planets": "Planets",
+			"player": "Empires",
+			"profile": "Profile",
+			"register": "Register",
+			"researches": "Researches",
+			"ship-classes": "Ship yard",
+			"star-map": "Star map",
+			"stratOps": "Strategic Operations",
+			"transportation": "Transportation"
+		}
+	},
+	"planetary": {
+		"constructions": {
+			"build": {
+				"filter-expansive-constructions": "Ignore too expensive constructions",
+				"has-level": "current level",
+				"is-new": "new construction",
+				"must-do-research": "Level capped by research",
+				"not-possible": "Job running",
+				"nothing-to-show": "Nothing selected",
+				"start-building": "Start job",
+				"too-expensive": "Job too expensive"
+			},
+			"building": {
+				"CAPACITY": {
+					"POPULATION": "NAME provides housing for AMOUNT people."
+				},
+				"PRODUCE": {
+					"CONSTRUCTION": "The construction yard generates AMOUNT industry points.",
+					"ORBITAL_CONSTRUCTION": "The shipyard generates AMOUNT orbital industry points.",
+					"POPULATION": "The hospital improves the health care and life expectancy of your population. Statistical considerations show that AMOUNT people can be cared for.",
+					"RESEARCH": "The laboratory generates AMOUNT research points.",
+					"RESOURCE": "NAME creates AMOUNT units WHAT."
+				},
+				"REFINEMENT": {
+					"POPULATION": "NAME trains up to AMOUNT PRODUCT. The candidates should already have completed training as an EDUCT."
+				}
+			},
+			"info": {
+				"title": "Details"
+			},
+			"level": {
+				"current": "build",
+				"operational": "active",
+				"title": "Construction level"
+			},
+			"title": "Ground constructions"
+		},
+		"fleets-in-orbit": {
+			"not-present": "No fleets in orbit",
+			"percentage-message": "Combat readiness",
+			"repair-btn": {
+				"already-in-use": "Shipyard already in use",
+				"is-in-repair": "Under construction",
+				"no-repair-needed": "No need of repair",
+				"no-shipyard": "No shipyard on site",
+				"start-job": "Start repair job"
+			},
+			"repair-job-started-message": "The fleet was sent to the dock",
+			"title": "Fleets in orbit",
+			"upgrade-btn": {
+				"not-needed": "Upgrade not necessary",
+				"start-job": "Upgrade ships to new flight"
+			},
+			"upgrade-job-started-message": "Upgrade to latest flights started"
+		},
+		"marketplace": {
+			"history": {
+				"amount": {
+					"title": "Traded amount"
+				},
+				"price": {
+					"title": "Price history"
+				}
+			},
+			"offer": {
+				"action": {
+					"abort": "Cancel",
+					"edit": "Edit",
+					"release": "Release for market",
+					"take": "Take"
+				},
+				"buy": "Buy",
+				"chose-amount-buy": "Amount to buy",
+				"chose-amount-sell": "Amount to sell",
+				"chose-price": "Price per unit",
+				"create": "Create a trade offer",
+				"create-for": "Create an offer about",
+				"created-notif": "Offer released",
+				"edit": "Edit the offer",
+				"market": "Offer market",
+				"offer-taken": "You accepted the offer.",
+				"sell": "Sell",
+				"spot": {
+					"create": "Accept a spot offer",
+					"price": "Spot price for",
+					"title": "Spot market",
+					"warning": "Spot prices are changing fast, please keep that in mind while trading at the spot market."
+				},
+				"title": "Available offers"
+			}
+		},
+		"mining-factors": {
+			"title": "Mining factors"
+		},
+		"population-development": {
+			"title": "Population development"
+		},
+		"resource-development": {
+			"title": "Resource development"
+		}
+	},
+	"population-development": {
+		"demand": {
+			"toolTip": "The needed people"
+		},
+		"deposit": {
+			"toolTip": "The available people"
+		},
+		"income": {
+			"toolTip": "The projected growth"
+		},
+		"utilization": {
+			"toolTip": "The deployed population"
+		}
+	},
+	"register": {
+		"email": {
+			"info": "Your eMail address will be used only for resetting the password.",
+			"will-not-provide": {
+				"message": "I don't want to provide my eMail address.",
+				"tooltip": "If you chose this option, you can't change the password later."
+			}
+		},
+		"spinner-message": "Please wait while you navy is fighting for you."
+	},
+	"research": {
+		"level-details": "Details",
+		"no-available": "There are currently no researches available.",
+		"not-possible": "There is no laboratory or it is already in use.",
+		"title": "Research"
+	},
+	"resource-overlay": {
+		"capacity": {
+			"info": {
+				"population": "The living space for AMOUNT people will be enough for TICKS ticks",
+				"population-growth-warning": "The population is at the limit of the living space and will not growth.",
+				"resource": "The storage space for AMOUNT RESOURCE_NAME will still be enough for TICKS ticks"
+			}
+		},
+		"costs": {
+			"population": "The amount of workers which are needed.",
+			"toolTip": "The costs"
+		},
+		"deposit": {
+			"population": "The total population.",
+			"tick": "The time flows independently from you.",
+			"toolTip": "The deposit"
+		},
+		"income": {
+			"population": "If this is below zero, your population needs more housings.",
+			"tick": "The time flows independently from you.",
+			"toolTip": "The income"
+		}
+	},
+	"resources": {
+		"manpower": {
+			"title": "Manpower"
+		},
+		"materials": {
+			"title": "Materials"
+		},
+		"ticks-to-done": "Ticks needed"
+	},
+	"screen-size-warning": {
+		"close": "Close",
+		"message": "",
+		"remember": "Remember setting"
+	},
+	"shipyard": {
+		"constructions": {
+			"build": {
+				"already-in-use": "Shipyard already in use",
+				"nothing-to-do": "No ships selected",
+				"start-building": "Start construction of warships",
+				"too-expensive": "Job is too expensive"
+			},
+			"capacity": {
+				"title": "Tonnage"
+			},
+			"fleet-state": "Fleet state",
+			"fleet-to-repair": "Fleet in dock",
+			"title": "Shipyard constructions",
+			"weapon-amount-by-alignment": {
+				"title": "Weaponry"
+			}
+		},
+		"create-new-class": "Create new class",
+		"fitting": {
+			"ammunition": {
+				"remember": "Set up ammunition for launchers.",
+				"title": "Ammunition loadout"
+			},
+			"armor": {
+				"title": "Armor"
+			},
+			"electronic-warfare": {
+				"title": "Electronic warfare"
+			},
+			"hull": {
+				"title": "Hull"
+			},
+			"not-selected": {
+				"mandatory": {
+					"hull": "Select a hull.",
+					"propulsion": "Select a propulsion."
+				},
+				"warship-needs": {
+					"ammunition": "If you are creating a warship don't forget the ammunition.",
+					"armor": "If you are creating a warship don't forget the armor.",
+					"eloka": "If you are creating a warship don't forget the electronic warfare.",
+					"sidewall": "If you are creating a warship don't forget the sidewall.",
+					"support": "If you are creating a warship don't forget support modules.",
+					"weapons": "If you are creating a warship don't forget weapons."
+				}
+			},
+			"offensive": {
+				"title": "Offensive loadout"
+			},
+			"propulsion": {
+				"title": "Propulsion"
+			},
+			"sidewall": {
+				"title": "Sidewall"
+			},
+			"singular-module": {
+				"title": "Basic modules"
+			},
+			"support": {
+				"title": "Support loadout"
+			},
+			"weapon-for": {
+				"weaponType": {
+					"BEAM": "Gun",
+					"COUNTER_MISSILE": "Launcher",
+					"MISSILE": "Launcher",
+					"POINT_DEFENSE": "Gun"
+				}
+			}
+		},
+		"hull-capacities": "Construction capacities",
+		"hull": {
+			"type": {
+				"AE": "Ammunition Ship",
+				"AR": "Repair Ship",
+				"BB": "Battleship",
+				"BC": "Battlecruiser",
+				"BCP": "Battlecruiser (Podlayer)",
+				"CA": "Heavy Cruiser",
+				"CL": "Light Cruiser",
+				"CLAC": "LAC Carrier",
+				"DD": "Destroyer",
+				"DN": "Dreadnought",
+				"FAT": "Fast attack Transport",
+				"FG": "Frigate",
+				"FR": "Freighter",
+				"LAC": "Light Attack Craft",
+				"SD": "Super Dreadnought",
+				"SDP": "Super Dreadnought (Podlayer)",
+				"VT": "Corvette"
+			}
+		}
+	},
+	"spacecraft": {
+		"state": {
+			"msg": {
+				"needs-ammunition": "Ammunition needed",
+				"needs-repair": "Repair needed",
+				"not-active": "Inactive",
+				"not-operational": "Inoperational"
+			},
+			"title": {
+				"fleet": "Fleet",
+				"warShip": "Warship"
+			}
+		}
+	},
+	"star-map": {
+		"notch": {
+			"action": {
+				"show-info": "Info",
+				"show-merge": "Transfer ships",
+				"show-move": "Move fleets",
+				"show-transport": "Transport"
+			},
+			"deselect": "Deselect"
+		},
+		"universe-map": {
+			"loading-spinner-message": "Gather information for star map..."
+		}
+	},
+	"tab": {
+		"admin": {
+			"do-tick": "Tick",
+			"statistics": "Statistics",
+			"translations": "Translations"
+		},
+		"alliance": {
+			"create": "Found an alliance",
+			"dashboard": "Dashboard",
+			"forum": "Forum",
+			"list": "Alliance list",
+			"members-list": "Members"
+		},
+		"expansion": {
+			"organize": "Organize expansion",
+			"view": "View expansion"
+		},
+		"fleet": {
+			"dashboard": "Dashboard",
+			"split": "Detachment"
+		},
+		"journal": {
+			"battles": "Battle reports",
+			"dashboard": "Dashboard",
+			"jobs": "Job reports",
+			"movements": "Fleet movement reports"
+		},
+		"planetary": {
+			"dashboard": "Dashboard",
+			"ground-constructions": "Constructions",
+			"jobs": "Jobs",
+			"marketplace": "Marketplace",
+			"shipyard": "Shipyard"
+		},
+		"research": {
+			"available": "Available researches",
+			"tech-tree": "Tech tree"
+		},
+		"shipyard": {
+			"fitting": {
+				"modify": "Modify fitting",
+				"view": "Display fitting"
+			}
+		},
+		"star-map": {
+			"star-map": "Star system map",
+			"universe-map": "Star map"
+		},
+		"stratOps": {
+			"mission-administration": "Mission planning",
+			"mission-overview": "Mission overview"
+		},
+		"transportation": {
+			"humans": "People",
+			"resources": "Resources"
+		}
+	},
+	"tick": {
+		"current": "Current tick",
+		"title": "Tick"
+	},
+	"translation": {
+		"designated": {
+			"language": "Designated language"
+		},
+		"idTranslatable": "idTranslatable",
+		"no-change-reference-translation": "You cannot change the reference translation",
+		"reference": {
+			"language": "Reference language"
+		},
+		"target": "translation target",
+		"text": {
+			"title": "Translated text"
+		},
+		"type": "kind of"
+	},
+	"transport": {
+		"manual": {
+			"transfer-btn": {
+				"title": "Transfer resources",
+				"tooltip": "Transfer the selected resources"
+			}
+		}
+	},
+	"transportation": {
+		"amount": {
+			"delivery": {
+				"caption": "Delivery"
+			},
+			"demand": {
+				"caption": "Demand"
+			}
+		},
+		"human-resources": {
+			"help": "Select the demand and the possibility to deliver of every planet"
+		},
+		"resources": {
+			"help": "Select the demand and the possibility to deliver of every planet"
+		}
+	},
+	"tutorial": {
+		"trigger": {
+			"scope-selector": "Tutorial"
+		}
+	},
+	"wiki": {
+		"article": {
+			"create": {
+				"button": "Create article",
+				"menu-entry": "Create article",
+				"title": "Title"
+			},
+			"display": {
+				"author": "Author",
+				"menu-entry": "Read article",
+				"revision": "Revision"
+			},
+			"edit": {
+				"button": "Edit article",
+				"menu-entry": "Edit article"
+			}
+		},
+		"header": {
+			"search-wiki": {
+				"label": "Search in wiki"
+			}
+		},
+		"home": {
+			"menu-entry": "Home"
+		},
+		"selection": {
+			"content": {
+				"menu-entry": "Articles"
+			},
+			"orga": {
+				"menu-entry": "Orga"
+			}
+		}
+	}
 }

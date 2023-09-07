@@ -74,12 +74,12 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.rememberIgnoreScreenWarning = this.tokenStorage.getRememberScreenWarning();
 
         // this language will be used as a fallback when a translation isn't found in the current language
-        translate.setDefaultLang(TranslationEditorComponent.DEFAULT_LANGUAGE);
+        this.translate.setDefaultLang(TranslationEditorComponent.DEFAULT_LANGUAGE);
 
         // the lang to use, if the lang isn't available, it will use the current loader to get them
-        const browserLang = translate.getBrowserLang();
+        const browserLang = this.translate.getBrowserLang();
         if (!!browserLang) {
-            translate.use(browserLang);
+            this.translate.use(browserLang);
         }
 
         this.navService.getNavigationEmitter().subscribe(route => this.navigate(route));
@@ -114,20 +114,12 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
 
         if (!this.rememberIgnoreScreenWarning && window.innerWidth <= 800) {
-            this.message = 'The screen is too small. Use a bigger one.';
             this.spinner.show('screen-size');
         }
     }
 
     openBottomSheet(): void {
         this.bottomSheet.open(TopicSelectorComponent);
-    }
-
-    closeScreenSizeWarning() {
-        this.message = undefined;
-        this.spinner.hide('screen-size');
-
-        this.tokenStorage.rememberScreenWarning(this.rememberIgnoreScreenWarning);
     }
 
     showSeasonBadge() {
