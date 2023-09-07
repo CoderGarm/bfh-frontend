@@ -25,4 +25,8 @@ export interface TradeOffer {
     origin: AbstractId;
     originOrbit: Orbit;
     trade: Trade;
+    /**
+     * The distance in ticks travel time.
+     */
+    travelTime?: number;
 }

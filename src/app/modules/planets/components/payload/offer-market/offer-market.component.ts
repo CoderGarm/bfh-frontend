@@ -92,13 +92,13 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
 
         this.setUpTradableResources();
 
-        this.fetchOffers();
         if (!this.credits) {
             throw new Error("Yes but no. Repair me.")
         }
     }
 
     ngAfterViewInit() {
+        this.fetchOffers();
         this.setDatasource();
     }
 
@@ -126,9 +126,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
                 case "price":
                     return item.trade.pricePerUnit * item.trade.resourceAmount.amount;
                 case 'distance':
-                    const systemOrbit = this.starSystem!.orbit;
-                    const originOrbit = item.originOrbit;
-                    return NavigationCalculator.calculateDistanceOfOrbits(systemOrbit, originOrbit, EDistanceMetricsEnum.LY);
+                    return item.travelTime!;
                 case "ppu":
                 default:
                     return item.trade.pricePerUnit;
@@ -161,7 +159,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
     }
 
     private fetchOffers() {
-        let sub = this.marketService.getOffers().subscribe(resp => {
+        let sub = this.marketService.getOffers(this.planet!.idPlanet).subscribe(resp => {
             this.tradeOffers = resp;
             this.setDatasource();
         });

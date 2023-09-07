@@ -94,7 +94,7 @@
 
         <ng-container matColumnDef="distance">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Distance</th>
-            <td mat-cell *matCellDef="let element">{{ distanceMap.get(element.idTradeOffer!)! | numberShort }} ly</td>
+            <td mat-cell *matCellDef="let element">{{ element.travelTime }} Ticks</td>
         </ng-container>
 
         <ng-container matColumnDef="take">

@@ -192,13 +192,18 @@ export class MarketplaceApiService {
     /**
      * Get all EResourceTypes.
      * 
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getOffers(observe?: 'body', reportProgress?: boolean): Observable<Array<TradeOffer>>;
-    public getOffers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TradeOffer>>>;
-    public getOffers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TradeOffer>>>;
-    public getOffers(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getOffers(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<Array<TradeOffer>>;
+    public getOffers(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TradeOffer>>>;
+    public getOffers(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TradeOffer>>>;
+    public getOffers(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getOffers.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -216,7 +221,7 @@ export class MarketplaceApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<TradeOffer>>('get',`${this.basePath}/api/private/trade/offer`,
+        return this.httpClient.request<Array<TradeOffer>>('get',`${this.basePath}/api/private/trade/offer/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
