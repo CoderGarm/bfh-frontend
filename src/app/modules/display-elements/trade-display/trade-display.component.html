@@ -10,12 +10,15 @@
         <app-number-short [input]="trade.offer.trade.pricePerUnit * trade.offer.trade.resourceAmount.amount"></app-number-short>
         <app-icon credits></app-icon>
     </span>
-        <span matListItemLine *ngIf="trade.isFinished">
+        <span matListItemLine *ngIf="trade.isFinished && leftOverResourceAmount != trade.offer.trade.resourceAmount.amount">
             {{ 'mission.convoy.text.percentOfCargoLost.predicate.loss' | translate }}
             <app-number-short [input]="leftOverResourceAmount"></app-number-short>
             <app-icon [icon]="trade.offer.trade.resourceAmount.resourceType"></app-icon> for
             <app-number-short [input]="trade.offer.trade.pricePerUnit * leftOverResourceAmount"></app-number-short>
             <app-icon credits></app-icon>
+    </span>
+        <span matListItemLine *ngIf="trade.isFinished && leftOverResourceAmount == trade.offer.trade.resourceAmount.amount">
+            {{ 'mission.convoy.text.percentOfCargoLost.predicate.without-loss' | translate }}
     </span>
     </mat-list-item>
 </mat-list>

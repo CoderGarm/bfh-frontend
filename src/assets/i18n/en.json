@@ -331,7 +331,8 @@
           "no-ransom": "Ransoms have been refused, people have died and ships have been damaged.",
           "predicate": {
             "loss": "With a loss of",
-            "lossPercentage": "percent of the value of the charge is lost."
+            "lossPercentage": "percent of the value of the charge is lost.",
+            "without-loss": "No losses to complain about."
           },
           "ransom": "Your government has paid ransom to save the ships and the crews."
         },

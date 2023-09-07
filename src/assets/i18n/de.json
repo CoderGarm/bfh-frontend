@@ -330,7 +330,8 @@
           "no-ransom": "Die Annahme von Lösegeld wurde verweigert, es sind Menschen gestorben und Schiffe wurden beschädigt.",
           "predicate": {
             "loss": "Bei einem Verlust von",
-            "lossPercentage": "Prozent des Wertes der Ladung sind verloren."
+            "lossPercentage": "Prozent des Wertes der Ladung sind verloren.",
+            "without-loss": "Keine Verluste zu beklagen."
           },
           "ransom": "Deine Regierung hat Lösegeld gezahlt um die Schiffe und Crews zu schützen."
         },
