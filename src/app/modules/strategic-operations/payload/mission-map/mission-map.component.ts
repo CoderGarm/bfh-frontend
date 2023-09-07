@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {AssetsService, Coords} from "../../../../services/assets/assets.service";
+import {Coords} from "../../../../services/assets/assets.service";
 import {MapData} from "./map-data.component";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 import {BackgroundService} from "../../../../services/prefetch/background.service";
@@ -50,8 +50,7 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     selectedSystem: EventEmitter<StarSystem | undefined> = new EventEmitter<StarSystem | undefined>();
 
     constructor(private spinner: NgxSpinnerService,
-                private systemService: BackgroundService,
-                private publicResourcesApiService: AssetsService,
+                private backgroundService: BackgroundService,
                 protected missionCommService: MissionCommunicationService) {
         super();
     }
@@ -144,7 +143,7 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     private createUniverseMap() {
         this.activateSpinner();
 
-        let sub = this.systemService.getStarSystems().subscribe(resp => {
+        let sub = this.backgroundService.getStarSystems().subscribe(resp => {
             this.coords = resp.map(sys => <Coords>{name: sys.name, x: sys.orbit.xCoordinate.coordinate, y: sys.orbit.yCoordinate.coordinate});
             this.drawMap();
         });
@@ -190,7 +189,7 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     }
 
     private drawJunctions() {
-        let sub = this.publicResourcesApiService.getAllWormholeJunctions().subscribe(junctions => {
+        let sub = this.backgroundService.getAllWormholeJunctions().subscribe(junctions => {
             junctions.forEach(junction => {
                 junction.termini.forEach(terminus => {
                     const mainCelestialGroup = this.getOrCreateMainCelestialGroup();

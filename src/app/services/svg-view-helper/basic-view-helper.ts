@@ -6,7 +6,7 @@ import {Component, HostListener} from "@angular/core";
 import {StarMapCommunicationService} from "../intercom/star-map-communication.service";
 import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
-import {AssetsService} from "../assets/assets.service";
+import {BackgroundService} from "../prefetch/background.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 interface ElementToParent {
@@ -22,7 +22,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     protected canvas?: Svg;
 
     starMapCommService = AppInjector.get(StarMapCommunicationService);
-    assetsService: AssetsService = AppInjector.get(AssetsService);
+    assetsService: BackgroundService = AppInjector.get(BackgroundService);
 
     public static readonly PAN_ZOOM_OPTIONS = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md

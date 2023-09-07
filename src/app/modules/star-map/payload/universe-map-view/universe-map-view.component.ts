@@ -99,6 +99,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.clearData();
 
         if (this.backgroundService.getStarSystemsAsArray().length > 0) {
+            // even not a solution for the strange 'double fetch' phenomena
             this.setUpMap(this.backgroundService.getStarSystemsAsArray());
             return;
         }
