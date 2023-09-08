@@ -15,6 +15,7 @@ export interface Coords {
     x: number;
     y: number;
     name: string;
+    idStarSystem?: number;
 }
 
 @Component({
@@ -65,7 +66,7 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
 
     private getOrbitDefinitions(selectedMissionTypes?: MissionTypeEnum[]): LocalMapOrbitDefinition[] {
         return this.missionCommService.systems.map(system => {
-            const coords: Coords = {name: system.name, x: system.orbit.xCoordinate.coordinate, y: system.orbit.yCoordinate.coordinate};
+            const coords: Coords = {idStarSystem: system.idStarSystem, name: system.name, x: system.orbit.xCoordinate.coordinate, y: system.orbit.yCoordinate.coordinate};
             const missionTypes: EMissionTypesEnum[] = this.getMissionsBySystem(system, selectedMissionTypes).map(m => m.missionType);
 
             let isColonized: boolean = false;

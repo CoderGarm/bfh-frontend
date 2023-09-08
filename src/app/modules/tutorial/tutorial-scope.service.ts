@@ -87,7 +87,6 @@ export class TutorialScopeService extends SubscriptionManager {
     }
 
     setOpenTopic(topic?: Topic) {
-        console.log(topic)
         this.openTopic = topic;
     }
 }

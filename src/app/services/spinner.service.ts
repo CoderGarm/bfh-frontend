@@ -54,12 +54,10 @@ export class SpinnerService {
     }
 
     show(spinnerName: string) {
-        console.log("show", spinnerName)
         this.spinner.show(spinnerName);
     }
 
     hide(spinnerName: string) {
-        console.log("hide", spinnerName)
         this.spinner.hide(spinnerName);
     }
 }

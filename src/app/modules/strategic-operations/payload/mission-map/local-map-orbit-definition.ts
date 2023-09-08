@@ -1,5 +1,5 @@
-import {Coords} from "../../../../services/assets/assets.service";
 import {EnumValueDto} from "../../../../services/swagger";
+import {Coords} from "../mission-administration/mission-administration.component";
 import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
 /**

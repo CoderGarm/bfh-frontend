@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {Coords} from "../../../../services/assets/assets.service";
 import {MapData} from "./map-data.component";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 import {BackgroundService} from "../../../../services/prefetch/background.service";
@@ -7,6 +6,7 @@ import {Mission, StarSystem} from "../../../../services/swagger";
 import {MissionCommunicationService} from "../../../../services/intercom/mission-communication.service";
 import {MapDataProvider} from "./map-data-provider.component";
 import {SpinnerService} from "../../../../services/spinner.service";
+import {Coords} from "../mission-administration/mission-administration.component";
 import MissionTypeEnum = Mission.MissionTypeEnum;
 
 
@@ -152,7 +152,6 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
 
     private drawMap() {
         this.activateSpinner();
-
         this.clearData();
 
         if (this.orbitDefinitions.length == 0) {

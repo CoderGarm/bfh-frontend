@@ -49,7 +49,6 @@ export class MissionCreateComponent extends SubscriptionManager implements OnCha
         const selected = event.source.selectedOptions.selected.map(o => <WarShip>o.value);
         const isConvoyProtection = this.missionCommService.selectedType === EMissionTypesEnum.CONVOY_PROTECTION;
         this.selectedWarships = selected.filter(w => isConvoyProtection ? w.warshipHealthState.state.isFTLCapable : true);
-        console.log(this.selectedWarships)
     }
 
     submit() {

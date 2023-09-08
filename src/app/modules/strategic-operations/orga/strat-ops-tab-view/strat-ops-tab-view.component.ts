@@ -21,5 +21,6 @@ export class StratOpsTabViewComponent extends SubscriptionManager implements Aft
         this.missionCommService.fetchPlanets();
         this.missionCommService.fetchTrades();
         this.missionCommService.fetchStarSystems();
+        this.missionCommService.fetchHeatMap();
     }
 }

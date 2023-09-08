@@ -57,6 +57,7 @@ export * from './forumMessage';
 export * from './forumThread';
 export * from './frontendError';
 export * from './hasIcon';
+export * from './heatMap';
 export * from './hitLog';
 export * from './humanResourceAmount';
 export * from './jWT';

@@ -2,12 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
-
-export interface Coords {
-    x: number;
-    y: number;
-    name: string;
-}
+import {Coords} from "../../modules/strategic-operations/payload/mission-administration/mission-administration.component";
 
 export interface Junction {
     position: Coords;

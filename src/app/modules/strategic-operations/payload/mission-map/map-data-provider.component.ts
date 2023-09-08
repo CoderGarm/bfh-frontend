@@ -1,12 +1,12 @@
-import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
+import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Rect, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {Component, HostListener} from "@angular/core";
 import {MapData} from "./map-data.component";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.filter.js'
 import {MissionMapComponent} from "./mission-map.component";
-import {Coords} from "../../../../services/assets/assets.service";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 import {EnumValueDto} from "../../../../services/swagger";
+import {Coords} from "../mission-administration/mission-administration.component";
 import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
 interface ElementToParent {
@@ -48,6 +48,7 @@ export class MapDataProvider extends MapData {
     protected static readonly PLANET_RADIUS = 5;
     protected static readonly STAR_RADIUS = 5;
     protected static readonly STAR_RADIUS_IN_SYSTEM = 15;
+    protected static readonly HEAT_MAP_LENGTH = 30;
 
     protected static readonly INVISIBLE_CLASS = "invisible";
 
@@ -153,12 +154,15 @@ export class MapDataProvider extends MapData {
                 this.resizeCelestial(c);
             }
             if (c.classes().filter(c => c == MapData.ROUND_CAP_MARKER).length != 0) {
-                this.repositioningRoundCapMarker(c);
+                this.repositioningRoundCap(c);
             }
             if (c.classes().filter(c => c == MapData.WORMHOLE_MARKER).length != 0) {
                 c.stroke(this.zoomStroke({width: 1, color: 'irrelevant'}));
             }
         });
+        this.getOrCreateMainHeatMapGroup().children()
+            .filter(c => c.classes().filter(c => c == MapData.HEAT_MAP_MARKER).length != 0)
+            .forEach(c => this.repositioningHeatMap(c))
     }
 
     protected getOrCreateMainCelestialGroup() {
@@ -166,11 +170,22 @@ export class MapDataProvider extends MapData {
         if (mainGroups.length > 0) {
             return <G>mainGroups[0]!;
         } else {
+            // makes sure that it is below the group with interactable content
+            this.getOrCreateMainHeatMapGroup();
             return this.canvas!.group().id(MapData.CELESTIAL_MAIN_GROUP);
         }
     }
 
-    private repositioningRoundCapMarker(c: Element) {
+    protected getOrCreateMainHeatMapGroup() {
+        const mainGroups = this.canvas!.children().filter(c => c.id() === MapData.HEAT_MAP_GROUP);
+        if (mainGroups.length > 0) {
+            return <G>mainGroups[0]!;
+        } else {
+            return this.canvas!.group().id(MapData.HEAT_MAP_GROUP);
+        }
+    }
+
+    private repositioningRoundCap(c: Element) {
         const path = <Path>c;
         const center = this.getCoordsFromCenterMarker(path);
         if (!!center) {
@@ -184,6 +199,20 @@ export class MapDataProvider extends MapData {
             }
             let arr = this.createRoundCapMarkerNorthPoints(x, y, xShifter, yShifter);
             path.plot(arr)
+        }
+    }
+
+    private repositioningHeatMap(c: Element) {
+        const rect = <Rect>c;
+        const center = this.getCoordsFromCenterMarker(rect);
+        if (!!center) {
+            let x = center[0];
+            let y = center[1];
+            if (this.zoomLevel > 1) {
+                x = x / this.zoomLevel;
+                y = y / this.zoomLevel;
+                rect.x(x).y(y).width(MapDataProvider.HEAT_MAP_LENGTH / this.zoomLevel).height(MapDataProvider.HEAT_MAP_LENGTH / this.zoomLevel);
+            }
         }
     }
 
@@ -243,7 +272,6 @@ export class MapDataProvider extends MapData {
             if (missionTypesToDisplay.includes(missionType)) {
                 switch (missionType) {
                     default:
-                    case "PIRATE_RAID":
                         break;
                     case "PIRATE_HUNT":
                         celestialColor = MissionMapComponent.PIRATE_HUNT_COLOR;
@@ -286,20 +314,6 @@ export class MapDataProvider extends MapData {
         this.setTextById(celestialBodyID, text);
     }
 
-    toggleNames() {
-        let mainGroup = this.getOrCreateMainCelestialGroup();
-        let bodyIDs = this.getCelestialBodyIDs();
-        bodyIDs.forEach(celestialId => {
-            let text = this.getTextById(celestialId)!;
-            let present = mainGroup.children().filter(t => t === text).length > 0;
-            if (present) {
-                mainGroup.removeElement(text);
-            } else {
-                mainGroup.add(text);
-            }
-        })
-    }
-
     createRoundCapMarkerNorth(mainGroup: G, id: string, x: number, y: number, cssMarker: string) {
         let arr = this.createRoundCapMarkerNorthPoints(x, y, undefined, undefined);
         mainGroup.path(arr)
@@ -311,7 +325,7 @@ export class MapDataProvider extends MapData {
             .addClass(this.getCenterMarker(x, y));
     }
 
-    private getCenterMarker(x: number, y: number) {
+    protected getCenterMarker(x: number, y: number) {
         return MapData.CENTER_COORDINATES_MARKER + x + MapData.CENTER_COORDINATES_SEPARATOR + y;
     }
 

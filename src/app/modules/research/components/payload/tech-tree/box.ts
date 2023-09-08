@@ -5,7 +5,7 @@ export class Box {
     readonly y1: number;
     readonly y2: number;
 
-    constructor(x: number, y: number, width: number, height: number, radius: number) {
+    constructor(x: number, y: number, width: number, height: number) {
         this.x1 = x;
         this.x2 = x + width;
         this.y1 = y;

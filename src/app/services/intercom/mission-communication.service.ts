@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
-import {EnumValueDto, FleetApiService, MarketplaceApiService, Mission, MissionApiService, Planet, PlanetApiService, StarSystem, TradeContract, WarShip} from "../swagger";
+import {EnumValueDto, FleetApiService, HeatMap, MarketplaceApiService, Mission, MissionApiService, Planet, PlanetApiService, StarSystem, TradeContract, WarShip} from "../swagger";
 import {SubscriptionManager} from "../../subscription.manager";
 import {BackgroundService} from "../prefetch/background.service";
+import {of} from "rxjs";
 import MissionTypeEnum = Mission.MissionTypeEnum;
 import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
@@ -26,6 +27,7 @@ export class MissionCommunicationService extends SubscriptionManager {
     selectedPlanet?: Planet;
     selectedTrade?: TradeContract;
     activeTrades: TradeContract[] = [];
+    heatMap?: HeatMap;
 
     constructor(private missionService: MissionApiService,
                 private planetService: PlanetApiService,
@@ -103,5 +105,19 @@ export class MissionCommunicationService extends SubscriptionManager {
     private buildPlanetsWithoutMission() {
         const idPlanetsWithMissions = this.activeMissions.map(m => m.venue?.idPlanet);
         this.planetsWithoutMissions = this.colonizedPlanets.filter(p => !idPlanetsWithMissions.includes(p.idPlanet));
+    }
+
+    fetchHeatMap() {
+        let sub = this.missionService.getHeatMap().subscribe(resp =>
+            this.heatMap = resp
+        );
+        this.subscriptions.push(sub);
+    }
+
+    getHeatMap() {
+        if (!!this.heatMap) {
+            return of(this.heatMap);
+        }
+        return this.missionService.getHeatMap();
     }
 }

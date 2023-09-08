@@ -256,7 +256,7 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
             const fillColor = treeElement.levelCompleted >= level ? TechTreeComponent.RESEARCH_DONE_BACKGROUND_COLOR : TechTreeComponent.ELEMENT_BACKGROUND_COLOR;
             this.roundRect(ctx, boxX, y, TechTreeComponent.WIDTH_PER_LEVEL, boxHeight, radius, TechTreeComponent.BOUNDARY_COLOR_DARK, fillColor);
             this.unlockables.push({
-                box: new Box(boxX, y, TechTreeComponent.WIDTH_PER_LEVEL, boxHeight, radius),
+                box: new Box(boxX, y, TechTreeComponent.WIDTH_PER_LEVEL, boxHeight),
                 context: researchResults
             });
             ctx.font = "20px Georgia";
@@ -286,7 +286,7 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
         if (fill) {
             ctx.fill();
         }
-        return new Box(x, y, width, height, radius);
+        return new Box(x, y, width, height);
     }
 
     private create(treeParent: ResearchTreeElement, chain: ResearchTreeChain): TreeElement[] {

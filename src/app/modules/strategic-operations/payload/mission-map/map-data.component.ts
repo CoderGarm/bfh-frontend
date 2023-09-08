@@ -1,8 +1,8 @@
 import {Circle, G, Shape, Text} from "@svgdotjs/svg.js";
 import {Component} from "@angular/core";
 import {SubscriptionManager} from "../../../../subscription.manager";
-import {Coords} from "../../../../services/assets/assets.service";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
+import {Coords} from "../mission-administration/mission-administration.component";
 
 
 @Component({
@@ -11,6 +11,7 @@ import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 export class MapData extends SubscriptionManager {
 
     protected static readonly CELESTIAL_MAIN_GROUP = 'celestial-main-group';
+    protected static readonly HEAT_MAP_GROUP = 'heatMap-main-group';
 
     protected static readonly GROUP_SELECTOR_SUFFIX: string = "-group";
     protected static readonly CYCLING_CIRCLE_SUFFIX = "-circle-cycle";
@@ -31,16 +32,16 @@ export class MapData extends SubscriptionManager {
     protected static readonly WORMHOLE_MARKER = "wormhole";
     protected static readonly STAR_MARKER = "star";
     protected static readonly STAR_IN_SYSTEM_MARKER = "star-in-system";
-    protected static readonly HYPER_LIMIT_MARKER = "hyper-limit";
+    protected static readonly HEAT_MAP_MARKER = "heatMap";
     protected static readonly CENTER_COORDINATES_MARKER = "center-";
     protected static readonly CENTER_COORDINATES_SEPARATOR = "|";
 
     private orbits?: Coords[];
 
-    private smallestXOrbit?: Coords;
-    private biggestXOrbit?: Coords;
-    private smallestYOrbit?: Coords;
-    private biggestYOrbit?: Coords;
+    protected smallestXOrbit?: Coords;
+    protected biggestXOrbit?: Coords;
+    protected smallestYOrbit?: Coords;
+    protected biggestYOrbit?: Coords;
 
     protected radiusOfCoordinateCross?: number;
 
