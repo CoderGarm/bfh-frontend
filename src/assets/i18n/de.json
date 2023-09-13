@@ -33,6 +33,11 @@
 		"finished": {
 			"nothing": "Keine fertiggestellten Kolonisierungen",
 			"title": "Fertiggestellte Kolonisierungen"
+        },
+      "planned": {
+        "stop": {
+          "submit": "Geplante Kolonisierung abbrechen"
+        }
 		}
 	},
 	"combat-arena": {
@@ -473,6 +478,7 @@
 			"offer": {
 				"action": {
 					"abort": "Abbrechen",
+                  "delete": "Offerte zurückziehen",
 					"edit": "Bearbeiten",
 					"release": "Handel anbieten",
 					"take": "Annehmen"

@@ -1,1 +1,7 @@
 @import "src/app/modules/expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
+
+.retire-btn {
+  color: $warning-color;
+  position: absolute;
+  z-index: 99;
+}

@@ -63,8 +63,14 @@
                                     <div *ngIf="!colo.colonizationsByPlanet[planet.idPlanet].isPlanned">
                                         {{planet.name}} has a colonization in progress - Ticks left: {{getTicksLeft(colo, planet)}}
                                     </div>
-                                    <div *ngIf="colo.colonizationsByPlanet[planet.idPlanet].isPlanned">
+                                    <div *ngIf="colo.colonizationsByPlanet[planet.idPlanet].isPlanned" style="position: relative;">
                                         The colonization of {{planet.name}} is already in planning.
+                                        <button mat-mini-fab class="retire-btn"
+                                                (click)="stopPlannedColo(colo.colonizationsByPlanet[planet.idPlanet].idColonization)"
+                                                *ngIf="colo.colonizationsByPlanet[planet.idPlanet].user.idUser == userId"
+                                                matTooltip="{{ 'colonizations.planned.stop.submit' | translate }}">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
                                     </div>
                                 </mat-card-header>
                                 <mat-card-content>

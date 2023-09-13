@@ -81,4 +81,9 @@ export class SeeExpansionComponent extends ExpansionManager implements AfterView
         this.reference = this.knownSystems.filter(sys => sys.idStarSystem === idStarSystem)[0];
         this.change.detectChanges()
     }
+
+    stopPlannedColo(idColonization: number) {
+        let sub = this.colonizationApi.stopPlannedColonization(idColonization).subscribe(resp => this.fetchData());
+        this.subscriptions.push(sub);
+    }
 }
