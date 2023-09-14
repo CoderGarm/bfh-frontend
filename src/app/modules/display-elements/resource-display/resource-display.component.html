@@ -51,9 +51,11 @@
                     </div>
                     <div>
                         <div *ngIf="!!income" class="diffAmount no-flex"
-                             matTooltip="{{getTooltip(income!.subType, resource.resourceType)}}">
+                             matTooltip="{{ getTooltip(income!.subType, resource.resourceType) }}">
                             <div>
-                                <app-number-short color="#46a35e" [input]="getResourceAmount(resource.resourceType, income)"></app-number-short>
+                                <app-number-short [suppressTooltip]="!!getTooltip(income!.subType, resource.resourceType)"
+                                                  [color]="getResourceAmount(resource.resourceType, income) <= 0? '#de2839' : '#46a35e'"
+                                                  [input]="getResourceAmount(resource.resourceType, income)"></app-number-short>
                             </div>
                             <div *ngIf="!!getResourceImprovement(resource.resourceType)" class="diffImprovementAmount">
                                 (+
@@ -83,7 +85,8 @@
                     <div class="amount-holder">
                         <div *ngIf="!!income" class="diffAmount no-flex">
                             <div>
-                                <app-number-short color="#46a35e" [input]="getHumans(resource.resourceType, income)"></app-number-short>
+                                <app-number-short [color]="getHumans(resource.resourceType, income) <= 0? '#de2839' : '#46a35e'"
+                                                  [input]="getHumans(resource.resourceType, income)"></app-number-short>
                             </div>
                             <div *ngIf="!!getHumanImprovement(resource.resourceType)"
                                  class="diffImprovementAmount">
