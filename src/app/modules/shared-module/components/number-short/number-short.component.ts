@@ -13,6 +13,9 @@ export class NumberShortComponent implements OnInit {
     @Input()
     color?: string;
 
+    @Input()
+    suppressTooltip: boolean = false;
+
     constructor() {
     }
 
