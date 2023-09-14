@@ -255,7 +255,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     showMergeDisabled() {
         const ownFleets = this.selectedFleets.filter(f => f.owner.idUser == this.userId);
-        let nope = ownFleets.length < 2 || this.isStarSystemDisplayed();
+        let nope = ownFleets.length < 2 || !this.isStarSystemDisplayed();
         if (!nope) {
             const orbits: Orbit[] = [];
             ownFleets.filter(f => !!f.orbit && !!f.orbit.orbit).forEach(f => orbits.push(f.orbit!.orbit!));
