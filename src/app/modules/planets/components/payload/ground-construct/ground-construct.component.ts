@@ -66,8 +66,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
      * and it's field name
      */
     @Input()
-    selectedPlanetInput?: Planet;
-    private selectedPlanetDefinition = "selectedPlanetInput";
+    planet?: Planet;
+    private planetDefinition = "planet";
 
     sumOfPops: number = 0;
 
@@ -151,7 +151,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.selectedPlanetDefinition]) {
+        if (changes[this.planetDefinition]) {
             this.setConstruction(undefined);
             this.fetchPlanet();
         }
@@ -180,8 +180,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
      * @private
      */
     private fetchPlanet() {
-        if (!!this.selectedPlanetInput) {
-            const idPlanet = this.selectedPlanetInput.idPlanet;
+        if (!!this.planet) {
+            const idPlanet = this.planet.idPlanet;
             let sub = this.constructionApi
                 .getPossibleConstructionsByPlanet(idPlanet).subscribe(resp => {
                     this.possibleConstructions = resp;
@@ -200,20 +200,16 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                     resp.humanResources.forEach(hr => this.sumOfPops += hr.amount);
                 });
             this.subscriptions.push(sub);
-            sub = this.resourceApi.getResourceUtilization(this.selectedPlanetInput!.idPlanet).subscribe(utilization => {
+            sub = this.resourceApi.getResourceUtilization(this.planet!.idPlanet).subscribe(utilization => {
                 utilization.humanResources.forEach(hr => this.sumOfPops += hr.amount);
             });
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getPlanetaryIncome(idPlanet)
-                .subscribe(resp => {
-                    this.income = resp;
-                });
+            sub = this.resourceApi.getPlanetaryIncome(idPlanet).subscribe(resp => this.income = resp);
             this.subscriptions.push(sub);
+
             sub = this.resourceApi.getPlanetaryCapacity(idPlanet)
-                .subscribe(resp => {
-                    this.capacity = resp;
-                });
+                .subscribe(resp => this.capacity = resp);
             this.subscriptions.push(sub);
         }
     }
@@ -285,7 +281,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
      * starts the construction of the building at the planet
      */
     startConstruction(construction: Construction) {
-        let sub = this.planetApi.buildConstruction(this.selectedPlanetInput!.idPlanet, construction!.building.idBuilding)
+        let sub = this.planetApi.buildConstruction(this.planet!.idPlanet, construction!.building.idBuilding)
             .subscribe(resp => {
                 if (resp) {
                     this.notificationService.open("Construction of " + construction.building.name + " started.");

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {EDepositType, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
@@ -11,7 +11,7 @@ import CollectableTypeEnum = EResourceType.CollectableTypeEnum;
     templateUrl: './resource-display.component.html',
     styleUrls: ['./resource-display.component.scss']
 })
-export class ResourceDisplayComponent extends SubscriptionManager implements AfterViewInit {
+export class ResourceDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @Input()
     deposit?: ResourceDeposit;
@@ -106,6 +106,12 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     }
 
     ngAfterViewInit(): void {
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (!!this.sumOfPops) {
+            console.log("sumOfPops", this.sumOfPops)
+        }
     }
 
     private coerceBooleanProperty(value: any): boolean {
@@ -255,6 +261,7 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         const resourceName = resource.resourceType.typeName.toLocaleLowerCase(this.translate.getLangs());
 
         let lastingTicks = this.calculateLastingCapacityTicks(resource);
+        console.log("lastingTicks", lastingTicks)
         if (this.isPopulationGrowthWarning(lastingTicks)) {
             translation = this.translations.get(this.capacityPopulationWarningKey);
         } else {
@@ -267,11 +274,12 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
     }
 
     private isPopulationGrowthWarning(lastingTicks: number) {
-        return lastingTicks === Number.MAX_VALUE || lastingTicks > 99;
+        return lastingTicks === Number.MAX_VALUE || lastingTicks === 0;
     }
 
     private calculateLastingCapacityTicks(resource: ResourceAmount) {
         const incoming = this.getResourceAmount(resource.resourceType, this.income);
+        console.log("incoming", incoming)
         if (incoming != 0 && !incoming) {
             throw new Error("There should be an incoming if requested.");
         }
@@ -280,10 +288,12 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         }
         const current = this.sumOfPops;
         const capacity = this.getResourceAmount(resource.resourceType, this.capacity);
+        console.log("current", current, "capa", capacity)
         if ((capacity != 0 && !capacity) || (current != 0 && !current)) {
             throw new Error("There should be a capacity or a current if requested.");
         }
         const result = Math.round((capacity - current) / incoming);
+        console.log("result", result)
         return result >= 0 ? result : 0;
     }
 
@@ -292,7 +302,7 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
         if (lastingTicks <= 5) {
             return 'uprising';
         }
-        if (lastingTicks <= 10 || this.isPopulationGrowthWarning(lastingTicks)) {
+        if (lastingTicks <= 10) {
             return 'warning';
         }
         return 'fine';

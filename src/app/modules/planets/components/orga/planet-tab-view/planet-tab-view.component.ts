@@ -50,7 +50,8 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
         subscription = this.planetApi.isShipyardExistsOnPlanet(this.selectedPlanet!.idPlanet)
             .subscribe(resp => {
                 this.shipyardExists = resp;
-                if (!this.shipyardExists) {
+                if (!this.shipyardExists && this.index === 2) {
+                    // switch back to planetary dash when the new planet has no yard and you was on the old yard
                     this.index = 0;
                 }
             });

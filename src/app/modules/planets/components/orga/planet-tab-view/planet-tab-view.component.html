@@ -9,7 +9,7 @@
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.ground-constructions' | translate }}">
         <ng-template matTabContent>
-            <app-ground-construct [selectedPlanetInput]="selectedPlanet"></app-ground-construct>
+            <app-ground-construct [planet]="selectedPlanet"></app-ground-construct>
         </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.shipyard' | translate }}" [disabled]="!shipyardExists">
