@@ -192,9 +192,9 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
     }
 
     takeOffer(idTradeOffer: number) {
+        this.removeFromList(idTradeOffer);
         let sub = this.marketService.takeOffer({idTradeOffer: idTradeOffer, idDestination: this.planet!.idPlanet}).subscribe(() => {
             this.notif.open(this.translations.get('planetary.marketplace.offer.offer-taken')!)
-            this.removeFromList(idTradeOffer);
             this.plantNotifService.fireOfferCreated();
         });
         this.subscriptions.push(sub);
