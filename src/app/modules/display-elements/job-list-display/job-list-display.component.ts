@@ -23,7 +23,6 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
 
     @Input()
     jobs: Job[] = [];
-    jobsDefinition: string = 'jobs';
 
     @Input()
     allowCancel: boolean = false;

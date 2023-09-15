@@ -8,6 +8,8 @@ import {
     JournalApiService,
     MarketplaceApiService,
     MissionReport,
+    Planet,
+    PlanetApiService,
     ResourceDeposit,
     ResourcesApiService,
     TradesByLocation,
@@ -43,8 +45,10 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
 
     sumOfPops: number = 0;
     capacitySum: number = 0;
+    planets: Planet[] = [];
 
     constructor(private jobService: JobApiService,
+                private planetService: PlanetApiService,
                 private journalService: JournalApiService,
                 private resourceService: ResourcesApiService,
                 private marketService: MarketplaceApiService) {
@@ -64,6 +68,9 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
             const jobs = resp.filter(j => j.isResearchJob);
             this.finishedResearch = jobs.length == 1 ? jobs[0] : undefined;
         });
+        this.subscriptions.push(sub);
+
+        sub = this.planetService.getPlanetByUsers().subscribe(resp => this.planets = resp);
         this.subscriptions.push(sub);
 
         sub = this.journalService.getTransportJobs().subscribe(resp => this.transportJobs = resp);

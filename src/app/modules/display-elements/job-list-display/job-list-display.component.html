@@ -1,7 +1,7 @@
 <div mat-subheader *ngIf="jobs.length == 0">{{ 'jobs.nothing.' + title_key | translate }}</div>
 <div mat-subheader *ngIf="jobs.length > 0">{{ 'jobs.title.' + title_key | translate }}</div>
 
-<mat-grid-list [cols]="displayResearch ? 4 : 3" rowHeight="50px" class="job-list" *ngIf="!_noHeader">
+<mat-grid-list [cols]="displayResearch ? 4 : 3" rowHeight="30px" class="job-list" *ngIf="!_noHeader">
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile class="header-item" *ngIf="displayResearch">
         <div mat-subheader>{{ 'research.title' | translate }}</div>
@@ -16,9 +16,9 @@
 
 <mat-list>
     <mat-list-item *ngFor="let pJob of planetaryJobs" style="height: 100%;">
-        <mat-grid-list [cols]="displayResearch ? 4 : 3" rowHeight="120px" class="job-list">
+        <mat-grid-list [cols]="displayResearch ? 4 : 3" rowHeight="80px" class="job-list">
             <mat-grid-tile>
-                <app-icon matListItemAvatar png64px planet></app-icon>
+                <app-icon matListItemAvatar png32px planet></app-icon>
                 <div mat-subheader class="name-field">{{pJob.planet.name}}</div>
             </mat-grid-tile>
 
@@ -28,7 +28,7 @@
                     <app-icon matListItemAvatar
                               [icon]="pJob.researches![0].facility.building.productionTarget"
                               [altText]="pJob.researches![0].facility.building.productionTarget.typeName"
-                              png64px [toolTip]="pJob.researches![0].facility.building.productionTarget.typeName"></app-icon>
+                              png32px [toolTip]="pJob.researches![0].facility.building.productionTarget.typeName"></app-icon>
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(pJob.researches![0])"
                             *ngIf="allowCancel"
@@ -53,7 +53,7 @@
                     <app-icon matListItemAvatar
                               [icon]="job.facility.building.productionTarget"
                               [altText]="job.facility.building.productionTarget.typeName"
-                              png64px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
+                              png32px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
@@ -78,7 +78,7 @@
                     <app-icon matListItemAvatar
                               [icon]="job.facility.building.productionTarget"
                               [altText]="job.facility.building.productionTarget.typeName"
-                              png64px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
+                              png32px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"

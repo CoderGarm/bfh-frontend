@@ -25,6 +25,13 @@
 
                 <app-outlined titleValue="{{ 'tab.journal.jobs' | translate }}">
 
+                    <app-job-overview [planets]="planets"
+                                      [runningJobs]="runningJobs"
+                                      [finishedJobs]="finishedJobs"
+                                      [runningResearch]="runningResearch"
+                                      [finishedResearch]="finishedResearch"></app-job-overview>
+
+
                     <mat-list *ngIf="!!runningResearch || !!finishedResearch">
                         <mat-grid-list cols="3" rowHeight="120px" class="job-list">
                             <mat-grid-tile></mat-grid-tile>
@@ -33,7 +40,7 @@
                                     <app-icon matListItemAvatar
                                               [icon]="runningResearch.facility.building.productionTarget"
                                               [altText]="runningResearch.facility.building.productionTarget.typeName"
-                                              png64px [toolTip]="runningResearch.facility.building.productionTarget.typeName"></app-icon>
+                                              png32px [toolTip]="runningResearch.facility.building.productionTarget.typeName"></app-icon>
                                     <div mat-line>{{runningResearch.researchTarget!.name}}</div>
                                     <div mat-line>{{ 'jobs.level' | translate }}: {{runningResearch.targetLevel}}</div>
                                     <div mat-line *ngIf="runningResearch.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{runningResearch.ticksLeft}}</div>
@@ -45,7 +52,7 @@
                                     <app-icon matListItemAvatar
                                               [icon]="finishedResearch.facility.building.productionTarget"
                                               [altText]="finishedResearch.facility.building.productionTarget.typeName"
-                                              png64px [toolTip]="finishedResearch.facility.building.productionTarget.typeName"></app-icon>
+                                              png32px [toolTip]="finishedResearch.facility.building.productionTarget.typeName"></app-icon>
                                     <button mat-icon-button class="finished-btn"
                                             matTooltip="{{ 'jobs.finished-icon' | translate }}">
                                         <mat-icon>check_circle_outline</mat-icon>
