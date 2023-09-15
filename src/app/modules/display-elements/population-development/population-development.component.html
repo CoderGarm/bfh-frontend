@@ -17,7 +17,32 @@
                 </div>
             </div>
         </div>
+        <div class="box">
+            <!-- summed up  -->
+            <div class="res-wrapper">
+                <div class="img-container">
+                    <app-icon class="icon"
+                              [icon]="popType"
+                              altText="{{ 'population-development.sum-of-pops.title' | translate }}"
+                              png24px
+                              toolTip="{{ 'population-development.sum-of-pops.title' | translate }} {{ sumOfPops | numberShort }} / {{ capacitySum | numberShort }}"></app-icon>
+                </div>
+                <div class="amount-present" *ngIf="isPresent(utilization)">
+                    <app-number-short [input]="getSum(utilization)"></app-number-short>
+                </div>
+                <div class="amount-present" *ngIf="isPresent(deposit)">
+                    <app-number-short [input]="getSum(deposit)"></app-number-short>
+                </div>
+                <div class="amount-present" *ngIf="isPresent(demand)">
+                    <app-number-short color="darkorange" [input]="getSum(demand)"></app-number-short>
+                </div>
+                <div class="amount-present" *ngIf="isPresent(income)">
+                    <app-number-short color="#46a35e" [input]="getSum(income)"></app-number-short>
+                </div>
+            </div>
+        </div>
         <div *ngFor="let resource of getDisplayableResources()!" class="box">
+            <!-- real numbers to education -->
             <div class="res-wrapper">
                 <div class="img-container">
                     <app-icon class="icon"

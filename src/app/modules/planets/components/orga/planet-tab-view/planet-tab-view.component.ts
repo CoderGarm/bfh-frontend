@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
-import {Fleet, FleetApiService, Planet, PlanetApiService} from "../../../../../services/swagger";
+import {Fleet, FleetApiService, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {PlanetsEventService} from "../../../planets-event.service";
 
@@ -18,10 +18,17 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     shipyardJobPossible: boolean = false;
     shipyardExists: boolean = false;
 
+    sumOfPops: number = 0;
+    resourceDeposit?: ResourceDeposit;
+    income?: ResourceDeposit;
+    capacity?: ResourceDeposit;
+    utilization?: ResourceDeposit;
+
     index = 0;
 
     constructor(private planetApi: PlanetApiService,
                 private planetsNotificationService: PlanetsEventService,
+                private resourceApi: ResourcesApiService,
                 private fleetApi: FleetApiService,
                 private change: ChangeDetectorRef) {
         super();
@@ -43,11 +50,12 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     }
 
     fetchData() {
-        let subscription = this.planetApi.isShipyardJobPossibleOnPlanet(this.selectedPlanet!.idPlanet)
+        const idPlanet = this.selectedPlanet!.idPlanet;
+        let sub = this.planetApi.isShipyardJobPossibleOnPlanet(idPlanet)
             .subscribe(resp => this.shipyardJobPossible = resp);
-        this.subscriptions.push(subscription);
+        this.subscriptions.push(sub);
 
-        subscription = this.planetApi.isShipyardExistsOnPlanet(this.selectedPlanet!.idPlanet)
+        sub = this.planetApi.isShipyardExistsOnPlanet(idPlanet)
             .subscribe(resp => {
                 this.shipyardExists = resp;
                 if (!this.shipyardExists && this.index === 2) {
@@ -55,6 +63,25 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
                     this.index = 0;
                 }
             });
-        this.subscriptions.push(subscription);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getResourceDeposit(idPlanet)
+            .subscribe(resp => {
+                this.resourceDeposit = resp;
+                resp.humanResources.forEach(hr => this.sumOfPops += hr.amount);
+            });
+        this.subscriptions.push(sub);
+        sub = this.resourceApi.getResourceUtilization(idPlanet).subscribe(utilization => {
+            this.utilization = utilization;
+            utilization.humanResources.forEach(hr => this.sumOfPops += hr.amount);
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getPlanetaryIncome(idPlanet).subscribe(resp => this.income = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceApi.getPlanetaryCapacity(idPlanet)
+            .subscribe(resp => this.capacity = resp);
+        this.subscriptions.push(sub);
     }
 }

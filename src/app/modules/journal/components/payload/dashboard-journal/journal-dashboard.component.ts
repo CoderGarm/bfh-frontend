@@ -36,11 +36,13 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     trades: TradesByLocation[] = [];
     missionResults?: MissionReport;
 
-
     deposit?: ResourceDeposit;
     demand?: ResourceDeposit;
     utilization?: ResourceDeposit;
     income?: ResourceDeposit;
+
+    sumOfPops: number = 0;
+    capacitySum: number = 0;
 
     constructor(private jobService: JobApiService,
                 private journalService: JournalApiService,
@@ -80,6 +82,12 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
         this.subscriptions.push(sub);
 
         sub = this.resourceService.getIncomeForUser().subscribe(resp => this.income = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceService.getPopOverview().subscribe(resp => {
+            this.sumOfPops = resp.present
+            this.capacitySum = resp.capacity;
+        });
         this.subscriptions.push(sub);
 
         sub = this.journalService.getFinishedColonizations().subscribe(resp => this.colonizations = resp);

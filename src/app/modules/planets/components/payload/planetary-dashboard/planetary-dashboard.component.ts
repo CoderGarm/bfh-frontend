@@ -26,10 +26,21 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     @Input()
     fleetsInOrbit?: Fleet[];
 
+    @Input()
+    sumOfPops: number = 0;
+
+    @Input()
     deposit?: ResourceDeposit;
+
+    @Input()
     income?: ResourceDeposit;
+
     demand?: ResourceDeposit;
+
+    @Input()
     utilization?: ResourceDeposit;
+
+    @Input()
     capacity?: ResourceDeposit;
     miningFactors?: MiningFactors;
 
@@ -46,10 +57,6 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
         }
     }
 
-
-    /**
-     * fetches the mining factors if needed
-     */
     private fetchData() {
         if (!this.planet) {
             return;
@@ -59,30 +66,10 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
         });
         this.subscriptions.push(sub);
 
-        sub = this.resourceService.getResourceDeposit(this.planet.idPlanet).subscribe(resp => {
-            this.deposit = resp;
-        });
-        this.subscriptions.push(sub);
-
         sub = this.resourceService.getResourceDemand(this.planet.idPlanet).subscribe(resp => {
             this.demand = resp;
         });
-        this.subscriptions.push(sub);
-
-        sub = this.resourceService.getResourceUtilization(this.planet.idPlanet).subscribe(resp => {
-            this.utilization = resp;
-        });
-        this.subscriptions.push(sub);
-
-        sub = this.resourceService.getPlanetaryCapacity(this.planet.idPlanet).subscribe(resp => {
-            this.capacity = resp;
-        });
-        this.subscriptions.push(sub);
-
-        sub = this.resourceService.getPlanetaryIncome(this.planet.idPlanet).subscribe(resp => {
-            this.income = resp;
-        });
-        this.subscriptions.push(sub);
+        this.subscriptions.push(sub)
     }
 
 }

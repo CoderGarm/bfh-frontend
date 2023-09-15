@@ -1,15 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {TypeService} from "../../../services/type.service";
 import {SubscriptionManager} from "../../../subscription.manager";
-import {EEducationType, EResourceType, HumanResourceAmount, ResourceDeposit} from "../../../services/swagger";
+import {EEducationType, EnumValueDto, EResourceType, HumanResourceAmount, ResourceDeposit} from "../../../services/swagger";
 import {StaticResourcesService} from "../../../services/static-resources.service";
+import {ResourceHelper} from "../../../services/helper/resource.helper";
+import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 @Component({
     selector: 'app-population-development',
     templateUrl: './population-development.component.html',
     styleUrls: ['./population-development.component.scss']
 })
-export class PopulationDevelopmentComponent extends SubscriptionManager implements OnInit {
+export class PopulationDevelopmentComponent extends SubscriptionManager implements OnChanges {
 
     @Input()
     workforceOnly: boolean = false;
@@ -35,6 +37,14 @@ export class PopulationDevelopmentComponent extends SubscriptionManager implemen
     resourceTypes: EResourceType[];
     educationTypes: EEducationType[];
 
+    @Input()
+    sumOfPops: number = 0;
+
+    @Input()
+    capacitySum: number = 0;
+
+    popType: EResourceType = ResourceHelper.getResourceType(EResourceTypeEnum.POPULATION);
+
     constructor(private typeService: TypeService) {
         super();
 
@@ -42,7 +52,10 @@ export class PopulationDevelopmentComponent extends SubscriptionManager implemen
         this.educationTypes = this.typeService.educationTypes;
     }
 
-    ngOnInit(): void {
+    ngOnChanges(changes: SimpleChanges) {
+        if (!!this.capacity) {
+            this.capacitySum = this.capacity.resources.filter(r => r.resourceType.typeName === this.popType.typeName)[0].amount;
+        }
     }
 
     getHumans(resource: EEducationType, costs?: ResourceDeposit): number {
@@ -104,5 +117,12 @@ export class PopulationDevelopmentComponent extends SubscriptionManager implemen
             });
         }
         return result;
+    }
+
+    getSum(resource?: ResourceDeposit) {
+        if (!resource) {
+            return 0;
+        }
+        return resource.humanResources.map(c => c.amount).reduce((sum, current) => sum + current, 0);
     }
 }

@@ -33,11 +33,11 @@
 		"finished": {
 			"nothing": "No finished colonizations",
 			"title": "Finished colonizations"
-        },
-      "planned": {
-        "stop": {
-          "submit": "Abort planned colonization"
-        }
+		},
+		"planned": {
+			"stop": {
+				"submit": "Abort planned colonization"
+			}
 		}
 	},
 	"combat-arena": {
@@ -479,7 +479,7 @@
 			"offer": {
 				"action": {
 					"abort": "Cancel",
-                  "delete": "Withdraw offer",
+					"delete": "Withdraw offer",
 					"edit": "Edit",
 					"release": "Release for market",
 					"take": "Take"
@@ -523,6 +523,9 @@
 		},
 		"income": {
 			"toolTip": "The projected growth"
+		},
+		"sum-of-pops": {
+			"title": "Summed up population to capacity"
 		},
 		"utilization": {
 			"toolTip": "The deployed population"

@@ -81,6 +81,7 @@ export * from './pirateRaidActionItemGroup';
 export * from './planet';
 export * from './plannedConstruction';
 export * from './player';
+export * from './populationOverview';
 export * from './propulsion';
 export * from './propulsionCapacity';
 export * from './releasedVolley';

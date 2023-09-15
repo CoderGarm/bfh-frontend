@@ -33,11 +33,11 @@
 		"finished": {
 			"nothing": "Keine fertiggestellten Kolonisierungen",
 			"title": "Fertiggestellte Kolonisierungen"
-        },
-      "planned": {
-        "stop": {
-          "submit": "Geplante Kolonisierung abbrechen"
-        }
+		},
+		"planned": {
+			"stop": {
+				"submit": "Geplante Kolonisierung abbrechen"
+			}
 		}
 	},
 	"combat-arena": {
@@ -478,7 +478,7 @@
 			"offer": {
 				"action": {
 					"abort": "Abbrechen",
-                  "delete": "Offerte zurückziehen",
+					"delete": "Offerte zurückziehen",
 					"edit": "Bearbeiten",
 					"release": "Handel anbieten",
 					"take": "Annehmen"
@@ -522,6 +522,9 @@
 		},
 		"income": {
 			"toolTip": "Das prognostizierte Wachstum"
+		},
+		"sum-of-pops": {
+			"title": "Aufsummierte Bevölkerung zu Kapazität"
 		},
 		"utilization": {
 			"toolTip": "Die eingesetzte Bevölkerung"

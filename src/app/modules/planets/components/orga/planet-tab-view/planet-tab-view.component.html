@@ -2,6 +2,11 @@
     <mat-tab label="{{ 'tab.planetary.dashboard' | translate }}">
         <ng-template matTabContent>
             <app-planetary-dashboard [planet]="selectedPlanet"
+                                     [income]="income"
+                                     [deposit]="resourceDeposit"
+                                     [capacity]="capacity"
+                                     [utilization]="utilization"
+                                     [sumOfPops]="sumOfPops"
                                      [fleetsInOrbit]="fleetsInOrbit"
                                      [shipyardJobPossible]="shipyardJobPossible"
                                      [shipyardExists]="shipyardExists"></app-planetary-dashboard>
@@ -9,7 +14,11 @@
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.ground-constructions' | translate }}">
         <ng-template matTabContent>
-            <app-ground-construct [planet]="selectedPlanet"></app-ground-construct>
+            <app-ground-construct [planet]="selectedPlanet"
+                                  [income]="income"
+                                  [capacity]="capacity"
+                                  [resourceDeposit]="resourceDeposit"
+                                  [sumOfPops]="sumOfPops"></app-ground-construct>
         </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.planetary.shipyard' | translate }}" [disabled]="!shipyardExists">

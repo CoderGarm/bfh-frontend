@@ -69,13 +69,21 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     planet?: Planet;
     private planetDefinition = "planet";
 
+    @Input()
     sumOfPops: number = 0;
 
     ignoreExpensiveConstructions: boolean = false;
 
+    @Input()
     resourceDeposit?: ResourceDeposit;
+
+    @Input()
     income?: ResourceDeposit;
+
+    @Input()
     capacity?: ResourceDeposit;
+
+
     levelImprovementResources?: ResourceAmount;
     levelImprovementHumanResources?: HumanResourceAmount;
     costsToDisplay?: ResourceDeposit;
@@ -192,24 +200,6 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
             sub = this.planetApi.isConstructionPossibleOnPlanet(idPlanet)
                 .subscribe(resp => this.constructionPossible = resp);
-            this.subscriptions.push(sub);
-
-            sub = this.resourceApi.getResourceDeposit(idPlanet)
-                .subscribe(resp => {
-                    this.resourceDeposit = resp;
-                    resp.humanResources.forEach(hr => this.sumOfPops += hr.amount);
-                });
-            this.subscriptions.push(sub);
-            sub = this.resourceApi.getResourceUtilization(this.planet!.idPlanet).subscribe(utilization => {
-                utilization.humanResources.forEach(hr => this.sumOfPops += hr.amount);
-            });
-            this.subscriptions.push(sub);
-
-            sub = this.resourceApi.getPlanetaryIncome(idPlanet).subscribe(resp => this.income = resp);
-            this.subscriptions.push(sub);
-
-            sub = this.resourceApi.getPlanetaryCapacity(idPlanet)
-                .subscribe(resp => this.capacity = resp);
             this.subscriptions.push(sub);
         }
     }
