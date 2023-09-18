@@ -9,6 +9,21 @@
          alt="{{ altText }}"
          matTooltip="{{ toolTip }}">
 
+    <img *ngIf="!icon && _construction" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/resources/CONSTRUCTION.png"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
+         alt="{{ altText }}"
+         matTooltip="{{ toolTip }}">
+
+    <img *ngIf="!icon && _shipyard" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/resources/ORBITAL_CONSTRUCTION.png"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
+         alt="{{ altText }}"
+         matTooltip="{{ toolTip }}">
+
+    <img *ngIf="!icon && _research" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/resources/RESEARCH.png"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
+         alt="{{ altText }}"
+         matTooltip="{{ toolTip }}">
+
     <img *ngIf="!icon && !!fleetIcon" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/fleets/{{ fleetIcon }}.png"
          [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
          alt="{{ altText }}"

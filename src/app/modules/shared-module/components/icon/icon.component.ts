@@ -36,6 +36,21 @@ export class IconComponent implements OnChanges {
     _credits: boolean = false;
 
     @Input()
+    get construction() { return this._construction; }
+    set construction(value: any) { this._construction = this.coerceBooleanProperty(value); }
+    _construction: boolean = false;
+
+    @Input()
+    get shipyard() { return this._shipyard; }
+    set shipyard(value: any) { this._shipyard = this.coerceBooleanProperty(value); }
+    _shipyard: boolean = false;
+
+    @Input()
+    get research() { return this._research; }
+    set research(value: any) { this._research = this.coerceBooleanProperty(value); }
+    _research: boolean = false;
+
+    @Input()
     get png64px() { return this._png64px; }
     set png64px(value: any) { this._png64px = this.coerceBooleanProperty(value); }
     _png64px: boolean = false;

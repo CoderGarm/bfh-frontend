@@ -219,11 +219,13 @@
 		"level": "Level",
 		"nothing": {
 			"active": "Keine laufenden Aufträge",
+			"active-singular": "Keine laufender Auftrag",
 			"finished": "Keine beendeten Aufträge"
 		},
 		"priority": "Priorität",
 		"ticks-left": "Ticks",
 		"title": {
+			"only-job-title": "Aufträge",
 			"active": "laufende Aufträge",
 			"finished": "Beendete Aufträge"
 		},

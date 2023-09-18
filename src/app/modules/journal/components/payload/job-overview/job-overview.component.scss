@@ -1,0 +1,52 @@
+@import "src/styles/variables";
+
+mat-grid-list {
+  margin-bottom: 35px;
+}
+
+.job-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.research-container {
+  display: flex;
+}
+
+.research-icon {
+  width: 100px;
+  margin: auto 0;
+}
+
+.name-field {
+  overflow-wrap: anywhere;
+  font-weight: 500;
+}
+
+.mat-mdc-header-cell {
+  text-align: center;
+  position: relative;
+}
+
+.mat-column-ground {
+  border-left: 1px solid var(--mat-table-row-item-outline-color);
+  border-right: 1px solid var(--mat-table-row-item-outline-color);
+}
+
+.mat-mdc-header-cell.mat-column-jobs {
+  border-bottom: none;
+}
+
+app-job-display {
+  margin: 10px;
+  display: block;
+  width: fit-content;
+  height: fit-content;
+}
+
+#research-block {
+  background-color: transparent;
+  max-width: 600px;
+  margin: 35px auto;
+}

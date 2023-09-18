@@ -31,49 +31,6 @@
                                       [runningResearch]="runningResearch"
                                       [finishedResearch]="finishedResearch"></app-job-overview>
 
-
-                    <mat-list *ngIf="!!runningResearch || !!finishedResearch">
-                        <mat-grid-list cols="3" rowHeight="120px" class="job-list">
-                            <mat-grid-tile></mat-grid-tile>
-                            <mat-grid-tile>
-                                <mat-list-item style="height: 100%;" *ngIf="!!runningResearch">
-                                    <app-icon matListItemAvatar
-                                              [icon]="runningResearch.facility.building.productionTarget"
-                                              [altText]="runningResearch.facility.building.productionTarget.typeName"
-                                              png32px [toolTip]="runningResearch.facility.building.productionTarget.typeName"></app-icon>
-                                    <div mat-line>{{runningResearch.researchTarget!.name}}</div>
-                                    <div mat-line>{{ 'jobs.level' | translate }}: {{runningResearch.targetLevel}}</div>
-                                    <div mat-line *ngIf="runningResearch.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{runningResearch.ticksLeft}}</div>
-                                </mat-list-item>
-                            </mat-grid-tile>
-
-                            <mat-grid-tile>
-                                <mat-list-item style="height: 100%;" *ngIf="!!finishedResearch">
-                                    <app-icon matListItemAvatar
-                                              [icon]="finishedResearch.facility.building.productionTarget"
-                                              [altText]="finishedResearch.facility.building.productionTarget.typeName"
-                                              png32px [toolTip]="finishedResearch.facility.building.productionTarget.typeName"></app-icon>
-                                    <button mat-icon-button class="finished-btn"
-                                            matTooltip="{{ 'jobs.finished-icon' | translate }}">
-                                        <mat-icon>check_circle_outline</mat-icon>
-                                    </button>
-                                    <div mat-line>{{finishedResearch.researchTarget!.name}}</div>
-                                    <div mat-line>{{ 'jobs.level' | translate }}: {{finishedResearch.targetLevel}}</div>
-                                    <div mat-line *ngIf="finishedResearch.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{finishedResearch.ticksLeft}}</div>
-                                </mat-list-item>
-                            </mat-grid-tile>
-                        </mat-grid-list>
-                    </mat-list>
-
-                    <app-job-list-display
-                            displayNoResearch
-                            [title_key]="'active'"
-                            [jobs]="runningJobs"></app-job-list-display>
-
-                    <app-job-list-display
-                            displayNoResearch
-                            [title_key]="'finished'"
-                            [jobs]="finishedJobs"></app-job-list-display>
                 </app-outlined>
             </ng-template>
         </mat-step>

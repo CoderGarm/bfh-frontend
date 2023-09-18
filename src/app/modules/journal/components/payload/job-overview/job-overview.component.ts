@@ -1,18 +1,14 @@
-import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Job, Planet} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
 
 
 export interface PlanetaryJobs {
     idPlanet: number,
-    name: string;
+    planetName: string;
     construction?: Job,
-    research?: Job,
     shipyard?: Job[],
     finishedConstruction?: Job,
-    finishedResearch?: Job,
     finishedShipyard?: Job,
 }
 
@@ -40,28 +36,69 @@ export class JobOverviewComponent implements OnChanges {
     @Input()
     planets: Planet[] = [];
 
-    @ViewChild(MatPaginator)
-    paginator?: MatPaginator;
-
-    @ViewChild(MatSort, {static: false})
-    sort?: MatSort;
-
+    planetaryJobs: PlanetaryJobs[] = [];
 
     constructor() {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.rebuild();
+        this.organizeJobsPerPlanet();
     }
 
-    private rebuild() {
+    private organizeJobsPerPlanet() {
+        this.planetaryJobs = [];
+        this.planets.forEach(p => this.planetaryJobs.push({idPlanet: p.idPlanet, planetName: p.name}));
 
+        this.runningJobs.forEach(job => {
+            const buildingJob = job.isBuildingJob;
+            const shipyardJob = job.isShipyardJob;
 
-        if (!!this.paginator) {
-            this.dataSource.paginator = this.paginator;
-        }
-        if (!!this.sort) {
-            this.dataSource.sort = this.sort;
-        }
+            let facilityPlanet = job.facilityPlanet;
+            const planetaryJobs = this.planetaryJobs.filter(pj => pj.idPlanet == facilityPlanet.idPlanet);
+            if (planetaryJobs.length == 0) {
+                const jobsPerPlanet: PlanetaryJobs = {
+                    idPlanet: facilityPlanet.idPlanet,
+                    planetName: facilityPlanet.name,
+                    construction: buildingJob ? job : undefined,
+                    shipyard: shipyardJob ? [job] : undefined
+                }
+                this.planetaryJobs.push(jobsPerPlanet);
+            } else {
+                const jobsPerPlanet = planetaryJobs[0];
+                if (buildingJob) {
+                    jobsPerPlanet.construction = job;
+                } else if (shipyardJob) {
+                    if (!jobsPerPlanet.shipyard) {
+                        jobsPerPlanet.shipyard = [];
+                    }
+                    jobsPerPlanet.shipyard.push(job);
+                }
+            }
+        });
+
+        this.finishedJobs.forEach(job => {
+            const buildingJob = job.isBuildingJob;
+            const shipyardJob = job.isShipyardJob;
+
+            let facilityPlanet = job.facilityPlanet;
+            const planetaryJobs = this.planetaryJobs.filter(pj => pj.idPlanet == facilityPlanet.idPlanet);
+            if (planetaryJobs.length == 0) {
+                const jobsPerPlanet: PlanetaryJobs = {
+                    idPlanet: facilityPlanet.idPlanet,
+                    planetName: facilityPlanet.name,
+                    finishedConstruction: buildingJob ? job : undefined,
+                    finishedShipyard: shipyardJob ? job : undefined
+                }
+                this.planetaryJobs.push(jobsPerPlanet);
+            } else {
+                const jobsPerPlanet = planetaryJobs[0];
+                if (buildingJob) {
+                    jobsPerPlanet.finishedConstruction = job;
+                } else if (shipyardJob) {
+                    jobsPerPlanet.finishedShipyard = job;
+                }
+            }
+        });
+        this.dataSource.data = this.planetaryJobs;
     }
 }

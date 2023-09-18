@@ -38,6 +38,7 @@ import {BlueCardComponent} from './blue-card/blue-card.component';
 import {TradeDisplayComponent} from './trade-display/trade-display.component';
 import {MissionResultComponent} from './mission-result/mission-result.component';
 import {TradeLossComponent} from "./trade-loss/trade-loss.component";
+import {JobDisplayComponent} from './job-display/job-display.component';
 
 @NgModule({
     declarations: [
@@ -79,6 +80,7 @@ import {TradeLossComponent} from "./trade-loss/trade-loss.component";
         TradeDisplayComponent,
         TradeLossComponent,
         MissionResultComponent,
+        JobDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -121,6 +123,7 @@ import {TradeLossComponent} from "./trade-loss/trade-loss.component";
         TradeDisplayComponent,
         TradeLossComponent,
         MissionResultComponent,
+        JobDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

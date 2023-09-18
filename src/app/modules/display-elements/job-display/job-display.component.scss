@@ -1,0 +1,38 @@
+@import "src/styles/variables";
+
+.finished-btn {
+  color: $success;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.job-tile {
+  margin: 10px;
+}
+
+.missing-job-item {
+  width: 140px;
+  height: 60px;
+  border: solid 1px var(--mat-table-row-item-outline-color);
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+.job-item {
+  min-width: 140px;
+  min-height: 60px;
+}
+
+.title-line {
+  font-weight: 500;
+}
+
+.no-job-icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 5px;
+}

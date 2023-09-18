@@ -16,7 +16,7 @@
   border-radius: 0 0 5px 0;
 }
 
-mat-card-actions {
+mat-card-actions, mat-card-header, mat-card-content {
   min-height: 0;
   padding: 0;
   margin: 0;

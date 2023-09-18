@@ -60,7 +60,7 @@
                             matTooltip="{{ 'jobs.cancel-btn' | translate }}">
                         <mat-icon>cancel</mat-icon>
                     </button>
-                    <button mat-icon-button class="finished-btn"
+                    <button mat-icon-button class="finished-btn" disabled
                             *ngIf="isFinishedJobsDisplay"
                             matTooltip="{{ 'jobs.finished-icon' | translate }}">
                         <mat-icon>check_circle_outline</mat-icon>
@@ -73,19 +73,19 @@
             </mat-grid-tile>
 
             <mat-grid-tile *ngIf="pJob.shipyard!.length == 0"></mat-grid-tile>
-            <mat-grid-tile *ngFor="let job of pJob.shipyard">
-                <mat-list-item style="height: 100%;" class="job-item">
-                    <app-icon matListItemAvatar
+            <mat-grid-tile>
+                <mat-list-item style="height: 100%;" class="job-item" *ngFor="let job of pJob.shipyard">
+                    <app-icon matListItemAvatar [png32px]="pJob.shipyard?.length == 1"
                               [icon]="job.facility.building.productionTarget"
                               [altText]="job.facility.building.productionTarget.typeName"
-                              png32px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
+                              [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
                     <button mat-icon-button class="cancel-btn"
                             (click)="cancelJob(job)"
                             *ngIf="allowCancel"
                             matTooltip="{{ 'jobs.cancel-btn' | translate }}">
                         <mat-icon>cancel</mat-icon>
                     </button>
-                    <button mat-icon-button class="finished-btn"
+                    <button mat-icon-button class="finished-btn" disabled
                             *ngIf="isFinishedJobsDisplay"
                             matTooltip="{{ 'jobs.finished-icon' | translate }}">
                         <mat-icon>check_circle_outline</mat-icon>

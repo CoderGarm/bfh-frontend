@@ -219,11 +219,13 @@
 		"level": "Level",
 		"nothing": {
 			"active": "No active jobs",
+			"active-singular": "No active job",
 			"finished": "No finished jobs"
 		},
 		"priority": "Priority",
 		"ticks-left": "Ticks",
 		"title": {
+			"only-job-title": "Jobs",
 			"active": "Active jobs",
 			"finished": "Finished jobs"
 		},
