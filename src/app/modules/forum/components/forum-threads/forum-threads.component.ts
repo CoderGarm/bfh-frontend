@@ -4,8 +4,6 @@ import {SubscriptionManager} from "../../../../subscription.manager";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {tap} from "rxjs/operators";
-import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
-import {ConfirmDialogComponent} from "../../../../components/confirmation-dialog/confirm-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateForumThreadComponent} from "../create-forum-thread/create-forum-thread.component";
 import {DialogConfigHelper} from "../../../../services/helper/dialog-config.helper";
@@ -144,17 +142,12 @@ export class ForumThreadsComponent extends SubscriptionManager implements AfterV
 
     openCreateThreadDialog() {
         const dialogConfig = DialogConfigHelper.createDialog();
-
-        let dialogData = new DialogData("New thread in " + this.selectedForum?.title);
-        dialogData.addDialogDataPerTemplate(CreateForumThreadComponent,
-            ['selectedForum'],
-            [this.selectedForum]);
-        dialogConfig.data = dialogData;
-
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+        this.forumsNotificationService.selectedForum = this.selectedForum;
+        const dialogRef = this.dialog.open(CreateForumThreadComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.createThread(this.createdThread);
+                this.forumsNotificationService.selectedForum = undefined;
             }
             this.createdThread = undefined;
         })

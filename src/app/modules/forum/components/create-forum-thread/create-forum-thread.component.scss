@@ -1,3 +1,4 @@
+@import "src/styles/variables";
 @import "src/styles/markdown-editor";
 
 #new-thread-field {
@@ -6,14 +7,36 @@
 
 #thread-title,
 #thread-description,
-#thread-message {
+#new-forum-thread-message {
   margin: 0 25px 0 25px;
-}
-
-#thread-message {
-  width: 500px;
 }
 
 #message-text {
   height: 200px;
+}
+
+#new-thread-field {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.title-field, .description-field {
+  width: 80%;
+}
+
+.header {
+  text-transform: lowercase;
+}
+
+.header::first-letter {
+  text-transform: uppercase;
+}
+
+.dialog-actions {
+  float: right;
+}
+
+* {
+  color: $body-text-color;
 }

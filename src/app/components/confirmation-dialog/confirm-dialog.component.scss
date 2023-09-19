@@ -1,3 +1,5 @@
+@import "src/styles/variables";
+
 .header {
   text-transform: lowercase;
 }
@@ -8,4 +10,8 @@
 
 .dialog-actions {
   float: right;
+}
+
+* {
+  color: $body-text-color;
 }

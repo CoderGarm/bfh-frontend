@@ -1,12 +1,14 @@
-import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {CreateForumThread, Forum} from "../../../../services/swagger";
+import {Component, HostListener, Inject, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {CreateForumThread} from "../../../../services/swagger";
 import {ForumsNotificationService} from "../../forums-notification.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 import {MarkdownService} from "ngx-markdown";
 import * as DOMPurify from "dompurify";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {DialogData} from "../../../../components/confirmation-dialog/DialogData";
 
 @Component({
     selector: 'app-create-forum-thread',
@@ -15,22 +17,36 @@ import * as DOMPurify from "dompurify";
 })
 export class CreateForumThreadComponent extends SubscriptionManager implements OnInit {
 
-    @Input()
-    selectedForum?: Forum;
-
-    newThreadFG: UntypedFormGroup = new UntypedFormGroup({
-        newThreadsTitle: new UntypedFormControl(''),
-        newThreadsDescription: new UntypedFormControl(''),
-        firstMessage: new UntypedFormControl(''),
+    newThreadFG: FormGroup = new FormGroup({
+        newThreadsTitle: new FormControl('', Validators.required),
+        newThreadsDescription: new FormControl(''),
+        firstMessage: new FormControl(''),
     });
     bsEditorInstance?: EditorInstance;
     editorOptions?: EditorOption;
 
-    constructor(@Optional() @Inject('selectedForum') selectedForum: Forum | undefined,
+    constructor(public dialogRef: MatDialogRef<CreateForumThreadComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
                 private markdownService: MarkdownService,
-                private forumsNotificationService: ForumsNotificationService) {
+                public forumsNotificationService: ForumsNotificationService) {
         super();
-        this.selectedForum = selectedForum;
+    }
+
+    public cancel() {
+        this.close(false);
+    }
+
+    public close(value: boolean) {
+        this.dialogRef.close(value);
+    }
+
+    public confirm() {
+        this.close(true);
+    }
+
+    @HostListener("keydown.esc")
+    public onEsc() {
+        this.close(false);
     }
 
     ngOnInit(): void {
@@ -51,15 +67,17 @@ export class CreateForumThreadComponent extends SubscriptionManager implements O
         };
 
         this.newThreadFG.valueChanges.subscribe(value => {
-            this.forumsNotificationService.pushCreatedThread(this.createThread());
+            if (this.newThreadFG.valid) {
+                this.forumsNotificationService.pushCreatedThread(this.createThread());
+            }
         });
     }
 
     createThread(): CreateForumThread | undefined {
         let result: CreateForumThread | undefined;
-        if (!!this.selectedForum) {
+        if (!!this.forumsNotificationService.selectedForum) {
             result = {
-                idForum: this.selectedForum.idForum,
+                idForum: this.forumsNotificationService.selectedForum.idForum,
                 title: this.newThreadFG.controls.newThreadsTitle.value,
                 description: this.newThreadFG.controls.newThreadsDescription.value,
                 firstMessage: this.newThreadFG.controls.firstMessage.value
