@@ -2,7 +2,7 @@
     <div id="content-container">
         <ng-container *ngFor="let research of availableResearches">
             <mat-card style="background-color: transparent;" class="right-blue-card"
-                      *ngIf="research.research.name.includes(filterValue)|| research.research.description.includes(filterValue)">
+                      *ngIf="research.research.name.toLowerCase().includes(filterValue.toLowerCase())|| research.research.description.toLowerCase().includes(filterValue.toLowerCase())">
                 <mat-card-content>
                     <app-outlined titleValue="{{ 'research.title' | translate }}" class="floated">
                         <app-icon mat-card-avatar class="avatar-image icon"

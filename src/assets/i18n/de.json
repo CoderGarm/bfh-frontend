@@ -225,9 +225,9 @@
 		"priority": "Priorität",
 		"ticks-left": "Ticks",
 		"title": {
-			"only-job-title": "Aufträge",
 			"active": "laufende Aufträge",
-			"finished": "Beendete Aufträge"
+			"finished": "Beendete Aufträge",
+			"only-job-title": "Aufträge"
 		},
 		"transports": {
 			"human-resources": {
@@ -241,6 +241,28 @@
 		}
 	},
 	"journal": {
+		"advisory": {
+			"infrastructure": {
+				"predicate": {
+					"constructionPossible": "Auf nicht allen Planeten wird gebaut.",
+					"noting-to-do": "Aktuell gibt es nichts über das übliche hinaus zu sagen.",
+					"researchPossible": "Es wird nicht geforscht.",
+					"shipyardPossible": "Nicht alle Schiffswerften laufen.",
+					"suggestedBuilding": "Vorgeschlagene nächstes Gebäude",
+					"suggestedResearch": "Vorgeschlagene nächste Forschungsinitiative"
+				}
+			},
+			"predicate": {
+				"convoy-protection": "Lasse deine Handelsrouten nicht ungeschützt!",
+				"pirate-hunt": "Sichere den Orbit deiner Planeten!"
+			},
+			"title": {
+				"convoy-protection": "Convoys ohne Eskorte",
+				"infrastructure": "Infrastrukturelle Änderungsvorschläge",
+				"main": "Beirat",
+				"pirate-hunt": "Planeten ohne Garnison"
+			}
+		},
 		"commissioned-operationals": {
 			"finished": {
 				"nothing": "Keine Inbetriebnahmen",

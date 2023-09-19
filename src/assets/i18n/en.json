@@ -225,9 +225,9 @@
 		"priority": "Priority",
 		"ticks-left": "Ticks",
 		"title": {
-			"only-job-title": "Jobs",
 			"active": "Active jobs",
-			"finished": "Finished jobs"
+			"finished": "Finished jobs",
+			"only-job-title": "Jobs"
 		},
 		"transports": {
 			"human-resources": {
@@ -241,6 +241,28 @@
 		}
 	},
 	"journal": {
+		"advisory": {
+			"infrastructure": {
+				"predicate": {
+					"constructionPossible": "Not on all planets are constructions running.",
+					"noting-to-do": "There is nothing more to say then at every other day.",
+					"researchPossible": "There is no research running.",
+					"shipyardPossible": "Not every shipyards are in use.",
+					"suggestedBuilding": "Suggested next construction",
+					"suggestedResearch": "Suggested next research"
+				}
+			},
+			"predicate": {
+				"convoy-protection": "Don't let your trade routes unprotected!",
+				"pirate-hunt": "Secure the orbits of your planet!"
+			},
+			"title": {
+				"convoy-protection": "Unguarded Convoys",
+				"infrastructure": "Suggested infrastructural changes",
+				"main": "Advisory Board",
+				"pirate-hunt": "Unprotected Planets"
+			}
+		},
 		"commissioned-operationals": {
 			"finished": {
 				"nothing": "No activated operationals",

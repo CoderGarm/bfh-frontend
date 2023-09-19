@@ -11,6 +11,8 @@ import {JournalDashboardComponent} from './components/payload/dashboard-journal/
 import {NgOptimizedImage} from "@angular/common";
 import {MissionJournalComponent} from './components/payload/mission-journal/mission-journal.component';
 import {JobOverviewComponent} from './components/payload/job-overview/job-overview.component';
+import {AdvisoryBoardComponent} from './components/payload/advisory-board/advisory-board.component';
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
@@ -24,11 +26,13 @@ import {JobOverviewComponent} from './components/payload/job-overview/job-overvi
         JournalDashboardComponent,
         MissionJournalComponent,
         JobOverviewComponent,
+        AdvisoryBoardComponent,
     ],
     imports: [
         SharedModuleModule,
         DisplayElementsModule,
         NgOptimizedImage,
+        NgxSpinnerModule,
     ]
 })
 export class JournalModule {

@@ -1,0 +1,19 @@
+@import "src/styles/variables";
+
+.box {
+  width: fit-content;
+  display: block;
+  font-size: small;
+  margin-bottom: 15px;
+}
+
+.icon {
+  margin: 15px;
+}
+
+.title {
+}
+
+app-trade-display {
+  width: 450px;
+}

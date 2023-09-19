@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { AdminApiService } from './api/adminApi.service';
+import { AdvisoryApiService } from './api/advisoryApi.service';
 import { AllianceApiService } from './api/allianceApi.service';
 import { AuthApiService } from './api/authApi.service';
 import { BattleReportApiService } from './api/battleReportApi.service';
@@ -34,6 +35,7 @@ import { WikiApiService } from './api/wikiApi.service';
   exports:      [],
   providers: [
     AdminApiService,
+    AdvisoryApiService,
     AllianceApiService,
     AuthApiService,
     BattleReportApiService,

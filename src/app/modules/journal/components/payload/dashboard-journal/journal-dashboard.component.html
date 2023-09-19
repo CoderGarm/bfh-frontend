@@ -2,6 +2,15 @@
     <mat-stepper animationDuration="500ms">
         <mat-step>
             <ng-template matStepLabel>
+                <div>{{ 'journal.advisory.title.main' | translate }}</div>
+            </ng-template>
+            <ng-template matStepContent>
+                <app-advisory-board></app-advisory-board>
+            </ng-template>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>
                 <div>{{ 'journal.title.content-area.fleet' | translate }}</div>
             </ng-template>
             <ng-template matStepContent>

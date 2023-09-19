@@ -109,6 +109,7 @@ export * from './stateBlock';
 export * from './supportFitting';
 export * from './takeOffer';
 export * from './tick';
+export * from './tickAdvice';
 export * from './time';
 export * from './trade';
 export * from './tradeContract';
