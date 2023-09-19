@@ -1,8 +1,12 @@
 import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
-import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {FleetEventService} from "../../../services/intercom/fleet-event.service";
+import {DialogConfigHelper} from "../../../services/helper/dialog-config.helper";
+import {DialogData} from "../../../components/confirmation-dialog/DialogData";
+import {ConfirmDialogComponent} from "../../../components/confirmation-dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-fleet-display',
@@ -14,7 +18,7 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     @Input()
     fleet?: Fleet;
 
-    formGroup: UntypedFormGroup;
+    formGroup: FormGroup;
 
     // @formatter:off
     @Input()
@@ -38,11 +42,12 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
     }
 
     constructor(private fleetService: FleetApiService,
-                private fleetChangeService: FleetEventService) {
+                private fleetChangeService: FleetEventService,
+                private dialog: MatDialog) {
         super();
 
-        this.formGroup = new UntypedFormGroup({
-            fleetName: new UntypedFormControl({value: '', disabled: true})
+        this.formGroup = new FormGroup({
+            fleetName: new FormControl({value: '', disabled: true})
         });
     }
 
@@ -114,5 +119,16 @@ export class FleetDisplayComponent extends SubscriptionManager implements AfterV
                 }
             });
         this.subscriptions.push(sub);
+    }
+
+    openRetireFleetDialog() {
+        const dialogConfig = DialogConfigHelper.createDialog();
+        dialogConfig.data = new DialogData("Retire " + this.fleet?.name + '?');
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.retireFleet();
+            }
+        })
     }
 }

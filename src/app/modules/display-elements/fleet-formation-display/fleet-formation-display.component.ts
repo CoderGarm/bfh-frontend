@@ -1,6 +1,10 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EShipClassType, Fleet, FleetApiService, WarShip} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
+import {DialogConfigHelper} from "../../../services/helper/dialog-config.helper";
+import {DialogData} from "../../../components/confirmation-dialog/DialogData";
+import {ConfirmDialogComponent} from "../../../components/confirmation-dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-fleet-formation-display',
@@ -34,7 +38,8 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
         return value != null && `${value}` !== 'false';
     }
 
-    constructor(private fleetService: FleetApiService) {
+    constructor(private fleetService: FleetApiService,
+                private dialog: MatDialog) {
         super();
     }
 
@@ -110,5 +115,17 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
             }
         });
         this.subscriptions.push(sub);
+    }
+
+
+    openRetireWarshipDialog(warShip: WarShip) {
+        const dialogConfig = DialogConfigHelper.createDialog();
+        dialogConfig.data = new DialogData("Retire " + warShip.name + '?');
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.retireShip(warShip);
+            }
+        })
     }
 }

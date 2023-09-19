@@ -1,11 +1,11 @@
 @import "src/styles/variables";
 
 .header {
-  text-transform: lowercase;
+  //text-transform: lowercase;
 }
 
 .header::first-letter {
-  text-transform: uppercase;
+  //text-transform: uppercase;
 }
 
 .dialog-actions {

@@ -20,7 +20,7 @@
                 </mat-form-field>
             </form>
             <button mat-mini-fab class="retire-btn"
-                    (click)="retireFleet()"
+                    (click)="openRetireFleetDialog()"
                     *ngIf="_retireAllowed"
                     matTooltip="{{ 'fleet.retire.submit' | translate }}">
                 <mat-icon>cancel</mat-icon>

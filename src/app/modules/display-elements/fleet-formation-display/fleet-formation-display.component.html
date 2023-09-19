@@ -19,7 +19,7 @@
                     <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
                                                         [isWarship]="true"></app-spacecraft-state-block-display>
                     <button mat-mini-fab class="retire-btn"
-                            (click)="retireShip(warShip)"
+                            (click)="openRetireWarshipDialog(warShip)"
                             *ngIf="_retireAllowed"
                             matTooltip="{{ 'fleet.composition.warship.retire.submit' | translate }}">
                         <mat-icon>cancel</mat-icon>
