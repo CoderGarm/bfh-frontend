@@ -12,8 +12,6 @@ import {MatSelectionList} from "@angular/material/list";
 })
 export class ProfileComponent extends SubscriptionManager implements OnInit, AfterViewInit {
 
-    static path: string = 'profile';
-
     role?: string;
 
     eMailFormGroup: FormGroup;

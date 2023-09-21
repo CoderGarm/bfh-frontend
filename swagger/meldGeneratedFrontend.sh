@@ -51,6 +51,7 @@ for filename in ./*; do
   sed -i 's/ELECTRONICWARFARE/ELECTRONIC_WARFARE/' $filename
   sed -i 's/TRANSPORTATIONDEMAND/TRANSPORTATION_DEMAND/' $filename
   sed -i 's/TRANSPORTATIONDELIVERY/TRANSPORTATION_DELIVERY/' $filename
+  sed -i 's/SOLARIANLEAGUE/SOLARIAN_LEAGUE/' $filename
 done
 
 cd ../..

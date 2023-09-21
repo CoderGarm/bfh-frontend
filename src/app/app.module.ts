@@ -81,6 +81,8 @@ import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
 import {TutorialModule} from "./modules/tutorial/tutorial.module";
 import {ImprintComponent} from './components/imprint/imprint.component';
 import {ScreenSizeWarningComponent} from './components/screen-size-warning/screen-size-warning.component';
+import {ShipNameTemplatorComponent} from './components/user/ship-name-templator/ship-name-templator.component';
+import {ProfileTabViewComponent} from './components/user/profile-tab-view/profile-tab-view.component';
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -121,6 +123,8 @@ export let AppInjector: Injector;
         ContributeCreditsComponent,
         ImprintComponent,
         ScreenSizeWarningComponent,
+        ShipNameTemplatorComponent,
+        ProfileTabViewComponent,
     ],
     imports: [
         NgxPermissionsModule.forRoot(),

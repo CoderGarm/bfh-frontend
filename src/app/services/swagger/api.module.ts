@@ -23,6 +23,7 @@ import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
 import { ResearchApiService } from './api/researchApi.service';
 import { ResourcesApiService } from './api/resourcesApi.service';
+import { RolePlayApiService } from './api/rolePlayApi.service';
 import { ShipyardApiService } from './api/shipyardApi.service';
 import { StarMapApiService } from './api/starMapApi.service';
 import { TickApiService } from './api/tickApi.service';
@@ -54,6 +55,7 @@ import { WikiApiService } from './api/wikiApi.service';
     PlanetApiService,
     ResearchApiService,
     ResourcesApiService,
+    RolePlayApiService,
     ShipyardApiService,
     StarMapApiService,
     TickApiService,

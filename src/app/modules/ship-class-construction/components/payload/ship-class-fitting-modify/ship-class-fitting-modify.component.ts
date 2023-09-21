@@ -171,7 +171,11 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                 idUser: userID,
                 role: role,
                 isNpc: false,
-                username: username
+                username: username,
+                rolePlayData: {
+                    shipNames: [],
+                    shipNameTemplates: []
+                }
             },
             shipClassCapabilities: {
                 capabilities: []

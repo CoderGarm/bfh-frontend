@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { RolePlayData } from './rolePlayData';
 
 /**
  * .
@@ -38,4 +39,5 @@ export interface Player {
      * The user's profile pic.
      */
     profilePic?: string;
+    rolePlayData: RolePlayData;
 }

@@ -94,6 +94,7 @@ export * from './researchTreeElement';
 export * from './resourceAmount';
 export * from './resourceDeposit';
 export * from './resourceTransfer';
+export * from './rolePlayData';
 export * from './shipClass';
 export * from './shipClassMock';
 export * from './shipKillerHit';

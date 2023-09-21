@@ -5,8 +5,8 @@ import {ErrorHandler, Injectable, NgZone} from '@angular/core';
 import {ErrorDialogComponent} from '../components/error-dialog/error-dialog.component';
 import {TokenStorage} from "./authentication/token-storage.service";
 import {Router} from "@angular/router";
-import {ProfileComponent} from "../components/user/profile/profile.component";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ProfileTabViewComponent} from "../components/user/profile-tab-view/profile-tab-view.component";
 
 @Injectable({
     providedIn: 'root'
@@ -78,7 +78,7 @@ export class CustomErrorHandler implements ErrorHandler {
     navigateToLandingPage(role: string) {
         switch (role) {
             case "ROLE_USER":
-                this.router.navigateByUrl(ProfileComponent.path).then(() => {
+                this.router.navigateByUrl(ProfileTabViewComponent.path).then(() => {
                 });
                 break;
             default:

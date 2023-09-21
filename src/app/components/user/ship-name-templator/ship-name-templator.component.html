@@ -1,0 +1,14 @@
+<div>
+
+    <mat-button-toggle-group id="template-selector">
+        <mat-button-toggle *ngFor="let nation of nations" [value]="nation" [checked]="nation === selectedTemplate" (change)="displayTemplateNames($event.value)">
+            {{ nation }}
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-selection-list id="template-list">
+        <mat-list-option *ngFor="let name of templatedNames">
+            <div>{{ name }}</div>
+        </mat-list-option>
+    </mat-selection-list>
+</div>

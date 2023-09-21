@@ -765,6 +765,10 @@
 			"marketplace": "Marketplace",
 			"shipyard": "Shipyard"
 		},
+		"profile": {
+			"navy-stuff": "Navy Area",
+			"personal-area": "Personal area"
+		},
 		"research": {
 			"available": "Available researches",
 			"tech-tree": "Tech tree"

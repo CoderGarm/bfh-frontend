@@ -1,0 +1,15 @@
+mat-expansion-panel {
+  width: fit-content;
+}
+
+#template-list {
+  height: fit-content;
+  max-height: 500px;
+  width: fit-content;
+  min-width: 350px;
+  overflow-y: scroll;
+}
+
+#template-selector {
+  margin: 50px auto;
+}

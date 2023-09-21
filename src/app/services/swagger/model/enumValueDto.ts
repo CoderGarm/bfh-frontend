@@ -40,6 +40,7 @@ export interface EnumValueDto {
     eTimeMetrics?: Array<EnumValueDto.ETimeMetricsEnum>;
     eWebUserRoles?: Array<EnumValueDto.EWebUserRolesEnum>;
     eJobTypes?: Array<EnumValueDto.EJobTypesEnum>;
+    eStarNations?: Array<EnumValueDto.EStarNationsEnum>;
 }
 export namespace EnumValueDto {
     export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
@@ -260,5 +261,13 @@ export namespace EnumValueDto {
         CONSTRUCTION: 'CONSTRUCTION' as EJobTypesEnum,
         REPAIR: 'REPAIR' as EJobTypesEnum,
         UPGRADE: 'UPGRADE' as EJobTypesEnum
+    };
+    export type EStarNationsEnum = 'MANTICORE' | 'HAVEN' | 'ANDERMAN' | 'SILESIA' | 'SOLARIAN_LEAGUE';
+    export const EStarNationsEnum = {
+        MANTICORE: 'MANTICORE' as EStarNationsEnum,
+        HAVEN: 'HAVEN' as EStarNationsEnum,
+        ANDERMAN: 'ANDERMAN' as EStarNationsEnum,
+        SILESIA: 'SILESIA' as EStarNationsEnum,
+        SOLARIAN_LEAGUE: 'SOLARIAN_LEAGUE' as EStarNationsEnum
     };
 }

@@ -1,6 +1,5 @@
 import {ChatComponent} from '../../modules/chat/components/chat/chat.component';
 import {HomeComponent} from '../../components/home/home.component';
-import {ProfileComponent} from '../../components/user/profile/profile.component';
 import {LoginComponent} from '../../components/user/login/login.component';
 import {RegisterComponent} from '../../components/user/register/register.component';
 import {Route, Routes} from '@angular/router';
@@ -25,6 +24,7 @@ import {PlayerPointsListComponent} from "../../modules/user-points/player-points
 import {StratOpsTabViewComponent} from "../../modules/strategic-operations/orga/strat-ops-tab-view/strat-ops-tab-view.component";
 import {TakeATourComponent} from "../../components/take-a-tour/take-a-tour.component";
 import {protectedGuard} from "ngx-auth";
+import {ProfileTabViewComponent} from "../../components/user/profile-tab-view/profile-tab-view.component";
 
 
 export class NavigationCreationService {
@@ -42,7 +42,7 @@ export class NavigationCreationService {
             {path: LoginComponent.path, component: LoginComponent},
             {path: ForgottenPasswordComponent.path, component: ForgottenPasswordComponent},
             {path: ForgottenPasswordComponent.paramPath, component: ForgottenPasswordComponent},
-            {path: ProfileComponent.path, component: ProfileComponent, canActivate: [protectedGuard]},
+            {path: ProfileTabViewComponent.path, component: ProfileTabViewComponent, canActivate: [protectedGuard]},
         ];
     }
 
