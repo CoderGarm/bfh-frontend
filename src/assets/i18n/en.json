@@ -141,6 +141,7 @@
 				"hint": "Add ships and fleet name",
 				"placeholder": "Type fleet name",
 				"pool": {
+					"create-from": "Create fleet",
 					"name": "Reserve fleet",
 					"tooltip": "Mothballed ships can be made operational and reactivated at any time."
 				},

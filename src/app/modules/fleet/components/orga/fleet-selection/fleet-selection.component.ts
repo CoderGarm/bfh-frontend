@@ -3,6 +3,7 @@ import {AbstractId, FleetApiService} from "../../../../../services/swagger";
 import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
 import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
+import {FleetDetachmentComponent} from "../../payload/fleet-split/fleet-detachment.component";
 
 @Component({
     selector: 'app-fleet-selection',
@@ -11,6 +12,11 @@ import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager"
 })
 export class FleetSelectionComponent extends SidenavSelectionManager implements AfterViewInit {
 
+
+    mothball: AbstractId = {
+        id: FleetDetachmentComponent.POOL_FLEET_ID,
+        name: 'Reserve'
+    }
     fleets: AbstractId[] = [];
 
     constructor(private fleetApi: FleetApiService,

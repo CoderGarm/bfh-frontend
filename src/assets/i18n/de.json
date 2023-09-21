@@ -141,6 +141,7 @@
 				"hint": "Schiffe und Flottennamen zuweisen",
 				"placeholder": "Flottennamen eingeben",
 				"pool": {
+					"create-from": "Flotte erzeugen",
 					"name": "Reserveflotte",
 					"tooltip": "Eingemottete Schiffe können jederzeit einsatzbereit gemacht und reaktiviert werden."
 				},

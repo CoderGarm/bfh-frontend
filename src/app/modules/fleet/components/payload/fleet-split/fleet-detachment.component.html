@@ -3,13 +3,7 @@
         <div cdkDropListGroup class="clearfix inner-list">
             <div *ngFor="let fleet of fleets | slice:1" class="fleet-container">
                 <div class="fleet-box">
-                    <div *ngIf="locked.includes(fleet.idFleet)" class="rel">
-                        <button mat-mini-fab color="success" aria-label="unlock input button" class="lock-btn"
-                                (click)="locked.splice(locked.indexOf(fleet.idFleet), 1)"
-                                *ngIf="locked.includes(fleet.idFleet) && fleet.idFleet < 0">
-                            <mat-icon>lock</mat-icon>
-                        </button>
-                        <div mat-subheader class="fleet-name" [matTooltip]="fleet.name">{{ fleet.name }}</div>
+                    <div class="rel">
                         <button mat-mini-fab color="accent" aria-label="add a fleet detachment button" class="add-btn-with-name"
                                 (click)="addFleetContainer()"
                                 matTooltip="{{ 'fleet.composition.detachment.tooltip' | translate }}"
@@ -18,12 +12,7 @@
                         </button>
                     </div>
 
-                    <div *ngIf="!locked.includes(fleet.idFleet)" class="rel">
-                        <button mat-mini-fab color="accent" aria-label="lock input button" class="lock-btn"
-                                (click)="locked.push(fleet.idFleet)"
-                                *ngIf="!locked.includes(fleet.idFleet) && fleet.idFleet < 0" [disabled]="fleet.name.length <= 0 || fleet.ships.length == 0">
-                            <mat-icon>lock_open</mat-icon>
-                        </button>
+                    <div class="rel">
                         <mat-form-field class="name-input">
                             <input matInput autocomplete="off"
                                    [(ngModel)]="fleet.name"
@@ -32,17 +21,11 @@
                                    type='text'>
                             <mat-hint align="start">{{ 'fleet.composition.detachment.hint' | translate }}</mat-hint>
                         </mat-form-field>
-                        <button mat-mini-fab color="accent" aria-label="add a fleet detachment button" class="add-btn-without-name"
-                                (click)="addFleetContainer()"
-                                matTooltip="{{ 'fleet.composition.detachment.add' | translate }}"
-                                *ngIf="fleets.indexOf(fleet) === fleets.length - 1 && locked.includes(fleet.idFleet)">
-                            <mat-icon>add_circle_outline</mat-icon>
-                        </button>
                         <button mat-mini-fab color="primary" aria-label="remove a fleet detachment button" class="remove-btn"
                                 (click)="removeFleetContainer()"
                                 matTooltip="{{ 'fleet.composition.detachment.remove' | translate }}"
                                 *ngIf="fleets.indexOf(fleet) === fleets.length - 1 && fleets.indexOf(fleet) > 2"
-                                [disabled]="locked.includes(fleet.idFleet) || fleet.ships.length > 0">
+                                [disabled]="fleet.ships.length > 0">
                             <mat-icon>remove_circle_outline</mat-icon>
                         </button>
                     </div>
@@ -50,11 +33,10 @@
                     <div cdkDropList
                          [cdkDropListData]="fleet.ships"
                          class="warship-list"
-                         (cdkDropListDropped)="drop($event, locked.includes(fleet.idFleet))">
+                         (cdkDropListDropped)="drop($event)">
                         <div class="warship-box" *ngFor="let warship of fleet.ships"
-                             [ngStyle]="{'cursor':( !locked.includes(fleet.idFleet) ? 'move' : '')}"
                              cdkDrag
-                             [cdkDragDisabled]="locked.includes(fleet.idFleet) && (fleet.idFleet < 0 || (fleet.idFleet > 0 && fleet.ships.length == 1))">
+                             [cdkDragDisabled]="(fleet.idFleet < 0 || (fleet.idFleet > 0 && fleet.ships.length == 1))">
                             <div>
                                 <span class="warship-title">{{ warship.name }}</span><br>
                                 <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
@@ -67,27 +49,14 @@
 
             <div class="fleet-container pool-item">
                 <div *ngIf="fleets.length >= 1" class="rel">
-                    <a mat-mini-fab color="success" aria-label="unlock input button" class="lock-reserve-btn"
-                       (click)="locked.splice(locked.indexOf(fleets[0].idFleet), 1)"
-                       *ngIf="locked.includes(fleets[0].idFleet)">
-                        <mat-icon>lock</mat-icon>
-                    </a>
-                    <button mat-mini-fab color="accent" aria-label="lock input button" class="lock-reserve-btn"
-                            (click)="locked.push(fleets[0].idFleet)"
-                            *ngIf="!locked.includes(fleets[0].idFleet)"
-                            [disabled]="fleets[0].name.length <= 0 || fleets[0].ships.length == 0">
-                        <mat-icon>lock_open</mat-icon>
-                    </button>
                     <div mat-subheader class="fleet-name"
                          matTooltip="{{ 'fleet.composition.detachment.pool.tooltip' | translate }}">{{ 'fleet.composition.detachment.pool.name' | translate }}</div>
                     <div cdkDropList
                          [cdkDropListData]="fleets[0].ships"
                          class="warship-list"
-                         (cdkDropListDropped)="drop($event, locked.includes(fleets[0].idFleet))">
+                         (cdkDropListDropped)="drop($event)">
                         <div class="warship-box" *ngFor="let warship of fleets[0].ships"
-                             [ngStyle]="{'cursor':( !locked.includes(fleets[0].idFleet) ? 'move' : '')}"
-                             cdkDrag
-                             [cdkDragDisabled]="locked.includes(fleets[0].idFleet)">
+                             cdkDrag>
                             <div>
                                 <span class="warship-title">{{ warship.name }}</span><br>
                                 <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>

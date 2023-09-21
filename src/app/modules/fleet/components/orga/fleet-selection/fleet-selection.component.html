@@ -1,4 +1,7 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
+    <mat-list-option (click)="selectFleet(mothball)" [selected]="isSelected(mothball.id)" class="sidenav-item">
+        {{ 'fleet.composition.detachment.pool.create-from' | translate }}
+    </mat-list-option>
     <mat-list-option *ngFor="let fleet of fleets"
                      (click)="selectFleet(fleet)"
                      [selected]="isSelected(fleet.id)"

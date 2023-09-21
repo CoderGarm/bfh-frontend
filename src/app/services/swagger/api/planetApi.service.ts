@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { FleetOrbit } from '../model/fleetOrbit';
 import { FrontendError } from '../model/frontendError';
 import { Orbit } from '../model/orbit';
 import { Planet } from '../model/planet';
@@ -183,6 +184,43 @@ export class PlanetApiService {
         ];
 
         return this.httpClient.request<Planet>('get',`${this.basePath}/api/private/planet/main`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the main planet of a user.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getMainPlanetCoords(observe?: 'body', reportProgress?: boolean): Observable<FleetOrbit>;
+    public getMainPlanetCoords(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FleetOrbit>>;
+    public getMainPlanetCoords(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FleetOrbit>>;
+    public getMainPlanetCoords(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<FleetOrbit>('get',`${this.basePath}/api/private/planet/main/coords`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

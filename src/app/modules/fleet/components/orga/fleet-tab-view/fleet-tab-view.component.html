@@ -1,6 +1,6 @@
-<mat-tab-group animationDuration="500ms" class="bottom-spacer" *ngIf="!!fleet">
-    <mat-tab label="{{ 'tab.fleet.dashboard' | translate }}">
-        <div class="holder">
+<mat-tab-group animationDuration="500ms" class="bottom-spacer" [selectedIndex]="index" (selectedIndexChange)="index = $event">
+    <mat-tab label="{{ 'tab.fleet.dashboard' | translate }}" [disabled]="onlyAllowDetachment">
+        <div class="holder" *ngIf="!!fleet && !onlyAllowDetachment">
             <app-fleet-display [fleet]="fleet" nameChangeAllowed retireAllowed transparent>
                 <div class="fleet-info-container" body>
                     <div class="main-display">
@@ -40,6 +40,6 @@
         </div>
     </mat-tab>
     <mat-tab label="{{ 'tab.fleet.split' | translate }}">
-        <app-fleet-detachment [fleet]="fleet"></app-fleet-detachment>
+        <app-fleet-detachment [fleet]="fleet" [isPoolFleet]="onlyAllowDetachment"></app-fleet-detachment>
     </mat-tab>
 </mat-tab-group>

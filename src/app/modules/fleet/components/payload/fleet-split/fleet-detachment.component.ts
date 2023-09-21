@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, SimpleChanges} from '@angular/core';
-import {AbstractId, Fleet, FleetApiService, FleetSplit, WarShip} from "../../../../../services/swagger";
+import {AbstractId, Fleet, FleetApiService, FleetOrbit, FleetSplit, PlanetApiService, WarShip} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
@@ -22,6 +22,9 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     @Input()
     fleet?: Fleet;
 
+    @Input()
+    isPoolFleet: boolean = false;
+
     fleets: FleetContainer[] = [];
 
     fleetSplit: FleetSplit = {fleetConstellations: {}, orbit: {}};
@@ -29,17 +32,17 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
 
     pooledShips: WarShip[] = [];
 
-    locked: number[] = [];
-
     runningInteger: number = -2;
 
     changeHappened: boolean = false;
 
     private static readonly POOL_FLEET_NAME: string = 'POOL';
-    private static readonly POOL_FLEET_ID: number = -Number.MAX_VALUE;
+    public static readonly POOL_FLEET_ID: number = -Number.MAX_VALUE;
+    private coords?: FleetOrbit;
 
     constructor(private fleetService: FleetApiService,
                 private fleetCommService: FleetEventService,
+                private planetService: PlanetApiService,
                 private notif: SnackbarNotificationService) {
         super();
     }
@@ -52,9 +55,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         let sub = this.fleetService.getPooledWarships().subscribe(resp => {
             this.pooledShips = resp
             this.fleets.filter(f => f.idFleet === FleetDetachmentComponent.POOL_FLEET_ID).forEach(f => f.ships = this.pooledShips.map(w => w));
-            if (this.pooledShips.length > 0) {
-                this.locked.push(FleetDetachmentComponent.POOL_FLEET_ID)
-            }
+            this.setupFleet();
         });
         this.subscriptions.push(sub);
     }
@@ -63,18 +64,25 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         if (changes['fleet'] && !!this.fleet) {
             this.setupFleet(this.fleet);
         }
+        if (changes['isPoolFleet'] && this.isPoolFleet) {
+            this.fetchPooledShips();
+        }
     }
 
-    private setupFleet(fleet: Fleet) {
+    private setupFleet(fleet?: Fleet) {
         this.fleets = [];
         this.createPoolFleet();
 
-        this.locked.push(fleet.idFleet);
-        this.fleets.push({
-            idFleet: fleet.idFleet,
-            name: fleet.name,
-            ships: fleet.ships
-        });
+        if (!!fleet) {
+            this.fleets.push({
+                idFleet: fleet.idFleet,
+                name: fleet.name,
+                ships: fleet.ships
+            });
+        } else {
+            let sub = this.planetService.getMainPlanetCoords().subscribe(resp => this.coords = resp);
+            this.subscriptions.push(sub);
+        }
         this.addFleetContainer();
     }
 
@@ -90,10 +98,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         return this.pooledShips.filter(p => p.idWarship === w.idWarship).length > 0;
     }
 
-    drop(event: CdkDragDrop<WarShip[]>, isLocked: boolean) {
-        if (isLocked) {
-            return;
-        }
+    drop(event: CdkDragDrop<WarShip[]>) {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
@@ -122,7 +127,8 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     submit() {
-        this.fleetSplit = {fleetConstellations: {}, orbit: this.fleet!.orbit!};
+        const orbit = !!this.fleet ? this.fleet.orbit! : this.coords!;
+        this.fleetSplit = {fleetConstellations: {}, orbit: orbit};
         this.shipsForPool = [];
         this.fleets.forEach(fleet => {
             if (fleet.idFleet === FleetDetachmentComponent.POOL_FLEET_ID) {
@@ -175,7 +181,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         const length = this.shipsForPool.length;
         const checksumFuturePool = this.shipsForPool.reduce((sum, current) => sum + current, 0);
         const checksumPool = this.pooledShips.map(w => w.idWarship).reduce((sum, current) => sum + current, 0);
-        const noNamePresent = this.fleets.filter(f => this.locked.includes(f.idFleet)).filter(f => f.name.trim().length == 0).length > 0;
-        return !noNamePresent && (detachmentsWithShips > 1 || checksumPool != checksumFuturePool || length > 0) && this.locked.length == detachmentsWithShips;
+        const noNamePresent = this.fleets.filter(f => f.name.trim().length == 0).length > 0;
+        return !noNamePresent && (detachmentsWithShips > 1 || checksumPool != checksumFuturePool || length > 0);
     }
 }
