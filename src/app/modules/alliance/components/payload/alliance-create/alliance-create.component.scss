@@ -1,7 +1,3 @@
-#title {
-  margin: 15px 0 15px 15px;
-}
-
 #create-form {
   display: flex;
   justify-content: space-around;
@@ -9,6 +5,17 @@
   margin: 15px 0 15px 0;
 }
 
-#create-btn {
-  margin-left: 15px;
+.ally-card {
+  margin-top: 50px;
+  width: 550px;
+  display: block;
+}
+
+.allyname, .allytag {
+  font-size: larger;
+  margin: 0 0 0 15px;
+}
+
+.allytag {
+  text-transform: uppercase;
 }

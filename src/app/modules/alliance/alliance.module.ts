@@ -8,6 +8,8 @@ import {ForumModule} from "../forum/forum.module";
 import {MembersListComponent} from './components/payload/members-list/members-list.component';
 import {AllianceCreateComponent} from "./components/payload/alliance-create/alliance-create.component";
 import {AllianceCodeValidatorDirective, AllianceNameValidatorDirective} from "./validators/alliance.validator";
+import {DisplayElementsModule} from "../display-elements/display-elements.module";
+import {AllianceNotificationService} from "./alliance-notification.service";
 
 
 @NgModule({
@@ -23,7 +25,11 @@ import {AllianceCodeValidatorDirective, AllianceNameValidatorDirective} from "./
     ],
     imports: [
         SharedModuleModule,
-        ForumModule
+        ForumModule,
+        DisplayElementsModule,
+    ],
+    providers: [
+        AllianceNotificationService,
     ]
 })
 export class AllianceModule {

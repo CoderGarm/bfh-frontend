@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {Alliance, AllianceApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {AllianceHelper} from "../../../alliance.helper";
+import {AllianceNotificationService} from "../../../alliance-notification.service";
 
 @Component({
     selector: 'app-alliance-tab-view',
     templateUrl: './alliance-tab-view.component.html',
     styleUrls: ['./alliance-tab-view.component.scss']
 })
-export class AllianceTabViewComponent extends SubscriptionManager implements OnInit {
+export class AllianceTabViewComponent extends SubscriptionManager implements AfterViewInit {
 
     static path: string = 'alliance';
 
@@ -17,11 +18,19 @@ export class AllianceTabViewComponent extends SubscriptionManager implements OnI
     allianceID?: number;
     applicationOpenAt: Alliance[] = [];
 
-    constructor(private allianceApi: AllianceApiService) {
+    constructor(private allianceApi: AllianceApiService,
+                private allyNotificationService: AllianceNotificationService) {
         super();
+
+        let sub = this.allyNotificationService.askCreation().subscribe(() => this.fetchBaseData());
+        this.subscriptions.push(sub);
     }
 
-    ngOnInit(): void {
+    ngAfterViewInit(): void {
+        this.fetchBaseData();
+    }
+
+    private fetchBaseData() {
         let sub = this.allianceApi.getAllianceForUser().subscribe(resp => this.alliance = resp);
         this.subscriptions.push(sub);
 

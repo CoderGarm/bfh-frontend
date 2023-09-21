@@ -1,17 +1,30 @@
-<p id="title">{{ 'alliance.create.title' | translate }}</p>
+<div class="flex-items-container">
+    <mat-card appearance="outlined" class="streamline-background ally-card">
+        <mat-card-header>
+            <mat-card-title>
+                {{ 'alliance.create.title' | translate }}
+                <span *ngIf="!!allianceG.get('allianceNameFC')?.value" class="allyname">{{ allianceG.get('allianceNameFC')?.value }}</span>
+                <span *ngIf="!!allianceG.get('allianceCodeFC')?.value" class="allytag">[{{ allianceG.get('allianceCodeFC')?.value }}]</span>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]=allianceG id="create-form" allianceNameValidator allianceCodeValidator>
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ 'alliance.create.name' | translate }}</mat-label>
+                    <input matInput autocomplete="off" placeholder="{{ 'alliance.create.name' | translate }}" formControlName=allianceNameFC>
+                    <mat-error *ngIf="allianceG.get('allianceNameFC')?.hasError('allianceNameInvalid')">{{errors.allianceNameInvalid}} </mat-error>
+                </mat-form-field>
 
-<form [formGroup]=allianceG id="create-form" allianceNameValidator allianceCodeValidator>
-    <mat-form-field appearance="outline">
-        <mat-label>{{ 'alliance.create.name' | translate }}</mat-label>
-        <input matInput autocomplete="off" placeholder="Name ..." formControlName=allianceNameFC>
-        <mat-error *ngIf="allianceG.get('allianceNameFC')?.hasError('allianceNameInvalid')">{{errors.allianceNameInvalid}} </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-        <mat-label>{{ 'alliance.create.code' | translate }}</mat-label>
-        <input matInput autocomplete="off" placeholder="Code ..." formControlName=allianceCodeFC>
-        <mat-error *ngIf="allianceG.get('allianceCodeFC')?.hasError('allianceCodeInvalid')">{{errors.allianceCodeInvalid}} </mat-error>
-    </mat-form-field>
-</form>
-
-<button id="create-btn" mat-flat-button color="primary" mat-button (click)="create()" [disabled]="!allianceG.valid">{{ 'alliance.create.submit' | translate }}</button>
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ 'alliance.create.code' | translate }}</mat-label>
+                    <input matInput autocomplete="off" placeholder="{{ 'alliance.create.code' | translate }}" formControlName=allianceCodeFC>
+                    <mat-error *ngIf="allianceG.get('allianceCodeFC')?.hasError('allianceCodeInvalid')">{{errors.allianceCodeInvalid}} </mat-error>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-flat-button color="primary" mat-button (click)="create()"
+                    [disabled]="!allianceG.valid">{{ 'alliance.create.submit' | translate }}</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AllianceApiService} from "../../../../../services/swagger";
-import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
+import {AllianceApiService, JWT} from "../../../../../services/swagger";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {AllianceErrorMessages} from "../../../validators/alliance.validator";
+import {AllianceNotificationService} from "../../../alliance-notification.service";
+import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({
     selector: 'app-alliance-create',
@@ -14,12 +16,14 @@ export class AllianceCreateComponent extends SubscriptionManager implements OnIn
 
     errors = AllianceErrorMessages;
 
-    allianceG: UntypedFormGroup = new UntypedFormGroup({
-        allianceNameFC: new UntypedFormControl(''),
-        allianceCodeFC: new UntypedFormControl('')
+    allianceG: FormGroup = new FormGroup({
+        allianceNameFC: new FormControl('', Validators.required),
+        allianceCodeFC: new FormControl('', Validators.required)
     })
 
-    constructor(private allianceApi: AllianceApiService, private snackbarService: SnackbarNotificationService) {
+    constructor(private allianceApi: AllianceApiService,
+                private allyNotificationService: AllianceNotificationService,
+                private snackbarService: SnackbarNotificationService) {
         super();
     }
 
@@ -32,6 +36,10 @@ export class AllianceCreateComponent extends SubscriptionManager implements OnIn
         let sub = this.allianceApi.createAlliance(name, code).subscribe(resp => {
             if (!!resp) {
                 this.snackbarService.open("You founded the alliance " + resp.name + " [" + resp.code + "]");
+                this.allyNotificationService.pushCreation();
+                const gameRoles = this.tokenStorage.getGameRoles();
+                gameRoles.push(GameUserRolesEnum.ALLIANCE_ADMIN)
+                this.tokenStorage.setGameRoles(gameRoles)
             }
         });
         this.subscriptions.push(sub);
