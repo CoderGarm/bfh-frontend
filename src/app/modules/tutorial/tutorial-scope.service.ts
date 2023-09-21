@@ -19,6 +19,8 @@ import {TutorialUniverseMapComponent} from "./topics/starMapTabView/tutorial-uni
 import {TutorialStarMapComponent} from "./topics/starMapTabView/tutorial-star-map/tutorial-star-map.component";
 import {StratOpsTabViewComponent} from "../strategic-operations/orga/strat-ops-tab-view/strat-ops-tab-view.component";
 import {TutorialMissionComponent} from "./topics/stratOpsTabView/tutorial-star-map/tutorial-mission.component";
+import {ExpansionTabViewComponent} from "../expansion/components/orga/expansion-tab-view/expansion-tab-view.component";
+import {TutorialColonizationInfoComponent} from "./topics/expansionTabView/colonization-info/tutorial-colonization-info.component";
 
 export interface Topic {
     uuid: string,
@@ -39,6 +41,7 @@ export class TutorialScopeService extends SubscriptionManager {
         TransportTabViewComponent.path,
         StarMapTabViewComponent.path,
         StratOpsTabViewComponent.path,
+        ExpansionTabViewComponent.path,
     ];
 
     private static topicsByRoute: Map<string, Topic[]> = new Map<string, Topic[]>();
@@ -65,6 +68,9 @@ export class TutorialScopeService extends SubscriptionManager {
         ]);
         this.topicsByRoute.set(StratOpsTabViewComponent.path, [
             TutorialMissionComponent.TOPIC,
+        ]);
+        this.topicsByRoute.set(ExpansionTabViewComponent.path, [
+            TutorialColonizationInfoComponent.TOPIC,
         ]);
     }
 
