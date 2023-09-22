@@ -585,6 +585,11 @@
 			},
 			"ship-name": {
 				"plural": "Namen"
+			},
+			"ship-prefix": {
+				"hint": "Das Prefix darf maximal 6 Zeichen lang sein.",
+				"label": "Wähle das Hoheitszeichen deiner Flotte.",
+				"predicate": "Deine Flotte repräsentiert sich selbst und dein Imperium. Mache sie stolz!"
 			}
 		}
 	},

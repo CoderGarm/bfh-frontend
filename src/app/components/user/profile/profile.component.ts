@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {UserApiService, UserSettings} from "../../../services/swagger";
+import {RolePlayApiService, UserApiService, UserSettings} from "../../../services/swagger";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {MatSelectionList} from "@angular/material/list";
@@ -47,7 +47,8 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
 
     constructor(private formBuilder: FormBuilder,
                 private notif: SnackbarNotificationService,
-                private userService: UserApiService) {
+                private userService: UserApiService,
+                private rpgService: RolePlayApiService) {
         super();
 
         this.eMailFormGroup = this.formBuilder.group({

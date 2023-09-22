@@ -586,6 +586,11 @@
 			},
 			"ship-name": {
 				"plural": "names"
+			},
+			"ship-prefix": {
+				"hint": "The prefix can be a maximum of 6 characters long.",
+				"label": "Choose your fleet's national emblem.",
+				"predicate": "Your fleet presents itself and your empire. Make them proud!"
 			}
 		}
 	},
@@ -799,7 +804,7 @@
 			"shipyard": "Shipyard"
 		},
 		"profile": {
-			"navy-stuff": "Navy Area",
+			"navy-stuff": "Navy area",
 			"personal-area": "Personal area"
 		},
 		"research": {

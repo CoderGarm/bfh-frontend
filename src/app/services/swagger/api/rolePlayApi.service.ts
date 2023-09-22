@@ -260,6 +260,43 @@ export class RolePlayApiService {
     /**
      * Get the list of ship names
      * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getShipPrefix(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public getShipPrefix(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public getShipPrefix(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getShipPrefix(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/private/rpg/shipPrefix`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of ship names
+     * 
      * @param starNation 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -332,6 +369,85 @@ export class RolePlayApiService {
         ];
 
         return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/rpg/shipNames/${encodeURIComponent(String(name))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of ship names
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeShipPrefix(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public removeShipPrefix(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public removeShipPrefix(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public removeShipPrefix(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/rpg/shipPrefix`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of ship names
+     * 
+     * @param prefix 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setShipPrefix(prefix: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public setShipPrefix(prefix: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public setShipPrefix(prefix: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public setShipPrefix(prefix: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (prefix === null || prefix === undefined) {
+            throw new Error('Required parameter prefix was null or undefined when calling setShipPrefix.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/rpg/shipPrefix/${encodeURIComponent(String(prefix))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

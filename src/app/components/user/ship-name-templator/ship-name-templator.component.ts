@@ -3,7 +3,16 @@ import {EnumValueDto, RolePlayApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 import {MatCheckboxChange} from "@angular/material/checkbox";
+import {FormControl, FormGroupDirective, NgForm, ValidationErrors} from "@angular/forms";
+import {ErrorStateMatcher} from "@angular/material/core";
 import EStarNationsEnum = EnumValueDto.EStarNationsEnum;
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+        const isSubmitted = form && form.submitted;
+        return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+    }
+}
 
 @Component({
     selector: 'app-ship-name-templator',
@@ -11,6 +20,10 @@ import EStarNationsEnum = EnumValueDto.EStarNationsEnum;
     styleUrls: ['./ship-name-templator.component.scss']
 })
 export class ShipNameTemplatorComponent extends SubscriptionManager implements AfterViewInit {
+
+    prefixFC: FormControl<string | null> = this.getPrefixFC(undefined);
+
+    matcher = new MyErrorStateMatcher();
 
     readonly nations: EStarNationsEnum[] = [
         EStarNationsEnum.MANTICORE,
@@ -34,6 +47,16 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
                 private translate: TranslateService) {
         super();
 
+        this.prefixFC.valueChanges.subscribe(prefix => {
+            if (!!prefix) {
+                let sub = this.rpgService.setShipPrefix(prefix).subscribe(() => {
+                });
+                this.subscriptions.push(sub);
+            } else {
+                this.deletePrefix();
+            }
+        });
+
         this.translate.get('profile.navy.ship-name-template.nation.title.MANTICORE');
         this.translate.get('profile.navy.ship-name-template.nation.title.HAVEN');
         this.translate.get('profile.navy.ship-name-template.nation.title.ANDERMAN');
@@ -41,6 +64,14 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
         this.translate.get('profile.navy.ship-name-template.nation.title.SOLARIAN_LEAGUE');
     }
 
+    deletePrefix() {
+        let sub = this.rpgService.removeShipPrefix().subscribe(resp => {
+            if (resp) {
+                this.prefixFC = this.getPrefixFC('');
+            }
+        });
+        this.subscriptions.push(sub);
+    }
 
     ngAfterViewInit() {
         let sub = this.rpgService.getShipNameTemplates().subscribe(resp => {
@@ -59,6 +90,28 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
             });
             this.subscriptions.push(sub);
         });
+
+        sub = this.rpgService.getShipPrefix().subscribe(resp => {
+            if (resp.length == 1) {
+                const prefix = resp[0];
+                this.prefixFC = this.getPrefixFC(prefix);
+            }
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private getPrefixFC(prefix?: string) {
+        if (!prefix) {
+            prefix = '';
+        }
+        return new FormControl(prefix, [control => {
+            const v: ValidationErrors = {};
+            const isError = !!control && !!control.value ? (<string>control.value).length > 6 : false;
+            if (isError) {
+                v['too-long'] = '1';
+            }
+            return v;
+        }]);
     }
 
     private selectAllChosenTemplates() {

@@ -18,10 +18,23 @@ mat-expansion-panel {
   max-width: 350px;
 }
 
-.flex-items-container > * {
+.flex-items-container > *,
+.content-area > * {
   margin: 25px;
 }
 
-#special {
+.special {
   margin-left: 50px
+}
+
+mat-card-header {
+  margin-bottom: 25px;
+}
+
+mat-hint {
+  font-size: small;
+}
+
+.prefix-field {
+  width: 450px;
 }

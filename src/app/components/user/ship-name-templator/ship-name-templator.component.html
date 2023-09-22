@@ -1,6 +1,29 @@
 <div class="content-area">
     <mat-card appearance="outlined" class="streamline-background">
         <mat-card-header class="streamline-background">
+            <mat-card-title>{{ 'profile.navy.ship-prefix.predicate' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+            <form>
+                <mat-form-field appearance="outline" class="prefix-field">
+                    <mat-label>{{ 'profile.navy.ship-prefix.label' | translate }}</mat-label>
+                    <input type="text" matInput [formControl]="prefixFC" [errorStateMatcher]="matcher"
+                           placeholder="{{ 'profile.navy.ship-prefix.label' | translate }}">
+                    <button matSuffix mat-icon-button (click)="deletePrefix();">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <mat-error *ngIf="prefixFC.hasError('too-long')">
+                        {{ 'profile.navy.ship-prefix.hint' | translate }}
+                    </mat-error>
+                    <mat-hint>{{ 'profile.navy.ship-prefix.hint' | translate }}</mat-hint>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="streamline-background">
+        <mat-card-header class="streamline-background">
             <img mat-card-avatar class="avatar-image" src="assets/icons/misc/uncertainty.png" alt="help icon">
             <mat-card-title>
                 <div innerHTML="{{ 'profile.navy.ship-name-template.help' | translate }}"></div>
@@ -15,7 +38,6 @@
             <div>{{ 'profile.navy.ship-name-template.result.individual-selection' | translate }} {{ selectedNames.length }}</div>
         </mat-card-content>
     </mat-card>
-
 
     <mat-card appearance="outlined" class="streamline-background">
         <mat-card-header class="streamline-background">
@@ -34,7 +56,7 @@
                 </section>
 
                 <mat-form-field appearance="outline">
-                    <mat-label id="special">{{ 'profile.navy.ship-name-template.filter-and-add.label' | translate }}</mat-label>
+                    <mat-label class="special">{{ 'profile.navy.ship-name-template.filter-and-add.label' | translate }}</mat-label>
                     <button matPrefix mat-icon-button (click)="addIndividualName(filterValue)"
                             matTooltip="{{ 'profile.navy.ship-name-template.filter-and-add.tooltip' | translate }}">
                         <mat-icon>add</mat-icon>
