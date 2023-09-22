@@ -60,6 +60,90 @@ export class RolePlayApiService {
     /**
      * Get the list of ship names
      * 
+     * @param starNation 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addShipNameTemplate(starNation: string, observe?: 'body', reportProgress?: boolean): Observable<RolePlayData>;
+    public addShipNameTemplate(starNation: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RolePlayData>>;
+    public addShipNameTemplate(starNation: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RolePlayData>>;
+    public addShipNameTemplate(starNation: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (starNation === null || starNation === undefined) {
+            throw new Error('Required parameter starNation was null or undefined when calling addShipNameTemplate.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<RolePlayData>('put',`${this.basePath}/api/private/rpg/shipTemplate/${encodeURIComponent(String(starNation))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of ship names
+     * 
+     * @param name 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addShipNamesFor(name: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public addShipNamesFor(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public addShipNamesFor(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public addShipNamesFor(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling addShipNamesFor.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/rpg/shipNames/${encodeURIComponent(String(name))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of ship names
+     * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -164,6 +248,90 @@ export class RolePlayApiService {
         ];
 
         return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/private/rpg/shipNames`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of ship names
+     * 
+     * @param starNation 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeShipNameTemplate(starNation: string, observe?: 'body', reportProgress?: boolean): Observable<RolePlayData>;
+    public removeShipNameTemplate(starNation: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RolePlayData>>;
+    public removeShipNameTemplate(starNation: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RolePlayData>>;
+    public removeShipNameTemplate(starNation: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (starNation === null || starNation === undefined) {
+            throw new Error('Required parameter starNation was null or undefined when calling removeShipNameTemplate.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<RolePlayData>('delete',`${this.basePath}/api/private/rpg/shipTemplate/${encodeURIComponent(String(starNation))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the list of ship names
+     * 
+     * @param name 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeShipNamesFor(name: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public removeShipNamesFor(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public removeShipNamesFor(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public removeShipNamesFor(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling removeShipNamesFor.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/rpg/shipNames/${encodeURIComponent(String(name))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

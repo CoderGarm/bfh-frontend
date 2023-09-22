@@ -1,6 +1,8 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {EnumValueDto, RolePlayApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
+import {TranslateService} from "@ngx-translate/core";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 import EStarNationsEnum = EnumValueDto.EStarNationsEnum;
 
 @Component({
@@ -18,40 +20,139 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
         EStarNationsEnum.SOLARIAN_LEAGUE
     ];
 
-    templates: EStarNationsEnum[] = [];
+    usersChosenTemplates: EStarNationsEnum[] = [];
     selectedNames: string[] = [];
     templatedNames: string[] = [];
     templateNames: Map<EStarNationsEnum, string[]> = new Map<EnumValueDto.EStarNationsEnum, string[]>();
-    selectedTemplate?: EStarNationsEnum;
 
-    constructor(private rpgService: RolePlayApiService,) {
+    filteredTemplatedNames: string[] = [];
+    filteredSelectedNames: string[] = [];
+
+    filterValue: string = '';
+
+    constructor(private rpgService: RolePlayApiService,
+                private translate: TranslateService) {
         super();
+
+        this.translate.get('profile.navy.ship-name-template.nation.title.MANTICORE');
+        this.translate.get('profile.navy.ship-name-template.nation.title.HAVEN');
+        this.translate.get('profile.navy.ship-name-template.nation.title.ANDERMAN');
+        this.translate.get('profile.navy.ship-name-template.nation.title.SILESIA');
+        this.translate.get('profile.navy.ship-name-template.nation.title.SOLARIAN_LEAGUE');
     }
 
 
     ngAfterViewInit() {
-        let sub = this.rpgService.getShipNameTemplates().subscribe(resp => this.templates = resp.shipNameTemplates);
+        let sub = this.rpgService.getShipNameTemplates().subscribe(resp => {
+            this.usersChosenTemplates = resp.shipNameTemplates;
+            this.selectAllChosenTemplates();
+        });
         this.subscriptions.push(sub);
 
         sub = this.rpgService.getShipNamesForUser().subscribe(resp => this.selectedNames = resp);
         this.subscriptions.push(sub);
 
         this.nations.forEach(value => {
-            let sub = this.rpgService.getShipNamesFor(value).subscribe(resp => this.templateNames.set(value, resp));
+            let sub = this.rpgService.getShipNamesFor(value).subscribe(resp => {
+                this.templateNames.set(value, resp);
+                this.selectAllChosenTemplates();
+            });
             this.subscriptions.push(sub);
         });
-
-        setTimeout(() => {
-            this.displayTemplateNames(EStarNationsEnum.MANTICORE);
-        }, 2000);
     }
 
-    displayTemplateNames(event: EStarNationsEnum) {
-        this.selectedTemplate = event;
-        if (this.templateNames.has(event)) {
-            this.templatedNames = this.templateNames.get(event)!;
-        } else {
-            this.templatedNames = [];
+    private selectAllChosenTemplates() {
+        if (this.usersChosenTemplates.length > 0 && this.usersChosenTemplates.every(nation => this.templateNames.has(nation))) {
+            this.usersChosenTemplates.forEach(nation => this.addTemplateNames(nation));
         }
+    }
+
+    addTemplateNames(event: EStarNationsEnum) {
+        if (this.templateNames.has(event)) {
+            this.templatedNames.push(...this.templateNames.get(event)!);
+        }
+        this.applyShipNameFilter();
+    }
+
+    removeTemplateNames(event: EStarNationsEnum) {
+        if (this.templateNames.has(event)) {
+            const names = this.templateNames.get(event)!;
+            names.forEach(name => {
+                const indexOf = this.templatedNames.indexOf(name);
+                this.templatedNames.splice(indexOf, 1);
+            });
+        }
+        this.applyShipNameFilter();
+    }
+
+    selectTemplate(event: MatCheckboxChange) {
+        const checked = event.checked;
+        const nation: EStarNationsEnum = event.source.value as keyof typeof EStarNationsEnum;
+        if (checked) {
+            this.addTemplateNames(nation);
+            this.usersChosenTemplates.push(nation);
+            this.addTemplate(nation);
+        } else {
+            this.removeTemplateNames(nation);
+            const indexOf = this.usersChosenTemplates.indexOf(nation);
+            this.usersChosenTemplates.splice(indexOf, 1);
+            this.removeTemplate(nation);
+        }
+    }
+
+    applyShipNameFilter() {
+        this.filteredTemplatedNames = this.filterByValue(this.templatedNames);
+        this.filteredSelectedNames = this.filterByValue(this.selectedNames);
+    }
+
+    private filterByValue(names: string[]) {
+        if (this.filterValue.length == 0) {
+            return names;
+        }
+        return names.filter(name => name.toLowerCase().includes(this.filterValue.toLowerCase()));
+    }
+
+    addIndividualName(name: string) {
+        if (name.length > 0) {
+            const alreadyPresent = this.selectedNames.filter(sn => sn.toLowerCase() === name.toLowerCase()).length > 0;
+            if (!alreadyPresent) {
+                this.selectedNames.push(name);
+                this.applyShipNameFilter();
+                this.addName(name);
+            }
+        }
+    }
+
+    removeIndividualName(name: string) {
+        if (name.length > 0) {
+            const indexOf = this.selectedNames.indexOf(name);
+            this.selectedNames.splice(indexOf, 1);
+            this.applyShipNameFilter();
+            this.removeName(name);
+        }
+    }
+
+    private addName(name: string) {
+        let sub = this.rpgService.addShipNamesFor(name).subscribe(() => {
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private removeName(name: string) {
+        let sub = this.rpgService.removeShipNamesFor(name).subscribe(() => {
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private addTemplate(template: EStarNationsEnum) {
+        let sub = this.rpgService.addShipNameTemplate(template).subscribe(() => {
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private removeTemplate(template: EStarNationsEnum) {
+        let sub = this.rpgService.removeShipNameTemplate(template).subscribe(() => {
+        });
+        this.subscriptions.push(sub);
     }
 }

@@ -1,54 +1,56 @@
-<ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="advisory-spinner" [fullScreen]="false"></ngx-spinner>
-<app-outlined titleValue="{{ 'journal.advisory.title.infrastructure' | translate }}">
+<div class="ngx-spinner-limiter">
+    <ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="advisory-spinner" [fullScreen]="false"></ngx-spinner>
+    <app-outlined titleValue="{{ 'journal.advisory.title.infrastructure' | translate }}">
 
     <span *ngIf="nothing" class="title">
         {{ 'journal.advisory.infrastructure.predicate.noting-to-do' | translate }}
     </span>
 
-    <span *ngIf="infra?.shipyardPossible" class="title">
+        <span *ngIf="infra?.shipyardPossible" class="title">
         <app-icon png32px shipyard></app-icon>
-        {{ 'journal.advisory.infrastructure.predicate.shipyardPossible' | translate }}
+            {{ 'journal.advisory.infrastructure.predicate.shipyardPossible' | translate }}
     </span>
 
-    <span *ngIf="infra?.constructionPossible" class="title">
+        <span *ngIf="infra?.constructionPossible" class="title">
         <app-icon png32px construction></app-icon>
-        {{ 'journal.advisory.infrastructure.predicate.constructionPossible' | translate }}
+            {{ 'journal.advisory.infrastructure.predicate.constructionPossible' | translate }}
     </span>
-    <app-outlined *ngIf="!!suggestedConstruction" titleValue="{{ 'journal.advisory.infrastructure.predicate.suggestedBuilding' | translate }}" class="box">
-        <div class="box">
-            <app-icon matCardAvatar class="icon"
-                      [icon]="suggestedConstruction.building.productionTarget"
-                      [altText]="suggestedConstruction.building.productionTarget.typeName"
-                      png24px [toolTip]="suggestedConstruction.building.productionTarget.typeName"></app-icon>
-            <span>{{ suggestedConstruction.building.name }}</span>
-        </div>
-    </app-outlined>
+        <app-outlined *ngIf="!!suggestedConstruction" titleValue="{{ 'journal.advisory.infrastructure.predicate.suggestedBuilding' | translate }}" class="box">
+            <div class="box">
+                <app-icon matCardAvatar class="icon"
+                          [icon]="suggestedConstruction.building.productionTarget"
+                          [altText]="suggestedConstruction.building.productionTarget.typeName"
+                          png24px [toolTip]="suggestedConstruction.building.productionTarget.typeName"></app-icon>
+                <span>{{ suggestedConstruction.building.name }}</span>
+            </div>
+        </app-outlined>
 
-    <span *ngIf="infra?.researchPossible" class="title">
+        <span *ngIf="infra?.researchPossible" class="title">
         <app-icon png32px research></app-icon>
-        {{ 'journal.advisory.infrastructure.predicate.researchPossible' | translate }}
+            {{ 'journal.advisory.infrastructure.predicate.researchPossible' | translate }}
     </span>
-    <app-outlined *ngIf="!!suggestedResearch" titleValue="{{ 'journal.advisory.infrastructure.predicate.suggestedResearch' | translate }}" class="box">
-        <div class="box">
-            <app-icon mat-card-avatar
-                      [icon]="suggestedResearch.hasIcon"
-                      [altText]="suggestedResearch.name"
-                      png24px [toolTip]="suggestedResearch.name"></app-icon>
-            {{ suggestedResearch.name }}
+        <app-outlined *ngIf="!!suggestedResearch" titleValue="{{ 'journal.advisory.infrastructure.predicate.suggestedResearch' | translate }}" class="box">
+            <div class="box">
+                <app-icon mat-card-avatar
+                          [icon]="suggestedResearch.hasIcon"
+                          [altText]="suggestedResearch.name"
+                          png24px [toolTip]="suggestedResearch.name"></app-icon>
+                {{ suggestedResearch.name }}
+            </div>
+        </app-outlined>
+    </app-outlined>
+
+    <app-outlined *ngIf="pirateHunt.length > 0" titleValue="{{ 'journal.advisory.title.pirate-hunt' | translate }}">
+        <span class="title">{{ 'journal.advisory.predicate.pirate-hunt' | translate }}</span>
+        <div *ngFor="let planet of pirateHunt" class="box">
+            <app-icon png32px planet></app-icon>
+            {{ planet.name }}
         </div>
     </app-outlined>
-</app-outlined>
-
-<app-outlined *ngIf="pirateHunt.length > 0" titleValue="{{ 'journal.advisory.title.pirate-hunt' | translate }}">
-    <span class="title">{{ 'journal.advisory.predicate.pirate-hunt' | translate }}</span>
-    <div *ngFor="let planet of pirateHunt" class="box">
-        <app-icon png32px planet></app-icon>
-        {{ planet.name }}
-    </div>
-</app-outlined>
 
 
-<app-outlined *ngIf="convoyProtection.length > 0" titleValue="{{ 'journal.advisory.title.convoy-protection' | translate }}">
-    <span class="title">{{ 'journal.advisory.predicate.convoy-protection' | translate }}</span>
-    <app-trade-display *ngFor="let contract of convoyProtection" [trade]="contract"></app-trade-display>
-</app-outlined>
+    <app-outlined *ngIf="convoyProtection.length > 0" titleValue="{{ 'journal.advisory.title.convoy-protection' | translate }}">
+        <span class="title">{{ 'journal.advisory.predicate.convoy-protection' | translate }}</span>
+        <app-trade-display *ngFor="let contract of convoyProtection" [trade]="contract"></app-trade-display>
+    </app-outlined>
+</div>

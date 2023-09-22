@@ -555,6 +555,39 @@
 			"toolTip": "Die eingesetzte Bevölkerung"
 		}
 	},
+	"profile": {
+		"navy": {
+			"ship-name-individual-list": {
+				"title": "Deine gewählten Schiffsnamen:"
+			},
+			"ship-name-template": {
+				"filter-and-add": {
+					"label": "Suchen und ergänzen",
+					"remove-tooltip": "Entferne den Namen von deiner persönlichen Liste",
+					"tooltip": "Füge den Namen deiner persönlichen Liste hinzu"
+				},
+				"help": "Ok, das ist etwas umständlich hier.<br>Du kannst dir eine persönliche Liste an Schiffsnamen zusammenstellen und alle oder nur einzelne aus den Vorlagen wählen.",
+				"nation": {
+					"title": {
+						"ANDERMAN": "Anderman",
+						"HAVEN": "Haven",
+						"MANTICORE": "Manticore",
+						"SILESIA": "Silesia",
+						"SOLARIAN_LEAGUE": "Solare Liga"
+					}
+				},
+				"no-individual-selection": "Keine individuellen Katalognamen gewählt",
+				"result": {
+					"from-template": "Du hast die folgenden Templates gewählt:",
+					"individual-selection": "Anzahl an individuell gewählten Schiffsnamen:"
+				},
+				"title": "Schiffsnamen nach Vorlage:"
+			},
+			"ship-name": {
+				"plural": "Namen"
+			}
+		}
+	},
 	"register": {
 		"email": {
 			"info": "Deine eMail-Adresse wird ausschließlich für das Zurücksetzen des Passworts verwendet.",

@@ -1,14 +1,86 @@
-<div>
+<div class="content-area">
+    <mat-card appearance="outlined" class="streamline-background">
+        <mat-card-header class="streamline-background">
+            <img mat-card-avatar class="avatar-image" src="assets/icons/misc/uncertainty.png" alt="help icon">
+            <mat-card-title>
+                <div innerHTML="{{ 'profile.navy.ship-name-template.help' | translate }}"></div>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>{{ 'profile.navy.ship-name-template.result.from-template' | translate }}  {{ templatedNames.length }} {{ 'profile.navy.ship-name.plural' | translate }}</div>
+            <ul>
+                <li *ngFor="let nation of usersChosenTemplates">{{ 'profile.navy.ship-name-template.nation.title.' + nation | translate }}</li>
+            </ul>
+            <br>
+            <div>{{ 'profile.navy.ship-name-template.result.individual-selection' | translate }} {{ selectedNames.length }}</div>
+        </mat-card-content>
+    </mat-card>
 
-    <mat-button-toggle-group id="template-selector">
-        <mat-button-toggle *ngFor="let nation of nations" [value]="nation" [checked]="nation === selectedTemplate" (change)="displayTemplateNames($event.value)">
-            {{ nation }}
-        </mat-button-toggle>
-    </mat-button-toggle-group>
 
-    <mat-selection-list id="template-list">
-        <mat-list-option *ngFor="let name of templatedNames">
-            <div>{{ name }}</div>
-        </mat-list-option>
-    </mat-selection-list>
+    <mat-card appearance="outlined" class="streamline-background">
+        <mat-card-header class="streamline-background">
+            <mat-card-title>
+                <span>{{ 'profile.navy.ship-name-template.title' | translate }}</span>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="flex-items-container">
+                <section id="template-selector">
+                    <mat-checkbox *ngFor="let nation of nations" [value]="nation"
+                                  [checked]="usersChosenTemplates.includes(nation)"
+                                  (change)="selectTemplate($event)">
+                        {{ 'profile.navy.ship-name-template.nation.title.' + nation | translate }}
+                    </mat-checkbox>
+                </section>
+
+                <mat-form-field appearance="outline">
+                    <mat-label id="special">{{ 'profile.navy.ship-name-template.filter-and-add.label' | translate }}</mat-label>
+                    <button matPrefix mat-icon-button (click)="addIndividualName(filterValue)"
+                            matTooltip="{{ 'profile.navy.ship-name-template.filter-and-add.tooltip' | translate }}">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <input matInput type="text"
+                           placeholder="{{ 'profile.navy.ship-name-template.filter-and-add.label' | translate }}"
+                           [(ngModel)]="filterValue"
+                           (ngModelChange)="applyShipNameFilter()">
+                    <button matSuffix mat-icon-button (click)="filterValue = ''; applyShipNameFilter();">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-items-container">
+                <div>
+                    <span>{{ 'profile.navy.ship-name-template.title' | translate }} {{ templatedNames.length }} {{ 'profile.navy.ship-name.plural' | translate }}</span>
+                    <mat-selection-list class="names-list" id="template-list">
+                        <mat-list-item *ngFor="let name of filteredTemplatedNames" disableRipple>
+                            <button mat-icon-button
+                                    matTooltip="{{ 'profile.navy.ship-name-template.filter-and-add.tooltip' | translate }}"
+                                    (click)="addIndividualName(name)">
+                                <mat-icon>keyboard_double_arrow_right</mat-icon>
+                            </button>
+                            <span matListItemMeta>{{ name }}</span>
+                        </mat-list-item>
+                    </mat-selection-list>
+                </div>
+                <div>
+
+                    <span>{{ 'profile.navy.ship-name-individual-list.title' | translate }} {{ selectedNames.length }} {{ 'profile.navy.ship-name.plural' | translate }}</span>
+                    <mat-selection-list class="names-list">
+                        <mat-list-item *ngIf="selectedNames.length == 0" disableRipple>
+                            {{ 'profile.navy.ship-name-template.no-individual-selection' | translate }}
+                        </mat-list-item>
+                        <mat-list-item *ngFor="let name of filteredSelectedNames" disableRipple>
+                            <span>{{ name }}</span>
+                            <button matListItemMeta mat-icon-button
+                                    matTooltip="{{ 'profile.navy.ship-name-template.filter-and-add.remove-tooltip' | translate }}"
+                                    (click)="removeIndividualName(name)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-list-item>
+                    </mat-selection-list>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

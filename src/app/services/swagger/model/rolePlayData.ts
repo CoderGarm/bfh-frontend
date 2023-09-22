@@ -38,6 +38,6 @@ export namespace RolePlayData {
         HAVEN: 'HAVEN' as ShipNameTemplatesEnum,
         ANDERMAN: 'ANDERMAN' as ShipNameTemplatesEnum,
         SILESIA: 'SILESIA' as ShipNameTemplatesEnum,
-        SOLARIANLEAGUE: 'SOLARIAN_LEAGUE' as ShipNameTemplatesEnum
+        SOLARIAN_LEAGUE: 'SOLARIAN_LEAGUE' as ShipNameTemplatesEnum
     };
 }

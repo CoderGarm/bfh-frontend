@@ -2,14 +2,26 @@ mat-expansion-panel {
   width: fit-content;
 }
 
-#template-list {
+.names-list {
   height: fit-content;
   max-height: 500px;
   width: fit-content;
   min-width: 350px;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+#template-list {
+  direction: rtl;
 }
 
 #template-selector {
-  margin: 50px auto;
+  max-width: 350px;
+}
+
+.flex-items-container > * {
+  margin: 25px;
+}
+
+#special {
+  margin-left: 50px
 }

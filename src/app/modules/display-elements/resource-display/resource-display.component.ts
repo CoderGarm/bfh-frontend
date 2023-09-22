@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {EDepositType, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
@@ -11,7 +11,7 @@ import CollectableTypeEnum = EResourceType.CollectableTypeEnum;
     templateUrl: './resource-display.component.html',
     styleUrls: ['./resource-display.component.scss']
 })
-export class ResourceDisplayComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class ResourceDisplayComponent extends SubscriptionManager {
 
     @Input()
     deposit?: ResourceDeposit;
@@ -103,15 +103,6 @@ export class ResourceDisplayComponent extends SubscriptionManager implements Aft
             this.translations.set(this.capacityResourceKey, translated);
         });
         this.subscriptions.push(sub);
-    }
-
-    ngAfterViewInit(): void {
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (!!this.sumOfPops) {
-            console.log("sumOfPops", this.sumOfPops)
-        }
     }
 
     private coerceBooleanProperty(value: any): boolean {
