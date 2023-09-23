@@ -12,7 +12,8 @@
                                   png24px [toolTip]="research.research.name"></app-icon>
                         {{research.research.name}}
                     </app-outlined>
-                    <app-outlined titleValue="{{ 'research.level-details' | translate }}" class="floated-right">
+                    <app-outlined titleValue="{{ 'research.level-details' | translate }}" class="floated-right"
+                                  matTooltip="{{ research.researchPoints }} RP / max Level {{ research.research.levelCap != 2147483647 ? research.research.levelCap : '∞' }}">
                         lvl {{ research.level }} / {{ research.ticksToComplete }} ticks
                     </app-outlined>
                     {{ research.research.description }}

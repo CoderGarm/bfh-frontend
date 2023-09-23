@@ -24,4 +24,8 @@ export interface ResearchLevel {
      * The amount of ticks.
      */
     ticksToComplete?: number;
+    /**
+     * The amount of research points needed.
+     */
+    researchPoints?: number;
 }
