@@ -1,6 +1,6 @@
 <div class="ngx-spinner-limiter">
     <ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="advisory-spinner" [fullScreen]="false"></ngx-spinner>
-    <app-outlined titleValue="{{ 'journal.advisory.title.infrastructure' | translate }}">
+    <app-outlined titleValue="{{ 'journal.advisory.title.infrastructure' | translate }}" [ngClass]="{'limited-width': spinnerActive}">
 
     <span *ngIf="nothing" class="title">
         {{ 'journal.advisory.infrastructure.predicate.noting-to-do' | translate }}
@@ -40,7 +40,7 @@
         </app-outlined>
     </app-outlined>
 
-    <app-outlined *ngIf="pirateHunt.length > 0" titleValue="{{ 'journal.advisory.title.pirate-hunt' | translate }}">
+    <app-outlined *ngIf="pirateHunt.length > 0" titleValue="{{ 'journal.advisory.title.pirate-hunt' | translate }}" [ngClass]="{'limited-width': spinnerActive}">
         <span class="title">{{ 'journal.advisory.predicate.pirate-hunt' | translate }}</span>
         <div *ngFor="let planet of pirateHunt" class="box">
             <app-icon png32px planet></app-icon>
@@ -49,7 +49,7 @@
     </app-outlined>
 
 
-    <app-outlined *ngIf="convoyProtection.length > 0" titleValue="{{ 'journal.advisory.title.convoy-protection' | translate }}">
+    <app-outlined *ngIf="convoyProtection.length > 0" titleValue="{{ 'journal.advisory.title.convoy-protection' | translate }}" [ngClass]="{'limited-width': spinnerActive}">
         <span class="title">{{ 'journal.advisory.predicate.convoy-protection' | translate }}</span>
         <app-trade-display *ngFor="let contract of convoyProtection" [trade]="contract"></app-trade-display>
     </app-outlined>

@@ -1,9 +1,10 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {RolePlayApiService, UserApiService, UserSettings} from "../../../services/swagger";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {RolePlayApiService, RolePlayData, UserApiService, UserSettings} from "../../../services/swagger";
+import {FormBuilder, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {MatSelectionList} from "@angular/material/list";
+import {SingleTouchedFormFieldErrorStateMatcher} from "../../../validators/single-touched-form-field-error-state-matcher";
 
 @Component({
     selector: 'app-profile',
@@ -12,9 +13,12 @@ import {MatSelectionList} from "@angular/material/list";
 })
 export class ProfileComponent extends SubscriptionManager implements OnInit, AfterViewInit {
 
+    matcher = new SingleTouchedFormFieldErrorStateMatcher();
+
     role?: string;
 
     eMailFormGroup: FormGroup;
+    rpgFormGroup: FormGroup;
 
     private disabled: boolean = true;
     noEMailConfigPossible: boolean = true;
@@ -69,6 +73,18 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
                 this.subscriptions.push(sub);
             }
         });
+
+        this.rpgFormGroup = this.formBuilder.group({
+            title: undefined,
+            titleAbbreviation: undefined,
+            firstname: undefined,
+            surname: undefined,
+        });
+
+        this.rpgFormGroup.valueChanges.subscribe(val => {
+            console.log(val)
+        });
+
     }
 
     ngAfterViewInit(): void {
@@ -81,6 +97,8 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             });
             this.subscriptions.push(sub);
         });
+        let sub = this.rpgService.getRPGData().subscribe(resp => this.createRPGForm(resp));
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {
@@ -103,5 +121,47 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             this.selectedIcon = resp.profilePic + '.png';
         });
         this.subscriptions.push(sub);
+    }
+
+    clear() {
+        this.rpgFormGroup.controls.title.setValue(undefined);
+        this.rpgFormGroup.controls.titleAbbreviation.setValue(undefined);
+        this.rpgFormGroup.controls.firstname.setValue(undefined);
+        this.rpgFormGroup.controls.surname.setValue(undefined);
+    }
+
+    submitRPGStuff() {
+        const rpg: RolePlayData = {
+            title: this.rpgFormGroup.controls.title.value,
+            titleAbbreviation: this.rpgFormGroup.controls.titleAbbreviation.value,
+            firstname: this.rpgFormGroup.controls.firstname.value,
+            surname: this.rpgFormGroup.controls.surname.value,
+            shipNames: [],
+            shipNameTemplates: [],
+            shipPrefix: undefined
+        }
+        let sub = this.rpgService.setRPGData(rpg).subscribe(() => {
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private createRPGForm(resp: RolePlayData) {
+        this.rpgFormGroup = this.formBuilder.group({
+            title: this.createFormControl(3, 50, resp.title),
+            titleAbbreviation: this.createFormControl(3, 8, resp.titleAbbreviation),
+            firstname: this.createFormControl(3, 50, resp.firstname),
+            surname: this.createFormControl(3, 50, resp.surname)
+        });
+    }
+
+    private createFormControl(min: number, max: number, initialValue?: string) {
+        return new FormControl(initialValue, [control => {
+            const v: ValidationErrors = {};
+            const isError = !!control && !!control.value ? ((<string>control.value).length < min || (<string>control.value).length > max) : false;
+            if (isError) {
+                v['too-long'] = '1';
+            }
+            return v;
+        }]);
     }
 }

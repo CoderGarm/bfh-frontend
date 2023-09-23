@@ -24,8 +24,9 @@
         </mat-grid-tile>
 
         <mat-grid-tile>
-            <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitLogin()">Submit</button>
-            <button mat-raised-button class="action-button" color="secondary" (click)="clear()" [disabled]="isAuthenticated">Clear</button>
+            <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitLogin()"
+                    [disabled]="isSubmitDisabled()">{{ 'action.submit' | translate }}</button>
+            <button mat-raised-button class="action-button" color="secondary" (click)="clear()" [disabled]="isAuthenticated">{{ 'action.clear' | translate }}</button>
         </mat-grid-tile>
 
     </mat-grid-list>

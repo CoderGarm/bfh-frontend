@@ -642,6 +642,29 @@
 		},
 		"ticks-to-done": "Ticks needed"
 	},
+	"role-play": {
+		"personal": {
+			"hint": {
+				"firstname": "The first name must contain between 3 and 50 characters.",
+				"surname": "The last name must contain between 3 and 50 characters.",
+				"title": "The title must contain between 3 and 50 characters.",
+				"titleAbbreviation": "The abbreviation must contain between 3 and 8 characters."
+			},
+			"placeholder": {
+				"main": "How would you like to be introduced at official events?",
+				"firstname": "",
+				"surname": "",
+				"title": "",
+				"titleAbbreviation": ""
+			},
+			"title": {
+				"firstname": "Your first name",
+				"surname": "Your last name",
+				"title": "Your stately title",
+				"titleAbbreviation": "The abbreviation of your title"
+			}
+		}
+	},
 	"screen-size-warning": {
 		"close": "Close",
 		"message": "",

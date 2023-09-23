@@ -17,6 +17,7 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
     suggestedResearch?: Research;
 
     nothing: boolean = false;
+    spinnerActive: boolean = true;
 
     constructor(private advisoryService: AdvisoryApiService,
                 private spinner: SpinnerService) {
@@ -46,6 +47,7 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
             }
             this.nothing = !resp.constructionPossible && !resp.researchPossible && !resp.shipyardPossible && !resp.suggestedResearch && !resp.suggestedBuilding;
             this.spinner.hide('advisory-spinner');
+            this.spinnerActive = false;
         });
         this.subscriptions.push(sub);
     }

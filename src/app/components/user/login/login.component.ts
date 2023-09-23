@@ -2,7 +2,7 @@ import {AuthRequest} from '../../../services/swagger';
 import {AuthenticationService} from '../../../services/authentication';
 
 import {Component, OnInit} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
@@ -16,7 +16,7 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
 
     static path: string = 'login';
 
-    loginForm: UntypedFormGroup;
+    loginForm: FormGroup;
     isAuthenticated: boolean = false;
     hide: boolean = true;
 
@@ -25,9 +25,9 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
                 private permissionsService: NgxPermissionsService) {
         super();
 
-        this.loginForm = new UntypedFormGroup({
-            login: new UntypedFormControl(''),
-            pass: new UntypedFormControl('')
+        this.loginForm = new FormGroup({
+            login: new FormControl(undefined, Validators.required),
+            pass: new FormControl(undefined, Validators.required)
         });
     }
 
@@ -61,8 +61,8 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
     clear() {
         this.authService.clear();
         this.permissionsService.flushPermissions();
-        this.loginForm.controls.login.setValue('');
-        this.loginForm.controls.pass.setValue('');
+        this.loginForm.controls.login.setValue(undefined);
+        this.loginForm.controls.pass.setValue(undefined);
     }
 
     toggleHide(event: MouseEvent) {

@@ -641,6 +641,29 @@
 		},
 		"ticks-to-done": "benötigte Ticks"
 	},
+	"role-play": {
+		"personal": {
+			"hint": {
+				"firstname": "Der Vorname muss zwischen 3 und 50 Zeichen enthalten.",
+				"surname": "Der Nachname muss zwischen 3 und 50 Zeichen enthalten.",
+				"title": "Der Titel muss zwischen 3 und 50 Zeichen enthalten.",
+				"titleAbbreviation": "Die Abkürzung muss zwischen 3 und 8 Zeichen enthalten."
+			},
+			"placeholder": {
+				"main": "Wie möchtest du bei offiziellen Anlässen vorgestellt werden?",
+				"firstname": "",
+				"surname": "",
+				"title": "",
+				"titleAbbreviation": ""
+			},
+			"title": {
+				"firstname": "Dein Vorname",
+				"surname": "Dein Nachname",
+				"title": "Dein herrschaftlicher Titel",
+				"titleAbbreviation": "Die Abkürzung deines Titels"
+			}
+		}
+	},
 	"screen-size-warning": {
 		"close": "Schließen",
 		"message": "",

@@ -3,16 +3,9 @@ import {EnumValueDto, RolePlayApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 import {MatCheckboxChange} from "@angular/material/checkbox";
-import {FormControl, FormGroupDirective, NgForm, ValidationErrors} from "@angular/forms";
-import {ErrorStateMatcher} from "@angular/material/core";
+import {FormControl, ValidationErrors} from "@angular/forms";
+import {SingleTouchedFormFieldErrorStateMatcher} from "../../../validators/single-touched-form-field-error-state-matcher";
 import EStarNationsEnum = EnumValueDto.EStarNationsEnum;
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        const isSubmitted = form && form.submitted;
-        return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-    }
-}
 
 @Component({
     selector: 'app-ship-name-templator',
@@ -23,7 +16,7 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
 
     prefixFC: FormControl<string | null> = this.getPrefixFC(undefined);
 
-    matcher = new MyErrorStateMatcher();
+    matcher = new SingleTouchedFormFieldErrorStateMatcher();
 
     readonly nations: EStarNationsEnum[] = [
         EStarNationsEnum.MANTICORE,

@@ -30,7 +30,7 @@ export interface Player {
     /**
      * The user's alliance.
      */
-    idAlliance?: number;
+    allianceTag?: string;
     /**
      * The user's role.
      */

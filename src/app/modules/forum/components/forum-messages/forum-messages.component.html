@@ -9,15 +9,24 @@
     </mat-paginator>
     <mat-card appearance="outlined" class="forum-card" *ngFor="let message of messagesInThread">
         <mat-card-header>
-            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.profilePic }}.png">
-            <mat-card-title>Author: {{message.author}}</mat-card-title>
+            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.profilePic }}.png" matTooltip="{{ message.author.username }}">
+
+            <mat-card-title>
+                <span *ngIf="!!message.author.allianceTag">[{{ message.author.allianceTag }}]</span>
+                <span *ngIf="!message.author.rolePlayData.title">
+                    {{ message.author.username }}
+                </span>
+                <span *ngIf="!!message.author.rolePlayData.title">
+                    {{ message.author.rolePlayData.title }} {{ message.author.rolePlayData.firstname }} {{ message.author.rolePlayData.surname }}
+                </span>
+            </mat-card-title>
             <mat-card-subtitle>{{message.sentAt | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content class="message">
             <markdown [data]="message.message"></markdown>
         </mat-card-content>
-        <mat-card-actions *ngIf="message.idAuthor == userId">
+        <mat-card-actions *ngIf="message.author.idUser == userId">
             <button mat-button (click)="msgToEdit = message">Edit</button>
             <button mat-button (click)="sendAsMail(message)" *ngIf="showSendButton(message)" [disabled]="noSendAllowed">USE CAREFULLY: Send via eMail</button>
         </mat-card-actions>

@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Player } from './player';
 
 /**
  * The entry of a forum's thread.
@@ -26,14 +27,7 @@ export interface ForumMessage {
      * The id of the forum.
      */
     idForum: number;
-    /**
-     * The id of the author.
-     */
-    idAuthor: number;
-    /**
-     * The username of the author.
-     */
-    author: string;
+    author: Player;
     /**
      * The user's profile pic.
      */
