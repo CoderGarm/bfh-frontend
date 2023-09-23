@@ -127,7 +127,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     submit() {
-        const orbit = !!this.fleet ? this.fleet.orbit! : this.coords!;
+        const orbit = !!this.fleet && !!this.fleet.orbit ? this.fleet.orbit : this.coords!;
         this.fleetSplit = {fleetConstellations: {}, orbit: orbit};
         this.shipsForPool = [];
         this.fleets.forEach(fleet => {
