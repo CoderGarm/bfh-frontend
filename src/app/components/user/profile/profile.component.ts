@@ -80,11 +80,6 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             firstname: undefined,
             surname: undefined,
         });
-
-        this.rpgFormGroup.valueChanges.subscribe(val => {
-            console.log(val)
-        });
-
     }
 
     ngAfterViewInit(): void {

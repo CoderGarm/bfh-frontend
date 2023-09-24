@@ -33,6 +33,7 @@ export class FleetTabViewComponent extends SubscriptionManager implements AfterV
             if (!!fleet && fleet.id === FleetDetachmentComponent.POOL_FLEET_ID) {
                 this.onlyAllowDetachment = true;
                 this.index = 1;
+                this.fleet = undefined;
                 return;
             }
             this.index = 0;

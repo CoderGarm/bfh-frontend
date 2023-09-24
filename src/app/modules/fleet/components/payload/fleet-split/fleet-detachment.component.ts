@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {AbstractId, Fleet, FleetApiService, FleetOrbit, FleetSplit, PlanetApiService, WarShip} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
@@ -17,13 +17,10 @@ interface FleetContainer {
     templateUrl: './fleet-detachment.component.html',
     styleUrls: ['./fleet-detachment.component.scss']
 })
-export class FleetDetachmentComponent extends SubscriptionManager implements AfterViewInit {
+export class FleetDetachmentComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @Input()
     fleet?: Fleet;
-
-    @Input()
-    isPoolFleet: boolean = false;
 
     fleets: FleetContainer[] = [];
 
@@ -49,23 +46,25 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
 
     ngAfterViewInit(): void {
         this.fetchPooledShips();
+        this.fetchMainPlanetOrbit();
+    }
+
+    private fetchMainPlanetOrbit() {
+        let sub = this.planetService.getMainPlanetCoords().subscribe(resp => this.coords = resp);
+        this.subscriptions.push(sub);
     }
 
     private fetchPooledShips() {
         let sub = this.fleetService.getPooledWarships().subscribe(resp => {
-            this.pooledShips = resp
+            this.pooledShips = resp;
             this.fleets.filter(f => f.idFleet === FleetDetachmentComponent.POOL_FLEET_ID).forEach(f => f.ships = this.pooledShips.map(w => w));
-            this.setupFleet();
         });
         this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['fleet'] && !!this.fleet) {
+        if (changes['fleet']) {
             this.setupFleet(this.fleet);
-        }
-        if (changes['isPoolFleet'] && this.isPoolFleet) {
-            this.fetchPooledShips();
         }
     }
 
@@ -79,9 +78,6 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 name: fleet.name,
                 ships: fleet.ships
             });
-        } else {
-            let sub = this.planetService.getMainPlanetCoords().subscribe(resp => this.coords = resp);
-            this.subscriptions.push(sub);
         }
         this.addFleetContainer();
     }
@@ -130,15 +126,17 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         const orbit = !!this.fleet && !!this.fleet.orbit ? this.fleet.orbit : this.coords!;
         this.fleetSplit = {fleetConstellations: {}, orbit: orbit};
         this.shipsForPool = [];
-        this.fleets.forEach(fleet => {
-            if (fleet.idFleet === FleetDetachmentComponent.POOL_FLEET_ID) {
-                this.shipsForPool = fleet.ships.filter(s => !this.isPooledShip(s)).map(s => s.idWarship);
-            } else {
-                if (fleet.idFleet < 0 && fleet.ships.length > 0) {
-                    this.fleetSplit.fleetConstellations[fleet.name + fleet.idFleet] = fleet.ships.map(s => s.idWarship);
+        this.fleets
+            .filter(f => !!f.name && f.ships.length > 0)
+            .forEach(fleet => {
+                if (fleet.idFleet === FleetDetachmentComponent.POOL_FLEET_ID) {
+                    this.shipsForPool = fleet.ships.filter(s => !this.isPooledShip(s)).map(s => s.idWarship);
+                } else {
+                    if (fleet.idFleet < 0 && fleet.ships.length > 0) {
+                        this.fleetSplit.fleetConstellations[fleet.name + fleet.idFleet] = fleet.ships.map(s => s.idWarship);
+                    }
                 }
-            }
-        });
+            });
 
         if (this.shipsForPool.length > 0) {
             let sub = this.fleetService.sendWarshipsToPool(this.shipsForPool).subscribe(() => {
@@ -161,6 +159,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 this.notif.open('Fleets detached');
                 this.reFetchFleet();
                 this.fetchPooledShips();
+                this.fleetCommService.selectFleet({id: this.fleet!.idFleet});
             });
             this.subscriptions.push(sub);
         }
@@ -177,11 +176,6 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         if (!this.changeHappened) {
             return false;
         }
-        const detachmentsWithShips = this.fleets.filter(f => f.ships.length > 0).length;
-        const length = this.shipsForPool.length;
-        const checksumFuturePool = this.shipsForPool.reduce((sum, current) => sum + current, 0);
-        const checksumPool = this.pooledShips.map(w => w.idWarship).reduce((sum, current) => sum + current, 0);
-        const noNamePresent = this.fleets.filter(f => f.name.trim().length == 0).length > 0;
-        return !noNamePresent && (detachmentsWithShips > 1 || checksumPool != checksumFuturePool || length > 0);
+        return this.fleets.filter(f => f.ships.length > 0).filter(f => !f.name || f.name.trim().length == 0).length == 0;
     }
 }
