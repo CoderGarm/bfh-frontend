@@ -19,6 +19,8 @@ import { Observable }                                        from 'rxjs';
 
 import { AbstractId } from '../model/abstractId';
 import { Fleet } from '../model/fleet';
+import { FleetFormationMultiAction } from '../model/fleetFormationMultiAction';
+import { FleetFormationMultiActionResult } from '../model/fleetFormationMultiActionResult';
 import { FleetMarker } from '../model/fleetMarker';
 import { FleetMerge } from '../model/fleetMerge';
 import { FleetMergeResult } from '../model/fleetMergeResult';
@@ -515,6 +517,54 @@ export class FleetApiService {
         }
 
         return this.httpClient.request<Array<FleetMarker>>('post',`${this.basePath}/api/private/fleet/moveFleets`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Transfer the warships between existing fleets.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public multiActionFleetFormation(body: FleetFormationMultiAction, observe?: 'body', reportProgress?: boolean): Observable<FleetFormationMultiActionResult>;
+    public multiActionFleetFormation(body: FleetFormationMultiAction, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FleetFormationMultiActionResult>>;
+    public multiActionFleetFormation(body: FleetFormationMultiAction, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FleetFormationMultiActionResult>>;
+    public multiActionFleetFormation(body: FleetFormationMultiAction, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling multiActionFleetFormation.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<FleetFormationMultiActionResult>('post',`${this.basePath}/api/private/fleet/multiaction`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

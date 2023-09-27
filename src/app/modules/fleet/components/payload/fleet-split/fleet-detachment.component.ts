@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {AbstractId, Fleet, FleetApiService, FleetOrbit, FleetSplit, PlanetApiService, WarShip} from "../../../../../services/swagger";
+import {AbstractId, Fleet, FleetApiService, FleetFormationMultiAction, FleetMerge, FleetOrbit, FleetSplit, PlanetApiService, WarShip} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
@@ -21,11 +21,15 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
 
     @Input()
     fleet?: Fleet;
+    shipsInOriginalFleet: number[] = [];
 
     fleets: FleetContainer[] = [];
 
     fleetSplit: FleetSplit = {fleetConstellations: {}, orbit: {}};
     shipsForPool: number[] = [];
+    fleetMerge: FleetMerge = {
+        fleetConstellations: {}
+    }
 
     pooledShips: WarShip[] = [];
 
@@ -42,6 +46,9 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 private planetService: PlanetApiService,
                 private notif: SnackbarNotificationService) {
         super();
+
+        let sub = this.fleetCommService.getRetireFleetEmitter().subscribe(fleet => this.fetchBaseData());
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {
@@ -70,6 +77,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
 
     private setupFleet(fleet?: Fleet) {
         this.fleets = [];
+        this.shipsInOriginalFleet = [];
         this.createPoolFleet();
 
         if (!!fleet) {
@@ -78,6 +86,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 name: fleet.name,
                 ships: fleet.ships
             });
+            this.shipsInOriginalFleet.push(...fleet.ships.map(s => s.idWarship));
         }
         this.addFleetContainer();
     }
@@ -126,43 +135,67 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         const orbit = !!this.fleet && !!this.fleet.orbit ? this.fleet.orbit : this.coords!;
         this.fleetSplit = {fleetConstellations: {}, orbit: orbit};
         this.shipsForPool = [];
+        this.fleetMerge = {
+            fleetConstellations: {}
+        }
         this.fleets
             .filter(f => !!f.name && f.ships.length > 0)
+            .filter(f => f.idFleet != this.fleet?.idFleet)
             .forEach(fleet => {
                 if (fleet.idFleet === FleetDetachmentComponent.POOL_FLEET_ID) {
                     this.shipsForPool = fleet.ships.filter(s => !this.isPooledShip(s)).map(s => s.idWarship);
                 } else {
-                    if (fleet.idFleet < 0 && fleet.ships.length > 0) {
-                        this.fleetSplit.fleetConstellations[fleet.name + fleet.idFleet] = fleet.ships.map(s => s.idWarship);
-                    }
+                    this.fleetSplit.fleetConstellations[fleet.name + fleet.idFleet] = fleet.ships.map(s => s.idWarship);
                 }
             });
 
-        if (this.shipsForPool.length > 0) {
-            let sub = this.fleetService.sendWarshipsToPool(this.shipsForPool).subscribe(() => {
-                this.notif.open('Ships send to reserve');
-                this.fetchPooledShips();
-            });
-            this.subscriptions.push(sub);
+        this.setupShipsForChosenFleet();
+
+        const request: FleetFormationMultiAction = {
+            fleetMerge: this.fleetMerge,
+            fleetSplit: this.fleetSplit,
+            shipsToPool: this.shipsForPool
         }
 
-        if (Object.keys(this.fleetSplit.fleetConstellations).length > 0) {
-            let sub = this.fleetService.splitFleets(this.fleetSplit).subscribe(resp => {
-                let separatedFleets: AbstractId[] = resp.map(f => <AbstractId>{
-                    id: f.idFleet,
-                    name: f.name
-                });
-                separatedFleets.forEach(sf => this.fleetCommService.changeName({
-                    id: sf.id,
-                    name: sf.name!
-                }));
-                this.notif.open('Fleets detached');
-                this.reFetchFleet();
-                this.fetchPooledShips();
-                this.fleetCommService.selectFleet({id: this.fleet!.idFleet});
-            });
-            this.subscriptions.push(sub);
+        let sub = this.fleetService.multiActionFleetFormation(request).subscribe(resp => {
+            this.notifyNewFleet(resp.splitResult);
+            this.afterDetachAction();
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private setupShipsForChosenFleet() {
+        if (!!this.fleet) {
+            const newShipsForFleet: WarShip[] = this.fleets
+                .filter(fc => fc.idFleet === this.fleet!.idFleet)[0]
+                .ships
+                .filter(shipInContainer => !this.shipsInOriginalFleet.includes(shipInContainer.idWarship));
+            if (newShipsForFleet.length > 0) {
+                this.fleetMerge.fleetConstellations[this.fleet!.idFleet] = newShipsForFleet.map(s => s.idWarship);
+            }
         }
+    }
+
+    private notifyNewFleet(fleets: Fleet[]) {
+        let separatedFleets: AbstractId[] = fleets.map(f => <AbstractId>{
+            id: f.idFleet,
+            name: f.name
+        });
+        separatedFleets.forEach(sf => this.fleetCommService.changeName({
+            id: sf.id,
+            name: sf.name!
+        }));
+    }
+
+    private afterDetachAction() {
+        this.notif.open('Fleets detached');
+        this.fetchBaseData();
+        this.fleetCommService.selectFleet({id: this.fleet!.idFleet});
+    }
+
+    private fetchBaseData() {
+        this.reFetchFleet();
+        this.fetchPooledShips();
     }
 
     reFetchFleet() {

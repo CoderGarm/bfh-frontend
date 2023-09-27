@@ -45,6 +45,8 @@ export * from './enumValueDto';
 export * from './fileUpload';
 export * from './finishedColonization';
 export * from './fleet';
+export * from './fleetFormationMultiAction';
+export * from './fleetFormationMultiActionResult';
 export * from './fleetMarker';
 export * from './fleetMerge';
 export * from './fleetMergeResult';

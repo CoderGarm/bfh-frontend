@@ -43,6 +43,7 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
                 const indexOf = this.fleets.indexOf(filter[0]);
                 this.fleets.splice(indexOf, 1);
             }
+            this.selectFleet(this.fleets[0]);
         });
         this.subscriptions.push(sub);
     }
@@ -52,11 +53,11 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
         this.subscriptions.push(sub);
     }
 
-    selectFleet(fleet: AbstractId) {
+    selectFleet(fleet?: AbstractId) {
         this.navService.navigate(NavigationCreationService.getFleetRoute());
         this.fleetEventService.selectFleet(fleet);
         this.selectedItem = {
-            id: fleet.id
+            id: !!fleet ? fleet.id : FleetDetachmentComponent.POOL_FLEET_ID
         };
     }
 }
