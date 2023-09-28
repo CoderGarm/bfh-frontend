@@ -152,8 +152,8 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         this.setupShipsForChosenFleet();
 
         const request: FleetFormationMultiAction = {
-            fleetMerge: this.fleetMerge,
-            fleetSplit: this.fleetSplit,
+            fleetMerge: Object.keys(this.fleetMerge.fleetConstellations).length > 0 ? this.fleetMerge : undefined,
+            fleetSplit: Object.keys(this.fleetSplit.fleetConstellations).length > 0 ? this.fleetSplit : undefined,
             shipsToPool: this.shipsForPool
         }
 
