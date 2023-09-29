@@ -25,7 +25,7 @@
                     </div>
 
                     <app-blue-card class="cap-display">
-                        <div body>
+                        <div body class="mar-ri">
                             <app-outlined titleValue="{{ 'fleet.display.population.title' | translate }}">
                                 <app-military-people [utilization]="utilization"></app-military-people>
                             </app-outlined>
@@ -39,7 +39,7 @@
             </app-fleet-display>
         </div>
     </mat-tab>
-    <mat-tab label="{{ 'tab.fleet.split' | translate }}">
+    <mat-tab label="{{ 'tab.fleet.split' | translate }}" [disabled]="!!fleet?.move">
         <app-fleet-detachment [fleet]="fleet"></app-fleet-detachment>
     </mat-tab>
 </mat-tab-group>
