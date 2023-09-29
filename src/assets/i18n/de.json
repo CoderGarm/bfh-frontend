@@ -246,7 +246,7 @@
 			"infrastructure": {
 				"predicate": {
 					"constructionPossible": "Auf nicht allen Planeten wird gebaut.",
-					"noting-to-do": "Aktuell gibt es nichts über das übliche hinaus zu sagen.",
+					"noting-to-do": "Aktuell gibt es nichts zu sagen.",
 					"researchPossible": "Es wird nicht geforscht.",
 					"shipyardPossible": "Nicht alle Schiffswerften laufen.",
 					"suggestedBuilding": "Vorgeschlagene nächstes Gebäude",

@@ -246,7 +246,7 @@
 			"infrastructure": {
 				"predicate": {
 					"constructionPossible": "Not on all planets are constructions running.",
-					"noting-to-do": "There is nothing more to say then at every other day.",
+					"noting-to-do": "There is nothing to mention.",
 					"researchPossible": "There is no research running.",
 					"shipyardPossible": "Not every shipyards are in use.",
 					"suggestedBuilding": "Suggested next construction",
