@@ -36,6 +36,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     noSendAllowed: boolean = false;
 
     now: number;
+    unreadMessages: number[] = [];
 
     constructor(private datePipe: DatePipe,
                 private notif: SnackbarNotificationService,
@@ -100,6 +101,8 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         this.subscriptions.push(sub);
         sub = this.forumApi.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
         this.subscriptions.push(sub);
+        sub = this.forumApi.getUnreadMessages(thread.idForumThread).subscribe(resp => this.unreadMessages = resp);
+        this.subscriptions.push(sub);
     }
 
     submitMessage(txt: string) {
@@ -127,8 +130,11 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         }
         this.messagesInThread.forEach(msg =>
             this.forumApi.markForumMessageRead(msg.idForum, msg.idForumThread, msg.idForumMessage).subscribe(() => {
-            })
-        );
+                setTimeout(() => {
+                    const indexOf = this.unreadMessages.indexOf(msg.idForumMessage);
+                    this.unreadMessages.splice(indexOf, 1);
+                }, 900);
+            }));
     }
 
     sendAsMail(message: ForumMessage) {

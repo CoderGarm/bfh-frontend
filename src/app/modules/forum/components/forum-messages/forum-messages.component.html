@@ -8,7 +8,7 @@
                    (page)="fetchByPagination($event)">
     </mat-paginator>
     <mat-card appearance="outlined" class="forum-card" *ngFor="let message of messagesInThread">
-        <mat-card-header>
+        <mat-card-header *inView>
             <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.profilePic }}.png" matTooltip="{{ message.author.username }}">
 
             <mat-card-title>
@@ -19,6 +19,7 @@
                 <span *ngIf="!!message.author.rolePlayData.title">
                     {{ message.author.rolePlayData.title }} {{ message.author.rolePlayData.firstname }} {{ message.author.rolePlayData.surname }}
                 </span>
+                <mat-icon *ngIf="unreadMessages.includes(message.idForumMessage)">mark_email_unread</mat-icon>
             </mat-card-title>
             <mat-card-subtitle>{{message.sentAt | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
         </mat-card-header>
