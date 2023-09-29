@@ -11,6 +11,7 @@
  */
 import { AbstractId } from './abstractId';
 import { EPlanetClassType } from './ePlanetClassType';
+import { EResourceType } from './eResourceType';
 import { Orbit } from './orbit';
 import { Player } from './player';
 
@@ -38,4 +39,8 @@ export interface Planet {
      */
     colonizedAt?: Date;
     planetType: EPlanetClassType;
+    /**
+     * The planet's usage capabilities.
+     */
+    capabilities: Array<EResourceType>;
 }

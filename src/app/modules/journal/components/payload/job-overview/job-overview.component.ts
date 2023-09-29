@@ -1,15 +1,17 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Job, Planet} from "../../../../../services/swagger";
+import {EnumValueDto, Job, Planet} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
+import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 
 export interface PlanetaryJobs {
     idPlanet: number,
     planetName: string;
     construction?: Job,
-    shipyard?: Job[],
+    shipyard: Job[],
     finishedConstruction?: Job,
     finishedShipyard?: Job,
+    isShipyardPresent: boolean
 }
 
 @Component({
@@ -47,7 +49,7 @@ export class JobOverviewComponent implements OnChanges {
 
     private organizeJobsPerPlanet() {
         this.planetaryJobs = [];
-        this.planets.forEach(p => this.planetaryJobs.push({idPlanet: p.idPlanet, planetName: p.name}));
+        this.planets.forEach(p => this.planetaryJobs.push({idPlanet: p.idPlanet, planetName: p.name, shipyard: [], isShipyardPresent: this.isShipyardPresent(p)}));
 
         this.runningJobs.forEach(job => {
             const buildingJob = job.isBuildingJob;
@@ -60,7 +62,8 @@ export class JobOverviewComponent implements OnChanges {
                     idPlanet: facilityPlanet.idPlanet,
                     planetName: facilityPlanet.name,
                     construction: buildingJob ? job : undefined,
-                    shipyard: shipyardJob ? [job] : undefined
+                    shipyard: shipyardJob ? [job] : [],
+                    isShipyardPresent: this.isShipyardPresent(facilityPlanet)
                 }
                 this.planetaryJobs.push(jobsPerPlanet);
             } else {
@@ -87,7 +90,9 @@ export class JobOverviewComponent implements OnChanges {
                     idPlanet: facilityPlanet.idPlanet,
                     planetName: facilityPlanet.name,
                     finishedConstruction: buildingJob ? job : undefined,
-                    finishedShipyard: shipyardJob ? job : undefined
+                    shipyard: [],
+                    finishedShipyard: shipyardJob ? job : undefined,
+                    isShipyardPresent: this.isShipyardPresent(facilityPlanet)
                 }
                 this.planetaryJobs.push(jobsPerPlanet);
             } else {
@@ -100,5 +105,9 @@ export class JobOverviewComponent implements OnChanges {
             }
         });
         this.dataSource.data = this.planetaryJobs;
+    }
+
+    private isShipyardPresent(facilityPlanet: Planet) {
+        return facilityPlanet.capabilities.map(c => c.typeName).includes(EResourceTypeEnum.ORBITAL_CONSTRUCTION);
     }
 }
