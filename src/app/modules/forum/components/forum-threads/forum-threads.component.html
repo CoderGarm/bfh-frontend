@@ -13,6 +13,7 @@
                    (page)="displayByPagination($event)">
     </mat-paginator>
     <mat-card appearance="outlined" class="forum-card clickable" *ngFor="let thread of displayedThreads" (click)="selectThread(thread)">
+        <!-- no mat-card-header please -->
         <mat-card-title>
             {{thread.title}}
             <mat-icon *ngIf="hasThreadUnread(thread)">mark_email_unread</mat-icon>
@@ -20,12 +21,15 @@
         <mat-card-subtitle>
             {{thread.description}}
             <div class="set-right">
-                {{thread.lastChanged  | date: 'dd.MM.yyyy HH:mm'}}
+                {{ thread.lastChanged  | date: 'HH:mm' }}<br>
+                {{ thread.lastChanged  | date: 'dd.MM.yyyy' }}<br>
+                {{ thread.idForumMessages.length }} {{ 'forum.thread.messages-in-thread' | translate }}
             </div>
         </mat-card-subtitle>
-        <mat-card-content>
-            <p>{{ 'forum.thread.messages-in-thread' | translate }}: {{thread.idForumMessages.length}}</p>
-        </mat-card-content>
+        <button mat-icon-button class="mark-read" (click)="markRead(thread.idForumThread); $event.stopPropagation();"
+                matTooltip="{{ 'forum.action.mark-read.forum-thread' | translate }}">
+            <mat-icon>mark_email_read</mat-icon>
+        </button>
     </mat-card>
     <mat-paginator #paginatorBottom
                    class="forum-pager"

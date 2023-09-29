@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { CreateForumThread } from '../model/createForumThread';
 import { CreateForumThreadMessage } from '../model/createForumThreadMessage';
 import { Forum } from '../model/forum';
+import { ForumIdContainer } from '../model/forumIdContainer';
 import { ForumMessage } from '../model/forumMessage';
 import { ForumThread } from '../model/forumThread';
 import { FrontendError } from '../model/frontendError';
@@ -654,29 +655,19 @@ export class ForumApiService {
     }
 
     /**
-     * Creates a chat message
-     * Creates a chat message
-     * @param idForum 
-     * @param idForumThread 
-     * @param idForumMessage 
+     * Marks a message or thread or forum as read.
+     * 
+     * @param body default response
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public markForumMessageRead(idForum: number, idForumThread: number, idForumMessage: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public markForumMessageRead(body: ForumIdContainer, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public markForumMessageRead(body: ForumIdContainer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public markForumMessageRead(body: ForumIdContainer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public markForumMessageRead(body: ForumIdContainer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idForum === null || idForum === undefined) {
-            throw new Error('Required parameter idForum was null or undefined when calling markForumMessageRead.');
-        }
-
-        if (idForumThread === null || idForumThread === undefined) {
-            throw new Error('Required parameter idForumThread was null or undefined when calling markForumMessageRead.');
-        }
-
-        if (idForumMessage === null || idForumMessage === undefined) {
-            throw new Error('Required parameter idForumMessage was null or undefined when calling markForumMessageRead.');
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling markForumMessageRead.');
         }
 
         let headers = this.defaultHeaders;
@@ -693,10 +684,16 @@ export class ForumApiService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/markForumMessageRead/${encodeURIComponent(String(idForum))}/${encodeURIComponent(String(idForumThread))}/${encodeURIComponent(String(idForumMessage))}`,
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/markForumMessageRead`,
             {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

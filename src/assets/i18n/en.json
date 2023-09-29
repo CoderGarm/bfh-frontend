@@ -209,9 +209,15 @@
 		}
 	},
 	"forum": {
+		"action": {
+			"mark-read": {
+				"forum": "Mark forum as read.",
+				"forum-thread": "Mark thread as read."
+			}
+		},
 		"thread": {
-			"in-forum": "Threads in forum",
-			"messages-in-thread": "Messages in thread"
+			"in-forum": "Threads",
+			"messages-in-thread": "Messages"
 		}
 	},
 	"jobs": {
@@ -651,8 +657,8 @@
 				"titleAbbreviation": "The abbreviation must contain between 3 and 8 characters."
 			},
 			"placeholder": {
-				"main": "How would you like to be introduced at official events?",
 				"firstname": "",
+				"main": "How would you like to be introduced at official events?",
 				"surname": "",
 				"title": "",
 				"titleAbbreviation": ""

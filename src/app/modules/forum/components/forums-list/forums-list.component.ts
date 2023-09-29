@@ -29,7 +29,7 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit, 
     pageIndex: number = 0;
     pageSize: number = 5;
 
-    unreadStateByIdForum: Map<number, boolean> = new Map<number, boolean>();
+    hasUnreadByIdForum: Map<number, boolean> = new Map<number, boolean>();
 
     constructor(private forumApi: ForumApiService, private forumsNotificationService: ForumsNotificationService) {
         super();
@@ -68,21 +68,22 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit, 
     }
 
     private detectUnreadMessages() {
-        this.unreadStateByIdForum.clear();
+        this.hasUnreadByIdForum.clear();
         this.forums.forEach(forum => {
             const sub = this.forumApi.hasForumUnread(forum.idForum).subscribe(resp => {
-                this.unreadStateByIdForum.set(forum.idForum, resp);
+                this.hasUnreadByIdForum.set(forum.idForum, resp);
             });
             this.subscriptions.push(sub);
         });
     }
 
     hasForumUnread(forum: Forum) {
-        let hasUnread = false;
-        const knownValue = this.unreadStateByIdForum.get(forum.idForum);
-        if (!!knownValue) {
-            hasUnread = knownValue;
-        }
-        return hasUnread;
+        const knownValue = this.hasUnreadByIdForum.get(forum.idForum);
+        return !!knownValue ? knownValue : false;
+    }
+
+    markRead(idForum: number) {
+        let sub = this.forumApi.markForumMessageRead({idForum: idForum}).subscribe(() => this.hasUnreadByIdForum.set(idForum, false));
+        this.subscriptions.push(sub);
     }
 }

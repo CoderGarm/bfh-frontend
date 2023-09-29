@@ -7,8 +7,8 @@
                    showFirstLastButtons
                    (page)="fetchByPagination($event)">
     </mat-paginator>
-    <mat-card appearance="outlined" class="forum-card" *ngFor="let message of messagesInThread">
-        <mat-card-header *inView>
+    <mat-card appearance="outlined" class="forum-card" *ngFor="let message of messagesInThread" ngClass="messageId-{{ message.idForumMessage }}">
+        <mat-card-header>
             <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.profilePic }}.png" matTooltip="{{ message.author.username }}">
 
             <mat-card-title>
@@ -21,7 +21,7 @@
                 </span>
                 <mat-icon *ngIf="unreadMessages.includes(message.idForumMessage)">mark_email_unread</mat-icon>
             </mat-card-title>
-            <mat-card-subtitle>{{message.sentAt | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
+            <mat-card-subtitle>{{ message.sentAt | date: 'dd.MM.yyyy HH:mm' }}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content class="message">

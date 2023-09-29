@@ -209,9 +209,15 @@
 		}
 	},
 	"forum": {
+		"action": {
+			"mark-read": {
+				"forum": "Forum als gelesen markieren.",
+				"forum-thread": "Faden als gelesen markieren."
+			}
+		},
 		"thread": {
-			"in-forum": "Beiträge im Forum",
-			"messages-in-thread": "Nachrichten im Faden"
+			"in-forum": "Fäden",
+			"messages-in-thread": "Nachrichten"
 		}
 	},
 	"jobs": {
@@ -650,8 +656,8 @@
 				"titleAbbreviation": "Die Abkürzung muss zwischen 3 und 8 Zeichen enthalten."
 			},
 			"placeholder": {
-				"main": "Wie möchtest du bei offiziellen Anlässen vorgestellt werden?",
 				"firstname": "",
+				"main": "Wie möchtest du bei offiziellen Anlässen vorgestellt werden?",
 				"surname": "",
 				"title": "",
 				"titleAbbreviation": ""

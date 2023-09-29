@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CreateForumThreadMessage, EnumValueDto, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
@@ -12,7 +12,7 @@ import {SnackbarNotificationService} from "../../../../services/snackbar-notific
     templateUrl: './forum-messages.component.html',
     styleUrls: ['./forum-messages.component.scss']
 })
-export class ForumMessagesComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class ForumMessagesComponent extends SubscriptionManager implements AfterViewInit, OnChanges, OnDestroy {
 
     msgToEdit?: ForumMessage;
 
@@ -21,6 +21,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     selectedForumThreadDefinition: string = 'selectedForumThread';
 
     messagesInThread?: ForumMessage[];
+    markAsRead: number[] = [];
 
     @ViewChild('paginatorTop', {static: true})
     paginatorTop?: MatPaginator;
@@ -53,6 +54,11 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         }
     }
 
+    ngOnDestroy() {
+        this.markMessagesRead();
+        super.ngOnDestroy();
+    }
+
     showSendButton(message: ForumMessage) {
         if (!this.selectedForumThread || !this.selectedForumThread.title.toLowerCase().includes('release')) {
             return false;
@@ -80,6 +86,34 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         }
     }
 
+    @HostListener('document:scroll', ['$event'])
+    @HostListener('window:wheel', ['$event'])
+    @HostListener('window:touchmove', ['$event'])
+    public onViewportScroll() {
+        this.markMessagesInViewportAsRead();
+    }
+
+    private markMessagesInViewportAsRead() {
+        const inViewPortObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                let target = entry.target;
+                if (entry.isIntersecting) {
+                    target.classList.forEach(cssClass => {
+                        if (cssClass.startsWith('messageId-')) {
+                            const idForumMessage = Number.parseInt(cssClass.split('-')[1]);
+                            if (!this.markAsRead.includes(idForumMessage)) {
+                                this.markAsRead.push(idForumMessage);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        const svg = document.querySelectorAll(".forum-card");
+        svg.forEach(card => inViewPortObserver.observe(card));
+    }
+
     fetchByPagination(pageEvent: PageEvent | any) {
         this.pageIndex = pageEvent.pageIndex;
         this.pageSize = pageEvent.pageSize;
@@ -94,10 +128,14 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             return;
         }
         this.selectedForumThread = thread;
-        let sub = this.forumApi.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize).subscribe(resp => {
-            this.messagesInThread = resp;
-            this.markMessagesRead();
-        });
+        let sub = this.forumApi.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize)
+            .subscribe(resp => {
+                this.messagesInThread = resp;
+                for (let i = 0; i < (resp.length >= 3 ? 3 : resp.length); i++) {
+                    // just add the first three to mark as read
+                    this.markAsRead.push(resp[i].idForumMessage);
+                }
+            });
         this.subscriptions.push(sub);
         sub = this.forumApi.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
         this.subscriptions.push(sub);
@@ -125,15 +163,13 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     private markMessagesRead() {
-        if (!this.messagesInThread) {
+        if (this.markAsRead.length == 0) {
             return;
         }
-        this.messagesInThread.forEach(msg =>
-            this.forumApi.markForumMessageRead(msg.idForum, msg.idForumThread, msg.idForumMessage).subscribe(() => {
-                setTimeout(() => {
-                    const indexOf = this.unreadMessages.indexOf(msg.idForumMessage);
-                    this.unreadMessages.splice(indexOf, 1);
-                }, 900);
+
+        const toMarkAsRead = this.markAsRead.filter(idForumMessage => this.unreadMessages.includes(idForumMessage));
+        toMarkAsRead.forEach(idForumMessage =>
+            this.forumApi.markForumMessageRead({idMessage: idForumMessage}).subscribe(() => {
             }));
     }
 

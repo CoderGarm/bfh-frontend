@@ -42,7 +42,7 @@ export class ForumThreadsComponent extends SubscriptionManager implements AfterV
 
     createdThread?: CreateForumThread;
 
-    unreadStateByIdForumThread: Map<number, boolean> = new Map<number, boolean>();
+    hasUnreadByIdForumThread: Map<number, boolean> = new Map<number, boolean>();
 
     constructor(private forumApi: ForumApiService,
                 private forumsNotificationService: ForumsNotificationService,
@@ -154,24 +154,25 @@ export class ForumThreadsComponent extends SubscriptionManager implements AfterV
     }
 
     private detectUnreadMessages() {
-        this.unreadStateByIdForumThread.clear();
+        this.hasUnreadByIdForumThread.clear();
         if (!this.threads) {
             return;
         }
         this.threads.forEach(thread => {
             const sub = this.forumApi.hasThreadUnread(thread.idForumThread).subscribe(resp => {
-                this.unreadStateByIdForumThread.set(thread.idForumThread, resp);
+                this.hasUnreadByIdForumThread.set(thread.idForumThread, resp);
             });
             this.subscriptions.push(sub);
         });
     }
 
     hasThreadUnread(thread: ForumThread) {
-        let hasUnread = false;
-        const knownValue = this.unreadStateByIdForumThread.get(thread.idForumThread);
-        if (!!knownValue) {
-            hasUnread = knownValue;
-        }
-        return hasUnread;
+        const knownValue = this.hasUnreadByIdForumThread.get(thread.idForumThread);
+        return !!knownValue ? knownValue : false;
+    }
+
+    markRead(idForumThread: number) {
+        let sub = this.forumApi.markForumMessageRead({idThread: idForumThread}).subscribe(() => this.hasUnreadByIdForumThread.set(idForumThread, false));
+        this.subscriptions.push(sub);
     }
 }

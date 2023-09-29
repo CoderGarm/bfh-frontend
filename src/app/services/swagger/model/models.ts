@@ -55,6 +55,7 @@ export * from './fleetMovement';
 export * from './fleetOrbit';
 export * from './fleetSplit';
 export * from './forum';
+export * from './forumIdContainer';
 export * from './forumMessage';
 export * from './forumThread';
 export * from './frontendError';
