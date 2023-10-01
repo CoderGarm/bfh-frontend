@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
 import {AuthenticationService} from './services/authentication';
 import {NavigationCreationService} from './services/navigation/navigation-creation.service';
@@ -53,6 +53,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     message?: string;
     rememberIgnoreScreenWarning: boolean;
+
+    screenHeight?: number;
+    screenWidth?: number;
 
     constructor(private spinnerService: SpinnerService,
                 private spinner: NgxSpinnerService,
@@ -116,6 +119,33 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         if (!this.rememberIgnoreScreenWarning && window.innerWidth <= 800) {
             this.spinner.show('screen-size');
         }
+    }
+
+    /**
+     * Incredible strange way to detect the true size of the screen.
+     */
+    @HostListener('window:resize', ['$event'])
+    @HostListener('window:load', ['$event'])
+    @HostListener('window:click', ['$event'])
+    @HostListener('window:touchmove', ['$event'])
+    @HostListener('window:wheel', ['$event'])
+    getScreenSize(event?: any) {
+        this.screenWidth = window.innerWidth;
+        this.screenHeight = window.innerHeight;
+
+        const metaViewport = document.querySelector('meta[name=viewport]')!;
+        let content = metaViewport.getAttribute('content')!;
+        const strings = content.split(',');
+        for (let i = 0; i < strings.length; i++) {
+            let string = strings[i];
+            if (string.trim().startsWith('height')) {
+                strings[i] = 'height=' + this.screenHeight + 'px';
+            } else {
+                strings[i] = string.trim();
+            }
+        }
+        content = strings.join(', ');
+        metaViewport.setAttribute('content', content);
     }
 
     openBottomSheet(): void {
