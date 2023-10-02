@@ -19,7 +19,7 @@
                 <span *ngIf="!!message.author.rolePlayData.title">
                     {{ message.author.rolePlayData.title }} {{ message.author.rolePlayData.firstname }} {{ message.author.rolePlayData.surname }}
                 </span>
-                <mat-icon *ngIf="unreadMessages.includes(message.idForumMessage)">mark_email_unread</mat-icon>
+                <mat-icon *ngIf="unreadMessages.includes(message.idForumMessage)">mail</mat-icon>
             </mat-card-title>
             <mat-card-subtitle>{{ message.sentAt | date: 'dd.MM.yyyy HH:mm' }}</mat-card-subtitle>
         </mat-card-header>

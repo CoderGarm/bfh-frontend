@@ -7,7 +7,7 @@
     <mat-tab bodyClass="no-pad">
         <ng-template mat-tab-label>
             {{ 'tab.journal.battles' | translate }}
-            <mat-icon *ngIf="hasNewReports" [inline]="true">mark_email_unread</mat-icon>
+            <mat-icon *ngIf="hasNewReports" inline>mail</mat-icon>
         </ng-template>
         <ng-template matTabContent>
             <app-battle-report></app-battle-report>

@@ -16,6 +16,7 @@ import {
     TransportJob
 } from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
+import {CurrentTickService} from "../../../../../services/intercom/current-tick.service";
 
 @Component({
     selector: 'app-journal-dashboard',
@@ -47,7 +48,13 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     capacitySum: number = 0;
     planets: Planet[] = [];
 
-    constructor(private jobService: JobApiService,
+    hasNewFleetInfo: boolean = false;
+    hasNewCarrierInfo: boolean = false;
+    hasNewJobInfo: boolean = false;
+    hasNewInfraInfo: boolean = false;
+
+    constructor(private currentTickService: CurrentTickService,
+                private jobService: JobApiService,
                 private planetService: PlanetApiService,
                 private journalService: JournalApiService,
                 private resourceService: ResourcesApiService,
@@ -67,16 +74,23 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
             this.finishedJobs = resp;
             const jobs = resp.filter(j => j.isResearchJob);
             this.finishedResearch = jobs.length == 1 ? jobs[0] : undefined;
+            this.stateNewJobInfo();
         });
         this.subscriptions.push(sub);
 
         sub = this.planetService.getPlanetByUsers().subscribe(resp => this.planets = resp);
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getTransportJobs().subscribe(resp => this.transportJobs = resp);
+        sub = this.journalService.getTransportJobs().subscribe(resp => {
+            this.transportJobs = resp;
+            this.stateCarrierInfo();
+        });
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getFinishedMovements().subscribe(resp => this.movements = resp);
+        sub = this.journalService.getFinishedMovements().subscribe(resp => {
+            this.movements = resp;
+            this.stateNewFleetInfo();
+        });
         this.subscriptions.push(sub);
 
         sub = this.resourceService.getResourceDepositForUser().subscribe(resp => this.deposit = resp);
@@ -97,19 +111,55 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
         });
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getFinishedColonizations().subscribe(resp => this.colonizations = resp);
+        sub = this.journalService.getFinishedColonizations().subscribe(resp => {
+            this.colonizations = resp;
+            this.stateNewInfraInfo();
+        });
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getNewlyActiveOperationals().subscribe(resp => this.operationals = resp);
+        sub = this.journalService.getNewlyActiveOperationals().subscribe(resp => {
+            this.operationals = resp;
+            this.stateNewInfraInfo();
+        });
         this.subscriptions.push(sub);
 
         sub = this.journalService.getOperationalsWaitingForActivation().subscribe(resp => this.pending = resp);
         this.subscriptions.push(sub);
 
-        sub = this.marketService.getTradesForUser().subscribe(resp => this.trades = resp);
+        sub = this.marketService.getTradesForUser().subscribe(resp => {
+            this.trades = resp;
+            this.stateCarrierInfo();
+        });
         this.subscriptions.push(sub);
 
-        sub = this.journalService.getMissionResults().subscribe(resp => this.missionResults = resp);
+        sub = this.journalService.getMissionResults().subscribe(resp => {
+            this.missionResults = resp;
+            this.stateNewFleetInfo();
+        });
         this.subscriptions.push(sub);
+    }
+
+    private stateNewFleetInfo() {
+        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'fleetInfo');
+        this.hasNewFleetInfo = !topicRead && (this.movements.length > 0 || (!!this.missionResults && (this.missionResults.actionItemGroups.length > 0 || this.missionResults.convoyActionItemGroups.length > 0)));
+    }
+
+    private stateNewJobInfo() {
+        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'jobInfo');
+        this.hasNewJobInfo = !topicRead && (this.finishedJobs.length > 0 || !!this.finishedResearch);
+    }
+
+    private stateCarrierInfo() {
+        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'carrierInfo');
+        this.hasNewCarrierInfo = !topicRead && (this.transportJobs.length > 0 || this.trades.filter(t => t.tradesByTick.filter(byTick => byTick.tick.tickNo == this.currentTickService.currentTick?.tickNo).length > 0).length > 0);
+    }
+
+    private stateNewInfraInfo() {
+        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'infraInfo');
+        this.hasNewInfraInfo = !topicRead && (this.colonizations.length > 0 || this.operationals.length > 0);
+    }
+
+    markTopicRead(topic: string) {
+        this.tokenStorage.addReadJournalTopics(this.currentTickService.currentTick!.tickNo, topic);
     }
 }

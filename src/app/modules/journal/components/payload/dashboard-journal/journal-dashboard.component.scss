@@ -1,3 +1,4 @@
+@import "src/styles/variables";
 @import "src/app/modules/display-elements/job-list-display/job-list-display.component";
 
 .nav-control {
@@ -11,4 +12,10 @@
 app-resource-display {
   height: 1px; // ist must just made be clear that it should be small
   display: block;
+}
+
+
+::ng-deep .mat-horizontal-stepper-header .mat-step-icon {
+  // remove number icons of stepper
+  display: none !important;
 }

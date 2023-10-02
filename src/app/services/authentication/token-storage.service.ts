@@ -4,6 +4,13 @@ import {JWT} from "../swagger";
 import {environment} from "../../../environments/environment";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
+export interface JournalDashEntry {
+    // more or less for multi-accounting
+    idUser: number,
+    tickNo: number,
+    topics: string[]
+}
+
 @Injectable()
 export class TokenStorage {
 
@@ -17,10 +24,48 @@ export class TokenStorage {
     private readonly refreshToken = 'refreshToken';
     private readonly interruptedURL = 'interruptedURL';
 
+    // game logic stuff - stays in the cache
+    private readonly journalDashEntries = 'journalDash';
+
     protected basePath = environment.backendServer;
 
     isLocalhost() {
         return this.basePath.includes("localhost");
+    }
+
+    isJournalTopicRead(tickNo: number, topic: string): boolean {
+        const token: string = <string>localStorage.getItem(this.journalDashEntries);
+        let entries: JournalDashEntry[] = <JournalDashEntry[]>JSON.parse(token);
+        entries = !!entries ? entries : [];
+        const userID = this.getUserID();
+        const topics = entries.filter(e => e.tickNo === tickNo && e.idUser === userID).flatMap(e => e.topics);
+        // remove old entries
+        const toStore = entries.filter(e => e.tickNo === tickNo);
+        this.setReadJournalTopics(toStore);
+        // answer
+        return topics.includes(topic);
+    }
+
+    private setReadJournalTopics(entries: JournalDashEntry[]): void {
+        localStorage.setItem(this.journalDashEntries, JSON.stringify(entries));
+    }
+
+    addReadJournalTopics(tickNo: number, topic: string): void {
+        console.log("add", tickNo, topic)
+        const userID = this.getUserID();
+        const token: string = <string>localStorage.getItem(this.journalDashEntries);
+        const entries: JournalDashEntry[] = <JournalDashEntry[]>JSON.parse(token);
+        const journalDashEntries = entries.filter(e => e.tickNo === tickNo && e.idUser === userID);
+        if (journalDashEntries.length == 0) {
+            entries.push({
+                idUser: userID,
+                tickNo: tickNo,
+                topics: [topic]
+            });
+        } else {
+            journalDashEntries[0].topics.push(topic);
+        }
+        this.setReadJournalTopics(entries);
     }
 
     /**
