@@ -16,7 +16,7 @@
 
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
     <mat-list-option *ngFor="let chat of activeChats" (click)="displayChatHistoryBetweenMeAnd(getChatPartner(chat))">
-        <mat-icon *ngIf="hasUnread(chat)">mail</mat-icon>
+        <app-icon *ngIf="hasUnread(chat)" hasUnread></app-icon>
         {{getChatPartner(chat).username}}
     </mat-list-option>
 </mat-selection-list>

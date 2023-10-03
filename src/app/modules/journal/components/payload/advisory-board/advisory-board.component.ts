@@ -45,6 +45,11 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
                     operationalLevel: 0
                 }
             }
+
+            /* fixme nothing to do is a dangerous advice */
+            /* fixme display "build a lac for defense" advice */
+            /* fixme display set up mission advice */
+
             this.nothing = !resp.constructionPossible && !resp.researchPossible && !resp.shipyardPossible && !resp.suggestedResearch && !resp.suggestedBuilding;
             this.spinner.hide('advisory-spinner');
             this.spinnerActive = false;

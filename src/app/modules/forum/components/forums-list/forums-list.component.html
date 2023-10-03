@@ -27,7 +27,7 @@
             <!-- no mat-card-header please -->
             <mat-card-title>
                 {{ forum.title }}
-                <mat-icon *ngIf="hasForumUnread(forum)">mail</mat-icon>
+                <app-icon *ngIf="hasForumUnread(forum)" hasUnread></app-icon>
             </mat-card-title>
             <mat-card-subtitle>
                 {{  forum.description }}
@@ -37,7 +37,7 @@
                 </div>
             </mat-card-subtitle>
             <button mat-icon-button class="mark-read" (click)="markRead(forum.idForum); $event.stopPropagation();" matTooltip="{{ 'forum.action.mark-read.forum' | translate }}">
-                <mat-icon>mark_email_read</mat-icon>
+                <app-icon markRead></app-icon>
             </button>
         </mat-card>
     </div>

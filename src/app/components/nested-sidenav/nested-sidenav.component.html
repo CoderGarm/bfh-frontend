@@ -5,7 +5,7 @@
                              (click)="navigate(route)"
                              [selected]="(!navService.activeRoute && afterLoginPath === route.path) || (!!navService.activeRoute && navService.activeRoute.path === route.path)">
                 {{ 'path.menu.' + route.path | translate }}
-                <mat-icon *ngIf="hasUnread.indexOf(route.path!) != -1">mail</mat-icon>
+                <app-icon *ngIf="hasUnread.indexOf(route.path!) != -1" hasUnread></app-icon>
             </mat-list-option>
 
             <div class="sidenav-expansion-panel">

@@ -69,6 +69,16 @@ export class IconComponent implements OnChanges {
     get circleBorder() { return this._circleBorder; }
     set circleBorder(value: any) { this._circleBorder = this.coerceBooleanProperty(value); }
     _circleBorder: boolean = false;
+
+    @Input()
+    get hasUnread() { return this._hasUnread; }
+    set hasUnread(value: any) { this._hasUnread = this.coerceBooleanProperty(value); }
+    _hasUnread: boolean = false;
+
+    @Input()
+    get markRead() { return this._markRead; }
+    set markRead(value: any) { this._markRead = this.coerceBooleanProperty(value); }
+    _markRead: boolean = false;
     // @formatter:on
 
     sizeComplement: string = '16px';

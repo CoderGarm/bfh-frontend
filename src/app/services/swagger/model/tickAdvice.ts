@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Building } from './building';
+import { EShipClassType } from './eShipClassType';
 import { Research } from './research';
 
 /**
@@ -30,4 +31,18 @@ export interface TickAdvice {
     researchPossible: boolean;
     suggestedBuilding?: Building;
     suggestedResearch?: Research;
+    suggestedShipClass?: EShipClassType;
+    /**
+     * The suggested class to build up.
+     */
+    suggestedMission?: TickAdvice.SuggestedMissionEnum;
+}
+export namespace TickAdvice {
+    export type SuggestedMissionEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION' | 'CONVOY_RAID';
+    export const SuggestedMissionEnum = {
+        PIRATE_RAID: 'PIRATE_RAID' as SuggestedMissionEnum,
+        PIRATE_HUNT: 'PIRATE_HUNT' as SuggestedMissionEnum,
+        CONVOY_PROTECTION: 'CONVOY_PROTECTION' as SuggestedMissionEnum,
+        CONVOY_RAID: 'CONVOY_RAID' as SuggestedMissionEnum
+    };
 }

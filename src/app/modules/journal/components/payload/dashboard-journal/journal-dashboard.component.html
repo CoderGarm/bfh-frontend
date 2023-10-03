@@ -12,7 +12,7 @@
         <mat-step>
             <ng-template matStepLabel>
                 <span (click)="markTopicRead('fleetInfo')">{{ 'journal.title.content-area.fleet' | translate }}</span>
-                <mat-icon *ngIf="hasNewFleetInfo" inline>mail</mat-icon>
+                <app-icon *ngIf="hasNewFleetInfo" hasUnread></app-icon>
             </ng-template>
             <ng-template matStepContent>
 
@@ -30,7 +30,7 @@
         <mat-step>
             <ng-template matStepLabel>
                 <span (click)="markTopicRead('jobInfo')">{{ 'journal.title.content-area.jobs' | translate }}</span>
-                <mat-icon *ngIf="hasNewJobInfo" inline>mail</mat-icon>
+                <app-icon *ngIf="hasNewJobInfo" hasUnread></app-icon>
             </ng-template>
             <ng-template matStepContent>
 
@@ -49,7 +49,7 @@
         <mat-step>
             <ng-template matStepLabel>
                 <span (click)="markTopicRead('carrierInfo')">{{ 'journal.title.content-area.transportation-trade' | translate }}</span>
-                <mat-icon *ngIf="hasNewCarrierInfo" inline>mail</mat-icon>
+                <app-icon *ngIf="hasNewCarrierInfo" hasUnread></app-icon>
             </ng-template>
             <ng-template matStepContent>
 
@@ -66,7 +66,7 @@
         <mat-step>
             <ng-template matStepLabel>
                 <span (click)="markTopicRead('infraInfo')">{{ 'journal.title.content-area.infrastructure' | translate }}</span>
-                <mat-icon *ngIf="hasNewInfraInfo" inline>mail</mat-icon>
+                <app-icon *ngIf="hasNewInfraInfo" hasUnread></app-icon>
             </ng-template>
             <ng-template matStepContent>
 

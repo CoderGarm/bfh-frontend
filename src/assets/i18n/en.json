@@ -265,6 +265,7 @@
 			},
 			"title": {
 				"convoy-protection": "Unguarded Convoys",
+				"general": "General hints",
 				"infrastructure": "Suggested infrastructural changes",
 				"main": "Advisory Board",
 				"pirate-hunt": "Unprotected Planets"

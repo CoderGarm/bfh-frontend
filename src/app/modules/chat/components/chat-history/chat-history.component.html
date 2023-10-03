@@ -8,7 +8,7 @@
                 <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.sender.profilePic }}.png">
                 <mat-card-title>
                     {{message.sender.username}}
-                    <mat-icon *ngIf="!message.receivedAt && message.sender.idUser != userId">mail</mat-icon>
+                    <app-icon *ngIf="!message.receivedAt && message.sender.idUser != userId" hasUnread></app-icon>
                 </mat-card-title>
                 <mat-card-subtitle>{{message.sentAt  | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
             </mat-card-header>
