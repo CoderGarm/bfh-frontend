@@ -322,9 +322,13 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
   background-color: $secondary-background-color !important;
 }
 
-.mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal {
+.mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel {
   border-radius: 20px;
   padding: 5px;
+}
+
+.mat-expansion-panel {
+  border-radius: 20px !important;
 }
 
 .mat-mdc-list-item {

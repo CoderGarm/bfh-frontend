@@ -140,26 +140,41 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     }
 
     private stateNewFleetInfo() {
-        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'fleetInfo');
-        this.hasNewFleetInfo = !topicRead && (this.movements.length > 0 || (!!this.missionResults && (this.missionResults.actionItemGroups.length > 0 || this.missionResults.convoyActionItemGroups.length > 0)));
+        let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'fleetInfo');
+            this.hasNewFleetInfo = !topicRead && (this.movements.length > 0 || (!!this.missionResults && (this.missionResults.actionItemGroups.length > 0 || this.missionResults.convoyActionItemGroups.length > 0)));
+        });
+        this.subscriptions.push(sub);
     }
 
     private stateNewJobInfo() {
-        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'jobInfo');
-        this.hasNewJobInfo = !topicRead && (this.finishedJobs.length > 0 || !!this.finishedResearch);
+        let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'jobInfo');
+            this.hasNewJobInfo = !topicRead && (this.finishedJobs.length > 0 || !!this.finishedResearch);
+        });
+        this.subscriptions.push(sub);
     }
 
     private stateCarrierInfo() {
-        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'carrierInfo');
-        this.hasNewCarrierInfo = !topicRead && (this.transportJobs.length > 0 || this.trades.filter(t => t.tradesByTick.filter(byTick => byTick.tick.tickNo == this.currentTickService.currentTick?.tickNo).length > 0).length > 0);
+        let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'carrierInfo');
+            this.hasNewCarrierInfo = !topicRead && (this.transportJobs.length > 0 || this.trades.filter(t => t.tradesByTick.filter(byTick => byTick.tick.tickNo == this.currentTickService.currentTick?.tickNo).length > 0).length > 0);
+        });
+        this.subscriptions.push(sub);
     }
 
     private stateNewInfraInfo() {
-        const topicRead = this.tokenStorage.isJournalTopicRead(this.currentTickService.currentTick!.tickNo, 'infraInfo');
-        this.hasNewInfraInfo = !topicRead && (this.colonizations.length > 0 || this.operationals.length > 0);
+        let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'infraInfo');
+            this.hasNewInfraInfo = !topicRead && (this.colonizations.length > 0 || this.operationals.length > 0);
+        });
+        this.subscriptions.push(sub);
     }
 
     markTopicRead(topic: string) {
-        this.tokenStorage.addReadJournalTopics(this.currentTickService.currentTick!.tickNo, topic);
+        if (!this.currentTickService.currentTick) {
+            return;
+        }
+        this.tokenStorage.addReadJournalTopics(this.currentTickService.currentTick.tickNo, topic);
     }
 }

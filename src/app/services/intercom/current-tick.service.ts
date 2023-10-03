@@ -1,10 +1,13 @@
 import {Injectable} from "@angular/core";
 import {Tick} from "../swagger";
+import {ReplaySubject} from "rxjs";
 
 @Injectable()
 export class CurrentTickService {
 
     currentTick?: Tick;
+
+    readonly tickEmitter: ReplaySubject<Tick> = new ReplaySubject<Tick>();
 
     getCurrentTick() {
         if (!this.currentTick) {
@@ -15,6 +18,7 @@ export class CurrentTickService {
 
     setTick(tick: Tick) {
         this.currentTick = tick;
+        this.tickEmitter.next(this.currentTick);
     }
 
     clear() {
