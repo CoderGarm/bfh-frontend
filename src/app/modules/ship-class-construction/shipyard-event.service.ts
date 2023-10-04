@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {ShipClass} from "../../services/swagger";
-import {ReplaySubject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class ShipyardEventService {
@@ -8,7 +8,7 @@ export class ShipyardEventService {
     /**
      * communicates a clicked ship class in the shipyard section of the sidenav
      */
-    private selectedShipClassEmitter: ReplaySubject<ShipClass | undefined> = new ReplaySubject<ShipClass | undefined>();
+    private selectedShipClassEmitter: BehaviorSubject<ShipClass | undefined> = new BehaviorSubject<ShipClass | undefined>(undefined);
 
     getSelectedShipClassEmitter() {
         return this.selectedShipClassEmitter;

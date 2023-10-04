@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from "@angular/core";
-import {ReplaySubject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {Planet} from "../../services/swagger";
 
 /**
@@ -27,7 +27,7 @@ export class PlanetsEventService {
     /**
      * communicates a clicked planet in the shipyard section of the sidenav
      */
-    private selectedPlanetEmitter: ReplaySubject<Planet | undefined> = new ReplaySubject<Planet | undefined>();
+    private selectedPlanetEmitter: BehaviorSubject<Planet | undefined> = new BehaviorSubject<Planet | undefined>(undefined);
 
     getSelectedPlanetEmitter() {
         return this.selectedPlanetEmitter;
@@ -40,7 +40,7 @@ export class PlanetsEventService {
     /**
      * communicates a created offer and therefore a changed deposit
      */
-    private offerCreatedEmitter: ReplaySubject<any> = new ReplaySubject<any>();
+    private offerCreatedEmitter: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
 
     getOfferCreatedEmitter() {
         return this.offerCreatedEmitter;

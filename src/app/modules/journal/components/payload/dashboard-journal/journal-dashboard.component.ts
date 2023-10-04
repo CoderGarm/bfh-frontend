@@ -141,6 +141,9 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
 
     private stateNewFleetInfo() {
         let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            if (!tick) {
+                return;
+            }
             const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'fleetInfo');
             this.hasNewFleetInfo = !topicRead && (this.movements.length > 0 || (!!this.missionResults && (this.missionResults.actionItemGroups.length > 0 || this.missionResults.convoyActionItemGroups.length > 0)));
         });
@@ -149,6 +152,9 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
 
     private stateNewJobInfo() {
         let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            if (!tick) {
+                return;
+            }
             const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'jobInfo');
             this.hasNewJobInfo = !topicRead && (this.finishedJobs.length > 0 || !!this.finishedResearch);
         });
@@ -157,6 +163,9 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
 
     private stateCarrierInfo() {
         let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            if (!tick) {
+                return;
+            }
             const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'carrierInfo');
             this.hasNewCarrierInfo = !topicRead && (this.transportJobs.length > 0 || this.trades.filter(t => t.tradesByTick.filter(byTick => byTick.tick.tickNo == this.currentTickService.currentTick?.tickNo).length > 0).length > 0);
         });
@@ -165,6 +174,9 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
 
     private stateNewInfraInfo() {
         let sub = this.currentTickService.tickEmitter.subscribe(tick => {
+            if (!tick) {
+                return;
+            }
             const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'infraInfo');
             this.hasNewInfraInfo = !topicRead && (this.colonizations.length > 0 || this.operationals.length > 0);
         });

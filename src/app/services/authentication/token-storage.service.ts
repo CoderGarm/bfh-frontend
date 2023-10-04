@@ -51,7 +51,6 @@ export class TokenStorage {
     }
 
     addReadJournalTopics(tickNo: number, topic: string): void {
-        console.log("add", tickNo, topic)
         const userID = this.getUserID();
         const token: string = <string>localStorage.getItem(this.journalDashEntries);
         const entries: JournalDashEntry[] = <JournalDashEntry[]>JSON.parse(token);

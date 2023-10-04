@@ -1,13 +1,13 @@
 import {Injectable} from "@angular/core";
 import {Tick} from "../swagger";
-import {ReplaySubject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class CurrentTickService {
 
     currentTick?: Tick;
 
-    readonly tickEmitter: ReplaySubject<Tick> = new ReplaySubject<Tick>();
+    readonly tickEmitter: BehaviorSubject<Tick | undefined> = new BehaviorSubject<Tick | undefined>(undefined);
 
     getCurrentTick() {
         if (!this.currentTick) {

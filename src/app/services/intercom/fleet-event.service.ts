@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from "@angular/core";
-import {ReplaySubject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {AbstractId} from "../swagger";
 
 @Injectable()
@@ -22,7 +22,7 @@ export class FleetEventService {
     /**
      * communicates a clicked fleet in the sidenav
      */
-    private selectedFleetEmitter: ReplaySubject<AbstractId | undefined> = new ReplaySubject<AbstractId | undefined>();
+    private selectedFleetEmitter: BehaviorSubject<AbstractId | undefined> = new BehaviorSubject<AbstractId | undefined>(undefined);
 
     getSelectedFleetEmitter() {
         return this.selectedFleetEmitter;
@@ -35,14 +35,14 @@ export class FleetEventService {
     /**
      * communicates a retired fleet in the sidenav
      */
-    private retireFleetEmitter: ReplaySubject<AbstractId> = new ReplaySubject<AbstractId>();
+    private retireFleetEmitter: BehaviorSubject<AbstractId | undefined> = new BehaviorSubject<AbstractId | undefined>(undefined);
 
     retireFleet(fleet: AbstractId) {
         this.retireFleetEmitter.next(fleet);
         this.selectFleet(undefined);
     }
 
-    getRetireFleetEmitter(): ReplaySubject<AbstractId> {
+    getRetireFleetEmitter() {
         return this.retireFleetEmitter;
     }
 }

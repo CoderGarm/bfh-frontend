@@ -38,6 +38,9 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
         this.subscriptions.push(sub);
 
         sub = this.fleetEventService.getRetireFleetEmitter().subscribe(fleet => {
+            if (!fleet) {
+                return;
+            }
             const filter = this.fleets.filter(f => f.id === fleet.id);
             if (filter.length == 1) {
                 const indexOf = this.fleets.indexOf(filter[0]);
