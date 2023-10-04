@@ -1,17 +1,13 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EShipClassType, Fleet, FleetApiService, WarShip} from "../../../services/swagger";
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {EShipClassType, Fleet, WarShip} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
-import {DialogConfigHelper} from "../../../services/helper/dialog-config.helper";
-import {DialogData} from "../../../components/confirmation-dialog/DialogData";
-import {ConfirmDialogComponent} from "../../../components/confirmation-dialog/confirm-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-fleet-formation-display',
     templateUrl: './fleet-formation-display.component.html',
     styleUrls: ['./fleet-formation-display.component.scss']
 })
-export class FleetFormationDisplay extends SubscriptionManager implements OnInit, OnChanges {
+export class FleetFormationDisplay extends SubscriptionManager implements OnChanges {
 
     @Input()
     fleet?: Fleet;
@@ -27,23 +23,10 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
     get smallDisplay() { return this._smallDisplay; }
     set smallDisplay(value: any) { this._smallDisplay = this.coerceBooleanProperty(value); }
     _smallDisplay: boolean = false;
-
-    @Input()
-    get retireAllowed() { return this._retireAllowed; }
-    set retireAllowed(value: any) { this._retireAllowed = this.coerceBooleanProperty(value); }
-    _retireAllowed: boolean = false;
     // @formatter:on
 
     private coerceBooleanProperty(value: any): boolean {
         return value != null && `${value}` !== 'false';
-    }
-
-    constructor(private fleetService: FleetApiService,
-                private dialog: MatDialog) {
-        super();
-    }
-
-    ngOnInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -94,38 +77,5 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnInit
             return hull.typeName + ' - ' + hull.description;
         }
         return "";
-    }
-
-    retireShip(warShip: WarShip) {
-        let sub = this.fleetService.retireWarship(warShip.idWarship).subscribe(resp => {
-            if (resp) {
-                const ship = this.fleet!.ships.filter(s => s.idWarship === warShip.idWarship);
-                if (ship.length == 1) {
-                    const indexOf = this.fleet!.ships.indexOf(ship[0]);
-                    this.fleet!.ships.splice(indexOf, 1);
-
-                    this.warShipsByType.forEach((ships, className) => {
-                        const ship = ships.filter(s => s.idWarship === warShip.idWarship);
-                        if (ship.length == 1) {
-                            const indexOf = ships.indexOf(ship[0]);
-                            ships.splice(indexOf, 1);
-                        }
-                    });
-                }
-            }
-        });
-        this.subscriptions.push(sub);
-    }
-
-
-    openRetireWarshipDialog(warShip: WarShip) {
-        const dialogConfig = DialogConfigHelper.createDialog();
-        dialogConfig.data = new DialogData("Retire " + warShip.name + '?');
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.retireShip(warShip);
-            }
-        })
     }
 }

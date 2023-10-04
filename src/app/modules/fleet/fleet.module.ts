@@ -4,6 +4,7 @@ import {FleetTabViewComponent} from './components/orga/fleet-tab-view/fleet-tab-
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {FleetDetachmentComponent} from './components/payload/fleet-split/fleet-detachment.component';
+import {FleetEditComponent} from './components/payload/fleet-edit/fleet-edit.component';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import {FleetDetachmentComponent} from './components/payload/fleet-split/fleet-d
         FleetSelectionComponent,
         FleetTabViewComponent,
         FleetDetachmentComponent,
+        FleetEditComponent,
     ],
     imports: [
         SharedModuleModule,

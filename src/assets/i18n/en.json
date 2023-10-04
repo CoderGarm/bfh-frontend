@@ -153,9 +153,13 @@
 				"title": "Create detachments",
 				"tooltip": "Add next detachment"
 			},
+			"fleet-name": {
+				"title": "Fleet"
+			},
 			"title": "Fleet composition",
 			"warShip-names": "Warships",
 			"warship": {
+				"change-name-hint": "Change name",
 				"retire": {
 					"submit": "Retire warship"
 				},
@@ -818,6 +822,7 @@
 		},
 		"fleet": {
 			"dashboard": "Dashboard",
+			"edit": "Fleet administration",
 			"split": "Detachment"
 		},
 		"journal": {

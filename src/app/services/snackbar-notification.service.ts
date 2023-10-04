@@ -28,4 +28,8 @@ export class SnackbarNotificationService {
     close() {
         this.snackBar.dismiss();
     }
+
+    notifySave() {
+        this.open('Saved', '', 150);
+    }
 }

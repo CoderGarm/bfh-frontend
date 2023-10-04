@@ -153,9 +153,13 @@
 				"title": "Detachiere Flottenteile",
 				"tooltip": "Erzeuge neues Detachment"
 			},
+			"fleet-name": {
+				"title": "Flotte"
+			},
 			"title": "Flottenzusammensetzung",
 			"warShip-names": "Kriegsschiffe",
 			"warship": {
+				"change-name-hint": "Namen ändern",
 				"retire": {
 					"submit": "Kriegsschiff deaktivieren"
 				},
@@ -817,6 +821,7 @@
 		},
 		"fleet": {
 			"dashboard": "Übersicht",
+			"edit": "Flottenverwaltung",
 			"split": "Detachment"
 		},
 		"journal": {

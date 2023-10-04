@@ -373,3 +373,7 @@ mat-step-header {
 .ngx-spinner-limiter {
   position: relative;
 }
+
+.mat-mdc-form-field-icon-prefix > span {
+  padding: 0 15px;
+}

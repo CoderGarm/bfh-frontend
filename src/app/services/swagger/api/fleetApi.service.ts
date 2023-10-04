@@ -671,6 +671,54 @@ export class FleetApiService {
     }
 
     /**
+     * Rename a ship.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public renameWarship(body: AbstractId, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public renameWarship(body: AbstractId, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public renameWarship(body: AbstractId, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public renameWarship(body: AbstractId, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling renameWarship.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/rename/warship`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Renames a fleet.
      * 
      * @param idFleet 

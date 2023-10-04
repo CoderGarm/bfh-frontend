@@ -51,16 +51,12 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     ngOnInit(): void {
     }
 
-    private stateChange() {
-        this.snackbar.open('Saved', '', 150);
-    }
-
     setDemand(event: CarrierAmount) {
         if (this.invalidEvent(event)) {
             return;
         }
         let r: ResourceDeposit = ResourceHelper.transformResourceTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.stateChange());
+        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
         this.subscriptions.push(sub);
     }
 
@@ -69,7 +65,7 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
             return;
         }
         let r: ResourceDeposit = ResourceHelper.transformResourceTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.stateChange());
+        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
         this.subscriptions.push(sub);
     }
 
@@ -83,7 +79,7 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
             return;
         }
         let r: ResourceDeposit = ResourceHelper.transformHumanTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.stateChange());
+        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
         this.subscriptions.push(sub);
     }
 
@@ -92,7 +88,7 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
             return;
         }
         let r: ResourceDeposit = ResourceHelper.transformHumanTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.stateChange());
+        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
         this.subscriptions.push(sub);
     }
 

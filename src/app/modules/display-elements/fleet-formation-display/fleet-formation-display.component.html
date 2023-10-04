@@ -18,12 +18,6 @@
                     <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
                     <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
                                                         [isWarship]="true"></app-spacecraft-state-block-display>
-                    <button mat-mini-fab class="retire-btn"
-                            (click)="openRetireWarshipDialog(warShip)"
-                            *ngIf="_retireAllowed"
-                            matTooltip="{{ 'fleet.composition.warship.retire.submit' | translate }}">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
                 </app-outlined>
             </mat-list>
         </div>

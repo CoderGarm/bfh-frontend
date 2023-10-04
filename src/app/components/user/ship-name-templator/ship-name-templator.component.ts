@@ -5,6 +5,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {FormControl, ValidationErrors} from "@angular/forms";
 import {SingleTouchedFormFieldErrorStateMatcher} from "../../../validators/single-touched-form-field-error-state-matcher";
+import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import EStarNationsEnum = EnumValueDto.EStarNationsEnum;
 
 @Component({
@@ -37,18 +38,9 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
     filterValue: string = '';
 
     constructor(private rpgService: RolePlayApiService,
+                private snackbar: SnackbarNotificationService,
                 private translate: TranslateService) {
         super();
-
-        this.prefixFC.valueChanges.subscribe(prefix => {
-            if (!!prefix) {
-                let sub = this.rpgService.setShipPrefix(prefix).subscribe(() => {
-                });
-                this.subscriptions.push(sub);
-            } else {
-                this.deletePrefix();
-            }
-        });
 
         this.translate.get('profile.navy.ship-name-template.nation.title.MANTICORE');
         this.translate.get('profile.navy.ship-name-template.nation.title.HAVEN');
@@ -94,10 +86,8 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
     }
 
     private getPrefixFC(prefix?: string) {
-        if (!prefix) {
-            prefix = '';
-        }
-        return new FormControl(prefix, [control => {
+        prefix = !!prefix ? prefix : '';
+        const formControl = new FormControl(prefix, [control => {
             const v: ValidationErrors = {};
             const isError = !!control && !!control.value ? (<string>control.value).length > 6 : false;
             if (isError) {
@@ -105,6 +95,18 @@ export class ShipNameTemplatorComponent extends SubscriptionManager implements A
             }
             return v;
         }]);
+
+        let sub = formControl.valueChanges.subscribe(prefix => {
+            if (!!prefix) {
+                let sub = this.rpgService.setShipPrefix(prefix).subscribe(() => this.snackbar.notifySave());
+                this.subscriptions.push(sub);
+            } else {
+                this.deletePrefix();
+            }
+        });
+        this.subscriptions.push(sub);
+
+        return formControl;
     }
 
     private selectAllChosenTemplates() {

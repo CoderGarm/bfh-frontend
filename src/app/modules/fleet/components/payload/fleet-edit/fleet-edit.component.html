@@ -1,0 +1,63 @@
+<div class="content-area" *ngIf="!!fleet">
+    <mat-card appearance="raised" style="background-color: transparent;" class="blue-card">
+        <mat-card-header class="rename-element">
+            <app-icon matCardAvatar png64px [fleetSize]="fleet.ships.length"></app-icon>
+            <mat-card-title class="title-block">
+                <form [formGroup]="formGroup" matTooltip="Double click to rename" class="clickable" style="margin-left: 15px;">
+                    <mat-form-field class="name-input rename-element">
+                        <span matPrefix>{{ 'fleet.composition.fleet-name.title' | translate }}</span>
+                        <input matInput autocomplete="off"
+                               class="name-input"
+                               type='text'
+                               formControlName='fleetName'>
+                        <mat-hint>{{ 'fleet.composition.warship.change-name-hint' | translate }}</mat-hint>
+                    </mat-form-field>
+                </form>
+                <button mat-mini-fab color="primary" class="retire-btn"
+                        (click)="openRetireFleetDialog()"
+                        matTooltip="{{ 'fleet.retire.submit' | translate }}">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-card-title>
+            <app-spacecraft-state-block-display [stateBlock]="fleet.state" [isFleet]="true"></app-spacecraft-state-block-display>
+        </mat-card-header>
+        <mat-card-content class="flex-items-container">
+            <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
+
+            <div class="flex-container">
+                <div *ngFor="let entry of warShipsByType  | keyvalue" class="flex-container">
+                    <mat-list class="ship-list">
+                        <div mat-subheader>
+                            <app-icon matListItemAvatar class="icon"
+                                      [icon]="entry.value[0].shipClass.shipClassType"
+                                      [altText]="entry.value[0].shipClass.shipClassType.typeName"
+                                      png24px [toolTip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"></app-icon>
+
+                            {{entry.value[0].shipClass.name}} {{ 'fleet.composition.class.title' | translate }}
+                        </div>
+
+                        <app-outlined titleValue="{{ 'fleet.composition.warship.title' | translate }}" *ngFor="let warShip of entry.value">
+
+                            <mat-form-field style="width: 100%;">
+                                <span matPrefix *ngIf="!!prefix">{{ prefix }}</span>
+                                <input matInput type="text" #nameField [value]="getWarShipName(warShip)" (change)="setWarshipName(warShip, nameField.value)">
+                                <mat-hint>{{ 'fleet.composition.warship.change-name-hint' | translate }}</mat-hint>
+                            </mat-form-field>
+
+
+                            <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+                            <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
+                                                                [isWarship]="true"></app-spacecraft-state-block-display>
+                            <button mat-mini-fab color="primary" class="retire-btn"
+                                    (click)="openRetireWarshipDialog(warShip)"
+                                    matTooltip="{{ 'fleet.composition.warship.retire.submit' | translate }}">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </app-outlined>
+                    </mat-list>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+</div>
