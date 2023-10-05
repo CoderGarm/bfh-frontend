@@ -15,8 +15,8 @@ export class PlanetaryJobListComponent extends SubscriptionManager implements Af
      * and it's field name
      */
     @Input()
-    selectedPlanetInput?: Planet;
-    private selectedPlanetDefinition = "selectedPlanetInput";
+    planet?: Planet;
+    private selectedPlanetDefinition = "planet";
 
     /**
      * all active jobs on the planet
@@ -40,8 +40,8 @@ export class PlanetaryJobListComponent extends SubscriptionManager implements Af
     }
 
     private loadData() {
-        if (this.selectedPlanetInput) {
-            let sub = this.jobApi.getJobsOnPlanet(this.selectedPlanetInput.idPlanet)
+        if (this.planet) {
+            let sub = this.jobApi.getJobsOnPlanet(this.planet.idPlanet)
                 .subscribe(resp => this.runningJobs = resp);
             this.subscriptions.push(sub);
         }

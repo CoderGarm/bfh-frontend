@@ -27,6 +27,9 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
     @Input()
     allowCancel: boolean = false;
 
+    @Input()
+    planet?: Planet;
+
     jobsPerIdPlanet: Map<number, Job[]> = new Map<number, Job[]>();
     planetaryJobs: PlanetaryJobs[] = [];
 
@@ -180,10 +183,19 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
     }
 
     private loadData() {
-        let sub = this.jobService.getJobsForEmpire().subscribe(resp => {
-            this.jobs = resp;
-            this.prepareData();
-        });
-        this.subscriptions.push(sub);
+        if (this.planet) {
+            let sub = this.jobService.getJobsOnPlanet(this.planet.idPlanet)
+                .subscribe(resp => {
+                    this.jobs = resp
+                    this.prepareData();
+                });
+            this.subscriptions.push(sub);
+        } else {
+            let sub = this.jobService.getJobsForEmpire().subscribe(resp => {
+                this.jobs = resp;
+                this.prepareData();
+            });
+            this.subscriptions.push(sub);
+        }
     }
 }
