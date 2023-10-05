@@ -308,7 +308,17 @@ export class BasicViewHelper extends BasicViewHelperData {
         if (mainGroups.length > 0) {
             return <G>mainGroups[0]!;
         } else {
+            this.getOrCreateMainSubLayerGroup();
             return this.canvas!.group().id(BasicViewHelperData.CELESTIAL_MAIN_GROUP);
+        }
+    }
+
+    protected getOrCreateMainSubLayerGroup() {
+        const mainGroups = this.canvas!.children().filter(c => c.id() === BasicViewHelperData.SUB_LAYER_GROUP);
+        if (mainGroups.length > 0) {
+            return <G>mainGroups[0]!;
+        } else {
+            return this.canvas!.group().id(BasicViewHelperData.SUB_LAYER_GROUP);
         }
     }
 

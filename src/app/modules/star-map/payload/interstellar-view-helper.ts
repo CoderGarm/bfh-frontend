@@ -45,10 +45,10 @@ export class InterstellarViewHelper extends BasicViewHelper {
 
     drawJunctions() {
         let sub = this.assetsService.getAllWormholeJunctions().subscribe(junctions => {
+            const subLayerGroup = this.getOrCreateMainSubLayerGroup();
             junctions.forEach(junction => {
                 junction.termini.forEach(terminus => {
-                    const mainCelestialGroup = this.getOrCreateMainCelestialGroup();
-                    mainCelestialGroup
+                    subLayerGroup
                         .line(junction.position.x, junction.position.y, terminus.x, terminus.y)
                         .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER)
                         .addClass(BasicViewHelperData.WORMHOLE_MARKER)
