@@ -56,20 +56,22 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
         this.detectName();
 
         if (changes['fleet']) {
-            this.hullTypes.clear();
-            this.hullsByType.clear();
-            this.warShipsByType.clear();
-            this.warShipsByTypeAndFlight.clear();
-            this.sortWarshipsByHull();
-            this.fleet?.ships.map(w => w.name)
+            this.loadFleet();
         }
     }
 
 
+    private loadFleet() {
+        this.hullTypes.clear();
+        this.hullsByType.clear();
+        this.warShipsByType.clear();
+        this.warShipsByTypeAndFlight.clear();
+        this.sortWarshipsByHull();
+    }
+
     private sortWarshipsByHull() {
         if (!!this.fleet) {
-            let warShips: WarShip[] = this.fleet.ships;
-            warShips.forEach(warShip => {
+            this.fleet.ships.forEach(warShip => {
                 this.hullTypes.set(warShip.shipClass.shipClassType.typeName, warShip.shipClass.shipClassType);
                 this.addToTypeList(warShip);
                 this.addToTypeAndFlightList(warShip);
@@ -165,24 +167,19 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
     }
 
     retireShip(warShip: WarShip) {
+        this.removeShip(warShip);
         let sub = this.fleetService.retireWarship(warShip.idWarship).subscribe(resp => {
-            if (resp) {
-                const ship = this.fleet!.ships.filter(s => s.idWarship === warShip.idWarship);
-                if (ship.length == 1) {
-                    const indexOf = this.fleet!.ships.indexOf(ship[0]);
-                    this.fleet!.ships.splice(indexOf, 1);
-
-                    this.warShipsByType.forEach(ships => {
-                        const ship = ships.filter(s => s.idWarship === warShip.idWarship);
-                        if (ship.length == 1) {
-                            const indexOf = ships.indexOf(ship[0]);
-                            ships.splice(indexOf, 1);
-                        }
-                    });
-                }
-            }
         });
         this.subscriptions.push(sub);
+    }
+
+    private removeShip(warShip: WarShip) {
+        const ships = this.fleet!.ships.filter(s => s.idWarship === warShip.idWarship);
+        ships.forEach(ship => {
+            const indexOf = this.fleet!.ships.indexOf(ship);
+            this.fleet!.ships.splice(indexOf, 1);
+        });
+        this.loadFleet();
     }
 
     openRetireWarshipDialog(warShip: WarShip) {
