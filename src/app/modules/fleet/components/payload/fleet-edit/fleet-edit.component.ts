@@ -29,6 +29,8 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
         fleetName: new FormControl('')
     });
 
+    noSave: boolean = false;
+
     constructor(private fleetService: FleetApiService,
                 private rolePlayService: RolePlayApiService,
                 private snackbar: SnackbarNotificationService,
@@ -46,7 +48,7 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
         });
         this.subscriptions.push(sub);
 
-        sub = this.formGroup.controls.fleetName.valueChanges.subscribe(fleetName => this.saveFleetName());
+        sub = this.formGroup.controls.fleetName.valueChanges.subscribe(() => this.saveFleetName());
         this.subscriptions.push(sub);
     }
 
@@ -105,14 +107,19 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
     }
 
     private detectName() {
+        this.noSave = true;
         if (!!this.fleet) {
             this.formGroup.controls.fleetName.setValue(this.fleet.name);
         } else {
             this.formGroup.controls.fleetName.setValue('');
         }
+        this.noSave = false;
     }
 
     saveFleetName() {
+        if (this.noSave) {
+            return;
+        }
         const name: string = this.formGroup.controls.fleetName.value;
         const disabled = this.formGroup.controls.fleetName.disabled;
         if (disabled || !this.fleet || name.length == 0) {
@@ -165,7 +172,7 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
                     const indexOf = this.fleet!.ships.indexOf(ship[0]);
                     this.fleet!.ships.splice(indexOf, 1);
 
-                    this.warShipsByType.forEach((ships, className) => {
+                    this.warShipsByType.forEach(ships => {
                         const ship = ships.filter(s => s.idWarship === warShip.idWarship);
                         if (ship.length == 1) {
                             const indexOf = ships.indexOf(ship[0]);
