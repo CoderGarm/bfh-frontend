@@ -76,6 +76,8 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         }
         let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
+            const fleetsForMove = this.plannedMovements.flatMap(m => this.fleets.filter(f => f.idFleet === m.idFleetInMotion));
+            fleetsForMove.forEach(f => this.selectForFlight(true, f));
         });
         this.subscriptions.push(sub);
     }
