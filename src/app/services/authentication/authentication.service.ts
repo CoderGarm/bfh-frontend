@@ -8,6 +8,7 @@ import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../subscription.manager";
+import {NavigationCommunicationService} from "../navigation/navigation-communication.service";
 
 @Injectable()
 export class AuthenticationService extends SubscriptionManager implements AuthService {
@@ -20,6 +21,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
 
     constructor(private router: Router,
                 private authService: AuthApiService,
+                private navService: NavigationCommunicationService,
                 private permissionsService: NgxPermissionsService) {
         super();
     }
@@ -133,6 +135,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
         this.clearAccessData();
         this.logoutEvent.next(true);
         this.router.navigateByUrl(HomeComponent.path).then(() => {
+            this.navService.activeRoute = undefined;
         });
     }
 
