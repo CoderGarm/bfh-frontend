@@ -1,5 +1,11 @@
 {
 	"": "",
+	"account": {
+		"eMail": {
+			"hint": "Ändere die eMail-Adresse",
+			"prefix": "eMail"
+		}
+	},
 	"action": {
 		"clear": "Zurücksetzen",
 		"filter": "Filtern",

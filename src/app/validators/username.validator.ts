@@ -7,7 +7,8 @@ import {Subscription} from "rxjs";
 export const UserErrorMessages: { [key: string]: string } = {
     userNameInvalid: 'The username is already in use.',
     userNamePatternInvalid: 'The username must contain of 3 to 30 characters of numbers or letters.',
-    eMailInvalid: 'The eMail address is already in use.'
+    eMailInvalid: 'The eMail address is already in use.',
+    eMailWrongFormat: 'This is not an eMail address.'
 };
 
 @Directive({

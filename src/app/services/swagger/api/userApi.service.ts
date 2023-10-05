@@ -345,4 +345,46 @@ export class UserApiService {
         );
     }
 
+    /**
+     * Triggers the password change mail.
+     * Triggers the eMail change mail.
+     * @param eMail 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public requestEMailChange(eMail: string, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public requestEMailChange(eMail: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public requestEMailChange(eMail: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public requestEMailChange(eMail: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (eMail === null || eMail === undefined) {
+            throw new Error('Required parameter eMail was null or undefined when calling requestEMailChange.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/user/requestEMailChange/${encodeURIComponent(String(eMail))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
 }

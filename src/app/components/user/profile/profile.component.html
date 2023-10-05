@@ -21,7 +21,7 @@
                                formControlName='title'
                                [errorStateMatcher]="matcher"
                                required>
-                        <mat-error *ngIf="rpgFormGroup.controls.title.hasError('too-long')">
+                        <mat-error *ngIf="rpgFormGroup.controls.title.hasError('tooLong')">
                             {{ 'role-play.personal.hint.title' | translate }}
                         </mat-error>
                         <mat-hint>{{ 'role-play.personal.hint.title' | translate }}</mat-hint>
@@ -34,7 +34,7 @@
                                formControlName='titleAbbreviation'
                                [errorStateMatcher]="matcher"
                                required>
-                        <mat-error *ngIf="rpgFormGroup.controls.titleAbbreviation.hasError('too-long')">
+                        <mat-error *ngIf="rpgFormGroup.controls.titleAbbreviation.hasError('tooLong')">
                             {{ 'role-play.personal.hint.titleAbbreviation' | translate }}
                         </mat-error>
                         <mat-hint>{{ 'role-play.personal.hint.titleAbbreviation' | translate }}</mat-hint>
@@ -49,7 +49,7 @@
                                formControlName='firstname'
                                [errorStateMatcher]="matcher"
                                required>
-                        <mat-error *ngIf="rpgFormGroup.controls.firstname.hasError('too-long')">
+                        <mat-error *ngIf="rpgFormGroup.controls.firstname.hasError('tooLong')">
                             {{ 'role-play.personal.hint.firstname' | translate }}
                         </mat-error>
                         <mat-hint>{{ 'role-play.personal.hint.firstname' | translate }}</mat-hint>
@@ -62,7 +62,7 @@
                                formControlName='surname'
                                [errorStateMatcher]="matcher"
                                required>
-                        <mat-error *ngIf="rpgFormGroup.controls.surname.hasError('too-long')">
+                        <mat-error *ngIf="rpgFormGroup.controls.surname.hasError('tooLong')">
                             {{ 'role-play.personal.hint.surname' | translate }}
                         </mat-error>
                         <mat-hint>{{ 'role-play.personal.hint.surname' | translate }}</mat-hint>
@@ -77,27 +77,48 @@
         </mat-card-actions>
     </mat-card>
 
-    <mat-card appearance="outlined" class="streamline-background">
-        <mat-card-content class="streamline-background">
-            <section [formGroup]="eMailFormGroup">
-                <span matListItemLine>eMail status</span>
-                <ul>
-                    <li>
-                        <mat-checkbox formControlName="eMailVerified">eMail is verified.</mat-checkbox>
-                    </li>
-                    <li>
-                        <mat-checkbox formControlName="noEMailWanted">No eMail address provided.</mat-checkbox>
-                    </li>
-                </ul>
-                <span matListItemLine>Change eMail settings</span>
-                <ul>
-                    <li>
-                        <mat-checkbox formControlName="receiveChangelogInfos">I want to receive mails about a new release.</mat-checkbox>
-                    </li>
-                </ul>
-            </section>
-        </mat-card-content>
-    </mat-card>
+    <div>
+        <mat-card appearance="outlined" class="streamline-background">
+            <mat-card-content class="streamline-background">
+                <section [formGroup]="eMailFormGroup">
+                    <span matListItemLine>eMail status</span>
+                    <ul>
+                        <li>
+                            <mat-checkbox formControlName="eMailVerified">eMail is verified.</mat-checkbox>
+                        </li>
+                        <li>
+                            <mat-checkbox formControlName="noEMailWanted">No eMail address provided.</mat-checkbox>
+                        </li>
+                    </ul>
+                    <span matListItemLine>Change eMail settings</span>
+                    <ul>
+                        <li>
+                            <mat-checkbox formControlName="receiveChangelogInfos">I want to receive mails about a new release.</mat-checkbox>
+                        </li>
+                    </ul>
+                </section>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined" class="streamline-background">
+            <mat-card-content class="streamline-background" [formGroup]="eMailChangeFormGroup">
+                <span matListItemLine>{{ 'account.eMail.hint' | translate }}</span>
+                <mat-form-field id="eMail-field">
+                    <span matPrefix>{{ 'account.eMail.prefix' | translate }}</span>
+                    <input matInput autocomplete="off" type='email' formControlName="eMail"
+                           email
+                           [errorStateMatcher]="matcher" required>
+                    <mat-error *ngIf="eMailChangeFormGroup.get('eMail')?.hasError('eMailInvalid')">{{ userErrors.eMailInvalid }} </mat-error>
+                    <mat-error *ngIf="eMailChangeFormGroup.get('eMail')?.hasError('email')">{{ userErrors.eMailWrongFormat }} </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitEMailChange()"
+                        [disabled]="eMailChangeFormGroup.invalid">{{ 'action.submit' | translate }}</button>
+                <button mat-raised-button class="action-button" color="secondary" (click)="clearEMailChange()">{{ 'action.clear' | translate }}</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 
     <mat-card appearance="outlined" class="streamline-background" id="icon-card">
         <mat-card-content class="streamline-background">

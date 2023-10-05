@@ -19,7 +19,7 @@ export class AllianceCreateComponent extends SubscriptionManager implements OnIn
     allianceG: FormGroup = new FormGroup({
         allianceNameFC: new FormControl('', Validators.required),
         allianceCodeFC: new FormControl('', Validators.required)
-    })
+    });
 
     constructor(private allianceApi: AllianceApiService,
                 private allyNotificationService: AllianceNotificationService,

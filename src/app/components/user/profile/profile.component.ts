@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {RolePlayApiService, RolePlayData, UserApiService, UserSettings} from "../../../services/swagger";
+import {AuthApiService, RolePlayApiService, RolePlayData, UserApiService, UserSettings} from "../../../services/swagger";
 import {FormBuilder, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {MatSelectionList} from "@angular/material/list";
 import {SingleTouchedFormFieldErrorStateMatcher} from "../../../validators/single-touched-form-field-error-state-matcher";
+import {UserErrorMessages} from "../../../validators/username.validator";
 
 @Component({
     selector: 'app-profile',
@@ -19,6 +20,8 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
 
     eMailFormGroup: FormGroup;
     rpgFormGroup: FormGroup;
+    eMailChangeFormGroup: FormGroup;
+    userErrors = UserErrorMessages;
 
     private disabled: boolean = true;
     noEMailConfigPossible: boolean = true;
@@ -50,6 +53,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
     iconSelector?: MatSelectionList;
 
     constructor(private formBuilder: FormBuilder,
+                private authService: AuthApiService,
                 private notif: SnackbarNotificationService,
                 private userService: UserApiService,
                 private rpgService: RolePlayApiService) {
@@ -80,6 +84,10 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             firstname: undefined,
             surname: undefined,
         });
+
+        this.eMailChangeFormGroup = this.formBuilder.group({
+            eMail: ''
+        });
     }
 
     ngAfterViewInit(): void {
@@ -103,6 +111,12 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             const eMailVerified = resp.eMailVerified;
             const noEMailWanted = resp.noEMailWanted;
             this.noEMailConfigPossible = !eMailVerified && noEMailWanted;
+
+            if (!!resp.eMail) {
+                this.eMailChangeFormGroup = this.formBuilder.group({
+                    eMail: this.createFormControlEMailValidation(resp.eMail)
+                });
+            }
 
             this.eMailFormGroup.controls.receiveChangelogInfos.setValue(resp.receiveChangelogInfos);
             if (this.noEMailConfigPossible) {
@@ -142,21 +156,48 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
 
     private createRPGForm(resp: RolePlayData) {
         this.rpgFormGroup = this.formBuilder.group({
-            title: this.createFormControl(3, 50, resp.title),
-            titleAbbreviation: this.createFormControl(3, 8, resp.titleAbbreviation),
-            firstname: this.createFormControl(3, 50, resp.firstname),
-            surname: this.createFormControl(3, 50, resp.surname)
+            title: this.createFormControlTextLengthValidation(3, 50, resp.title),
+            titleAbbreviation: this.createFormControlTextLengthValidation(3, 8, resp.titleAbbreviation),
+            firstname: this.createFormControlTextLengthValidation(3, 50, resp.firstname),
+            surname: this.createFormControlTextLengthValidation(3, 50, resp.surname)
         });
     }
 
-    private createFormControl(min: number, max: number, initialValue?: string) {
+    private createFormControlTextLengthValidation(min: number, max: number, initialValue?: string) {
         return new FormControl(initialValue, [control => {
             const v: ValidationErrors = {};
             const isError = !!control && !!control.value ? ((<string>control.value).length < min || (<string>control.value).length > max) : false;
             if (isError) {
-                v['too-long'] = '1';
+                control.setErrors({tooLong: true});
             }
             return v;
         }]);
+    }
+
+    private createFormControlEMailValidation(initialValue?: string) {
+        return new FormControl(initialValue, [control => {
+            const v: ValidationErrors = {};
+            if (!!control.value) {
+                let sub = this.authService.checkEmail(control.value).subscribe(resp => {
+                    if (!resp) {
+                        control.setErrors({eMailInvalid: true});
+                    }
+                });
+                this.subscriptions.push(sub);
+            }
+            return v;
+        }]);
+    }
+
+    submitEMailChange() {
+        let sub = this.userService.requestEMailChange(this.eMailChangeFormGroup.controls.eMail.value).subscribe(() => this.ngOnInit());
+        this.subscriptions.push(sub);
+    }
+
+    clearEMailChange() {
+        let eMail = !!this.userSetting && !!this.userSetting.eMail ? this.userSetting.eMail : '';
+        this.eMailChangeFormGroup = this.formBuilder.group({
+            eMail: this.createFormControlEMailValidation(eMail)
+        });
     }
 }

@@ -27,6 +27,10 @@ export interface UserSettings {
      */
     eMailVerified: boolean;
     /**
+     * The mail address.
+     */
+    eMail?: string;
+    /**
      * If the user does not want receive any mail.
      */
     noEMailWanted: boolean;
