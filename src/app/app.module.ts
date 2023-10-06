@@ -152,7 +152,7 @@ export let AppInjector: Injector;
         AllianceModule,
         PlayerModule,
         MarkdownModule.forRoot({
-            sanitize: SecurityContext.URL
+            sanitize: SecurityContext.HTML
         }),
         AngularMarkdownEditorModule.forRoot(),
         WikiModule,
