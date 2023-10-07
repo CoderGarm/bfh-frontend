@@ -231,7 +231,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
                     id: this.planet!.idPlanet,
                     name: this.planet!.name
                 },
-                originOrbit: this.planet!.orbit /* fixme system orbit */
+                originOrbit: this.planet!.orbit
             }
             if (!!this.idTradeOfferToEdit) {
                 // we are editing an offer

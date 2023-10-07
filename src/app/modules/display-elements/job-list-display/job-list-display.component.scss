@@ -34,7 +34,7 @@
 }
 
 .finished-btn {
-  color: $success;
+  color: var(--success-color);
   position: absolute;
   left: 50px;
   top: 10px;

@@ -34,10 +34,10 @@
                     <app-number-short [input]="getSum(deposit)"></app-number-short>
                 </div>
                 <div class="amount-present" *ngIf="isPresent(demand)">
-                    <app-number-short color="darkorange" [input]="getSum(demand)"></app-number-short>
+                    <app-number-short colorRequired [input]="getSum(demand)"></app-number-short>
                 </div>
                 <div class="amount-present" *ngIf="isPresent(income)">
-                    <app-number-short color="#46a35e" [input]="getSum(income)"></app-number-short>
+                    <app-number-short colorSuccess [input]="getSum(income)"></app-number-short>
                 </div>
             </div>
         </div>
@@ -57,10 +57,10 @@
                     <app-number-short [input]="getHumans(resource.resourceType, deposit)"></app-number-short>
                 </div>
                 <div class="amount-present" *ngIf="isPresent(demand)">
-                    <app-number-short color="darkorange" [input]="getHumans(resource.resourceType, demand)"></app-number-short>
+                    <app-number-short colorRequired [input]="getHumans(resource.resourceType, demand)"></app-number-short>
                 </div>
                 <div class="amount-present" *ngIf="isPresent(income)">
-                    <app-number-short color="#46a35e" [input]="getHumans(resource.resourceType, income)"></app-number-short>
+                    <app-number-short colorSuccess [input]="getHumans(resource.resourceType, income)"></app-number-short>
                 </div>
             </div>
         </div>

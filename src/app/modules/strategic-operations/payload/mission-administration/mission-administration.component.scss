@@ -21,7 +21,7 @@
   left: 25px;
   font-size: small;
   padding: 5px;
-  background: linear-gradient(-45deg, $secondary-background-color 20px, $tertiary-background-color 20px);
+  background: linear-gradient(-45deg, var(--secondary-background-color) 20px, $tertiary-background-color 20px);
   border-radius: 0 0 5px;
 }
 
@@ -30,7 +30,7 @@ mat-form-field {
 }
 
 #legend-colonized {
-  color: #5e8c6a;
+  color: var(--success-color);
 }
 
 #legend-highlighted {

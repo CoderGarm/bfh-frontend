@@ -26,6 +26,7 @@ import {TakeATourComponent} from "./components/take-a-tour/take-a-tour.component
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {TopicSelectorComponent} from "./modules/tutorial/topic-selector/topic-selector.component";
 import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
+import {ColorSchemeService} from "./services/color-scheme.service";
 
 @Component({
     selector: 'app-root',
@@ -58,7 +59,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     screenWidth?: number;
     isMobile: boolean = false;
 
-    constructor(private renderer: Renderer2,
+    constructor(private colorSchemeService: ColorSchemeService,
+                private renderer: Renderer2,
                 private spinnerService: SpinnerService,
                 private spinner: NgxSpinnerService,
                 private translate: TranslateService,
@@ -75,6 +77,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
                 private chatApi: ChatApiService,
                 private forumApi: ForumApiService) {
         super();
+        this.colorSchemeService.load();
 
         this.detectDeviceType();
         this.rememberIgnoreScreenWarning = this.tokenStorage.getRememberScreenWarning();

@@ -8,12 +8,15 @@
   z-index: 999;
 }
 
-
 app-resource-display {
-  height: 1px; // ist must just made be clear that it should be small
+  height: 100px;
   display: block;
 }
 
+app-population-development {
+  display: block;
+  height: 150px;
+}
 
 ::ng-deep .mat-horizontal-stepper-header .mat-step-icon {
   // remove number icons of stepper

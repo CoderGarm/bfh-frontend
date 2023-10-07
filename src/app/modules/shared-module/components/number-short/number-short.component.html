@@ -1,3 +1,3 @@
-<label [matTooltip]="!suppressTooltip ? (input | numberThousandSeparator) : ''" [ngStyle]="{'color':( !!color ? color : '')}">
+<label [matTooltip]="!suppressTooltip ? (input | numberThousandSeparator) : ''" [class.success]="_colorSuccess" [class.required]="_colorRequired" [class.warning]="_colorWarning">
     {{input | numberShort }}
 </label>

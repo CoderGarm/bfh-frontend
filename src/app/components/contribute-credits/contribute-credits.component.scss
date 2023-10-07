@@ -1,7 +1,7 @@
 @import "src/styles/variables";
 
 .content-area {
-  background-color: $bright-background-color;
+  background-color: var(--ctto-background-color);
   border-radius: 20px;
   padding: 20px;
   max-width: 550px;

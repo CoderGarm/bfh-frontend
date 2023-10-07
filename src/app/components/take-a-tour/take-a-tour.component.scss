@@ -32,7 +32,7 @@ span {
 }
 
 .keen-slider__slide {
-  background-color: $secondary-background-color;
+  background-color: var(--secondary-background-color);
   position: relative;
 }
 
@@ -73,7 +73,7 @@ span {
 }
 
 .has-border {
-  border: solid 2px $primary-color;
+  border: solid 2px var(--primary-color);
   border-radius: 5px;
   margin: 25px;
   padding: 15px;

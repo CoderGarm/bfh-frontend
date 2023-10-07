@@ -37,7 +37,7 @@
 .diffImprovementAmount {
   font-size: 1vmin;
   margin-left: 5px;
-  color: #46a35e;
+  color: var(--success-color);
   display: inline-flex;
 }
 
@@ -74,7 +74,7 @@
 }
 
 .uprising {
-  color: $warning-color;
+  color: var(--warning-color);
 }
 
 .warning {
@@ -82,7 +82,7 @@
 }
 
 .fine {
-  color: $success;
+  color: var(--success-color);
 }
 
 .height-reduced {
@@ -98,9 +98,9 @@
 }
 
 .income-display, .income {
-  color: #46a35e;
+  color: var(--success-color);
 }
 
 .needed {
-  color: darkorange;
+  color: var(--required-color);
 }

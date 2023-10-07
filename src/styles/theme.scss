@@ -6,86 +6,73 @@
 @include mat.core();
 
 
-$bfh-primary: mat.define-palette(variables.$bfh-palette);
-$bfh-accent: mat.define-palette(variables.$bfh-palette, A200, A100, A400);
+$dark-primary: mat.define-palette(variables.$dark-palette);
+$dark-accent: mat.define-palette(variables.$dark-palette, A200, A100, A400);
+$dark-warn: mat.define-palette(mat.$red-palette);
 
-$bfh-warn: mat.define-palette(mat.$red-palette);
-
-$bfh-theme: mat.define-dark-theme((
+$theme-dark: mat.define-dark-theme((
         color: (
-                primary: $bfh-primary,
-                accent: $bfh-accent,
-                warn: $bfh-warn,
+                primary: $dark-primary,
+                accent: $dark-accent,
+                warn: $dark-warn,
         )
 ));
 
-$bfh-theme: palette-helper.modify-background($bfh-theme, variables.$background-color);
-$bfh-theme: palette-helper.modify-text-color($bfh-theme, variables.$secondary-text-color);
+$theme-dark: palette-helper.modify-background($theme-dark, variables.$dark-background-color);
+$theme-dark: palette-helper.modify-text-color($theme-dark, variables.$dark-secondary-text-color);
 
-@include mat.all-component-themes($bfh-theme);
+.color-scheme-dark {
+  @include mat.all-component-themes($theme-dark);
 
-/* other way with some drawbacks
-$dark-primary-text: rgba(black, 0.87);
-$dark-secondary-text: rgba(black, 0.54);
-$dark-disabled-text: rgba(black, 0.38);
-$dark-dividers: rgba(black, 0.12);
-$dark-focused: rgba(black, 0.12);
-$light-primary-text: white;
-$light-secondary-text: rgba(white, 0.7);
-$light-disabled-text: rgba(white, 0.5);
-$light-dividers: rgba(white, 0.12);
-$light-focused: rgba(white, 0.12);
+  --primary-color: #{variables.$dark-primary-color};
+  --background-color: #{variables.$dark-background-color};
+  --secondary-background-color: #{variables.$dark-secondary-background-color};
+  --secondary-text-color: #{variables.$dark-secondary-text-color};
+  --ctto-background-color: #{variables.$light-background-color};
+  --success-color: #{variables.$dark-success-color};
+  --required-color: #{variables.$dark-required-color};
+  --warning-color: #{variables.$error-color};
 
-// custom background and foreground palettes
-$my-dark-theme-background: (
-        status-bar: black,
-        app-bar: map.get(mat.$grey-palette, 900),
-        background: $background-color,
-        hover: rgba(white, 0.04),
-        card: map.get(mat.$grey-palette, 800),
-        dialog: map.get(mat.$grey-palette, 800),
-        disabled-button: rgba(white, 0.12),
-        raised-button: map.get(mat.$grey-palette, 800),
-        focused-button: $light-focused,
-        selected-button: map.get(mat.$grey-palette, 900),
-        selected-disabled-button: map.get(mat.$grey-palette, 800),
-        disabled-button-toggle: black,
-        unselected-chip: map.get(mat.$grey-palette, 700),
-        disabled-list-option: rgba(white, 0.12),
-        tooltip: map.get(mat.$grey-palette, 700),
-);
-
-$my-dark-theme-foreground: (
-        base: white,
-        divider: $light-dividers,
-        dividers: $light-dividers,
-        disabled: $light-disabled-text,
-        disabled-button: rgba(white, 0.3),
-        disabled-text: $light-disabled-text,
-        elevation: black,
-        hint-text: $light-disabled-text,
-        secondary-text: $light-secondary-text,
-        icon: white,
-        icons: white,
-        text: $secondary-text-color,
-        slider-min: white,
-        slider-off: rgba(white, 0.3),
-        slider-off-active: rgba(white, 0.3),
-);
-
-// instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
-@function create-wonky-theme($primary, $accent, $warn: $bfh-warn) {
-  @return (
-          primary: $primary,
-          accent: $accent,
-          warn: $warn,
-          is-dark: false,
-          foreground: $my-dark-theme-foreground,
-          background: $my-dark-theme-background,
-  );
+  .mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #{variables.$dark-background-color};
+    --mdc-snackbar-supporting-text-color: #{variables.$dark-secondary-text-color};
+  }
 }
 
-$custom-theme: create-wonky-theme($bfh-primary, $bfh-accent, $bfh-warn);
+$light-primary: mat.define-palette(variables.$light-palette);
+$light-accent: mat.define-palette(variables.$light-palette, A200, A100, A400);
+$light-warn: mat.define-palette(mat.$red-palette);
 
-@include mat.all-component-themes($custom-theme);
-*/
+$theme-light: mat.define-light-theme((
+        color: (
+                primary: $light-primary,
+                accent: $light-accent,
+                warn: $light-warn,
+        )
+));
+
+$theme-light: palette-helper.modify-background($theme-light, variables.$light-background-color);
+$theme-light: palette-helper.modify-text-color($theme-light, variables.$dark-background-color);
+
+.color-scheme-light {
+  @include mat.all-component-themes($theme-light);
+
+  --primary-color: #{variables.$light-primary-color};
+  --background-color: #{variables.$light-background-color};
+  --secondary-background-color: #{variables.$light-secondary-background-color};
+  --secondary-text-color: #{variables.$dark-background-color};
+  --ctto-background-color: #{variables.$light-card-background};
+  --success-color: #{variables.$light-success-color};
+  --required-color: #{variables.$light-required-color};
+  --warning-color: #{variables.$error-color};
+
+  .mat-mdc-card {
+    --mdc-elevated-card-container-color: #{variables.$light-card-background};
+    --mdc-outlined-card-container-color: #{variables.$light-card-background};
+  }
+
+  .mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #{variables.$light-background-color};
+    --mdc-snackbar-supporting-text-color: #{variables.$light-background-color};
+  }
+}

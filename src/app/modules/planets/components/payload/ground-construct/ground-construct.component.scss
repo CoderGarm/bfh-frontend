@@ -6,6 +6,11 @@
   margin-top: 15px;
 }
 
+app-resource-display {
+  height: 130px;
+  display: block;
+}
+
 .mat-mdc-chip {
   font-size: 0.8rem;
   min-height: 18px;
@@ -59,5 +64,5 @@ app-blue-card, app-construction-display {
 }
 
 .full-op {
-  color: $success;
+  color: var(--success-color);
 }

@@ -32,7 +32,7 @@ $max-width: 350px;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  background: $primary-color;
+  background: var(--primary-color);
   font-size: 14px;
   cursor: move;
 }

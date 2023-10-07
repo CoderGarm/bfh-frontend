@@ -24,7 +24,7 @@ $max-width: 120px;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  background: $primary-color;
+  background: var(--primary-color);
   cursor: move;
   font-size: 14px;
 }

@@ -5,7 +5,7 @@
   position: sticky;
   top: 0;
   z-index: 15;
-  background-color: $background-color;
+  background-color: var(--background-color);
 }
 
 .filter {

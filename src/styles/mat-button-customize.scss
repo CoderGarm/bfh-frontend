@@ -2,13 +2,13 @@
 
 .mdc-button.mat-success,
 .mat-mdc-stroked-button.mat-success {
-  color: $success;
+  color: var(--success-color);
 }
 
 .mat-mdc-unelevated-button.mat-success:hover,
 .mat-mdc-raised-button.mat-success:hover {
   color: #f0fff3;
-  background-color: $success;
+  background-color: var(--success-color);
 }
 
 .mat-mdc-unelevated-button:not(:disabled, :hover).mat-success,
@@ -16,9 +16,9 @@
 .mat-mdc-fab.mat-success,
 .mat-mdc-mini-fab.mat-success {
   color: #f0fff3;
-  background-color: $success;
+  background-color: var(--success-color);
 }
 
 .mat-mdc-icon-button.mat-success {
-  color: $success;
+  color: var(--success-color);
 }

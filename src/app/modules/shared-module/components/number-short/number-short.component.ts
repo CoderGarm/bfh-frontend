@@ -11,10 +11,28 @@ export class NumberShortComponent implements OnInit {
     input?: number;
 
     @Input()
-    color?: string;
+    suppressTooltip: boolean = false;
+
+    // @formatter:off
+    @Input()
+    get colorSuccess() { return this._colorSuccess; }
+    set colorSuccess(value: any) { this._colorSuccess = this.coerceBooleanProperty(value); }
+    _colorSuccess: boolean = false;
 
     @Input()
-    suppressTooltip: boolean = false;
+    get colorRequired() { return this._colorRequired; }
+    set colorRequired(value: any) { this._colorRequired = this.coerceBooleanProperty(value); }
+    _colorRequired: boolean = false;
+
+     @Input()
+    get colorWarning() { return this._colorWarning; }
+    set colorWarning(value: any) { this._colorWarning = this.coerceBooleanProperty(value); }
+    _colorWarning: boolean = false;
+    // @formatter:on
+
+    private coerceBooleanProperty(value: any): boolean {
+        return value != null && `${value}` !== 'false';
+    }
 
     constructor() {
     }

@@ -83,6 +83,7 @@ import {ImprintComponent} from './components/imprint/imprint.component';
 import {ScreenSizeWarningComponent} from './components/screen-size-warning/screen-size-warning.component';
 import {ShipNameTemplatorComponent} from './components/user/ship-name-templator/ship-name-templator.component';
 import {ProfileTabViewComponent} from './components/user/profile-tab-view/profile-tab-view.component';
+import {ColorSchemeService} from "./services/color-scheme.service";
 import {LayoutModule} from "@angular/cdk/layout";
 
 // AoT requires an exported function for factories
@@ -202,6 +203,7 @@ export let AppInjector: Injector;
         StarMapCommunicationService,
         AssetsService,
         MissionCommunicationService,
+        ColorSchemeService,
     ],
     exports: [
         LayoutModule,

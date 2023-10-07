@@ -50,7 +50,7 @@ mat-card-header {
 }
 
 .update-icon {
-  color: $success;
+  color: var(--success-color);
   position: absolute;
   top: 5px;
   right: -5px;

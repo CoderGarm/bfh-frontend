@@ -24,7 +24,7 @@
 }
 
 ngx-spinner {
-  color: white;
+  color: var(--secondary-text-color);
 }
 
 .clearfix {
@@ -79,23 +79,11 @@ div .mat-subheader {
 body {
   margin: 0;
   font-family: Roboto, "Raleway", sans-serif;
-  background-color: $background-color;
+  background-color: var(--background-color);
 }
 
 .clickable {
   cursor: pointer;
-}
-
-.mat-mdc-snack-bar-container {
-  //--mat-mdc-snack-bar-button-color: #ffffff;
-  --mdc-snackbar-container-color: #{$background-color};
-  --mdc-snackbar-supporting-text-color: #{$secondary-text-color};
-
-  &.error-snackbar {
-  }
-
-  &.notification-snackbar {
-  }
 }
 
 .no-scrolling {
@@ -129,7 +117,7 @@ body {
   max-width: 250px;
 
   & .mat-content {
-    color: white;
+    color: var(--secondary-text-color);
   }
 
   & .mat-expansion-panel {
@@ -231,11 +219,11 @@ body {
 }
 
 [mat-dialog-title] {
-  background: $primary-color;
+  background: var(--primary-color);
 }
 
 .resource-mat-dialog-panel .mat-mdc-dialog-container {
-  background: linear-gradient(45deg, $secondary-background-color 20px, $background-color 20px);
+  background: linear-gradient(45deg, var(--secondary-background-color) 20px, var(--background-color) 20px);
   border-radius: 5px 5px 5px 0;
 }
 
@@ -312,7 +300,7 @@ app-shipyard > .ship-class-card > mat-card-header {
 }
 
 .mat-step-header .mat-step-icon {
-  background-color: $primary-color;
+  background-color: var(--primary-color);
 }
 
 app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-content > app-outlined > .mat-mdc-text-field-wrapper {
@@ -326,7 +314,7 @@ app-available-researches > div.bottom-spacer.content-area > mat-card > mat-card-
 }
 
 .streamline-background, .mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel, .mat-drawer {
-  background-color: $secondary-background-color !important;
+  background-color: var(--secondary-background-color) !important;
 }
 
 .mat-mdc-table, .mat-mdc-paginator, .mat-stepper-vertical, .mat-stepper-horizontal, .mat-expansion-panel {

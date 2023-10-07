@@ -54,17 +54,18 @@
                              matTooltip="{{ getTooltip(income!.subType, resource.resourceType) }}">
                             <div>
                                 <app-number-short [suppressTooltip]="!!getTooltip(income!.subType, resource.resourceType)"
-                                                  [color]="getResourceAmount(resource.resourceType, income) <= 0? '#de2839' : '#46a35e'"
+                                                  [colorWarning]="getResourceAmount(resource.resourceType, income) <= 0"
+                                                  [colorSuccess]="getResourceAmount(resource.resourceType, income) > 0"
                                                   [input]="getResourceAmount(resource.resourceType, income)"></app-number-short>
                             </div>
                             <div *ngIf="!!getResourceImprovement(resource.resourceType)" class="diffImprovementAmount">
                                 (+
-                                <app-number-short color="#46a35e" [input]="getResourceImprovement(resource.resourceType)"></app-number-short>
+                                <app-number-short colorSuccess [input]="getResourceImprovement(resource.resourceType)"></app-number-short>
                                 )
                             </div>
                         </div>
                         <div *ngIf="!!costs" class="diffAmount" matTooltip="{{getTooltip(costs!.subType, resource.resourceType)}}">
-                            <app-number-short color="darkorange" [input]="getResourceAmount(resource.resourceType, costs)"></app-number-short>
+                            <app-number-short colorRequired [input]="getResourceAmount(resource.resourceType, costs)"></app-number-short>
                         </div>
                     </div>
                 </div>
@@ -85,18 +86,19 @@
                     <div class="amount-holder">
                         <div *ngIf="!!income" class="diffAmount no-flex">
                             <div>
-                                <app-number-short [color]="getHumans(resource.resourceType, income) <= 0? '#de2839' : '#46a35e'"
+                                <app-number-short [colorWarning]="getHumans(resource.resourceType, income) <= 0"
+                                                  [colorSuccess]="getHumans(resource.resourceType, income) > 0"
                                                   [input]="getHumans(resource.resourceType, income)"></app-number-short>
                             </div>
                             <div *ngIf="!!getHumanImprovement(resource.resourceType)"
                                  class="diffImprovementAmount">
                                 (+
-                                <app-number-short color="#46a35e" [input]="getHumanImprovement(resource.resourceType)"></app-number-short>
+                                <app-number-short colorSuccess [input]="getHumanImprovement(resource.resourceType)"></app-number-short>
                                 )
                             </div>
                         </div>
                         <div *ngIf="!!costs" class="diffAmount">
-                            <app-number-short color="darkorange" [input]="getHumans(resource.resourceType, costs)"></app-number-short>
+                            <app-number-short colorRequired [input]="getHumans(resource.resourceType, costs)"></app-number-short>
                         </div>
                     </div>
                 </div>

@@ -1,33 +1,35 @@
 $black: #000;
 $white: #fff;
-$success: #5e8c6a;
+
+$dark-success-color: #5e8c6a;
+$light-success-color: #004d13;
+
+$dark-required-color: darkorange;
+$light-required-color: #ff9900;
+
 $warning-color: #872727;
 $metal-glance: #B0B0B0;
 
 /* Text colors */
-$body-text-color: rgba(255, 255, 255, 1);
-$accent-text-color: #D871DD; //rgba(255, 255, 255, 1);
-$secondary-text-color: rgba(255, 255, 255, 0.7);
+$body-text-color: rgb(250, 250, 250);
+$dark-secondary-text-color: rgba(255, 255, 255, 0.7);
 $disabled-text-color: rgba(255, 255, 255, 0.5);
 
 /* Primary colors */
-$primary-color: #375a7f;
-$primary-text-color: #b794f6;
+$dark-primary-color: #375a7f;
+$light-primary-color: #7598a3;
 
 /* Error colors */
 $error-color: #de2839;
 $error-text-color: $error-color;
 
 /* Background colors */
-$purple-green-background-color: #383838;
-$new-background-color: #25242F; // compare https://www.heise.de/imgs/18/4/2/7/5/6/1/5/wiz2a-927ce504043f8188.png
+$dark-background-color: #25242F;
+$dark-secondary-background-color: #2E3338;
 
-$purple-green-secondary-background-color: #3b3b3b;
-$new-secondary-background-color: #2E3338;
-
-$background-color: $new-background-color;
-$secondary-background-color: $new-secondary-background-color;
-$bright-background-color: lightslategrey;
+$light-card-background: #d3d9de;
+$light-background-color: #99a6b2;
+$light-secondary-background-color: #73808c;
 
 $tertiary-background-color: hsla(214, 90%, 52%, 0.1);
 $disabled-color: rgba(255, 255, 255, 0.3);
@@ -36,7 +38,7 @@ $divider-color: rgba(255, 255, 255, 0.12);
 
 $page-width: 90%;
 
-$bfh-palette: (
+$dark-palette: (
         50 : #e7ebf0,
         100 : #c3ced9,
         200 : #9badbf,
@@ -68,4 +70,38 @@ $bfh-palette: (
                 A700 : #ffffff,
         )
 );
+
+$light-palette: (
+        50 : #f3e7e7,
+        100 : #e0c2c2,
+        200 : #cc9999,
+        300 : #b87070,
+        400 : #a85252,
+        500 : #993333,
+        600 : #912e2e,
+        700 : #862727,
+        800 : #7c2020,
+        900 : #6b1414,
+        A100 : #ffa2a2,
+        A200 : #ff6f6f,
+        A400 : #ff3c3c,
+        A700 : #ff2323,
+        contrast: (
+                50 : #000000,
+                100 : #000000,
+                200 : #000000,
+                300 : #000000,
+                400 : #ffffff,
+                500 : #ffffff,
+                600 : #ffffff,
+                700 : #ffffff,
+                800 : #ffffff,
+                900 : #ffffff,
+                A100 : #000000,
+                A200 : #000000,
+                A400 : #ffffff,
+                A700 : #ffffff,
+        )
+);
+
 
