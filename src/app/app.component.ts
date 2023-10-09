@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit, Renderer2} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
 import {AuthenticationService} from './services/authentication';
 import {NavigationCreationService} from './services/navigation/navigation-creation.service';
@@ -56,8 +56,10 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     screenHeight?: number;
     screenWidth?: number;
+    isMobile: boolean = false;
 
-    constructor(private spinnerService: SpinnerService,
+    constructor(private renderer: Renderer2,
+                private spinnerService: SpinnerService,
                 private spinner: NgxSpinnerService,
                 private translate: TranslateService,
                 private bottomSheet: MatBottomSheet,
@@ -74,6 +76,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
                 private forumApi: ForumApiService) {
         super();
 
+        this.detectDeviceType();
         this.rememberIgnoreScreenWarning = this.tokenStorage.getRememberScreenWarning();
 
         // this language will be used as a fallback when a translation isn't found in the current language
@@ -121,6 +124,18 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         }
     }
 
+    private detectDeviceType() {
+        const ua = navigator.userAgent;
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(ua)) {
+            this.isMobile = true;
+            this.renderer.addClass(document.body, 'mobile-width');
+        } else if (/Chrome/i.test(ua)) {
+            this.isMobile = false;
+        } else {
+            this.isMobile = false;
+        }
+    }
+
     /**
      * Incredible strange way to detect the true size of the screen.
      */
@@ -130,6 +145,11 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     @HostListener('window:touchmove', ['$event'])
     @HostListener('window:wheel', ['$event'])
     getScreenSize(event?: any) {
+
+        if (!this.isMobile) {
+            return;
+        }
+
         this.screenWidth = window.innerWidth;
         this.screenHeight = window.innerHeight;
 

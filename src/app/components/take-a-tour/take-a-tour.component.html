@@ -2,7 +2,7 @@
              (click)="imgSrc = ''; imgAlt = ''; spinner.hide('fullscreen-image')">
     <img src="{{ imgSrc }}" alt="{{ imgAlt }}" class='fullscreen-image'>
 </ngx-spinner>
-<div id="keen-box">
+<div id="keen-box" [ngStyle]="{'width': maxWidth}">
     <div class="navigation-wrapper">
         <div class="keen-slider" #sliderRef>
             <div class="keen-slider__slide">

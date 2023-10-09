@@ -43,8 +43,13 @@ html[xmlns] .clearfix {
 html,
 body {
   height: 100%;
+}
+
+.mobile-width {
   min-width: fit-content;
   width: 100%;
+  display: inline-block;
+  height: 100%;
 }
 
 div .mat-subheader {

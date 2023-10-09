@@ -28,7 +28,7 @@ export class TakeATourComponent {
     imgSrc: string = '';
     imgAlt: string = '';
 
-    maxWidth?: number;
+    maxWidth?: string;
     maxHeight?: number;
 
     constructor(private breakpointObserver: BreakpointObserver,
@@ -37,7 +37,7 @@ export class TakeATourComponent {
         this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => {
             console.log(result.breakpoints);
             if (result.matches) {
-                this.maxWidth = 800;
+                this.maxWidth = 800 + 'px;';
             }
             console.log(this.maxWidth, this.maxHeight) /* fixme how to clear that fuckin topic with da woo wide screen? */
         });
