@@ -1,4 +1,5 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -9,6 +10,16 @@ export class ColorSchemeService {
     private colorScheme?: string;
     // Define prefix for clearer and more readable class names in scss files
     private colorSchemePrefix = 'color-scheme-';
+
+    private schemaEmitter: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+
+    getSchemaEmitter() {
+        return this.schemaEmitter;
+    }
+
+    emitChange() {
+        this.schemaEmitter.next(this.colorScheme);
+    }
 
     constructor(rendererFactory: RendererFactory2) {
         // Create new renderer from renderFactory, to make it possible to use renderer2 in a service
@@ -47,6 +58,7 @@ export class ColorSchemeService {
     load() {
         this._getColorScheme();
         this.renderer.addClass(document.body, this.colorSchemePrefix + this.colorScheme);
+        this.emitChange();
     }
 
     update(scheme: string) {
@@ -55,10 +67,21 @@ export class ColorSchemeService {
         this.renderer.removeClass(document.body, this.colorSchemePrefix + (this.colorScheme === 'dark' ? 'light' : 'dark'));
         // Add the new / current color-scheme class
         this.renderer.addClass(document.body, this.colorSchemePrefix + scheme);
+        this.emitChange();
     }
 
-    currentActive() {
+    currentActiveSchema() {
         return this.colorScheme;
     }
 
+    toggle() {
+        switch (this.colorScheme) {
+            case 'dark':
+                this.update('light');
+                break;
+            case 'light':
+                this.update('dark');
+                break;
+        }
+    }
 }

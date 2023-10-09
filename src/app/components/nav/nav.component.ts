@@ -5,6 +5,7 @@ import {AdminApiService, ApplicationInfo, JWT, TickApiService} from "../../servi
 import {SubscriptionManager} from "../../subscription.manager";
 import {NavigationCreationService} from "../../services/navigation/navigation-creation.service";
 import {CurrentTickService} from "../../services/intercom/current-tick.service";
+import {ColorSchemeService} from "../../services/color-scheme.service";
 import RoleEnum = JWT.RoleEnum;
 
 
@@ -26,7 +27,10 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     honorverseMapPath: string;
     profilePic: string;
 
+    isDark: boolean = true;
+
     constructor(private router: Router,
+                private colorSchemeService: ColorSchemeService,
                 private authenticationService: AuthenticationService,
                 private tickApi: TickApiService,
                 private adminApi: AdminApiService,
@@ -35,6 +39,17 @@ export class NavComponent extends SubscriptionManager implements OnInit {
 
         this.honorverseMapPath = 'https://map.battleforhonor.de/';
         this.profilePic = 'perspective-dice-six-faces-random';
+
+        this.colorSchemeService.getSchemaEmitter().subscribe(schema => {
+            switch (schema) {
+                case 'dark':
+                    this.isDark = true;
+                    break;
+                case 'light':
+                    this.isDark = false;
+                    break;
+            }
+        })
     }
 
     ngOnInit(): void {
@@ -87,5 +102,9 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     @HostListener('window:beforeunload', ['$event'])
     beforeunloadHandler(event: any) {
         this.logout();
+    }
+
+    toggleDarkMode() {
+        this.colorSchemeService.toggle();
     }
 }

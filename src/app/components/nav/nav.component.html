@@ -28,6 +28,10 @@
     <button mat-flat-button color="primary" routerLink='/admin' *ngIf='isLoggedIn && isAdmin'>
         {{ 'path.button.admin' | translate }}
     </button>
+    <button mat-icon-button (click)="toggleDarkMode()">
+        <mat-icon *ngIf="isDark">light_mode</mat-icon>
+        <mat-icon *ngIf="!isDark">dark_mode</mat-icon>
+    </button>
     <button mat-icon-button routerLink='/profile' *ngIf='isLoggedIn' matTooltip="{{ 'path.button.profile' | translate }}">
         <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ profilePic }}.png" alt="member icon">
     </button>

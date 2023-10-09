@@ -1,5 +1,10 @@
 @import 'styles/google/roboto.scss';
-@import 'styles/google/material-icons.scss';
+@import 'styles/google/material-icons';
+@import 'styles/google/material-icons-outlined';
+@import 'styles/google/material-icons-round';
+@import 'styles/google/material-icons-sharp';
+@import 'styles/google/material-icons-two-tone';
+@import 'styles/google/material-symbols';
 @import "styles/variables";
 @import "src/app/modules/star-map/orga/star-map-tab-view/star-map-tab-view.component";
 @import "src/app/modules/strategic-operations/payload/mission-map/mission-map.component";
