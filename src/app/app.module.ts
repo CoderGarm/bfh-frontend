@@ -83,6 +83,7 @@ import {ImprintComponent} from './components/imprint/imprint.component';
 import {ScreenSizeWarningComponent} from './components/screen-size-warning/screen-size-warning.component';
 import {ShipNameTemplatorComponent} from './components/user/ship-name-templator/ship-name-templator.component';
 import {ProfileTabViewComponent} from './components/user/profile-tab-view/profile-tab-view.component';
+import {LayoutModule} from "@angular/cdk/layout";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -127,6 +128,7 @@ export let AppInjector: Injector;
         ProfileTabViewComponent,
     ],
     imports: [
+        LayoutModule,
         NgxPermissionsModule.forRoot(),
         TranslateModule.forRoot({
             defaultLanguage: TranslationEditorComponent.DEFAULT_LANGUAGE,
@@ -202,6 +204,7 @@ export let AppInjector: Injector;
         MissionCommunicationService,
     ],
     exports: [
+        LayoutModule,
         MarkdownModule,
         AngularMarkdownEditorModule,
         ConfirmDialogComponent,

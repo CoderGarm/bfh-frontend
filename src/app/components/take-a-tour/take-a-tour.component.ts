@@ -1,6 +1,7 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import KeenSlider, {KeenSliderInstance} from 'keen-slider'
 import {NgxSpinnerService} from "ngx-spinner";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 @Component({
     selector: 'app-take-a-tour',
@@ -27,7 +28,19 @@ export class TakeATourComponent {
     imgSrc: string = '';
     imgAlt: string = '';
 
-    constructor(protected spinner: NgxSpinnerService) {
+    maxWidth?: number;
+    maxHeight?: number;
+
+    constructor(private breakpointObserver: BreakpointObserver,
+                protected spinner: NgxSpinnerService) {
+
+        this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => {
+            console.log(result.breakpoints);
+            if (result.matches) {
+                this.maxWidth = 800;
+            }
+            console.log(this.maxWidth, this.maxHeight) /* fixme how to clear that fuckin topic with da woo wide screen? */
+        });
     }
 
     ngAfterViewInit() {
