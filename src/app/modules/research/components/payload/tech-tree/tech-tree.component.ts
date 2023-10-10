@@ -4,6 +4,7 @@ import {ScrollManager} from "./scroll.manager";
 import {Box} from "./box";
 import {ConnectionPositionPair} from "@angular/cdk/overlay";
 import {ResearchResultOverlayComponent} from "../research-result-overlay/research-result-overlay.component";
+import {ColorSchemeService} from "../../../../../services/color-scheme.service";
 
 export interface TreeElement {
     name: string;
@@ -27,11 +28,11 @@ export interface BoxWithContext {
 export class TechTreeComponent extends ScrollManager implements AfterViewInit {
 
     private static readonly WIDTH_PER_LEVEL: number = 100;
-    private static readonly TEXT_COLOR: string = "rgba(255, 255, 255, 0.7)";
-    private static readonly BOUNDARY_COLOR: string = "#375a7f";
-    private static readonly BOUNDARY_COLOR_DARK: string = "#383838";
-    private static readonly ELEMENT_BACKGROUND_COLOR: string = "rgb(66, 66, 66)";
-    private static readonly RESEARCH_DONE_BACKGROUND_COLOR: string = "#374f3d";
+    private static readonly TEXT_COLOR: string = 'rgba(255, 255, 255, 0.7)';
+    private static readonly BOUNDARY_COLOR: string = '#375a7f';
+    private static readonly BOUNDARY_COLOR_DARK: string = '#383838';
+    private elementBackgroundColor: string = 'rgb(66, 66, 66)';
+    private researchDoneBackgroundColor: string = '#374f3d';
 
     private tree?: ResearchTree;
     private researchMap: Map<number, Research> = new Map<number, Research>();
@@ -62,8 +63,23 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
         }
     }
 
-    constructor(private researchApi: ResearchApiService) {
+    constructor(private colorSchemeService: ColorSchemeService,
+                private researchApi: ResearchApiService) {
         super();
+
+        this.colorSchemeService.getSchemaEmitter().subscribe(schema => {
+            switch (schema) {
+                case 'dark':
+                    this.elementBackgroundColor = 'rgb(66, 66, 66)';
+                    this.researchDoneBackgroundColor = '#374f3d';
+                    break;
+                case 'light':
+                    this.elementBackgroundColor = '#abb3ba';
+                    this.researchDoneBackgroundColor = '#5e8c6a';
+                    break;
+            }
+            this.drawTree();
+        });
 
         this.setDrawMethod(this.drawTree);
     }
@@ -234,7 +250,7 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
         ctx.font = "20px Georgia";
         const textWidth = ctx.measureText(treeElement.name).width;
         let swimLaneWidth: number = textWidth + (treeElement.unlocksAtLevel.length * (TechTreeComponent.WIDTH_PER_LEVEL + radius)) + 3 * radius;
-        const result = this.roundRect(ctx, x, y, swimLaneWidth, height, radius, TechTreeComponent.BOUNDARY_COLOR, TechTreeComponent.ELEMENT_BACKGROUND_COLOR);
+        const result = this.roundRect(ctx, x, y, swimLaneWidth, height, radius, TechTreeComponent.BOUNDARY_COLOR, this.elementBackgroundColor);
         this.drawUnlockingResearchLevels(ctx, treeElement, x, y, height, radius, textWidth);
         return result;
     }
@@ -253,7 +269,7 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
             const researchResults = treeElement.researchResult.filter(u => u.unlockedByLevel === level);
 
             let boxX = x + (i * (radius + TechTreeComponent.WIDTH_PER_LEVEL));
-            const fillColor = treeElement.levelCompleted >= level ? TechTreeComponent.RESEARCH_DONE_BACKGROUND_COLOR : TechTreeComponent.ELEMENT_BACKGROUND_COLOR;
+            const fillColor = treeElement.levelCompleted >= level ? this.researchDoneBackgroundColor : this.elementBackgroundColor;
             this.roundRect(ctx, boxX, y, TechTreeComponent.WIDTH_PER_LEVEL, boxHeight, radius, TechTreeComponent.BOUNDARY_COLOR_DARK, fillColor);
             this.unlockables.push({
                 box: new Box(boxX, y, TechTreeComponent.WIDTH_PER_LEVEL, boxHeight),

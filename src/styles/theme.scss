@@ -27,11 +27,16 @@ $theme-dark: palette-helper.modify-text-color($theme-dark, variables.$dark-secon
   --primary-color: #{variables.$dark-primary-color};
   --background-color: #{variables.$dark-background-color};
   --secondary-background-color: #{variables.$dark-secondary-background-color};
+  --tertiary-background-color: #{variables.$dark-tertiary-background-color};
   --secondary-text-color: #{variables.$dark-secondary-text-color};
   --ctto-background-color: #{variables.$light-background-color};
   --success-color: #{variables.$dark-success-color};
+  --finish-icon-color: #{variables.$dark-finish-color};
   --required-color: #{variables.$dark-required-color};
   --warning-color: #{variables.$error-color};
+  --map-background: #{variables.$dark-map-background};
+  --map-text-color: #{variables.$dark-map-text-color};
+  --card-edge-color: #{variables.$dark-card-edge-color};
 
   .mat-mdc-snack-bar-container {
     --mdc-snackbar-container-color: #{variables.$dark-background-color};
@@ -52,7 +57,7 @@ $theme-light: mat.define-light-theme((
 ));
 
 $theme-light: palette-helper.modify-background($theme-light, variables.$light-background-color);
-$theme-light: palette-helper.modify-text-color($theme-light, variables.$dark-background-color);
+$theme-light: palette-helper.modify-text-color($theme-light, variables.$light-secondary-text-color);
 
 .color-scheme-light {
   @include mat.all-component-themes($theme-light);
@@ -60,11 +65,25 @@ $theme-light: palette-helper.modify-text-color($theme-light, variables.$dark-bac
   --primary-color: #{variables.$light-primary-color};
   --background-color: #{variables.$light-background-color};
   --secondary-background-color: #{variables.$light-secondary-background-color};
-  --secondary-text-color: #{variables.$dark-background-color};
+  --tertiary-background-color: #{variables.$light-tertiary-background-color};
+  --secondary-text-color: #{variables.$light-secondary-text-color};
   --ctto-background-color: #{variables.$light-card-background};
   --success-color: #{variables.$light-success-color};
+  --finish-icon-color: #{variables.$light-finish-color};
   --required-color: #{variables.$light-required-color};
   --warning-color: #{variables.$error-color};
+  --map-background: #{variables.$light-map-background};
+  --map-text-color: #{variables.$light-map-text-color};
+  --mdc-protected-button-label-text-color: #{variables.$light-secondary-text-color};
+  --card-edge-color: #{variables.$light-card-edge-color};
+
+  .mdc-text-field--outlined.mdc-text-field--disabled .mdc-text-field__input {
+    --mdc-outlined-text-field-disabled-input-text-color: #{variables.$light-secondary-text-color};
+  }
+
+  .mat-mdc-menu-panel {
+    --mat-menu-container-color: #{variables.$light-secondary-background-color};
+  }
 
   .mat-mdc-card {
     --mdc-elevated-card-container-color: #{variables.$light-card-background};

@@ -49,7 +49,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
                     this.isDark = false;
                     break;
             }
-        })
+        });
     }
 
     ngOnInit(): void {

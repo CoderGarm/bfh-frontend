@@ -1,5 +1,5 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {ReplaySubject} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -7,11 +7,11 @@ import {BehaviorSubject} from "rxjs";
 export class ColorSchemeService {
 
     private renderer: Renderer2;
-    private colorScheme?: string;
+    private colorScheme: string = 'dark';
     // Define prefix for clearer and more readable class names in scss files
     private colorSchemePrefix = 'color-scheme-';
 
-    private schemaEmitter: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+    private schemaEmitter: ReplaySubject<string> = new ReplaySubject<string>();
 
     getSchemaEmitter() {
         return this.schemaEmitter;

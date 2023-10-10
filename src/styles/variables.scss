@@ -1,11 +1,20 @@
 $black: #000;
 $white: #fff;
 
+$dark-map-background: #000000;
+$light-map-background: #cccccc;
+
+$dark-map-text-color: cadetblue;
+$light-map-text-color: black;
+
 $dark-success-color: #5e8c6a;
 $light-success-color: #004d13;
 
+$dark-finish-color: #004d13;
+$light-finish-color: #5e8c6a;
+
 $dark-required-color: darkorange;
-$light-required-color: #ff9900;
+$light-required-color: #851B00;
 
 $warning-color: #872727;
 $metal-glance: #B0B0B0;
@@ -13,11 +22,15 @@ $metal-glance: #B0B0B0;
 /* Text colors */
 $body-text-color: rgb(250, 250, 250);
 $dark-secondary-text-color: rgba(255, 255, 255, 0.7);
+$light-secondary-text-color: #25242F;
 $disabled-text-color: rgba(255, 255, 255, 0.5);
 
 /* Primary colors */
 $dark-primary-color: #375a7f;
 $light-primary-color: #7598a3;
+
+$dark-card-edge-color: #2E3338;
+$light-card-edge-color: #2E3338;
 
 /* Error colors */
 $error-color: #de2839;
@@ -29,9 +42,10 @@ $dark-secondary-background-color: #2E3338;
 
 $light-card-background: #d3d9de;
 $light-background-color: #99a6b2;
-$light-secondary-background-color: #73808c;
+$light-secondary-background-color: #abb3ba;
 
-$tertiary-background-color: hsla(214, 90%, 52%, 0.1);
+$dark-tertiary-background-color: hsla(214, 90%, 52%, 0.1);
+$light-tertiary-background-color: hsla(214, 30%, 50%, 0.8);
 $disabled-color: rgba(255, 255, 255, 0.3);
 
 $divider-color: rgba(255, 255, 255, 0.12);
