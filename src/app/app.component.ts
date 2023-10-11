@@ -57,7 +57,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     screenHeight?: number;
     screenWidth?: number;
-    isMobile: boolean = false;
 
     constructor(private colorSchemeService: ColorSchemeService,
                 private renderer: Renderer2,

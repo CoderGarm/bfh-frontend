@@ -2,6 +2,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import KeenSlider, {KeenSliderInstance} from 'keen-slider'
 import {NgxSpinnerService} from "ngx-spinner";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {SubscriptionManager} from "../../subscription.manager";
 
 @Component({
     selector: 'app-take-a-tour',
@@ -13,7 +14,7 @@ import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
         "./../../../styles/keen-slider/keen-slider.scss"
     ]
 })
-export class TakeATourComponent {
+export class TakeATourComponent extends SubscriptionManager {
 
     static path: string = 'take-a-tour';
 
@@ -29,17 +30,17 @@ export class TakeATourComponent {
     imgAlt: string = '';
 
     maxWidth?: string;
-    maxHeight?: number;
 
     constructor(private breakpointObserver: BreakpointObserver,
                 protected spinner: NgxSpinnerService) {
+        super();
+
 
         this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => {
-            console.log(result.breakpoints);
             if (result.matches) {
+                // todo I am an ugly hack - please repair me
                 this.maxWidth = 800 + 'px;';
             }
-            console.log(this.maxWidth, this.maxHeight) /* fixme how to clear that fuckin topic with da woo wide screen? */
         });
     }
 

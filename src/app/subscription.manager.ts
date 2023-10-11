@@ -16,6 +16,7 @@ export class SubscriptionManager implements OnDestroy {
     readonly userId: number;
     readonly userName: string;
     readonly profilePic: string;
+    isMobile: boolean = false;
 
     constructor() {
         this.userId = this.tokenStorage.getUserID();
