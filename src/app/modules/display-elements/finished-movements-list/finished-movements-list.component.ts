@@ -35,7 +35,6 @@ export class FinishedMovementsListComponent implements AfterViewInit, OnChanges 
             const map: Map<string, FleetMovement[]> = new Map<string, FleetMovement[]>();
 
             this.finishedMovements = this.finishedMovements.sort((a, b) => this.sortByAlertness(a, b));
-
             this.finishedMovements.forEach(m => {
                 const key = this.getKey(m);
                 let arr = map.get(key);
