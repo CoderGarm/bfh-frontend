@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {
     AlignedFitting,
-    EnumValueDto,
     ResourceDeposit,
     ResourcesApiService,
     ShipClass,
@@ -77,11 +76,12 @@ export class FittingModifyComponent extends SubscriptionManager implements After
     constructor(private shipYardApi: ShipyardApiService,
                 private change: ChangeDetectorRef,
                 private shipyardService: ShipyardEventService,
-                private resourceApi: ResourcesApiService) {
+                private resourceService: ResourcesApiService) {
         super();
 
         let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => {
             this.shipClass = shipClass;
+            this.fetchCosts();
         });
         this.subscriptions.push(sub);
     }
@@ -166,14 +166,14 @@ export class FittingModifyComponent extends SubscriptionManager implements After
      */
     private getCosts() {
         if (!!this.designedShipClass && ShipClassValidator.isValid(this.designedShipClass) && this.idChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(this.designedShipClass)
+            let sub = this.resourceService.getShipClassCosts(this.designedShipClass)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapabilities(this.designedShipClass).subscribe(resp => this.capabilities = resp);
+            sub = this.resourceService.getShipClassCapabilities(this.designedShipClass).subscribe(resp => this.capabilities = resp);
             this.subscriptions.push(sub);
 
-            sub = this.resourceApi.getShipClassCapacities(this.designedShipClass)
+            sub = this.resourceService.getShipClassCapacities(this.designedShipClass)
                 .subscribe(resp => this.capacities = resp);
             this.subscriptions.push(sub);
         } else if (!this.designedShipClass) {
@@ -182,6 +182,16 @@ export class FittingModifyComponent extends SubscriptionManager implements After
             this.capacities = undefined;
             this.compareClass = undefined;
         }
+    }
+
+    private fetchCosts() {
+        if (!this.shipClass || !this.shipClass.idShipClass) {
+            this.costs = undefined;
+            return;
+        }
+        let sub = this.resourceService.getCostsForShipClass(this.shipClass!.idShipClass!)
+            .subscribe(resp => this.costs = resp);
+        this.subscriptions.push(sub);
     }
 
     /**

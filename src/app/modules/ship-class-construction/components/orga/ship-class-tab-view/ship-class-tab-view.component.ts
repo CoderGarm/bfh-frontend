@@ -20,12 +20,12 @@ export class ShipClassTabViewComponent extends SubscriptionManager implements Af
 
     resourceDeposit?: ResourceDeposit;
 
-    constructor(private resourceApi: ResourcesApiService) {
+    constructor(private resourceService: ResourcesApiService) {
         super();
     }
 
     ngAfterViewInit() {
-        let sub = this.resourceApi.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
+        let sub = this.resourceService.getResourceDepositForUser().subscribe(resp => this.resourceDeposit = resp);
         this.subscriptions.push(sub);
     }
 

@@ -56,7 +56,7 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
     weaponTypes: EWeaponTypeEnum[];
     weaponAlignmentTypes: EWeaponAlignmentEnum[];
 
-    constructor(private resourceApi: ResourcesApiService,
+    constructor(private resourceService: ResourcesApiService,
                 private shipyardService: ShipyardEventService,
                 private typeService: TypeService) {
         super();
@@ -66,6 +66,8 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
         this.weaponAlignmentTypes = this.typeService.weaponAlignmentTypes;
         let sub = this.shipyardService.getSelectedShipClassEmitter().subscribe(shipClass => {
             this.shipClass = shipClass;
+            this.fetchCosts();
+            this.setName();
         });
         this.subscriptions.push(sub);
     }
@@ -84,14 +86,19 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
                 this.subscriptions.push(sub);
             }
         }
+        console.log(changes)
         if (changes[this.selectedShipClassInputDefinition]) {
-            if (!!this.shipClass) {
-                this.shipClassName = this.shipClass.name;
-            } else {
-                this.shipClassName = "";
-            }
+            this.setName();
         }
         this.getCosts();
+    }
+
+    private setName() {
+        if (!!this.shipClass) {
+            this.shipClassName = this.shipClass.name;
+        } else {
+            this.shipClassName = "";
+        }
     }
 
     /**
@@ -100,13 +107,23 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
      */
     private getCosts() {
         if (!!this.shipClass && this.idChangePending()) {
-            let sub = this.resourceApi.getShipClassCosts(this.shipClass)
+            let sub = this.resourceService.getShipClassCosts(this.shipClass)
                 .subscribe(resp => this.costs = resp);
             this.subscriptions.push(sub);
         } else if (!this.shipClass) {
             this.costs = undefined;
             this.compareClass = undefined;
         }
+    }
+
+    private fetchCosts() {
+        if (!this.shipClass || !this.shipClass.idShipClass) {
+            this.costs = undefined;
+            return;
+        }
+        let sub = this.resourceService.getCostsForShipClass(this.shipClass!.idShipClass!)
+            .subscribe(resp => this.costs = resp);
+        this.subscriptions.push(sub);
     }
 
     /**
