@@ -29,6 +29,11 @@
          alt="{{ altText }}"
          matTooltip="{{ toolTip }}">
 
+    <img *ngIf="!icon && _combat" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/stats/attack.png"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
+         alt="{{ altText }}"
+         matTooltip="{{ toolTip }}">
+
 </span>
 
 <mat-icon *ngIf="_hasUnread" inline>mail</mat-icon>

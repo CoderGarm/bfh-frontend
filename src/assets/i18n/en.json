@@ -416,6 +416,7 @@
 			"title": "Legend"
 		},
 		"report": {
+			"battles-happended": "New battle reports have arrived.",
 			"nothing": "No incidents, sir."
 		},
 		"spinner": {

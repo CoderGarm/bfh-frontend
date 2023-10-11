@@ -415,6 +415,7 @@
 			"title": "Legende"
 		},
 		"report": {
+			"battles-happended": "Neue Kampfberichte sind eingetroffen.",
 			"nothing": "Keine Vorkommnisse, Sir."
 		},
 		"spinner": {

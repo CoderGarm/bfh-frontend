@@ -1,5 +1,6 @@
-<mat-list>
-    <div mat-subheader *ngIf="missionItems.length == 0">{{ 'mission.report.nothing' | translate }}</div>
+<mat-list style="width: fit-content">
+    <div mat-subheader *ngIf="missionResults?.newBattleReports">{{ 'mission.report.battles-happended' | translate }}</div>
+    <div mat-subheader *ngIf="missionItems.length == 0 && !missionResults?.newBattleReports">{{ 'mission.report.nothing' | translate }}</div>
 </mat-list>
 
 <div *ngIf="!!missionResults?.convoyActionItemGroups" class="flex-items-container">

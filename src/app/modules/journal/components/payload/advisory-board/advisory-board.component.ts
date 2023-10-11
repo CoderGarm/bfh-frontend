@@ -1,6 +1,6 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, Input} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {AdvisoryApiService, Construction, Planet, Research, TickAdvice, TradeContract} from "../../../../../services/swagger";
+import {AdvisoryApiService, Construction, MissionReport, Planet, Research, TickAdvice, TradeContract} from "../../../../../services/swagger";
 import {SpinnerService} from "../../../../../services/spinner.service";
 
 @Component({
@@ -9,6 +9,9 @@ import {SpinnerService} from "../../../../../services/spinner.service";
     styleUrls: ['./advisory-board.component.scss']
 })
 export class AdvisoryBoardComponent extends SubscriptionManager implements AfterViewInit {
+
+    @Input()
+    missionResults?: MissionReport;
 
     pirateHunt: Planet[] = [];
     convoyProtection: TradeContract[] = [];
@@ -46,11 +49,7 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
                 }
             }
 
-            /* fixme nothing to do is a dangerous advice */
-            /* fixme display "build a lac for defense" advice */
-            /* fixme display set up mission advice */
-
-            this.nothing = !resp.constructionPossible && !resp.researchPossible && !resp.shipyardPossible && !resp.suggestedResearch && !resp.suggestedBuilding;
+            this.nothing = !resp.constructionPossible && !resp.researchPossible && !resp.shipyardPossible && !resp.suggestedResearch && !resp.suggestedBuilding && !this.missionResults?.newBattleReports;
             this.spinner.hide('advisory-spinner');
             this.spinnerActive = false;
         });

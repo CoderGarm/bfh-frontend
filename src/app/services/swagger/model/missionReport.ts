@@ -17,6 +17,10 @@ import { PirateRaidActionItemGroup } from './pirateRaidActionItemGroup';
  */
 export interface MissionReport { 
     /**
+     * If there were fights this tick.
+     */
+    newBattleReports: boolean;
+    /**
      * The by-venue grouped results.
      */
     actionItemGroups: Array<PirateRaidActionItemGroup>;
