@@ -1,6 +1,10 @@
 @import "src/styles/variables";
 
 #tech-tree-display {
+  cursor: pointer;
+}
+
+#tech-tree-display:active {
   cursor: move;
 }
 
@@ -8,5 +12,5 @@
   height: calc(100vh - 150px);
   width: 100%;
   overflow: hidden;
-  padding: 50px 50px 50px 0;
+  padding: 25px 25px 0 0;
 }

@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, ElementRef, HostListener, ViewChild} from '@angular/core';
-import {Research, ResearchApiService, ResearchLevel, ResearchResult, ResearchTree, ResearchTreeChain, ResearchTreeElement} from "../../../../../services/swagger";
+import {Research, ResearchLevel, ResearchResult, ResearchTree, ResearchTreeChain, ResearchTreeElement} from "../../../../../services/swagger";
 import {ScrollManager} from "./scroll.manager";
 import {Box} from "./box";
 import {ConnectionPositionPair} from "@angular/cdk/overlay";
 import {ResearchResultOverlayComponent} from "../research-result-overlay/research-result-overlay.component";
 import {ColorSchemeService} from "../../../../../services/color-scheme.service";
+import {BackgroundService} from "../../../../../services/prefetch/background.service";
 
 export interface TreeElement {
     name: string;
@@ -64,7 +65,7 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
     }
 
     constructor(private colorSchemeService: ColorSchemeService,
-                private researchApi: ResearchApiService) {
+                private backgroundService: BackgroundService) {
         super();
 
         this.colorSchemeService.getSchemaEmitter().subscribe(schema => {
@@ -85,12 +86,22 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        let sub = this.researchApi.getTree().subscribe(resp => this.setTree(resp));
-        this.subscriptions.push(sub);
-        sub = this.researchApi.getResearchByUser().subscribe(resp => this.completedResearches = resp);
-        this.subscriptions.push(sub);
+        this.fetchData();
         this.ctx = this.canvas!.nativeElement.getContext('2d')!;
         this.fitToContainer();
+    }
+
+    private fetchData() {
+        let sub = this.backgroundService.getResearchTree().subscribe(resp => {
+            this.tree = resp;
+            this.setTree();
+        });
+        this.subscriptions.push(sub);
+        sub = this.backgroundService.getCompletedResearches().subscribe(resp => {
+            this.completedResearches = resp;
+            this.setTree();
+        });
+        this.subscriptions.push(sub);
     }
 
     handleMouseHover(e: MouseEvent) {
@@ -121,8 +132,10 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
         canvas.height = canvas.offsetHeight;
     }
 
-    private setTree(tree: ResearchTree) {
-        this.tree = tree;
+    private setTree() {
+        if (!this.tree || this.completedResearches.length == 0) {
+            return;
+        }
         this.tree.researches.forEach(r => this.researchMap.set(r.idResearch, r));
         this.constructDisplayItems();
         this.drawTree();

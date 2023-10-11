@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../../subscription.manager";
-import {ColonizationApiService, StarMapApiService, StarSystem, StarSystemColonization} from "../swagger";
+import {ColonizationApiService, ResearchApiService, ResearchLevel, ResearchTree, StarMapApiService, StarSystem, StarSystemColonization} from "../swagger";
 import {interval, ReplaySubject} from "rxjs";
 import {ModuleService} from "./module.service";
 import {AssetsService, Junction} from "../assets/assets.service";
@@ -20,9 +20,16 @@ export class BackgroundService extends SubscriptionManager {
     private junctions: Junction[] = [];
     private o3: ReplaySubject<Junction[]> = new ReplaySubject();
 
+    private researchTree?: ResearchTree;
+    private o4: ReplaySubject<ResearchTree> = new ReplaySubject();
+
+    private completedResearches: ResearchLevel[] = [];
+    private o5: ReplaySubject<ResearchLevel[]> = new ReplaySubject();
+
     constructor(private zone: NgZone,
                 private colonizationService: ColonizationApiService,
                 private mapService: StarMapApiService,
+                private researchService: ResearchApiService,
                 private moduleService: ModuleService,
                 private assetService: AssetsService) {
         super();
@@ -34,6 +41,60 @@ export class BackgroundService extends SubscriptionManager {
             this.subscriptions.push(sub);
             sub = this.mapService.getStarSystems().subscribe(resp => this.starSystems = resp);
             this.subscriptions.push(sub);
+            sub = this.researchService.getTree().subscribe(resp => this.researchTree = resp);
+            this.subscriptions.push(sub);
+            sub = this.researchService.getResearchByUser().subscribe(resp => this.completedResearches = resp);
+            this.subscriptions.push(sub);
+        });
+    }
+
+    public getResearchTree() {
+        if (!this.researchTree) {
+            const source = interval(100);
+            let sub = source.subscribe(val => {
+                // and later again repetitive
+                if (!!this.researchTree) {
+                    this.fireResearchTree();
+                    sub.unsubscribe();
+                }
+            });
+            this.subscriptions.push(sub);
+        } else {
+            setTimeout(() => {
+                this.fireResearchTree();
+            }, 10);
+        }
+        return this.o4;
+    }
+
+    private fireResearchTree() {
+        this.zone.run(() => {
+            this.o4.next(this.researchTree!);
+        });
+    }
+
+    public getCompletedResearches() {
+        if (this.completedResearches.length == 0) {
+            const source = interval(100);
+            let sub = source.subscribe(val => {
+                // and later again repetitive
+                if (this.completedResearches.length > 0) {
+                    this.fireCompletedResearches();
+                    sub.unsubscribe();
+                }
+            });
+            this.subscriptions.push(sub);
+        } else {
+            setTimeout(() => {
+                this.fireCompletedResearches();
+            }, 10);
+        }
+        return this.o5;
+    }
+
+    private fireCompletedResearches() {
+        this.zone.run(() => {
+            this.o5.next(this.completedResearches);
         });
     }
 
@@ -53,7 +114,7 @@ export class BackgroundService extends SubscriptionManager {
      * Strange idea:<br>
      * The subscriber has just to wait until the data is fetched. If the data is present it will be fired async 10 ms after subscribing.
      */
-    public getColonizationStarSystemsForUser(): ReplaySubject<StarSystemColonization[]> {
+    public getColonizationStarSystemsForUser() {
         if (this.colonizations.length == 0) {
             const source = interval(100);
             let sub = source.subscribe(val => {
@@ -76,7 +137,7 @@ export class BackgroundService extends SubscriptionManager {
      * Strange idea:<br>
      * The subscriber has just to wait until the data is fetched. If the data is present it will be fired async 10 ms after subscribing.
      */
-    public getStarSystems(): ReplaySubject<StarSystem[]> {
+    public getStarSystems() {
         if (this.starSystems.length == 0) {
             const source = interval(100);
             let sub = source.subscribe(val => {
