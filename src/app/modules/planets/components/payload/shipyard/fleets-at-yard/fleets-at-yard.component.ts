@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EnumValueDto, Fleet, JobApiService, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService, ShipClass} from "../../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../../subscription.manager";
@@ -16,14 +16,16 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     planet?: Planet;
 
     @Input()
+    deposit?: ResourceDeposit;
+
+    @Input()
     fleetsInOrbit?: Fleet[];
     fleetsInOrbitDef: string = 'fleetsInOrbit';
 
     @Input()
     possibleShipClasses: ShipClass[] = [];
 
-    @Output()
-    costs: EventEmitter<ResourceDeposit> = new EventEmitter<ResourceDeposit>()
+    costsToDisplay?: ResourceDeposit;
     knownCosts: Map<string, ResourceDeposit> = new Map<string, ResourceDeposit>();
     knownUtilizations: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
@@ -208,15 +210,20 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     }
 
     getCosts(fleet: Fleet, jobType: EJobTypesEnum) {
+        if ((jobType == EJobTypesEnum.REPAIR && !this.repairPossible(fleet) || (jobType == EJobTypesEnum.UPGRADE && !this.upgradePossible(fleet)))) {
+            this.costsToDisplay = undefined;
+            return;
+        }
+
         const costs = this.knownCosts.get(fleet.idFleet + '-' + jobType);
         if (!!costs) {
-            this.costs.emit(costs);
+            this.costsToDisplay = costs;
             return;
         }
         let sub = this.resourceService.getShipyardCosts(fleet.idFleet, jobType)
             .subscribe(resp => {
                 this.knownCosts.set(fleet.idFleet + '-' + jobType, resp);
-                this.costs.emit(resp);
+                this.costsToDisplay = resp;
             });
         this.subscriptions.push(sub);
     }

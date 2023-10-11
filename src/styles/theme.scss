@@ -77,8 +77,20 @@ $theme-light: palette-helper.modify-text-color($theme-light, variables.$light-se
   --mdc-protected-button-label-text-color: #{variables.$light-secondary-text-color};
   --card-edge-color: #{variables.$light-card-edge-color};
 
+  .mdc-text-field--outlined, .mdc-text-field--filled {
+    --mdc-filled-text-field-container-color: #{variables.$light-secondary-background-color};
+  }
+
   .mdc-text-field--outlined.mdc-text-field--disabled .mdc-text-field__input {
     --mdc-outlined-text-field-disabled-input-text-color: #{variables.$light-secondary-text-color};
+  }
+
+  .mat-mdc-dialog-container .mdc-dialog__title {
+    --mdc-dialog-subhead-color: #{variables.$light-secondary-background-color};
+  }
+
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    --mdc-dialog-container-color: #{variables.$light-secondary-background-color};
   }
 
   .mat-mdc-menu-panel {

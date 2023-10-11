@@ -32,7 +32,7 @@ export class FleetTabViewComponent extends SubscriptionManager implements AfterV
         let sub = this.fleetEventService.getSelectedFleetEmitter().subscribe(fleet => {
             if (!!fleet && fleet.id === FleetDetachmentComponent.POOL_FLEET_ID) {
                 this.onlyAllowDetachment = true;
-                this.index = 1;
+                this.index = 2;
                 this.fleet = undefined;
                 return;
             }

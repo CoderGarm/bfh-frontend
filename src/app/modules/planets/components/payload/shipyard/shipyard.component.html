@@ -8,7 +8,7 @@
     <app-outlined titleValue="{{ 'planetary.fleets-in-orbit.title' | translate }}">
         <app-fleets-at-yard [planet]="selectedPlanet"
                             [fleetsInOrbit]="fleetsInOrbit"
-                            (costs)="costsToDisplay = $event"
+                            [deposit]="resourceDeposit"
                             [possibleShipClasses]="possibleShipClasses"
                             [shipyardJobPossible]="shipyardJobPossible"></app-fleets-at-yard>
     </app-outlined>

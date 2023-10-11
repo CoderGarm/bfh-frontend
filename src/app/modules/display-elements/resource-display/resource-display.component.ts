@@ -4,6 +4,7 @@ import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../services/type.service";
 import {StaticResourcesService} from "../../../services/static-resources.service";
+import {coerceBooleanProperty} from "@angular/cdk/coercion";
 import CollectableTypeEnum = EResourceType.CollectableTypeEnum;
 
 @Component({
@@ -40,12 +41,12 @@ export class ResourceDisplayComponent extends SubscriptionManager {
     // @formatter:off
     @Input()
     get onlyResources() { return this._onlyResources; }
-    set onlyResources(value: any) { this._onlyResources = this.coerceBooleanProperty(value); }
+    set onlyResources(value: any) { this._onlyResources = coerceBooleanProperty(value); }
     _onlyResources: boolean = false;
 
     @Input()
     get onlyCollectables() { return this._onlyCollectables; }
-    set onlyCollectables(value: any) { this._onlyCollectables = this.coerceBooleanProperty(value); }
+    set onlyCollectables(value: any) { this._onlyCollectables = coerceBooleanProperty(value); }
     _onlyCollectables: boolean = false;
     // @formatter:on
 
@@ -103,10 +104,6 @@ export class ResourceDisplayComponent extends SubscriptionManager {
             this.translations.set(this.capacityResourceKey, translated);
         });
         this.subscriptions.push(sub);
-    }
-
-    private coerceBooleanProperty(value: any): boolean {
-        return value != null && `${value}` !== 'false';
     }
 
     getTooltip(type: EDepositType, resourceType: EResourceType) {

@@ -37,19 +37,28 @@
                             </app-outlined>
                         </div>
                     </app-blue-card>
+
                     <div class="flex-items-container">
-                        <div class="btn-container" [matTooltip]="getRepairJobButtonText(fleet)" (mouseover)="getCosts(fleet, 'REPAIR')">
+                        <div class="btn-container" [matTooltip]="getRepairJobButtonText(fleet)"
+                             (mouseover)="getCosts(fleet, 'REPAIR')"
+                             (mouseout)="costsToDisplay = undefined;">
                             <button mat-raised-button color="secondary"
                                     (click)="repair(fleet)"
                                     [disabled]="!repairPossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
                         </div>
-                        <div class="btn-container" [matTooltip]="getUpgradeJobButtonText(fleet)" (mouseover)="getCosts(fleet, 'UPGRADE')">
+                        <div class="btn-container" [matTooltip]="getUpgradeJobButtonText(fleet)"
+                             (mouseover)="getCosts(fleet, 'UPGRADE')"
+                             (mouseout)="costsToDisplay = undefined;">
                             <button mat-raised-button color="secondary"
                                     (click)="upgradeAll(fleet)"
                                     [disabled]="!upgradePossible(fleet)">{{ 'planetary.fleets-in-orbit.upgrade-btn.start-job' | translate }}</button>
                         </div>
                     </div>
+
+                    <app-resource-display [style.visibility]="!costsToDisplay ? 'hidden' : 'unset'" onlyCollectables
+                                          [deposit]="deposit" [costs]="costsToDisplay"></app-resource-display>
                 </div>
+
 
                 <app-blue-card class="cap-display">
                     <app-spacecraft-capabilities-display body
