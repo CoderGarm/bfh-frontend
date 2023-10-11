@@ -7,6 +7,7 @@ import {
     ERefinementSequence,
     EResourceType,
     HumanResourceAmount,
+    MiningFactors,
     Planet,
     PlanetApiService,
     PlannedConstruction,
@@ -83,6 +84,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     @Input()
     capacity?: ResourceDeposit;
 
+    @Input()
+    miningFactors?: MiningFactors;
 
     levelImprovementResources?: ResourceAmount;
     levelImprovementHumanResources?: HumanResourceAmount;
@@ -132,8 +135,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 public translate: TranslateService) {
         super();
 
-        let subscription = planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.fetchPlanet());
-        this.subscriptions.push(subscription);
+        let sub = planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.fetchPlanet());
+        this.subscriptions.push(sub);
 
         this.translations.set('planetary.constructions.build.is-new', 'planetary.constructions.build.is-new');
         this.translate.get('planetary.constructions.build.is-new').subscribe((translated: string) => {
@@ -321,6 +324,8 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
         let valueAtLevel = ResourceHelper.calculateNextOutput(this.construction);
         let productionTarget = this.construction.building.productionTarget;
+
+
         let productionCategory = this.construction.building.productionCategory;
         switch (productionCategory) {
             case ProductionCategoryEnum.CAPACITY:
@@ -328,9 +333,13 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 break;
             case ProductionCategoryEnum.PRODUCE:
                 this.levelImprovementHumanResources = undefined;
+                const miningFactor = this.miningFactors?.resources
+                    .filter(mf => mf.resourceType.typeName === productionTarget.typeName)[0]
+                    .amount!;
+                console.log(miningFactor)
                 this.levelImprovementResources = {
                     resourceType: productionTarget,
-                    amount: valueAtLevel
+                    amount: valueAtLevel * (miningFactor / 100)
                 }
                 break;
             case ProductionCategoryEnum.REFINEMENT:

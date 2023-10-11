@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
-import {Fleet, FleetApiService, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
+import {Fleet, FleetApiService, MiningFactors, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {PlanetsEventService} from "../../../planets-event.service";
 
@@ -23,12 +23,13 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     income?: ResourceDeposit;
     capacity?: ResourceDeposit;
     utilization?: ResourceDeposit;
+    miningFactors?: MiningFactors;
 
     index = 0;
 
     constructor(private planetApi: PlanetApiService,
                 private planetsNotificationService: PlanetsEventService,
-                private resourceApi: ResourcesApiService,
+                private resourceService: ResourcesApiService,
                 private fleetApi: FleetApiService,
                 private change: ChangeDetectorRef) {
         super();
@@ -65,23 +66,28 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
             });
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getResourceDeposit(idPlanet)
+        sub = this.resourceService.getResourceDeposit(idPlanet)
             .subscribe(resp => {
                 this.resourceDeposit = resp;
                 resp.humanResources.forEach(hr => this.sumOfPops += hr.amount);
             });
         this.subscriptions.push(sub);
-        sub = this.resourceApi.getResourceUtilization(idPlanet).subscribe(utilization => {
+        sub = this.resourceService.getResourceUtilization(idPlanet).subscribe(utilization => {
             this.utilization = utilization;
             utilization.humanResources.forEach(hr => this.sumOfPops += hr.amount);
         });
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getPlanetaryIncome(idPlanet).subscribe(resp => this.income = resp);
+        sub = this.resourceService.getPlanetaryIncome(idPlanet).subscribe(resp => this.income = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceApi.getPlanetaryCapacity(idPlanet)
+        sub = this.resourceService.getPlanetaryCapacity(idPlanet)
             .subscribe(resp => this.capacity = resp);
+        this.subscriptions.push(sub);
+
+        sub = this.resourceService.getMiningFactors(idPlanet).subscribe(resp => {
+            this.miningFactors = resp;
+        });
         this.subscriptions.push(sub);
     }
 }

@@ -42,6 +42,8 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
 
     @Input()
     capacity?: ResourceDeposit;
+
+    @Input()
     miningFactors?: MiningFactors;
 
     constructor(private resourceService: ResourcesApiService) {
@@ -61,12 +63,8 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
         if (!this.planet) {
             return;
         }
-        let sub = this.resourceService.getMiningFactors(this.planet.idPlanet).subscribe(resp => {
-            this.miningFactors = resp;
-        });
-        this.subscriptions.push(sub);
 
-        sub = this.resourceService.getResourceDemand(this.planet.idPlanet).subscribe(resp => {
+        let sub = this.resourceService.getResourceDemand(this.planet.idPlanet).subscribe(resp => {
             this.demand = resp;
         });
         this.subscriptions.push(sub)
