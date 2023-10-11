@@ -5,6 +5,7 @@ import {SubscriptionManager} from "../../../../subscription.manager";
 import {tap} from "rxjs/operators";
 import {DatePipe} from "@angular/common";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
+import {timer} from "rxjs";
 
 
 @Component({
@@ -46,6 +47,9 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
 
         this.isAdmin = this.tokenStorage.getRole() === EnumValueDto.EWebUserRolesEnum.ADMIN;
         this.now = new Date().getTime();
+
+        let sub = timer(0, 3 * 60 * 1000).subscribe(() => this.markMessagesRead());
+        this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -170,6 +174,8 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         const toMarkAsRead = this.markAsRead.filter(idForumMessage => this.unreadMessages.includes(idForumMessage));
         toMarkAsRead.forEach(idForumMessage =>
             this.forumApi.markForumMessageRead({idMessage: idForumMessage}).subscribe(() => {
+                const indexOf = this.markAsRead.indexOf(idForumMessage);
+                this.markAsRead.splice(indexOf, 1);
             }));
     }
 
