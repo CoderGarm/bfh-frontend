@@ -97,6 +97,16 @@ $theme-light: palette-helper.modify-text-color($theme-light, variables.$light-se
     --mat-menu-container-color: #{variables.$light-secondary-background-color};
   }
 
+  .mat-button-toggle-appearance-standard.mat-button-toggle-disabled {
+    //--mat-standard-button-toggle-disabled-state-text-color: #{variables.$light-secondary-text-color};
+    --mat-standard-button-toggle-disabled-state-background-color: #{variables.$light-secondary-background-color};
+  }
+
+  .mat-button-toggle-appearance-standard {
+    --mat-standard-button-toggle-text-color: #{variables.$light-secondary-text-color};
+    --mat-standard-button-toggle-background-color: #{variables.$light-background-color};
+  }
+
   .mat-mdc-card {
     --mdc-elevated-card-container-color: #{variables.$light-card-background};
     --mdc-outlined-card-container-color: #{variables.$light-card-background};
