@@ -13,10 +13,11 @@
                         <mat-hint>{{ 'fleet.composition.warship.change-name-hint' | translate }}</mat-hint>
                     </mat-form-field>
                 </form>
-                <button mat-mini-fab color="primary" class="retire-btn"
+                <button mat-raised-button color="primary" class="retire-fleet-btn"
                         (click)="openRetireFleetDialog()"
                         matTooltip="{{ 'fleet.retire.submit' | translate }}">
-                    <mat-icon>cancel</mat-icon>
+                    <mat-icon matPrefix class="retire-icon">cancel</mat-icon>
+                    Retire Fleet
                 </button>
             </mat-card-title>
             <app-spacecraft-state-block-display [stateBlock]="fleet.state" [isFleet]="true"></app-spacecraft-state-block-display>
@@ -36,23 +37,37 @@
                             {{entry.value[0].shipClass.name}} {{ 'fleet.composition.class.title' | translate }}
                         </div>
 
-                        <app-outlined titleValue="{{ 'fleet.composition.warship.title' | translate }}" *ngFor="let warShip of entry.value">
+                        <app-outlined titleValue="{{ 'fleet.composition.warship.title' | translate }}"
+                                      fitContent
+                                      *ngFor="let warShip of entry.value">
+                            <div class="flex-items-container ship-content">
+                                <div>
+                                    <mat-form-field style="width: 100%;">
+                                        <span matPrefix *ngIf="!!prefix">{{ prefix }}</span>
+                                        <input matInput type="text" #nameField [value]="getWarShipName(warShip)" (change)="setWarshipName(warShip, nameField.value)">
+                                        <mat-hint>{{ 'fleet.composition.warship.change-name-hint' | translate }}</mat-hint>
+                                    </mat-form-field>
 
-                            <mat-form-field style="width: 100%;">
-                                <span matPrefix *ngIf="!!prefix">{{ prefix }}</span>
-                                <input matInput type="text" #nameField [value]="getWarShipName(warShip)" (change)="setWarshipName(warShip, nameField.value)">
-                                <mat-hint>{{ 'fleet.composition.warship.change-name-hint' | translate }}</mat-hint>
-                            </mat-form-field>
 
-
-                            <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
-                            <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
-                                                                [isWarship]="true"></app-spacecraft-state-block-display>
-                            <button mat-mini-fab color="primary" class="retire-btn"
-                                    (click)="openRetireWarshipDialog(warShip)"
-                                    matTooltip="{{ 'fleet.composition.warship.retire.submit' | translate }}">
-                                <mat-icon>cancel</mat-icon>
-                            </button>
+                                    <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
+                                    <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
+                                                                        [isWarship]="true"></app-spacecraft-state-block-display>
+                                </div>
+                                <div class="flex-items-container" style="width: 100%;">
+                                    <button mat-raised-button color="primary" class="retire-ship-btn"
+                                            (click)="openRetireWarshipDialog(warShip)"
+                                            matTooltip="{{ 'fleet.composition.warship.retire.submit' | translate }}">
+                                        <mat-icon matPrefix class="retire-icon">cancel</mat-icon>
+                                        {{ 'fleet.composition.warship.retire.submit' | translate }}
+                                    </button>
+                                    <button mat-raised-button color="primary" class="retire-ship-btn"
+                                            (click)="openWreckWarshipDialog(warShip)"
+                                            matTooltip="{{ 'fleet.composition.warship.wreck.submit' | translate }}">
+                                        <mat-icon matPrefix class="retire-icon">cancel</mat-icon>
+                                        {{ 'fleet.composition.warship.wreck.submit' | translate }}
+                                    </button>
+                                </div>
+                            </div>
                         </app-outlined>
                     </mat-list>
                 </div>

@@ -480,6 +480,48 @@ export class FleetApiService {
     }
 
     /**
+     * Renames a fleet.
+     * 
+     * @param idWarship 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public mothballWarship(idWarship: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public mothballWarship(idWarship: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public mothballWarship(idWarship: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public mothballWarship(idWarship: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idWarship === null || idWarship === undefined) {
+            throw new Error('Required parameter idWarship was null or undefined when calling mothballWarship.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/mothballWarship/${encodeURIComponent(String(idWarship))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Moves a fleet to another celestial.
      * 
      * @param body default response
@@ -761,48 +803,6 @@ export class FleetApiService {
     }
 
     /**
-     * Renames a fleet.
-     * 
-     * @param idWarship 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public retireWarship(idWarship: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public retireWarship(idWarship: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public retireWarship(idWarship: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
-    public retireWarship(idWarship: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idWarship === null || idWarship === undefined) {
-            throw new Error('Required parameter idWarship was null or undefined when calling retireWarship.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/retireWarship/${encodeURIComponent(String(idWarship))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Send ships to the pool
      * 
      * @param body default response
@@ -887,6 +887,48 @@ export class FleetApiService {
         return this.httpClient.request<Array<Fleet>>('post',`${this.basePath}/api/private/fleet/split`,
             {
                 body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Renames a fleet.
+     * 
+     * @param idWarship 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wreckWarship(idWarship: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public wreckWarship(idWarship: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public wreckWarship(idWarship: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public wreckWarship(idWarship: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idWarship === null || idWarship === undefined) {
+            throw new Error('Required parameter idWarship was null or undefined when calling wreckWarship.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/fleet/wreckWarship/${encodeURIComponent(String(idWarship))}`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

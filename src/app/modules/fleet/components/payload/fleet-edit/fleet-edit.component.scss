@@ -38,12 +38,21 @@ app-spacecraft-state-block-display {
   margin-left: 25px;
 }
 
-.retire-btn {
-  color: $warning-color;
-  position: absolute;
-  top: -20px;
-  right: -35px;
-  z-index: 99;
+.retire-fleet-btn {
+  position: relative;
+  left: 90%;
+}
+
+.retire-ship-btn {
+
+}
+
+.retire-icon {
+  //color: $warning-color;
+}
+
+.ship-content {
+  width: 350px;
 }
 
 mat-card-actions {

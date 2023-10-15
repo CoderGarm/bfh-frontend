@@ -168,7 +168,14 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
 
     retireShip(warShip: WarShip) {
         this.removeShip(warShip);
-        let sub = this.fleetService.retireWarship(warShip.idWarship).subscribe(resp => {
+        let sub = this.fleetService.mothballWarship(warShip.idWarship).subscribe(() => {
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private wreckShip(warShip: WarShip) {
+        this.removeShip(warShip);
+        let sub = this.fleetService.wreckWarship(warShip.idWarship).subscribe(() => {
         });
         this.subscriptions.push(sub);
     }
@@ -190,7 +197,18 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
             if (result) {
                 this.retireShip(warShip);
             }
-        })
+        });
+    }
+
+    openWreckWarshipDialog(warShip: WarShip) {
+        const dialogConfig = DialogConfigHelper.createDialog();
+        dialogConfig.data = new DialogData("Wreck " + warShip.name + '?');
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.wreckShip(warShip);
+            }
+        });
     }
 
     setWarshipName(warShip: WarShip, warshipName: string) {

@@ -166,6 +166,9 @@
 			"warShip-names": "Warships",
 			"warship": {
 				"change-name-hint": "Change name",
+				"wreck": {
+					"submit": "Wreck warship"
+				},
 				"retire": {
 					"submit": "Retire warship"
 				},

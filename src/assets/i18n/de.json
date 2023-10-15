@@ -166,6 +166,9 @@
 			"warShip-names": "Kriegsschiffe",
 			"warship": {
 				"change-name-hint": "Namen ändern",
+				"wreck": {
+					"submit": "Kriegsschiff abwracken"
+				},
 				"retire": {
 					"submit": "Kriegsschiff deaktivieren"
 				},
