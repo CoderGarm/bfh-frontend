@@ -36,7 +36,7 @@
                          id="fleet-{{ fleet.idFleet }}"
                          (cdkDropListDropped)="drop($event)">
                         <div *ngFor="let container of fleet.ships" cdkDrag
-                             class="warship-box" [class.active-ship]="container.isActive">
+                             class="warship-box" [class.active-ship]="container.isOperational">
                             <app-icon matListItemAvatar
                                       [icon]="container.warship.shipClass.shipClassType"
                                       [altText]="container.warship.shipClass.shipClassType.typeName"
@@ -45,12 +45,11 @@
                                 <span class="warship-title">{{ container.warship.name }}</span><br>
                                 <span class="warship-subtitle">{{ container.warship.shipClass.name }} Flt. {{ container.warship.shipClass.mark }}</span>
                             </div>
-                            <app-military-people *ngIf="container.idFleet != fleet.idFleet"
-                                                 preSelect [utilization]="costsByShipClass.get(container.warship.shipClass.idShipClass!) | async"></app-military-people>
-                            <mat-slide-toggle *ngIf="container.isPool" id="vertical-toggle"
-                                              (change)="container.isActive = !container.isActive"
-                                              [disabled]="!canBePaid(costsByShipClass.get(container.warship.shipClass.idShipClass!) | async)">
-                                <!-- fixme can be paid true if state == active -> pay back otherwise pay the price -->
+                            <app-military-people preSelect [utilization]="costsByShipClass.get(container.warship.shipClass.idShipClass!) | async"></app-military-people>
+                            <mat-slide-toggle id="vertical-toggle"
+                                              [checked]="container.isOperational"
+                                              (change)="changeOperationalState(container)"
+                                              [disabled]="!isStateChangePossible(container.isOperational, costsByShipClass.get(container.warship.shipClass.idShipClass!) | async)">
                             </mat-slide-toggle>
                         </div>
                     </div>
@@ -80,7 +79,7 @@
                              id="mothball"
                              (cdkDropListDropped)="drop($event)">
                             <div *ngFor="let container of fleets[0].ships" cdkDrag
-                                 class="warship-box" [class.active-ship]="container.isActive">
+                                 class="warship-box" [class.active-ship]="container.isOperational">
                                 <app-icon matListItemAvatar
                                           [icon]="container.warship.shipClass.shipClassType"
                                           [altText]="container.warship.shipClass.shipClassType.typeName"

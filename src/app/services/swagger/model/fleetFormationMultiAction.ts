@@ -22,4 +22,12 @@ export interface FleetFormationMultiAction {
      * the id's of the warships which will be transferred to the reserve
      */
     shipsToPool: Array<number>;
+    /**
+     * the id's of the warships which must be operational
+     */
+    orderOperational: Array<number>;
+    /**
+     * the id's of the warships which must be not operational
+     */
+    orderInoperational: Array<number>;
 }

@@ -89,13 +89,15 @@ export class ResourceHelper {
     static canPayTheBill(costs: ResourceDeposit, deposit: ResourceDeposit, popOnly: boolean): boolean {
 
         let map = new Map<string, number>();
-        costs.resources.forEach(costAmount => {
-            let resourceType = costAmount.resourceType;
-            if (resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
-                let toPay = costAmount.amount;
-                map.set(resourceType.typeName, toPay);
-            }
-        });
+        if (!popOnly) {
+            costs.resources.forEach(costAmount => {
+                let resourceType = costAmount.resourceType;
+                if (resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
+                    let toPay = costAmount.amount;
+                    map.set(resourceType.typeName, toPay);
+                }
+            });
+        }
         costs.humanResources.forEach(costAmount => {
             let resourceType = costAmount.resourceType;
             let toPay = costAmount.amount;
@@ -121,7 +123,6 @@ export class ResourceHelper {
                 let depositAmount = depositedHuman[0];
                 let currentAmount = depositAmount.amount;
                 if (currentAmount < toPay) {
-                    console.log(resourceTypeName, currentAmount, toPay)
                     canPay = false;
                     return;
                 }

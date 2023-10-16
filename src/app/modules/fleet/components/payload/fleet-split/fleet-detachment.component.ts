@@ -31,7 +31,7 @@ interface FleetContainer {
 interface WarshipContainer {
     idFleet?: number,
     warship: WarShip,
-    isActive: boolean,
+    isOperational: boolean,
     isPool: boolean
 }
 
@@ -84,7 +84,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 private notif: SnackbarNotificationService) {
         super();
 
-        let sub = this.fleetCommService.getRetireFleetEmitter().subscribe(fleet => this.fetchBaseData());
+        let sub = this.fleetCommService.getRetireFleetEmitter().subscribe(() => this.fetchBaseData());
         this.subscriptions.push(sub);
     }
 
@@ -182,7 +182,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 ships: fleet.ships.map(w => <WarshipContainer>{
                     warship: w,
                     idFleet: fleet.idFleet,
-                    isActive: w.warshipHealthState.state.isActive && w.warshipHealthState.state.isOperational
+                    isOperational: w.warshipHealthState.state.isActive && w.warshipHealthState.state.isOperational
                 })
             });
             this.shipsInOriginalFleet.push(...fleet.ships.map(s => s.idWarship));
@@ -203,7 +203,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         return pooledShips.map(w => <WarshipContainer>{
             warship: w,
             isPool: true,
-            isActive: w.warshipHealthState.state.isActive && w.warshipHealthState.state.isOperational
+            isOperational: w.warshipHealthState.state.isActive && w.warshipHealthState.state.isOperational
         });
     }
 
@@ -228,18 +228,6 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
             );
         }
         this.changeHappened = true;
-        let container = event.container.data[event.currentIndex];
-        if (container.isActive) {
-            return;
-        }
-        this.moduleService.getShipClassCosts(container.warship.shipClass.idShipClass!).subscribe(costs => {
-            console.log(container.warship.shipClass.idShipClass, container.warship.shipClass.name, costs)
-            if (!!this.deposit && ResourceHelper.canPayTheBill(costs, this.deposit, true)) {
-                console.log("can be paid")
-            } else {
-                console.log("can NOT be paid")
-            }
-        });
     }
 
     addFleetContainer() {
@@ -279,7 +267,9 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         const request: FleetFormationMultiAction = {
             fleetMerge: Object.keys(this.fleetMerge.fleetConstellations).length > 0 ? this.fleetMerge : undefined,
             fleetSplit: Object.keys(this.fleetSplit.fleetConstellations).length > 0 ? this.fleetSplit : undefined,
-            shipsToPool: this.shipsForPool
+            shipsToPool: this.shipsForPool,
+            orderInoperational: this.fleets.map(fc => fc.ships).flatMap(s => s).filter(c => !c.isOperational).map(c => c.warship.idWarship),
+            orderOperational: this.fleets.map(fc => fc.ships).flatMap(s => s).filter(c => c.isOperational).map(c => c.warship.idWarship)
         }
 
         let sub = this.fleetService.multiActionFleetFormation(request).subscribe(resp => {
@@ -337,10 +327,34 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         return this.fleets.filter(f => f.ships.length > 0).filter(f => !f.name || f.name.trim().length == 0).length == 0;
     }
 
-    canBePaid(costs: ResourceDeposit | null) {
+    isStateChangePossible(isActive: boolean, costs: ResourceDeposit | null) {
         if (!costs || !this.deposit) {
             return false;
         }
+        if (isActive) {
+            return true;
+        }
         return ResourceHelper.canPayTheBill(costs, this.deposit, true);
+    }
+
+    changeOperationalState(container: WarshipContainer) {
+        const isOperational = container.isOperational;
+        this.changeHappened = true;
+
+        let sub = this.costsByShipClass.get(container.warship.shipClass.idShipClass!)!
+            .subscribe(costs => {
+                if (!!costs && !!this.deposit) {
+                    if (!isOperational && ResourceHelper.canPayTheBill(costs, this.deposit, true)) {
+                        // to ship
+                        container.isOperational = !isOperational;
+                        this.deposit = ResourceHelper.reduceTheBill(costs, this.deposit);
+                    } else {
+                        // to planet
+                        container.isOperational = !isOperational;
+                        this.deposit = ResourceHelper.addToBill(costs, this.deposit);
+                    }
+                }
+            });
+        this.subscriptions.push(sub);
     }
 }
