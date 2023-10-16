@@ -152,6 +152,7 @@
 					"tooltip": "Mothballed ships can be made operational and reactivated at any time."
 				},
 				"remove": "Remove detachment",
+				"spinner": "Loading fleet data",
 				"submit": {
 					"action": "Submit",
 					"disabled-hint": "There must be at least two locked detachments."
@@ -166,13 +167,13 @@
 			"warShip-names": "Warships",
 			"warship": {
 				"change-name-hint": "Change name",
+				"retire": {
+					"submit": "Deactivate warship"
+				},
+				"title": "Warship",
 				"wreck": {
 					"submit": "Wreck warship"
-				},
-				"retire": {
-					"submit": "Retire warship"
-				},
-				"title": "Warship"
+				}
 			}
 		},
 		"display": {

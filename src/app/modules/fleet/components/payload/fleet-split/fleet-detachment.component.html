@@ -35,29 +35,54 @@
                          class="warship-list"
                          (cdkDropListDropped)="drop($event)">
                         <div class="warship-box" *ngFor="let warship of fleet.ships" cdkDrag>
-                            <div>
+                            <app-icon matListItemAvatar
+                                      [icon]="warship.shipClass.shipClassType"
+                                      [altText]="warship.shipClass.shipClassType.typeName"
+                                      [toolTip]="warship.shipClass.shipClassType.typeName"></app-icon> <!-- fixme app icon tooltip -->
+                            <div class="item-box">
                                 <span class="warship-title">{{ warship.name }}</span><br>
                                 <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
                             </div>
+                            <app-military-people *ngIf="warship.idFleet != fleet.idFleet"
+                                                 preSelect [utilization]="costsByShipClass.get(warship.shipClass.idShipClass!) | async"></app-military-people>
+                            <!-- fixme costs wrong-->
                         </div>
                     </div>
+                    <app-military-people preSelect [utilization]="costs"></app-military-people> <!-- fixme costs wrong -->
                 </div>
+
             </div>
 
+            <div class="fleet-container">
+                <ngx-spinner type="ball-clip-rotate-multiple" name="detachment-spinner">{{ 'fleet.composition.detachment.spinner' | translate }}</ngx-spinner>
+                <mat-divider></mat-divider>
 
-            <div class="fleet-container pool-item">
-                <div *ngIf="fleets.length >= 1" class="rel">
-                    <div mat-subheader class="fleet-name"
-                         matTooltip="{{ 'fleet.composition.detachment.pool.tooltip' | translate }}">{{ 'fleet.composition.detachment.pool.name' | translate }}</div>
-                    <div cdkDropList
-                         [cdkDropListData]="fleets[0].ships"
-                         class="warship-list"
-                         (cdkDropListDropped)="drop($event)">
-                        <div class="warship-box" *ngFor="let warship of fleets[0].ships"
-                             cdkDrag>
-                            <div>
-                                <span class="warship-title">{{ warship.name }}</span><br>
-                                <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                <app-military-people preSelect [utilization]="deposit"></app-military-people>
+
+                <div class="pool-item">
+                    <mat-chip-listbox (change)="setVenue($event.value)" [multiple]="false" [disabled]="!isFleetCreation">
+                        <mat-chip-option *ngFor="let p of planets" [value]="p" [selected]="p.idPlanet === planet?.idPlanet" color="primary">
+                            {{ p.name }}
+                        </mat-chip-option>
+                    </mat-chip-listbox>
+                    <div *ngIf="fleets.length >= 1" class="rel">
+                        <div mat-subheader class="fleet-name"
+                             matTooltip="{{ 'fleet.composition.detachment.pool.tooltip' | translate }}">{{ 'fleet.composition.detachment.pool.name' | translate }}</div>
+                        <div cdkDropList
+                             [cdkDropListData]="fleets[0].ships"
+                             class="warship-list"
+                             (cdkDropListDropped)="drop($event)">
+                            <div class="warship-box" *ngFor="let warship of fleets[0].ships"
+                                 cdkDrag>
+                                <app-icon matListItemAvatar
+                                          [icon]="warship.shipClass.shipClassType"
+                                          [altText]="warship.shipClass.shipClassType.typeName"
+                                          [toolTip]="warship.shipClass.shipClassType.typeName"></app-icon> <!-- fixme app icon tooltip -->
+                                <div class="item-box">
+                                    <span class="warship-title">{{ warship.name }}</span><br>
+                                    <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                                </div>
+                                <app-military-people preSelect [utilization]="costsByShipClass.get(warship.shipClass.idShipClass!) | async"></app-military-people>
                             </div>
                         </div>
                     </div>

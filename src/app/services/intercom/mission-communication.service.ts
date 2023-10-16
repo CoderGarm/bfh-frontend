@@ -84,9 +84,12 @@ export class MissionCommunicationService extends SubscriptionManager {
     }
 
     fetchPooledShips() {
-        let sub = this.fleetService.getPooledWarships().subscribe(resp =>
-            this.pooledShips = resp
-        );
+        const idPlanet = this.selectedPlanet?.idPlanet;
+        if (!idPlanet) {
+            this.pooledShips = [];
+            return;
+        }
+        let sub = this.fleetService.getPooledWarships(idPlanet).subscribe(resp => this.pooledShips = resp);
         this.subscriptions.push(sub);
     }
 

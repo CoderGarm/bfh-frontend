@@ -12,7 +12,7 @@ import {SubscriptionManager} from "../../../subscription.manager";
 export class MilitaryPeopleComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     @Input()
-    utilization?: ResourceDeposit;
+    utilization: ResourceDeposit | undefined | null;
 
     displayableResources: HumanResourceAmount[] = [];
 
@@ -42,7 +42,7 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
         return value != null && `${value}` !== 'false';
     }
 
-    getHumans(resource: EEducationType, costs?: ResourceDeposit): number {
+    getHumans(resource: EEducationType, costs: ResourceDeposit | undefined | null): number {
         if (!costs) {
             return 0;
         }

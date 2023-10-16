@@ -24,17 +24,31 @@ $max-width: 350px;
   background: transparent;
 }
 
+.item-box {
+  width: fit-content;
+  margin-right: 15px;
+}
+
 .warship-box {
-  padding: 10px 10px;
-  border-bottom: solid 1px #ccc;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  padding: 10px 10px;
+  border-bottom: solid 1px #ccc;
   box-sizing: border-box;
   background: var(--primary-color);
+  color: var(--primary-text-color);
   font-size: 14px;
   cursor: move;
+}
+
+app-military-people {
+  // fixme space between elements
+}
+
+app-icon {
+  margin-right: 15px;
 }
 
 .cdk-drag-preview {
@@ -75,12 +89,16 @@ $max-width: 350px;
   flex: 0 1 100%;
 }
 
+mat-divider {
+  margin: 65px 0;
+}
+
 .pool-item {
-  margin-top: 65px;
+  margin-top: 25px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  border-top: solid 1px;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .fleet-container div .mat-mdc-subheader {
@@ -162,4 +180,9 @@ mat-hint {
 
 .warship-subtitle {
   font-size: small;
+}
+
+.mat-mdc-chip-set {
+  max-width: 180px;
+  height: fit-content;
 }

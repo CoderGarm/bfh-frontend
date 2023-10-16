@@ -1,9 +1,26 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {AbstractId, Fleet, FleetApiService, FleetFormationMultiAction, FleetMerge, FleetOrbit, FleetSplit, PlanetApiService, WarShip} from "../../../../../services/swagger";
+import {
+    AbstractId,
+    Fleet,
+    FleetApiService,
+    FleetFormationMultiAction,
+    FleetMerge,
+    FleetOrbit,
+    FleetSplit,
+    Planet,
+    PlanetApiService,
+    ResourceDeposit,
+    ResourcesApiService,
+    WarShip
+} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {ModuleService} from "../../../../../services/prefetch/module.service";
+import {ResourceHelper} from "../../../../../services/helper/resource.helper";
+import {NgxSpinnerService} from "ngx-spinner";
+import {ReplaySubject} from "rxjs";
 
 interface FleetContainer {
     idFleet: number,
@@ -23,6 +40,12 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     fleet?: Fleet;
     shipsInOriginalFleet: number[] = [];
 
+    @Input()
+    planet?: Planet;
+
+    @Input()
+    isFleetCreation: boolean = false;
+
     fleets: FleetContainer[] = [];
 
     fleetSplit: FleetSplit = {fleetConstellations: {}, orbit: {}};
@@ -40,10 +63,18 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     private static readonly POOL_FLEET_NAME: string = 'POOL';
     public static readonly POOL_FLEET_ID: number = -Number.MAX_VALUE;
     private coords?: FleetOrbit;
+    planets: Planet[] = [];
+    deposit?: ResourceDeposit;
+    costs?: ResourceDeposit;
 
-    constructor(private fleetService: FleetApiService,
+    costsByShipClass: Map<number, ReplaySubject<ResourceDeposit>> = new Map<number, ReplaySubject<ResourceDeposit>>();
+
+    constructor(private spinner: NgxSpinnerService,
+                private fleetService: FleetApiService,
                 private fleetCommService: FleetEventService,
                 private planetService: PlanetApiService,
+                private resourceService: ResourcesApiService,
+                private moduleService: ModuleService,
                 private notif: SnackbarNotificationService) {
         super();
 
@@ -52,8 +83,25 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     ngAfterViewInit(): void {
+        this.showSpinner();
         this.fetchPooledShips();
         this.fetchMainPlanetOrbit();
+        let sub = this.planetService.getPlanetByUsers().subscribe(resp => {
+            this.planets = resp;
+            if (this.isFleetCreation) {
+                this.setVenue(this.planets.filter(p => p.isMain)[0]!);
+                this.hideSpinner();
+            }
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private hideSpinner() {
+        this.spinner.hide('detachment-spinner');
+    }
+
+    private showSpinner() {
+        this.spinner.show('detachment-spinner'); /* fixme spinner logic open and close by event type? if no events running just close */
     }
 
     private fetchMainPlanetOrbit() {
@@ -62,17 +110,58 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     private fetchPooledShips() {
-        let sub = this.fleetService.getPooledWarships().subscribe(resp => {
+        this.showSpinner();
+        if (!this.planet) {
+            this.pooledShips = [];
+            this.populizePoolFleetContainer();
+            this.hideSpinner();
+            return;
+        }
+        let sub = this.fleetService.getPooledWarships(this.planet.idPlanet).subscribe(resp => {
             this.pooledShips = resp;
-            this.fleets.filter(f => f.idFleet === FleetDetachmentComponent.POOL_FLEET_ID).forEach(f => f.ships = this.pooledShips.map(w => w));
+            this.pooledShips.forEach(ship => this.addShipClassCosts(ship));
+            this.populizePoolFleetContainer();
+            this.hideSpinner();
         });
         this.subscriptions.push(sub);
+    }
+
+    private addShipClassCosts(ship: WarShip) {
+        const idShipClass = ship.shipClass.idShipClass!;
+        return this.costsByShipClass.set(idShipClass, this.moduleService.getShipClassCosts(idShipClass));
+    }
+
+    private populizePoolFleetContainer() {
+        this.fleets.filter(f => f.idFleet === FleetDetachmentComponent.POOL_FLEET_ID).forEach(f => f.ships = this.pooledShips.map(w => w));
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['fleet']) {
             this.setupFleet(this.fleet);
         }
+        if (changes['planet']) {
+            this.fetchPooledShips();
+        }
+    }
+
+    setVenue(event: Planet) {
+        this.planet = event;
+        this.fetchPooledShips();
+        this.fetchPopDeposit();
+    }
+
+    private fetchPopDeposit() {
+        this.showSpinner();
+        if (!this.planet) {
+            this.deposit = undefined;
+            this.hideSpinner();
+            return;
+        }
+        let sub = this.resourceService.getResourceDeposit(this.planet.idPlanet).subscribe(resp => {
+            this.deposit = resp;
+            this.hideSpinner();
+        });
+        this.subscriptions.push(sub);
     }
 
     private setupFleet(fleet?: Fleet) {
@@ -87,6 +176,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 ships: fleet.ships
             });
             this.shipsInOriginalFleet.push(...fleet.ships.map(s => s.idWarship));
+            fleet.ships.forEach(ship => this.addShipClassCosts(ship));
         }
         this.addFleetContainer();
     }
@@ -115,6 +205,13 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
             );
         }
         this.changeHappened = true;
+        const warShip = event.container.data[event.previousIndex];
+        this.moduleService.getShipClassCosts(warShip.shipClass.idShipClass!).subscribe(resp => {
+            this.costs = resp;
+            if (ResourceHelper.canPayTheBill(resp, this.deposit!, true)) {
+
+            }
+        });
     }
 
     addFleetContainer() {

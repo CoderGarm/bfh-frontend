@@ -33,10 +33,8 @@ export class MissionCreateComponent extends SubscriptionManager implements OnCha
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (this.pooledWarships.length > 0) {
-            const isConvoyProtection = this.missionCommService.selectedType === EMissionTypesEnum.CONVOY_PROTECTION;
-            this.filteredWarships = this.pooledWarships.filter(w => isConvoyProtection ? w.warshipHealthState.state.isFTLCapable : true);
-        }
+        const isConvoyProtection = this.missionCommService.selectedType === EMissionTypesEnum.CONVOY_PROTECTION;
+        this.filteredWarships = this.pooledWarships.filter(w => isConvoyProtection ? w.warshipHealthState.state.isFTLCapable : true);
     }
 
     isMissionCreateValid() {
@@ -90,6 +88,7 @@ export class MissionCreateComponent extends SubscriptionManager implements OnCha
     setVenue(event: MatSelectionListChange) {
         this.missionCommService.selectedPlanet = <Planet><unknown>event.source!._value![0];
         this.missionCommService.selectedTrade = undefined;
+        this.missionCommService.fetchPooledShips();
     }
 
     setTrade(event: MatSelectionListChange) {

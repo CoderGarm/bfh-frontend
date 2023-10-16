@@ -152,6 +152,7 @@
 					"tooltip": "Eingemottete Schiffe können jederzeit einsatzbereit gemacht und reaktiviert werden."
 				},
 				"remove": "Detachment entfernen",
+				"spinner": "Flottendaten laden",
 				"submit": {
 					"action": "Abschicken",
 					"disabled-hint": "Es müssen mind. zwei bestätigte Detachments existieren."
@@ -166,13 +167,13 @@
 			"warShip-names": "Kriegsschiffe",
 			"warship": {
 				"change-name-hint": "Namen ändern",
-				"wreck": {
-					"submit": "Kriegsschiff abwracken"
-				},
 				"retire": {
 					"submit": "Kriegsschiff deaktivieren"
 				},
-				"title": "Kriegsschiff"
+				"title": "Kriegsschiff",
+				"wreck": {
+					"submit": "Kriegsschiff abwracken"
+				}
 			}
 		},
 		"display": {

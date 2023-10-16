@@ -397,13 +397,18 @@ export class FleetApiService {
     /**
      * Renames a fleet.
      * 
+     * @param idPlanet 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPooledWarships(observe?: 'body', reportProgress?: boolean): Observable<Array<WarShip>>;
-    public getPooledWarships(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WarShip>>>;
-    public getPooledWarships(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WarShip>>>;
-    public getPooledWarships(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPooledWarships(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<Array<WarShip>>;
+    public getPooledWarships(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WarShip>>>;
+    public getPooledWarships(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WarShip>>>;
+    public getPooledWarships(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getPooledWarships.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -421,7 +426,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<WarShip>>('get',`${this.basePath}/api/private/fleet/pool`,
+        return this.httpClient.request<Array<WarShip>>('get',`${this.basePath}/api/private/fleet/pool/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -1,6 +1,19 @@
 import {Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../../subscription.manager";
-import {Armor, ElectronicWarfare, Launcher, ModuleApiService, PassiveModule, Propulsion, Sidewall, Weapon} from "../swagger";
+import {
+    Armor,
+    ElectronicWarfare,
+    Launcher,
+    ModuleApiService,
+    PassiveModule,
+    Propulsion,
+    ResourceDeposit,
+    ResourcesApiService,
+    ShipClass,
+    ShipyardApiService,
+    Sidewall,
+    Weapon
+} from "../swagger";
 import {ReplaySubject} from "rxjs";
 
 /**
@@ -30,65 +43,117 @@ export class ModuleService extends SubscriptionManager {
     private propulsionsByUser: ReplaySubject<Propulsion[]> = new ReplaySubject<Propulsion[]>();
     private propulsions: ReplaySubject<Propulsion[]> = new ReplaySubject<Propulsion[]>();
 
+
+    private shipClasses: ShipClass[] = [];
+    private costsByShipClass: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
+
+    private shipClassByUserEmitter: ReplaySubject<ShipClass[]> = new ReplaySubject<ShipClass[]>();
+
     constructor(private zone: NgZone,
-                private moduleApi: ModuleApiService) {
+                private resourceService: ResourcesApiService,
+                private shipyardService: ShipyardApiService,
+                private moduleApiService: ModuleApiService) {
         super();
 
-        this.zone.run(() => this.fetchWeapons());
-        this.zone.run(() => this.fetchLaunchers());
-        this.zone.run(() => this.fetchArmors());
-        this.zone.run(() => this.fetchSidewalls());
-        this.zone.run(() => this.fetchElokas());
-        this.zone.run(() => this.fetchPropulsions());
-        this.zone.run(() => this.fetchPassives());
+        this.zone.run(() => {
+            this.fetchWeapons();
+            this.fetchLaunchers();
+            this.fetchArmors();
+            this.fetchSidewalls();
+            this.fetchElokas();
+            this.fetchPropulsions();
+            this.fetchPassives();
+            this.fetchShipClasses();
+        });
+    }
+
+    public fetchShipClasses() {
+        let sub = this.shipyardService.getShipClassesByUser().subscribe(resp => {
+            this.shipClasses = resp;
+            this.registerClassData();
+            this.shipClassByUserEmitter.next(this.shipClasses);
+        });
+        this.subscriptions.push(sub);
+    }
+
+    getShipClassCosts(idShipClass: number): ReplaySubject<ResourceDeposit> {
+        let costsEmitter: ReplaySubject<ResourceDeposit> = new ReplaySubject<ResourceDeposit>();
+        if (this.costsByShipClass.has(idShipClass)) {
+            setTimeout(() => {
+                costsEmitter.next(this.costsByShipClass.get(idShipClass)!);
+            }, 100);
+        } else {
+            this.fetchShipClassCosts(idShipClass);
+        }
+        return costsEmitter;
+    }
+
+    getShipClassesByUser() {
+        return this.shipClassByUserEmitter;
+    }
+
+    private registerClassData() {
+        for (let i = 0; i < this.shipClasses.length; i++) {
+            let shipClass = this.shipClasses[i];
+            this.fetchShipClassCosts(shipClass.idShipClass!);
+        }
+    }
+
+    private fetchShipClassCosts(idShipClass: number, costsEmitter?: ReplaySubject<ResourceDeposit>) {
+        let sub = this.resourceService.getCostsForShipClass(idShipClass)
+            .subscribe(resp => {
+                this.costsByShipClass.set(idShipClass, resp);
+                costsEmitter?.next(this.costsByShipClass.get(idShipClass)!);
+            });
+        this.subscriptions.push(sub);
     }
 
     private fetchWeapons() {
-        let sub = this.moduleApi.getWeaponsByUser().subscribe(resp => this.weaponsByUser.next(resp));
+        let sub = this.moduleApiService.getWeaponsByUser().subscribe(resp => this.weaponsByUser.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getWeapons().subscribe(resp => this.weapons.next(resp));
+        sub = this.moduleApiService.getWeapons().subscribe(resp => this.weapons.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchLaunchers() {
-        let sub = this.moduleApi.getLaunchersByUser().subscribe(resp => this.launchersByUser.next(resp));
+        let sub = this.moduleApiService.getLaunchersByUser().subscribe(resp => this.launchersByUser.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getLaunchers().subscribe(resp => this.launchers.next(resp));
+        sub = this.moduleApiService.getLaunchers().subscribe(resp => this.launchers.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchArmors() {
-        let sub = this.moduleApi.getArmorsByUser().subscribe(resp => this.armorsByUser.next(resp));
+        let sub = this.moduleApiService.getArmorsByUser().subscribe(resp => this.armorsByUser.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getArmors().subscribe(resp => this.armors.next(resp));
+        sub = this.moduleApiService.getArmors().subscribe(resp => this.armors.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchSidewalls() {
-        let sub = this.moduleApi.getSidewallsByUser().subscribe(resp => this.sidewallsByUser.next(resp));
+        let sub = this.moduleApiService.getSidewallsByUser().subscribe(resp => this.sidewallsByUser.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getSidewalls().subscribe(resp => this.sidewalls.next(resp));
+        sub = this.moduleApiService.getSidewalls().subscribe(resp => this.sidewalls.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchElokas() {
-        let sub = this.moduleApi.getElectronicWarfareByUser().subscribe(resp => this.elokaByUser.next(resp));
+        let sub = this.moduleApiService.getElectronicWarfareByUser().subscribe(resp => this.elokaByUser.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getElectronicWarfare().subscribe(resp => this.eloka.next(resp));
+        sub = this.moduleApiService.getElectronicWarfare().subscribe(resp => this.eloka.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchPropulsions() {
-        let sub = this.moduleApi.getPropulsionsByUser().subscribe(resp => this.propulsionsByUser.next(resp));
+        let sub = this.moduleApiService.getPropulsionsByUser().subscribe(resp => this.propulsionsByUser.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getPropulsions().subscribe(resp => this.propulsions.next(resp));
+        sub = this.moduleApiService.getPropulsions().subscribe(resp => this.propulsions.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchPassives() {
-        let sub = this.moduleApi.getPassiveModulesByUser().subscribe(resp => this.passiveModulesByUser.next(resp));
+        let sub = this.moduleApiService.getPassiveModulesByUser().subscribe(resp => this.passiveModulesByUser.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApi.getPassiveModules().subscribe(resp => this.passiveModules.next(resp));
+        sub = this.moduleApiService.getPassiveModules().subscribe(resp => this.passiveModules.next(resp));
         this.subscriptions.push(sub);
     }
 

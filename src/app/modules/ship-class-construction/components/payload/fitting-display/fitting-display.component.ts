@@ -86,7 +86,6 @@ export class FittingDisplayComponent extends SubscriptionManager implements Afte
                 this.subscriptions.push(sub);
             }
         }
-        console.log(changes)
         if (changes[this.selectedShipClassInputDefinition]) {
             this.setName();
         }

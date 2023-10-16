@@ -1,9 +1,9 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {ShipClass, ShipyardApiService} from "../../../../../services/swagger";
-import {TokenStorage} from "../../../../../services/authentication/token-storage.service";
+import {ShipClass} from "../../../../../services/swagger";
 import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
 import {ShipyardEventService} from "../../../shipyard-event.service";
 import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
+import {ModuleService} from "../../../../../services/prefetch/module.service";
 
 @Component({
     selector: 'app-ship-class-selection',
@@ -16,13 +16,12 @@ export class ShipClassSelectionComponent extends SidenavSelectionManager impleme
 
     selectedClass?: ShipClass;
 
-    constructor(private tokenService: TokenStorage,
-                private shipyardService: ShipyardEventService,
-                private shipyardApi: ShipyardApiService) {
+    constructor(private shipyardService: ShipyardEventService,
+                private moduleService: ModuleService) {
         super(NavigationCreationService.getShipYardRoute());
 
         let sub = this.shipyardService.getModifiedShipClassEmitter().subscribe(shipClass => {
-            this.fetchShipClasses();
+            this.moduleService.fetchShipClasses();
             setTimeout(() => {
                 this.selectClass(shipClass);
             }, 200);
@@ -39,7 +38,7 @@ export class ShipClassSelectionComponent extends SidenavSelectionManager impleme
      * @private
      */
     private fetchShipClasses() {
-        let sub = this.shipyardApi.getShipClassesByUser().subscribe(resp => this.shipClasses = resp);
+        let sub = this.moduleService.getShipClassesByUser().subscribe(resp => this.shipClasses = resp);
         this.subscriptions.push(sub);
     }
 

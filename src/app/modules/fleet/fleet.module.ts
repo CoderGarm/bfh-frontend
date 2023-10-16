@@ -5,6 +5,7 @@ import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {FleetDetachmentComponent} from './components/payload/fleet-split/fleet-detachment.component';
 import {FleetEditComponent} from './components/payload/fleet-edit/fleet-edit.component';
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {FleetEditComponent} from './components/payload/fleet-edit/fleet-edit.com
     ],
     imports: [
         SharedModuleModule,
-        DisplayElementsModule
+        DisplayElementsModule,
+        NgxSpinnerModule
     ]
 })
 export class FleetModule {

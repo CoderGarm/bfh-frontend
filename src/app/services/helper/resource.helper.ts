@@ -84,8 +84,9 @@ export class ResourceHelper {
      *
      * @param costs the costs
      * @param deposit the account which must pay
+     * @param popOnly if only the pops should be checked
      */
-    static canPayTheBill(costs: ResourceDeposit, deposit: ResourceDeposit): boolean {
+    static canPayTheBill(costs: ResourceDeposit, deposit: ResourceDeposit, popOnly: boolean): boolean {
 
         let map = new Map<string, number>();
         costs.resources.forEach(costAmount => {
@@ -103,22 +104,19 @@ export class ResourceHelper {
 
         let canPay: boolean = true;
         map.forEach((toPay, resourceTypeName) => {
-            let depositedResource = deposit.resources.filter(dep => dep.resourceType.typeName === resourceTypeName);
-            let depositedHuman = deposit.humanResources.filter(dep => dep.resourceType.typeName === resourceTypeName);
-            if (depositedHuman.length == 0 && depositedResource.length == 0) {
-                canPay = false;
-                return;
-            }
-
-            if (depositedResource.length != 0) {
-                let depositAmount = depositedResource[0];
-                let currentAmount = depositAmount.amount;
-                if (currentAmount < toPay) {
-                    canPay = false;
-                    return;
+            if (!popOnly) {
+                let depositedResource = deposit.resources.filter(dep => dep.resourceType.typeName === resourceTypeName);
+                if (depositedResource.length != 0) {
+                    let depositAmount = depositedResource[0];
+                    let currentAmount = depositAmount.amount;
+                    if (currentAmount < toPay) {
+                        canPay = false;
+                        return;
+                    }
                 }
             }
 
+            let depositedHuman = deposit.humanResources.filter(dep => dep.resourceType.typeName === resourceTypeName);
             if (depositedHuman.length != 0) {
                 let depositAmount = depositedHuman[0];
                 let currentAmount = depositAmount.amount;

@@ -336,7 +336,6 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 const miningFactor = this.miningFactors?.resources
                     .filter(mf => mf.resourceType.typeName === productionTarget.typeName)[0]
                     .amount!;
-                console.log(miningFactor)
                 this.levelImprovementResources = {
                     resourceType: productionTarget,
                     amount: valueAtLevel * (miningFactor / 100)
