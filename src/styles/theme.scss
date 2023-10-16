@@ -35,6 +35,7 @@ $theme-dark: palette-helper.modify-text-color($theme-dark, variables.$dark-secon
   --ctto-background-color: #{variables.$light-background-color};
   --success-color: #{variables.$dark-success-color};
   --finish-icon-color: #{variables.$dark-finish-color};
+  --active-warship-background-color: #{variables.$dark-success-color};
   --required-color: #{variables.$dark-required-color};
   --warning-color: #{variables.$error-color};
   --map-background: #{variables.$dark-map-background};
@@ -75,6 +76,7 @@ $theme-light: palette-helper.modify-text-color($theme-light, variables.$light-se
   --ctto-background-color: #{variables.$light-card-background};
   --success-color: #{variables.$light-success-color};
   --finish-icon-color: #{variables.$light-finish-color};
+  --active-warship-background-color: #{variables.$light-finish-color};
   --required-color: #{variables.$light-required-color};
   --warning-color: #{variables.$error-color};
   --map-background: #{variables.$light-map-background};

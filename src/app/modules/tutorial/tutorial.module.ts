@@ -17,6 +17,7 @@ import {TutorialUniverseMapComponent} from './topics/starMapTabView/tutorial-uni
 import {TutorialStarMapComponent} from './topics/starMapTabView/tutorial-star-map/tutorial-star-map.component';
 import {TutorialMissionComponent} from "./topics/stratOpsTabView/tutorial-star-map/tutorial-mission.component";
 import {TutorialColonizationInfoComponent} from './topics/expansionTabView/colonization-info/tutorial-colonization-info.component';
+import {TutorialFleetDetachmentComponent} from './topics/fleetTabView/tutorial-fleet-detachment/tutorial-fleet-detachment.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {TutorialColonizationInfoComponent} from './topics/expansionTabView/colon
         TutorialStarMapComponent,
         TutorialMissionComponent,
         TutorialColonizationInfoComponent,
+        TutorialFleetDetachmentComponent,
     ],
     imports: [
         SharedModuleModule,

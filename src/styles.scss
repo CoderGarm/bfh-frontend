@@ -377,3 +377,12 @@ mat-step-header {
 .mat-mdc-form-field-icon-prefix > span {
   padding: 0 15px;
 }
+
+#vertical-toggle-button {
+  transform: rotate(-90deg);
+
+  & .mdc-switch__icon {
+    transform: rotate(90deg);
+  }
+}
+

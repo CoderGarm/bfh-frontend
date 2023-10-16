@@ -43,8 +43,20 @@ $max-width: 350px;
   cursor: move;
 }
 
+.warship-box:last-child {
+  border: none;
+}
+
+.warship-box > app-military-people {
+  margin-left: auto;
+}
+
+.active-ship {
+  background: var(--active-warship-background-color);
+}
+
 app-military-people {
-  // fixme space between elements
+  min-width: 130px;
 }
 
 app-icon {
@@ -65,10 +77,6 @@ app-icon {
 
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.warship-box:last-child {
-  border: none;
 }
 
 .warship-list.cdk-drop-list-dragging .warship-box:not(.cdk-drag-placeholder) {

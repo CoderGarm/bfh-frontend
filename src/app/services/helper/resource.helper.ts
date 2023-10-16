@@ -121,6 +121,7 @@ export class ResourceHelper {
                 let depositAmount = depositedHuman[0];
                 let currentAmount = depositAmount.amount;
                 if (currentAmount < toPay) {
+                    console.log(resourceTypeName, currentAmount, toPay)
                     canPay = false;
                     return;
                 }

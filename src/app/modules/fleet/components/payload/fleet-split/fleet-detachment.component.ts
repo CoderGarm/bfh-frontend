@@ -25,7 +25,14 @@ import {ReplaySubject} from "rxjs";
 interface FleetContainer {
     idFleet: number,
     name: string,
-    ships: WarShip[]
+    ships: WarshipContainer[]
+}
+
+interface WarshipContainer {
+    idFleet?: number,
+    warship: WarShip,
+    isActive: boolean,
+    isPool: boolean
 }
 
 
@@ -65,7 +72,6 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     private coords?: FleetOrbit;
     planets: Planet[] = [];
     deposit?: ResourceDeposit;
-    costs?: ResourceDeposit;
 
     costsByShipClass: Map<number, ReplaySubject<ResourceDeposit>> = new Map<number, ReplaySubject<ResourceDeposit>>();
 
@@ -128,19 +134,19 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
 
     private addShipClassCosts(ship: WarShip) {
         const idShipClass = ship.shipClass.idShipClass!;
-        return this.costsByShipClass.set(idShipClass, this.moduleService.getShipClassCosts(idShipClass));
+        this.costsByShipClass.set(idShipClass, this.moduleService.getShipClassCosts(idShipClass));
     }
 
     private populizePoolFleetContainer() {
-        this.fleets.filter(f => f.idFleet === FleetDetachmentComponent.POOL_FLEET_ID).forEach(f => f.ships = this.pooledShips.map(w => w));
+        this.fleets.filter(f => f.idFleet === FleetDetachmentComponent.POOL_FLEET_ID).forEach(f => f.ships = this.mapPooledShips(this.pooledShips));
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['fleet']) {
             this.setupFleet(this.fleet);
         }
-        if (changes['planet']) {
-            this.fetchPooledShips();
+        if (changes['planet'] && !!this.planet) {
+            this.setVenue(this.planet);
         }
     }
 
@@ -173,7 +179,11 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
             this.fleets.push({
                 idFleet: fleet.idFleet,
                 name: fleet.name,
-                ships: fleet.ships
+                ships: fleet.ships.map(w => <WarshipContainer>{
+                    warship: w,
+                    idFleet: fleet.idFleet,
+                    isActive: w.warshipHealthState.state.isActive && w.warshipHealthState.state.isOperational
+                })
             });
             this.shipsInOriginalFleet.push(...fleet.ships.map(s => s.idWarship));
             fleet.ships.forEach(ship => this.addShipClassCosts(ship));
@@ -185,15 +195,28 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
         this.fleets.push({
             idFleet: FleetDetachmentComponent.POOL_FLEET_ID,
             name: FleetDetachmentComponent.POOL_FLEET_NAME,
-            ships: this.pooledShips.map(w => w)
+            ships: this.mapPooledShips(this.pooledShips)
         });
     }
 
-    private isPooledShip(w: WarShip) {
+    private mapPooledShips(pooledShips: WarShip[]) {
+        return pooledShips.map(w => <WarshipContainer>{
+            warship: w,
+            isPool: true,
+            isActive: w.warshipHealthState.state.isActive && w.warshipHealthState.state.isOperational
+        });
+    }
+
+    private isPooledShip(w: WarShip | WarshipContainer) {
+        if ('isPool' in w) {
+            return w.isPool;
+        }
         return this.pooledShips.filter(p => p.idWarship === w.idWarship).length > 0;
     }
 
-    drop(event: CdkDragDrop<WarShip[]>) {
+    drop(event: CdkDragDrop<WarshipContainer[]>) {
+        console.log(event.previousContainer)
+        console.log(event.container)
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
@@ -205,11 +228,16 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
             );
         }
         this.changeHappened = true;
-        const warShip = event.container.data[event.previousIndex];
-        this.moduleService.getShipClassCosts(warShip.shipClass.idShipClass!).subscribe(resp => {
-            this.costs = resp;
-            if (ResourceHelper.canPayTheBill(resp, this.deposit!, true)) {
-
+        let container = event.container.data[event.currentIndex];
+        if (container.isActive) {
+            return;
+        }
+        this.moduleService.getShipClassCosts(container.warship.shipClass.idShipClass!).subscribe(costs => {
+            console.log(container.warship.shipClass.idShipClass, container.warship.shipClass.name, costs)
+            if (!!this.deposit && ResourceHelper.canPayTheBill(costs, this.deposit, true)) {
+                console.log("can be paid")
+            } else {
+                console.log("can NOT be paid")
             }
         });
     }
@@ -240,9 +268,9 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
             .filter(f => f.idFleet != this.fleet?.idFleet)
             .forEach(fleet => {
                 if (fleet.idFleet === FleetDetachmentComponent.POOL_FLEET_ID) {
-                    this.shipsForPool = fleet.ships.filter(s => !this.isPooledShip(s)).map(s => s.idWarship);
+                    this.shipsForPool = fleet.ships.filter(s => !this.isPooledShip(s)).map(s => s.warship.idWarship);
                 } else {
-                    this.fleetSplit.fleetConstellations[fleet.name + fleet.idFleet] = fleet.ships.map(s => s.idWarship);
+                    this.fleetSplit.fleetConstellations[fleet.name + fleet.idFleet] = fleet.ships.map(s => s.warship.idWarship);
                 }
             });
 
@@ -263,12 +291,12 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
 
     private setupShipsForChosenFleet() {
         if (!!this.fleet) {
-            const newShipsForFleet: WarShip[] = this.fleets
+            const newShipsForFleet: WarshipContainer[] = this.fleets
                 .filter(fc => fc.idFleet === this.fleet!.idFleet)[0]
                 .ships
-                .filter(shipInContainer => !this.shipsInOriginalFleet.includes(shipInContainer.idWarship));
+                .filter(shipInContainer => !this.shipsInOriginalFleet.includes(shipInContainer.warship.idWarship));
             if (newShipsForFleet.length > 0) {
-                this.fleetMerge.fleetConstellations[this.fleet!.idFleet] = newShipsForFleet.map(s => s.idWarship);
+                this.fleetMerge.fleetConstellations[this.fleet!.idFleet] = newShipsForFleet.map(s => s.warship.idWarship);
             }
         }
     }
@@ -307,5 +335,12 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
             return false;
         }
         return this.fleets.filter(f => f.ships.length > 0).filter(f => !f.name || f.name.trim().length == 0).length == 0;
+    }
+
+    canBePaid(costs: ResourceDeposit | null) {
+        if (!costs || !this.deposit) {
+            return false;
+        }
+        return ResourceHelper.canPayTheBill(costs, this.deposit, true);
     }
 }

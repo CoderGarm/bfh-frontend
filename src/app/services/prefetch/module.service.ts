@@ -83,7 +83,7 @@ export class ModuleService extends SubscriptionManager {
                 costsEmitter.next(this.costsByShipClass.get(idShipClass)!);
             }, 100);
         } else {
-            this.fetchShipClassCosts(idShipClass);
+            this.fetchShipClassCosts(idShipClass, costsEmitter);
         }
         return costsEmitter;
     }

@@ -33,22 +33,27 @@
                     <div cdkDropList
                          [cdkDropListData]="fleet.ships"
                          class="warship-list"
+                         id="fleet-{{ fleet.idFleet }}"
                          (cdkDropListDropped)="drop($event)">
-                        <div class="warship-box" *ngFor="let warship of fleet.ships" cdkDrag>
+                        <div *ngFor="let container of fleet.ships" cdkDrag
+                             class="warship-box" [class.active-ship]="container.isActive">
                             <app-icon matListItemAvatar
-                                      [icon]="warship.shipClass.shipClassType"
-                                      [altText]="warship.shipClass.shipClassType.typeName"
-                                      [toolTip]="warship.shipClass.shipClassType.typeName"></app-icon> <!-- fixme app icon tooltip -->
+                                      [icon]="container.warship.shipClass.shipClassType"
+                                      [altText]="container.warship.shipClass.shipClassType.typeName"
+                                      [toolTip]="container.warship.shipClass.shipClassType.typeName"></app-icon> <!-- fixme app icon tooltip -->
                             <div class="item-box">
-                                <span class="warship-title">{{ warship.name }}</span><br>
-                                <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                                <span class="warship-title">{{ container.warship.name }}</span><br>
+                                <span class="warship-subtitle">{{ container.warship.shipClass.name }} Flt. {{ container.warship.shipClass.mark }}</span>
                             </div>
-                            <app-military-people *ngIf="warship.idFleet != fleet.idFleet"
-                                                 preSelect [utilization]="costsByShipClass.get(warship.shipClass.idShipClass!) | async"></app-military-people>
-                            <!-- fixme costs wrong-->
+                            <app-military-people *ngIf="container.idFleet != fleet.idFleet"
+                                                 preSelect [utilization]="costsByShipClass.get(container.warship.shipClass.idShipClass!) | async"></app-military-people>
+                            <mat-slide-toggle *ngIf="container.isPool" id="vertical-toggle"
+                                              (change)="container.isActive = !container.isActive"
+                                              [disabled]="!canBePaid(costsByShipClass.get(container.warship.shipClass.idShipClass!) | async)">
+                                <!-- fixme can be paid true if state == active -> pay back otherwise pay the price -->
+                            </mat-slide-toggle>
                         </div>
                     </div>
-                    <app-military-people preSelect [utilization]="costs"></app-military-people> <!-- fixme costs wrong -->
                 </div>
 
             </div>
@@ -57,32 +62,34 @@
                 <ngx-spinner type="ball-clip-rotate-multiple" name="detachment-spinner">{{ 'fleet.composition.detachment.spinner' | translate }}</ngx-spinner>
                 <mat-divider></mat-divider>
 
-                <app-military-people preSelect [utilization]="deposit"></app-military-people>
-
                 <div class="pool-item">
-                    <mat-chip-listbox (change)="setVenue($event.value)" [multiple]="false" [disabled]="!isFleetCreation">
-                        <mat-chip-option *ngFor="let p of planets" [value]="p" [selected]="p.idPlanet === planet?.idPlanet" color="primary">
-                            {{ p.name }}
-                        </mat-chip-option>
-                    </mat-chip-listbox>
+                    <div>
+                        <app-military-people preSelect [utilization]="deposit"></app-military-people>
+                        <mat-chip-listbox (change)="setVenue($event.value)" [multiple]="false" [disabled]="!isFleetCreation">
+                            <mat-chip-option *ngFor="let p of planets" [value]="p" [selected]="p.idPlanet === planet?.idPlanet" color="primary">
+                                {{ p.name }}
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                    </div>
                     <div *ngIf="fleets.length >= 1" class="rel">
                         <div mat-subheader class="fleet-name"
                              matTooltip="{{ 'fleet.composition.detachment.pool.tooltip' | translate }}">{{ 'fleet.composition.detachment.pool.name' | translate }}</div>
                         <div cdkDropList
                              [cdkDropListData]="fleets[0].ships"
                              class="warship-list"
+                             id="mothball"
                              (cdkDropListDropped)="drop($event)">
-                            <div class="warship-box" *ngFor="let warship of fleets[0].ships"
-                                 cdkDrag>
+                            <div *ngFor="let container of fleets[0].ships" cdkDrag
+                                 class="warship-box" [class.active-ship]="container.isActive">
                                 <app-icon matListItemAvatar
-                                          [icon]="warship.shipClass.shipClassType"
-                                          [altText]="warship.shipClass.shipClassType.typeName"
-                                          [toolTip]="warship.shipClass.shipClassType.typeName"></app-icon> <!-- fixme app icon tooltip -->
+                                          [icon]="container.warship.shipClass.shipClassType"
+                                          [altText]="container.warship.shipClass.shipClassType.typeName"
+                                          [toolTip]="container.warship.shipClass.shipClassType.typeName"></app-icon> <!-- fixme app icon tooltip -->
                                 <div class="item-box">
-                                    <span class="warship-title">{{ warship.name }}</span><br>
-                                    <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                                    <span class="warship-title">{{ container.warship.name }}</span><br>
+                                    <span class="warship-subtitle">{{ container.warship.shipClass.name }} Flt. {{ container.warship.shipClass.mark }}</span>
                                 </div>
-                                <app-military-people preSelect [utilization]="costsByShipClass.get(warship.shipClass.idShipClass!) | async"></app-military-people>
+                                <app-military-people preSelect [utilization]="costsByShipClass.get(container.warship.shipClass.idShipClass!) | async"></app-military-people>
                             </div>
                         </div>
                     </div>
