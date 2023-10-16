@@ -113,10 +113,10 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     }
 
     selectForCancel(checked: boolean, fleet: Fleet) {
-        if (checked) {
+        let indexOf = this.fleetsDesignatedForCancel.indexOf(fleet);
+        if (checked && indexOf == -1) {
             this.fleetsDesignatedForCancel.push(fleet);
         } else {
-            let indexOf = this.fleetsDesignatedForCancel.indexOf(fleet);
             this.fleetsDesignatedForCancel.splice(indexOf, 1);
         }
         this.sendCancelFlights();

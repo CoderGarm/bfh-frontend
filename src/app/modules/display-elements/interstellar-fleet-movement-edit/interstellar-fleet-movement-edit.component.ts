@@ -153,10 +153,10 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     }
 
     selectForFlight(checked: boolean, fleet: Fleet) {
-        if (checked) {
+        let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
+        if (checked && indexOf == -1) {
             this.fleetsDesignatedForMotion.push(fleet);
         } else {
-            let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
             this.fleetsDesignatedForMotion.splice(indexOf, 1);
         }
         this.sendPlannedFlights();
