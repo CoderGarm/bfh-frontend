@@ -89,6 +89,12 @@
                                     <span class="warship-subtitle">{{ container.warship.shipClass.name }} Flt. {{ container.warship.shipClass.mark }}</span>
                                 </div>
                                 <app-military-people preSelect [utilization]="costsByShipClass.get(container.warship.shipClass.idShipClass!) | async"></app-military-people>
+                                <!--suppress XmlDuplicatedId -->
+                                <mat-slide-toggle id="vertical-toggle"
+                                                  [checked]="container.isOperational"
+                                                  (change)="changeOperationalState(container)"
+                                                  [disabled]="!isStateChangePossible(container.isOperational, costsByShipClass.get(container.warship.shipClass.idShipClass!) | async)">
+                                </mat-slide-toggle>
                             </div>
                         </div>
                     </div>

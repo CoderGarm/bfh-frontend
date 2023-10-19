@@ -35,7 +35,7 @@ $theme-dark: palette-helper.modify-text-color($theme-dark, variables.$dark-secon
   --ctto-background-color: #{variables.$light-background-color};
   --success-color: #{variables.$dark-success-color};
   --finish-icon-color: #{variables.$dark-finish-color};
-  --active-warship-background-color: #{variables.$dark-finish-color};
+  --active-warship-background-color: #{variables.$dark-success-color};
   --inactive-warship-background-color: #{variables.$light-required-color};
   --required-color: #{variables.$dark-required-color};
   --warning-color: #{variables.$error-color};

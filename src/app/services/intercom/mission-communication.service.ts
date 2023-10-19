@@ -89,7 +89,8 @@ export class MissionCommunicationService extends SubscriptionManager {
             this.pooledShips = [];
             return;
         }
-        let sub = this.fleetService.getPooledWarships(idPlanet).subscribe(resp => this.pooledShips = resp);
+        let sub = this.fleetService.getPooledWarships(idPlanet)
+            .subscribe(resp => this.pooledShips = resp.filter(w => w.warshipHealthState.state.isFightingCapable));
         this.subscriptions.push(sub);
     }
 
