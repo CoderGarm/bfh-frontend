@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {AbstractId, FleetApiService} from "../../../../../services/swagger";
+import {AbstractId, FleetApiService, StateBlock} from "../../../../../services/swagger";
 import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 import {NavigationCreationService} from "../../../../../services/navigation/navigation-creation.service";
 import {SidenavSelectionManager} from "../../../../../sidenav-selection-manager";
@@ -18,8 +18,11 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
         name: 'Reserve'
     }
     fleets: AbstractId[] = [];
+    fleetStatesById: Map<number, StateBlock> = new Map<number, StateBlock>();
 
-    constructor(private fleetApi: FleetApiService,
+    hoveredId: number = -1;
+
+    constructor(private fleetService: FleetApiService,
                 private fleetEventService: FleetEventService) {
         super(NavigationCreationService.getPlanetRoute());
 
@@ -49,18 +52,62 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
             this.selectFleet(this.fleets[0]);
         });
         this.subscriptions.push(sub);
+
+        sub = this.fleetEventService.getReloadEmitter().subscribe(() => this.ngAfterViewInit());
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {
-        let sub = this.fleetApi.getFleetsForUser().subscribe(resp => this.fleets = resp);
+        let sub = this.fleetService.getFleetsForUser().subscribe(resp => {
+            this.fleets = resp;
+            this.fleets.forEach(f => this.fetchState(f));
+        });
         this.subscriptions.push(sub);
     }
 
     selectFleet(fleet?: AbstractId) {
+        this.closeItem();
         this.navService.navigate(NavigationCreationService.getFleetRoute());
         this.fleetEventService.selectFleet(fleet);
+        this.fetchState(fleet);
         this.selectedItem = {
             id: !!fleet ? fleet.id : FleetDetachmentComponent.POOL_FLEET_ID
         };
+    }
+
+    private fetchState(fleet?: AbstractId) {
+        if (!fleet) {
+            return;
+        }
+        let sub = this.fleetService.getFleet(fleet.id).subscribe(resp => this.fleetStatesById.set(fleet.id, resp.state));
+        this.subscriptions.push(sub);
+    }
+
+    openItem(id: number) {
+        if (this.hoveredId == -1) {
+            this.hoveredId = id;
+            const item = document.getElementById('item-' + this.hoveredId);
+            this.toggleCssClass('scaled-item', item);
+            const clone = document.getElementById('clone-' + this.hoveredId);
+            this.toggleCssClass('clone-item', clone);
+        }
+    }
+
+    closeItem() {
+        if (this.hoveredId != -1) {
+            const item = document.getElementById('item-' + this.hoveredId);
+            this.toggleCssClass('scaled-item', item);
+            const clone = document.getElementById('clone-' + this.hoveredId);
+            this.toggleCssClass('clone-item', clone);
+            this.hoveredId = -1;
+        }
+    }
+
+    private toggleCssClass(cssSelector: string, item: HTMLElement | null) {
+        if (item?.classList.contains(cssSelector)) {
+            item?.classList.remove(cssSelector);
+        } else {
+            item?.classList.add(cssSelector);
+        }
     }
 }

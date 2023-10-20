@@ -8,8 +8,6 @@
             <div mat-subheader *ngIf="!!destinationRepresentation">{{destinationRepresentation}}</div>
             <div mat-subheader *ngIf="!!orbitRepresentation">{{orbitRepresentation}}</div>
         </mat-card-subtitle>
-        <app-spacecraft-state-block-display *ngIf="isOwnFleet()"
-                                            [stateBlock]="fleet.state"
-                                            [isFleet]="true"></app-spacecraft-state-block-display>
+        <app-spacecraft-state-block-display *ngIf="isOwnFleet()" [stateBlock]="fleet.state" isFleet></app-spacecraft-state-block-display>
     </mat-card-header>
 </mat-card>

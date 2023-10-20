@@ -3,6 +3,7 @@ import {Fleet, FleetApiService, FleetMarker, FleetMerge, FleetMove, StarMapApiSe
 import {SystemViewHelper} from "../system-view-helper";
 import {StellarMovement} from "../../../../services/intercom/star-map-communication.service";
 import {timer} from "rxjs";
+import {FleetEventService} from "../../../../services/intercom/fleet-event.service";
 
 @Component({
     selector: 'app-star-map-view',
@@ -17,6 +18,7 @@ export class StarMapViewComponent extends SystemViewHelper implements OnInit, On
     private distribution: FleetMarker[] = [];
 
     constructor(private starMapApi: StarMapApiService,
+                private fleetEventService: FleetEventService,
                 private fleetService: FleetApiService) {
         super();
 
@@ -58,6 +60,7 @@ export class StarMapViewComponent extends SystemViewHelper implements OnInit, On
             let sub = this.fleetService.moveFleets(plannedMoves).subscribe(resp => {
                 moveDone = resp.length > 0;
                 resp.forEach(fm => changes.push(fm));
+                this.fleetEventService.reload();
             });
             this.subscriptions.push(sub);
         }
@@ -67,6 +70,7 @@ export class StarMapViewComponent extends SystemViewHelper implements OnInit, On
             let sub = this.fleetService.cancelMovements(ids).subscribe(resp => {
                 cancelDone = resp.length > 0;
                 resp.forEach(fm => changes.push(fm));
+                this.fleetEventService.reload();
             });
             this.subscriptions.push(sub);
         }

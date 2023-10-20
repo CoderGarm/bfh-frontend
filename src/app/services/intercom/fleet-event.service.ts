@@ -45,4 +45,14 @@ export class FleetEventService {
     getRetireFleetEmitter() {
         return this.retireFleetEmitter;
     }
+
+    private reloadEmitter: BehaviorSubject<undefined> = new BehaviorSubject<undefined>(undefined);
+
+    reload() {
+        this.reloadEmitter.next(undefined);
+    }
+
+    getReloadEmitter() {
+        return this.reloadEmitter;
+    }
 }

@@ -17,7 +17,7 @@
                     <span matListItemTitle>{{warShip.name}}</span>
                     <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
                     <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
-                                                        [isWarship]="true"></app-spacecraft-state-block-display>
+                                                        isWarship></app-spacecraft-state-block-display>
                 </app-outlined>
             </mat-list>
         </div>

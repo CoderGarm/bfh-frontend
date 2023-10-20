@@ -105,6 +105,10 @@ body {
   width: 180px;
 }
 
+#nav-drawer > .mat-drawer-inner-container {
+  overflow-x: visible !important;
+}
+
 .mat-mdc-tab-body-content {
   padding-left: 50px;
 }
@@ -120,6 +124,10 @@ body {
 .sidenav-expansion-panel {
 
   max-width: 250px;
+
+  & .sidenav-expansion-panel-panel > .mat-drawer-inner-container {
+    overflow-x: visible !important;
+  }
 
   & .mat-content {
     color: var(--secondary-text-color);

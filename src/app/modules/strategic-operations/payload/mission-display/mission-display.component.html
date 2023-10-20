@@ -19,8 +19,7 @@
             <span matListItemTitle>{{warShip.name}}</span>
             <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
             <span matListItemLine>FTL: {{ warShip.warshipHealthState.state.isFTLCapable }}</span>
-            <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
-                                                [isWarship]="true"></app-spacecraft-state-block-display>
+            <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state" isWarship></app-spacecraft-state-block-display>
         </mat-list-item>
     </mat-card-content>
     <mat-card-actions actions>

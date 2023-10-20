@@ -3,33 +3,39 @@
         {{ 'spacecraft.state.title.warShip' | translate }}
         {{ 'spacecraft.state.title.fleet' | translate }}
     </div>
-    <mat-icon class="state-icon"
+    <mat-icon class="state-icon" [class.minified-state-icon]="_minified" [inline]="_minified"
               *ngIf="stateBlock.isInYard"
-              matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.is-in-yard' | translate }}">
+              matTooltip="{{ 'spacecraft.state.msg.is-in-yard' | translate }}">
         construction
     </mat-icon>
 
-    <mat-icon class="state-icon"
+    <mat-icon class="state-icon" [class.minified-state-icon]="_minified" [inline]="_minified"
+              *ngIf="stateBlock.isInMotion"
+              matTooltip="{{ 'spacecraft.state.msg.is-in-motion' | translate }}">
+        explore
+    </mat-icon>
+
+    <mat-icon class="state-icon" [class.minified-state-icon]="_minified" [inline]="_minified"
               *ngIf="!stateBlock.isActive"
-              matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.not-active' | translate }}">
+              matTooltip="{{ 'spacecraft.state.msg.not-active' | translate }}">
         do_not_disturb_on
     </mat-icon>
 
-    <mat-icon
-            *ngIf="!stateBlock.isOperational"
-            matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.not-operational' | translate }}">
+    <mat-icon class="state-icon" [class.minified-state-icon]="_minified" [inline]="_minified"
+              *ngIf="!stateBlock.isOperational"
+              matTooltip="{{ 'spacecraft.state.msg.not-operational' | translate }}">
         event_busy
     </mat-icon>
 
-    <mat-icon
-            *ngIf="stateBlock.needsRepair"
-            matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.needs-repair' | translate }}">
+    <mat-icon class="state-icon" [class.minified-state-icon]="_minified" [inline]="_minified"
+              *ngIf="stateBlock.needsRepair"
+              matTooltip="{{ 'spacecraft.state.msg.needs-repair' | translate }}">
         home_repair_service
     </mat-icon>
 
-    <mat-icon
-            *ngIf="stateBlock.needsAmmunition"
-            matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.needs-ammunition' | translate }}">
+    <mat-icon class="state-icon" [class.minified-state-icon]="_minified" [inline]="_minified"
+              *ngIf="stateBlock.needsAmmunition"
+              matTooltip="{{ 'spacecraft.state.msg.needs-ammunition' | translate }}">
         local_police
     </mat-icon>
 </div>

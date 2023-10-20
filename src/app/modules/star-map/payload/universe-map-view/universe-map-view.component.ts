@@ -12,6 +12,7 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {FormControl} from "@angular/forms";
 import {map} from "rxjs/operators";
 import {Point} from "@svgdotjs/svg.js";
+import {FleetEventService} from "../../../../services/intercom/fleet-event.service";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -33,6 +34,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     centerFormControl = new FormControl('');
 
     constructor(private fleetApi: FleetApiService,
+                private fleetEventService: FleetEventService,
                 private spinnerService: SpinnerService,
                 private backgroundService: BackgroundService,
                 private translate: TranslateService,
@@ -133,7 +135,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 if (indexToRemove != -1) {
                     this.distribution.splice(indexToRemove, 1, marker);
                 }
-            })
+            });
+            this.fleetEventService.reload();
             this.setFleets(this.distribution);
         });
         this.subscriptions.push(sub);

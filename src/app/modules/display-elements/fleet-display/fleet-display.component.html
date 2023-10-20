@@ -10,7 +10,7 @@
                 </div>
             </app-outlined>
         </mat-card-title>
-        <app-spacecraft-state-block-display [stateBlock]="fleet.state" [isFleet]="true" *ngIf="isOwnFleet(fleet)"></app-spacecraft-state-block-display>
+        <app-spacecraft-state-block-display [stateBlock]="fleet.state" isFleet *ngIf="isOwnFleet(fleet)"></app-spacecraft-state-block-display>
     </mat-card-header>
     <mat-card-content class="flex-items-container">
         <ng-content select="[body]"></ng-content>

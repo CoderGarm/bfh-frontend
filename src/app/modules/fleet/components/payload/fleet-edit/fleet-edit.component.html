@@ -20,7 +20,7 @@
                     Retire Fleet
                 </button>
             </mat-card-title>
-            <app-spacecraft-state-block-display [stateBlock]="fleet.state" [isFleet]="true"></app-spacecraft-state-block-display>
+            <app-spacecraft-state-block-display [stateBlock]="fleet.state" isFleet></app-spacecraft-state-block-display>
         </mat-card-header>
         <mat-card-content class="flex-items-container">
             <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
@@ -50,8 +50,7 @@
 
 
                                     <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
-                                    <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
-                                                                        [isWarship]="true"></app-spacecraft-state-block-display>
+                                    <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state" isWarship></app-spacecraft-state-block-display>
                                 </div>
                                 <div class="flex-items-container" style="width: 100%;">
                                     <button mat-raised-button color="primary" class="retire-ship-btn"

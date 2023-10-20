@@ -43,7 +43,15 @@ export interface StateBlock {
      */
     isInYard: boolean;
     /**
+     * The amount of ships in the fleet.
+     */
+    fleetSize?: number;
+    /**
      * If the spacecraft needs ammunition.
      */
     needsAmmunition: boolean;
+    /**
+     * If the spacecraft is moving around.
+     */
+    isInMotion: boolean;
 }

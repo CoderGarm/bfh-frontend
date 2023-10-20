@@ -11,6 +11,7 @@
             <div class="sidenav-expansion-panel">
                 <mat-expansion-panel *ngIf="isLoggedIn && !!route.data && !!route.data['sidenav']"
                                      [class.mat-elevation-z0]="true"
+                                     class="sidenav-expansion-panel-panel"
                                      [expanded]="isSelected(route.path!)">
                     <mat-expansion-panel-header>
                         {{ 'path.menu.' + route.path | translate }}

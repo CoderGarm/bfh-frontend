@@ -1,0 +1,36 @@
+
+app-spacecraft-state-block-display {
+  margin-left: 0 !important;
+}
+
+mat-selection-list {
+  position: relative;
+}
+
+.scaled-item {
+  animation: main 1s;
+  transform-origin: 0 0;
+  animation-fill-mode: forwards;
+  background-color: var(--tertiary-background-color);
+  position: absolute;
+  width: fit-content;
+  z-index: 99;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes main {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+.clone-item {
+  display: none;
+}
+
+.height-fit-content-forced {
+  min-height: 64px !important;
+}

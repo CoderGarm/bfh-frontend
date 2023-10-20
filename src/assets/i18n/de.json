@@ -792,6 +792,7 @@
 				"needs-repair": "Reparatur benötigt",
 				"not-active": "Inaktiv",
 				"not-operational": "Nicht betriebsbereit",
+				"is-in-motion": "In Bewegung",
 				"is-in-yard": "In der Werft"
 			},
 			"title": {
