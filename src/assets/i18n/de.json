@@ -500,7 +500,7 @@
 			"percentage-message": "Kampfbereitschaft",
 			"repair-btn": {
 				"already-in-use": "Es wird bereits gebaut",
-				"is-in-repair": "Wird repariert",
+				"is-in-repair": "In der Werft",
 				"no-repair-needed": "Flotte unbeschädigt",
 				"no-shipyard": "Kein Werft vor Ort",
 				"start-job": "Starte Reparaturauftrag"
@@ -791,7 +791,8 @@
 				"needs-ammunition": "Munition benötigt",
 				"needs-repair": "Reparatur benötigt",
 				"not-active": "Inaktiv",
-				"not-operational": "Nicht betriebsbereit"
+				"not-operational": "Nicht betriebsbereit",
+				"is-in-yard": "In der Werft"
 			},
 			"title": {
 				"fleet": "Flotte",

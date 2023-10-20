@@ -792,7 +792,8 @@
 				"needs-ammunition": "Ammunition needed",
 				"needs-repair": "Repair needed",
 				"not-active": "Inactive",
-				"not-operational": "Inoperational"
+				"not-operational": "Inoperational",
+				"is-in-yard": "In the yard"
 			},
 			"title": {
 				"fleet": "Fleet",

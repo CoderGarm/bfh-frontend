@@ -4,19 +4,32 @@
         {{ 'spacecraft.state.title.fleet' | translate }}
     </div>
     <mat-icon class="state-icon"
-              *ngIf="!stateBlock.isActive"
-              matTooltip="{{ getSubject() | translate }}: {{ 'spacecraft.state.msg.not-active' | translate }}">report_problem
+              *ngIf="stateBlock.isInYard"
+              matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.is-in-yard' | translate }}">
+        construction
     </mat-icon>
+
+    <mat-icon class="state-icon"
+              *ngIf="!stateBlock.isActive"
+              matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.not-active' | translate }}">
+        do_not_disturb_on
+    </mat-icon>
+
     <mat-icon
             *ngIf="!stateBlock.isOperational"
-            matTooltip="{{ getSubject() | translate }}: {{ 'spacecraft.state.msg.not-operational' | translate }}">report_problem
+            matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.not-operational' | translate }}">
+        event_busy
     </mat-icon>
+
     <mat-icon
             *ngIf="stateBlock.needsRepair"
-            matTooltip="{{ getSubject() | translate }}: {{ 'spacecraft.state.msg.needs-repair' | translate }}">report_problem
+            matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.needs-repair' | translate }}">
+        home_repair_service
     </mat-icon>
+
     <mat-icon
             *ngIf="stateBlock.needsAmmunition"
-            matTooltip="{{ getSubject() | translate }}: {{ 'spacecraft.state.msg.needs-ammunition' | translate }}">report_problem
+            matTooltip="{{ prefix | translate }}: {{ 'spacecraft.state.msg.needs-ammunition' | translate }}">
+        local_police
     </mat-icon>
 </div>

@@ -39,6 +39,10 @@ export interface StateBlock {
      */
     needsRepair: boolean;
     /**
+     * If the spacecraft is in the shipyard.
+     */
+    isInYard: boolean;
+    /**
      * If the spacecraft needs ammunition.
      */
     needsAmmunition: boolean;

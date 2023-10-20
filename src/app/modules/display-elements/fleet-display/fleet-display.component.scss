@@ -4,6 +4,17 @@
   position: relative;
 }
 
+.title {
+  & span {
+    font-weight: 700;
+    margin-left: 15px
+  }
+
+  & .flex-items-from-start-container {
+    align-items: center;
+  }
+}
+
 .name-input {
   cursor: text;
 }

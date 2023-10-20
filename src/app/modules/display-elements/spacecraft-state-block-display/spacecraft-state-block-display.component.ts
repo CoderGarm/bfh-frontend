@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {StateBlock} from "../../../services/swagger";
 
 @Component({
@@ -6,7 +6,7 @@ import {StateBlock} from "../../../services/swagger";
     templateUrl: './spacecraft-state-block-display.component.html',
     styleUrls: ['./spacecraft-state-block-display.component.scss']
 })
-export class SpacecraftStateBlockDisplayComponent implements OnInit {
+export class SpacecraftStateBlockDisplayComponent implements OnChanges {
 
     @Input()
     stateBlock?: StateBlock;
@@ -17,16 +17,18 @@ export class SpacecraftStateBlockDisplayComponent implements OnInit {
     @Input()
     isWarship: boolean = false;
 
-    constructor() {
+    prefix: string = '';
+
+    ngOnChanges(changes: SimpleChanges) {
+        this.getSubject();
     }
 
-    ngOnInit(): void {
-    }
 
     getSubject() {
         if (this.isFleet) {
-            return 'spacecraft.state.title.fleet';
+            this.prefix = 'spacecraft.state.title.fleet';
+        } else {
+            this.prefix = 'spacecraft.state.title.warShip';
         }
-        return 'spacecraft.state.title.warShip';
     }
 }

@@ -5,7 +5,9 @@
         <app-icon matCardAvatar png64px [fleetSize]="fleet.ships.length"></app-icon>
         <mat-card-title class="title-block">
             <app-outlined titleValue="{{ 'fleet.composition.fleet-name.title' | translate }}">
-                {{ fleet.name }}
+                <div class="title flex-items-from-start-container">
+                    <span>{{ fleet.name }}</span>
+                </div>
             </app-outlined>
         </mat-card-title>
         <app-spacecraft-state-block-display [stateBlock]="fleet.state" [isFleet]="true" *ngIf="isOwnFleet(fleet)"></app-spacecraft-state-block-display>
