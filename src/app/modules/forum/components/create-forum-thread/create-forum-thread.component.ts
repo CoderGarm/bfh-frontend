@@ -1,7 +1,7 @@
 import {Component, HostListener, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CreateForumThread} from "../../../../services/swagger";
-import {ForumsNotificationService} from "../../forums-notification.service";
+import {ForumsCommunicationService} from "../../forums-communication.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
@@ -28,7 +28,7 @@ export class CreateForumThreadComponent extends SubscriptionManager implements O
     constructor(public dialogRef: MatDialogRef<CreateForumThreadComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: DialogData,
                 private markdownService: MarkdownService,
-                public forumsNotificationService: ForumsNotificationService) {
+                public forumsNotificationService: ForumsCommunicationService) {
         super();
     }
 

@@ -9,7 +9,7 @@ import {MembersListComponent} from './components/payload/members-list/members-li
 import {AllianceCreateComponent} from "./components/payload/alliance-create/alliance-create.component";
 import {AllianceCodeValidatorDirective, AllianceNameValidatorDirective} from "./validators/alliance.validator";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
-import {AllianceNotificationService} from "./alliance-notification.service";
+import {AllianceCommunicationService} from "./alliance-communication.service";
 
 
 @NgModule({
@@ -29,7 +29,7 @@ import {AllianceNotificationService} from "./alliance-notification.service";
         DisplayElementsModule,
     ],
     providers: [
-        AllianceNotificationService,
+        AllianceCommunicationService,
     ]
 })
 export class AllianceModule {

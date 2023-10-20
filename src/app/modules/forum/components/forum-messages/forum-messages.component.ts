@@ -6,6 +6,7 @@ import {tap} from "rxjs/operators";
 import {DatePipe} from "@angular/common";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
 import {timer} from "rxjs";
+import {ForumsCommunicationService} from "../../forums-communication.service";
 
 
 @Component({
@@ -22,7 +23,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     selectedForumThreadDefinition: string = 'selectedForumThread';
 
     messagesInThread?: ForumMessage[];
-    markAsRead: number[] = [];
 
     @ViewChild('paginatorTop', {static: true})
     paginatorTop?: MatPaginator;
@@ -38,17 +38,17 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     noSendAllowed: boolean = false;
 
     now: number;
-    unreadMessages: number[] = [];
 
     constructor(private datePipe: DatePipe,
                 private notif: SnackbarNotificationService,
-                private forumApi: ForumApiService) {
+                protected forumsCommService: ForumsCommunicationService,
+                private forumService: ForumApiService) {
         super();
 
         this.isAdmin = this.tokenStorage.getRole() === EnumValueDto.EWebUserRolesEnum.ADMIN;
         this.now = new Date().getTime();
 
-        let sub = timer(0, 3 * 60 * 1000).subscribe(() => this.markMessagesRead());
+        let sub = timer(0, 3 * 60 * 1000).subscribe(() => this.forumsCommService.markMessagesRead());
         this.subscriptions.push(sub);
     }
 
@@ -59,7 +59,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     ngOnDestroy() {
-        this.markMessagesRead();
+        this.forumsCommService.markMessagesRead();
         super.ngOnDestroy();
     }
 
@@ -105,8 +105,8 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
                     target.classList.forEach(cssClass => {
                         if (cssClass.startsWith('messageId-')) {
                             const idForumMessage = Number.parseInt(cssClass.split('-')[1]);
-                            if (!this.markAsRead.includes(idForumMessage)) {
-                                this.markAsRead.push(idForumMessage);
+                            if (!this.forumsCommService.markAsRead.includes(idForumMessage)) {
+                                this.forumsCommService.markAsRead.push(idForumMessage);
                             }
                         }
                     });
@@ -132,18 +132,18 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             return;
         }
         this.selectedForumThread = thread;
-        let sub = this.forumApi.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize)
+        let sub = this.forumService.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize)
             .subscribe(resp => {
                 this.messagesInThread = resp;
                 for (let i = 0; i < (resp.length >= 3 ? 3 : resp.length); i++) {
                     // just add the first three to mark as read
-                    this.markAsRead.push(resp[i].idForumMessage);
+                    this.forumsCommService.markAsRead.push(resp[i].idForumMessage);
                 }
             });
         this.subscriptions.push(sub);
-        sub = this.forumApi.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
+        sub = this.forumService.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);
         this.subscriptions.push(sub);
-        sub = this.forumApi.getUnreadMessages(thread.idForumThread).subscribe(resp => this.unreadMessages = resp);
+        sub = this.forumService.getUnreadMessages(thread.idForumThread).subscribe(resp => this.forumsCommService.unreadMessages = resp);
         this.subscriptions.push(sub);
     }
 
@@ -152,36 +152,23 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             if (!!this.msgToEdit) {
                 let message: ForumMessage = this.msgToEdit;
                 this.msgToEdit.message = txt;
-                let sub = this.forumApi.editThreadMessage(message).subscribe(() => this.selectThread(this.selectedForumThread));
+                let sub = this.forumService.editThreadMessage(message).subscribe(() => this.selectThread(this.selectedForumThread));
                 this.subscriptions.push(sub);
             } else {
                 let message: CreateForumThreadMessage = {
                     message: txt,
                     idForumThread: this.selectedForumThread.idForumThread
                 }
-                let sub = this.forumApi.createThreadMessage(message).subscribe(() => this.selectThread(this.selectedForumThread));
+                let sub = this.forumService.createThreadMessage(message).subscribe(() => this.selectThread(this.selectedForumThread));
                 this.subscriptions.push(sub);
             }
             this.msgToEdit = undefined;
         }
     }
 
-    private markMessagesRead() {
-        if (this.markAsRead.length == 0) {
-            return;
-        }
-
-        const toMarkAsRead = this.markAsRead.filter(idForumMessage => this.unreadMessages.includes(idForumMessage));
-        toMarkAsRead.forEach(idForumMessage =>
-            this.forumApi.markForumMessageRead({idMessage: idForumMessage}).subscribe(() => {
-                const indexOf = this.markAsRead.indexOf(idForumMessage);
-                this.markAsRead.splice(indexOf, 1);
-            }));
-    }
-
     sendAsMail(message: ForumMessage) {
         this.noSendAllowed = true;
-        let sub = this.forumApi.distributeRelease(message.idForumThread).subscribe(() => {
+        let sub = this.forumService.distributeRelease(message.idForumThread).subscribe(() => {
             this.notif.open("Mail sent to all receivers.");
         });
         this.subscriptions.push(sub);

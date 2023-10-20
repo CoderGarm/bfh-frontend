@@ -2,7 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import {Alliance, AllianceApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {AllianceHelper} from "../../../alliance.helper";
-import {AllianceNotificationService} from "../../../alliance-notification.service";
+import {AllianceCommunicationService} from "../../../alliance-communication.service";
 
 @Component({
     selector: 'app-alliance-tab-view',
@@ -19,7 +19,7 @@ export class AllianceTabViewComponent extends SubscriptionManager implements Aft
     applicationOpenAt: Alliance[] = [];
 
     constructor(private allianceApi: AllianceApiService,
-                private allyNotificationService: AllianceNotificationService) {
+                private allyNotificationService: AllianceCommunicationService) {
         super();
 
         let sub = this.allyNotificationService.askCreation().subscribe(() => this.fetchBaseData());

@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@an
 import {Forum, ForumApiService, ForumThread} from "../../../../services/swagger";
 import {MatPaginator} from "@angular/material/paginator";
 import {SubscriptionManager} from "../../../../subscription.manager";
-import {ForumsNotificationService} from "../../forums-notification.service";
+import {ForumsCommunicationService} from "../../forums-communication.service";
 
 @Component({
     selector: 'app-forums-list',
@@ -31,7 +31,7 @@ export class ForumsListComponent extends SubscriptionManager implements OnInit, 
 
     hasUnreadByIdForum: Map<number, boolean> = new Map<number, boolean>();
 
-    constructor(private forumApi: ForumApiService, private forumsNotificationService: ForumsNotificationService) {
+    constructor(private forumApi: ForumApiService, private forumsNotificationService: ForumsCommunicationService) {
         super();
     }
 

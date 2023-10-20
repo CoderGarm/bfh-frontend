@@ -4,7 +4,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {AllianceErrorMessages} from "../../../validators/alliance.validator";
-import {AllianceNotificationService} from "../../../alliance-notification.service";
+import {AllianceCommunicationService} from "../../../alliance-communication.service";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({
@@ -22,7 +22,7 @@ export class AllianceCreateComponent extends SubscriptionManager implements OnIn
     });
 
     constructor(private allianceApi: AllianceApiService,
-                private allyNotificationService: AllianceNotificationService,
+                private allyNotificationService: AllianceCommunicationService,
                 private snackbarService: SnackbarNotificationService) {
         super();
     }

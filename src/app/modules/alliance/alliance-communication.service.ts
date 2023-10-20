@@ -4,7 +4,7 @@ import {EventEmitter, Injectable} from "@angular/core";
  * Plain and simple service to open a snackbar.
  */
 @Injectable()
-export class AllianceNotificationService {
+export class AllianceCommunicationService {
 
     private allyCreatedEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 

@@ -3,7 +3,7 @@ import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {ForumsListComponent} from './components/forums-list/forums-list.component';
 import {ForumMessagesComponent} from './components/forum-messages/forum-messages.component';
 import {ForumThreadsComponent} from './components/forum-threads/forum-threads.component';
-import {ForumsNotificationService} from "./forums-notification.service";
+import {ForumsCommunicationService} from "./forums-communication.service";
 import {CreateForumThreadComponent} from './components/create-forum-thread/create-forum-thread.component';
 
 
@@ -18,10 +18,10 @@ import {CreateForumThreadComponent} from './components/create-forum-thread/creat
         SharedModuleModule,
     ],
     exports: [
-        ForumsListComponent
+        ForumsListComponent,
     ],
     providers: [
-        ForumsNotificationService
+        ForumsCommunicationService
     ]
 })
 export class ForumModule {

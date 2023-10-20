@@ -2,7 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, Simple
 import {CreateForumThread, Forum, ForumApiService, ForumThread} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {ForumsNotificationService} from "../../forums-notification.service";
+import {ForumsCommunicationService} from "../../forums-communication.service";
 import {tap} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateForumThreadComponent} from "../create-forum-thread/create-forum-thread.component";
@@ -45,12 +45,12 @@ export class ForumThreadsComponent extends SubscriptionManager implements AfterV
     hasUnreadByIdForumThread: Map<number, boolean> = new Map<number, boolean>();
 
     constructor(private forumApi: ForumApiService,
-                private forumsNotificationService: ForumsNotificationService,
+                private forumsCommunicationService: ForumsCommunicationService,
                 private dialog: MatDialog) {
         super();
-        let sub = this.forumsNotificationService.askDeselectThread().subscribe(event => this.selectedForumThread = undefined);
+        let sub = this.forumsCommunicationService.askDeselectThread().subscribe(event => this.selectedForumThread = undefined);
         this.subscriptions.push(sub);
-        sub = this.forumsNotificationService.askCreatedThread().subscribe(createdThread => this.createdThread = createdThread);
+        sub = this.forumsCommunicationService.askCreatedThread().subscribe(createdThread => this.createdThread = createdThread);
         this.subscriptions.push(sub);
     }
 
@@ -142,12 +142,12 @@ export class ForumThreadsComponent extends SubscriptionManager implements AfterV
 
     openCreateThreadDialog() {
         const dialogConfig = DialogConfigHelper.createDialog();
-        this.forumsNotificationService.selectedForum = this.selectedForum;
+        this.forumsCommunicationService.selectedForum = this.selectedForum;
         const dialogRef = this.dialog.open(CreateForumThreadComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.createThread(this.createdThread);
-                this.forumsNotificationService.selectedForum = undefined;
+                this.forumsCommunicationService.selectedForum = undefined;
             }
             this.createdThread = undefined;
         })

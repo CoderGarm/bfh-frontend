@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../subscription.manager";
 import {NavigationCommunicationService} from "../navigation/navigation-communication.service";
+import {ForumsCommunicationService} from "../../modules/forum/forums-communication.service";
 
 @Injectable()
 export class AuthenticationService extends SubscriptionManager implements AuthService {
@@ -22,6 +23,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
     constructor(private router: Router,
                 private authService: AuthApiService,
                 private navService: NavigationCommunicationService,
+                private forumsCommService: ForumsCommunicationService,
                 private permissionsService: NgxPermissionsService) {
         super();
     }
@@ -130,6 +132,13 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
     }
 
     logout(): void {
+        let sub = this.forumsCommService.markMessagesRead().subscribe(() => {
+            this.processLogout();
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private processLogout() {
         this.tokenStorage.clear();
         this.permissionsService.flushPermissions();
         this.clearAccessData();
