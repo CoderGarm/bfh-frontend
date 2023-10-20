@@ -74,7 +74,7 @@
 
             <mat-grid-tile *ngIf="pJob.shipyard!.length == 0"></mat-grid-tile>
             <mat-grid-tile>
-                <mat-list-item style="height: 100%;" class="job-item" *ngFor="let job of pJob.shipyard">
+                <mat-list-item style="height: 100%;" class="job-item" *ngFor="let job of selectJobsToDisplay(pJob.shipyard)">
                     <app-icon matListItemAvatar [png32px]="pJob.shipyard?.length == 1"
                               [icon]="job.facility.building.productionTarget"
                               [altText]="job.facility.building.productionTarget.typeName"

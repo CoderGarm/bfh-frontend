@@ -41,6 +41,7 @@ export interface EnumValueDto {
     eWebUserRoles?: Array<EnumValueDto.EWebUserRolesEnum>;
     eJobTypes?: Array<EnumValueDto.EJobTypesEnum>;
     eStarNations?: Array<EnumValueDto.EStarNationsEnum>;
+    eJobPriorities?: Array<EnumValueDto.EJobPrioritiesEnum>;
 }
 export namespace EnumValueDto {
     export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
@@ -269,5 +270,10 @@ export namespace EnumValueDto {
         ANDERMAN: 'ANDERMAN' as EStarNationsEnum,
         SILESIA: 'SILESIA' as EStarNationsEnum,
         SOLARIAN_LEAGUE: 'SOLARIAN_LEAGUE' as EStarNationsEnum
+    };
+    export type EJobPrioritiesEnum = 'NONE' | 'PRIORITY';
+    export const EJobPrioritiesEnum = {
+        NONE: 'NONE' as EJobPrioritiesEnum,
+        PRIORITY: 'PRIORITY' as EJobPrioritiesEnum
     };
 }

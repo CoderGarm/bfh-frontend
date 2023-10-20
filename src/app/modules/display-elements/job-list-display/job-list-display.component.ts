@@ -3,6 +3,7 @@ import {EShipClassType, Fleet, Job, JobApiService, Planet} from "../../../servic
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 
+
 export interface PlanetaryJobs {
     idPlanet: number,
     planet: Planet,
@@ -197,5 +198,17 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
             });
             this.subscriptions.push(sub);
         }
+    }
+
+    selectJobsToDisplay(shipyardJobs: Job[] | undefined): Job[] {
+        if (!shipyardJobs) {
+            return [];
+        }
+        const prioJobs = shipyardJobs!.filter(j => j.priority == Job.PriorityEnum.PRIORITY);
+        if (prioJobs.length > 0) {
+            const sorted = prioJobs.sort((a, b) => a.ticksLeft - b.ticksLeft);
+            return [sorted[0]];
+        }
+        return shipyardJobs!;
     }
 }

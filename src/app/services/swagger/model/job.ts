@@ -36,7 +36,7 @@ export interface Job {
     /**
      * The priority of the job.
      */
-    priority: string;
+    priority: Job.PriorityEnum;
     /**
      * Is this a building job build.
      */
@@ -60,4 +60,11 @@ export interface Job {
      */
     targetLevel?: number;
     fleet?: Fleet;
+}
+export namespace Job {
+    export type PriorityEnum = 'NONE' | 'PRIORITY';
+    export const PriorityEnum = {
+        NONE: 'NONE' as PriorityEnum,
+        PRIORITY: 'PRIORITY' as PriorityEnum
+    };
 }
