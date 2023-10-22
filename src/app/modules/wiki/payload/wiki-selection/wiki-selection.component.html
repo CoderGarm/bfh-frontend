@@ -1,10 +1,21 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-    <div mat-subheader>{{ 'wiki.selection.content.menu-entry' | translate }}</div>
     <mat-divider></mat-divider>
+
+    <div mat-subheader>{{ 'wiki.selection.content.menu-entry' | translate }}</div>
+
+    <mat-select [(value)]="langCode" (valueChange)="displayArticles()" class="small">
+        <mat-option [value]="'nope'">{{ 'wiki.selection.language.placeholder-option' | translate }}</mat-option>
+        <mat-option *ngFor="let lang of possibleLanguages" [value]="lang">
+            {{ lang }}
+        </mat-option>
+    </mat-select>
+
+    <mat-divider></mat-divider>
+
     <div *ngFor="let entry of display | keyvalue" class="category-block">
-        <div mat-subheader>{{getDisplayName(entry.key)}}</div>
+        <div mat-subheader>{{ getDisplayName(entry.key) }}</div>
         <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)">
-            {{article.title}}
+            {{ article.title }}
         </mat-list-option>
     </div>
 </mat-selection-list>

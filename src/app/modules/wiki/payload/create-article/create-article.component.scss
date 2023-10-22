@@ -11,12 +11,20 @@
   margin-right: 15px;
 }
 
+.full-width {
+  width: 70%;
+}
+
 mat-mdc-select {
   width: 150px;
 }
 
 .small {
   width: 150px;
+}
+
+.suffix, .prefix {
+  margin: 0 10px 0 10px;
 }
 
 .angular-markdown-editor-minimalistic {

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, Renderer2} from '@angular/core';
+import {Component, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
 import {AuthenticationService} from './services/authentication';
 import {NavigationCreationService} from './services/navigation/navigation-creation.service';
@@ -27,6 +27,7 @@ import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {TopicSelectorComponent} from "./modules/tutorial/topic-selector/topic-selector.component";
 import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
 import {ColorSchemeService} from "./services/color-scheme.service";
+import {MatDrawer} from "@angular/material/sidenav";
 
 @Component({
     selector: 'app-root',
@@ -57,6 +58,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     screenHeight?: number;
     screenWidth?: number;
+
+    @ViewChild('drawer')
+    drawer!: MatDrawer;
 
     constructor(private colorSchemeService: ColorSchemeService,
                 private renderer: Renderer2,
@@ -220,6 +224,11 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         });
         const path = this.navService.activeRoute.path;
         this.isNoScroll = this.noScrollingForFullSection.includes(path!, 0);
+
+        console.log(path)
+        if (WikiMainComponent.path === path) {
+            this.drawer.close();
+        }
     }
 
     setUnread(hasUnread: boolean, path: string) {

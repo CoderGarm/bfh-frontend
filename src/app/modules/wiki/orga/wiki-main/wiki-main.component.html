@@ -3,13 +3,12 @@
                         (selectedArticleEmitter)="setArticle($event)"
                         [articleChangeReceiver]="articleChangeEmitter"></app-wiki-selection>
     <app-wiki-header header
-                     headline="header works"
                      (pageTypeEmitter)="pageType = $event"
                      [pageTypeReceiver]="pageTypeEmitter"
                      (articleEmitter)="setArticle($event)"></app-wiki-header>
 
     <div body *ngIf="isHome()">
-        <p>Nothing to see here.</p>
+        <p>You want to write an article? Request permission!</p>
     </div>
 
     <app-display-article body *ngIf="isDisplay()"

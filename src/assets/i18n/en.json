@@ -789,12 +789,12 @@
 	"spacecraft": {
 		"state": {
 			"msg": {
+				"is-in-motion": "In motion",
+				"is-in-yard": "In the yard",
 				"needs-ammunition": "Ammunition needed",
 				"needs-repair": "Repair needed",
 				"not-active": "Inactive",
-				"not-operational": "Inoperational",
-				"is-in-motion": "In motion",
-				"is-in-yard": "In the yard"
+				"not-operational": "Inoperational"
 			},
 			"title": {
 				"fleet": "Fleet",
@@ -954,6 +954,9 @@
 		"selection": {
 			"content": {
 				"menu-entry": "Articles"
+			},
+			"language": {
+				"placeholder-option": "Chose language"
 			},
 			"orga": {
 				"menu-entry": "Orga"

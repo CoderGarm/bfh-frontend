@@ -44,12 +44,13 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
     markdownText: string = this.template;
 
     constructor(private markdownService: MarkdownService,
-                private wikiApi: WikiApiService) {
+                private wikiService: WikiApiService) {
         super();
     }
 
     ngOnInit() {
-        this.wikiApi.getPossibleLanguages().subscribe(resp => this.possibleLanguages = resp);
+        let sub = this.wikiService.getPossibleLanguages().subscribe(resp => this.possibleLanguages = resp);
+        this.subscriptions.push(sub);
         this.editorOptions = {
             iconlibrary: 'fa',
             fullscreen: {

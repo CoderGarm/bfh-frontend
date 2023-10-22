@@ -7,3 +7,12 @@
   padding: 5px;
   background-color: var(--secondary-background-color);
 }
+
+.mat-mdc-selection-list {
+  min-width: 184px;
+}
+
+.mat-mdc-select {
+  width: 80%;
+  margin: calc((3rem - 1.5rem) / 2) 16px;
+}

@@ -6,6 +6,7 @@ import {SubscriptionManager} from "../../subscription.manager";
 import {NavigationCreationService} from "../../services/navigation/navigation-creation.service";
 import {CurrentTickService} from "../../services/intercom/current-tick.service";
 import {ColorSchemeService} from "../../services/color-scheme.service";
+import {NavigationCommunicationService} from "../../services/navigation/navigation-communication.service";
 import RoleEnum = JWT.RoleEnum;
 
 
@@ -32,6 +33,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     constructor(private router: Router,
                 private colorSchemeService: ColorSchemeService,
                 private authenticationService: AuthenticationService,
+                private navService: NavigationCommunicationService,
                 private tickApi: TickApiService,
                 private adminApi: AdminApiService,
                 protected currentTickService: CurrentTickService) {
@@ -96,7 +98,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
         this.activeRoute = route;
         this.router.navigateByUrl("/" + route.path).then(() => {
         });
-        const path = this.activeRoute.path;
+        this.navService.navigate(route);
     }
 
     @HostListener('window:beforeunload', ['$event'])

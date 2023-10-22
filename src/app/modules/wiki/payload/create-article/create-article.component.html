@@ -1,7 +1,7 @@
 <div class="container">
-    <mat-form-field class="example-full-width mar-ri" appearance="outline">
+    <mat-form-field class="full-width mar-ri" appearance="outline">
         <mat-label>{{ 'wiki.article.create.title' | translate }}</mat-label>
-        <input matInput type='text' [value]="title" disabled required autocomplete="off">
+        <input matInput type='text' [value]="title" disabled required autocomplete="off"> <!-- fixme make nicer look and selection -->
     </mat-form-field>
     <mat-select [(value)]="langCode" class="mar-ri small">
         <mat-option *ngFor="let lang of possibleLanguages" [value]="lang">
@@ -13,7 +13,7 @@
             {{lang}}
         </mat-option>
     </mat-select>
-    <button mat-raised-button class="mar-ri" color="secondary" type="submit" (click)="submit()" [disabled]="canSend()">{{ 'wiki.article.create.button' | translate }}</button>
+    <button mat-raised-button class="mar-ri" color="primary" type="submit" (click)="submit()" [disabled]="canSend()">{{ 'wiki.article.create.button' | translate }}</button>
 </div>
 <div class="container">
     <angular-markdown-editor

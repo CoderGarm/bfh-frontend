@@ -25,6 +25,9 @@ export class WikiSelectionComponent extends SubscriptionManager implements OnIni
 
     isWikiAdmin: boolean = false;
 
+    langCode: string = 'nope';
+    possibleLanguages: string[] = [];
+
     constructor(private wikiService: WikiApiService) {
         super();
 
@@ -32,8 +35,10 @@ export class WikiSelectionComponent extends SubscriptionManager implements OnIni
     }
 
     ngOnInit(): void {
+        let sub = this.wikiService.getPossibleLanguages().subscribe(resp => this.possibleLanguages = resp);
+        this.subscriptions.push(sub);
         this.fetchAllArticles();
-        let sub = this.articleChangeReceiver.subscribe(resp => {
+        sub = this.articleChangeReceiver.subscribe(resp => {
             this.fetchAllArticles();
             this.chose(resp);
         })
@@ -43,8 +48,17 @@ export class WikiSelectionComponent extends SubscriptionManager implements OnIni
     private fetchAllArticles() {
         let sub = this.wikiService.getAllArticles().subscribe(resp => {
             this.articles = resp;
-            const display: Map<EWikiCategoriesEnum, Article[]> = new Map<EnumValueDto.EWikiCategoriesEnum, Article[]>();
-            this.articles.forEach(a => {
+            this.displayArticles();
+        });
+        this.subscriptions.push(sub);
+    }
+
+    displayArticles() {
+        const display: Map<EWikiCategoriesEnum, Article[]> = new Map<EnumValueDto.EWikiCategoriesEnum, Article[]>();
+        console.log(this.langCode)
+        this.articles
+            .filter(a => this.langCode != 'nope' ? a.langCode === this.langCode : true)
+            .forEach(a => {
                 const category = a.wikiCategory;
                 let arr = display.get(category);
                 if (!arr) {
@@ -53,14 +67,11 @@ export class WikiSelectionComponent extends SubscriptionManager implements OnIni
                 arr.push(a);
                 display.set(category, arr);
             });
-            if (!this.isWikiAdmin) {
-                display.delete(EWikiCategoriesEnum.WELCOMEMESSAGE);
-            }
-            this.display = display;
-        });
-        this.subscriptions.push(sub);
+        if (!this.isWikiAdmin) {
+            display.delete(EWikiCategoriesEnum.WELCOMEMESSAGE);
+        }
+        this.display = display;
     }
-
 
     chose(article: Article) {
         this.article = article;
