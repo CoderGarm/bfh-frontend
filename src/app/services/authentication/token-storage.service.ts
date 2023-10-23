@@ -107,6 +107,11 @@ export class TokenStorage {
         return roles;
     }
 
+    isRole(gameRole: JWT.GameUserRolesEnum) {
+        const index: number = this.getGameRoles().indexOf(gameRole);
+        return index != -1;
+    }
+
     getUserID(): number {
         const token: string = <string>localStorage.getItem(this.userID);
         return Number(token);

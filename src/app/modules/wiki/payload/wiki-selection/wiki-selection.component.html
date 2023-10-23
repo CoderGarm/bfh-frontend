@@ -1,7 +1,4 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-    <mat-divider></mat-divider>
-
-    <div mat-subheader>{{ 'wiki.selection.content.menu-entry' | translate }}</div>
 
     <mat-select [(value)]="langCode" (valueChange)="displayArticles()" class="small">
         <mat-option [value]="'nope'">{{ 'wiki.selection.language.placeholder-option' | translate }}</mat-option>
@@ -11,11 +8,26 @@
     </mat-select>
 
     <mat-divider></mat-divider>
+    <div mat-subheader>{{ 'wiki.selection.content.menu-entry' | translate }}</div>
+    <mat-divider></mat-divider>
 
-    <div *ngFor="let entry of display | keyvalue" class="category-block">
-        <div mat-subheader>{{ getDisplayName(entry.key) }}</div>
-        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)">
-            {{ article.title }}
+    <div *ngFor="let entry of standardArticles | keyvalue" class="category-block">
+        <div mat-subheader>{{ entry.key }}</div>
+        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)" matTooltip="{{ article.title }}">
+            <span matListItemTitle>{{ article.title }}</span>
+            {{ article.langCode }}
+        </mat-list-option>
+    </div>
+
+    <mat-divider style="margin-top: 15px;"></mat-divider>
+    <div mat-subheader>{{ 'wiki.selection.tutorial-content.menu-entry' | translate }}</div>
+    <mat-divider></mat-divider>
+
+    <div *ngFor="let entry of tutorialArticles | keyvalue" class="category-block">
+        <div mat-subheader>{{ entry.key }}</div>
+        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)" matTooltip="{{ article.title }}">
+            <span matListItemTitle>{{ article.title }}</span>
+            {{ article.langCode }}
         </mat-list-option>
     </div>
 </mat-selection-list>

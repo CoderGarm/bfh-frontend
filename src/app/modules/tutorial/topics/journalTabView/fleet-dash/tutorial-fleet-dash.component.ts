@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Topic, TutorialScopeService} from "../../../tutorial-scope.service";
+import {EnumValueDto} from "../../../../../services/swagger";
 
 @Component({
     selector: 'tut-fleet-dash',
@@ -9,7 +10,7 @@ import {Topic, TutorialScopeService} from "../../../tutorial-scope.service";
 export class TutorialFleetDashComponent {
 
     public static TOPIC: Topic = {
-        uuid: 'dash-fleet-journal',
+        uuid: EnumValueDto.ETutorialCategoriesEnum.FLEET_DASH,
         title: 'Fleet Dashboard',
         subTitle: 'All about fleets'
     }

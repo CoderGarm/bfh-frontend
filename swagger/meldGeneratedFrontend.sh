@@ -18,7 +18,7 @@ echo 'editing models'
 cd swaggerGenerated/model/ || exit 1
 for filename in ./*; do
   if [[ $filename == './userReq.ts' ]]; then
-    echo "replacing boolean primitive by wrapper because a primitive boolean will not be 'rendered' in a http post request for whatever reasons"
+    #echo "replacing boolean primitive by wrapper because a primitive boolean will not be 'rendered' in a http post request for whatever reasons"
     lineNo=$(awk "/noEMailWanted: boolean;/{ print NR; exit }" $filename)
     if [[ ! -z "$lineNo" ]]; then
       cmd=$(echo -n "$lineNo")
@@ -26,7 +26,7 @@ for filename in ./*; do
       sed -i "$cmd$cmd2" $filename
     fi
   fi
-  echo "replacing enum constants with camel case"
+  #echo "replacing enum constants with camel case"
   sed -i 's/ALLIANCEADMIN/ALLIANCE_ADMIN/' $filename
   sed -i 's/WIKIADMIN/WIKI_ADMIN/' $filename
   sed -i 's/FORUMREAD/FORUM_READ/' $filename
@@ -52,6 +52,24 @@ for filename in ./*; do
   sed -i 's/TRANSPORTATIONDEMAND/TRANSPORTATION_DEMAND/' $filename
   sed -i 's/TRANSPORTATIONDELIVERY/TRANSPORTATION_DELIVERY/' $filename
   sed -i 's/SOLARIANLEAGUE/SOLARIAN_LEAGUE/' $filename
+  sed -i 's/WELCOMEMESSAGE/WELCOME_MESSAGE/' $filename
+  sed -i 's/MISSIONTYPES/MISSION_TYPES/' $filename
+  sed -i 's/GAMEMECHANICS/GAME_MECHANICS/' $filename
+  sed -i 's/FLEETDASH/FLEET_DASH/' $filename
+  sed -i 's/JOBDASH/JOB_DASH/' $filename
+  sed -i 's/TRADEDASH/TRADE_DASH/' $filename
+  sed -i 's/INFRADASH/INFRA_DASH/' $filename
+  sed -i 's/BATTLEDASH/BATTLE_DASH/' $filename
+  sed -i 's/PLANETDASH/PLANET_DASH/' $filename
+  sed -i 's/PLANETCONSTRUCTIONS/PLANET_CONSTRUCTIONS/' $filename
+  sed -i 's/PLANETSHIPYARD/PLANET_SHIPYARD/' $filename
+  sed -i 's/MARKETPLACE/MARKETPLACE/' $filename
+  sed -i 's/INNEREMPIRETRANSPORTATION/INNER_EMPIRE_TRANSPORTATION/' $filename
+  sed -i 's/UNIVERSEMAP/UNIVERSE_MAP/' $filename
+  sed -i 's/STARMAP/STAR_MAP/' $filename
+  sed -i 's/MISSION/MISSION/' $filename
+  sed -i 's/COLONIZATIONINFO/COLONIZATION_INFO/' $filename
+  sed -i 's/FLEETDETACHMENT/FLEET_DETACHMENT/' $filename
 done
 
 cd ../..

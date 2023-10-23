@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {TopicSelectorComponent} from './topic-selector/topic-selector.component';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
-import {TutorialDisplayComponent} from "./tutorial-display/tutorial-display.component";
+import {TutorialDisplayComponent} from "./components/tutorial-display/tutorial-display.component";
 import {TutorialFleetDashComponent} from './topics/journalTabView/fleet-dash/tutorial-fleet-dash.component';
 import {TutorialJobDashComponent} from './topics/journalTabView/job-dash/tutorial-job-dash.component';
 import {TutorialTradeDashComponent} from './topics/journalTabView/trade-dash/tutorial-trade-dash.component';
@@ -18,6 +18,9 @@ import {TutorialStarMapComponent} from './topics/starMapTabView/tutorial-star-ma
 import {TutorialMissionComponent} from "./topics/stratOpsTabView/tutorial-star-map/tutorial-mission.component";
 import {TutorialColonizationInfoComponent} from './topics/expansionTabView/colonization-info/tutorial-colonization-info.component';
 import {TutorialFleetDetachmentComponent} from './topics/fleetTabView/tutorial-fleet-detachment/tutorial-fleet-detachment.component';
+import {TutorialCategoryDisplayComponent} from './components/tutorial-category-display/tutorial-category-display.component';
+import {WikiModule} from "../wiki/wiki.module";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
@@ -39,10 +42,13 @@ import {TutorialFleetDetachmentComponent} from './topics/fleetTabView/tutorial-f
         TutorialMissionComponent,
         TutorialColonizationInfoComponent,
         TutorialFleetDetachmentComponent,
+        TutorialCategoryDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
         DisplayElementsModule,
+        WikiModule,
+        NgxSpinnerModule,
     ]
 })
 export class TutorialModule {

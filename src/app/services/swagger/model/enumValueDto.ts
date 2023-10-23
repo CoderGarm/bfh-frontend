@@ -42,6 +42,7 @@ export interface EnumValueDto {
     eJobTypes?: Array<EnumValueDto.EJobTypesEnum>;
     eStarNations?: Array<EnumValueDto.EStarNationsEnum>;
     eJobPriorities?: Array<EnumValueDto.EJobPrioritiesEnum>;
+    eTutorialCategories?: Array<EnumValueDto.ETutorialCategoriesEnum>;
 }
 export namespace EnumValueDto {
     export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
@@ -181,9 +182,9 @@ export namespace EnumValueDto {
     };
     export type EWikiCategoriesEnum = 'WELCOME_MESSAGE' | 'MISSION_TYPES' | 'GAME_MECHANICS';
     export const EWikiCategoriesEnum = {
-        WELCOMEMESSAGE: 'WELCOME_MESSAGE' as EWikiCategoriesEnum,
-        MISSIONTYPES: 'MISSION_TYPES' as EWikiCategoriesEnum,
-        GAMEMECHANICS: 'GAME_MECHANICS' as EWikiCategoriesEnum
+        WELCOME_MESSAGE: 'WELCOME_MESSAGE' as EWikiCategoriesEnum,
+        MISSION_TYPES: 'MISSION_TYPES' as EWikiCategoriesEnum,
+        GAME_MECHANICS: 'GAME_MECHANICS' as EWikiCategoriesEnum
     };
     export type EMissionTypesEnum = 'PIRATE_RAID' | 'PIRATE_HUNT' | 'CONVOY_PROTECTION' | 'CONVOY_RAID';
     export const EMissionTypesEnum = {
@@ -275,5 +276,23 @@ export namespace EnumValueDto {
     export const EJobPrioritiesEnum = {
         NONE: 'NONE' as EJobPrioritiesEnum,
         PRIORITY: 'PRIORITY' as EJobPrioritiesEnum
+    };
+    export type ETutorialCategoriesEnum = 'FLEET_DASH' | 'JOB_DASH' | 'TRADE_DASH' | 'INFRA_DASH' | 'BATTLE_DASH' | 'PLANET_DASH' | 'PLANET_CONSTRUCTIONS' | 'PLANET_SHIPYARD' | 'MARKETPLACE' | 'INNER_EMPIRE_TRANSPORTATION' | 'UNIVERSE_MAP' | 'STAR_MAP' | 'MISSION' | 'COLONIZATION_INFO' | 'FLEET_DETACHMENT';
+    export const ETutorialCategoriesEnum = {
+        FLEET_DASH: 'FLEET_DASH' as ETutorialCategoriesEnum,
+        JOB_DASH: 'JOB_DASH' as ETutorialCategoriesEnum,
+        TRADE_DASH: 'TRADE_DASH' as ETutorialCategoriesEnum,
+        INFRA_DASH: 'INFRA_DASH' as ETutorialCategoriesEnum,
+        BATTLE_DASH: 'BATTLE_DASH' as ETutorialCategoriesEnum,
+        PLANET_DASH: 'PLANET_DASH' as ETutorialCategoriesEnum,
+        PLANET_CONSTRUCTIONS: 'PLANET_CONSTRUCTIONS' as ETutorialCategoriesEnum,
+        PLANET_SHIPYARD: 'PLANET_SHIPYARD' as ETutorialCategoriesEnum,
+        MARKETPLACE: 'MARKETPLACE' as ETutorialCategoriesEnum,
+        INNER_EMPIRE_TRANSPORTATION: 'INNER_EMPIRE_TRANSPORTATION' as ETutorialCategoriesEnum,
+        UNIVERSE_MAP: 'UNIVERSE_MAP' as ETutorialCategoriesEnum,
+        STAR_MAP: 'STAR_MAP' as ETutorialCategoriesEnum,
+        MISSION: 'MISSION' as ETutorialCategoriesEnum,
+        COLONIZATION_INFO: 'COLONIZATION_INFO' as ETutorialCategoriesEnum,
+        FLEET_DETACHMENT: 'FLEET_DETACHMENT' as ETutorialCategoriesEnum
     };
 }

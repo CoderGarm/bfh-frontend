@@ -960,6 +960,15 @@
 			},
 			"orga": {
 				"menu-entry": "Orga"
+			},
+			"tutorial-content": {
+				"menu-entry": "Tutorial articles"
+			},
+			"tutorial": {
+				"placeholder-option": "Which tutorial should show this article?"
+			},
+			"wiki-category": {
+				"placeholder-option": "Chose the category of this article."
 			}
 		}
 	}

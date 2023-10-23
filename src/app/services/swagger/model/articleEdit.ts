@@ -34,8 +34,8 @@ export interface ArticleEdit {
 export namespace ArticleEdit {
     export type WikiCategoryEnum = 'WELCOME_MESSAGE' | 'MISSION_TYPES' | 'GAME_MECHANICS';
     export const WikiCategoryEnum = {
-        WELCOMEMESSAGE: 'WELCOME_MESSAGE' as WikiCategoryEnum,
-        MISSIONTYPES: 'MISSION_TYPES' as WikiCategoryEnum,
-        GAMEMECHANICS: 'GAME_MECHANICS' as WikiCategoryEnum
+        WELCOME_MESSAGE: 'WELCOME_MESSAGE' as WikiCategoryEnum,
+        MISSION_TYPES: 'MISSION_TYPES' as WikiCategoryEnum,
+        GAME_MECHANICS: 'GAME_MECHANICS' as WikiCategoryEnum
     };
 }

@@ -1,19 +1,41 @@
 <div class="container">
+
     <mat-form-field class="full-width mar-ri" appearance="outline">
         <mat-label>{{ 'wiki.article.create.title' | translate }}</mat-label>
         <input matInput type='text' [value]="title" disabled required autocomplete="off"> <!-- fixme make nicer look and selection -->
     </mat-form-field>
-    <mat-select [(value)]="langCode" class="mar-ri small">
-        <mat-option *ngFor="let lang of possibleLanguages" [value]="lang">
-            {{lang}}
-        </mat-option>
-    </mat-select>
-    <mat-select [(value)]="type" class="mar-ri small">
-        <mat-option *ngFor="let lang of possibleTypes" [value]="lang">
-            {{lang}}
-        </mat-option>
-    </mat-select>
-    <button mat-raised-button class="mar-ri" color="primary" type="submit" (click)="submit()" [disabled]="canSend()">{{ 'wiki.article.create.button' | translate }}</button>
+
+    <div class="flex-items-from-start-container">
+        <mat-form-field appearance="outline">
+            <mat-label>{{ 'wiki.selection.language.placeholder-option' | translate }}</mat-label>
+            <mat-select [(value)]="langCode" class="small">
+                <mat-option *ngFor="let lang of possibleLanguages" [value]="lang">
+                    {{ lang }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="description-field">
+            <mat-label>{{ 'wiki.selection.wiki-category.placeholder-option' | translate }}</mat-label>
+            <mat-select [(value)]="wikiCategory" [disabled]="!!tutorialType">
+                <mat-option *ngFor="let type of possibleTypes" [value]="type">
+                    {{type}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="description-field">
+            <mat-label>{{ 'wiki.selection.tutorial.placeholder-option' | translate }}</mat-label>
+            <mat-select [(value)]="tutorialType" (valueChange)="setTutType()">
+                <mat-option (select)="tutorialType = undefined;">-</mat-option>
+                <mat-option *ngFor="let tutType of tutTypes" [value]="tutType">
+                    {{ tutType }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <button mat-raised-button class="mar-ri" color="primary" type="submit" (click)="submit()" [disabled]="canNotSend()">{{ 'wiki.article.create.button' | translate }}</button>
 </div>
 <div class="container">
     <angular-markdown-editor

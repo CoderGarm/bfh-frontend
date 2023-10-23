@@ -3,9 +3,11 @@ import {SubscriptionManager} from "../../../../subscription.manager";
 import {EditorInstance} from "angular-markdown-editor";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 import {MarkdownService} from "ngx-markdown";
-import {ArticleCreate, WikiApiService} from "../../../../services/swagger";
+import {ArticleCreate, EnumValueDto, WikiApiService} from "../../../../services/swagger";
 import {TranslationEditorComponent} from "../../../admin/components/payload/translation-editor/translation-editor.component";
 import * as DOMPurify from "dompurify";
+import ETutorialCategoriesEnum = EnumValueDto.ETutorialCategoriesEnum;
+import EWikiCategoriesEnum = EnumValueDto.EWikiCategoriesEnum;
 
 @Component({
     selector: 'app-create-article',
@@ -18,13 +20,13 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
     createArticle: EventEmitter<ArticleCreate> = new EventEmitter<ArticleCreate>();
 
     possibleLanguages: string[] = [];
-    possibleTypes: ArticleCreate.WikiCategoryEnum[] = [ArticleCreate.WikiCategoryEnum.GAMEMECHANICS, ArticleCreate.WikiCategoryEnum.MISSIONTYPES];
+    possibleTypes: ArticleCreate.WikiCategoryEnum[] = [ArticleCreate.WikiCategoryEnum.GAME_MECHANICS, ArticleCreate.WikiCategoryEnum.MISSION_TYPES];
 
     bsEditorInstance?: EditorInstance;
     editorOptions?: EditorOption;
     title?: string;
     langCode: string = TranslationEditorComponent.DEFAULT_LANGUAGE;
-    type?: ArticleCreate.WikiCategoryEnum;
+    wikiCategory?: ArticleCreate.WikiCategoryEnum;
 
     private template: string = "# I am the title\n"
         + "---\n"
@@ -42,6 +44,9 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
         + "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
     markdownText: string = this.template;
+
+    tutTypes: ETutorialCategoriesEnum[] = Object.values(ETutorialCategoriesEnum);
+    tutorialType?: ETutorialCategoriesEnum;
 
     constructor(private markdownService: MarkdownService,
                 private wikiService: WikiApiService) {
@@ -68,13 +73,14 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
     }
 
     submit() {
-        if (!this.title || !this.langCode || !this.type) {
+        if (!this.title || !this.langCode || !this.wikiCategory) {
             return;
         }
         const a: ArticleCreate = {
             title: this.title,
             langCode: this.langCode,
-            wikiCategory: this.type,
+            wikiCategory: this.wikiCategory,
+            tutorialCategory: this.tutorialType,
             content: this.markdownText
         }
         this.createArticle.emit(a);
@@ -89,9 +95,9 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
 
     private parse(content: any) {
         if (!this.markdownText) {
-            this.title = undefined;
             return;
         }
+        this.title = undefined;
         const split = this.markdownText.split("\n");
         this.detectTitle(split);
     }
@@ -106,7 +112,14 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
         }
     }
 
-    canSend() {
-        return !(!!this.title && this.title != 'I am the title');
+    canNotSend() {
+        const titleIsValid = !!this.title && this.title.trim().length > 0 && this.title != 'I am the title';
+        return !(titleIsValid && !!this.wikiCategory);
+    }
+
+    setTutType() {
+        if (!!this.tutorialType) {
+            this.wikiCategory = EWikiCategoriesEnum.GAME_MECHANICS;
+        }
     }
 }

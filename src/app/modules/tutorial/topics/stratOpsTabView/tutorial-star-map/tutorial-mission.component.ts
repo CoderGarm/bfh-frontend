@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Topic, TutorialScopeService} from "../../../tutorial-scope.service";
+import {EnumValueDto} from "../../../../../services/swagger";
 
 @Component({
   selector: 'tut-mission',
@@ -9,7 +10,7 @@ import {Topic, TutorialScopeService} from "../../../tutorial-scope.service";
 export class TutorialMissionComponent {
 
   public static TOPIC: Topic = {
-    uuid: 'tut-mission',
+    uuid: EnumValueDto.ETutorialCategoriesEnum.MISSION,
     title: 'Strategic Objectives',
     subTitle: 'How to use missions'
   }

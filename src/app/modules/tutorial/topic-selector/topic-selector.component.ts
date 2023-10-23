@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Topic, TutorialScopeService} from "../tutorial-scope.service";
 import {MatDialog} from "@angular/material/dialog";
-import {TutorialDisplayComponent} from "../tutorial-display/tutorial-display.component";
+import {TutorialDisplayComponent} from "../components/tutorial-display/tutorial-display.component";
 
 @Component({
     selector: 'app-topic-selector',

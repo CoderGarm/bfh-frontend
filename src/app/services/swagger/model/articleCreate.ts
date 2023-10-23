@@ -23,6 +23,10 @@ export interface ArticleCreate {
      */
     wikiCategory: ArticleCreate.WikiCategoryEnum;
     /**
+     * The tutorial category
+     */
+    tutorialCategory?: ArticleCreate.TutorialCategoryEnum;
+    /**
      * The content
      */
     content: string;
@@ -34,8 +38,26 @@ export interface ArticleCreate {
 export namespace ArticleCreate {
     export type WikiCategoryEnum = 'WELCOME_MESSAGE' | 'MISSION_TYPES' | 'GAME_MECHANICS';
     export const WikiCategoryEnum = {
-        WELCOMEMESSAGE: 'WELCOME_MESSAGE' as WikiCategoryEnum,
-        MISSIONTYPES: 'MISSION_TYPES' as WikiCategoryEnum,
-        GAMEMECHANICS: 'GAME_MECHANICS' as WikiCategoryEnum
+        WELCOME_MESSAGE: 'WELCOME_MESSAGE' as WikiCategoryEnum,
+        MISSION_TYPES: 'MISSION_TYPES' as WikiCategoryEnum,
+        GAME_MECHANICS: 'GAME_MECHANICS' as WikiCategoryEnum
+    };
+    export type TutorialCategoryEnum = 'FLEET_DASH' | 'JOB_DASH' | 'TRADE_DASH' | 'INFRA_DASH' | 'BATTLE_DASH' | 'PLANET_DASH' | 'PLANET_CONSTRUCTIONS' | 'PLANET_SHIPYARD' | 'MARKETPLACE' | 'INNER_EMPIRE_TRANSPORTATION' | 'UNIVERSE_MAP' | 'STAR_MAP' | 'MISSION' | 'COLONIZATION_INFO' | 'FLEET_DETACHMENT';
+    export const TutorialCategoryEnum = {
+        FLEET_DASH: 'FLEET_DASH' as TutorialCategoryEnum,
+        JOB_DASH: 'JOB_DASH' as TutorialCategoryEnum,
+        TRADE_DASH: 'TRADE_DASH' as TutorialCategoryEnum,
+        INFRA_DASH: 'INFRA_DASH' as TutorialCategoryEnum,
+        BATTLE_DASH: 'BATTLE_DASH' as TutorialCategoryEnum,
+        PLANET_DASH: 'PLANET_DASH' as TutorialCategoryEnum,
+        PLANET_CONSTRUCTIONS: 'PLANET_CONSTRUCTIONS' as TutorialCategoryEnum,
+        PLANET_SHIPYARD: 'PLANET_SHIPYARD' as TutorialCategoryEnum,
+        MARKETPLACE: 'MARKETPLACE' as TutorialCategoryEnum,
+        INNER_EMPIRE_TRANSPORTATION: 'INNER_EMPIRE_TRANSPORTATION' as TutorialCategoryEnum,
+        UNIVERSE_MAP: 'UNIVERSE_MAP' as TutorialCategoryEnum,
+        STAR_MAP: 'STAR_MAP' as TutorialCategoryEnum,
+        MISSION: 'MISSION' as TutorialCategoryEnum,
+        COLONIZATION_INFO: 'COLONIZATION_INFO' as TutorialCategoryEnum,
+        FLEET_DETACHMENT: 'FLEET_DETACHMENT' as TutorialCategoryEnum
     };
 }

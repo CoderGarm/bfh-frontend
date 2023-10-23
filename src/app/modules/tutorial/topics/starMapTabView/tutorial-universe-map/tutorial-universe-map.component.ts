@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Topic, TutorialScopeService} from "../../../tutorial-scope.service";
+import {EnumValueDto} from "../../../../../services/swagger";
 
 @Component({
     selector: 'tut-universe-map',
@@ -9,7 +10,7 @@ import {Topic, TutorialScopeService} from "../../../tutorial-scope.service";
 export class TutorialUniverseMapComponent {
 
     public static TOPIC: Topic = {
-        uuid: 'tut-universe-map',
+        uuid: EnumValueDto.ETutorialCategoriesEnum.UNIVERSE_MAP,
         title: 'Galaxy Map',
         subTitle: 'How to use and interpret the map'
     }

@@ -959,6 +959,15 @@
 			},
 			"orga": {
 				"menu-entry": "Orga"
+			},
+			"tutorial-content": {
+				"menu-entry": "Tutorialbeiträge"
+			},
+			"tutorial": {
+				"placeholder-option": "In welchem Tutorial soll der Beitrag angezeigt werden?"
+			},
+			"wiki-category": {
+				"placeholder-option": "Wähle die Kategorie des Artikels aus."
 			}
 		}
 	}

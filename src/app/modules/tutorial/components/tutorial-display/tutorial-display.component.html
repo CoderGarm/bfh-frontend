@@ -1,4 +1,8 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<div mat-dialog-title>
+    <span class="title">{{ data.title }}</span>
+    <tut-category-display [uuid]="data.uuid"></tut-category-display>
+</div>
+
 <mat-dialog-content class="mat-typography">
     <!-- journal -->
     <tut-fleet-dash></tut-fleet-dash>
@@ -22,4 +26,9 @@
     <tut-colonization-info></tut-colonization-info>
     <!-- fleet -->
     <tut-fleet-detachment></tut-fleet-detachment>
+
+    <div>
+        <ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="tutorial-spinner" [fullScreen]="false"></ngx-spinner>
+        <app-display-article [latestContent]="latestContent"></app-display-article>
+    </div>
 </mat-dialog-content>
