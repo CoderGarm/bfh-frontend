@@ -67,20 +67,23 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
 
         if (!this.isYardFree) {
             this.isDisabled = true;
-            this.translate.get('planetary.constructions.build.not-possible').subscribe(tr => this.disabledMessage = tr);
+            this.translate.get('planetary.constructions.build.not-possible')
+                .subscribe(tr => this.disabledMessage = tr);
             return;
         }
 
         if (this.isTooExpensive) {
             // to expensive
             this.isDisabled = true;
-            this.translate.get('planetary.constructions.build.too-expensive').subscribe(tr => this.disabledMessage = tr);
+            this.translate.get('planetary.constructions.build.too-expensive')
+                .subscribe(tr => this.disabledMessage = tr);
             return;
         }
 
         if (!!this.construction && !this.construction.nextLevel && !(!this.isYardFree && !this.isTooExpensive) && !(this.isTooExpensive && this.isYardFree)) {
             this.isDisabled = true;
-            this.translate.get('planetary.constructions.build.must-do-research').subscribe(tr => this.disabledMessage = tr + " '" + this.construction!.building.unlockedThrough + "'");
+            this.translate.get('planetary.constructions.build.must-do-research')
+                .subscribe(tr => this.disabledMessage = tr + " '" + this.construction!.building.unlockedThrough + "'");
             return;
         }
 

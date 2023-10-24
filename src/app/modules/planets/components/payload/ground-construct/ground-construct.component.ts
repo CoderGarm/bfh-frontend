@@ -210,16 +210,25 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         }
     }
 
-    checkIfTooExpensive(construction: Construction): boolean {
+    disableIfCostsAreNotIgnored(construction: Construction): boolean {
         if (!this.ignoreExpensiveConstructions) {
             return false;
         }
+        return this.checkIfTooExpensive(construction);
+    }
+
+    checkIfTooExpensive(construction: Construction) {
         let key = this.getConstructionKey(construction);
         if (!this.resourceDeposit || !this.knownCosts.has(key)) {
             return true;
         }
         const costs = this.knownCosts.get(key)!;
         return !ResourceHelper.canPayTheCollectableBill(costs, this.resourceDeposit);
+    }
+
+    checkIfResearchNeeded(construction: Construction) {
+        const tooExpensive = this.checkIfTooExpensive(construction);
+        return !construction.nextLevel && !tooExpensive;
     }
 
     getCosts(): ResourceDeposit | undefined {
@@ -263,6 +272,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         if (this.filteredConstructions.length === 1) {
             this.setConstruction(this.filteredConstructions[0]);
         }
+
     }
 
     /**
