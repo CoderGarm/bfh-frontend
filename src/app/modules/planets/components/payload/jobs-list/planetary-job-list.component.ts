@@ -23,7 +23,7 @@ export class PlanetaryJobListComponent extends SubscriptionManager implements Af
      */
     runningJobs: Job[] = [];
 
-    constructor(private jobApi: JobApiService,
+    constructor(private jobService: JobApiService,
                 private notificationService: PlanetsEventService) {
         super();
         let subscription = notificationService.getConstructionStartsEmitter().subscribe(() => this.loadData());
@@ -41,7 +41,7 @@ export class PlanetaryJobListComponent extends SubscriptionManager implements Af
 
     private loadData() {
         if (this.planet) {
-            let sub = this.jobApi.getJobsOnPlanet(this.planet.idPlanet)
+            let sub = this.jobService.getJobsOnPlanet(this.planet.idPlanet)
                 .subscribe(resp => this.runningJobs = resp);
             this.subscriptions.push(sub);
         }

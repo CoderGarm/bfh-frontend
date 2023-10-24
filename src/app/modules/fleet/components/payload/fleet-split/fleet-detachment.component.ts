@@ -215,8 +215,6 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     drop(event: CdkDragDrop<WarshipContainer[]>) {
-        console.log(event.previousContainer)
-        console.log(event.container)
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {

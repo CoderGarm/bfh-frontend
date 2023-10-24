@@ -7,6 +7,8 @@ import {
     ERefinementSequence,
     EResourceType,
     HumanResourceAmount,
+    Job,
+    JobApiService,
     MiningFactors,
     Planet,
     PlanetApiService,
@@ -126,8 +128,11 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     construction?: Construction;
 
+    runningJobs: Job[] = [];
+
     constructor(private constructionApi: ConstructionApiService,
                 private planetApi: PlanetApiService,
+                private jobService: JobApiService,
                 private resourceApi: ResourcesApiService,
                 private typeService: TypeService,
                 private notificationService: SnackbarNotificationService,
@@ -168,28 +173,16 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         }
     }
 
-    /**
-     * sets the data as string to the fc
-     * @private
-     */
     private setRefinementSequenceFormControlData() {
         let typeNames = this.eRefinementSequences.map(r => r.typeName);
         this.eRefinementSequenceFC.setValue(typeNames);
     }
 
-    /**
-     * sets the data as string to the fc
-     * @private
-     */
     private setResourceTypeFormControlData() {
         let typeNames = this.eResourceTypes.map(r => r.typeName);
         this.eResourceTypeFC.setValue(typeNames);
     }
 
-    /**
-     * fetches the necessary information for the planet
-     * @private
-     */
     private fetchPlanet() {
         if (!!this.planet) {
             const idPlanet = this.planet.idPlanet;
@@ -202,7 +195,17 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.subscriptions.push(sub);
 
             sub = this.planetApi.isConstructionPossibleOnPlanet(idPlanet)
-                .subscribe(resp => this.constructionPossible = resp);
+                .subscribe(resp => {
+                    this.constructionPossible = resp;
+                    this.filterDisplayedConstructions();
+                });
+            this.subscriptions.push(sub);
+
+            sub = this.jobService.getJobsOnPlanet(idPlanet)
+                .subscribe(resp => {
+                    this.runningJobs = resp;
+                    this.filterDisplayedConstructions();
+                });
             this.subscriptions.push(sub);
         }
     }
@@ -247,6 +250,13 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             return includesResourceType && includesCategory && includesSequence;
         }).sort((a, b) => a.building.name.replace(' ', '') < b.building.name.replace(' ', '') ? -1 : 1);
 
+        if (this.filteredConstructions.length > 1) {
+            const buildingUnderConstruction = this.runningJobs.filter(j => j.isBuildingJob).map(j => j.buildingTarget!);
+            if (!!buildingUnderConstruction && buildingUnderConstruction.length == 1) {
+                const underConstruction = this.possibleConstructions.filter(c => c.building.idBuilding === buildingUnderConstruction[0].idBuilding)[0];
+                this.setConstruction(underConstruction);
+            }
+        }
         if (this.filteredConstructions.length === 0) {
             this.setConstruction(undefined);
         }
