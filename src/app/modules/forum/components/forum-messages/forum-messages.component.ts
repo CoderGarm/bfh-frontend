@@ -3,7 +3,6 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {CreateForumThreadMessage, EnumValueDto, ForumApiService, ForumMessage, ForumThread} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {tap} from "rxjs/operators";
-import {DatePipe} from "@angular/common";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
 import {timer} from "rxjs";
 import {ForumsCommunicationService} from "../../forums-communication.service";
@@ -39,8 +38,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
 
     now: number;
 
-    constructor(private datePipe: DatePipe,
-                private notif: SnackbarNotificationService,
+    constructor(private notif: SnackbarNotificationService,
                 protected forumsCommService: ForumsCommunicationService,
                 private forumService: ForumApiService) {
         super();
@@ -129,16 +127,14 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             this.selectedForumThread = undefined;
             this.messagesInThread = undefined;
             this.messageAmountInThread = 0;
+            this.forumsCommService.unreadMessages = [];
             return;
         }
         this.selectedForumThread = thread;
         let sub = this.forumService.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize)
             .subscribe(resp => {
-                this.messagesInThread = resp;
-                for (let i = 0; i < (resp.length >= 3 ? 3 : resp.length); i++) {
-                    // just add the first three to mark as read
-                    this.forumsCommService.markAsRead.push(resp[i].idForumMessage);
-                }
+                this.messagesInThread = resp.messages;
+                this.pageIndex = resp.page;
             });
         this.subscriptions.push(sub);
         sub = this.forumService.countMessagesInThread(thread.idForumThread).subscribe(resp => this.messageAmountInThread = !!resp ? resp : 0);

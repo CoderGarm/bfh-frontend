@@ -9,7 +9,8 @@
     </mat-paginator>
     <mat-card appearance="outlined" class="forum-card" *ngFor="let message of messagesInThread" ngClass="messageId-{{ message.idForumMessage }}">
         <mat-card-header>
-            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.profilePic }}.png" matTooltip="{{ message.author.username }}">
+            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.profilePic }}.png" matTooltip="{{ message.author.username }}"
+                 alt="profile icon">
 
             <mat-card-title>
                 <span *ngIf="!!message.author.allianceTag">[{{ message.author.allianceTag }}]</span>

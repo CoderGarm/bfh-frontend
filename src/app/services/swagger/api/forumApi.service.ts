@@ -22,6 +22,7 @@ import { CreateForumThreadMessage } from '../model/createForumThreadMessage';
 import { Forum } from '../model/forum';
 import { ForumIdContainer } from '../model/forumIdContainer';
 import { ForumMessage } from '../model/forumMessage';
+import { ForumMessageContainer } from '../model/forumMessageContainer';
 import { ForumThread } from '../model/forumThread';
 import { FrontendError } from '../model/frontendError';
 
@@ -448,9 +449,9 @@ export class ForumApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ForumMessage>>;
-    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ForumMessage>>>;
-    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ForumMessage>>>;
+    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<ForumMessageContainer>;
+    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ForumMessageContainer>>;
+    public getMessagesInThread(idForumThread: number, page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ForumMessageContainer>>;
     public getMessagesInThread(idForumThread: number, page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idForumThread === null || idForumThread === undefined) {
@@ -481,7 +482,7 @@ export class ForumApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ForumMessage>>('get',`${this.basePath}/api/private/forum/threadById/${encodeURIComponent(String(idForumThread))}/${encodeURIComponent(String(page))}/${encodeURIComponent(String(size))}`,
+        return this.httpClient.request<ForumMessageContainer>('get',`${this.basePath}/api/private/forum/threadById/${encodeURIComponent(String(idForumThread))}/${encodeURIComponent(String(page))}/${encodeURIComponent(String(size))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -57,6 +57,7 @@ export * from './fleetSplit';
 export * from './forum';
 export * from './forumIdContainer';
 export * from './forumMessage';
+export * from './forumMessageContainer';
 export * from './forumThread';
 export * from './frontendError';
 export * from './hasIcon';
