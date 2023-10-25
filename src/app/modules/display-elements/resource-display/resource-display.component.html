@@ -4,26 +4,26 @@
             <div class="res-wrapper">
                 <div class="img-container hasSize"></div>
                 <div class="height-reduced" *ngIf="!!deposit">
-                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.deposit.toolTip' | translate }}">{{getIcon(deposit!)}}</mat-icon>
+                    <mat-icon inline matTooltip="{{ 'resource-overlay.deposit.toolTip' | translate }}">{{getIcon(deposit!)}}</mat-icon>
                 </div>
                 <div class="height-reduced-2 income-display" *ngIf="!!income">
-                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.toolTip' | translate }}">{{getIcon(income!)}}</mat-icon>
+                    <mat-icon inline matTooltip="{{ 'resource-overlay.income.toolTip' | translate }}">{{getIcon(income!)}}</mat-icon>
                 </div>
                 <div class="diffAmount needed" *ngIf="!!costs">
-                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.costs.toolTip' | translate }}">{{getIcon(costs!)}}</mat-icon>
+                    <mat-icon inline matTooltip="{{ 'resource-overlay.costs.toolTip' | translate }}">{{getIcon(costs!)}}</mat-icon>
                 </div>
             </div>
         </div>
         <div class="box" *ngIf="showTick">
             <div class="res-wrapper">
                 <div class="img-container">
-                    <mat-icon [inline]="true">schedule</mat-icon>
+                    <mat-icon inline>schedule</mat-icon>
                 </div>
                 <div class="height-reduced" *ngIf="!!deposit">
-                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.deposit.tick' | translate }}">all_inclusive</mat-icon>
+                    <mat-icon inline matTooltip="{{ 'resource-overlay.deposit.tick' | translate }}">all_inclusive</mat-icon>
                 </div>
                 <div class="height-reduced-2 income-display" *ngIf="!!income">
-                    <mat-icon [inline]="true" matTooltip="{{ 'resource-overlay.income.tick' | translate }}">all_inclusive</mat-icon>
+                    <mat-icon inline matTooltip="{{ 'resource-overlay.income.tick' | translate }}">all_inclusive</mat-icon>
                 </div>
                 <div class="diffAmount needed">
                     {{getTicksNeeded()}}
@@ -41,7 +41,7 @@
                     <mat-icon *ngIf="isCapPresent(resource)"
                               class="capacity"
                               [ngClass]="getCapacityWarningClass(resource)"
-                              [inline]="true"
+                              inline
                               matTooltip="{{getCapacityTooltip(resource)}}">info
                     </mat-icon>
                 </div>

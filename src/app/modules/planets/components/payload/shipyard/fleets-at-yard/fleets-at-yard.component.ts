@@ -23,6 +23,9 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     fleetsInOrbitDef: string = 'fleetsInOrbit';
 
     @Input()
+    income?: ResourceDeposit;
+
+    @Input()
     possibleShipClasses: ShipClass[] = [];
 
     costsToDisplay?: ResourceDeposit;

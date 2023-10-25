@@ -1,6 +1,7 @@
 <div class="holder content-area">
     <div class="app-resource-display">
-        <app-resource-display [deposit]="resourceDeposit"
+        <app-resource-display shipyardMode
+                              [deposit]="resourceDeposit"
                               [costs]="costsToDisplay"
                               [income]="income"></app-resource-display>
     </div>
@@ -9,6 +10,7 @@
         <app-fleets-at-yard [planet]="selectedPlanet"
                             [fleetsInOrbit]="fleetsInOrbit"
                             [deposit]="resourceDeposit"
+                            [income]="income"
                             [possibleShipClasses]="possibleShipClasses"
                             [shipyardJobPossible]="shipyardJobPossible"></app-fleets-at-yard>
     </app-outlined>

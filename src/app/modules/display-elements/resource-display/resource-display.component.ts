@@ -1,11 +1,13 @@
 import {Component, Input} from '@angular/core';
-import {EDepositType, EEducationType, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../services/swagger";
+import {EDepositType, EEducationType, EnumValueDto, EResourceType, HumanResourceAmount, ResourceAmount, ResourceDeposit} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../services/type.service";
 import {StaticResourcesService} from "../../../services/static-resources.service";
 import {coerceBooleanProperty} from "@angular/cdk/coercion";
 import CollectableTypeEnum = EResourceType.CollectableTypeEnum;
+import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
+import EEducationTypeEnum = EnumValueDto.EEducationTypeEnum;
 
 @Component({
     selector: 'app-resource-display',
@@ -48,6 +50,11 @@ export class ResourceDisplayComponent extends SubscriptionManager {
     get onlyCollectables() { return this._onlyCollectables; }
     set onlyCollectables(value: any) { this._onlyCollectables = coerceBooleanProperty(value); }
     _onlyCollectables: boolean = false;
+
+    @Input()
+    get shipyardMode() { return this._shipyardMode; }
+    set shipyardMode(value: any) { this._shipyardMode = coerceBooleanProperty(value); }
+    _shipyardMode: boolean = false;
     // @formatter:on
 
     resourceTypes: EResourceType[];
@@ -176,7 +183,7 @@ export class ResourceDisplayComponent extends SubscriptionManager {
                     if (i.resourceType.typeName === c.resourceType.typeName) {
                         let income = i.amount;
                         let cost = c.amount;
-                        let ticks = Math.ceil(cost / income);
+                        let ticks = Math.floor(cost / income);
                         if (ticksNeeded < ticks) {
                             ticksNeeded = ticks;
                         }
@@ -199,8 +206,15 @@ export class ResourceDisplayComponent extends SubscriptionManager {
         } else if (!!this.income) {
             result = this.income;
         }
+        console.log("bools", this._onlyCollectables, this._shipyardMode)
         if (!!result && this._onlyCollectables) {
             result.resources = result.resources.filter(c => c.resourceType.collectableType == CollectableTypeEnum.COLLECTABLE);
+        }
+        if (!!result && this._shipyardMode) {
+            result.resources = result.resources
+                .filter(c => c.resourceType.collectableType == CollectableTypeEnum.COLLECTABLE || c.resourceType.typeName === EResourceTypeEnum.ORBITAL_CONSTRUCTION);
+            result.humanResources = result.humanResources
+                .filter(c => c.resourceType.typeName === EEducationTypeEnum.ENLISTED || c.resourceType.typeName === EEducationTypeEnum.OFFICER);
         }
         return result;
     }

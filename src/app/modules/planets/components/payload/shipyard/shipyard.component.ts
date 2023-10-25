@@ -95,7 +95,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
     constructor(private shipyardApi: ShipyardApiService,
                 private typeService: TypeService,
                 private planetApi: PlanetApiService,
-                private resourceApi: ResourcesApiService,
+                private resourceService: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
                 private planetsNotificationService: PlanetsEventService,
                 private translate: TranslateService) {
@@ -170,15 +170,11 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
         if (!this.selectedPlanet) {
             return;
         }
-        let sub = this.resourceApi.getResourceDeposit(this.selectedPlanet.idPlanet)
-            .subscribe(resp => {
-                this.resourceDeposit = resp;
-            });
+        let sub = this.resourceService.getResourceDeposit(this.selectedPlanet.idPlanet)
+            .subscribe(resp => this.resourceDeposit = resp);
         this.subscriptions.push(sub);
-        sub = this.resourceApi.getPlanetaryIncome(this.selectedPlanet.idPlanet)
-            .subscribe(resp => {
-                this.income = resp;
-            });
+        sub = this.resourceService.getPlanetaryIncome(this.selectedPlanet.idPlanet)
+            .subscribe(resp => this.income = resp);
         this.subscriptions.push(sub);
     }
 
@@ -255,7 +251,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
      */
     private getCostsAndCheckBalances() {
         if (!!this.order && this.selection.length != 0) {
-            let sub = this.resourceApi.getShipyardOrderCosts(this.selection)
+            let sub = this.resourceService.getShipyardOrderCosts(this.selection)
                 .subscribe(resp => {
                     this.costsToDisplay = resp;
                     this.checkBalances();

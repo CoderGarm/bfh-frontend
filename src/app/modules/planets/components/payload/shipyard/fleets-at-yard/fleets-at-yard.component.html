@@ -55,8 +55,11 @@
                         </div>
                     </div>
 
-                    <app-resource-display [style.visibility]="!costsToDisplay ? 'hidden' : 'unset'" onlyCollectables
-                                          [deposit]="deposit" [costs]="costsToDisplay"></app-resource-display>
+                    <app-resource-display [style.visibility]="!costsToDisplay ? 'hidden' : 'unset'"
+                                          shipyardMode
+                                          [deposit]="deposit"
+                                          [income]="income"
+                                          [costs]="costsToDisplay"></app-resource-display>
                 </div>
 
 
