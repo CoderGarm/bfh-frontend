@@ -1,5 +1,3 @@
-<ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="job-dash-spinner" [fullScreen]="false"></ngx-spinner>
-
 <mat-card id="research-block" class="blue-card" style="padding: 15px;">
     {{ 'research.title' | translate }}
     <div class="research-container">
@@ -10,7 +8,7 @@
 </mat-card>
 
 
-<table mat-table [dataSource]="dataSource">
+<table mat-table [dataSource]="dataSource"> <!-- fixme all finished must be a list item -->
 
     <ng-container matColumnDef="planet">
         <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">

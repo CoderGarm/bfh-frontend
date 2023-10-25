@@ -13,8 +13,9 @@
                         {{research.research.name}}
                     </app-outlined>
                     <app-outlined titleValue="{{ 'research.level-details' | translate }}" class="floated-right"
-                                  matTooltip="{{ research.researchPoints }} RP / max Level {{ research.research.levelCap != 2147483647 ? research.research.levelCap : '∞' }}">
-                        lvl {{ research.level }} / {{ research.ticksToComplete }} ticks
+                                  matTooltip="{{ research.researchPoints }} RP needed / {{ research.researchPointsAvailable }} RP available / max Level {{ research.research.levelCap != 2147483647 ? research.research.levelCap : '∞' }}">
+                        <span *ngIf="research.ticksToComplete! > 0">lvl {{ research.level }} / {{ research.ticksToComplete }} ticks</span>
+                        <span *ngIf="research.ticksToComplete! == 0">lvl {{ research.level }} / instant </span>
                     </app-outlined>
                     {{ research.research.description }}
                 </mat-card-content>

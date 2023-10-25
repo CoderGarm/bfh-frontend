@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {EnumValueDto, Job, Planet} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
-import {SpinnerService} from "../../../../../services/spinner.service";
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 
@@ -20,7 +19,7 @@ export interface PlanetaryJobs {
     templateUrl: './job-overview.component.html',
     styleUrls: ['./job-overview.component.scss']
 })
-export class JobOverviewComponent implements OnChanges, AfterViewInit {
+export class JobOverviewComponent implements OnChanges {
 
     dataSource: MatTableDataSource<PlanetaryJobs> = new MatTableDataSource<PlanetaryJobs>();
 
@@ -41,36 +40,11 @@ export class JobOverviewComponent implements OnChanges, AfterViewInit {
 
     planetaryJobs: PlanetaryJobs[] = [];
 
-    private inputCounter: number = 5;
-
-    constructor(private spinner: SpinnerService) {
-    }
-
-    ngAfterViewInit() {
-        this.spinner.show('job-dash-spinner');
+    constructor() {
     }
 
     ngOnChanges(changes: SimpleChanges) {
         this.organizeJobsPerPlanet();
-
-        if (!!changes['finishedJobs'] && changes['finishedJobs'].isFirstChange()) {
-            this.inputCounter--;
-        }
-        if (!!changes['finishedResearch'] && changes['finishedResearch'].isFirstChange()) {
-            this.inputCounter--;
-        }
-        if (!!changes['runningJobs'] && changes['runningJobs'].isFirstChange()) {
-            this.inputCounter--;
-        }
-        if (!!changes['runningResearch'] && changes['runningResearch'].isFirstChange()) {
-            this.inputCounter--;
-        }
-        if (!!changes['planets'] && changes['planets'].isFirstChange()) {
-            this.inputCounter--;
-        }
-        if (this.inputCounter == 0) {
-            this.spinner.hide('job-dash-spinner');
-        }
     }
 
     private organizeJobsPerPlanet() {

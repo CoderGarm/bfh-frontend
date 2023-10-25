@@ -28,4 +28,8 @@ export interface ResearchLevel {
      * The amount of research points needed.
      */
     researchPoints?: number;
+    /**
+     * The amount of research points available this tick.
+     */
+    researchPointsAvailable?: number;
 }
