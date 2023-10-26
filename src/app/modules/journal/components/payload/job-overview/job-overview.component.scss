@@ -71,3 +71,11 @@ app-job-display {
     transform: scale(1.2);
   }
 }
+
+.multi-box {
+  justify-content: space-evenly;
+}
+
+.inactive {
+  background-color: var(--disabled-blue-card-background);
+}

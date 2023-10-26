@@ -32,6 +32,10 @@ export interface Job {
      * The left duration of this job.
      */
     ticksLeft: number;
+    /**
+     * The left construction points of this job.
+     */
+    pointsLeft: number;
     resourceType: EResourceType;
     /**
      * The priority of the job.

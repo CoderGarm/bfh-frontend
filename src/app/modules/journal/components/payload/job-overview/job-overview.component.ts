@@ -10,7 +10,7 @@ export interface PlanetaryJobs {
     construction?: Job,
     shipyard: Job[],
     finishedConstruction?: Job,
-    finishedShipyard?: Job,
+    finishedShipyards: Job[],
     isShipyardPresent: boolean
 }
 
@@ -49,7 +49,13 @@ export class JobOverviewComponent implements OnChanges {
 
     private organizeJobsPerPlanet() {
         this.planetaryJobs = [];
-        this.planets.forEach(p => this.planetaryJobs.push({idPlanet: p.idPlanet, planetName: p.name, shipyard: [], isShipyardPresent: this.isShipyardPresent(p)}));
+        this.planets.forEach(p => this.planetaryJobs.push({
+            idPlanet: p.idPlanet,
+            planetName: p.name,
+            shipyard: [],
+            finishedShipyards: [],
+            isShipyardPresent: this.isShipyardPresent(p)
+        }));
 
         this.runningJobs.forEach(job => {
             const buildingJob = job.isBuildingJob;
@@ -63,6 +69,7 @@ export class JobOverviewComponent implements OnChanges {
                     planetName: facilityPlanet.name,
                     construction: buildingJob ? job : undefined,
                     shipyard: shipyardJob ? [job] : [],
+                    finishedShipyards: [],
                     isShipyardPresent: this.isShipyardPresent(facilityPlanet)
                 }
                 this.planetaryJobs.push(jobsPerPlanet);
@@ -91,7 +98,7 @@ export class JobOverviewComponent implements OnChanges {
                     planetName: facilityPlanet.name,
                     finishedConstruction: buildingJob ? job : undefined,
                     shipyard: [],
-                    finishedShipyard: shipyardJob ? job : undefined,
+                    finishedShipyards: [shipyardJob] ? [job] : [],
                     isShipyardPresent: this.isShipyardPresent(facilityPlanet)
                 }
                 this.planetaryJobs.push(jobsPerPlanet);
@@ -100,7 +107,7 @@ export class JobOverviewComponent implements OnChanges {
                 if (buildingJob) {
                     jobsPerPlanet.finishedConstruction = job;
                 } else if (shipyardJob) {
-                    jobsPerPlanet.finishedShipyard = job;
+                    jobsPerPlanet.finishedShipyards.push(job);
                 }
             }
         });
@@ -109,5 +116,15 @@ export class JobOverviewComponent implements OnChanges {
 
     private isShipyardPresent(facilityPlanet: Planet) {
         return facilityPlanet.capabilities.map(c => c.typeName).includes(EResourceTypeEnum.ORBITAL_CONSTRUCTION);
+    }
+
+    isPrioJob(job: Job, shipyard: Job[]) {
+        if (shipyard.length == 1) {
+            return true;
+        }
+        if (shipyard.length > 1 && job.priority === Job.PriorityEnum.NONE) {
+            return false;
+        }
+        return shipyard.filter(job => job.priority === Job.PriorityEnum.PRIORITY).sort((a, b) => a.pointsLeft - b.pointsLeft).indexOf(job) == 0;
     }
 }
