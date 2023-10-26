@@ -3,7 +3,10 @@
     <div class="research-container">
         <app-icon png64px research class="research-icon"></app-icon>
         <app-job-display [job]="runningResearch"></app-job-display>
-        <app-job-display *ngIf="!!finishedResearch" [job]="finishedResearch"></app-job-display>
+        <app-job-display *ngIf="finishedResearches.length > 0" [job]="finishedResearches[0]"></app-job-display>
+    </div>
+    <div class="research-container">
+        <app-job-display *ngFor="let job of finishedResearches | slice: 1" [job]="job" class="scaled-item"></app-job-display>
     </div>
 </mat-card>
 

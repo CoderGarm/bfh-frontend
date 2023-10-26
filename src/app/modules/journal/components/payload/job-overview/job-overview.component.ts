@@ -27,7 +27,7 @@ export class JobOverviewComponent implements OnChanges {
     finishedJobs: Job[] = [];
 
     @Input()
-    finishedResearch?: Job;
+    finishedResearches: Job[] = []
 
     @Input()
     runningJobs: Job[] = [];

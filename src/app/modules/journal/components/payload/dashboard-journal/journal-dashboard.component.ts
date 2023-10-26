@@ -26,7 +26,7 @@ import {CurrentTickService} from "../../../../../services/intercom/current-tick.
 export class JournalDashboardComponent extends SubscriptionManager implements OnInit {
 
     finishedJobs: Job[] = [];
-    finishedResearch?: Job;
+    finishedResearches: Job[] = [];
 
     runningJobs: Job[] = [];
     runningResearch?: Job;
@@ -73,7 +73,7 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
         sub = this.journalService.getFinishedJobs().subscribe(resp => {
             this.finishedJobs = resp;
             const jobs = resp.filter(j => j.isResearchJob);
-            this.finishedResearch = jobs.length == 1 ? jobs[0] : undefined;
+            this.finishedResearches = jobs;
             this.stateNewJobInfo();
         });
         this.subscriptions.push(sub);
@@ -156,7 +156,7 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
                 return;
             }
             const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'jobInfo');
-            this.hasNewJobInfo = !topicRead && (this.finishedJobs.length > 0 || !!this.finishedResearch);
+            this.hasNewJobInfo = !topicRead && (this.finishedJobs.length > 0 || !!this.finishedResearches);
         });
         this.subscriptions.push(sub);
     }
