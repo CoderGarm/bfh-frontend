@@ -9,7 +9,7 @@ export interface PlanetaryJobs {
     planetName: string;
     construction?: Job,
     shipyard: Job[],
-    finishedConstruction?: Job,
+    finishedConstructions: Job[],
     finishedShipyards: Job[],
     isShipyardPresent: boolean
 }
@@ -53,6 +53,7 @@ export class JobOverviewComponent implements OnChanges {
             idPlanet: p.idPlanet,
             planetName: p.name,
             shipyard: [],
+            finishedConstructions: [],
             finishedShipyards: [],
             isShipyardPresent: this.isShipyardPresent(p)
         }));
@@ -69,6 +70,7 @@ export class JobOverviewComponent implements OnChanges {
                     planetName: facilityPlanet.name,
                     construction: buildingJob ? job : undefined,
                     shipyard: shipyardJob ? [job] : [],
+                    finishedConstructions: [],
                     finishedShipyards: [],
                     isShipyardPresent: this.isShipyardPresent(facilityPlanet)
                 }
@@ -96,7 +98,7 @@ export class JobOverviewComponent implements OnChanges {
                 const jobsPerPlanet: PlanetaryJobs = {
                     idPlanet: facilityPlanet.idPlanet,
                     planetName: facilityPlanet.name,
-                    finishedConstruction: buildingJob ? job : undefined,
+                    finishedConstructions: [buildingJob] ? [job] : [],
                     shipyard: [],
                     finishedShipyards: [shipyardJob] ? [job] : [],
                     isShipyardPresent: this.isShipyardPresent(facilityPlanet)
@@ -105,7 +107,7 @@ export class JobOverviewComponent implements OnChanges {
             } else {
                 const jobsPerPlanet = planetaryJobs[0];
                 if (buildingJob) {
-                    jobsPerPlanet.finishedConstruction = job;
+                    jobsPerPlanet.finishedConstructions.push(job);
                 } else if (shipyardJob) {
                     jobsPerPlanet.finishedShipyards.push(job);
                 }
