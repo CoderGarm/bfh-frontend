@@ -76,7 +76,7 @@ export class FleetSelectionComponent extends SidenavSelectionManager implements 
     }
 
     private fetchState(fleet?: AbstractId) {
-        if (!fleet) {
+        if (!fleet || fleet.id == FleetDetachmentComponent.POOL_FLEET_ID) {
             return;
         }
         let sub = this.fleetService.getFleet(fleet.id).subscribe(resp => this.fleetStatesById.set(fleet.id, resp.state));

@@ -84,6 +84,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
                 private notif: SnackbarNotificationService) {
         super();
 
+        console.log("constructor")
         let sub = this.fleetCommService.getRetireFleetEmitter().subscribe(() => this.fetchBaseData());
         this.subscriptions.push(sub);
     }
@@ -142,6 +143,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log("changes", changes)
         if (changes['fleet']) {
             this.setupFleet(this.fleet);
         }

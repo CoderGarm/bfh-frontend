@@ -51,27 +51,6 @@ app-job-display {
   margin: 35px auto;
 }
 
-.scaled-item {
-  transform: scale(0.5);
-}
-
-.scaled-item:hover {
-  animation: main 1s;
-  animation-fill-mode: forwards;
-  width: fit-content;
-  z-index: 99;
-  backdrop-filter: blur(10px);
-}
-
-@keyframes main {
-  0% {
-    transform: scale(0.5);
-  }
-  100% {
-    transform: scale(1.2);
-  }
-}
-
 .multi-box {
   justify-content: space-evenly;
 }

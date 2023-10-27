@@ -35,7 +35,9 @@ export class FleetTabViewComponent extends SubscriptionManager implements AfterV
     ngAfterViewInit() {
         let sub = this.fleetEventService.getSelectedFleetEmitter().subscribe(fleet => {
             if (!!fleet && fleet.id === FleetDetachmentComponent.POOL_FLEET_ID) {
+                console.log("reserve detected")
                 setTimeout(() => {
+                    console.log("detachment for reserve set up")
                     this.fleet = undefined;
                     this.utilization = undefined;
                     this.index = 2;

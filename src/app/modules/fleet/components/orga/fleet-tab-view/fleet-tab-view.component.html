@@ -1,8 +1,7 @@
 <mat-tab-group animationDuration="500ms" class="bottom-spacer"
-               [selectedIndex]="index" (selectedIndexChange)="index = $event"
-               *ngIf="!!fleet">
+               [selectedIndex]="index" (selectedIndexChange)="index = $event">
     <mat-tab label="{{ 'tab.fleet.dashboard' | translate }}" [disabled]="onlyAllowDetachment">
-        <div class="holder" *ngIf="!onlyAllowDetachment">
+        <div class="holder" *ngIf="!!fleet && !onlyAllowDetachment">
             <app-fleet-display [fleet]="fleet" transparent>
                 <div class="fleet-info-container" body>
                     <div class="main-display">
@@ -41,10 +40,10 @@
             </app-fleet-display>
         </div>
     </mat-tab>
-    <mat-tab label="{{ 'tab.fleet.edit' | translate }}" [disabled]="!isShipyardAvailable || !!fleet.move || fleet.state.isInYard">
+    <mat-tab label="{{ 'tab.fleet.edit' | translate }}" [disabled]="onlyAllowDetachment || !isShipyardAvailable || (!!fleet && (!!fleet.move || fleet.state.isInYard))">
         <app-fleet-edit [fleet]="fleet"></app-fleet-edit>
     </mat-tab>
-    <mat-tab label="{{ 'tab.fleet.split' | translate }}" [disabled]="!!fleet.move || fleet.state.isInYard">
+    <mat-tab label="{{ 'tab.fleet.split' | translate }}" [disabled]="!!fleet && (!!fleet.move || fleet.state.isInYard)">
         <app-fleet-detachment [fleet]="fleet" [planet]="planet" [isFleetCreation]="onlyAllowDetachment"></app-fleet-detachment>
     </mat-tab>
 </mat-tab-group>

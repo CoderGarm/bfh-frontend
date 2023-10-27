@@ -206,7 +206,7 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
         }
         const prioJobs = shipyardJobs!.filter(j => j.priority == Job.PriorityEnum.PRIORITY);
         if (prioJobs.length > 0) {
-            const sorted = prioJobs.sort((a, b) => a.ticksLeft - b.ticksLeft);
+            const sorted = prioJobs.sort((a, b) => a.pointsLeft - b.pointsLeft);
             return [sorted[0]];
         }
         return shipyardJobs!;

@@ -42,7 +42,8 @@
                     </button>
                     <div mat-line>{{pJob.researches![0].researchTarget!.name}}</div>
                     <div mat-line>{{ 'jobs.level' | translate }}: {{pJob.researches![0].targetLevel}}</div>
-                    <div mat-line *ngIf="pJob.researches![0].ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{pJob.researches![0].ticksLeft}}</div>
+                    <div mat-line *ngIf="!!pJob.researches![0].ticksLeft && pJob.researches![0].ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}
+                        : {{pJob.researches![0].ticksLeft}}</div>
                     <div mat-line *ngIf="pJob.researches![0].priority != 'NONE'">{{ 'jobs.priority' | translate }}: {{pJob.researches![0].priority}}</div>
                 </mat-list-item>
             </mat-grid-tile>
@@ -67,7 +68,7 @@
                     </button>
                     <div mat-line>{{job.buildingTarget!.name}}</div>
                     <div mat-line>{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
-                    <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
+                    <div mat-line *ngIf="!!job.ticksLeft && job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
                     <div mat-line *ngIf="job.priority != 'NONE'">{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-grid-tile>
@@ -94,7 +95,7 @@
                     <div mat-line *ngIf="!!job.fleet && !job.isRepairJob">{{getHullCount(job.fleet)}}</div>
                     <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{ 'shipyard.constructions.fleet-to-repair' | translate }}: {{job.fleet.name}}</div>
                     <div mat-line *ngIf="!!job.fleet && job.isRepairJob">{{ 'shipyard.constructions.fleet-state' | translate }}: {{getPercentage(job.fleet)}}</div>
-                    <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
+                    <div mat-line *ngIf="!!job.ticksLeft && job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
                     <div mat-line *ngIf="job.priority != 'NONE'">{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
                 </mat-list-item>
             </mat-grid-tile>

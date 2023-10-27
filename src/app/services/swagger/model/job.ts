@@ -31,7 +31,7 @@ export interface Job {
     /**
      * The left duration of this job.
      */
-    ticksLeft: number;
+    ticksLeft?: number;
     /**
      * The left construction points of this job.
      */

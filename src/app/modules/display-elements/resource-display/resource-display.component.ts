@@ -181,9 +181,19 @@ export class ResourceDisplayComponent extends SubscriptionManager {
             if (c.resourceType.collectableType == CollectableTypeEnum.FORFEITABLE) {
                 this.income?.resources.forEach(i => {
                     if (i.resourceType.typeName === c.resourceType.typeName) {
+
                         let income = i.amount;
                         let cost = c.amount;
-                        let ticks = Math.floor(cost / income);
+                        let availablePoints = 0;
+                        const fromDeposit = this.deposit?.resources.filter(ra => ra.resourceType.typeName === c.resourceType.typeName);
+                        if (!!fromDeposit && fromDeposit.length == 1) {
+                            availablePoints = fromDeposit[0].amount;
+                        }
+
+                        let ticks = 0;
+                        if (cost > availablePoints) {
+                            ticks = Math.ceil((cost - availablePoints) / income);
+                        }
                         if (ticksNeeded < ticks) {
                             ticksNeeded = ticks;
                         }
@@ -206,7 +216,6 @@ export class ResourceDisplayComponent extends SubscriptionManager {
         } else if (!!this.income) {
             result = this.income;
         }
-        console.log("bools", this._onlyCollectables, this._shipyardMode)
         if (!!result && this._onlyCollectables) {
             result.resources = result.resources.filter(c => c.resourceType.collectableType == CollectableTypeEnum.COLLECTABLE);
         }

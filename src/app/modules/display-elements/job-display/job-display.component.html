@@ -6,7 +6,7 @@
                   [altText]="job.facility.building.productionTarget.typeName"
                   png32px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
 
-        <mat-icon matTooltip="{{ 'jobs.finished-icon' | translate }}" *ngIf="job.ticksLeft == 0" class="finished-btn">check_circle_outline</mat-icon>
+        <mat-icon matTooltip="{{ 'jobs.finished-icon' | translate }}" *ngIf="job.pointsLeft == 0" class="finished-btn">check_circle_outline</mat-icon>
 
         <!-- research job -->
         <div mat-line class="title-line" *ngIf="job.isResearchJob">{{job.researchTarget!.name}}</div>
@@ -16,12 +16,12 @@
 
         <!-- shipyard job -->
         <div mat-line class="title-line" *ngIf="job.isShipyardJob && !job.isRepairJob">{{job.fleet?.name}}</div>
-        <div mat-line *ngIf="job.isShipyardJob && !job.isRepairJob">{{getHullCount(job.fleet)}}</div>
+        <div mat-line *ngIf="job.isShipyardJob && !job.isRepairJob">{{ getHullCount(job.fleet) }}</div>
         <div mat-line *ngIf="job.isShipyardJob && job.isRepairJob">{{ 'shipyard.constructions.fleet-to-repair' | translate }}: {{job.fleet?.name}}</div>
         <div mat-line *ngIf="job.isShipyardJob && job.isRepairJob">{{ 'shipyard.constructions.fleet-state' | translate }}: {{getPercentage(job.fleet)}}</div>
 
         <div mat-line *ngIf="!job.isShipyardJob">{{ 'jobs.level' | translate }}: {{job.targetLevel}}</div>
-        <div mat-line *ngIf="job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{job.ticksLeft}}</div>
+        <div mat-line *ngIf="!!job.ticksLeft && job.ticksLeft > 0">{{ 'jobs.ticks-left' | translate }}: {{ job.ticksLeft }}</div>
         <div mat-line *ngIf="job.priority != 'NONE'">{{ 'jobs.priority' | translate }}: {{job.priority}}</div>
     </div>
 </app-blue-card>

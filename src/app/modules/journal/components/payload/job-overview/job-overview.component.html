@@ -3,10 +3,10 @@
     <div class="research-container">
         <app-icon png64px research class="research-icon"></app-icon>
         <app-job-display [job]="runningResearch"></app-job-display>
-        <app-job-display *ngIf="finishedResearches.length > 0" [job]="finishedResearches[0]"></app-job-display>
+        <app-job-display *ngIf="finishedResearches.length == 1" [job]="finishedResearches[0]"></app-job-display>
     </div>
     <div class="research-container multi-box">
-        <app-job-display *ngFor="let job of finishedResearches | slice: 1" [job]="job" class="scaled-item"></app-job-display>
+        <app-job-display *ngFor="let job of finishedResearches" [job]="job"></app-job-display>
     </div>
 </mat-card>
 
@@ -42,7 +42,11 @@
             <div class="job-container">
                 <app-job-display noIcon *ngIf="element.shipyard.length == 0 && element.isShipyardPresent"></app-job-display>
                 <app-job-display noIcon *ngFor="let job of element.shipyard" [job]="job" [class.inactive]="!isPrioJob(job, element.shipyard)"></app-job-display>
-                <app-job-display noIcon *ngIf="!!element.finishedShipyard" [job]="element.finishedShipyard"></app-job-display>
+                <app-job-display noIcon *ngIf="element.finishedShipyards.length == 1" [job]="element.finishedShipyards[0]"></app-job-display>
+            </div>
+            <div class="job-container multi-box">
+                <!-- tslint didn't detect tpe -> any -->
+                <app-job-display *ngFor="let job of element.finishedShipyards" [job]="$any(job)"></app-job-display>
             </div>
         </td>
     </ng-container>

@@ -21,6 +21,7 @@ import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../../services/type.service";
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../subscription.manager";
+import {FleetEventService} from "../../../../../services/intercom/fleet-event.service";
 import ECapacityAreaTypesEnum = EnumValueDto.ECapacityAreaTypesEnum;
 
 @Component({
@@ -98,6 +99,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                 private resourceService: ResourcesApiService,
                 private notificationService: SnackbarNotificationService,
                 private planetsNotificationService: PlanetsEventService,
+                private fleetEventservice: FleetEventService,
                 private translate: TranslateService) {
         super();
 
@@ -186,6 +188,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                     this.notificationService.open("Construction started.")
                     this.shipyardJobPossible = !resp
                     this.planetsNotificationService.pushStartedConstruction();
+                    this.fleetEventservice.reload();
                 } else {
                     this.notificationService.open("This was not possible.")
                 }
