@@ -14,7 +14,7 @@ export class StarMapTabViewComponent extends SubscriptionManager {
 
     starSystemSelectionInput?: StarSystem;
 
-    index?: number;
+    index: number = 0;
 
     constructor(private starMapCommService: StarMapCommunicationService) {
         super();
