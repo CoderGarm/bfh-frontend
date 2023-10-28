@@ -3,7 +3,7 @@
     <mat-card-content>
         <div *ngFor="let fleet of commService.selectedFleets">
             <app-fleet-display transparent [fleet]="fleet" *ngIf="isOwnFleet(fleet)">
-                <app-manual-transport transparent body [fleet]="fleet" [floatingStyle]="false"></app-manual-transport>
+                <app-manual-transport transparent body [fleet]="fleet"></app-manual-transport>
             </app-fleet-display>
         </div>
     </mat-card-content>

@@ -37,9 +37,6 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
     static CAPACITY_TO_RESOURCE_UNIT_CONVERSION_FACTOR = 1000;
 
     @Input()
-    floatingStyle: boolean = true;
-
-    @Input()
     fleet?: Fleet;
 
     left?: ResourceDeposit;
