@@ -1,5 +1,9 @@
 @import "src/styles/variables";
 
+* {
+  color: var(--map-text-color);
+}
+
 #map-box {
   width: 900px;
   height: 600px;
