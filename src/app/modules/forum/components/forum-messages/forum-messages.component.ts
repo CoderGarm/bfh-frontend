@@ -100,8 +100,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
                         if (cssClass.startsWith('messageId-')) {
                             const idForumMessage = Number.parseInt(cssClass.split('-')[1]);
                             if (!this.forumsCommService.markAsRead.includes(idForumMessage)) {
-                                this.forumsCommService.markAsRead.push(idForumMessage);
-                                this.forumsCommService.markMessagesRead();
+                                this.markMessageRead(idForumMessage);
                             }
                         }
                     });
@@ -111,6 +110,11 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
 
         const svg = document.querySelectorAll(".forum-card");
         svg.forEach(card => inViewPortObserver.observe(card));
+    }
+
+    private markMessageRead(idForumMessage: number) {
+        this.forumsCommService.markAsRead.push(idForumMessage);
+        this.forumsCommService.markMessagesRead();
     }
 
     fetchByPagination(pageEvent: PageEvent | any) {
@@ -152,7 +156,11 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
                     message: txt,
                     idForumThread: this.selectedForumThread.idForumThread
                 }
-                let sub = this.forumService.createThreadMessage(message).subscribe(() => this.selectThread(this.selectedForumThread));
+                let sub = this.forumService.createThreadMessage(message).subscribe(resp => {
+                    this.selectThread(this.selectedForumThread);
+                    this.forumsCommService.unreadMessages.push(resp.idForumMessage);
+                    this.markMessageRead(resp.idForumMessage);
+                });
                 this.subscriptions.push(sub);
             }
             this.msgToEdit = undefined;

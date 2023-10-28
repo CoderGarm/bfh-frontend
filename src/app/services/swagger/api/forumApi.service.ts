@@ -157,9 +157,9 @@ export class ForumApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'body', reportProgress?: boolean): Observable<ForumMessage>;
+    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ForumMessage>>;
+    public createThreadMessage(body?: CreateForumThreadMessage, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ForumMessage>>;
     public createThreadMessage(body?: CreateForumThreadMessage, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -184,7 +184,7 @@ export class ForumApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/forum/createThreadMessage`,
+        return this.httpClient.request<ForumMessage>('put',`${this.basePath}/api/private/forum/createThreadMessage`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
