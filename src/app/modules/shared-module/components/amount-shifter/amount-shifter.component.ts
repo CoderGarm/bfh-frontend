@@ -68,8 +68,4 @@ export class AmountShifterComponent implements OnInit {
         }
         this.input(minValue);
     }
-
-    change(event: string) { /* fixme ma schaun wie weiter */
-        console.log(event)
-    }
 }
