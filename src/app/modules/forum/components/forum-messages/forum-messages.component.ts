@@ -4,7 +4,6 @@ import {CreateForumThreadMessage, EnumValueDto, ForumApiService, ForumMessage, F
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {tap} from "rxjs/operators";
 import {SnackbarNotificationService} from "../../../../services/snackbar-notification.service";
-import {timer} from "rxjs";
 import {ForumsCommunicationService} from "../../forums-communication.service";
 
 
@@ -45,9 +44,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
 
         this.isAdmin = this.tokenStorage.getRole() === EnumValueDto.EWebUserRolesEnum.ADMIN;
         this.now = new Date().getTime();
-
-        let sub = timer(0, 3 * 60 * 1000).subscribe(() => this.forumsCommService.markMessagesRead());
-        this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -105,6 +101,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
                             const idForumMessage = Number.parseInt(cssClass.split('-')[1]);
                             if (!this.forumsCommService.markAsRead.includes(idForumMessage)) {
                                 this.forumsCommService.markAsRead.push(idForumMessage);
+                                this.forumsCommService.markMessagesRead();
                             }
                         }
                     });

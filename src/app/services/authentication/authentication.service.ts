@@ -132,14 +132,7 @@ export class AuthenticationService extends SubscriptionManager implements AuthSe
     }
 
     logout(): void {
-        if (this.forumsCommService.markAsRead.length == 0) {
-            this.processLogout();
-            return;
-        }
-        let sub = this.forumsCommService.markMessagesRead().subscribe(() => {
-            this.processLogout();
-        });
-        this.subscriptions.push(sub);
+        this.processLogout();
     }
 
     private processLogout() {
