@@ -40,6 +40,7 @@ $theme-dark: palette-helper.modify-text-color($theme-dark, variables.$dark-secon
   --required-color: #{variables.$dark-required-color};
   --warning-color: #{variables.$error-color};
   --map-background: #{variables.$dark-map-background};
+  --map-edge-background-color: #{variables.$dark-background-color};
   --map-text-color: #{variables.$dark-map-text-color};
   --card-edge-color: #{variables.$dark-card-edge-color};
   --disabled-blue-card-background: #{variables.$dark-disabled-blue-card-background};
@@ -83,6 +84,7 @@ $theme-light: palette-helper.modify-text-color($theme-light, variables.$light-se
   --required-color: #{variables.$light-required-color};
   --warning-color: #{variables.$error-color};
   --map-background: #{variables.$light-map-background};
+  --map-edge-background-color: #{variables.$dark-background-color};
   --map-text-color: #{variables.$light-map-text-color};
   --mdc-protected-button-label-text-color: #{variables.$light-secondary-text-color};
   --card-edge-color: #{variables.$light-card-edge-color};
