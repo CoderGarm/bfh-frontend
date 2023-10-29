@@ -28,7 +28,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     @ViewChild('paginatorBottom', {static: true})
     paginatorBottom?: MatPaginator;
 
-    pageIndex: number = 0;
+    pageIndex: number = -1;
     pageSize: number = 15;
     messageAmountInThread: number = 0;
 
@@ -48,12 +48,13 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.selectedForumThreadDefinition]) {
+            this.setDefaultParameters();
             this.selectThread(this.selectedForumThread);
         }
     }
 
     private setDefaultParameters() {
-        this.pageIndex = 0;
+        this.pageIndex = -1;
         this.pageSize = 15;
         this.messageAmountInThread = 0;
     }
@@ -130,7 +131,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     selectThread(thread?: ForumThread) {
-        this.setDefaultParameters();
         if (!thread) {
             this.selectedForumThread = undefined;
             this.messagesInThread = undefined;
@@ -138,6 +138,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             this.forumsCommService.unreadMessages = [];
             return;
         }
+        console.log(this.pageIndex)
         this.selectedForumThread = thread;
         let sub = this.forumService.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize)
             .subscribe(resp => {
