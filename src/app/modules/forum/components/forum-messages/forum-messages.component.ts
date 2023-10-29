@@ -52,6 +52,12 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
         }
     }
 
+    private setDefaultParameters() {
+        this.pageIndex = 0;
+        this.pageSize = 15;
+        this.messageAmountInThread = 0;
+    }
+
     ngOnDestroy() {
         this.forumsCommService.markMessagesRead();
         super.ngOnDestroy();
@@ -124,6 +130,7 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
     }
 
     selectThread(thread?: ForumThread) {
+        this.setDefaultParameters();
         if (!thread) {
             this.selectedForumThread = undefined;
             this.messagesInThread = undefined;
