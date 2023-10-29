@@ -1041,7 +1041,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     protected drawFleets(fleetMarkers: FleetMarker[]) {
 
         this.clearFleets();
-        fleetMarkers.forEach(fleetMarker => {
+        fleetMarkers.filter(fm => fm.ships.length > 0).forEach(fleetMarker => {
             let orbit = this.getOrbitFromFleetMarker(fleetMarker);
             const x = this.convertToStandardMetric(orbit.xCoordinate);
             const y = this.convertToStandardMetric(orbit.yCoordinate);

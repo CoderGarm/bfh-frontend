@@ -29,6 +29,13 @@ export class StarMapViewComponent extends SystemViewHelper implements OnInit, On
     }
 
     private executeMergeFleets(fm: FleetMerge) {
+        const freshEmptyFleets: number[] = [];
+        Object.keys(fm.fleetConstellations).forEach(idFleet => {
+            if (fm.fleetConstellations[idFleet].length == 0) {
+                freshEmptyFleets.push(Number.parseFloat(idFleet));
+            }
+        });
+
         let sub = this.fleetService.mergeFleets(fm).subscribe(resp => {
             resp.changed.forEach(marker => {
                 const toRemove = this.distribution.filter(fm => fm.fleet.id === marker.fleet.id)[0];
@@ -44,6 +51,8 @@ export class StarMapViewComponent extends SystemViewHelper implements OnInit, On
                     this.distribution.splice(indexToRemove, 1);
                 }
             });
+
+            this.distribution = this.distribution.filter(fm => !freshEmptyFleets.includes(fm.fleet.id));
             this.setFleets(this.distribution);
         });
         this.subscriptions.push(sub);
