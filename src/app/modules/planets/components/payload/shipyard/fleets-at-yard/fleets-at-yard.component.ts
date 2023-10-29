@@ -42,6 +42,7 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
     translations: Map<string, string> = new Map<string, string>();
 
     private fleetsInRepair: number[] = [];
+    expandedItem: number = -1;
 
     constructor(private translate: TranslateService,
                 private planetApi: PlanetApiService,
@@ -231,8 +232,9 @@ export class FleetsAtYardComponent extends SubscriptionManager implements OnInit
         this.subscriptions.push(sub);
     }
 
-    loadFleet(fleet: Fleet) {
+    loadFleet(fleet: Fleet, expansionPanelIndex: number) {
         this.fetchCosts(fleet);
+        this.expandedItem = expansionPanelIndex;
     }
 
     private fetchCosts(fleet: Fleet) {

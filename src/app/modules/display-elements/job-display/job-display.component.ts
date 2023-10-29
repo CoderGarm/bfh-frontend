@@ -16,6 +16,11 @@ export class JobDisplayComponent {
     get noIcon() { return this._noIcon; }
     set noIcon(value: any) { this._noIcon = this.coerceBooleanProperty(value); }
     _noIcon: boolean = false;
+
+    @Input()
+    get paused() { return this._paused; }
+    set paused(value: any) { this._paused = this.coerceBooleanProperty(value); }
+    _paused: boolean = false;
     // @formatter:on
 
     private coerceBooleanProperty(value: any): boolean {

@@ -1,6 +1,6 @@
 <div mat-subheader *ngIf="!!fleetsInOrbit && fleetsInOrbit.length == 0">{{ 'planetary.fleets-in-orbit.not-present' | translate }}</div>
 <mat-accordion>
-    <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit" class="margin-bottom" (opened)="loadFleet(fleet)">
+    <mat-expansion-panel *ngFor="let fleet of fleetsInOrbit; let i = index" class="margin-bottom" (opened)="loadFleet(fleet, i)" [expanded]="expandedItem == i">
         <mat-expansion-panel-header [matTooltip]="getPercentageString(fleet)">
             <mat-panel-title class="align-center">
                 <mat-icon *ngIf="!isInoperational(fleet) && !isInRepair(fleet)" matTooltip="{{ 'combat-arena.tooltip.warship-state.active' | translate }}">military_tech</mat-icon>
@@ -43,14 +43,14 @@
                              (mouseover)="getCosts(fleet, 'REPAIR')"
                              (mouseout)="costsToDisplay = undefined;">
                             <button mat-raised-button color="secondary"
-                                    (click)="repair(fleet)"
+                                    (click)="repair(fleet); expandedItem = -1;"
                                     [disabled]="!repairPossible(fleet)">{{ 'planetary.fleets-in-orbit.repair-btn.start-job' | translate }}</button>
                         </div>
                         <div class="btn-container" [matTooltip]="getUpgradeJobButtonText(fleet)"
                              (mouseover)="getCosts(fleet, 'UPGRADE')"
                              (mouseout)="costsToDisplay = undefined;">
                             <button mat-raised-button color="secondary"
-                                    (click)="upgradeAll(fleet)"
+                                    (click)="upgradeAll(fleet); expandedItem = -1;"
                                     [disabled]="!upgradePossible(fleet)">{{ 'planetary.fleets-in-orbit.upgrade-btn.start-job' | translate }}</button>
                         </div>
                     </div>

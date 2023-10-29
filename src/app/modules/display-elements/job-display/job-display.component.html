@@ -7,6 +7,7 @@
                   png32px [toolTip]="job.facility.building.productionTarget.typeName"></app-icon>
 
         <mat-icon matTooltip="{{ 'jobs.finished-icon' | translate }}" *ngIf="job.pointsLeft == 0" class="finished-btn">check_circle_outline</mat-icon>
+        <mat-icon matTooltip="{{ 'jobs.paused-icon' | translate }}" *ngIf="_paused" class="pause-btn">pause_circle_outline</mat-icon>
 
         <!-- research job -->
         <div mat-line class="title-line" *ngIf="job.isResearchJob">{{job.researchTarget!.name}}</div>

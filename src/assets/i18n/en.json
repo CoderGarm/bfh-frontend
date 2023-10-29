@@ -243,6 +243,7 @@
 			"active-singular": "No active job",
 			"finished": "No finished jobs"
 		},
+		"paused-icon": "paused",
 		"priority": "Priority",
 		"ticks-left": "Ticks",
 		"title": {

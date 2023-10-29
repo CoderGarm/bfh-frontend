@@ -45,7 +45,9 @@
         <td mat-cell *matCellDef="let element">
             <div class="job-container">
                 <app-job-display noIcon *ngIf="element.shipyard.length == 0 && element.isShipyardPresent"></app-job-display>
-                <app-job-display noIcon *ngFor="let job of element.shipyard" [job]="job" [class.inactive]="!isPrioJob(job, element.shipyard)"></app-job-display>
+                <app-job-display noIcon *ngFor="let job of element.shipyard"
+                                 [job]="job"
+                                 [paused]="!isPrioJob(job, element.shipyard)"></app-job-display>
                 <app-job-display noIcon *ngIf="element.finishedShipyards.length == 1" [job]="element.finishedShipyards[0]"></app-job-display>
             </div>
             <div class="job-container multi-box" *ngIf="element.finishedShipyards.length > 1">

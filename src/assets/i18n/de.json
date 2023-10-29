@@ -243,6 +243,7 @@
 			"active-singular": "Keine laufender Auftrag",
 			"finished": "Keine beendeten Aufträge"
 		},
+		"paused-icon": "pausiert",
 		"priority": "Priorität",
 		"ticks-left": "Ticks",
 		"title": {
