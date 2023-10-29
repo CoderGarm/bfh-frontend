@@ -1,12 +1,12 @@
-import {Component, Input} from '@angular/core';
-import {EShipClassType, Fleet, Job} from "../../../services/swagger";
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Fleet, Job} from "../../../services/swagger";
 
 @Component({
     selector: 'app-job-display',
     templateUrl: './job-display.component.html',
     styleUrls: ['./job-display.component.scss']
 })
-export class JobDisplayComponent {
+export class JobDisplayComponent implements OnChanges {
 
     @Input()
     job?: Job;
@@ -23,28 +23,22 @@ export class JobDisplayComponent {
     _paused: boolean = false;
     // @formatter:on
 
+    shipClassMap: Map<string, number> = new Map<string, number>();
+
     private coerceBooleanProperty(value: any): boolean {
         return value != null && `${value}` !== 'false';
     }
 
-    getHullCount(fleet?: Fleet) {
-        if (!fleet) {
-            return '';
+    ngOnChanges(changes: SimpleChanges) {
+        this.shipClassMap.clear();
+        if (!!this.job && !!this.job.fleet) {
+            this.job.fleet.ships.forEach(s => {
+                const key = s.shipClass.name + " Flt. " + s.shipClass.mark;
+                let count = this.shipClassMap.has(key) ? this.shipClassMap.get(key)! : 0;
+                count++;
+                this.shipClassMap.set(key, count);
+            });
         }
-
-        let m: Map<EShipClassType, number> = new Map<EShipClassType, number>();
-        fleet.ships.forEach(w => {
-            const hullType = w.shipClass.shipClassType;
-            let amount = m.get(hullType);
-            if (!amount) {
-                amount = 0;
-            }
-            amount += 1;
-            m.set(hullType, amount);
-        });
-        let result = "";
-        m.forEach((amount, hullType) => result += ", " + amount + " " + hullType.typeName);
-        return fleet.ships.length + " ships";
     }
 
     getPercentage(fleet?: Fleet) {

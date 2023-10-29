@@ -54,6 +54,10 @@ export interface Job {
      */
     isRepairJob: boolean;
     /**
+     * Is this a upgrade job.
+     */
+    isUpgradeJob: boolean;
+    /**
      * Is this a research job.
      */
     isResearchJob: boolean;
