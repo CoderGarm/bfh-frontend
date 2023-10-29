@@ -19,6 +19,9 @@ export class FleetEditComponent extends SubscriptionManager implements OnInit, O
     @Input()
     fleet?: Fleet;
 
+    @Input()
+    isShipyardAvailable: boolean = false;
+
     private hullTypes: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     hullsByType: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();

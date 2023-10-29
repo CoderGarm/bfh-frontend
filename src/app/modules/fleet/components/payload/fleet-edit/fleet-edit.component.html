@@ -61,6 +61,7 @@
                                     </button>
                                     <button mat-raised-button color="primary" class="retire-ship-btn"
                                             (click)="openWreckWarshipDialog(warShip)"
+                                            [disabled]="!isShipyardAvailable"
                                             matTooltip="{{ 'fleet.composition.warship.wreck.submit' | translate }}">
                                         <mat-icon matPrefix class="retire-icon">cancel</mat-icon>
                                         {{ 'fleet.composition.warship.wreck.submit' | translate }}

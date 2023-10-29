@@ -40,8 +40,8 @@
             </app-fleet-display>
         </div>
     </mat-tab>
-    <mat-tab label="{{ 'tab.fleet.edit' | translate }}" [disabled]="onlyAllowDetachment || !isShipyardAvailable || (!!fleet && (!!fleet.move || fleet.state.isInYard))">
-        <app-fleet-edit [fleet]="fleet"></app-fleet-edit>
+    <mat-tab label="{{ 'tab.fleet.edit' | translate }}" [disabled]="onlyAllowDetachment || (!!fleet && (!!fleet.move || fleet.state.isInYard))">
+        <app-fleet-edit [fleet]="fleet" [isShipyardAvailable]="isShipyardAvailable"></app-fleet-edit>
     </mat-tab>
     <mat-tab label="{{ 'tab.fleet.split' | translate }}" [disabled]="!!fleet && (!!fleet.move || fleet.state.isInYard)">
         <app-fleet-detachment [fleet]="fleet" [planet]="planet" [isFleetCreation]="onlyAllowDetachment"></app-fleet-detachment>

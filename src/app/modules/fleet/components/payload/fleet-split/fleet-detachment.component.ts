@@ -55,7 +55,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
 
     fleets: FleetContainer[] = [];
 
-    fleetSplit: FleetSplit = {fleetConstellations: {}, orbit: {}};
+    fleetSplit: FleetSplit = {fleetConstellations: {}};
     shipsForPool: number[] = [];
     fleetMerge: FleetMerge = {
         fleetConstellations: {}
@@ -243,8 +243,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     submit() {
-        const orbit = !!this.fleet && !!this.fleet.orbit ? this.fleet.orbit : this.coords!;
-        this.fleetSplit = {fleetConstellations: {}, orbit: orbit};
+        this.fleetSplit = {fleetConstellations: {}};
         this.shipsForPool = [];
         this.fleetMerge = {
             fleetConstellations: {}
