@@ -86,12 +86,16 @@ export class MissionCreateComponent extends SubscriptionManager implements OnCha
     }
 
     setVenue(event: MatSelectionListChange) {
-        this.missionCommService.selectedPlanet = <Planet><unknown>event.source!._value![0];
         this.missionCommService.selectedTrade = undefined;
-        this.missionCommService.fetchPooledShips();
+        this.missionCommService.selectedPlanet = <Planet><unknown>event.source!._value![0];
+        this.missionCommService.fetchPooledShips(this.missionCommService.selectedPlanet.idPlanet);
     }
 
     setTrade(event: MatSelectionListChange) {
+        this.missionCommService.selectedPlanet = undefined;
         this.missionCommService.selectedTrade = <TradeContract><unknown>event.source!._value![0];
+        const userIsSeller = this.missionCommService.selectedTrade.offer.seller?.id === this.userId;
+        let idPlanet = userIsSeller ? this.missionCommService.selectedTrade.offer.origin.id : this.missionCommService.selectedTrade.destination.id;
+        this.missionCommService.fetchPooledShips(idPlanet);
     }
 }

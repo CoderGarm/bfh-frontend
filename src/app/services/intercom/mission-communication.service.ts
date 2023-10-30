@@ -3,6 +3,7 @@ import {EnumValueDto, FleetApiService, HeatMap, MarketplaceApiService, Mission, 
 import {SubscriptionManager} from "../../subscription.manager";
 import {BackgroundService} from "../prefetch/background.service";
 import {of} from "rxjs";
+import {NgxSpinnerService} from "ngx-spinner";
 import MissionTypeEnum = Mission.MissionTypeEnum;
 import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
@@ -33,7 +34,8 @@ export class MissionCommunicationService extends SubscriptionManager {
                 private planetService: PlanetApiService,
                 private marketService: MarketplaceApiService,
                 private systemService: BackgroundService,
-                private fleetService: FleetApiService) {
+                private fleetService: FleetApiService,
+                private spinner: NgxSpinnerService) {
         super();
     }
 
@@ -83,14 +85,14 @@ export class MissionCommunicationService extends SubscriptionManager {
         this.subscriptions.push(sub);
     }
 
-    fetchPooledShips() {
-        const idPlanet = this.selectedPlanet?.idPlanet;
-        if (!idPlanet) {
-            this.pooledShips = [];
-            return;
-        }
+    fetchPooledShips(idPlanet: number) {
+        this.spinner.show('pool-ships-spinner');
+        this.pooledShips = [];
         let sub = this.fleetService.getPooledWarships(idPlanet)
-            .subscribe(resp => this.pooledShips = resp.filter(w => w.warshipHealthState.state.isFightingCapable));
+            .subscribe(resp => {
+                this.pooledShips = resp.filter(w => w.warshipHealthState.state.isFightingCapable);
+                this.spinner.hide('pool-ships-spinner');
+            });
         this.subscriptions.push(sub);
     }
 
