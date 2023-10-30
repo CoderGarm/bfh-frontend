@@ -72,8 +72,7 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
 
         sub = this.journalService.getFinishedJobs().subscribe(resp => {
             this.finishedJobs = resp;
-            const jobs = resp.filter(j => j.isResearchJob);
-            this.finishedResearches = jobs;
+            this.finishedResearches = resp.filter(j => j.isResearchJob);
             this.stateNewJobInfo();
         });
         this.subscriptions.push(sub);

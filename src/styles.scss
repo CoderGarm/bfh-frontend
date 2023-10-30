@@ -394,3 +394,8 @@ mat-step-header {
   }
 }
 
+#notch-content {
+  & * {
+    color: var(--map-text-color);
+  }
+}
