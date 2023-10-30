@@ -7,37 +7,35 @@ import ECollectableTypeEnum = EnumValueDto.ECollectableTypeEnum;
 
 export class ResourceHelper {
 
-    static calculateLevelOutput(construction: Construction | undefined): number {
+    static calculateLevelOutput(construction: Construction | undefined, miningFactor: number): number {
         if (!construction) {
             return 0;
         }
-        return this.calculateOutputAtLevel(construction, construction.level);
+        return this.calculateOutputAtLevel(construction, construction.level, miningFactor);
     }
 
-    static calculateCurrentOutput(construction: Construction | undefined): number {
+    static calculateCurrentOutput(construction: Construction | undefined, miningFactor: number): number {
         if (!construction) {
             return 0;
         }
-        return this.calculateOutputAtLevel(construction, construction.operationalLevel);
+        return this.calculateOutputAtLevel(construction, construction.operationalLevel, miningFactor);
     }
 
-    static calculateNextOutput(construction: Construction | undefined): number {
+    static calculateNextOutput(construction: Construction | undefined, miningFactor: number): number {
         if (!construction) {
             return 0;
         }
-        return this.calculateOutputAtLevel(construction, construction.level + 1);
+        return this.calculateOutputAtLevel(construction, construction.level + 1, miningFactor);
     }
 
-    private static calculateOutputAtLevel(construction: Construction, level: number) {
+    private static calculateOutputAtLevel(construction: Construction, level: number, miningFactor: number) {
         let baseValue = construction.building.baseValue;
         let increasingFactorPerLevel = construction.building.increasingFactorPerLevel;
-        let valueAtLevel;
+        let adjustedBaseValue = baseValue * miningFactor;
         if (level === 1) {
-            valueAtLevel = baseValue;
-        } else {
-            valueAtLevel = Math.round(baseValue + (baseValue * level * increasingFactorPerLevel));
+            return Math.round(adjustedBaseValue);
         }
-        return valueAtLevel;
+        return Math.round((adjustedBaseValue + (adjustedBaseValue * increasingFactorPerLevel)) * level);
     }
 
     /**

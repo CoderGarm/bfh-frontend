@@ -27,10 +27,12 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
     @Input()
     costsToDisplay?: ResourceDeposit;
 
+    @Input()
+    miningFactor: number = 1;
+
     isTooExpensive: boolean = false;
-    output: string = '';
-    outputAtLevel: string = '';
-    outputAfterBuild: string = '';
+    outputAfterBuild: number = 0;
+    outputAfterBuildWithoutMiningFactor: number = 0;
     descriptionText: string = '';
 
     isDisabled: boolean = false;
@@ -93,17 +95,15 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
 
     getOutput() {
         if (!this.construction) {
-            this.output = '';
-            this.outputAfterBuild = '';
+            this.outputAfterBuild = 0;
+            this.outputAfterBuildWithoutMiningFactor = 0;
             return;
         }
-        this.output = "" + ResourceHelper.calculateLevelOutput(this.construction);
-        this.outputAtLevel = "" + ResourceHelper.calculateCurrentOutput(this.construction);
-        this.outputAfterBuild = "" + ResourceHelper.calculateNextOutput(this.construction);
+        this.outputAfterBuild = ResourceHelper.calculateNextOutput(this.construction, this.miningFactor);
+        this.outputAfterBuildWithoutMiningFactor = ResourceHelper.calculateNextOutput(this.construction, 1);
     }
 
     protected readonly EnumValueDto = EnumValueDto;
-    protected readonly EProductionCategoryEnum = EProductionCategoryEnum;
 
     private createDescriptionText() {
         if (!this.construction) {
@@ -158,7 +158,7 @@ export class ConstructionDisplayComponent implements AfterViewInit, OnChanges {
                 desc = desc.replace('PRODUCT', to.typeName);
             }
         }
-        const output = ResourceHelper.calculateCurrentOutput(this.construction);
+        const output = ResourceHelper.calculateCurrentOutput(this.construction, this.miningFactor);
         desc = desc.replace('NAME', building.name);
         desc = desc.replace('AMOUNT', '' + output);
         desc = desc.replace('WHAT', productionTarget.typeName);

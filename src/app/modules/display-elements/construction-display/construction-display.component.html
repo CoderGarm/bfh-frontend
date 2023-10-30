@@ -17,7 +17,8 @@
                     <span matListItemTitle>Production Target:
                         <app-icon [icon]="construction.building.productionTarget"></app-icon>
                     </span>
-                    <span matListItemLine>Maximum output after build: {{ outputAfterBuild }}</span>
+                    <span matListItemLine>Output after build at 100 %: <app-number-short [input]="outputAfterBuildWithoutMiningFactor"></app-number-short></span>
+                    <span matListItemLine>Output after build at {{ miningFactor * 100 }} %: <app-number-short [input]="outputAfterBuild"></app-number-short></span>
                     <span matListItemLine>{{ 'planetary.constructions.level.title' | translate }}: {{ construction.operationalLevel }} / {{ construction.level }}</span>
 
                     <span matListItemLine *ngIf="!!construction.building.refinementSequence">Refinement Sequence:

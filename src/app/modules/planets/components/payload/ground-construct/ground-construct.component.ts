@@ -129,6 +129,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     construction?: Construction;
 
     runningJobs: Job[] = [];
+    miningFactor: number = 1;
 
     constructor(private constructionApi: ConstructionApiService,
                 private planetApi: PlanetApiService,
@@ -342,23 +343,22 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             return;
         }
 
-        let valueAtLevel = ResourceHelper.calculateNextOutput(this.construction);
         let productionTarget = this.construction.building.productionTarget;
-
-
         let productionCategory = this.construction.building.productionCategory;
+
+        this.miningFactor = this.getMiningFactor(productionTarget);
+        const valueAtNextLevel = ResourceHelper.calculateNextOutput(this.construction, this.miningFactor);
+        const valueAtLevel = ResourceHelper.calculateCurrentOutput(this.construction, this.miningFactor);
+
         switch (productionCategory) {
             case ProductionCategoryEnum.CAPACITY:
                 // do not display capacity because the value is shown by a tooltip
                 break;
             case ProductionCategoryEnum.PRODUCE:
                 this.levelImprovementHumanResources = undefined;
-                const miningFactor = this.miningFactors?.resources
-                    .filter(mf => mf.resourceType.typeName === productionTarget.typeName)[0]
-                    .amount!;
                 this.levelImprovementResources = {
                     resourceType: productionTarget,
-                    amount: valueAtLevel * (miningFactor / 100)
+                    amount: valueAtNextLevel - valueAtLevel
                 }
                 break;
             case ProductionCategoryEnum.REFINEMENT:
@@ -367,10 +367,16 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 this.levelImprovementResources = undefined;
                 this.levelImprovementHumanResources = {
                     resourceType: product,
-                    amount: valueAtLevel
+                    amount: valueAtNextLevel - valueAtLevel
                 }
                 break;
         }
+    }
+
+    private getMiningFactor(productionTarget: EResourceType) {
+        const filter = this.miningFactors?.resources
+            .filter(mf => mf.resourceType.typeName === productionTarget.typeName);
+        return !!filter && filter.length == 1 ? (filter[0].amount / 100) : 1;
     }
 
     private getConstructionKey(construction: Construction) {

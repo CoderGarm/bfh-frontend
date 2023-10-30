@@ -136,11 +136,7 @@ export class ResourceDisplayComponent extends SubscriptionManager {
 
     getResourceImprovement(resource: EResourceType): number {
         if (!!this.levelImprovementResources && this.levelImprovementResources.resourceType.typeName === resource.typeName) {
-            let incoming = this.getResourceAmount(resource, this.income);
-            if (!incoming) {
-                incoming = 0;
-            }
-            return (this.levelImprovementResources.amount - incoming);
+            return this.levelImprovementResources.amount;
         }
         return 0;
     }
@@ -159,11 +155,7 @@ export class ResourceDisplayComponent extends SubscriptionManager {
 
     getHumanImprovement(resource: EEducationType): number {
         if (!!this.levelImprovementHumanResources && this.levelImprovementHumanResources.resourceType.typeName === resource.typeName) {
-            let incoming = this.getHumans(resource, this.income);
-            if (!incoming) {
-                incoming = 0;
-            }
-            return (this.levelImprovementHumanResources.amount - incoming);
+            return this.levelImprovementHumanResources.amount;
         }
         return 0;
     }
