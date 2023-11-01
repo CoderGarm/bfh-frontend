@@ -118,7 +118,7 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
     }
 
     private fetchPlanet() {
-        if (!!this.planet && !this.right) {
+        if (!!this.planet) {
             let sub = this.resourceService.getResourceDeposit(this.planet.idPlanet).subscribe(resp => {
                 this.right = resp;
                 this.rightCopy = ResourceHelper.copy(this.right);
