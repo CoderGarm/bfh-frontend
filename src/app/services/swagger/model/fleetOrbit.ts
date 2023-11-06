@@ -10,12 +10,14 @@
  * Do not edit the class manually.
  */
 import { Orbit } from './orbit';
+import { Planet } from './planet';
 import { StarSystem } from './starSystem';
 
 /**
  * .
  */
 export interface FleetOrbit { 
+    planet?: Planet;
     system?: StarSystem;
     orbit?: Orbit;
 }

@@ -144,6 +144,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
             }
             let move: FleetMove = {
                 idFleetToMove: fleet.idFleet,
+                idDestinationPlanet: plannedMove.targetOrbit.planet?.idPlanet,
                 idDestinationSystem: plannedMove.targetOrbit.system?.idStarSystem,
                 destinationOrbit: plannedMove.targetOrbit.orbit
             }

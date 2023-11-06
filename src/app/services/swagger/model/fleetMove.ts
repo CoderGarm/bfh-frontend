@@ -21,6 +21,10 @@ export interface FleetMove {
     idFleetToMove: number;
     destinationOrbit?: Orbit;
     /**
+     * The planet which is the target of the movement.
+     */
+    idDestinationPlanet?: number;
+    /**
      * The system which is the target of the movement.
      */
     idDestinationSystem?: number;

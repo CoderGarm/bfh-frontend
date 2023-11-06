@@ -66,8 +66,9 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         let fleetMoves = this.fleets.filter(f => !f.move).map(fleet => {
             const fm: FleetMove = {
                 idFleetToMove: fleet.idFleet,
-                idDestinationSystem: this.destination!.starSystem.id,
-                destinationOrbit: this.destination!.orbit
+                idDestinationPlanet: this.destination?.idPlanet,
+                idDestinationSystem: this.destination?.starSystem.id,
+                destinationOrbit: this.destination?.orbit
             }
             return fm;
         });
@@ -104,6 +105,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
             }
             let move: FleetMove = {
                 idFleetToMove: fleet.idFleet,
+                idDestinationPlanet: plannedMove.targetOrbit.planet?.idPlanet,
                 idDestinationSystem: plannedMove.targetOrbit.system?.idStarSystem,
                 destinationOrbit: plannedMove.targetOrbit.orbit
             }
