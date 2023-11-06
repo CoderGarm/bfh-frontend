@@ -31,9 +31,9 @@ export class HumansCarrierComponent extends SubscriptionManager implements OnIni
         super();
         this.resources = this.typeService.educationTypes;
         this.resources.forEach(resource => {
-            if (resource.isMilitary) {
+            // fixme if (resource.isMilitary) {
                 this.militaries.push(resource);
-            }
+            //}
         });
     }
 
