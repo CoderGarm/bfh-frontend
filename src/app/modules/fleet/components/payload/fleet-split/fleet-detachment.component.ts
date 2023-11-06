@@ -302,6 +302,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     private afterDetachAction() {
         this.notif.open('Fleets detached');
         this.fetchBaseData();
+        this.fleetCommService.reload();
         this.fleetCommService.selectFleet({id: this.fleet!.idFleet});
     }
 

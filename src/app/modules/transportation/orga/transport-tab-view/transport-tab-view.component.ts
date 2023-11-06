@@ -27,7 +27,7 @@ export class TransportTabViewComponent extends SubscriptionManager implements On
         super();
 
         this.resourceTypes = this.typeService.collectableResourceTypes;
-        this.educationTypes = this.typeService.educationTypes;//fixme this.typeService.militaryEducationTypes;
+        this.educationTypes = this.typeService.militaryEducationTypes;
     }
 
     ngOnInit(): void {
