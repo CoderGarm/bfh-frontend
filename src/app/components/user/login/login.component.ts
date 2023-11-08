@@ -1,11 +1,10 @@
-import {AuthRequest} from '../../../services/swagger';
+import {AuthRequest, PublicResourcesApiService} from '../../../services/swagger';
 import {AuthenticationService} from '../../../services/authentication';
 
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {TokenStorage} from "../../../services/authentication/token-storage.service";
 
 @Component({
     selector: 'app-login',
@@ -20,8 +19,10 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
     isAuthenticated: boolean = false;
     hide: boolean = true;
 
+    userNames: string[] = [];
+
     constructor(protected authService: AuthenticationService,
-                private tokenService: TokenStorage,
+                protected publicResourceService: PublicResourcesApiService,
                 private permissionsService: NgxPermissionsService) {
         super();
 
@@ -29,6 +30,11 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
             login: new FormControl(undefined, Validators.required),
             pass: new FormControl(undefined, Validators.required)
         });
+
+        if (this.tokenStorage.isLocalhost()) {
+            let sub = this.publicResourceService.getUsernames().subscribe(resp => this.userNames = resp.sort((a, b) => a.localeCompare(b)));
+            this.subscriptions.push(sub);
+        }
     }
 
     ngOnInit(): void {
@@ -69,5 +75,9 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
         if (event.detail > 0) { // ignoring click event from submit type button
             this.hide = !this.hide;
         }
+    }
+
+    setLogin(name: string) {
+        this.loginForm.controls.login.setValue(name);
     }
 }

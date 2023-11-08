@@ -21,6 +21,7 @@ import { MarketplaceApiService } from './api/marketplaceApi.service';
 import { MissionApiService } from './api/missionApi.service';
 import { ModuleApiService } from './api/moduleApi.service';
 import { PlanetApiService } from './api/planetApi.service';
+import { PublicResourcesApiService } from './api/publicResourcesApi.service';
 import { ResearchApiService } from './api/researchApi.service';
 import { ResourcesApiService } from './api/resourcesApi.service';
 import { RolePlayApiService } from './api/rolePlayApi.service';
@@ -53,6 +54,7 @@ import { WikiApiService } from './api/wikiApi.service';
     MissionApiService,
     ModuleApiService,
     PlanetApiService,
+    PublicResourcesApiService,
     ResearchApiService,
     ResourcesApiService,
     RolePlayApiService,

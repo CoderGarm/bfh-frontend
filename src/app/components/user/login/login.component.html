@@ -31,3 +31,16 @@
 
     </mat-grid-list>
 </form>
+
+<div *ngIf="userNames.length > 0">
+    <div class="flex-items-container">
+        <div>I should be visible on localhost only! But don't worry, I don't so magic.</div>
+    </div>
+    <div class="flex-items-container">
+        <mat-chip-listbox>
+            <mat-chip-option *ngFor="let name of userNames" [value]="name" (click)="setLogin(name)">
+                {{ name }}
+            </mat-chip-option>
+        </mat-chip-listbox>
+    </div>
+</div>
