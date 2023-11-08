@@ -1,14 +1,15 @@
 <div class="headline" *ngIf="movingFleets.length == 0">{{ 'fleet.ongoing-movement.nothing' | translate }}</div>
 <div class="headline" *ngIf="movingFleets.length > 0">{{ 'fleet.ongoing-movement.title' | translate }}</div>
 
-<div class="flex-items-container">
+<div class="flex-items-from-start-container">
     <mat-card style="background-color: transparent;" class="width-fit-content blue-card" *ngFor="let fleet of movingFleets">
         <mat-card-header>
             <mat-card-title>{{ fleet.name }}</mat-card-title>
             <app-icon matCardAvatar png32px [fleetSize]="fleet.ships.length"></app-icon>
+            <mat-icon class="foreign-fleet" *ngIf="!isOwnFleet(fleet)" matTooltip="{{ 'fleet.ownership.isForeign.title' | translate }}">warning_amber</mat-icon>
         </mat-card-header>
         <mat-card-content>
-            <app-fleet-move-display [fleet]="fleet" [showTitle]="false" preSelect></app-fleet-move-display>
+            <app-fleet-move-display [fleet]="fleet" preSelect></app-fleet-move-display>
         </mat-card-content>
     </mat-card>
 </div>

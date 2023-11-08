@@ -190,6 +190,9 @@
 			}
 		},
 		"finished-movement": {
+			"arrival": {
+				"title": "Ankunft:"
+			},
 			"nothing": "Keine beendeten Flottenbewegungen",
 			"title": "Beendete Flottenbewegungen"
 		},
@@ -201,6 +204,11 @@
 		"ongoing-movement": {
 			"nothing": "Keine Marschbefehle",
 			"title": "Flottenbewegungen"
+		},
+		"ownership": {
+			"isForeign": {
+				"title": "Fremde Flotte"
+			}
 		},
 		"retire": {
 			"submit": "Flotte deaktivieren"

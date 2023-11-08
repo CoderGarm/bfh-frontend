@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetOrbit, Planet, PlanetApiService} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
+import {coerceBooleanProperty} from "@angular/cdk/coercion";
 
 @Component({
     selector: 'app-fleet-move-display',
@@ -13,9 +14,6 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
     fleet?: Fleet;
     fleetInputDefinition: string = "fleet";
 
-    @Input()
-    showTitle: boolean = true;
-
     destination?: Planet;
     position?: Planet;
 
@@ -25,16 +23,17 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
     // @formatter:off
     @Input()
     get preSelect() { return this._preSelect; }
-    set preSelect(value: any) { this._preSelect = this.coerceBooleanProperty(value); }
+    set preSelect(value: any) { this._preSelect = coerceBooleanProperty(value); }
     _preSelect: boolean = false;
+
+    @Input()
+    get showTitle() { return this._showTitle; }
+    set showTitle(value: any) { this._showTitle = coerceBooleanProperty(value); }
+    _showTitle: boolean = false;
     // @formatter:on
 
     constructor(private planetApi: PlanetApiService) {
         super();
-    }
-
-    private coerceBooleanProperty(value: any): boolean {
-        return value != null && `${value}` !== 'false';
     }
 
     ngAfterViewInit(): void {
@@ -82,10 +81,6 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
         }
     }
 
-    getTicksLeft() {
-        return this.fleet!.move!.originalDuration - this.fleet!.move!.moveDoneAtZero;
-    }
-
     private createDestinationRepresentation() {
         let destination = "";
         if (!!this.fleet && !!this.fleet.move && this.isOwnFleet(this.fleet)) {
@@ -99,10 +94,6 @@ export class FleetMoveDisplayComponent extends SubscriptionManager implements Af
                     destination += ", ";
                 }
                 destination += this.fleet.move.targetOrbit.system.name;
-            }
-            if (!!this.fleet.move) {
-                const ticksLeft = this.fleet.move.moveDoneAtZero;
-                destination += ', ' + ticksLeft + ' tick' + (ticksLeft > 1 ? 's' : '') + ' left';
             }
         }
         this.destinationRepresentation = destination;

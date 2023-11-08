@@ -190,6 +190,9 @@
 			}
 		},
 		"finished-movement": {
+			"arrival": {
+				"title": "Arrival:"
+			},
 			"nothing": "No finished movements",
 			"title": "Finished movements"
 		},
@@ -200,7 +203,12 @@
 		},
 		"ongoing-movement": {
 			"nothing": "No marching orders",
-			"title": "Arrivals"
+			"title": "Marching orders"
+		},
+		"ownership": {
+			"isForeign": {
+				"title": "Foreign fleet"
+			}
 		},
 		"retire": {
 			"submit": "Retire fleet"

@@ -171,6 +171,10 @@ body {
 .flex-items-from-start-container {
   display: flex;
   flex-flow: row wrap;
+
+  & * {
+    margin-right: 15px;
+  }
 }
 
 .flex-end-items-container {
@@ -394,4 +398,8 @@ mat-step-header {
   & * {
     color: var(--map-text-color);
   }
+}
+
+.headline {
+  margin-bottom: 15px;
 }

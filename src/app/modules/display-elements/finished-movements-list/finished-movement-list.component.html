@@ -1,0 +1,16 @@
+<div class="headline" *ngIf="finishedMovements.length == 0">{{ 'fleet.finished-movement.nothing' | translate }}</div>
+<div class="headline" *ngIf="finishedMovements.length > 0">{{ 'fleet.finished-movement.title' | translate }}</div>
+
+<div class="flex-items-from-start-container">
+    <mat-card style="background-color: transparent;" class="width-fit-content right-blue-card" *ngFor="let move of finishedMovements">
+        <mat-card-header>
+            <mat-card-title>{{ move.fleetName }}</mat-card-title>
+            <mat-card-subtitle>of {{ move.fleetOwnerName }}</mat-card-subtitle>
+            <app-icon matCardAvatar png32px [fleetSize]="move.fleetSize"></app-icon>
+            <mat-icon class="foreign-fleet" *ngIf="move.isForeignFleet" matTooltip="{{ 'fleet.ownership.isForeign.title' | translate }}">warning_amber</mat-icon>
+        </mat-card-header>
+        <mat-card-content>
+            <app-fleet-finished-move-display [fleetMovement]="move" showTitle></app-fleet-finished-move-display>
+        </mat-card-content>
+    </mat-card>
+</div>

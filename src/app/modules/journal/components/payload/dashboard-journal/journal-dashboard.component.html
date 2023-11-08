@@ -17,8 +17,9 @@
             <ng-template matStepContent>
 
                 <app-outlined titleValue="{{ 'tab.journal.movements' | translate }}">
-                    <app-fleet-movement-journal></app-fleet-movement-journal>
-                    <app-finished-movements-list [finishedMovements]="movements"></app-finished-movements-list>
+                    <app-fleet-movement-list [movingFleets]="movingFleets"></app-fleet-movement-list>
+                    <mat-divider style="margin: 25px 0;"></mat-divider>
+                    <app-finished-movement-list [finishedMovements]="finishedMovements"></app-finished-movement-list>
                 </app-outlined>
 
                 <app-outlined titleValue="{{ 'journal.missions.title' | translate }}">

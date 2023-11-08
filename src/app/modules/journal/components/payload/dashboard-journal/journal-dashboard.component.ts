@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {
     Commissioning,
     FinishedColonization,
+    Fleet,
+    FleetApiService,
     FleetMovement,
     Job,
     JobApiService,
@@ -32,7 +34,8 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     runningResearch?: Job;
 
     transportJobs: TransportJob[] = [];
-    movements: FleetMovement[] = [];
+    movingFleets: Fleet[] = [];
+    finishedMovements: FleetMovement[] = [];
     colonizations: FinishedColonization[] = [];
     operationals: Commissioning[] = [];
     pending: Commissioning[] = [];
@@ -56,6 +59,7 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     constructor(private currentTickService: CurrentTickService,
                 private jobService: JobApiService,
                 private planetService: PlanetApiService,
+                private fleetService: FleetApiService,
                 private journalService: JournalApiService,
                 private resourceService: ResourcesApiService,
                 private marketService: MarketplaceApiService) {
@@ -86,8 +90,11 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
         });
         this.subscriptions.push(sub);
 
+        sub = this.fleetService.getMovingFleetsForUser().subscribe(resp => this.movingFleets = resp);
+        this.subscriptions.push(sub);
+
         sub = this.journalService.getFinishedMovements().subscribe(resp => {
-            this.movements = resp;
+            this.finishedMovements = resp;
             this.stateNewFleetInfo();
         });
         this.subscriptions.push(sub);
@@ -144,7 +151,7 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
                 return;
             }
             const topicRead = this.tokenStorage.isJournalTopicRead(tick.tickNo, 'fleetInfo');
-            this.hasNewFleetInfo = !topicRead && (this.movements.length > 0 || (!!this.missionResults && (this.missionResults.actionItemGroups.length > 0 || this.missionResults.convoyActionItemGroups.length > 0)));
+            this.hasNewFleetInfo = !topicRead && (this.finishedMovements.length > 0 || (!!this.missionResults && (this.missionResults.actionItemGroups.length > 0 || this.missionResults.convoyActionItemGroups.length > 0)));
         });
         this.subscriptions.push(sub);
     }

@@ -1,0 +1,16 @@
+@import "src/styles/variables";
+
+.foreign-fleet {
+  color: $warning-color;
+  margin: 0 15px;
+}
+
+.icon {
+  height: 16px !important;
+  width: 16px !important;
+  margin-right: 10px;
+}
+
+mat-card-content {
+  padding-bottom: 0 !important;
+}

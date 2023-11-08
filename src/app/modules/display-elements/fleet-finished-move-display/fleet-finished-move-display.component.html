@@ -1,0 +1,9 @@
+<div *ngIf="!!fleetMovement && showTitle">
+    <div mat-subheader>
+        {{  'fleet.finished-movement.arrival.title' | translate  }} at {{ destinationRepresentation }}
+    </div>
+</div>
+
+<div mat-subheader *ngIf="!!fleetMovement && !showTitle">
+    at {{ destinationRepresentation }}
+</div>

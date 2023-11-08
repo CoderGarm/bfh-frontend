@@ -18,7 +18,7 @@ import {TransportationListDisplayComponent} from './transportation-list-display/
 import {ShipClassTonnagePerSectionDisplayComponent} from './construction-capacity-display/ship-class-tonnage-per-section-display.component';
 import {ManualTransportComponent} from './manual-transport/manual-transport.component';
 import {SingleResourceTransferComponent} from './single-resource-transfer/single-resource-transfer.component';
-import {FinishedMovementsListComponent} from "./finished-movements-list/finished-movements-list.component";
+import {FinishedMovementListComponent} from "./finished-movements-list/finished-movement-list.component";
 import {FinishedColonizationsListComponent} from "./finished-colonizations-list/finished-colonizations-list.component";
 import {SpacecraftStateBlockDisplayComponent} from './spacecraft-state-block-display/spacecraft-state-block-display.component';
 import {AmmunitionRosterComponent} from './ammunition-roster/ammunition-roster.component';
@@ -39,6 +39,8 @@ import {TradeDisplayComponent} from './trade-display/trade-display.component';
 import {MissionResultComponent} from './mission-result/mission-result.component';
 import {TradeLossComponent} from "./trade-loss/trade-loss.component";
 import {JobDisplayComponent} from './job-display/job-display.component';
+import {FleetFinishedMoveDisplayComponent} from './fleet-finished-move-display/fleet-finished-move-display.component';
+import {FleetMovementListComponent} from "./fleet-movement-list/fleet-movement-list.component";
 
 @NgModule({
     declarations: [
@@ -61,7 +63,7 @@ import {JobDisplayComponent} from './job-display/job-display.component';
         ShipClassTonnagePerSectionDisplayComponent,
         ManualTransportComponent,
         SingleResourceTransferComponent,
-        FinishedMovementsListComponent,
+        FinishedMovementListComponent,
         FinishedColonizationsListComponent,
         SpacecraftStateBlockDisplayComponent,
         AmmunitionRosterComponent,
@@ -81,6 +83,8 @@ import {JobDisplayComponent} from './job-display/job-display.component';
         TradeLossComponent,
         MissionResultComponent,
         JobDisplayComponent,
+        FleetFinishedMoveDisplayComponent,
+        FleetMovementListComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -105,7 +109,7 @@ import {JobDisplayComponent} from './job-display/job-display.component';
         ShipClassTonnagePerSectionDisplayComponent,
         ManualTransportComponent,
         SingleResourceTransferComponent,
-        FinishedMovementsListComponent,
+        FinishedMovementListComponent,
         FinishedColonizationsListComponent,
         SpacecraftStateBlockDisplayComponent,
         AmmunitionRosterComponent,
@@ -124,6 +128,8 @@ import {JobDisplayComponent} from './job-display/job-display.component';
         TradeLossComponent,
         MissionResultComponent,
         JobDisplayComponent,
+        FleetFinishedMoveDisplayComponent,
+        FleetMovementListComponent,
     ]
 })
 export class DisplayElementsModule {

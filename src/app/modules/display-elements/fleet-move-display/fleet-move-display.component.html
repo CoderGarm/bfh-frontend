@@ -1,6 +1,8 @@
 <div *ngIf="!!fleet && showTitle && !_preSelect">
     <div mat-subheader *ngIf="!!fleet.move">
-        {{  'fleet.display.move.movement.title' | translate  }} towards {{ destinationRepresentation }}, {{ getTicksLeft() }} of {{ fleet.move!.originalDuration }} ticks
+        {{  'fleet.display.move.movement.title' | translate  }} towards {{ destinationRepresentation }}
+        <br>
+        {{ fleet.move.moveDoneAtZero }} of {{ fleet.move!.originalDuration }} ticks left
     </div>
     <div mat-subheader *ngIf="!!fleet.orbit">
         {{  'fleet.display.move.orbit.title' | translate  }}: {{ orbitRepresentation }}
@@ -8,11 +10,19 @@
 </div>
 
 <div *ngIf="!!fleet && !showTitle && !_preSelect">
-    <div mat-subheader *ngIf="!!fleet.move">towards {{ destinationRepresentation }}, {{ getTicksLeft() }} of {{ fleet.move!.originalDuration }} ticks</div>
+    <div mat-subheader *ngIf="!!fleet.move">
+        towards {{ destinationRepresentation }}
+        <br>
+        {{ fleet.move.moveDoneAtZero }} of {{ fleet.move!.originalDuration }} ticks left
+    </div>
     <div mat-subheader *ngIf="!!fleet.orbit">{{ orbitRepresentation }}</div>
 </div>
 
 <div *ngIf="!!fleet && _preSelect">
-    <div mat-subheader *ngIf="!!fleet.move">towards {{ destinationRepresentation }} of {{ fleet.move!.originalDuration }} ticks</div>
+    <div mat-subheader *ngIf="!!fleet.move">
+        towards {{ destinationRepresentation }}
+        <br>
+        {{ fleet.move.moveDoneAtZero }} ticks left
+    </div>
     <div mat-subheader *ngIf="!!fleet.orbit">currently at  {{ orbitRepresentation }}</div>
 </div>
