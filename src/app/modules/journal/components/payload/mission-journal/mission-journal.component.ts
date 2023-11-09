@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {ConvoyRaidActionItemGroup, MissionReport, PirateRaidActionItem, PirateRaidActionItemGroup} from "../../../../../services/swagger";
+import {ConvoyRaidActionItemGroup, MissionReport, PirateRaidActionItemGroup} from "../../../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 
 
@@ -43,6 +43,7 @@ export class MissionJournalComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
+        console.log(this.missionResults)
         this.missionResults?.actionItemGroups.forEach(item => this.missionItems.push(item));
         this.missionResults?.convoyActionItemGroups.forEach(item => this.missionItems.push(item));
     }

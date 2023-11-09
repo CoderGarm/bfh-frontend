@@ -22,6 +22,8 @@ export class MissionResultComponent implements OnChanges {
         [EMissionActionEnum.SPAWN, EMissionActionEnum.WAIT].join('-'),
         [EMissionActionEnum.SPAWN, EMissionActionEnum.APPROACH].join('-'),
         [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID].join('-'),
+        [EMissionActionEnum.APPROACH, EMissionActionEnum.BATTLE, EMissionActionEnum.RAID].join('-'),
+        [EMissionActionEnum.APPROACH, EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID].join('-'),
         [EMissionActionEnum.BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('-'),
         [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID].join('-'),
         [EMissionActionEnum.NO_BATTLE, EMissionActionEnum.RAID, EMissionActionEnum.LEAVE_ORBIT].join('-'),

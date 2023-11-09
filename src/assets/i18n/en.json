@@ -356,8 +356,10 @@
 				"WAIT": "It seams, they are watching.",
 				"WITHDRAW": "We lost contact.",
 				"multi": {
+					"APPROACH-BATTLE-RAID": "It came to a fight and we were defeated. The looting was devastating.",
 					"BATTLE-RAID": "It came to a fight and we were defeated. The looting was devastating.",
 					"BATTLE-RAID-LEAVE_ORBIT": "It came to a fight and we were defeated. The looting was devastating, they left afterwards.",
+					"APPROACH-NO_BATTLE-RAID": "Nobody stood in the way of the attackers. They plundered everything.",
 					"NO_BATTLE-RAID": "Nobody stood in the way of the attackers. They plundered everything.",
 					"NO_BATTLE-RAID-LEAVE_ORBIT": "Nobody stood in the way of the attackers. They plundered everything and left without a shot.",
 					"SPAWN-APPROACH": "A transition has been caught, the ships are approaching the planet.",
