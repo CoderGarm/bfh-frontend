@@ -2,9 +2,8 @@
 
 # run it on build system
 
-rm -f bfh-fe.tar.gz
-tar -czf bfh-fe.tar.gz dist/
-scp bfh-fe.tar.gz scripts/htaccess scripts/google2cbaff394ce44864.html medusa:uploadTarget/
 scp scripts/deployFrontend.sh medusa:
+cp scripts/google2cbaff394ce44864.html dist/bfh-fe/
+cp scripts/htaccess dist/bfh-fe/.htaccess
+rsync -a --ignore-existing --delete --progress dist/ medusa:/home/karsten/uploadTarget/
 rm -rf dist/
-rm -f bfh-fe.tar.gz

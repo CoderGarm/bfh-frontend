@@ -62,6 +62,10 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     @ViewChild('drawer')
     drawer!: MatDrawer;
 
+    private static readonly IMG_NO: number = 16;
+
+    imageTag: string;
+
     constructor(private colorSchemeService: ColorSchemeService,
                 private renderer: Renderer2,
                 private spinnerService: SpinnerService,
@@ -128,6 +132,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         if (!this.rememberIgnoreScreenWarning && window.innerWidth <= 800) {
             this.spinner.show('screen-size');
         }
+
+        this.imageTag = this.getImage();
     }
 
     private detectDeviceType() {
@@ -251,5 +257,15 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             && !this.router.url.endsWith(WikiMainComponent.path)
             && !this.router.url.endsWith(TakeATourComponent.path)
             ;
+    }
+
+    randomIntFromInterval(min: number, max: number) {
+        // min and max included
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
+    private getImage() {
+        const number = this.randomIntFromInterval(1, AppComponent.IMG_NO);
+        return "<img src='assets/images/" + number + ".jpeg' />";
     }
 }

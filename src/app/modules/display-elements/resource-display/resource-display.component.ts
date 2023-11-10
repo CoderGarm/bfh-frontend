@@ -269,18 +269,19 @@ export class ResourceDisplayComponent extends SubscriptionManager {
         } else {
             translation = translation.replace("AMOUNT", capacityAmount + "");
             translation = translation.replace("RESOURCE_NAME", resourceName);
-            translation = translation.replace("TICKS", lastingTicks + "");
+            translation = translation.replace("TICKS", (lastingTicks === Number.MAX_VALUE ? 999 : lastingTicks) + "");
         }
 
         return translation;
     }
 
     private isPopulationGrowthWarning(lastingTicks: number) {
-        return lastingTicks === Number.MAX_VALUE || lastingTicks === 0;
+        return lastingTicks === 0;
     }
 
     private calculateLastingCapacityTicks(resource: ResourceAmount) {
         const incoming = this.getResourceAmount(resource.resourceType, this.income);
+        console.log("incoming", incoming)
         if (incoming != 0 && !incoming) {
             throw new Error("There should be an incoming if requested.");
         }
@@ -289,10 +290,12 @@ export class ResourceDisplayComponent extends SubscriptionManager {
         }
         const current = this.sumOfPops;
         const capacity = this.getResourceAmount(resource.resourceType, this.capacity);
+        console.log("current", current, "capacity", capacity)
         if ((capacity != 0 && !capacity) || (current != 0 && !current)) {
             throw new Error("There should be a capacity or a current if requested.");
         }
         const result = Math.round((capacity - current) / incoming);
+        console.log("result", result)
         return result >= 0 ? result : 0;
     }
 

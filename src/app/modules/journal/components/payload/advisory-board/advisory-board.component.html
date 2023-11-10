@@ -1,73 +1,67 @@
-<div class="ngx-spinner-limiter">
-    <ngx-spinner type="ball-clip-rotate-multiple" color="#375a7f" name="advisory-spinner" [fullScreen]="false"></ngx-spinner>
-    <app-outlined titleValue="{{ 'journal.advisory.title.general' | translate }}"
-                  *ngIf="infra?.shipyardPossible || infra?.constructionPossible || infra?.researchPossible || missionResults?.newBattleReports || nothing"
-                  [ngClass]="{'limited-width': spinnerActive}">
+<app-outlined titleValue="{{ 'journal.advisory.title.general' | translate }}"
+              *ngIf="infra?.shipyardPossible || infra?.constructionPossible || infra?.researchPossible || missionResults?.newBattleReports || nothing">
 
-        <div *ngIf="missionResults?.newBattleReports" class="title">
-            <app-icon png32px combat></app-icon>
-            {{ 'mission.report.battles-happended' | translate }}
-        </div>
+    <div *ngIf="missionResults?.newBattleReports" class="title">
+        <app-icon png32px combat></app-icon>
+        {{ 'mission.report.battles-happended' | translate }}
+    </div>
 
-        <div *ngIf="nothing" class="title">
-            {{ 'journal.advisory.infrastructure.predicate.noting-to-do' | translate }}
-        </div>
+    <div *ngIf="nothing" class="title">
+        {{ 'journal.advisory.infrastructure.predicate.noting-to-do' | translate }}
+    </div>
 
-        <div *ngIf="infra?.shipyardPossible" class="title">
-            <app-icon png32px shipyard></app-icon>
-            {{ 'journal.advisory.infrastructure.predicate.shipyardPossible' | translate }}
-        </div>
+    <div *ngIf="infra?.shipyardPossible" class="title">
+        <app-icon png32px shipyard></app-icon>
+        {{ 'journal.advisory.infrastructure.predicate.shipyardPossible' | translate }}
+    </div>
 
-        <div *ngIf="infra?.constructionPossible" class="title">
-            <app-icon png32px construction></app-icon>
-            {{ 'journal.advisory.infrastructure.predicate.constructionPossible' | translate }}
-        </div>
+    <div *ngIf="infra?.constructionPossible" class="title">
+        <app-icon png32px construction></app-icon>
+        {{ 'journal.advisory.infrastructure.predicate.constructionPossible' | translate }}
+    </div>
 
-        <div *ngIf="infra?.researchPossible" class="title">
-            <app-icon png32px research></app-icon>
-            {{ 'journal.advisory.infrastructure.predicate.researchPossible' | translate }}
-        </div>
-    </app-outlined>
+    <div *ngIf="infra?.researchPossible" class="title">
+        <app-icon png32px research></app-icon>
+        {{ 'journal.advisory.infrastructure.predicate.researchPossible' | translate }}
+    </div>
+</app-outlined>
 
-    <app-outlined titleValue="{{ 'journal.advisory.title.infrastructure' | translate }}"
-                  *ngIf="suggestedConstruction || suggestedResearch"
-                  [ngClass]="{'limited-width': spinnerActive}">
-        <div class="flex-items-from-start-container">
-            <app-blue-card *ngIf="!!suggestedConstruction" class="box">
-                <div header>{{ 'journal.advisory.infrastructure.predicate.suggestedBuilding' | translate }}</div>
-                <div body class="box">
-                    <app-icon matCardAvatar class="icon"
-                              [icon]="suggestedConstruction.building.productionTarget"
-                              [altText]="suggestedConstruction.building.productionTarget.typeName"
-                              png24px [toolTip]="suggestedConstruction.building.productionTarget.typeName"></app-icon>
-                    <span>{{ suggestedConstruction.building.name }}</span>
-                </div>
-            </app-blue-card>
+<app-outlined titleValue="{{ 'journal.advisory.title.infrastructure' | translate }}" *ngIf="suggestedConstruction || suggestedResearch">
+    <div class="flex-items-from-start-container">
+        <app-blue-card *ngIf="!!suggestedConstruction" class="box">
+            <div header>{{ 'journal.advisory.infrastructure.predicate.suggestedBuilding' | translate }}</div>
+            <div body class="box">
+                <app-icon matCardAvatar class="icon"
+                          [icon]="suggestedConstruction.building.productionTarget"
+                          [altText]="suggestedConstruction.building.productionTarget.typeName"
+                          png24px [toolTip]="suggestedConstruction.building.productionTarget.typeName"></app-icon>
+                <span>{{ suggestedConstruction.building.name }}</span>
+            </div>
+        </app-blue-card>
 
-            <app-blue-card *ngIf="!!suggestedResearch" class="box">
-                <div header>{{ 'journal.advisory.infrastructure.predicate.suggestedResearch' | translate }}</div>
-                <div body class="box">
-                    <app-icon mat-card-avatar
-                              [icon]="suggestedResearch.hasIcon"
-                              [altText]="suggestedResearch.name"
-                              png24px [toolTip]="suggestedResearch.name"></app-icon>
-                    {{ suggestedResearch.name }}
-                </div>
-            </app-blue-card>
-        </div>
-    </app-outlined>
+        <app-blue-card *ngIf="!!suggestedResearch" class="box">
+            <div header>{{ 'journal.advisory.infrastructure.predicate.suggestedResearch' | translate }}</div>
+            <div body class="box">
+                <app-icon mat-card-avatar
+                          [icon]="suggestedResearch.hasIcon"
+                          [altText]="suggestedResearch.name"
+                          png24px [toolTip]="suggestedResearch.name"></app-icon>
+                {{ suggestedResearch.name }}
+            </div>
+        </app-blue-card>
+    </div>
+</app-outlined>
 
-    <app-outlined *ngIf="pirateHunt.length > 0" titleValue="{{ 'journal.advisory.title.pirate-hunt' | translate }}" [ngClass]="{'limited-width': spinnerActive}">
-        <span class="title">{{ 'journal.advisory.predicate.pirate-hunt' | translate }}</span>
-        <div *ngFor="let planet of pirateHunt" class="box">
-            <app-icon png32px planet></app-icon>
-            {{ planet.name }}
-        </div>
-    </app-outlined>
+<app-outlined *ngIf="pirateHunt.length > 0" titleValue="{{ 'journal.advisory.title.pirate-hunt' | translate }}">
+    <span class="title">{{ 'journal.advisory.predicate.pirate-hunt' | translate }}</span>
+    <div *ngFor="let planet of pirateHunt" class="box">
+        <app-icon png32px planet></app-icon>
+        {{ planet.name }}
+    </div>
+</app-outlined>
 
 
-    <app-outlined *ngIf="convoyProtection.length > 0" titleValue="{{ 'journal.advisory.title.convoy-protection' | translate }}" [ngClass]="{'limited-width': spinnerActive}">
-        <span class="title">{{ 'journal.advisory.predicate.convoy-protection' | translate }}</span>
-        <app-trade-display *ngFor="let contract of convoyProtection" [trade]="contract"></app-trade-display>
-    </app-outlined>
-</div>
+<app-outlined *ngIf="convoyProtection.length > 0" titleValue="{{ 'journal.advisory.title.convoy-protection' | translate }}">
+    <span class="title">{{ 'journal.advisory.predicate.convoy-protection' | translate }}</span>
+    <app-trade-display *ngFor="let contract of convoyProtection" [trade]="contract"></app-trade-display>
+</app-outlined>
