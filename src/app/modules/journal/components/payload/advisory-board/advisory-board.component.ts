@@ -50,7 +50,9 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
             }
 
             this.nothing = !resp.constructionPossible && !resp.researchPossible && !resp.shipyardPossible && !resp.suggestedResearch && !resp.suggestedBuilding && !this.missionResults?.newBattleReports;
-            this.spinner.hide('advisory-spinner');
+            setTimeout(() => {
+                this.spinner.hide('advisory-spinner');
+            }, 1000);
             this.spinnerActive = false;
         });
         this.subscriptions.push(sub);

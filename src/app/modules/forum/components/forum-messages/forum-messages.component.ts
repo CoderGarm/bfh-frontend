@@ -138,7 +138,6 @@ export class ForumMessagesComponent extends SubscriptionManager implements After
             this.forumsCommService.unreadMessages = [];
             return;
         }
-        console.log(this.pageIndex)
         this.selectedForumThread = thread;
         let sub = this.forumService.getMessagesInThread(thread.idForumThread, this.pageIndex, this.pageSize)
             .subscribe(resp => {
