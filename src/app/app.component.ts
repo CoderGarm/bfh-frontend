@@ -64,7 +64,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
 
     private static readonly IMG_NO: number = 16;
 
-    imageTag: string;
+    imageLink: string = '';
 
     constructor(private colorSchemeService: ColorSchemeService,
                 private renderer: Renderer2,
@@ -133,7 +133,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             this.spinner.show('screen-size');
         }
 
-        this.imageTag = this.getImage();
+        this.imageLink = this.getImageURL();
     }
 
     private detectDeviceType() {
@@ -264,8 +264,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
-    private getImage() {
+    private getImageURL() {
         const number = this.randomIntFromInterval(1, AppComponent.IMG_NO);
-        return "<img src='assets/images/" + number + ".jpeg' />";
+        return "assets/images/" + number + ".jpeg";
     }
 }

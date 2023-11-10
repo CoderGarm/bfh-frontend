@@ -5,7 +5,7 @@
 # fixme schnellstens
 echo 'bitte lade es manuell hoch, der Prozess funktioniert momentan nicht'
 echo 'cp scripts/htaccess dist/bfh-fe/.htaccess'
-echo 'scp -r dist/ medusa:uploadTarget/'
+echo 'scp -r dist/ medusa:uploadTarget/bfh-frontend/'
 echo 'Und dann natürlich deployen'
 exit 1
 
