@@ -13,7 +13,7 @@ echo 'frontend archived in ' + /home/karsten/archive/"$date"/frontend/"$time"_bf
 
 ## deploy
 sudo rm -r /var/www/html/bfh-fe/
-sudo cp -r /home/karsten/uploadTarget/bfh-fe/ /var/www/html/
+sudo cp -r /home/karsten/uploadTarget/bhf-frontend/bfh-fe/ /var/www/html/
 sudo chown -R www-data:www-data /var/www/html/bfh-fe/
 echo 'deployment of frontend done'
 
