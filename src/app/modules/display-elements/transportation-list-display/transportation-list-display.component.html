@@ -25,7 +25,7 @@
                             <app-number-short [input]="what.total"></app-number-short>
                         </div>
                         <ul>
-                            <li *ngFor="let from of what.from | keyvalue" style="font-size: small">
+                            <li *ngFor="let from of what.from | keyvalue" style="font-size: small"> <!-- fixme show ship job -->
                                 {{ $any(from.value) | numberShort }} from {{ from.key }}
                             </li>
                         </ul>

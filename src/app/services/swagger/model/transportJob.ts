@@ -11,6 +11,7 @@
  */
 import { HumanResourceAmount } from './humanResourceAmount';
 import { ResourceAmount } from './resourceAmount';
+import { WarShip } from './warShip';
 
 /**
  * .
@@ -32,4 +33,5 @@ export interface TransportJob {
      * The transferred humans.
      */
     humanResources: Array<HumanResourceAmount>;
+    warship?: WarShip;
 }
