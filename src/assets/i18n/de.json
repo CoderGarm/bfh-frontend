@@ -356,9 +356,9 @@
 				"WITHDRAW": "Wir haben den Kontakt verloren.",
 				"multi": {
 					"APPROACH-BATTLE-RAID": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend.",
+					"APPROACH-NO_BATTLE-RAID": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles.",
 					"BATTLE-RAID": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend.",
 					"BATTLE-RAID-LEAVE_ORBIT": "Es kam zum Kampf uns wir unterlagen. Die Plünderungen waren verheerend, bevor sie flohen.",
-					"APPROACH-NO_BATTLE-RAID": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles.",
 					"NO_BATTLE-RAID": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles.",
 					"NO_BATTLE-RAID-LEAVE_ORBIT": "Niemand stellte sich den Angreifern in den Weg. Sie plünderten alles und flohen.",
 					"SPAWN-APPROACH": "Eine Transition wurde aufgefangen, die Schiffe nähern sich dem Planeten.",
@@ -885,7 +885,8 @@
 		},
 		"transportation": {
 			"humans": "Bevölkerung",
-			"resources": "Ressourcen"
+			"resources": "Ressourcen",
+			"ships": "Schiffe der Reserve"
 		}
 	},
 	"tick": {

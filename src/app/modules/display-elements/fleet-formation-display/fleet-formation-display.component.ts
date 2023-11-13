@@ -13,6 +13,9 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
     fleet?: Fleet;
     fleetInputDefinition: string = "fleet";
 
+    @Input()
+    warships?: WarShip[];
+
     private hullTypes: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     hullsByType: Map<string, EShipClassType> = new Map<string, EShipClassType>();
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
@@ -30,7 +33,7 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes[this.fleetInputDefinition]) {
+        if (changes[this.fleetInputDefinition] || !!this.warships) {
             this.hullTypes.clear();
             this.hullsByType.clear();
             this.warShipsByType.clear();
@@ -40,14 +43,18 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
     }
 
     private sortWarshipsByHull() {
+        let warShips: WarShip[] | undefined = undefined;
         if (!!this.fleet) {
-            let warShips: WarShip[] = this.fleet.ships;
-            warShips.forEach(warShip => {
-                this.hullTypes.set(warShip.shipClass.shipClassType.typeName, warShip.shipClass.shipClassType);
-                this.addToTypeList(warShip);
-                this.addToTypeAndFlightList(warShip);
-            });
+            warShips = this.fleet.ships;
+        } else if (!!this.warships) {
+            warShips = this.warships;
         }
+        warShips?.forEach(warShip => {
+            this.hullTypes.set(warShip.shipClass.shipClassType.typeName, warShip.shipClass.shipClassType);
+            this.addToTypeList(warShip);
+            this.addToTypeAndFlightList(warShip);
+        });
+
     }
 
     private addToTypeAndFlightList(warShip: WarShip) {

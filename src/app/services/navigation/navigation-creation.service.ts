@@ -11,7 +11,7 @@ import {AdminTabViewComponent} from "../../modules/admin/components/orga/admin-t
 import {ForumsListComponent} from "../../modules/forum/components/forums-list/forums-list.component";
 import {AllianceTabViewComponent} from "../../modules/alliance/components/orga/alliance-tab-view/alliance-tab-view.component";
 import {WikiMainComponent} from "../../modules/wiki/orga/wiki-main/wiki-main.component";
-import {TransportTabViewComponent} from "../../modules/transportation/orga/transport-tab-view/transport-tab-view.component";
+import {TransportMainViewComponent} from "../../modules/transportation/orga/transport-tab-view/transport-main-view.component";
 import {ShipClassSelectionComponent} from "../../modules/ship-class-construction/components/orga/ship-class-selection/ship-class-selection.component";
 import {PlanetSelectionComponent} from "../../modules/planets/components/orga/planet-selection/planet-selection.component";
 import {FleetSelectionComponent} from "../../modules/fleet/components/orga/fleet-selection/fleet-selection.component";
@@ -66,7 +66,7 @@ export class NavigationCreationService {
             NavigationCreationService.getFleetRoute(),
             {path: StratOpsTabViewComponent.path, component: StratOpsTabViewComponent, canActivate: [protectedGuard]},
             {path: ExpansionTabViewComponent.path, component: ExpansionTabViewComponent, canActivate: [protectedGuard]},
-            {path: TransportTabViewComponent.path, component: TransportTabViewComponent, canActivate: [protectedGuard]},
+            {path: TransportMainViewComponent.path, component: TransportMainViewComponent, canActivate: [protectedGuard]},
         ];
     }
 

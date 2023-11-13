@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChildren} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {EnumValueDto, Planet, PlanetApiService, ResourceDeposit} from "../../../../../services/swagger";
+import {EnumValueDto, FleetApiService, Planet, PlanetApiService, ResourceDeposit, WarShip} from "../../../../../services/swagger";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {MatStepper} from "@angular/material/stepper";
@@ -21,6 +21,12 @@ export interface ResourceFetchOrder {
     type: EDepositTypeEnum;
 }
 
+enum Items {
+    RESOURCES = 'Resources',
+    PERSONNEL = 'Personnel',
+    SHIPS = 'Ships'
+}
+
 @Component({
     selector: 'app-transport-resources',
     templateUrl: './transport-resources.component.html',
@@ -37,13 +43,17 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     @Input()
     depositsPopulation: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
-    carriageTypes: string[] = ['Resources', 'Personnel'];
+    @Input()
+    mothballByPlanet: Map<number, WarShip[]> = new Map<number, WarShip[]>();
+
+    carriageTypes: string[] = ['Resources', 'Personnel', 'Ships'];
     carriageType: string = 'Resources';
 
     @ViewChildren('stepper')
     private steppers?: MatStepper[];
 
     constructor(private planetService: PlanetApiService,
+                private fleetService: FleetApiService,
                 private snackbar: SnackbarNotificationService) {
         super();
     }
@@ -93,10 +103,23 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     }
 
     change() {
-        if (this.carriageType === 'Resources') {
-            this.steppers?.forEach(a => a.previous());
+        // fixme mothball dings neu setzen oder individuelle arrays erzeugen
+        // a little more complex then necessary, but 2 factors: no setter for selectedIndex and to lazy for enum ordinal
+        const index = this.steppers?.map(a => a.selectedIndex)[0]!;
+        let diff: number;
+        if (this.carriageType === Items.RESOURCES) {
+            diff = 0 - index;
+        } else if (this.carriageType === Items.PERSONNEL) {
+            diff = 1 - index;
         } else {
-            this.steppers?.forEach(a => a.next());
+            diff = 2 - index;
+        }
+        for (let i = 0; i < Math.abs(diff); i++) {
+            if (diff < 0) {
+                this.steppers?.forEach(a => a.previous());
+            } else {
+                this.steppers?.forEach(a => a.next());
+            }
         }
     }
 }

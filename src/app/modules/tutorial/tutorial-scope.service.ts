@@ -12,7 +12,7 @@ import {TutorialPlanetDashComponent} from "./topics/planetTabView/dash/tutorial-
 import {TutorialPlanetConstructionsComponent} from "./topics/planetTabView/constructions/tutorial-planet-constructions.component";
 import {TutorialMarketplaceComponent} from "./topics/planetTabView/market/tutorial-marketplace.component";
 import {TutorialPlanetShipyardComponent} from "./topics/planetTabView/shipyard/tutorial-planet-shipyard.component";
-import {TransportTabViewComponent} from "../transportation/orga/transport-tab-view/transport-tab-view.component";
+import {TransportMainViewComponent} from "../transportation/orga/transport-tab-view/transport-main-view.component";
 import {TutorialInnerEmpireTransportationComponent} from "./topics/tutorial-inner-empire-transportation/tutorial-inner-empire-transportation.component";
 import {StarMapTabViewComponent} from "../star-map/orga/star-map-tab-view/star-map-tab-view.component";
 import {TutorialUniverseMapComponent} from "./topics/starMapTabView/tutorial-universe-map/tutorial-universe-map.component";
@@ -40,7 +40,7 @@ export class TutorialScopeService extends SubscriptionManager {
     private static readonly TUTORIALS: string[] = [
         JournalTabViewComponent.path,
         PlanetTabViewComponent.path,
-        TransportTabViewComponent.path,
+        TransportMainViewComponent.path,
         StarMapTabViewComponent.path,
         StratOpsTabViewComponent.path,
         ExpansionTabViewComponent.path,
@@ -62,7 +62,7 @@ export class TutorialScopeService extends SubscriptionManager {
             TutorialPlanetShipyardComponent.TOPIC,
             TutorialMarketplaceComponent.TOPIC
         ]);
-        this.topicsByRoute.set(TransportTabViewComponent.path, [
+        this.topicsByRoute.set(TransportMainViewComponent.path, [
             TutorialInnerEmpireTransportationComponent.TOPIC,
         ]);
         this.topicsByRoute.set(StarMapTabViewComponent.path, [

@@ -4,6 +4,7 @@
         <mat-button-toggle *ngFor="let type of carriageTypes" value="{{ type }}">
             <span mat-subheader *ngIf="type === 'Resources'">{{ 'tab.transportation.resources' | translate }}</span>
             <span mat-subheader *ngIf="type === 'Personnel'">{{ 'tab.transportation.humans' | translate }}</span>
+            <span mat-subheader *ngIf="type === 'Ships'">{{ 'tab.transportation.ships' | translate }}</span>
         </mat-button-toggle>
     </mat-button-toggle-group>
 
@@ -37,6 +38,10 @@
                         <app-humans-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DELIVERY', planet: planet }"
                                             (change)="setHumanDelivery($event)"></app-humans-carrier>
                     </div>
+                </mat-step>
+
+                <mat-step>
+                    <app-fleet-formation-display [warships]="mothballByPlanet.get(planet.idPlanet)"></app-fleet-formation-display>
                 </mat-step>
             </mat-stepper>
 
