@@ -49,3 +49,23 @@
     <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
     <div mat-subheader>{{fleet.ships.length}} Ships</div> <!-- todo make it better -->
 </div>
+
+<div *ngIf="!!warships">
+    <div class="flex-container">
+        <div *ngFor="let entry of warShipsByTypeAndFlight  | keyvalue" class="flex-container">
+            <mat-list class="ship-list">
+                <div mat-subheader>
+                    <app-icon matListItemAvatar class="icon"
+                              [icon]="entry.value[0].shipClass.shipClassType"
+                              [altText]="entry.value[0].shipClass.shipClassType.typeName"
+                              png24px [toolTip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"></app-icon>
+
+                    {{entry.value[0].shipClass.name}} Flt. {{ entry.value[0].shipClass.mark }} {{ 'fleet.composition.class.title' | translate }}
+                </div>
+                <mat-list-item *ngFor="let warShip of entry.value" class="height-fit-content-forced">
+                    <span matListItemTitle>{{warShip.name}}</span>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</div>

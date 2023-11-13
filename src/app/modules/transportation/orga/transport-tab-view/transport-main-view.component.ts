@@ -3,6 +3,7 @@ import {EEducationType, EResourceType, FleetApiService, Planet, PlanetApiService
 import {ResourceHelper} from "../../../../services/helper/resource.helper";
 import {TypeService} from "../../../../services/type.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
+import {interval} from "rxjs";
 
 @Component({
     selector: 'app-transport-main-view',
@@ -63,10 +64,23 @@ export class TransportMainViewComponent extends SubscriptionManager implements O
         if (this.planets.length == 0) {
             this.mothballByPlanet.clear();
         }
+        const mothballByPlanet: Map<number, WarShip[]> = new Map<number, WarShip[]>();
+        let finished: number = this.planets.length;
         this.planets.forEach(planet => {
             let sub = this.fleetService.getPooledWarships(planet.idPlanet)
-                .subscribe(resp => this.mothballByPlanet.set(planet.idPlanet, resp));
+                .subscribe(resp => {
+                    mothballByPlanet.set(planet.idPlanet, resp);
+                    finished--;
+                });
             this.subscriptions.push(sub);
         });
+        const source = interval(500);
+        const sub = source.subscribe(() => {
+            if (finished == 0) {
+                this.mothballByPlanet = mothballByPlanet;
+                sub.unsubscribe();
+            }
+        });
+        this.subscriptions.push(sub);
     }
 }

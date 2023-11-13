@@ -1,4 +1,4 @@
-<div class="bottom-spacer content-area ">
+<div class="bottom-spacer content-area">
 
     <mat-button-toggle-group [(ngModel)]="carriageType" (valueChange)="change()">
         <mat-button-toggle *ngFor="let type of carriageTypes" value="{{ type }}">
@@ -8,7 +8,34 @@
         </mat-button-toggle>
     </mat-button-toggle-group>
 
-    <mat-accordion multi>
+    <div cdkDropListGroup *ngIf="!showStepper" class="ship-dropbox inner-list">
+        <div class="fleet-container" *ngFor="let planet of planets">
+            <div cdkDropList
+                 [cdkDropListData]="mothballByPlanet.get(planet.idPlanet)!"
+                 class="warship-list"
+                 id="{{ planet.idPlanet }}"
+                 (cdkDropListDropped)="drop($event)">
+
+                <div mat-subheader class="fleet-name">{{ planet.name }}</div>
+
+                <div *ngFor="let warship of mothballByPlanet.get(planet.idPlanet)"
+                     cdkDrag [cdkDragData]="warship"
+                     [class.active-ship]="warship.warshipHealthState.state.isOperational"
+                     class="warship-box">
+                    <app-icon matListItemAvatar
+                              [icon]="warship.shipClass.shipClassType"
+                              [altText]="warship.shipClass.shipClassType.typeName"
+                              [toolTip]="warship.shipClass.shipClassType.typeName"></app-icon>
+                    <div class="item-box">
+                        <span class="warship-title">{{ warship.name }}</span><br>
+                        <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mat-accordion multi *ngIf="showStepper">
         <mat-expansion-panel *ngFor="let planet of planets" class="margin-bottom">
             <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="{{ 'transportation.resources.help' | translate }}">
@@ -39,12 +66,7 @@
                                             (change)="setHumanDelivery($event)"></app-humans-carrier>
                     </div>
                 </mat-step>
-
-                <mat-step>
-                    <app-fleet-formation-display [warships]="mothballByPlanet.get(planet.idPlanet)"></app-fleet-formation-display>
-                </mat-step>
             </mat-stepper>
-
         </mat-expansion-panel>
     </mat-accordion>
 </div>

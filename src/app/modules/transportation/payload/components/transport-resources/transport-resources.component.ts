@@ -4,6 +4,7 @@ import {EnumValueDto, FleetApiService, Planet, PlanetApiService, ResourceDeposit
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {MatStepper} from "@angular/material/stepper";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
 
 export interface CarrierAmount {
@@ -51,6 +52,8 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
 
     @ViewChildren('stepper')
     private steppers?: MatStepper[];
+
+    showStepper: boolean = true;
 
     constructor(private planetService: PlanetApiService,
                 private fleetService: FleetApiService,
@@ -103,16 +106,18 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     }
 
     change() {
-        // fixme mothball dings neu setzen oder individuelle arrays erzeugen
         // a little more complex then necessary, but 2 factors: no setter for selectedIndex and to lazy for enum ordinal
         const index = this.steppers?.map(a => a.selectedIndex)[0]!;
         let diff: number;
         if (this.carriageType === Items.RESOURCES) {
             diff = 0 - index;
+            this.showStepper = true;
         } else if (this.carriageType === Items.PERSONNEL) {
             diff = 1 - index;
+            this.showStepper = true;
         } else {
-            diff = 2 - index;
+            this.showStepper = false;
+            return;
         }
         for (let i = 0; i < Math.abs(diff); i++) {
             if (diff < 0) {
@@ -121,5 +126,23 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
                 this.steppers?.forEach(a => a.next());
             }
         }
+    }
+
+    drop(event: CdkDragDrop<WarShip[]>) {
+        const warShip = event.item.data;
+        const idPlanet = Number.parseFloat(event.container.id);
+        if (event.previousContainer === event.container) {
+            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        } else {
+            transferArrayItem(
+                event.previousContainer.data,
+                event.container.data,
+                event.previousIndex,
+                event.currentIndex,
+            );
+        }
+        let sub = this.fleetService.transferPooledWarship(warShip.idWarship, idPlanet).subscribe(() => {
+        });
+        this.subscriptions.push(sub);
     }
 }

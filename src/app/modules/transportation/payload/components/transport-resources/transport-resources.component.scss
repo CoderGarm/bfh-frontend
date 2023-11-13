@@ -1,3 +1,5 @@
+@import "src/app/modules/fleet/components/payload/fleet-split/fleet-detachment.component.scss";
+
 .counter-element {
   margin-bottom: 15px;
 }
@@ -10,8 +12,13 @@ mat-expansion-panel {
   margin-right: 25px;
 }
 
-.the-left {
-  float: left;
+.ship-dropbox {
+  margin-left: 65px;
+  padding: 15px;
+}
+
+.inner-list > * {
+  flex: 1 1 200px;
 }
 
 .content-area {
