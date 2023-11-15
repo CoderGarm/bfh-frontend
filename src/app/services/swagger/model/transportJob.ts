@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { HumanResourceAmount } from './humanResourceAmount';
 import { ResourceAmount } from './resourceAmount';
 import { WarShip } from './warShip';
@@ -17,14 +18,8 @@ import { WarShip } from './warShip';
  * .
  */
 export interface TransportJob { 
-    /**
-     * The origin from which it comes.
-     */
-    from: string;
-    /**
-     * The designation to which it goes.
-     */
-    to: string;
+    from: AbstractId;
+    to: AbstractId;
     /**
      * The transferred resources.
      */
@@ -33,5 +28,8 @@ export interface TransportJob {
      * The transferred humans.
      */
     humanResources: Array<HumanResourceAmount>;
-    warship?: WarShip;
+    /**
+     * If ships were moved.
+     */
+    ships: Array<WarShip>;
 }

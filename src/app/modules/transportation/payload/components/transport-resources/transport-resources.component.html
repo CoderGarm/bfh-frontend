@@ -19,7 +19,9 @@
                 <div mat-subheader class="fleet-name">{{ planet.name }}</div>
 
                 <div *ngFor="let warship of mothballByPlanet.get(planet.idPlanet)"
-                     cdkDrag [cdkDragData]="warship"
+                     cdkDrag
+                     [cdkDragDisabled]="dragDisabled"
+                     [cdkDragData]="warship"
                      [class.active-ship]="warship.warshipHealthState.state.isOperational"
                      class="warship-box">
                     <app-icon matListItemAvatar
@@ -29,6 +31,12 @@
                     <div class="item-box">
                         <span class="warship-title">{{ warship.name }}</span><br>
                         <span class="warship-subtitle">{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                        <div class="warship-subtitle" *ngIf="warship.transportJob">
+                            {{ 'jobs.transports.ships.action' | translate }}:
+                            {{ warship.transportJob.from.name }}
+                            →
+                            {{ warship.transportJob.to.name }}
+                        </div>
                     </div>
                 </div>
             </div>

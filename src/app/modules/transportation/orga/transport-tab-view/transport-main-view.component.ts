@@ -69,7 +69,18 @@ export class TransportMainViewComponent extends SubscriptionManager implements O
         this.planets.forEach(planet => {
             let sub = this.fleetService.getPooledWarships(planet.idPlanet)
                 .subscribe(resp => {
-                    mothballByPlanet.set(planet.idPlanet, resp);
+                    resp.forEach(w => {
+                        let idPlanet = planet.idPlanet;
+                        if (!!w.transportJob) {
+                            idPlanet = w.transportJob.to.id;
+                        }
+                        let arr = mothballByPlanet.get(idPlanet);
+                        if (!arr) {
+                            arr = [];
+                        }
+                        arr.push(w);
+                        mothballByPlanet.set(idPlanet, arr);
+                    });
                     finished--;
                 });
             this.subscriptions.push(sub);
@@ -77,6 +88,11 @@ export class TransportMainViewComponent extends SubscriptionManager implements O
         const source = interval(500);
         const sub = source.subscribe(() => {
             if (finished == 0) {
+                this.planets.map(p => {
+                    if (!mothballByPlanet.has(p.idPlanet)) {
+                        mothballByPlanet.set(p.idPlanet, []);
+                    }
+                });
                 this.mothballByPlanet = mothballByPlanet;
                 sub.unsubscribe();
             }

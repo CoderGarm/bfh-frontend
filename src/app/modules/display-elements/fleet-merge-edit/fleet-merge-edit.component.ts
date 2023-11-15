@@ -30,6 +30,7 @@ export class FleetMergeEditComponent extends SubscriptionManager implements Afte
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['fleets']) {
+            console.log(this.fleets)
             this.fleets = this.fleets.filter(f => f.owner.idUser === this.userId).sort((a, b) => b.ships.length - a.ships.length);
             this.fleets.forEach(fleet => {
                 this.fleetsStorage.set(fleet.idFleet, fleet.ships.map(s => s));

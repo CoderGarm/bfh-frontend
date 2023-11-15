@@ -21,11 +21,11 @@ import MassMetricEnum = Mass.MassMetricEnum;
 
 
 @Component({
-    selector: 'app-manual-transport',
-    templateUrl: './manual-transport.component.html',
-    styleUrls: ['./manual-transport.component.scss']
+    selector: 'app-manual-fleet-transport',
+    templateUrl: './manual-fleet-transport.component.html',
+    styleUrls: ['./manual-fleet-transport.component.scss']
 })
-export class ManualTransportComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class ManualFleetTransportComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * A single capacity unit of a spacecraft multiplied by this is the amount of resources or human the capacity represents.<br>
@@ -104,7 +104,7 @@ export class ManualTransportComponent extends SubscriptionManager implements Aft
                 this.leftCopy = ResourceHelper.copy(this.left);
                 this.initialFreePassengerCapacity = this.fleet!.spacecraftCapacityAreas.passengerSpace;
                 this.initialFreeCargoCapacity = NavigationCalculator.convertMassToMetric(this.fleet!.spacecraftCapacityAreas.cargoHold, MassMetricEnum.T)
-                    * ManualTransportComponent.CAPACITY_TO_RESOURCE_UNIT_CONVERSION_FACTOR;
+                    * ManualFleetTransportComponent.CAPACITY_TO_RESOURCE_UNIT_CONVERSION_FACTOR;
 
                 this.freeCapacity = this.initialFreeCargoCapacity;
 

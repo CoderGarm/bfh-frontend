@@ -54,6 +54,7 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     private steppers?: MatStepper[];
 
     showStepper: boolean = true;
+    dragDisabled: boolean = false;
 
     constructor(private planetService: PlanetApiService,
                 private fleetService: FleetApiService,
@@ -129,6 +130,7 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     }
 
     drop(event: CdkDragDrop<WarShip[]>) {
+        this.dragDisabled = true;
         const warShip = event.item.data;
         const idPlanet = Number.parseFloat(event.container.id);
         if (event.previousContainer === event.container) {
@@ -141,7 +143,9 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
                 event.currentIndex,
             );
         }
-        let sub = this.fleetService.transferPooledWarship(warShip.idWarship, idPlanet).subscribe(() => {
+        let sub = this.fleetService.transferPooledWarship(warShip.idWarship, idPlanet).subscribe(resp => {
+            warShip.transportJob = resp;
+            setTimeout(() => this.dragDisabled = false, 300);
         });
         this.subscriptions.push(sub);
     }

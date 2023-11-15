@@ -16,7 +16,7 @@ import {SpacecraftCapabilityDisplaySmallComponent} from "./spacecraft-capability
 import {PopulationDevelopmentComponent} from './population-development/population-development.component';
 import {TransportationListDisplayComponent} from './transportation-list-display/transportation-list-display.component';
 import {ShipClassTonnagePerSectionDisplayComponent} from './construction-capacity-display/ship-class-tonnage-per-section-display.component';
-import {ManualTransportComponent} from './manual-transport/manual-transport.component';
+import {ManualFleetTransportComponent} from './manual-transport/manual-fleet-transport.component';
 import {SingleResourceTransferComponent} from './single-resource-transfer/single-resource-transfer.component';
 import {FinishedMovementListComponent} from "./finished-movements-list/finished-movement-list.component";
 import {FinishedColonizationsListComponent} from "./finished-colonizations-list/finished-colonizations-list.component";
@@ -61,7 +61,7 @@ import {FleetMovementListComponent} from "./fleet-movement-list/fleet-movement-l
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
         ShipClassTonnagePerSectionDisplayComponent,
-        ManualTransportComponent,
+        ManualFleetTransportComponent,
         SingleResourceTransferComponent,
         FinishedMovementListComponent,
         FinishedColonizationsListComponent,
@@ -107,7 +107,7 @@ import {FleetMovementListComponent} from "./fleet-movement-list/fleet-movement-l
         PopulationDevelopmentComponent,
         TransportationListDisplayComponent,
         ShipClassTonnagePerSectionDisplayComponent,
-        ManualTransportComponent,
+        ManualFleetTransportComponent,
         SingleResourceTransferComponent,
         FinishedMovementListComponent,
         FinishedColonizationsListComponent,

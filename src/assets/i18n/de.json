@@ -267,6 +267,10 @@
 			"resources": {
 				"title": "Ressourcen"
 			},
+			"ships": {
+				"action": "Transfer",
+				"title": "Schiffstransfer"
+			},
 			"title": "Transporte"
 		}
 	},

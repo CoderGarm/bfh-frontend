@@ -6,7 +6,11 @@
                  [cdkDropListData]="fleet.ships"
                  class="warship-list"
                  (cdkDropListDropped)="drop($event)">
-                <div class="warship-box" *ngFor="let warship of fleet.ships" cdkDrag>{{warship.name}}</div>
+                <div *ngFor="let warship of fleet.ships"
+                     class="warship-box" cdkDrag
+                     [class.active-ship]="warship.warshipHealthState.state.isOperational">
+                    {{ warship.name }}
+                </div>
             </div>
         </div>
     </div>

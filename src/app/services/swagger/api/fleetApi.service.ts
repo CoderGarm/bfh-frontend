@@ -28,6 +28,7 @@ import { FleetMove } from '../model/fleetMove';
 import { FleetSplit } from '../model/fleetSplit';
 import { FrontendError } from '../model/frontendError';
 import { Move } from '../model/move';
+import { TransportJob } from '../model/transportJob';
 import { WarShip } from '../model/warShip';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -908,9 +909,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public transferPooledWarship(idWarship: number, idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<Array<WarShip>>;
-    public transferPooledWarship(idWarship: number, idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WarShip>>>;
-    public transferPooledWarship(idWarship: number, idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WarShip>>>;
+    public transferPooledWarship(idWarship: number, idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<TransportJob>;
+    public transferPooledWarship(idWarship: number, idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TransportJob>>;
+    public transferPooledWarship(idWarship: number, idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TransportJob>>;
     public transferPooledWarship(idWarship: number, idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idWarship === null || idWarship === undefined) {
@@ -937,7 +938,7 @@ export class FleetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<WarShip>>('get',`${this.basePath}/api/private/fleet/pool/${encodeURIComponent(String(idWarship))}/${encodeURIComponent(String(idPlanet))}`,
+        return this.httpClient.request<TransportJob>('get',`${this.basePath}/api/private/fleet/pool/${encodeURIComponent(String(idWarship))}/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -15,8 +15,7 @@
             <div [class.tree-invisible]="!treeControl.isExpanded(node)" role="group" class="flex-items-container">
                 <div *ngFor="let what of node.parent.transportJobs" class="flex-items-container">
 
-
-                    <app-outlined titleValue="{{ what.resourceType.typeName }}">
+                    <app-outlined *ngIf="!!what.resourceType" titleValue="{{ what.resourceType.typeName }}">
                         <div class="flex-items-from-start-container header-item">
                             <app-icon [icon]="what.resourceType"
                                       [altText]="what.resourceType.typeName"
@@ -25,10 +24,24 @@
                             <app-number-short [input]="what.total"></app-number-short>
                         </div>
                         <ul>
-                            <li *ngFor="let from of what.from | keyvalue" style="font-size: small"> <!-- fixme show ship job -->
+                            <li *ngFor="let from of what.from | keyvalue" style="font-size: small">
                                 {{ $any(from.value) | numberShort }} from {{ from.key }}
                             </li>
                         </ul>
+                    </app-outlined>
+
+                    <app-outlined *ngIf="!!what.ships" titleValue="{{ 'jobs.transports.ships.title' | translate }}">
+                        <div *ngFor="let warship of what.ships" class="flex-container">
+                            <app-icon matListItemAvatar class="icon"
+                                      [icon]="warship.shipClass.shipClassType"
+                                      [altText]="warship.shipClass.shipClassType.typeName"
+                                      png24px [toolTip]="warship.shipClass.shipClassType.typeName"></app-icon>
+
+                            <mat-list>
+                                <span matListItemTitle>{{warship.name}}</span>
+                                <span matListItemLine>{{ warship.shipClass.name }} Flt. {{ warship.shipClass.mark }}</span>
+                            </mat-list>
+                        </div>
                     </app-outlined>
                 </div>
             </div>

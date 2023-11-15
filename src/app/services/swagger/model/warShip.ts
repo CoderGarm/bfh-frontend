@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { ShipClass } from './shipClass';
+import { TransportJob } from './transportJob';
 import { WarshipHealthState } from './warshipHealthState';
 
 /**
@@ -32,6 +33,7 @@ export interface WarShip {
      * The mission which this ship is part of.
      */
     idMission?: number;
+    transportJob?: TransportJob;
     /**
      * If the ship is part of the reserve.
      */
