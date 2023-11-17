@@ -68,6 +68,7 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
     translations: Map<string, string> = new Map<string, string>();
     distanceMap: Map<number, number> = new Map<number, number>();
     private starSystem?: StarSystem;
+    private collectableResourceTypes: EResourceType[] = [];
 
     constructor(private translate: TranslateService,
                 private plantNotifService: PlanetsEventService,
@@ -90,7 +91,11 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
         });
         this.subscriptions.push(sub);
 
-        this.setUpTradableResources();
+        sub = this.typeService.collectableResourceTypes.subscribe(d => {
+            this.collectableResourceTypes = d;
+            this.setUpTradableResources();
+        });
+        this.subscriptions.push(sub);
 
         if (!this.credits) {
             throw new Error("Yes but no. Repair me.")
@@ -152,8 +157,8 @@ export class OfferMarketComponent extends SubscriptionManager implements AfterVi
     }
 
     private setUpTradableResources() {
-        this.credits = this.typeService.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
-        this.tradableResourceTypes = this.typeService.collectableResourceTypes.filter(r => r.typeName != this.credits.typeName);
+        this.credits = this.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
+        this.tradableResourceTypes = this.collectableResourceTypes.filter(r => r.typeName != this.credits.typeName);
         this.thePrice = {amount: 0, resourceType: this.credits};
         this.theTotal = {amount: 0, resourceType: this.credits};
     }

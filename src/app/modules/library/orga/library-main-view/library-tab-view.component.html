@@ -1,6 +1,8 @@
 <mat-tab-group animationDuration="500ms" class="bottom-spacer">
     <mat-tab label="{{ 'tab.library.module' | translate }}">
-        <app-library-module-display></app-library-module-display>
+        <ng-template matTabContent>
+            <app-library-module-display></app-library-module-display>
+        </ng-template>
     </mat-tab>
     <mat-tab label="{{ 'tab.library.buildings' | translate }}">
         <ng-template matTabContent>

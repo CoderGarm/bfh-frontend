@@ -78,13 +78,17 @@ export class FittingCreateComponent extends SubscriptionManager implements After
                 private resourceApi: ResourcesApiService) {
         super();
 
-        const eModuleTypes = this.typeService.eModuleTypes;
-        eModuleTypes.filter(eModuleTypes => !eModuleTypes.typeName.includes(EModuleTypesEnum.PROPULSION))
-            .forEach(eModuleTypes => this.defaultCapabilities.capabilities.push({value: 0, moduleType: eModuleTypes}));
+        let sub = this.typeService.eModuleTypes.subscribe(d => {
+            d.filter(eModuleTypes => !eModuleTypes.typeName.includes(EModuleTypesEnum.PROPULSION))
+                .forEach(eModuleTypes => this.defaultCapabilities.capabilities.push({value: 0, moduleType: eModuleTypes}));
+        });
+        this.subscriptions.push(sub);
 
         this.capabilities = this.defaultCapabilities;
         this.capacities = this.defaultCapacities;
-        this.shipClassTypes = this.typeService.shipClassTypes;
+        sub = this.typeService.shipClassTypes.subscribe(d => this.shipClassTypes = d);
+        this.subscriptions.push(sub);
+
         this.form = new FormGroup({
             scName: new UntypedFormControl(),
             scTypeName: new FormControl<EShipClassType | null>(null, Validators.required)

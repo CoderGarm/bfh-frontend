@@ -4,6 +4,7 @@ import {NestedTreeControl} from "@angular/cdk/tree";
 import {MatTreeNestedDataSource} from "@angular/material/tree";
 import {TypeService} from "../../../services/type.service";
 import {CurrentTickService} from "../../../services/intercom/current-tick.service";
+import {SubscriptionManager} from "../../../subscription.manager";
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 interface TreeNode {
@@ -16,7 +17,7 @@ interface TreeNode {
     templateUrl: './trade-deliveries.component.html',
     styleUrls: ['./trade-deliveries.component.scss']
 })
-export class TradeDeliveriesComponent implements AfterViewInit, OnChanges {
+export class TradeDeliveriesComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     @Input()
     trades: TradesByLocation[] = [];
@@ -28,6 +29,12 @@ export class TradeDeliveriesComponent implements AfterViewInit, OnChanges {
 
     constructor(private typeService: TypeService,
                 protected currentTickService: CurrentTickService) {
+        super();
+
+        let sub = this.typeService.collectableResourceTypes.subscribe(d => {
+            this.credits = d.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {
@@ -44,8 +51,6 @@ export class TradeDeliveriesComponent implements AfterViewInit, OnChanges {
             })
             this.dataSource.data = arr;
             this.dataSource.data.forEach(node => this.treeControl.expandDescendants(node));
-            // ask as late as possible for the prefetched resource types to avoid implementing it by a subject
-            this.credits = this.typeService.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
         }
     }
 }

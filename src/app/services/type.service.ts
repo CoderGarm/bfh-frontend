@@ -1,6 +1,7 @@
 import {Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../subscription.manager";
 import {EEducationType, EModuleType, EnumValueDto, ERefinementSequence, EResourceType, EShipClassType, PublicResourcesApiService} from "./swagger";
+import {ReplaySubject} from "rxjs";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
@@ -11,87 +12,54 @@ import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
 @Injectable()
 export class TypeService extends SubscriptionManager {
 
-    private _eModuleTypes: EModuleType[] = [];
-    private _shipClassTypes: EShipClassType[] = [];
-    private _educationTypes: EEducationType[] = [];
-    private _eResourceTypes: EResourceType[] = [];
-    private _eProductionCategories: string[] = [];
-    private _eRefinementSequences: ERefinementSequence[] = [];
+    readonly eModuleTypes: ReplaySubject<EModuleType[]> = new ReplaySubject<EModuleType[]>();
+    readonly shipClassTypes: ReplaySubject<EShipClassType[]> = new ReplaySubject<EShipClassType[]>();
+    readonly educationTypes: ReplaySubject<EEducationType[]> = new ReplaySubject<EEducationType[]>();
+    readonly eResourceTypes: ReplaySubject<EResourceType[]> = new ReplaySubject<EResourceType[]>();
+    readonly eProductionCategories: ReplaySubject<string[]> = new ReplaySubject<string[]>();
+    readonly eRefinementSequences: ReplaySubject<ERefinementSequence[]> = new ReplaySubject<ERefinementSequence[]>();
 
-    private readonly _weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE];
-    private readonly _weaponAlignmentTypes: EWeaponAlignmentEnum[] = [EWeaponAlignmentEnum.STERN, EWeaponAlignmentEnum.BROADSIDE, EWeaponAlignmentEnum.BOW];
-    private readonly _alignmentAreas: EAlignmentTypeEnum[] = [EAlignmentTypeEnum.CHASEALIGNMENT, EAlignmentTypeEnum.BATTLEALIGNMENT];
+    readonly militaryEducationTypes: ReplaySubject<EEducationType[]> = new ReplaySubject<EEducationType[]>();
+    readonly collectableResourceTypes: ReplaySubject<EResourceType[]> = new ReplaySubject<EResourceType[]>();
+
+    readonly weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE];
+    readonly weaponAlignmentTypes: EWeaponAlignmentEnum[] = [EWeaponAlignmentEnum.STERN, EWeaponAlignmentEnum.BROADSIDE, EWeaponAlignmentEnum.BOW];
+    readonly alignmentAreas: EAlignmentTypeEnum[] = [EAlignmentTypeEnum.CHASEALIGNMENT, EAlignmentTypeEnum.BATTLEALIGNMENT];
 
     constructor(private zone: NgZone,
                 private publicResourcesApiService: PublicResourcesApiService) {
         super();
 
+        let sub = this.educationTypes.subscribe(d =>
+            this.militaryEducationTypes.next(d.filter(e => e.isMilitary)));
+        this.subscriptions.push(sub);
+
+        sub = this.eResourceTypes.subscribe(d =>
+            this.collectableResourceTypes.next(d.filter(resourceType => resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE)));
+        this.subscriptions.push(sub);
+
         this.fetchBaseData();
     }
 
-    private fetchBaseData() {
+    fetchBaseData() {
         this.zone.run(() => {
-            let sub = this.publicResourcesApiService.getEModuleTypes().subscribe(resp => this._eModuleTypes = resp);
+            let sub = this.publicResourcesApiService.getEModuleTypes().subscribe(resp => this.eModuleTypes.next(resp));
             this.subscriptions.push(sub);
 
-            sub = this.publicResourcesApiService.getEEducationTypes().subscribe(resp => this._educationTypes = resp);
+            sub = this.publicResourcesApiService.getEEducationTypes().subscribe(resp => this.educationTypes.next(resp));
             this.subscriptions.push(sub);
 
-            sub = this.publicResourcesApiService.getEResourceTypes().subscribe(resp => this._eResourceTypes = resp);
+            sub = this.publicResourcesApiService.getEResourceTypes().subscribe(resp => this.eResourceTypes.next(resp));
             this.subscriptions.push(sub);
 
-            sub = this.publicResourcesApiService.getEProductionCategories().subscribe(resp => this._eProductionCategories = resp);
+            sub = this.publicResourcesApiService.getEProductionCategories().subscribe(resp => this.eProductionCategories.next(resp));
             this.subscriptions.push(sub);
 
-            sub = this.publicResourcesApiService.getERefinementSequences().subscribe(resp => this._eRefinementSequences = resp);
+            sub = this.publicResourcesApiService.getERefinementSequences().subscribe(resp => this.eRefinementSequences.next(resp));
             this.subscriptions.push(sub);
 
-            sub = this.publicResourcesApiService.getEShipClassTypes().subscribe(resp => this._shipClassTypes = resp);
+            sub = this.publicResourcesApiService.getEShipClassTypes().subscribe(resp => this.shipClassTypes.next(resp));
             this.subscriptions.push(sub);
         });
-    }
-
-    get alignmentAreas(): EnumValueDto.EAlignmentTypeEnum[] {
-        return this._alignmentAreas;
-    }
-
-    get eModuleTypes(): EModuleType[] {
-        return this._eModuleTypes;
-    }
-
-    get shipClassTypes(): EShipClassType[] {
-        return this._shipClassTypes;
-    }
-
-    get educationTypes(): EEducationType[] {
-        return this._educationTypes;
-    }
-
-    get militaryEducationTypes(): EEducationType[] {
-        return this._educationTypes.filter(e => e.isMilitary);
-    }
-
-    get eResourceTypes(): EResourceType[] {
-        return this._eResourceTypes;
-    }
-
-    get collectableResourceTypes(): EResourceType[] {
-        return this._eResourceTypes.filter(resourceType => resourceType.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE);
-    }
-
-    get eProductionCategories(): string[] {
-        return this._eProductionCategories;
-    }
-
-    get eRefinementSequences(): ERefinementSequence[] {
-        return this._eRefinementSequences;
-    }
-
-    get weaponTypes(): EnumValueDto.EWeaponTypeEnum[] {
-        return this._weaponTypes;
-    }
-
-    get weaponAlignmentTypes(): EnumValueDto.EWeaponAlignmentEnum[] {
-        return this._weaponAlignmentTypes;
     }
 }

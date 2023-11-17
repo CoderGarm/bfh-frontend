@@ -3,7 +3,7 @@ import {ErrorDialogComponent} from './components/error-dialog/error-dialog.compo
 import {CustomErrorHandler} from './services/custom-error-handler.service';
 import {PasswordEqualityValidatorDirective, PasswordPatternValidatorDirective} from './validators/password.validator';
 import {AuthenticationModule} from './services/authentication';
-import {CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, Injector, NgModule, SecurityContext} from '@angular/core';
+import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, Injector, NgModule, SecurityContext} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/user/login/login.component';
 import {RegisterComponent} from './components/user/register/register.component';
@@ -186,7 +186,19 @@ export let AppInjector: Injector;
         FleetEventService,
         CurrentTickService,
         TypeService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: (ds: TypeService) => () => ds.fetchBaseData(),
+            deps: [TypeService],
+            multi: true
+        },
         ModuleService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: (ds: ModuleService) => () => ds.fetchBaseData(),
+            deps: [ModuleService],
+            multi: true
+        },
         BackgroundService,
         DatePipe,
         NumberShortPipe,

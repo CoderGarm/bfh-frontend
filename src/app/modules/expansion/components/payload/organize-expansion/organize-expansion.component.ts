@@ -27,8 +27,8 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
 
     private static COLUMNS: string[] = ['Star system', 'Orbit', 'Distance'];
 
-    private readonly resourceTypes?: EResourceType[];
-    private readonly educationTypes?: EEducationType[];
+    private resourceTypes?: EResourceType[];
+    private educationTypes?: EEducationType[];
 
     private main?: Planet;
     resourceDeposit?: ResourceDeposit;
@@ -48,8 +48,11 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         // just make sure that the key exists
         this.translate.get('expansion.organize.spinner-message.wait');
 
-        this.educationTypes = typeService.educationTypes;
-        this.resourceTypes = typeService.eResourceTypes;
+        let sub = this.typeService.educationTypes.subscribe(d => this.educationTypes = d);
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.eResourceTypes.subscribe(d => this.resourceTypes = d);
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit() {

@@ -46,7 +46,6 @@ export class ModuleService extends SubscriptionManager {
     private propulsionsByUser: ReplaySubject<Propulsion[]> = new ReplaySubject<Propulsion[]>();
     private propulsions: ReplaySubject<Propulsion[]> = new ReplaySubject<Propulsion[]>();
 
-
     private shipClasses: ShipClass[] = [];
     private costsByShipClass: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
@@ -72,7 +71,7 @@ export class ModuleService extends SubscriptionManager {
         this.fetchBaseData();
     }
 
-    private fetchBaseData() {
+    fetchBaseData() {
         this.zone.run(() => {
             this.fetchWeapons();
             this.fetchLaunchers();

@@ -20,7 +20,7 @@ export class HumansCarrierComponent extends SubscriptionManager implements OnIni
 
     titleKey: string = 'demand';
 
-    resources: EEducationType[];
+    resources: EEducationType[] = [];
 
     militaries: EEducationType[] = [];
 
@@ -29,12 +29,16 @@ export class HumansCarrierComponent extends SubscriptionManager implements OnIni
     constructor(private typeService: TypeService,
                 private planetService: PlanetApiService) {
         super();
-        this.resources = this.typeService.educationTypes;
-        this.resources.forEach(resource => {
-            if (resource.isMilitary) {
-                this.militaries.push(resource);
-            }
+
+        let sub = this.typeService.educationTypes.subscribe(d => {
+            this.resources = d;
+            this.resources.forEach(resource => {
+                if (resource.isMilitary) {
+                    this.militaries.push(resource);
+                }
+            });
         });
+        this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges): void {

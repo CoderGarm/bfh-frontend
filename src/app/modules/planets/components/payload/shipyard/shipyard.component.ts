@@ -103,10 +103,11 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                 private translate: TranslateService) {
         super();
 
-        this.eHullTypes = this.typeService.shipClassTypes;
+        let sub = this.typeService.shipClassTypes.subscribe(d => this.eHullTypes == d);
+        this.subscriptions.push(sub);
 
         this.translations.set('shipyard.constructions.build.already-in-use', 'shipyard.constructions.build.already-in-use');
-        let sub = this.translate.get('shipyard.constructions.build.already-in-use').subscribe((translated: string) => {
+        sub = this.translate.get('shipyard.constructions.build.already-in-use').subscribe((translated: string) => {
             this.translations.set('shipyard.constructions.build.already-in-use', translated);
         });
         this.subscriptions.push(sub);

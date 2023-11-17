@@ -40,8 +40,6 @@ export class TransportationListDisplayComponent implements AfterViewInit, OnChan
     transportJobs: TransportJob[] = [];
 
     constructor(private typeService: TypeService) {
-        this.typeService.educationTypes;
-        this.typeService.eResourceTypes;
     }
 
     ngAfterViewInit(): void {

@@ -33,6 +33,7 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
     tradableResourceTypes: EResourceType[] = [];
     resourceDeposit: ResourceAmount[] = [];
     presentMoney: number = 0;
+    private collectableResourceTypes: EResourceType[] = [];
 
     constructor(private translate: TranslateService,
                 private plantNotifService: PlanetsEventService,
@@ -54,7 +55,12 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
         });
         this.subscriptions.push(sub);
 
-        this.setUpTradableResources();
+        sub = this.typeService.collectableResourceTypes.subscribe(d => {
+            this.collectableResourceTypes = d;
+            this.setUpTradableResources();
+        });
+        this.subscriptions.push(sub);
+
         this.createPriceChart(this.tradableResourceTypes, this.detectTicks());
         this.plantNotifService.getOfferCreatedEmitter().subscribe(() => {
             this.fetchDeposit();
@@ -72,8 +78,8 @@ export class PlanetaryMarketplaceComponent extends PriceChartHelper implements A
     }
 
     private setUpTradableResources() {
-        this.credits = this.typeService.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
-        this.tradableResourceTypes = this.typeService.collectableResourceTypes.filter(r => r.typeName != this.credits.typeName);
+        this.credits = this.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
+        this.tradableResourceTypes = this.collectableResourceTypes.filter(r => r.typeName != this.credits.typeName);
     }
 
     ngOnChanges(changes: SimpleChanges): void {

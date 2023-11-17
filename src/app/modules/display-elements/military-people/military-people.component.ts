@@ -23,12 +23,13 @@ export class MilitaryPeopleComponent extends SubscriptionManager implements OnIn
     _preSelect: boolean = false;
     // @formatter:on
 
-    educationTypes: EEducationType[];
+    educationTypes: EEducationType[] = [];
 
     constructor(private typeService: TypeService) {
         super();
 
-        this.educationTypes = typeService.militaryEducationTypes;
+        let sub = this.typeService.militaryEducationTypes.subscribe(d => this.educationTypes = d);
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {

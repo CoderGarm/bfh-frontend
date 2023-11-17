@@ -44,6 +44,8 @@ export class SpotMarketComponent extends SubscriptionManager {
     triggerSpotOffer: any;
     maxToBuy: number = 0;
 
+    collectableResourceTypes: EResourceType[] = []
+
     constructor(private translate: TranslateService,
                 private plantNotifService: PlanetsEventService,
                 private typeService: TypeService,
@@ -51,20 +53,25 @@ export class SpotMarketComponent extends SubscriptionManager {
                 private marketService: MarketplaceApiService) {
         super();
 
-        this.setUpTradableResources();
+        let sub = this.typeService.collectableResourceTypes.subscribe(d => {
+            this.collectableResourceTypes = d;
+            this.setUpTradableResources();
+        });
+        this.subscriptions.push(sub);
+
 
         if (!this.credits) {
             throw new Error("Yes but no. Repair me.")
         }
         const source = interval(AppComponent.CHECK_MESSAGES_INTERVAL_IN_SECONDS);
-        let sub = source.subscribe(() => this.fetchSpotPrices());
+        sub = source.subscribe(() => this.fetchSpotPrices());
         this.subscriptions.push(sub);
         this.plantNotifService.getOfferCreatedEmitter().subscribe(() => this.fetchSpotPrices());
     }
 
     private setUpTradableResources() {
-        this.credits = this.typeService.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
-        this.tradableResourceTypes = this.typeService.collectableResourceTypes.filter(r => r.typeName != this.credits.typeName);
+        this.credits = this.collectableResourceTypes.filter(rt => rt.typeName === EResourceTypeEnum.CREDITS)[0];
+        this.tradableResourceTypes = this.collectableResourceTypes.filter(r => r.typeName != this.credits.typeName);
         this.thePrice = {amount: 0, resourceType: this.credits};
         this.theTotal = {amount: 0, resourceType: this.credits};
         this.tradableResourceTypes.forEach(r => this.spotPriceByResourceType.set(r.typeName, 0));

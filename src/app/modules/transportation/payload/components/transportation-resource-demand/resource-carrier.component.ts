@@ -20,7 +20,7 @@ export class ResourceCarrierComponent extends SubscriptionManager implements OnI
 
     titleKey: string = '';
 
-    resources: EResourceType[];
+    resources: EResourceType[] = [];
 
     collectables: EResourceType[] = [];
 
@@ -29,12 +29,16 @@ export class ResourceCarrierComponent extends SubscriptionManager implements OnI
     constructor(private typeService: TypeService,
                 private planetService: PlanetApiService) {
         super();
-        this.resources = this.typeService.eResourceTypes;
-        this.resources.forEach(resource => {
-            if (resource.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
-                this.collectables.push(resource);
-            }
+
+        let sub = this.typeService.eResourceTypes.subscribe(d => {
+            this.resources = d;
+            this.resources.forEach(resource => {
+                if (resource.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
+                    this.collectables.push(resource);
+                }
+            });
         });
+        this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges): void {

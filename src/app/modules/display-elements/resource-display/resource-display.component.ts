@@ -57,8 +57,8 @@ export class ResourceDisplayComponent extends SubscriptionManager {
     _shipyardMode: boolean = false;
     // @formatter:on
 
-    resourceTypes: EResourceType[];
-    educationTypes: EEducationType[];
+    resourceTypes: EResourceType[] = [];
+    educationTypes: EEducationType[] = [];
 
     translations: Map<string, string> = new Map<string, string>();
 
@@ -73,11 +73,14 @@ export class ResourceDisplayComponent extends SubscriptionManager {
                 public translate: TranslateService) {
         super();
 
-        this.resourceTypes = typeService.eResourceTypes;
-        this.educationTypes = typeService.educationTypes;
+        let sub = this.typeService.educationTypes.subscribe(d => this.educationTypes = d);
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.eResourceTypes.subscribe(d => this.resourceTypes = d);
+        this.subscriptions.push(sub);
 
         this.translations.set(this.incomePopulation, this.incomePopulation);
-        let sub = this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
+        sub = this.translate.get('resource-overlay.income.population').subscribe((translated: string) => {
             this.translations.set(this.incomePopulation, translated);
         });
         this.subscriptions.push(sub);

@@ -34,8 +34,8 @@ export class PopulationDevelopmentComponent extends SubscriptionManager implemen
     @Input()
     capacity?: ResourceDeposit;
 
-    resourceTypes: EResourceType[];
-    educationTypes: EEducationType[];
+    resourceTypes: EResourceType[] = [];
+    educationTypes: EEducationType[] = [];
 
     @Input()
     sumOfPops: number = 0;
@@ -48,8 +48,11 @@ export class PopulationDevelopmentComponent extends SubscriptionManager implemen
     constructor(private typeService: TypeService) {
         super();
 
-        this.resourceTypes = this.typeService.eResourceTypes;
-        this.educationTypes = this.typeService.educationTypes;
+        let sub = this.typeService.educationTypes.subscribe(d => this.educationTypes = d);
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.eResourceTypes.subscribe(d => this.resourceTypes = d);
+        this.subscriptions.push(sub);
     }
 
     ngOnChanges(changes: SimpleChanges) {

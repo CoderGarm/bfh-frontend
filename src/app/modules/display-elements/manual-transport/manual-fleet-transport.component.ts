@@ -48,8 +48,8 @@ export class ManualFleetTransportComponent extends SubscriptionManager implement
     right?: ResourceDeposit;
     rightCopy?: ResourceDeposit;
 
-    resourceTypes: EResourceType[];
-    educationTypes: EEducationType[];
+    resourceTypes: EResourceType[] = [];
+    educationTypes: EEducationType[] = [];
 
     initialFreeCargoCapacity: number = 0;
     initialFreePassengerCapacity: number = 0;
@@ -74,8 +74,11 @@ export class ManualFleetTransportComponent extends SubscriptionManager implement
                 private planetService: PlanetApiService) {
         super();
 
-        this.resourceTypes = this.typeService.collectableResourceTypes;
-        this.educationTypes = this.typeService.militaryEducationTypes;
+        let sub = this.typeService.militaryEducationTypes.subscribe(d => this.educationTypes = d);
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.collectableResourceTypes.subscribe(d => this.resourceTypes = d);
+        this.subscriptions.push(sub);
     }
 
     isOwnFleet() {

@@ -39,14 +39,25 @@ export class LibraryBuildingDisplayComponent extends SubscriptionManager impleme
                 private typeService: TypeService) {
         super();
 
-        this.eEducationTypes = this.typeService.educationTypes;
-        this.eResourceTypes = this.typeService.eResourceTypes;
-        this.eRefinementSequences = this.typeService.eRefinementSequences;
-        this.eProductionCategories = this.typeService.eProductionCategories;
+        let sub = this.typeService.eResourceTypes.subscribe(d => {
+            this.eResourceTypes = d;
+            this.eResourceTypeFC.setValue(this.eResourceTypes.map(r => r.typeName));
+        });
+        this.subscriptions.push(sub);
+        sub = this.typeService.educationTypes.subscribe(d => this.eEducationTypes = d);
+        this.subscriptions.push(sub);
 
-        this.eProductionCategoryFC.setValue(this.eProductionCategories);
-        this.setResourceTypeFormControlData()
-        this.setRefinementSequenceFormControlData()
+        sub = this.typeService.eRefinementSequences.subscribe(d => {
+            this.eRefinementSequences = d;
+            this.eRefinementSequenceFC.setValue(this.eRefinementSequences.map(r => r.typeName));
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.eProductionCategories.subscribe(d => {
+            this.eProductionCategories = d;
+            this.eProductionCategoryFC.setValue(this.eProductionCategories);
+        });
+        this.subscriptions.push(sub);
     }
 
     ngOnInit() {
@@ -56,16 +67,6 @@ export class LibraryBuildingDisplayComponent extends SubscriptionManager impleme
             this.building = this.buildings[0];
         });
         this.subscriptions.push(sub);
-    }
-
-    private setRefinementSequenceFormControlData() {
-        let typeNames = this.eRefinementSequences.map(r => r.typeName);
-        this.eRefinementSequenceFC.setValue(typeNames);
-    }
-
-    private setResourceTypeFormControlData() {
-        let typeNames = this.eResourceTypes.map(r => r.typeName);
-        this.eResourceTypeFC.setValue(typeNames);
     }
 
     toggle(event: string) {

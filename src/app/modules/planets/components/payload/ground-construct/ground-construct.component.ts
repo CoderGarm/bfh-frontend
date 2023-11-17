@@ -127,13 +127,25 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
             this.translations.set('planetary.constructions.build.has-level', translated);
         });
 
-        this.eEducationTypes = this.typeService.educationTypes;
-        this.eResourceTypes = this.typeService.eResourceTypes;
-        this.eRefinementSequences = this.typeService.eRefinementSequences;
-        this.eProductionCategories = this.typeService.eProductionCategories;
-        this.eProductionCategoryFC.setValue(this.eProductionCategories);
-        this.setResourceTypeFormControlData()
-        this.setRefinementSequenceFormControlData()
+        sub = this.typeService.eResourceTypes.subscribe(d => {
+            this.eResourceTypes = d;
+            this.setResourceTypeFormControlData()
+        });
+        this.subscriptions.push(sub);
+        sub = this.typeService.educationTypes.subscribe(d => this.eEducationTypes = d);
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.eRefinementSequences.subscribe(d => {
+            this.eRefinementSequences = d;
+            this.setRefinementSequenceFormControlData()
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.eProductionCategories.subscribe(d => {
+            this.eProductionCategories = d;
+            this.eProductionCategoryFC.setValue(this.eProductionCategories);
+        });
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {

@@ -20,8 +20,8 @@ export class TransportMainViewComponent extends SubscriptionManager implements O
     depositsPopulation: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
     mothballByPlanet: Map<number, WarShip[]> = new Map<number, WarShip[]>();
 
-    resourceTypes: EResourceType[];
-    educationTypes: EEducationType[];
+    resourceTypes: EResourceType[] = [];
+    educationTypes: EEducationType[] = [];
 
     constructor(private planetService: PlanetApiService,
                 private fleetService: FleetApiService,
@@ -29,8 +29,10 @@ export class TransportMainViewComponent extends SubscriptionManager implements O
                 private typeService: TypeService) {
         super();
 
-        this.resourceTypes = this.typeService.collectableResourceTypes;
-        this.educationTypes = this.typeService.militaryEducationTypes;
+        let sub = this.typeService.collectableResourceTypes.subscribe(d => this.resourceTypes = d);
+        this.subscriptions.push(sub);
+        sub = this.typeService.militaryEducationTypes.subscribe(d => this.educationTypes = d);
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {
