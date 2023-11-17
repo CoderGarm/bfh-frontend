@@ -17,7 +17,20 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { Armor } from '../model/armor';
+import { Building } from '../model/building';
+import { EEducationType } from '../model/eEducationType';
+import { EModuleType } from '../model/eModuleType';
+import { ERefinementSequence } from '../model/eRefinementSequence';
+import { EResourceType } from '../model/eResourceType';
+import { EShipClassType } from '../model/eShipClassType';
+import { ElectronicWarfare } from '../model/electronicWarfare';
 import { FrontendError } from '../model/frontendError';
+import { Launcher } from '../model/launcher';
+import { PassiveModule } from '../model/passiveModule';
+import { Propulsion } from '../model/propulsion';
+import { Sidewall } from '../model/sidewall';
+import { Weapon } from '../model/weapon';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -57,6 +70,487 @@ export class PublicResourcesApiService {
 
 
     /**
+     * Get all unlocked passive modules for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllBuildings(observe?: 'body', reportProgress?: boolean): Observable<Array<Building>>;
+    public getAllBuildings(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Building>>>;
+    public getAllBuildings(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Building>>>;
+    public getAllBuildings(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Building>>('get',`${this.basePath}/api/public/resources/buildings/all`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked armors for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getArmors(observe?: 'body', reportProgress?: boolean): Observable<Array<Armor>>;
+    public getArmors(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Armor>>>;
+    public getArmors(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Armor>>>;
+    public getArmors(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Armor>>('get',`${this.basePath}/api/public/resources/armor/all`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EEducationTypes.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEEducationTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EEducationType>>;
+    public getEEducationTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EEducationType>>>;
+    public getEEducationTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EEducationType>>>;
+    public getEEducationTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<EEducationType>>('get',`${this.basePath}/api/public/resources/educationTypes`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EModuleType.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEModuleTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EModuleType>>;
+    public getEModuleTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EModuleType>>>;
+    public getEModuleTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EModuleType>>>;
+    public getEModuleTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<EModuleType>>('get',`${this.basePath}/api/public/resources/moduleType`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EProductionCategories.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEProductionCategories(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public getEProductionCategories(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public getEProductionCategories(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getEProductionCategories(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/public/resources/EProductionCategory`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all ERefinementSequences.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getERefinementSequences(observe?: 'body', reportProgress?: boolean): Observable<Array<ERefinementSequence>>;
+    public getERefinementSequences(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ERefinementSequence>>>;
+    public getERefinementSequences(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ERefinementSequence>>>;
+    public getERefinementSequences(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<ERefinementSequence>>('get',`${this.basePath}/api/public/resources/ERefinementSequence`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EResourceTypes.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEResourceTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EResourceType>>;
+    public getEResourceTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EResourceType>>>;
+    public getEResourceTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EResourceType>>>;
+    public getEResourceTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<EResourceType>>('get',`${this.basePath}/api/public/resources/types`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all EShipClassTypes.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEShipClassTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EShipClassType>>;
+    public getEShipClassTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EShipClassType>>>;
+    public getEShipClassTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EShipClassType>>>;
+    public getEShipClassTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<EShipClassType>>('get',`${this.basePath}/api/public/resources/shipClassType`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked electronic warfare for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getElectronicWarfare(observe?: 'body', reportProgress?: boolean): Observable<Array<ElectronicWarfare>>;
+    public getElectronicWarfare(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ElectronicWarfare>>>;
+    public getElectronicWarfare(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ElectronicWarfare>>>;
+    public getElectronicWarfare(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<ElectronicWarfare>>('get',`${this.basePath}/api/public/resources/eloka/all`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked weapons for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLaunchers(observe?: 'body', reportProgress?: boolean): Observable<Array<Launcher>>;
+    public getLaunchers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Launcher>>>;
+    public getLaunchers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Launcher>>>;
+    public getLaunchers(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Launcher>>('get',`${this.basePath}/api/public/resources/launcher/all`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked passive modules for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPassiveModules(observe?: 'body', reportProgress?: boolean): Observable<Array<PassiveModule>>;
+    public getPassiveModules(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PassiveModule>>>;
+    public getPassiveModules(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PassiveModule>>>;
+    public getPassiveModules(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<PassiveModule>>('get',`${this.basePath}/api/public/resources/passive/all`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked propulsions for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPropulsions(observe?: 'body', reportProgress?: boolean): Observable<Array<Propulsion>>;
+    public getPropulsions(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Propulsion>>>;
+    public getPropulsions(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Propulsion>>>;
+    public getPropulsions(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Propulsion>>('get',`${this.basePath}/api/public/resources/propulsion/all`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked sidewalls for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSidewalls(observe?: 'body', reportProgress?: boolean): Observable<Array<Sidewall>>;
+    public getSidewalls(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Sidewall>>>;
+    public getSidewalls(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Sidewall>>>;
+    public getSidewalls(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Sidewall>>('get',`${this.basePath}/api/public/resources/sidewall/all`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all usernames.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -84,6 +578,43 @@ export class PublicResourcesApiService {
         ];
 
         return this.httpClient.request<Array<string>>('get',`${this.basePath}/api/public/resources/user-names`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked weapons for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getWeapons(observe?: 'body', reportProgress?: boolean): Observable<Array<Weapon>>;
+    public getWeapons(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Weapon>>>;
+    public getWeapons(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Weapon>>>;
+    public getWeapons(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Weapon>>('get',`${this.basePath}/api/public/resources/weapon/all`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

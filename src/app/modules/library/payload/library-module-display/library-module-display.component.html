@@ -1,0 +1,59 @@
+<mat-tab-group animationDuration="500ms" class="bottom-spacer">
+    <mat-tab label="{{ 'library.modules.title.armor' | translate }}">
+        <ng-template matTabContent>
+            <div class="flex-items-container content-area">
+                <app-base-module-display *ngFor="let module of armors"
+                                         showIcon [module]="module"></app-base-module-display>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'library.modules.title.weapon' | translate }}">
+        <ng-template matTabContent>
+            <div class="flex-items-container content-area">
+                <app-base-module-display *ngFor="let module of weapons"
+                                         showIcon [module]="module"></app-base-module-display>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'library.modules.title.launcher' | translate }}">
+        <ng-template matTabContent>
+            <div class="flex-items-container content-area">
+                <app-base-module-display *ngFor="let module of launchers"
+                                         showIcon [module]="module"></app-base-module-display>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'library.modules.title.sidewall' | translate }}">
+        <ng-template matTabContent>
+            <div class="flex-items-container content-area">
+                <app-base-module-display *ngFor="let module of sidewalls"
+                                         showIcon [module]="module"></app-base-module-display>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'library.modules.title.eloka' | translate }}">
+        <ng-template matTabContent>
+            <div class="flex-items-container content-area">
+                <app-base-module-display *ngFor="let module of eloka"
+                                         showIcon [module]="module"></app-base-module-display>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'library.modules.title.passiveModule' | translate }}">
+        <ng-template matTabContent>
+            <div class="flex-items-container content-area">
+                <app-base-module-display *ngFor="let module of passiveModules"
+                                         [module]="module"></app-base-module-display>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'library.modules.title.propulsion' | translate }}">
+        <ng-template matTabContent>
+            <div class="flex-items-container content-area">
+                <app-propulsion-module-display *ngFor="let propulsion of propulsions"
+                                               showIcon class="width-fit-content"
+                                               [module]="propulsion"></app-propulsion-module-display>
+            </div>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>

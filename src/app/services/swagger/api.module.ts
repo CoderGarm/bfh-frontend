@@ -8,7 +8,6 @@ import { AdvisoryApiService } from './api/advisoryApi.service';
 import { AllianceApiService } from './api/allianceApi.service';
 import { AuthApiService } from './api/authApi.service';
 import { BattleReportApiService } from './api/battleReportApi.service';
-import { BuildingApiService } from './api/buildingApi.service';
 import { ChatApiService } from './api/chatApi.service';
 import { ColonizationApiService } from './api/colonizationApi.service';
 import { ConstructionApiService } from './api/constructionApi.service';
@@ -41,7 +40,6 @@ import { WikiApiService } from './api/wikiApi.service';
     AllianceApiService,
     AuthApiService,
     BattleReportApiService,
-    BuildingApiService,
     ChatApiService,
     ColonizationApiService,
     ConstructionApiService,

@@ -1,0 +1,69 @@
+<!--<div class="flex-items-container content-area">
+    <app-building-display *ngFor="let b of buildings" [building]="b"></app-building-display>
+</div>-->
+
+<div class="content-area">
+    <div class="filter">
+        <app-outlined titleValue="Product category" (click)="toggle('productCategoryChipList')">
+            <mat-chip-listbox #productCategoryChipList multiple [formControl]="eProductionCategoryFC">
+                <mat-chip-option
+                        class="no-checkmark"
+                        *ngFor="let category of eProductionCategories as string"
+                        [value]="category"
+                        (click)="filterDisplayedBuildings(); $event.stopPropagation();">
+                    <mat-icon matChipTrailingIcon aria-hidden="false" [attr.aria-label]="category" fontIcon="precision_manufacturing"></mat-icon>
+                    {{category}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </app-outlined>
+
+        <app-outlined titleValue="Refinement sequence" (click)="toggle('refinementSequenceChipList')">
+            <mat-chip-listbox #refinementSequenceChipList multiple [formControl]="eRefinementSequenceFC">
+                <mat-chip-option
+                        class="no-checkmark"
+                        *ngFor="let sequence of eRefinementSequences"
+                        [value]="sequence.typeName"
+                        (click)="filterDisplayedBuildings(); $event.stopPropagation();">
+                    <app-icon matChipTrailingIcon
+                              [icon]="sequence.product"
+                              [altText]="sequence.product.typeName"
+                              [toolTip]="sequence.product.typeName"></app-icon>
+                    {{sequence.typeName}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </app-outlined>
+
+        <app-outlined titleValue="Resource types" (click)="toggle('resourceTypeChipList')">
+            <mat-chip-listbox #resourceTypeChipList multiple [formControl]="eResourceTypeFC">
+                <mat-chip-option
+                        class="no-checkmark"
+                        *ngFor="let eResourceType of eResourceTypes"
+                        [value]="eResourceType.typeName"
+                        (click)="filterDisplayedBuildings(); $event.stopPropagation();">
+                    <app-icon matChipTrailingIcon
+                              [icon]="eResourceType"
+                              [altText]="eResourceType.typeName"
+                              [toolTip]="eResourceType.typeName"></app-icon>
+                    {{eResourceType.typeName}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </app-outlined>
+
+        <app-blue-card class="margin-bottom" *ngIf="!building">
+            <span body>
+                {{ 'planetary.constructions.build.nothing-to-show' | translate }}
+            </span>
+        </app-blue-card>
+        <app-building-display [building]="building"></app-building-display>
+    </div>
+
+    <app-outlined titleValue="{{ 'planetary.constructions.title' | translate }}" class="selector-container">
+        <mat-selection-list #buildlingList [multiple]="false" hideSingleSelectionIndicator
+                            (click)=" building = buildlingList.selectedOptions.hasValue() ? buildlingList.selectedOptions.selected[0].value : undefined">
+            <mat-list-option *ngFor="let building of filteredBuildings"
+                             [value]="building">
+                <span matListItemTitle>{{ building.name }}</span>
+            </mat-list-option>
+        </mat-selection-list>
+    </app-outlined>
+</div>

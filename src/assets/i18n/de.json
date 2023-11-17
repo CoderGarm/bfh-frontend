@@ -1,5 +1,4 @@
 {
-	"": "",
 	"account": {
 		"eMail": {
 			"hint": "Ändere die eMail-Adresse",
@@ -29,6 +28,7 @@
 	},
 	"burger-menu": {
 		"external-star-map-manager": "Externe Sternenkarte",
+		"library": "Bibliothek",
 		"take-a-tour": "Take a tour",
 		"wiki": "Wiki"
 	},
@@ -328,6 +328,19 @@
 			"nothing": "Keine Lieferungen",
 			"present-title": "Aktuelle Lieferungen",
 			"title": "Lieferungen"
+		}
+	},
+	"library": {
+		"modules": {
+			"title": {
+				"armor": "Panzerung",
+				"eloka": "Eloka",
+				"launcher": "Raketenwerfer",
+				"passiveModule": "Unterstützungsmodul",
+				"propulsion": "Antrieb",
+				"sidewall": "Seitenschild",
+				"weapon": "Waffen"
+			}
 		}
 	},
 	"mining-factor": {
@@ -687,11 +700,11 @@
 				"titleAbbreviation": "Die Abkürzung muss zwischen 3 und 8 Zeichen enthalten."
 			},
 			"placeholder": {
-				"firstname": "",
+				"firstname": "Dein Vorname",
 				"main": "Wie möchtest du bei offiziellen Anlässen vorgestellt werden?",
-				"surname": "",
-				"title": "",
-				"titleAbbreviation": ""
+				"surname": "Dein Nachname",
+				"title": "Dein herrschaftlicher Titel",
+				"titleAbbreviation": "Die Abkürzung deines Titels"
 			},
 			"title": {
 				"firstname": "Dein Vorname",
@@ -703,7 +716,7 @@
 	},
 	"screen-size-warning": {
 		"close": "Schließen",
-		"message": "",
+		"message": "Der Bildschirm ist sehr klein. Für eine bessere Erfahrung ist ein größeres Display besser.",
 		"remember": "Einstellung merken"
 	},
 	"shipyard": {
@@ -733,6 +746,14 @@
 			"armor": {
 				"title": "Panzerung"
 			},
+			"base-module": {
+				"effect-value": {
+					"title": "Kampfwert"
+				},
+				"intended-for": {
+					"title": "Vorgesehen für Schiffsklasse"
+				}
+			},
 			"electronic-warfare": {
 				"title": "Elektronische Kampfführung"
 			},
@@ -757,6 +778,13 @@
 				"title": "Waffensysteme"
 			},
 			"propulsion": {
+				"costs-percentage": {
+					"description": "Anteil an der Gesamtmasse des Rumpfes.",
+					"title": "Masseprozent"
+				},
+				"hyper-band": {
+					"title": "Hyperband"
+				},
 				"title": "Antrieb"
 			},
 			"sidewall": {
@@ -767,6 +795,9 @@
 			},
 			"support": {
 				"title": "Unterstützungsmodule"
+			},
+			"technology-type": {
+				"title": "Technologie"
 			},
 			"weapon-for": {
 				"weaponType": {
@@ -857,6 +888,10 @@
 			"dashboard": "Übersicht",
 			"jobs": "Jobberichte",
 			"movements": "Flottenbewegungen"
+		},
+		"library": {
+			"buildings": "Gebäude",
+			"module": "Schiffsmodule"
 		},
 		"planetary": {
 			"dashboard": "Übersicht",

@@ -1,16 +1,16 @@
 import {Component, Input} from '@angular/core';
-import {BaseModule} from "../../../services/swagger";
+import {Propulsion} from "../../../services/swagger";
 import {coerceBooleanProperty} from "@angular/cdk/coercion";
 
 @Component({
-    selector: 'app-module-display',
-    templateUrl: './module-display.component.html',
-    styleUrls: ['./module-display.component.scss']
+    selector: 'app-propulsion-module-display',
+    templateUrl: './propulsion-module-display.component.html',
+    styleUrls: ['./propulsion-module-display.component.scss']
 })
-export class ModuleDisplayComponent<MODULE extends { baseModule: BaseModule }> {
+export class PropulsionModuleDisplayComponent {
 
     @Input()
-    module?: MODULE;
+    module?: Propulsion;
 
     // @formatter:off
     @Input()
@@ -18,4 +18,5 @@ export class ModuleDisplayComponent<MODULE extends { baseModule: BaseModule }> {
     set showIcon(value: any) { this._showIcon = coerceBooleanProperty(value); }
     _showIcon: boolean = false;
     // @formatter:on
+
 }

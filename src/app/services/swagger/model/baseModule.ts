@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { EModuleType } from './eModuleType';
 import { EShipClassType } from './eShipClassType';
 import { Mass } from './mass';
 
@@ -42,6 +43,7 @@ export interface BaseModule {
      */
     techLevel: BaseModule.TechLevelEnum;
     shipClassType?: EShipClassType;
+    moduleType?: EModuleType;
 }
 export namespace BaseModule {
     export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';

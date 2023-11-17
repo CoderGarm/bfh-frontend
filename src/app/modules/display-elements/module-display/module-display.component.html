@@ -1,16 +1,16 @@
 <div class="flex-items-container">
     <mat-form-field appearance="outline">
-        <mat-label>Intended for ship class</mat-label>
-        <input matInput disabled value="{{module?.baseModule?.shipClassType?.typeName}}">
+        <mat-label>{{ 'shipyard.fitting.base-module.intended-for.title' | translate }}</mat-label>
+        <input matInput disabled value="{{ module?.baseModule?.shipClassType?.typeName }}">
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <mat-label>Effect value</mat-label>
-        <input matInput disabled value="{{module?.baseModule?.effectValue}}">
+        <mat-label>{{ 'shipyard.fitting.base-module.effect-value.title' | translate }}</mat-label>
+        <input matInput disabled value="{{ module?.baseModule?.effectValue }}">
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <mat-label>Tonnage</mat-label>
+        <mat-label>{{ 'shipyard.constructions.capacity.title' | translate }}</mat-label>
         <input matInput disabled value="{{ module?.baseModule?.tonnage | mass: 'T' }}">
     </mat-form-field>
 </div>

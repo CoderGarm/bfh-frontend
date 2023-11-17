@@ -1,5 +1,4 @@
 {
-	"": "",
 	"account": {
 		"eMail": {
 			"hint": "Change the eMail address",
@@ -29,6 +28,7 @@
 	},
 	"burger-menu": {
 		"external-star-map-manager": "External star map",
+		"library": "Library",
 		"take-a-tour": "Take a tour",
 		"wiki": "Wiki"
 	},
@@ -329,6 +329,19 @@
 			"nothing": "No deliveries",
 			"present-title": "Current deliveries",
 			"title": "Deliveries"
+		}
+	},
+	"library": {
+		"modules": {
+			"title": {
+				"armor": "Armor",
+				"eloka": "Electronic Warfare",
+				"launcher": "Launcher",
+				"passiveModule": "Support modules",
+				"propulsion": "Propulsion",
+				"sidewall": "Sidewall",
+				"weapon": "Weapon"
+			}
 		}
 	},
 	"mining-factor": {
@@ -688,11 +701,11 @@
 				"titleAbbreviation": "The abbreviation must contain between 3 and 8 characters."
 			},
 			"placeholder": {
-				"firstname": "",
+				"firstname": "Your first name",
 				"main": "How would you like to be introduced at official events?",
-				"surname": "",
-				"title": "",
-				"titleAbbreviation": ""
+				"surname": "Your last name",
+				"title": "Your stately title",
+				"titleAbbreviation": "The abbreviation of your title"
 			},
 			"title": {
 				"firstname": "Your first name",
@@ -704,7 +717,7 @@
 	},
 	"screen-size-warning": {
 		"close": "Close",
-		"message": "",
+		"message": "The screen is very small. For a improved experience, a larger display is better.",
 		"remember": "Remember setting"
 	},
 	"shipyard": {
@@ -734,6 +747,14 @@
 			"armor": {
 				"title": "Armor"
 			},
+			"base-module": {
+				"effect-value": {
+					"title": "Combat value"
+				},
+				"intended-for": {
+					"title": "Intended for ship class"
+				}
+			},
 			"electronic-warfare": {
 				"title": "Electronic warfare"
 			},
@@ -758,6 +779,13 @@
 				"title": "Offensive loadout"
 			},
 			"propulsion": {
+				"costs-percentage": {
+					"description": "Proportion of the total hull mass.",
+					"title": "Mass percent"
+				},
+				"hyper-band": {
+					"title": "Hyberband"
+				},
 				"title": "Propulsion"
 			},
 			"sidewall": {
@@ -768,6 +796,9 @@
 			},
 			"support": {
 				"title": "Support loadout"
+			},
+			"technology-type": {
+				"title": "Technology"
 			},
 			"weapon-for": {
 				"weaponType": {
@@ -858,6 +889,10 @@
 			"dashboard": "Dashboard",
 			"jobs": "Job reports",
 			"movements": "Fleet movement reports"
+		},
+		"library": {
+			"buildings": "Buildings",
+			"module": "Spacecraft modules"
 		},
 		"planetary": {
 			"dashboard": "Dashboard",

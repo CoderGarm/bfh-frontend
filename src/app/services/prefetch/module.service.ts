@@ -7,6 +7,7 @@ import {
     ModuleApiService,
     PassiveModule,
     Propulsion,
+    PublicResourcesApiService,
     ResourceDeposit,
     ResourcesApiService,
     ShipClass,
@@ -15,6 +16,8 @@ import {
     Weapon
 } from "../swagger";
 import {ReplaySubject} from "rxjs";
+import {AuthenticationService} from "../authentication";
+import {TypeService} from "../type.service";
 
 /**
  * Executed slow queries in the background and sends the data if the original request is finished.
@@ -49,12 +52,27 @@ export class ModuleService extends SubscriptionManager {
 
     private shipClassByUserEmitter: ReplaySubject<ShipClass[]> = new ReplaySubject<ShipClass[]>();
 
+    private isLoggedIn: boolean = false;
+
     constructor(private zone: NgZone,
+                private authService: AuthenticationService,
                 private resourceService: ResourcesApiService,
+                private publicResourcesService: PublicResourcesApiService,
                 private shipyardService: ShipyardApiService,
-                private moduleApiService: ModuleApiService) {
+                private moduleApiService: ModuleApiService,
+                private typeService: TypeService) {
         super();
 
+        let sub = this.authService.getAccessData().subscribe(loggedIn => {
+            this.isLoggedIn = !!loggedIn;
+            this.fetchBaseData();
+        });
+        this.subscriptions.push(sub);
+
+        this.fetchBaseData();
+    }
+
+    private fetchBaseData() {
         this.zone.run(() => {
             this.fetchWeapons();
             this.fetchLaunchers();
@@ -68,6 +86,9 @@ export class ModuleService extends SubscriptionManager {
     }
 
     public fetchShipClasses() {
+        if (!this.isLoggedIn) {
+            return;
+        }
         let sub = this.shipyardService.getShipClassesByUser().subscribe(resp => {
             this.shipClasses = resp;
             this.registerClassData();
@@ -109,51 +130,73 @@ export class ModuleService extends SubscriptionManager {
     }
 
     private fetchWeapons() {
-        let sub = this.moduleApiService.getWeaponsByUser().subscribe(resp => this.weaponsByUser.next(resp));
+        let sub = this.publicResourcesService.getWeapons().subscribe(resp => this.weapons.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApiService.getWeapons().subscribe(resp => this.weapons.next(resp));
+
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getWeaponsByUser().subscribe(resp => this.weaponsByUser.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchLaunchers() {
-        let sub = this.moduleApiService.getLaunchersByUser().subscribe(resp => this.launchersByUser.next(resp));
+        let sub = this.publicResourcesService.getLaunchers().subscribe(resp => this.launchers.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApiService.getLaunchers().subscribe(resp => this.launchers.next(resp));
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getLaunchersByUser().subscribe(resp => this.launchersByUser.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchArmors() {
-        let sub = this.moduleApiService.getArmorsByUser().subscribe(resp => this.armorsByUser.next(resp));
+        let sub = this.publicResourcesService.getArmors().subscribe(resp => this.armors.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApiService.getArmors().subscribe(resp => this.armors.next(resp));
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getArmorsByUser().subscribe(resp => this.armorsByUser.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchSidewalls() {
-        let sub = this.moduleApiService.getSidewallsByUser().subscribe(resp => this.sidewallsByUser.next(resp));
+        let sub = this.publicResourcesService.getSidewalls().subscribe(resp => this.sidewalls.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApiService.getSidewalls().subscribe(resp => this.sidewalls.next(resp));
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getSidewallsByUser().subscribe(resp => this.sidewallsByUser.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchElokas() {
-        let sub = this.moduleApiService.getElectronicWarfareByUser().subscribe(resp => this.elokaByUser.next(resp));
+        let sub = this.publicResourcesService.getElectronicWarfare().subscribe(resp => this.eloka.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApiService.getElectronicWarfare().subscribe(resp => this.eloka.next(resp));
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getElectronicWarfareByUser().subscribe(resp => this.elokaByUser.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchPropulsions() {
-        let sub = this.moduleApiService.getPropulsionsByUser().subscribe(resp => this.propulsionsByUser.next(resp));
+        let sub = this.publicResourcesService.getPropulsions().subscribe(resp => this.propulsions.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApiService.getPropulsions().subscribe(resp => this.propulsions.next(resp));
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getPropulsionsByUser().subscribe(resp => this.propulsionsByUser.next(resp));
         this.subscriptions.push(sub);
     }
 
     private fetchPassives() {
-        let sub = this.moduleApiService.getPassiveModulesByUser().subscribe(resp => this.passiveModulesByUser.next(resp));
+        let sub = this.publicResourcesService.getPassiveModules().subscribe(resp => this.passiveModules.next(resp));
         this.subscriptions.push(sub);
-        sub = this.moduleApiService.getPassiveModules().subscribe(resp => this.passiveModules.next(resp));
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getPassiveModulesByUser().subscribe(resp => this.passiveModulesByUser.next(resp));
         this.subscriptions.push(sub);
     }
 

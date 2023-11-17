@@ -17,8 +17,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { EEducationType } from '../model/eEducationType';
-import { EResourceType } from '../model/eResourceType';
 import { FrontendError } from '../model/frontendError';
 import { MiningFactors } from '../model/miningFactors';
 import { PlannedConstruction } from '../model/plannedConstruction';
@@ -190,80 +188,6 @@ export class ResourcesApiService {
         ];
 
         return this.httpClient.request<ResourceDeposit>('get',`${this.basePath}/api/private/resources/costsShipClass/${encodeURIComponent(String(idShipClass))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all EEducationTypes.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getEEducationTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EEducationType>>;
-    public getEEducationTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EEducationType>>>;
-    public getEEducationTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EEducationType>>>;
-    public getEEducationTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<EEducationType>>('get',`${this.basePath}/api/private/resources/educationTypes`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all EResourceTypes.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getEResourceTypes(observe?: 'body', reportProgress?: boolean): Observable<Array<EResourceType>>;
-    public getEResourceTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EResourceType>>>;
-    public getEResourceTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EResourceType>>>;
-    public getEResourceTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<EResourceType>>('get',`${this.basePath}/api/private/resources/types`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

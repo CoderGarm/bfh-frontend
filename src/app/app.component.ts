@@ -12,7 +12,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {TranslationEditorComponent} from "./modules/admin/components/payload/translation-editor/translation-editor.component";
 import {LoginComponent} from "./components/user/login/login.component";
 import {HomeComponent} from "./components/home/home.component";
-import {WikiMainComponent} from "./modules/wiki/orga/wiki-main/wiki-main.component";
+import {WikiMainViewComponent} from "./modules/wiki/orga/wiki-main/wiki-main-view.component";
 import {RegisterComponent} from "./components/user/register/register.component";
 import {NavigationCommunicationService} from "./services/navigation/navigation-communication.service";
 import {ForgottenPasswordComponent} from "./components/user/forgotten-password/forgotten-password.component";
@@ -28,6 +28,7 @@ import {TopicSelectorComponent} from "./modules/tutorial/topic-selector/topic-se
 import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
 import {ColorSchemeService} from "./services/color-scheme.service";
 import {MatDrawer} from "@angular/material/sidenav";
+import {LibraryTabViewComponent} from "./modules/library/orga/library-main-view/library-tab-view.component";
 
 @Component({
     selector: 'app-root',
@@ -232,7 +233,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         this.isNoScroll = this.noScrollingForFullSection.includes(path!, 0);
 
         console.log(path)
-        if (WikiMainComponent.path === path) {
+        if (WikiMainViewComponent.path === path) {
             this.drawer.close();
         }
     }
@@ -254,7 +255,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             && !this.router.url.endsWith(HomeComponent.path)
             && !this.router.url.endsWith(RegisterComponent.path)
             && !this.router.url.includes(ForgottenPasswordComponent.path)
-            && !this.router.url.endsWith(WikiMainComponent.path)
+            && !this.router.url.endsWith(WikiMainViewComponent.path)
+            && !this.router.url.endsWith(LibraryTabViewComponent.path)
             && !this.router.url.endsWith(TakeATourComponent.path)
             ;
     }

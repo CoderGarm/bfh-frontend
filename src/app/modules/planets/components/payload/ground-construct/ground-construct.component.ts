@@ -34,29 +34,11 @@ import ProductionCategoryEnum = Building.ProductionCategoryEnum;
 })
 export class GroundConstructComponent extends SubscriptionManager implements OnChanges, AfterViewInit {
 
-    /**
-     * all possible construction which could be build
-     */
     possibleConstructions: Construction[] = [];
-
-    /**
-     * all possibly constructable building which are filtered to display
-     */
     filteredConstructions: Construction[] = [];
 
-    /**
-     * all EResourceType enum elements
-     */
     eResourceTypes: EResourceType[] = [];
-
-    /**
-     * all EEducationType enum elements
-     */
     eEducationTypes: EEducationType[] = [];
-
-    /**
-     * all EProductionCategory enum elements
-     */
     eProductionCategories: string[] = [];
 
     /**
@@ -94,21 +76,12 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     costsToDisplay?: ResourceDeposit;
     private knownCosts: Map<String, ResourceDeposit> = new Map<String, ResourceDeposit>();
 
-    /**
-     * the EResourceType mat chip list
-     */
     @ViewChild('resourceTypeChipList')
     resourceTypeChipList!: MatChipListbox;
 
-    /**
-     * the EProductionCategory mat chip list
-     */
     @ViewChild('productCategoryChipList')
     productCategoryChipList!: MatChipListbox;
 
-    /**
-     * the ERefinementSequence mat chip list
-     */
     @ViewChild('refinementSequenceChipList')
     refinementSequenceChipList!: MatChipListbox;
 

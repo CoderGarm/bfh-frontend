@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {WikiMainComponent} from './orga/wiki-main/wiki-main.component';
+import {WikiMainViewComponent} from './orga/wiki-main/wiki-main-view.component';
 import {DisplayArticleComponent} from './payload/wiki-display/display-article.component';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
@@ -13,7 +13,7 @@ import {WikiSelectionComponent} from "./payload/wiki-selection/wiki-selection.co
 
 @NgModule({
     declarations: [
-        WikiMainComponent,
+        WikiMainViewComponent,
         WikiSelectionComponent,
         DisplayArticleComponent,
         CreateArticleComponent,

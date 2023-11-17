@@ -85,6 +85,7 @@ import {ShipNameTemplatorComponent} from './components/user/ship-name-templator/
 import {ProfileTabViewComponent} from './components/user/profile-tab-view/profile-tab-view.component';
 import {ColorSchemeService} from "./services/color-scheme.service";
 import {LayoutModule} from "@angular/cdk/layout";
+import {LibraryModule} from "./modules/library/library.module";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -159,6 +160,7 @@ export let AppInjector: Injector;
         }),
         AngularMarkdownEditorModule.forRoot(),
         WikiModule,
+        LibraryModule,
         TransportationModule,
         TutorialModule,
         ClipboardModule,

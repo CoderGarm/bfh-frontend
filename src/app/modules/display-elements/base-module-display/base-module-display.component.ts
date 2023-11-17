@@ -1,46 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {BaseModule} from "../../../services/swagger";
+import {coerceBooleanProperty} from "@angular/cdk/coercion";
 
 @Component({
     selector: 'app-base-module-display',
     templateUrl: './base-module-display.component.html',
     styleUrls: ['./base-module-display.component.scss']
 })
-export class BaseModuleDisplayComponent implements OnInit {
+export class BaseModuleDisplayComponent<MODULE extends { baseModule: BaseModule }> {
 
-    /**
-     * the module which should be displayed
-     */
     @Input()
-    moduleInput!: BaseModule;
+    module?: MODULE;
 
-    /**
-     * the amount to display
-     */
+    // @formatter:off
     @Input()
-    amountInput?: number;
+    get showIcon() { return this._showIcon; }
+    set showIcon(value: any) { this._showIcon = coerceBooleanProperty(value); }
+    _showIcon: boolean = false;
+    // @formatter:on
 
-    /**
-     * the alignment to display
-     */
-    @Input()
-    alignmentInput?: string;
-
-    constructor() {
-    }
-
-    ngOnInit(): void {
-    }
-
-    createTitle() {
-        let title: string = "";
-        if (this.amountInput!) {
-            title += this.amountInput + "x ";
-        }
-        title += this.moduleInput.name;
-        if (this.alignmentInput!) {
-            title += " @" + this.alignmentInput;
-        }
-        return title;
-    }
 }

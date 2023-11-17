@@ -52,6 +52,11 @@ export class IconComponent implements OnChanges {
     _combat: boolean = false;
 
     @Input()
+    get propulsion() { return this._propulsion; }
+    set propulsion(value: any) { this._propulsion = coerceBooleanProperty(value); }
+    _propulsion: boolean = false;
+
+    @Input()
     get research() { return this._research; }
     set research(value: any) { this._research = coerceBooleanProperty(value); }
     _research: boolean = false;

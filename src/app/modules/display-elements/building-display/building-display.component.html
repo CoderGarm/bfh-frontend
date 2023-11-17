@@ -1,0 +1,30 @@
+<mat-card *ngIf="!!building"
+          style="background-color: transparent;"
+          class="margin-bottom blue-card">
+    <mat-card-header>
+        <app-icon matCardAvatar class="icon"
+                  [icon]="building.productionTarget"
+                  [altText]="building.productionTarget.typeName"
+                  png32px [toolTip]="building.productionTarget.typeName"></app-icon>
+        <mat-card-title>{{ building.name }}</mat-card-title>
+        <mat-card-subtitle style="max-width: 350px;">{{ building.description }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content style="padding-right: 25px;">
+        <app-outlined titleValue="{{ 'planetary.constructions.info.title' | translate }}">
+            {{ descriptionText }}
+            <mat-list>
+                <mat-list-item>
+                    <span matListItemTitle>Production Target:
+                        <app-icon [icon]="building.productionTarget"></app-icon>
+                    </span>
+
+                    <span matListItemLine *ngIf="!!building.refinementSequence">Refinement Sequence:
+                    <app-icon [icon]="building.refinementSequence.educt"></app-icon>
+                        to
+                    <app-icon [icon]="building.refinementSequence.product"></app-icon>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+        </app-outlined>
+    </mat-card-content>
+</mat-card>

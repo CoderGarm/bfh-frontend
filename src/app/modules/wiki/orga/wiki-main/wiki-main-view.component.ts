@@ -4,10 +4,10 @@ import {SubscriptionManager} from "../../../../subscription.manager";
 
 @Component({
     selector: 'app-wiki-main',
-    templateUrl: './wiki-main.component.html',
-    styleUrls: ['./wiki-main.component.scss']
+    templateUrl: './wiki-main-view.component.html',
+    styleUrls: ['./wiki-main-view.component.scss']
 })
-export class WikiMainComponent extends SubscriptionManager implements OnInit {
+export class WikiMainViewComponent extends SubscriptionManager implements OnInit {
 
     static path: string = 'wiki';
 

@@ -10,7 +10,7 @@ import {JournalTabViewComponent} from "../../modules/journal/components/orga/jou
 import {AdminTabViewComponent} from "../../modules/admin/components/orga/admin-tab-view/admin-tab-view.component";
 import {ForumsListComponent} from "../../modules/forum/components/forums-list/forums-list.component";
 import {AllianceTabViewComponent} from "../../modules/alliance/components/orga/alliance-tab-view/alliance-tab-view.component";
-import {WikiMainComponent} from "../../modules/wiki/orga/wiki-main/wiki-main.component";
+import {WikiMainViewComponent} from "../../modules/wiki/orga/wiki-main/wiki-main-view.component";
 import {TransportMainViewComponent} from "../../modules/transportation/orga/transport-tab-view/transport-main-view.component";
 import {ShipClassSelectionComponent} from "../../modules/ship-class-construction/components/orga/ship-class-selection/ship-class-selection.component";
 import {PlanetSelectionComponent} from "../../modules/planets/components/orga/planet-selection/planet-selection.component";
@@ -25,6 +25,7 @@ import {StratOpsTabViewComponent} from "../../modules/strategic-operations/orga/
 import {TakeATourComponent} from "../../components/take-a-tour/take-a-tour.component";
 import {protectedGuard} from "ngx-auth";
 import {ProfileTabViewComponent} from "../../components/user/profile-tab-view/profile-tab-view.component";
+import {LibraryTabViewComponent} from "../../modules/library/orga/library-main-view/library-tab-view.component";
 
 
 export class NavigationCreationService {
@@ -88,7 +89,8 @@ export class NavigationCreationService {
 
     static createBurgerMenuRoutes(): Routes {
         return [
-            {path: WikiMainComponent.path, component: WikiMainComponent},
+            {path: WikiMainViewComponent.path, component: WikiMainViewComponent},
+            {path: LibraryTabViewComponent.path, component: LibraryTabViewComponent},
             this.getTakeATourRoute(),
         ];
     }
