@@ -5,6 +5,7 @@ import {ReplaySubject} from "rxjs";
 import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
 import EAlignmentTypeEnum = EnumValueDto.EAlignmentTypeEnum;
+import EHyperBandsEnum = EnumValueDto.EHyperBandsEnum;
 
 /**
  * Displays the spinner with or without a message.
@@ -25,6 +26,17 @@ export class TypeService extends SubscriptionManager {
     readonly weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE];
     readonly weaponAlignmentTypes: EWeaponAlignmentEnum[] = [EWeaponAlignmentEnum.STERN, EWeaponAlignmentEnum.BROADSIDE, EWeaponAlignmentEnum.BOW];
     readonly alignmentAreas: EAlignmentTypeEnum[] = [EAlignmentTypeEnum.CHASEALIGNMENT, EAlignmentTypeEnum.BATTLEALIGNMENT];
+    readonly hyperBands: EHyperBandsEnum[] = [
+        EHyperBandsEnum.NONE,
+        EHyperBandsEnum.ALPHA,
+        EHyperBandsEnum.BETA,
+        EHyperBandsEnum.GAMMA,
+        EHyperBandsEnum.DELTA,
+        EHyperBandsEnum.EPSILON,
+        EHyperBandsEnum.ZETA,
+        EHyperBandsEnum.ETA,
+        EHyperBandsEnum.THETA
+    ];
 
     constructor(private zone: NgZone,
                 private publicResourcesApiService: PublicResourcesApiService) {

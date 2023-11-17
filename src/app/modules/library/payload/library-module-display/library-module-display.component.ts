@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {ModuleService} from "../../../../services/prefetch/module.service";
-import {Armor, BaseModule, ElectronicWarfare, EShipClassType, Launcher, Missile, PassiveModule, Propulsion, Sidewall, Weapon} from "../../../../services/swagger";
+import {Armor, BaseModule, ElectronicWarfare, EShipClassType, Launcher, PassiveModule, Propulsion, Sidewall, Weapon} from "../../../../services/swagger";
 import {ChipSelectorValue, ChipSelectorValueResult} from "../../../shared-module/components/chip-selector/chip-selector.component";
 import {FittingHelper} from "../../../../services/helper/fitting.helper";
 import {TypeService} from "../../../../services/type.service";
@@ -32,14 +32,8 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
      * the single selection items
      */
     shipClassTypeSelection?: EShipClassType;
-    propulsionSelection?: Propulsion;
-    hoveredArmor?: Armor;
     armorSelection?: Armor;
-    hoveredSidewall?: Sidewall;
     sidewallSelection?: Sidewall;
-    hoveredPassiveModule?: PassiveModule;
-    passiveModuleSelection?: PassiveModule;
-    hoveredEloka?: ElectronicWarfare;
     elokaSelection?: ElectronicWarfare;
 
     filteredWeapons: Weapon[] = [];
@@ -51,37 +45,85 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
     filteredEloka: ElectronicWarfare[] = [];
     filteredPropulsions: Propulsion[] = [];
     eHullTypeChipValues: ChipSelectorValue[] = [];
-    hoveredWeapon?: Weapon | Launcher;
-    selectedWeapon?: Weapon | Launcher;
 
-    missileLoadout: Missile[] = [];
 
     technologyTypes: TechnologyTypeEnum[] = [TechnologyTypeEnum.CIVIL, TechnologyTypeEnum.MILITARY];
     selectedTechnologyType: TechnologyTypeEnum = TechnologyTypeEnum.CIVIL;
     selectedHyperband: HyperBandEnum = HyperBandEnum.NONE;
-    hyperBands: HyperBandEnum[] = [];
+    hyperBands: HyperBandEnum[] = this.typeService.hyperBands;
+    private shipClassTypes: EShipClassType[] = [];
 
     constructor(private moduleService: ModuleService,
                 private typeService: TypeService) {
         super();
 
         let sub = this.typeService.shipClassTypes.subscribe(d => {
-            this.eHullTypeChipValues.push(...d.map((type: EShipClassType) => ({value: type.type, trailingIcon: type})));
+            this.shipClassTypes = d;
+            this.setPossibleShipClassTypes();
         });
         this.subscriptions.push(sub);
 
-        sub = this.moduleService.getWeapons().subscribe(resp => this.weapons = resp);
+        sub = this.moduleService.getWeapons().subscribe(resp => {
+            this.weapons = resp;
+            this.setPossibleShipClassTypes();
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getLaunchers().subscribe(resp => this.launchers = resp);
+        sub = this.moduleService.getLaunchers().subscribe(resp => {
+            this.launchers = resp;
+            this.setPossibleShipClassTypes();
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getArmors().subscribe(resp => this.armors = resp);
+        sub = this.moduleService.getArmors().subscribe(resp => {
+            this.armors = resp;
+            this.setPossibleShipClassTypes();
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getSidewalls().subscribe(resp => this.sidewalls = resp);
+        sub = this.moduleService.getSidewalls().subscribe(resp => {
+            this.sidewalls = resp;
+            this.setPossibleShipClassTypes();
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getElectronicWarfare().subscribe(resp => this.eloka = resp);
+        sub = this.moduleService.getElectronicWarfare().subscribe(resp => {
+            this.eloka = resp;
+            this.setPossibleShipClassTypes();
+        });
         this.subscriptions.push(sub);
-        sub = this.moduleService.getPassiveModules().subscribe(resp => this.passiveModules = resp);
+        sub = this.moduleService.getPassiveModules().subscribe(resp => {
+            this.passiveModules = resp;
+            this.setPossibleShipClassTypes();
+        });
         this.subscriptions.push(sub);
+        sub = this.moduleService.getPropulsions().subscribe(resp => {
+            this.propulsions = resp;
+            this.setPossibleShipClassTypes();
+        });
+        this.subscriptions.push(sub);
+    }
+
+    private setPossibleShipClassTypes() {
+        this.eHullTypeChipValues = [];
+        const set = new Set<string>();
+        this.weapons.map(m => m.baseModule.shipClassType!.typeName).forEach(n => set.add(n));
+        this.launchers.map(m => m.baseModule.shipClassType!.typeName).forEach(n => set.add(n));
+        this.armors.map(m => m.baseModule.shipClassType!.typeName).forEach(n => set.add(n));
+        this.sidewalls.map(m => m.baseModule.shipClassType!.typeName).forEach(n => set.add(n));
+        this.eloka.map(m => m.baseModule.shipClassType!.typeName).forEach(n => set.add(n));
+        this.passiveModules.map(m => m.baseModule.shipClassType!.typeName).forEach(n => set.add(n));
+
+        const arr = Array.from(set);
+        this.eHullTypeChipValues.push(...this.shipClassTypes
+            .filter(t => arr.includes(t.type))
+            .map((type: EShipClassType) => ({value: type.type, trailingIcon: type})));
+    }
+
+    selectTechnologyType(type: TechnologyTypeEnum) {
+        this.selectedTechnologyType = type;
+        this.filterDisplayedItems();
+    }
+
+    selectHyperband(type: HyperBandEnum) {
+        this.selectedHyperband = type;
+        this.filterDisplayedItems();
     }
 
     filterDisplayedItems(chips?: ChipSelectorValueResult[]) {
@@ -131,9 +173,11 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
         }
     }
 
-    private addOrRemoveSingleSelectModule<MODULE extends {
-        baseModule: BaseModule
-    }>(selectedTypeNames: string[], module: MODULE, elements: MODULE[], selection: MODULE | undefined) {
+    private addOrRemoveSingleSelectModule<MODULE extends { baseModule: BaseModule }>(
+        selectedTypeNames: string[],
+        module: MODULE,
+        elements: MODULE[],
+        selection: MODULE | undefined) {
         if (this.isPushCandidate(selectedTypeNames, module, selection)) {
             if (elements.filter(h => h.baseModule.shipClassType!.typeName === module.baseModule.shipClassType!.typeName).length == 0) {
                 elements.push(module);
@@ -144,19 +188,15 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
     }
 
     private addOrRemovePropulsion(module: Propulsion) {
-        if (this.propulsionMatchesConditions(module, false)) {
+        if (this.propulsionMatchesConditions(module)) {
             this.addIfNotPresent(this.filteredPropulsions, module);
         } else {
             this.removeIfPresent(this.filteredPropulsions, module);
         }
     }
 
-    private propulsionMatchesConditions(module: Propulsion, bothConditionsWorking: boolean = true) {
-        if (bothConditionsWorking) {
-            return module.technologyType === this.selectedTechnologyType && module.hyperBand === this.selectedHyperband;
-        } else {
-            return module.technologyType === this.selectedTechnologyType;
-        }
+    private propulsionMatchesConditions(module: Propulsion) {
+        return module.technologyType === this.selectedTechnologyType && module.hyperBand === this.selectedHyperband;
     }
 
     private addIfNotPresent<MODULE>(elements: MODULE[], module: MODULE) {

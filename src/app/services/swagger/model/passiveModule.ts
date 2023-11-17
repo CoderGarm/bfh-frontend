@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 import { BaseModule } from './baseModule';
+import { ResourceDeposit } from './resourceDeposit';
 
 /**
  * .
  */
 export interface PassiveModule { 
+    costs?: ResourceDeposit;
     baseModule: BaseModule;
     /**
      * What type of property is supported.

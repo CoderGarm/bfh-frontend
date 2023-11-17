@@ -53,10 +53,27 @@
         </mat-tab>
         <mat-tab label="{{ 'library.modules.title.propulsion' | translate }}">
             <ng-template matTabContent>
-                <div class="flex-items-container content-area">
-                    <app-propulsion-module-display *ngFor="let propulsion of propulsions"
-                                                   showIcon class="width-fit-content"
-                                                   [module]="propulsion"></app-propulsion-module-display>
+                <div class="content-area">
+
+                    <div class="flex-items-container">
+                        <mat-button-toggle-group>
+                            <mat-button-toggle *ngFor="let type of technologyTypes" (click)="selectTechnologyType(type)" [checked]="type === selectedTechnologyType">
+                                <div class="capitalize">{{ type }}</div>
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
+
+                        <mat-button-toggle-group>
+                            <mat-button-toggle *ngFor="let type of hyperBands" (click)="selectHyperband(type)" [checked]="type === selectedHyperband">
+                                <div class="capitalize">{{ type }}</div>
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+
+                    <div class="flex-items-container" style="margin-top: 25px;">
+                        <app-propulsion-module-display *ngFor="let propulsion of filteredPropulsions"
+                                                       showIcon class="width-fit-content"
+                                                       [module]="propulsion"></app-propulsion-module-display>
+                    </div>
                 </div>
             </ng-template>
         </mat-tab>

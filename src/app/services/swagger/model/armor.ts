@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 import { BaseModule } from './baseModule';
+import { ResourceDeposit } from './resourceDeposit';
 
 /**
  * .
  */
 export interface Armor { 
+    costs?: ResourceDeposit;
     baseModule: BaseModule;
 }

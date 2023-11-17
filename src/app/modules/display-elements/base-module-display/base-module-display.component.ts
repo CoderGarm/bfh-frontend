@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {BaseModule} from "../../../services/swagger";
+import {BaseModule, ResourceDeposit} from "../../../services/swagger";
 import {coerceBooleanProperty} from "@angular/cdk/coercion";
 
 @Component({
@@ -7,7 +7,7 @@ import {coerceBooleanProperty} from "@angular/cdk/coercion";
     templateUrl: './base-module-display.component.html',
     styleUrls: ['./base-module-display.component.scss']
 })
-export class BaseModuleDisplayComponent<MODULE extends { baseModule: BaseModule }> {
+export class BaseModuleDisplayComponent<MODULE extends { baseModule: BaseModule, costs?: ResourceDeposit }> {
 
     @Input()
     module?: MODULE;

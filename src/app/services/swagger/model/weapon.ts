@@ -11,11 +11,13 @@
  */
 import { BaseModule } from './baseModule';
 import { Distance } from './distance';
+import { ResourceDeposit } from './resourceDeposit';
 
 /**
  * .
  */
 export interface Weapon { 
+    costs?: ResourceDeposit;
     baseModule: BaseModule;
     effectiveRange: Distance;
     /**

@@ -47,7 +47,7 @@
                 </div>
                 <div [ngClass]="getOpeningBracketClass(resource)">
                     <div>
-                        <app-number-short [input]="getResourceAmount(resource.resourceType, deposit)"></app-number-short>
+                        <app-number-short *ngIf="!!deposit" [input]="getResourceAmount(resource.resourceType, deposit)"></app-number-short>
                     </div>
                     <div>
                         <div *ngIf="!!income" class="diffAmount no-flex"
@@ -81,7 +81,7 @@
                 </div>
                 <div [ngClass]="getClosingBracketClass(resource)">
                     <label class="amount-present">
-                        <app-number-short [input]="getHumans(resource.resourceType, deposit)"></app-number-short>
+                        <app-number-short *ngIf="!!deposit" [input]="getHumans(resource.resourceType, deposit)"></app-number-short>
                     </label>
                     <div class="amount-holder">
                         <div *ngIf="!!income" class="diffAmount no-flex">

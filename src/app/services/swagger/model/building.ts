@@ -11,11 +11,13 @@
  */
 import { ERefinementSequence } from './eRefinementSequence';
 import { EResourceType } from './eResourceType';
+import { ResourceDeposit } from './resourceDeposit';
 
 /**
  * .
  */
 export interface Building { 
+    costs?: ResourceDeposit;
     /**
      * The ID.
      */

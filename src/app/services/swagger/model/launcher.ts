@@ -11,11 +11,13 @@
  */
 import { BaseModule } from './baseModule';
 import { Missile } from './missile';
+import { ResourceDeposit } from './resourceDeposit';
 
 /**
  * .
  */
 export interface Launcher { 
+    costs?: ResourceDeposit;
     baseModule: BaseModule;
     /**
      * The way how the damage will be projected.

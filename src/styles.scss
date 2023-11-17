@@ -407,3 +407,11 @@ mat-step-header {
 .active-ship {
   background: var(--active-warship-background-color) !important;
 }
+
+.capitalize {
+  text-transform: lowercase;
+}
+
+.capitalize:first-letter {
+  text-transform: uppercase;
+}

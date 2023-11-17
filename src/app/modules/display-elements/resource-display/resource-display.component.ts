@@ -55,6 +55,11 @@ export class ResourceDisplayComponent extends SubscriptionManager {
     get shipyardMode() { return this._shipyardMode; }
     set shipyardMode(value: any) { this._shipyardMode = coerceBooleanProperty(value); }
     _shipyardMode: boolean = false;
+
+    @Input()
+    get constructionMode() { return this._constructionMode; }
+    set constructionMode(value: any) { this._constructionMode = coerceBooleanProperty(value); }
+    _constructionMode: boolean = false;
     // @formatter:on
 
     resourceTypes: EResourceType[] = [];
@@ -219,6 +224,12 @@ export class ResourceDisplayComponent extends SubscriptionManager {
                 .filter(c => c.resourceType.collectableType == CollectableTypeEnum.COLLECTABLE || c.resourceType.typeName === EResourceTypeEnum.ORBITAL_CONSTRUCTION);
             result.humanResources = result.humanResources
                 .filter(c => c.resourceType.typeName === EEducationTypeEnum.ENLISTED || c.resourceType.typeName === EEducationTypeEnum.OFFICER);
+        }
+        if (!!result && this._constructionMode) {
+            result.resources = result.resources
+                .filter(c => c.resourceType.collectableType == CollectableTypeEnum.COLLECTABLE || c.resourceType.typeName === EResourceTypeEnum.ORBITAL_CONSTRUCTION);
+            result.humanResources = result.humanResources
+                .filter(c => c.resourceType.typeName === EEducationTypeEnum.COLLEGE || c.resourceType.typeName === EEducationTypeEnum.UNIVERSITY);
         }
         return result;
     }

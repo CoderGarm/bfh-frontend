@@ -4,6 +4,7 @@
         <mat-card-title>{{ module?.baseModule?.name }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+        <div class="description-field">{{ module?.baseModule?.description }}</div>
 
         <div class="flex-items-container">
             <mat-form-field appearance="outline">
@@ -21,6 +22,8 @@
                 <input matInput disabled value="{{ module?.baseModule?.tonnage | mass: 'T' }}">
             </mat-form-field>
         </div>
-        <div class="description-field">{{ module?.baseModule?.description }}</div>
+
+        <app-resource-display shipyardMode [showTick]="false" [costs]="module?.costs"></app-resource-display>
+
     </mat-card-content>
 </mat-card>
