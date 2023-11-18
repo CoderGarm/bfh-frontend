@@ -67,9 +67,7 @@ export class WikiMainViewComponent extends SubscriptionManager implements OnInit
             this.subscriptions.push(sub);
         });
         this.subscriptions.push(sub);
-        if (this.isHome()) {
-            this.setDisplay();
-        }
+        this.setDisplay();
     }
 
     private setDisplay() {

@@ -4,6 +4,7 @@
         <mat-list-option *ngFor="let planet of pair.value"
                          (click)="chosePlanet(planet)"
                          [selected]="isSelected(planet.idPlanet)"
+                         matTooltipDisabled
                          class="sidenav-item">
             <span matListItemTitle>
                 <app-icon matListItemAvatar

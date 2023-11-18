@@ -13,7 +13,7 @@
 
     <div *ngFor="let entry of standardArticles | keyvalue" class="category-block">
         <div mat-subheader>{{ entry.key }}</div>
-        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)" matTooltip="{{ article.title }}">
+        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)" matTooltip="{{ article.title }}" matTooltipDisabled>
             <span matListItemTitle>{{ article.title }}</span>
             {{ article.langCode }}
         </mat-list-option>
@@ -25,7 +25,7 @@
 
     <div *ngFor="let entry of tutorialArticles | keyvalue" class="category-block">
         <div mat-subheader>{{ entry.key }}</div>
-        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)" matTooltip="{{ article.title }}">
+        <mat-list-option *ngFor="let article of entry.value" (click)="chose(article)" matTooltip="{{ article.title }}" matTooltipDisabled>
             <span matListItemTitle>{{ article.title }}</span>
             {{ article.langCode }}
         </mat-list-option>

@@ -45,7 +45,7 @@ export class CreateArticleComponent extends SubscriptionManager implements OnIni
 
     markdownText: string = this.template;
 
-    tutTypes: ETutorialCategoriesEnum[] = Object.values(ETutorialCategoriesEnum);
+    tutTypes: ETutorialCategoriesEnum[] = Object.values(ETutorialCategoriesEnum).sort((a, b) => a.localeCompare(b));
     tutorialType?: ETutorialCategoriesEnum;
 
     constructor(private markdownService: MarkdownService,

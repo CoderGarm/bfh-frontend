@@ -1,5 +1,5 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-    <mat-list-option (click)="selectFleet(mothball)" [selected]="isSelected(mothball.id)" class="sidenav-item">
+    <mat-list-option (click)="selectFleet(mothball)" [selected]="isSelected(mothball.id)" class="sidenav-item" matTooltipDisabled>
         {{ 'fleet.composition.detachment.pool.create-from' | translate }}
     </mat-list-option>
     <ng-template ngFor let-fleet let-i="index" [ngForOf]="fleets">
@@ -7,13 +7,13 @@
                          [selected]="isSelected(fleet.id)"
                          class="sidenav-item fleet-item height-fit-content-forced"
                          [id]="'item-' + fleet.id"
-                         (mouseover)="openItem(fleet.id);" (mouseleave)="closeItem();">
+                         (mouseover)="openItem(fleet.id);" (mouseleave)="closeItem();" matTooltipDisabled>
             <div>
                 <app-icon matCardAvatar [fleetSize]="fleetStatesById.get(fleet.id)?.fleetSize"></app-icon>
                 {{fleet.name}}
                 <app-spacecraft-state-block-display minified [stateBlock]="fleetStatesById.get(fleet.id)" isFleet></app-spacecraft-state-block-display>
             </div>
         </mat-list-option>
-        <mat-list-option [id]="'clone-' + fleet.id" class="clone-item height-fit-content-forced"></mat-list-option>
+        <mat-list-option [id]="'clone-' + fleet.id" class="clone-item height-fit-content-forced" matTooltipDisabled></mat-list-option>
     </ng-template>
 </mat-selection-list>

@@ -1,9 +1,9 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-    <mat-list-option (click)="selectClass(undefined)" class="sidenav-item">{{ 'shipyard.create-new-class' | translate }}</mat-list-option>
+    <mat-list-option (click)="selectClass(undefined)" class="sidenav-item" matTooltipDisabled>{{ 'shipyard.create-new-class' | translate }}</mat-list-option>
     <mat-list-option *ngFor="let shipClass of shipClasses"
                      (click)="selectClass(shipClass)"
                      [selected]="isSelected(shipClass.idShipClass!)"
-                     class="sidenav-item">
+                     class="sidenav-item" matTooltipDisabled>
         <span matListItemTitle>
         <app-icon matListItemAvatar
                   [icon]="shipClass.shipClassType"
