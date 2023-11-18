@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { FleetOrbit } from '../model/fleetOrbit';
 import { FrontendError } from '../model/frontendError';
+import { Job } from '../model/job';
 import { Orbit } from '../model/orbit';
 import { Planet } from '../model/planet';
 import { ResourceDeposit } from '../model/resourceDeposit';
@@ -69,9 +70,9 @@ export class PlanetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'body', reportProgress?: boolean): Observable<Job>;
+    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Job>>;
+    public buildConstruction(idPlanet: number, idBuilding: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Job>>;
     public buildConstruction(idPlanet: number, idBuilding: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (idPlanet === null || idPlanet === undefined) {
@@ -98,7 +99,7 @@ export class PlanetApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<boolean>('get',`${this.basePath}/api/private/planet/groundConstructionBuild/${encodeURIComponent(String(idPlanet))}/${encodeURIComponent(String(idBuilding))}`,
+        return this.httpClient.request<Job>('get',`${this.basePath}/api/private/planet/groundConstructionBuild/${encodeURIComponent(String(idPlanet))}/${encodeURIComponent(String(idBuilding))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

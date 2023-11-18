@@ -114,7 +114,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                 public translate: TranslateService) {
         super();
 
-        let sub = planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.fetchPlanet());
+        let sub = this.planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.fetchPlanet());
         this.subscriptions.push(sub);
 
         this.translations.set('planetary.constructions.build.is-new', 'planetary.constructions.build.is-new');
@@ -282,9 +282,13 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
     startConstruction(construction: Construction) {
         let sub = this.planetApi.buildConstruction(this.planet!.idPlanet, construction!.building.idBuilding)
             .subscribe(resp => {
-                if (resp) {
-                    this.notificationService.open("Construction of " + construction.building.name + " started.");
-                    this.constructionPossible = false;
+                if (!!resp) {
+                    this.constructionPossible = !resp.ticksLeft || resp.ticksLeft == 0;
+                    if (!this.constructionPossible) {
+                        this.notificationService.open("Construction of " + construction.building.name + " started.");
+                    } else {
+                        this.notificationService.open("Construction of " + construction.building.name + " finished.");
+                    }
                     this.fetchPlanet();
                     this.planetsNotificationService.pushStartedConstruction();
                 } else {

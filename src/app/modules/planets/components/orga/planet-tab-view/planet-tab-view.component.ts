@@ -42,6 +42,10 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
             this.fetchFleetsInOrbit();
         });
         this.subscriptions.push(sub);
+
+        sub = this.planetsNotificationService.getConstructionStartsEmitter().subscribe(() => this.fetchResourceDeposit());
+        this.subscriptions.push(sub);
+
         this.change.detectChanges();
     }
 
@@ -66,12 +70,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
             });
         this.subscriptions.push(sub);
 
-        sub = this.resourceService.getResourceDeposit(idPlanet)
-            .subscribe(resp => {
-                this.resourceDeposit = resp;
-                resp.humanResources.forEach(hr => this.sumOfPops += hr.amount);
-            });
-        this.subscriptions.push(sub);
+        this.fetchResourceDeposit();
         sub = this.resourceService.getResourceUtilization(idPlanet).subscribe(utilization => {
             this.utilization = utilization;
             utilization.humanResources.forEach(hr => this.sumOfPops += hr.amount);
@@ -89,5 +88,16 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
             this.miningFactors = resp;
         });
         this.subscriptions.push(sub);
+    }
+
+    private fetchResourceDeposit() {
+        const idPlanet = this.selectedPlanet!.idPlanet;
+        const sub = this.resourceService.getResourceDeposit(idPlanet)
+            .subscribe(resp => {
+                this.resourceDeposit = resp;
+                resp.humanResources.forEach(hr => this.sumOfPops += hr.amount);
+            });
+        this.subscriptions.push(sub);
+        return sub;
     }
 }

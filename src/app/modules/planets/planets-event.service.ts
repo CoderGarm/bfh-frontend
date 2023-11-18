@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs";
 import {Planet} from "../../services/swagger";
 
@@ -8,13 +8,13 @@ import {Planet} from "../../services/swagger";
 @Injectable()
 export class PlanetsEventService {
 
-    private constructionStartsEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+    private constructionStartsEmitter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     /**
      * Tell the others that some kind of construction was started.
      */
     public pushStartedConstruction() {
-        this.constructionStartsEmitter.emit(true);
+        this.constructionStartsEmitter.next(true);
     }
 
     /**
