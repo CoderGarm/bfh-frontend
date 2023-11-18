@@ -58,7 +58,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
     /**
      * all EResourceType enum elements
      */
-    readonly eHullTypes: EShipClassType[] = [];
+    eHullTypes: EShipClassType[] = [];
 
     /**
      * some needed form controls to use the mat chip list
@@ -103,7 +103,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                 private translate: TranslateService) {
         super();
 
-        let sub = this.typeService.shipClassTypes.subscribe(d => this.eHullTypes == d);
+        let sub = this.typeService.shipClassTypes.subscribe(d => this.eHullTypes = d);
         this.subscriptions.push(sub);
 
         this.translations.set('shipyard.constructions.build.already-in-use', 'shipyard.constructions.build.already-in-use');
@@ -185,9 +185,13 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
         if (!!this.order) {
             this.order.shipJobPayload = this.selection;
             let subscription = this.planetApi.buildShip(this.order).subscribe(resp => {
-                if (resp) {
-                    this.notificationService.open("Construction started.")
-                    this.shipyardJobPossible = !resp
+                if (!!resp) {
+                    this.shipyardJobPossible = !resp.ticksLeft || resp.ticksLeft == 0;
+                    if (!this.shipyardJobPossible) {
+                        this.notificationService.open("Construction started.")
+                    } else {
+                        this.notificationService.open("Construction finished.")
+                    }
                     this.planetsNotificationService.pushStartedConstruction();
                     this.fleetEventservice.reload();
                 } else {

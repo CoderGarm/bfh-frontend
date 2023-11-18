@@ -116,9 +116,9 @@ export class PlanetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buildShip(body: ShipyardConstructionOrder, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
-    public buildShip(body: ShipyardConstructionOrder, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
-    public buildShip(body: ShipyardConstructionOrder, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public buildShip(body: ShipyardConstructionOrder, observe?: 'body', reportProgress?: boolean): Observable<Job>;
+    public buildShip(body: ShipyardConstructionOrder, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Job>>;
+    public buildShip(body: ShipyardConstructionOrder, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Job>>;
     public buildShip(body: ShipyardConstructionOrder, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -146,7 +146,7 @@ export class PlanetApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/planet/shipyardConstructionBuild`,
+        return this.httpClient.request<Job>('post',`${this.basePath}/api/private/planet/shipyardConstructionBuild`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
