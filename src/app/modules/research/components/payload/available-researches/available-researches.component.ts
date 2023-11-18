@@ -1,6 +1,8 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {ResearchApiService, ResearchLevel} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
+import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-available-researches',
@@ -23,8 +25,13 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
 
     filterValue: string = '';
 
-    constructor(private researchApi: ResearchApiService) {
+    constructor(private researchApi: ResearchApiService,
+                private translate: TranslateService,
+                private notif: SnackbarNotificationService) {
         super();
+
+        this.translate.instant('research.started');
+        this.translate.instant('research.insta-finished');
     }
 
     ngAfterViewInit() {
@@ -38,11 +45,18 @@ export class AvailableResearchesComponent extends SubscriptionManager implements
     /**
      * starts a research job
      *
-     * @param research the research with it's level to run as job
+     * @param research the research with its level to run as job
      */
     runResearch(research: ResearchLevel) {
         if (!!research) {
-            let sub = this.researchApi.startResearchByUser(research).subscribe(resp => this.researchPossible = false);
+            this.notif.open('research.started');
+            this.researchPossible = false;
+            let sub = this.researchApi.startResearchByUser(research).subscribe(resp => {
+                if (!resp.ticksLeft || resp.ticksLeft == 0) {
+                    this.notif.open('research.insta-finished');
+                    this.ngAfterViewInit();
+                }
+            });
             this.subscriptions.push(sub);
         }
     }

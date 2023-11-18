@@ -1,4 +1,5 @@
 {
+	"": "",
 	"account": {
 		"eMail": {
 			"hint": "Change the eMail address",
@@ -655,9 +656,11 @@
 		"spinner-message": "Please wait while you navy is fighting for you."
 	},
 	"research": {
+		"insta-finished": "Research successful",
 		"level-details": "Details",
 		"no-available": "There are currently no researches available.",
 		"not-possible": "There is no laboratory or it is already in use.",
+		"started": "Research started",
 		"title": "Research"
 	},
 	"resource-overlay": {

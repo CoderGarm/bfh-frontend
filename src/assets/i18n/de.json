@@ -1,4 +1,5 @@
 {
+	"": "",
 	"account": {
 		"eMail": {
 			"hint": "Ändere die eMail-Adresse",
@@ -654,9 +655,11 @@
 		"spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
 	},
 	"research": {
+		"insta-finished": "Forschung erfolgreich",
 		"level-details": "Details",
 		"no-available": "Es gibt derzeit keine verfügbaren Forschungen.",
 		"not-possible": "Es gibt kein Labor oder es wird bereits geforscht.",
+		"started": "Forschung gestartet.",
 		"title": "Forschung"
 	},
 	"resource-overlay": {
