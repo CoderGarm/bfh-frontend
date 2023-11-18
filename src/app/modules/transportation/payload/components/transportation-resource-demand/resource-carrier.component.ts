@@ -32,11 +32,7 @@ export class ResourceCarrierComponent extends SubscriptionManager implements OnI
 
         let sub = this.typeService.eResourceTypes.subscribe(d => {
             this.resources = d;
-            this.resources.forEach(resource => {
-                if (resource.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE) {
-                    this.collectables.push(resource);
-                }
-            });
+            this.collectables = this.resources.filter(resource => resource.collectableType === EResourceType.CollectableTypeEnum.COLLECTABLE);
         });
         this.subscriptions.push(sub);
     }

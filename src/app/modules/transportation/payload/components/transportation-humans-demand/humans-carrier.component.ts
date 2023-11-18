@@ -32,11 +32,7 @@ export class HumansCarrierComponent extends SubscriptionManager implements OnIni
 
         let sub = this.typeService.educationTypes.subscribe(d => {
             this.resources = d;
-            this.resources.forEach(resource => {
-                if (resource.isMilitary) {
-                    this.militaries.push(resource);
-                }
-            });
+            this.militaries = this.resources.filter(resource => resource.isMilitary);
         });
         this.subscriptions.push(sub);
     }
