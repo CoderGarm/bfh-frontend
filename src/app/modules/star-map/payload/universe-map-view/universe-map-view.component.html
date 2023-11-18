@@ -1,8 +1,11 @@
-<app-red-box titleValue="Known star systems" class="universe-info" *ngIf="!starMapCommService.selectedStarSystem">
+<app-red-box titleValue="Known star systems"
+             class="universe-info"
+             [class.invertColor]="tokenStorage.isGeorge()"
+             *ngIf="!starMapCommService.selectedStarSystem">
     {{ knownStarSystems.length }}
 </app-red-box>
 
-<form class="search-box">
+<form class="search-box" [class.invertColor]="tokenStorage.isGeorge()">
     <mat-form-field class="center-field" appearance="fill">
         <mat-label>Search for system</mat-label>
         <input matInput
@@ -28,7 +31,7 @@
 
 <app-system-info class="system-info-div" [starSystem]="starMapCommService.selectedStarSystem"></app-system-info>
 
-<div id="universe">
+<div id="universe" [class.invertColor]="tokenStorage.isGeorge()">
     <!-- svg elements will be created programmatically -->
 </div>
 

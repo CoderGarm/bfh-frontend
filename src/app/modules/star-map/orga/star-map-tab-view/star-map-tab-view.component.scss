@@ -29,6 +29,11 @@
   background-image: radial-gradient(var(--map-background), var(--map-background), var(--map-background), var(--map-background), var(--map-edge-background-color));
 }
 
+.invertColor {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
 .coordCross {
   stroke: darkgoldenrod;
   opacity: 0.4;

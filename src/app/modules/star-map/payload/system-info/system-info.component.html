@@ -1,4 +1,4 @@
-<div class="flex-items-container" *ngIf="!!starSystem">
+<div class="flex-items-container" *ngIf="!!starSystem" [class.invertColor]="tokenStorage.isGeorge()">
 
     <app-red-box titleValue="System">
         {{ starSystem!.name }}

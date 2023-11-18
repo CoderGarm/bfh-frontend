@@ -1,4 +1,4 @@
-<div id="external-map">
+<div id="external-map" [class.invertColor]="tokenStorage.isGeorge()">
     <div class="flex-items-container system-info-div" *ngIf="!!hoveredStarSystem">
         <app-red-box titleValue="System">
             {{ hoveredStarSystem!.name }}

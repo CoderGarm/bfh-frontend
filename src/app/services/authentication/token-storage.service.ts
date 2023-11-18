@@ -26,8 +26,13 @@ export class TokenStorage {
 
     // game logic stuff - stays in the cache
     private readonly journalDashEntries = 'journalDash';
+    private readonly idUserOfGeorge: number = 24;
 
     protected basePath = environment.backendServer;
+
+    isGeorge() {
+        return this.getUserID() == this.idUserOfGeorge;
+    }
 
     isLocalhost() {
         return this.basePath.includes("localhost");

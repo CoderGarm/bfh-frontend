@@ -6,7 +6,7 @@
                   [altText]="warShip.shipClass.shipClassType.typeName"
                   [matTooltip]="getShipIconTooltip(warShip)"
                   [ngClass]="getStateClass(getCurrentWarshipState(warShip))"></app-icon>
-        <div mat-subheader>{{warShip.name}}</div>
+        <div mat-subheader>{{ warShip.name }}</div>
 
         <app-spacecraft-capability-display-small
                 class="fleet-round-state-cap-display"
