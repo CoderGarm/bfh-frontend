@@ -15,5 +15,11 @@ echo 'frontend archived in ' + /home/karsten/archive/"$date"/frontend/"$time"_bf
 sudo rm -r /var/www/html/bfh-fe/
 sudo cp -r /home/karsten/uploadTarget/bfh-frontend/bfh-fe/ /var/www/html/
 sudo chown -R www-data:www-data /var/www/html/bfh-fe/
+rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.js
+rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.html
+rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.css
+rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.txt
+rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.svg
+rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.ico
 echo 'deployment of frontend done'
 

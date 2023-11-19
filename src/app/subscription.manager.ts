@@ -27,7 +27,8 @@ export class SubscriptionManager implements OnDestroy {
         this.userName = this.tokenStorage.getLogin();
         this.profilePic = this.tokenStorage.getProfilePic();
 
-        this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => this.isHandheldDisplaySize = result.matches);
+        let sub = this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => this.isHandheldDisplaySize = result.matches);
+        this.subscriptions.push(sub);
     }
 
 
