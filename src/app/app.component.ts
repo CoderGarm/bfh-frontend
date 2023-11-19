@@ -140,12 +140,12 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     private detectDeviceType() {
         const ua = navigator.userAgent;
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(ua)) {
-            this.isMobile = true;
+            this.isMobileBrowser = true;
             this.renderer.addClass(document.body, 'mobile-width');
         } else if (/Chrome/i.test(ua)) {
-            this.isMobile = false;
+            this.isMobileBrowser = false;
         } else {
-            this.isMobile = false;
+            this.isMobileBrowser = false;
         }
     }
 
@@ -159,7 +159,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     @HostListener('window:wheel', ['$event'])
     getScreenSize(event?: any) {
 
-        if (!this.isMobile) {
+        if (!this.isMobileBrowser) {
             return;
         }
 

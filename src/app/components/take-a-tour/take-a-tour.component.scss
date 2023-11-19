@@ -1,9 +1,14 @@
 @import "src/styles/variables";
 
 #keen-box {
-  width: 80%;
   height: 80%;
+  width: 80%;
   margin: 5% auto;
+}
+
+.keen-box-handheld {
+  max-height: 715px;
+  max-width: 1200px;
 }
 
 .keen-slider {

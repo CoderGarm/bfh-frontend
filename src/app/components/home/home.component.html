@@ -11,7 +11,9 @@
     </button>
 </div>
 
-<div class="footer contact-info">
+<div class="contact-info"
+     [class.footer]="!isHandheldDisplaySize"
+     [class.handheld-footer]="isHandheldDisplaySize">
     <hr>
     <span>Contact: webmaster [at] battleforhonor.de</span>
 

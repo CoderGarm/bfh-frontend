@@ -1,7 +1,7 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import KeenSlider, {KeenSliderInstance} from 'keen-slider'
 import {NgxSpinnerService} from "ngx-spinner";
-import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {Breakpoints} from "@angular/cdk/layout";
 import {SubscriptionManager} from "../../subscription.manager";
 
 @Component({
@@ -31,15 +31,16 @@ export class TakeATourComponent extends SubscriptionManager {
 
     maxWidth?: string;
 
-    constructor(private breakpointObserver: BreakpointObserver,
-                protected spinner: NgxSpinnerService) {
+    constructor(protected spinner: NgxSpinnerService) {
         super();
 
 
         this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => {
+            console.log(result)
             if (result.matches) {
                 // todo I am an ugly hack - please repair me
-                this.maxWidth = 800 + 'px;';
+                this.maxWidth = 800 + 'px';
+                console.log(this.maxWidth)
             }
         });
     }
