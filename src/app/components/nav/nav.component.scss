@@ -5,3 +5,9 @@
 #version {
 
 }
+
+#nav-bar {
+  background-image: var(--top-line-image);
+  background-repeat: no-repeat;
+  background-position-y: bottom;
+}

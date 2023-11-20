@@ -33,7 +33,6 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
 
     @Input()
     activeRound?: number;
-    private activeRoundInputDefinition: string = "activeRound";
 
     @Input()
     hoveredWarship?: AbstractId;
@@ -200,16 +199,6 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
             };
             return cap;
         });
-    }
-
-    /**
-     * constructs and returns the url to the icon
-     */
-    getLink(typeName: string): string {
-        const hullType = this.hullTypes.get(typeName);
-        let folder = hullType!.folder;
-        let iconName = hullType!.iconName;
-        return "assets/" + folder + "/png24x/" + iconName + "_c.png";
     }
 
     getCapsForWarship(warShip: WarShip) {
