@@ -105,6 +105,13 @@ body {
   width: 180px;
 }
 
+#main-content-area {
+  background-image: var(--lineart-image);
+  background-repeat: no-repeat;
+  background-position-y: bottom;
+  background-position-x: right;
+}
+
 #nav-drawer > .mat-drawer-inner-container {
   overflow-x: visible !important;
 }

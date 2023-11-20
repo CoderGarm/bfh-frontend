@@ -43,6 +43,8 @@ $theme-dark: palette-helper.modify-text-color($theme-dark, variables.$dark-secon
   --map-edge-background-color: #{variables.$dark-background-color};
   --map-text-color: #{variables.$dark-secondary-text-color};
   --card-edge-color: #{variables.$dark-card-edge-color};
+  --top-line-image: #{url('/assets/decorations/Top-Line-blau.png')};
+  --lineart-image: #{url('/assets/decorations/lineart-dark.png')};
 
   .mat-mdc-snack-bar-container {
     --mdc-snackbar-container-color: #{variables.$dark-background-color};
@@ -87,6 +89,8 @@ $theme-light: palette-helper.modify-text-color($theme-light, variables.$light-se
   --map-text-color: #{variables.$dark-secondary-text-color};
   --mdc-protected-button-label-text-color: #{variables.$light-secondary-text-color};
   --card-edge-color: #{variables.$light-card-edge-color};
+  --top-line-image: #{url('/assets/decorations/Top-Line-rot.png')};
+  --lineart-image: #{url('/assets/decorations/lineart-light.png')};
 
   .mdc-text-field--outlined, .mdc-text-field--filled {
     --mdc-filled-text-field-container-color: #{variables.$light-secondary-background-color};

@@ -1,3 +1,7 @@
+* {
+  color: var(--map-text-color);
+}
+
 .flex-items-container {
   flex-flow: unset !important;
 }
@@ -15,7 +19,6 @@
 .fleet-round-state-list {
   width: 300px;
   direction: ltr;
-  color: var(--map-text-color);
 }
 
 .highlight {
