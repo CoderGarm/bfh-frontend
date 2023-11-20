@@ -279,7 +279,7 @@
 		"advisory": {
 			"infrastructure": {
 				"predicate": {
-					"constructionPossible": "Not on all planets are constructions running.",
+					"constructionPossible": "Not all planets have constructions running.",
 					"noting-to-do": "There is nothing to mention.",
 					"researchPossible": "There is no research running.",
 					"shipyardPossible": "Not every shipyards are in use.",
