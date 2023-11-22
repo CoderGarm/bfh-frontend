@@ -63,7 +63,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     @ViewChild('drawer')
     drawer!: MatDrawer;
 
-    private static readonly IMG_NO: number = 16;
+    private static readonly IMG_NO: number = 21;
 
     imageLink: string = '';
 
