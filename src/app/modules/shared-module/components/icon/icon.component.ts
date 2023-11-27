@@ -27,6 +27,11 @@ export class IconComponent implements OnChanges {
 
     // @formatter:off
     @Input()
+    get suppressTooltip() { return this._suppressTooltip; }
+    set suppressTooltip(value: any) { this._suppressTooltip = coerceBooleanProperty(value); }
+    _suppressTooltip: boolean = false;
+
+    @Input()
     get planet() { return this._planet; }
     set planet(value: any) { this._planet = coerceBooleanProperty(value); }
     _planet: boolean = false;
@@ -108,5 +113,12 @@ export class IconComponent implements OnChanges {
         if (this._credits) {
             this.icon = ResourceHelper.getResourceType(EResourceTypeEnum.CREDITS);
         }
+    }
+
+    getTooltip() {
+        if (this.suppressTooltip) {
+            return '';
+        }
+        return this.toolTip != '' ? this.toolTip : this.icon?.typeName;
     }
 }

@@ -2,7 +2,7 @@
     <img *ngIf="!!icon" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/{{icon.folder}}{{icon.iconName}}.png"
          [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
          alt="{{ altText != '' ? altText : icon.typeName }}"
-         matTooltip="{{ toolTip != '' ? toolTip : icon.typeName }}">
+         matTooltip="{{ getTooltip() }}">
 
     <img *ngIf="!icon && _planet" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/planets/planet.png"
          [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
