@@ -70,6 +70,7 @@ for filename in ./*; do
   sed -i 's/MISSION/MISSION/' $filename
   sed -i 's/COLONIZATIONINFO/COLONIZATION_INFO/' $filename
   sed -i 's/FLEETDETACHMENT/FLEET_DETACHMENT/' $filename
+  sed -i 's/ORBITALMODULE/ORBITAL_MODULE/' $filename
 done
 
 cd ../..

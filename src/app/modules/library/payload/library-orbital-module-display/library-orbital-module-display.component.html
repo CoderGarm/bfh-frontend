@@ -1,0 +1,10 @@
+<div class="content-area">
+    <app-chip-selector multiple noCheckmark preSelect style="width: 90%;"
+                       titleValue="Filter modules by ship class"
+                       [chipValues]="chipValues" (chipValuesChange)="filterDisplayedItems($event)"></app-chip-selector>
+
+
+    <p *ngFor="let m of filteredOrbitalModules">
+        {{ m.name }}
+    </p>
+</div>

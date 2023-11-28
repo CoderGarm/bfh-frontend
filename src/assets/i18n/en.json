@@ -895,7 +895,8 @@
 		},
 		"library": {
 			"buildings": "Buildings",
-			"module": "Spacecraft modules"
+			"module": "Spacecraft modules",
+			"orbital-modules": "Orbital structures"
 		},
 		"planetary": {
 			"dashboard": "Dashboard",

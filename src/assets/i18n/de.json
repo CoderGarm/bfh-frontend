@@ -894,7 +894,8 @@
 		},
 		"library": {
 			"buildings": "Gebäude",
-			"module": "Schiffsmodule"
+			"module": "Schiffsmodule",
+			"orbital-modules": "Orbitale Strukturen"
 		},
 		"planetary": {
 			"dashboard": "Übersicht",

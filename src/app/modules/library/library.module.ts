@@ -10,13 +10,15 @@ import {LibraryBuildingDisplayComponent} from './payload/library-building-displa
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {SharedModuleModule} from "../shared-module/shared-module.module";
+import {LibraryOrbitalModuleDisplayComponent} from './payload/library-orbital-module-display/library-orbital-module-display.component';
 
 
 @NgModule({
   declarations: [
     LibraryTabViewComponent,
     LibraryModuleDisplayComponent,
-    LibraryBuildingDisplayComponent
+      LibraryBuildingDisplayComponent,
+      LibraryOrbitalModuleDisplayComponent
   ],
   imports: [
     CommonModule,

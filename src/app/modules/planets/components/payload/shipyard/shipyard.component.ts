@@ -152,7 +152,8 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
 
                 this.order = {
                     idPlanet: this.selectedPlanet!.idPlanet,
-                    shipJobPayload: []
+                    shipJobPayload: [],
+                    orbitalsJobPayload: []
                 }
                 this.updateDepositsAndIncome();
             }
@@ -163,7 +164,8 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
             if (!this.order) {
                 this.order = {
                     idPlanet: this.selectedPlanet!.idPlanet,
-                    shipJobPayload: []
+                    shipJobPayload: [],
+                    orbitalsJobPayload: []
                 }
             }
         }

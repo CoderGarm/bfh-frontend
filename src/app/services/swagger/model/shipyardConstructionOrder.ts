@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { ShipyardConstructionSelection } from './shipyardConstructionSelection';
+import { ShipyardOrbitalModuleConstructionSelection } from './shipyardOrbitalModuleConstructionSelection';
 
 /**
  * .
@@ -23,4 +24,8 @@ export interface ShipyardConstructionOrder {
      * The job to run - key must be the idShipClass, value must be the amount.
      */
     shipJobPayload: Array<ShipyardConstructionSelection>;
+    /**
+     * The job to run - key must be the idOrbitalModule, value must be the amount.
+     */
+    orbitalsJobPayload: Array<ShipyardOrbitalModuleConstructionSelection>;
 }
