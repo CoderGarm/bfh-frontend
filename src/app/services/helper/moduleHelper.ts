@@ -1,8 +1,9 @@
-import {Acceleration, Launcher, Missile, Weapon} from "../swagger";
+import {Acceleration, EModuleType, EnumValueDto, Launcher, Missile, Weapon} from "../swagger";
 import {NavigationCalculator} from "./navigation-calculator.helper";
 import AccelerationMetricEnum = Acceleration.AccelerationMetricEnum;
+import EModuleTypesEnum = EnumValueDto.EModuleTypesEnum;
 
-export class WeaponHelper {
+export class ModuleHelper {
 
     /**
      * Checks if the selection is about a a launcher type.
@@ -37,5 +38,21 @@ export class WeaponHelper {
         let acceleration = missile.missileMotor.acceleration;
         range += NavigationCalculator.getRangeByTimeAndAcceleration(endurance, acceleration, AccelerationMetricEnum.MS2);
         return range;
+    }
+
+    static getModuleType(typeName: string): EModuleType {
+        const newVar = {
+            typeName: typeName,
+            iconName: typeName,
+            folder: "icons/stats/",
+            moduleName: typeName
+        };
+        switch (typeName) {
+            case EModuleTypesEnum.ELECTRONIC_WARFARE:
+                newVar.iconName = 'scanner';
+                return newVar
+            default:
+                throw new Error("Please implement '" + typeName + "'");
+        }
     }
 }

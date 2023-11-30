@@ -1,5 +1,5 @@
 import {AlignedFitting, CapabilityValue, EnumValueDto, Launcher, Missile, PassiveModule, SpacecraftCapabilities, Weapon} from "../swagger";
-import {WeaponHelper} from "./weapon.helper";
+import {ModuleHelper} from "./moduleHelper";
 import EModuleTypesEnum = EnumValueDto.EModuleTypesEnum;
 
 export class FittingHelper {
@@ -7,10 +7,10 @@ export class FittingHelper {
     public static getWeaponSystemMapKey(weapon: Weapon | Launcher, key?: AlignedFitting.WeaponAlignmentEnum): string {
         let alignment = key as keyof typeof AlignedFitting.WeaponAlignmentEnum;
         let id: string = "";
-        if (WeaponHelper.isWeapon(weapon)) {
+        if (ModuleHelper.isWeapon(weapon)) {
             id = FittingHelper.getWeaponMapKey(<Weapon>weapon, alignment);
         }
-        if (WeaponHelper.isLauncher(weapon)) {
+        if (ModuleHelper.isLauncher(weapon)) {
             id = FittingHelper.getLauncherMapKey(<Launcher>weapon, alignment);
         }
         if (id.length == 0) {

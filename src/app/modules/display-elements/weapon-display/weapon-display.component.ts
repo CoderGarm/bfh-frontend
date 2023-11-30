@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Distance, Launcher, Weapon} from "../../../services/swagger";
-import {WeaponHelper} from "../../../services/helper/weapon.helper";
+import {ModuleHelper} from "../../../services/helper/moduleHelper";
 import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
@@ -24,7 +24,7 @@ export class WeaponDisplayComponent {
             if ('effectiveRange' in weapon) {
                 result.coordinate = NavigationCalculator.convertDistanceToMetric(weapon.effectiveRange, DistanceMetricEnum.M);
             } else {
-                result.coordinate = WeaponHelper.getMissileRange(weapon.allowedMissiles[0]) // todo fix missile selection
+                result.coordinate = ModuleHelper.getMissileRange(weapon.allowedMissiles[0]) // todo fix missile selection
             }
         }
         return result

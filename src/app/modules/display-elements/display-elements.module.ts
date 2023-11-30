@@ -43,6 +43,7 @@ import {FleetFinishedMoveDisplayComponent} from './fleet-finished-move-display/f
 import {FleetMovementListComponent} from "./fleet-movement-list/fleet-movement-list.component";
 import {PropulsionModuleDisplayComponent} from './propulsion-module-display/propulsion-module-display.component';
 import {BuildingDisplayComponent} from './building-display/building-display.component';
+import {OrbitalModuleDisplayComponent} from "./orbital-module-display/orbital-module-display.component";
 
 @NgModule({
     declarations: [
@@ -89,6 +90,7 @@ import {BuildingDisplayComponent} from './building-display/building-display.comp
         FleetMovementListComponent,
         PropulsionModuleDisplayComponent,
         BuildingDisplayComponent,
+        OrbitalModuleDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -136,6 +138,7 @@ import {BuildingDisplayComponent} from './building-display/building-display.comp
         FleetMovementListComponent,
         PropulsionModuleDisplayComponent,
         BuildingDisplayComponent,
+        OrbitalModuleDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

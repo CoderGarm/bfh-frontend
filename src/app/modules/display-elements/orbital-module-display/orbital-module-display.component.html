@@ -1,0 +1,14 @@
+<mat-card style="background-color: transparent;" class="blue-card">
+    <mat-card-header>
+        <app-icon matCardAvatar [icon]="getIcon()" *ngIf="_showIcon" png32px></app-icon>
+        <mat-card-title>{{ module?.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="flex-items-container">
+
+        </div>
+
+        <app-resource-display shipyardMode [showTick]="false" [costs]="module?.costs"></app-resource-display>
+
+    </mat-card-content>
+</mat-card>

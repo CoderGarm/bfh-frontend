@@ -9,7 +9,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { EModuleType } from './eModuleType';
 import { ResourceDeposit } from './resourceDeposit';
 
 /**
@@ -25,9 +24,30 @@ export interface OrbitalModule {
      * The name of this class.
      */
     name: string;
-    moduleType: EModuleType;
     /**
      * The effect value of this module.
      */
     effectValue: number;
+    /**
+     * The effect of this module.
+     */
+    effect: OrbitalModule.EffectEnum;
+}
+export namespace OrbitalModule {
+    export type EffectEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION' | 'PASSENGER' | 'FREIGHT';
+    export const EffectEnum = {
+        WEAPON: 'WEAPON' as EffectEnum,
+        ARMOR: 'ARMOR' as EffectEnum,
+        SIDEWALL: 'SIDEWALL' as EffectEnum,
+        PROPULSION: 'PROPULSION' as EffectEnum,
+        FTLPROPULSION: 'FTLPROPULSION' as EffectEnum,
+        ELECTRONIC_WARFARE: 'ELECTRONIC_WARFARE' as EffectEnum,
+        CREDITS: 'CREDITS' as EffectEnum,
+        METALORE: 'METALORE' as EffectEnum,
+        RARE_ELEMENTS: 'RARE_ELEMENTS' as EffectEnum,
+        HEAVY_METALS: 'HEAVY_METALS' as EffectEnum,
+        POPULATION: 'POPULATION' as EffectEnum,
+        PASSENGER: 'PASSENGER' as EffectEnum,
+        FREIGHT: 'FREIGHT' as EffectEnum
+    };
 }

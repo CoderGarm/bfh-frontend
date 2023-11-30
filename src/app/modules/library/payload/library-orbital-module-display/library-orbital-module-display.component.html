@@ -1,11 +1,17 @@
 <div class="content-area">
     <app-chip-selector multiple noCheckmark preSelect style="width: 90%;"
-                       titleValue="Filter modules by ship class"
-                       [chipValues]="chipValues" (chipValuesChange)="filterDisplayedItems($event)"></app-chip-selector>
+                       titleValue="Filter by effect"
+                       [chipValues]="moduleChipValues" (chipValuesChange)="moduleResultingChips = $event; filterDisplayedItems()"></app-chip-selector>
 
+    <app-chip-selector multiple noCheckmark preSelect style="width: 90%;"
+                       titleValue="Filter by resource"
+                       [chipValues]="resourceChipValues" (chipValuesChange)="resourceResultingChips = $event; filterDisplayedItems()"></app-chip-selector>
 
-    <div *ngFor="let module of filteredOrbitalModules">
-        {{ module.name }}
-        <app-resource-display shipyardMode [showTick]="false" [costs]="module?.costs"></app-resource-display>
+    <mat-divider></mat-divider>
+
+    <div class="flex-items-container">
+        <app-orbital-module-display *ngFor="let module of filteredOrbitalModules"
+                                    showIcon
+                                    [module]="module"></app-orbital-module-display>
     </div>
 </div>

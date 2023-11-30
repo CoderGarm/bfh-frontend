@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TypeService} from "../../../../services/type.service";
-import {EModuleType, OrbitalModule, PublicResourcesApiService} from "../../../../services/swagger";
+import {OrbitalModule, PublicResourcesApiService} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {ChipSelectorValue, ChipSelectorValueResult} from "../../../shared-module/components/chip-selector/chip-selector.component";
+import {MatChip} from "@angular/material/chips";
 
 @Component({
     selector: 'app-library-orbital-module-display',
@@ -11,20 +12,29 @@ import {ChipSelectorValue, ChipSelectorValueResult} from "../../../shared-module
 })
 export class LibraryOrbitalModuleDisplayComponent extends SubscriptionManager implements OnInit {
 
-    private moduleTypes: EModuleType[] = [];
     private orbitalModules: OrbitalModule[] = [];
     filteredOrbitalModules: OrbitalModule[] = [];
 
-    chipValues: ChipSelectorValue[] = [];
-    private chips: ChipSelectorValueResult[] = [];
+    moduleChipValues: ChipSelectorValue[] = [];
+    moduleResultingChips: ChipSelectorValueResult[] = [];
+
+    resourceChipValues: ChipSelectorValue[] = [];
+    resourceResultingChips: ChipSelectorValueResult[] = [];
 
     constructor(private publicResourcesApiService: PublicResourcesApiService,
                 private typeService: TypeService) {
         super();
 
         let sub = this.typeService.eModuleTypes.subscribe(resp => {
-            this.moduleTypes = resp;
-            this.chipValues = resp.map(type => <ChipSelectorValue>{
+            this.moduleChipValues = resp.map(type => <ChipSelectorValue>{
+                value: type.typeName,
+                trailingIcon: type
+            });
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.typeService.eResourceTypes.subscribe(resp => {
+            this.resourceChipValues = resp.map(type => <ChipSelectorValue>{
                 value: type.typeName,
                 trailingIcon: type
             });
@@ -41,14 +51,24 @@ export class LibraryOrbitalModuleDisplayComponent extends SubscriptionManager im
         this.subscriptions.push(sub);
     }
 
-    filterDisplayedItems(chips?: ChipSelectorValueResult[]) {
-        if (!chips) {
-            chips = this.chips;
-        } else {
-            this.chips = chips;
-        }
+    filterDisplayedItems() {
+
+        const chips: ChipSelectorValueResult[] = [];
+        chips.push(...this.resourceResultingChips);
+        chips.push(...this.moduleResultingChips);
 
         const values = chips.filter(c => c.selected).map(c => c.chipValue);
-        this.filteredOrbitalModules = this.orbitalModules.filter(o => values.includes(o.moduleType.typeName))
+        this.filteredOrbitalModules = this.orbitalModules.filter(o => values.includes(o.effect))
+    }
+
+
+    private getStringArrayFromMatChips(MatChipListbox: MatChip[] | MatChip): string[] {
+        const selectedResourceTypes: string[] = [];
+        if (MatChipListbox instanceof Array) {
+            MatChipListbox.forEach(chip => selectedResourceTypes.push(chip.value));
+        } else {
+            selectedResourceTypes.push(MatChipListbox.value);
+        }
+        return selectedResourceTypes;
     }
 }
