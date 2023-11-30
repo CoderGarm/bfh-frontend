@@ -4,7 +4,8 @@
                        [chipValues]="chipValues" (chipValuesChange)="filterDisplayedItems($event)"></app-chip-selector>
 
 
-    <p *ngFor="let m of filteredOrbitalModules">
-        {{ m.name }}
-    </p>
+    <div *ngFor="let module of filteredOrbitalModules">
+        {{ module.name }}
+        <app-resource-display shipyardMode [showTick]="false" [costs]="module?.costs"></app-resource-display>
+    </div>
 </div>

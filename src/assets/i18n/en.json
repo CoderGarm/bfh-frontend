@@ -896,7 +896,8 @@
 		"library": {
 			"buildings": "Buildings",
 			"module": "Spacecraft modules",
-			"orbital-modules": "Orbital structures"
+			"orbital-modules": "Orbital structures",
+			"tech-tree": "Forschungsbaum"
 		},
 		"planetary": {
 			"dashboard": "Dashboard",

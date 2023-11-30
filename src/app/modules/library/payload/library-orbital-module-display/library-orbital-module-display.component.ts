@@ -35,6 +35,7 @@ export class LibraryOrbitalModuleDisplayComponent extends SubscriptionManager im
     ngOnInit() {
         let sub = this.publicResourcesApiService.getOrbitalModules().subscribe(resp => {
             this.orbitalModules = resp;
+            console.log(resp)
             this.filterDisplayedItems();
         });
         this.subscriptions.push(sub);

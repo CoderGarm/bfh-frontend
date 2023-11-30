@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 import { EModuleType } from './eModuleType';
+import { ResourceDeposit } from './resourceDeposit';
 
 /**
  * .
  */
 export interface OrbitalModule { 
+    costs?: ResourceDeposit;
     /**
      * The ID.
      */
@@ -24,4 +26,8 @@ export interface OrbitalModule {
      */
     name: string;
     moduleType: EModuleType;
+    /**
+     * The effect value of this module.
+     */
+    effectValue: number;
 }

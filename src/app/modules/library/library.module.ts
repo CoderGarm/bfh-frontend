@@ -11,25 +11,27 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {LibraryOrbitalModuleDisplayComponent} from './payload/library-orbital-module-display/library-orbital-module-display.component';
+import {ResearchModule} from "../research/research.module";
 
 
 @NgModule({
-  declarations: [
-    LibraryTabViewComponent,
-    LibraryModuleDisplayComponent,
-      LibraryBuildingDisplayComponent,
-      LibraryOrbitalModuleDisplayComponent
-  ],
-  imports: [
-    CommonModule,
-    MatTabsModule,
-    TranslateModule,
-    DisplayElementsModule,
-    MatListModule,
-    MatChipsModule,
-    MatIconModule,
-    SharedModuleModule
-  ]
+    declarations: [
+        LibraryTabViewComponent,
+        LibraryModuleDisplayComponent,
+        LibraryBuildingDisplayComponent,
+        LibraryOrbitalModuleDisplayComponent
+    ],
+    imports: [
+        CommonModule,
+        MatTabsModule,
+        TranslateModule,
+        DisplayElementsModule,
+        MatListModule,
+        MatChipsModule,
+        MatIconModule,
+        SharedModuleModule,
+        ResearchModule,
+    ]
 })
 export class LibraryModule {
 }

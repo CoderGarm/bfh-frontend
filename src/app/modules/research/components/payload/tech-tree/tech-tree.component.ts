@@ -35,9 +35,9 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
     private elementBackgroundColor: string = 'rgb(66, 66, 66)';
     private researchDoneBackgroundColor: string = '#374f3d';
 
-    private tree?: ResearchTree;
+    tree?: ResearchTree;
     private researchMap: Map<number, Research> = new Map<number, Research>();
-    private completedResearches: ResearchLevel[] = [];
+    completedResearches: ResearchLevel[] = [];
 
     @ViewChild('canvas', {static: true})
     canvas?: ElementRef<HTMLCanvasElement>;
@@ -133,7 +133,7 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
     }
 
     private setTree() {
-        if (!this.tree || this.completedResearches.length == 0) {
+        if (!this.tree) {
             return;
         }
         this.tree.researches.forEach(r => this.researchMap.set(r.idResearch, r));
@@ -339,6 +339,9 @@ export class TechTreeComponent extends ScrollManager implements AfterViewInit {
     }
 
     getCompletedLevel(idResearch: number): number {
+        if (this.completedResearches.length == 0) {
+            return 0;
+        }
         const researchLevels = this.completedResearches.filter(r => r.research.idResearch === idResearch);
         return researchLevels.length === 0 ? 0 : researchLevels[0].level;
     }

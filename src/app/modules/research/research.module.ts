@@ -14,6 +14,9 @@ import {ResearchResultOverlayComponent} from './components/payload/research-resu
         TechTreeComponent,
         ResearchResultOverlayComponent
     ],
+    exports: [
+        TechTreeComponent
+    ],
     imports: [
         SharedModuleModule,
         DisplayElementsModule,

@@ -1,9 +1,19 @@
 import {Injectable, NgZone} from '@angular/core';
 import {SubscriptionManager} from "../../subscription.manager";
-import {ColonizationApiService, ResearchApiService, ResearchLevel, ResearchTree, StarMapApiService, StarSystem, StarSystemColonization} from "../swagger";
+import {
+    ColonizationApiService,
+    PublicResourcesApiService,
+    ResearchApiService,
+    ResearchLevel,
+    ResearchTree,
+    StarMapApiService,
+    StarSystem,
+    StarSystemColonization
+} from "../swagger";
 import {interval, ReplaySubject} from "rxjs";
 import {ModuleService} from "./module.service";
 import {AssetsService, Junction} from "../assets/assets.service";
+import {AuthenticationService} from "../authentication";
 
 /**
  * Executed slow queries in the background and sends the data if the original request is finished.
@@ -28,24 +38,40 @@ export class BackgroundService extends SubscriptionManager {
 
     constructor(private zone: NgZone,
                 private colonizationService: ColonizationApiService,
+                private publicResourceService: PublicResourcesApiService,
                 private mapService: StarMapApiService,
                 private researchService: ResearchApiService,
                 private moduleService: ModuleService,
+                private authService: AuthenticationService,
                 private assetService: AssetsService) {
         super();
 
+        this.authService.isAuthorized().subscribe(isAuthorized => this.fetchData());
+
         this.zone.run(() => {
-            let sub = this.colonizationService.getColonizationStarSystemsForUser().subscribe(resp => this.colonizations = resp);
-            this.subscriptions.push(sub);
-            sub = this.assetService.getAllWormholeJunctions().subscribe(resp => this.junctions = resp)
-            this.subscriptions.push(sub);
-            sub = this.mapService.getStarSystems().subscribe(resp => this.starSystems = resp);
-            this.subscriptions.push(sub);
-            sub = this.researchService.getTree().subscribe(resp => this.researchTree = resp);
-            this.subscriptions.push(sub);
-            sub = this.researchService.getResearchByUser().subscribe(resp => this.completedResearches = resp);
+            let sub = this.publicResourceService.getOpenTechTree().subscribe(resp => this.researchTree = resp);
             this.subscriptions.push(sub);
         });
+    }
+
+    private fetchData() {
+        if (!!this.userId)
+            this.zone.run(() => {
+                let sub = this.colonizationService.getColonizationStarSystemsForUser().subscribe(resp => this.colonizations = resp);
+                this.subscriptions.push(sub);
+                sub = this.assetService.getAllWormholeJunctions().subscribe(resp => this.junctions = resp)
+                this.subscriptions.push(sub);
+                sub = this.mapService.getStarSystems().subscribe(resp => this.starSystems = resp);
+                this.subscriptions.push(sub);
+
+                if (!this.researchTree) {
+                    sub = this.researchService.getTree().subscribe(resp => this.researchTree = resp);
+                    this.subscriptions.push(sub);
+                }
+
+                sub = this.researchService.getResearchByUser().subscribe(resp => this.completedResearches = resp);
+                this.subscriptions.push(sub);
+            });
     }
 
     public getResearchTree() {
