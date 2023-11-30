@@ -14,6 +14,8 @@ export class TransportMainViewComponent extends SubscriptionManager implements O
 
     static path: string = 'transportation';
 
+    public static readonly ALLOW_CIVIL_MIGRATION: boolean = true;
+
     planets: Planet[] = [];
 
     depositsResources: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
@@ -31,7 +33,12 @@ export class TransportMainViewComponent extends SubscriptionManager implements O
 
         let sub = this.typeService.collectableResourceTypes.subscribe(d => this.resourceTypes = d);
         this.subscriptions.push(sub);
-        sub = this.typeService.militaryEducationTypes.subscribe(d => this.educationTypes = d);
+
+        let subject = this.typeService.militaryEducationTypes;
+        if (TransportMainViewComponent.ALLOW_CIVIL_MIGRATION) {
+            subject = this.typeService.educationTypes;
+        }
+        sub = subject.subscribe(d => this.educationTypes = d);
         this.subscriptions.push(sub);
     }
 

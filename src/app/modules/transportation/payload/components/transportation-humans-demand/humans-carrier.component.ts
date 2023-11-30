@@ -3,6 +3,7 @@ import {EEducationType, EnumValueDto, PlanetApiService} from "../../../../../ser
 import {TypeService} from "../../../../../services/type.service";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {Amount, CarrierAmount, ResourceFetchOrder} from "../transport-resources/transport-resources.component";
+import {TransportMainViewComponent} from "../../../orga/transport-tab-view/transport-main-view.component";
 import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
 
 @Component({
@@ -33,6 +34,9 @@ export class HumansCarrierComponent extends SubscriptionManager implements OnIni
         let sub = this.typeService.educationTypes.subscribe(d => {
             this.resources = d;
             this.militaries = this.resources.filter(resource => resource.isMilitary);
+            if (TransportMainViewComponent.ALLOW_CIVIL_MIGRATION) {
+                this.militaries = this.resources;
+            }
         });
         this.subscriptions.push(sub);
     }
