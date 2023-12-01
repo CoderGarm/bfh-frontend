@@ -719,7 +719,7 @@
 	},
 	"screen-size-warning": {
 		"close": "Schließen",
-		"message": "Der Bildschirm ist sehr klein. Für eine bessere Erfahrung ist ein größeres Display besser.",
+		"message": "BfH ist für Computerbildschirme und größere Tablets konzipiert und funktioniert möglicherweise nicht richtig auf Telefonen.",
 		"remember": "Einstellung merken"
 	},
 	"shipyard": {

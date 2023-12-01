@@ -720,7 +720,7 @@
 	},
 	"screen-size-warning": {
 		"close": "Close",
-		"message": "The screen is very small. For a improved experience, a larger display is better.",
+		"message": "BfH is designed for computer sized screens and bigger tablets and may not work properly on phone-sized screens.",
 		"remember": "Remember setting"
 	},
 	"shipyard": {
