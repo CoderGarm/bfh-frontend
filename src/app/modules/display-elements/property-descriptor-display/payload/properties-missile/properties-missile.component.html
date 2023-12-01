@@ -1,0 +1,12 @@
+<mat-list *ngIf="!!propertyDescriptor && !!propertyDescriptor.missileDescriptor">
+    <mat-list-item>
+        <span matListItemLine>Damage: {{ propertyDescriptor.missileDescriptor.damageValue }}</span>
+        <span matListItemLine>Endurance: {{ propertyDescriptor.missileDescriptor.endurance | time: 'SECOND' }}</span>
+        <span matListItemLine>Acceleration: {{ propertyDescriptor.missileDescriptor.acceleration | acceleration: 'G' }}</span>
+        <span matListItemLine>Range: {{ propertyDescriptor.missileDescriptor | missileEndurance: 'KM' }}</span>
+        <span matListItemLine>Attack type: {{ propertyDescriptor.missileDescriptor.warheadType }}</span>
+        <span matListItemLine>Maneuverability: {{ propertyDescriptor.missileDescriptor.maneuverability }}</span>
+        <span matListItemLine>Eloka resistance: {{ propertyDescriptor.missileDescriptor.elokaResistance }}</span>
+        <span matListItemLine>Attack range: {{ propertyDescriptor.missileDescriptor.damageProjectionRange | distance: 'KM' }}</span>
+    </mat-list-item>
+</mat-list>

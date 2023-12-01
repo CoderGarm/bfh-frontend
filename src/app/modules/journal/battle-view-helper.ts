@@ -265,7 +265,7 @@ export class BattleViewHelper extends BasicViewHelper {
             if (weaponType === WeaponTypeEnum.MISSILE) {
 
             }
-            if (weaponType === WeaponTypeEnum.COUNTERMISSILE) {
+            if (weaponType === WeaponTypeEnum.COUNTER_MISSILE) {
 
             }
             if (weaponType === WeaponTypeEnum.BEAM) {
@@ -274,7 +274,7 @@ export class BattleViewHelper extends BasicViewHelper {
                     .addClass("beamVolley")
                     .id(damageDealerId);
             }
-            if (weaponType === WeaponTypeEnum.POINTDEFENSE) {
+            if (weaponType === WeaponTypeEnum.POINT_DEFENSE) {
 
             }
         });

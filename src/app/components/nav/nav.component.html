@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" id="nav-bar">
     <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="More...">
-        <mat-icon mat-card-avatar>menu</mat-icon>
+        <mat-icon class="centered-icon">menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
         <button mat-menu-item *ngFor="let route of routes" (click)="navigate(route)">
@@ -17,8 +17,8 @@
     <div *ngIf="!!currentTickService.currentTick">{{ 'tick.current' | translate }} {{currentTickService.currentTick.tickNo}}</div>
     <span class="spacer"></span>
     <button mat-icon-button (click)="toggleDarkMode()">
-        <mat-icon *ngIf="isDark">light_mode</mat-icon>
-        <mat-icon *ngIf="!isDark">dark_mode</mat-icon>
+        <mat-icon *ngIf="isDark" class="centered-icon">light_mode</mat-icon>
+        <mat-icon *ngIf="!isDark" class="centered-icon">dark_mode</mat-icon>
     </button>
     <button mat-flat-button color="primary" *ngIf="!!applicationInfo" disabled>
         {{applicationInfo.applicationVersion}}

@@ -1,0 +1,5 @@
+<mat-list *ngIf="!!propertyDescriptor && !!propertyDescriptor.launcherDescriptor">
+    <mat-list-item>
+        <span matListItemTitle>Reload time: {{ propertyDescriptor.launcherDescriptor.reloadTime | time: 'SECOND' }}</span>
+    </mat-list-item>
+</mat-list>

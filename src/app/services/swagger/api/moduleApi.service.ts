@@ -21,6 +21,7 @@ import { Armor } from '../model/armor';
 import { ElectronicWarfare } from '../model/electronicWarfare';
 import { FrontendError } from '../model/frontendError';
 import { Launcher } from '../model/launcher';
+import { Missile } from '../model/missile';
 import { PassiveModule } from '../model/passiveModule';
 import { Propulsion } from '../model/propulsion';
 import { Sidewall } from '../model/sidewall';
@@ -165,6 +166,43 @@ export class ModuleApiService {
         ];
 
         return this.httpClient.request<Array<Launcher>>('get',`${this.basePath}/api/private/modules/launcher`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all unlocked weapons for the owner .
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getMissilesByUser(observe?: 'body', reportProgress?: boolean): Observable<Array<Missile>>;
+    public getMissilesByUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Missile>>>;
+    public getMissilesByUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Missile>>>;
+    public getMissilesByUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Missile>>('get',`${this.basePath}/api/private/modules/missiles`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -1,0 +1,6 @@
+<mat-list *ngIf="!!propertyDescriptor && !!propertyDescriptor.orbitalModuleDescriptor">
+    <mat-list-item *ngIf="!!propertyDescriptor.orbitalModuleDescriptor.inhabitants">
+        <span matListItemLine>Living space for: {{ propertyDescriptor.orbitalModuleDescriptor.inhabitants }} inhabitants</span>
+        <span matListItemLine>Pop factor: + {{ propertyDescriptor.orbitalModuleDescriptor.popFactorIncreasement }} %</span>
+    </mat-list-item>
+</mat-list>

@@ -1,14 +1,16 @@
-<mat-card style="background-color: transparent;" class="blue-card">
+<mat-card *ngIf="!!module" style="background-color: transparent;" class="blue-card">
     <mat-card-header>
         <app-icon matCardAvatar [icon]="getIcon()" *ngIf="_showIcon" png32px></app-icon>
-        <mat-card-title>{{ module?.name }}</mat-card-title>
+        <mat-card-title>{{ module.name }}</mat-card-title>
+        <mat-card-subtitle style="max-width: 350px;">{{ module.description }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <div class="flex-items-container">
-
-        </div>
-
-        <app-resource-display shipyardMode [showTick]="false" [costs]="module?.costs"></app-resource-display>
-
+        <mat-list>
+            <mat-list-item *ngIf="!module.propertyDescriptor?.orbitalModuleDescriptor?.inhabitants">
+                <span matListItemLine>System wide effect: + {{ module.effectValue }}</span>
+            </mat-list-item>
+        </mat-list>
+        <app-properties-orbital-module [propertyDescriptor]="module.propertyDescriptor"></app-properties-orbital-module>
+        <app-resource-display [libraryMode]="_libraryMode" [showTick]="false" [costs]="module.costs"></app-resource-display>
     </mat-card-content>
 </mat-card>

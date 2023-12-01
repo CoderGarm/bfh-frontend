@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {ModuleService} from "../../../../services/prefetch/module.service";
-import {Armor, BaseModule, ElectronicWarfare, EShipClassType, Launcher, PassiveModule, Propulsion, Sidewall, Weapon} from "../../../../services/swagger";
+import {Armor, BaseModule, ElectronicWarfare, EShipClassType, Launcher, Missile, PassiveModule, Propulsion, Sidewall, Weapon} from "../../../../services/swagger";
 import {ChipSelectorValue, ChipSelectorValueResult} from "../../../shared-module/components/chip-selector/chip-selector.component";
 import {FittingHelper} from "../../../../services/helper/fitting.helper";
 import {TypeService} from "../../../../services/type.service";
@@ -19,18 +19,13 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
 
     weapons: Weapon[] = [];
     launchers: Launcher[] = [];
+    missiles: Missile[] = [];
     armors: Armor[] = [];
     sidewalls: Sidewall[] = [];
     eloka: ElectronicWarfare[] = [];
     passiveModules: PassiveModule[] = [];
     propulsions: Propulsion[] = [];
 
-    weaponsSelection: Map<string, number> = new Map<string, number>();
-    ammoSelection: Map<string, number> = new Map<string, number>();
-    supportSelection: Map<string, number> = new Map<string, number>();
-    /**
-     * the single selection items
-     */
     shipClassTypeSelection?: EShipClassType;
     armorSelection?: Armor;
     sidewallSelection?: Sidewall;
@@ -38,6 +33,7 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
 
     filteredWeapons: Weapon[] = [];
     filteredLaunchers: Launcher[] = [];
+    filteredMissiles: Missile[] = [];
     filteredPassiveModules: PassiveModule[] = [];
 
     filteredArmors: Armor[] = [];
@@ -73,6 +69,13 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
             this.setPossibleShipClassTypes();
         });
         this.subscriptions.push(sub);
+        sub = this.moduleService.getMissiles().subscribe(resp => {
+            this.missiles = resp;
+            this.setPossibleShipClassTypes();
+        });
+        this.subscriptions.push(sub);
+
+
         sub = this.moduleService.getArmors().subscribe(resp => {
             this.armors = resp;
             this.setPossibleShipClassTypes();
@@ -134,9 +137,10 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
         }
         const selectedTypeNames: string[] = chips.filter(c => c.selected).map(c => c.chipValue);
 
-        this.passiveModules.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredPassiveModules, this.supportSelection));
-        this.launchers.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredLaunchers, this.weaponsSelection));
-        this.weapons.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredWeapons, this.weaponsSelection));
+        this.passiveModules.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredPassiveModules));
+        this.launchers.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredLaunchers));
+        this.missiles.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredMissiles));
+        this.weapons.forEach(module => this.addOrRemoveMultiSelectionModule(selectedTypeNames, module, this.filteredWeapons));
 
         this.armors.forEach(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredArmors, this.armorSelection));
         this.sidewalls.forEach(module => this.addOrRemoveSingleSelectModule(selectedTypeNames, module, this.filteredSidewalls, this.sidewallSelection));
@@ -144,27 +148,17 @@ export class LibraryModuleDisplayComponent extends SubscriptionManager {
         this.propulsions.forEach(module => this.addOrRemovePropulsion(module));
     }
 
-    private addOrRemoveMultiSelectionModule<MODULE extends Weapon | Launcher | PassiveModule>(selectedTypeNames: string[],
+    private addOrRemoveMultiSelectionModule<MODULE extends Weapon | Launcher | Missile | PassiveModule>(selectedTypeNames: string[],
                                                                                               module: MODULE,
-                                                                                              filteredElements: MODULE[],
-                                                                                              selectionMap: Map<String, number>) {
-
-        let selectedByFilter: boolean = true;
+                                                                                                        filteredElements: MODULE[]) {
         let id: string;
         if ('supportType' in module) {
             id = FittingHelper.getPassiveMapKey(module);
         }
 
-        let moduleSelected: boolean = false;
-        selectionMap.forEach((value, key) => {
-            if (value > 0 && key.startsWith(id)) {
-                moduleSelected = true;
-            }
-        });
-
         const hullTypeName = module.baseModule.shipClassType?.typeName;
         const matchedSelectedHull = !!this.shipClassTypeSelection && this.shipClassTypeSelection.typeName === hullTypeName;
-        if (selectedByFilter && ((!!hullTypeName && selectedTypeNames.includes(hullTypeName)) || matchedSelectedHull || moduleSelected)) {
+        if ((!!hullTypeName && selectedTypeNames.includes(hullTypeName)) || matchedSelectedHull) {
             if (!filteredElements.includes(module)) {
                 filteredElements.push(module);
             }

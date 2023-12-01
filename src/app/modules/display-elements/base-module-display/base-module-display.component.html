@@ -1,29 +1,30 @@
-<mat-card style="background-color: transparent;" class="blue-card">
+<mat-card *ngIf="!!module" style="background-color: transparent;" class="blue-card">
     <mat-card-header>
-        <app-icon matCardAvatar [icon]="module?.baseModule?.moduleType" *ngIf="_showIcon" png32px></app-icon>
-        <mat-card-title>{{ module?.baseModule?.name }}</mat-card-title>
+        <app-icon matCardAvatar [icon]="module.baseModule.moduleType" *ngIf="_showIcon" png32px></app-icon>
+        <mat-card-title>{{ module.baseModule?.name }}</mat-card-title>
+        <mat-card-subtitle style="max-width: 350px;">{{ module.baseModule.description }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <div class="description-field">{{ module?.baseModule?.description }}</div>
-
         <div class="flex-items-container">
             <mat-form-field appearance="outline">
                 <mat-label>{{ 'shipyard.fitting.base-module.intended-for.title' | translate }}</mat-label>
-                <input matInput disabled value="{{ module?.baseModule?.shipClassType?.typeName }}">
+                <input matInput disabled value="{{ module.baseModule?.shipClassType?.typeName }}">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>{{ 'shipyard.fitting.base-module.effect-value.title' | translate }}</mat-label>
-                <input matInput disabled value="{{ module?.baseModule?.effectValue | numberShort }}">
+                <input matInput disabled value="{{ module.baseModule?.effectValue | numberShort }}">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>{{ 'shipyard.constructions.capacity.title' | translate }}</mat-label>
-                <input matInput disabled value="{{ module?.baseModule?.tonnage | mass: 'T' }}">
+                <input matInput disabled value="{{ module.baseModule?.tonnage | mass: 'T' }}">
             </mat-form-field>
         </div>
 
-        <app-resource-display shipyardMode [showTick]="false" [costs]="module?.costs"></app-resource-display>
+        <app-property-descriptor-display [propertyDescriptor]="module.baseModule.propertyDescriptor"></app-property-descriptor-display>
+
+        <app-resource-display [libraryMode]="_libraryMode" shipyardMode [showTick]="false" [costs]="module.costs"></app-resource-display>
 
     </mat-card-content>
 </mat-card>

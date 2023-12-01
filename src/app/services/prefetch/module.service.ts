@@ -4,6 +4,7 @@ import {
     Armor,
     ElectronicWarfare,
     Launcher,
+    Missile,
     ModuleApiService,
     PassiveModule,
     Propulsion,
@@ -30,6 +31,9 @@ export class ModuleService extends SubscriptionManager {
 
     private launchersByUser: ReplaySubject<Launcher[]> = new ReplaySubject<Launcher[]>();
     private launchers: ReplaySubject<Launcher[]> = new ReplaySubject<Launcher[]>();
+
+    private missilesByUser: ReplaySubject<Missile[]> = new ReplaySubject<Missile[]>();
+    private missiles: ReplaySubject<Missile[]> = new ReplaySubject<Missile[]>();
 
     private armorsByUser: ReplaySubject<Armor[]> = new ReplaySubject<Armor[]>();
     private armors: ReplaySubject<Armor[]> = new ReplaySubject<Armor[]>();
@@ -75,6 +79,7 @@ export class ModuleService extends SubscriptionManager {
         this.zone.run(() => {
             this.fetchWeapons();
             this.fetchLaunchers();
+            this.fetchMissiles();
             this.fetchArmors();
             this.fetchSidewalls();
             this.fetchElokas();
@@ -149,6 +154,16 @@ export class ModuleService extends SubscriptionManager {
         this.subscriptions.push(sub);
     }
 
+    private fetchMissiles() {
+        let sub = this.publicResourcesService.getMissiles().subscribe(resp => this.missiles.next(resp));
+        this.subscriptions.push(sub);
+        if (!this.isLoggedIn) {
+            return;
+        }
+        sub = this.moduleApiService.getMissilesByUser().subscribe(resp => this.missilesByUser.next(resp));
+        this.subscriptions.push(sub);
+    }
+
     private fetchArmors() {
         let sub = this.publicResourcesService.getArmors().subscribe(resp => this.armors.next(resp));
         this.subscriptions.push(sub);
@@ -213,6 +228,14 @@ export class ModuleService extends SubscriptionManager {
 
     getLaunchers() {
         return this.launchers;
+    }
+
+    getMissilesByUser() {
+        return this.missilesByUser;
+    }
+
+    getMissiles() {
+        return this.missiles;
     }
 
     getArmorsByUser() {

@@ -12,6 +12,7 @@
 import { EModuleType } from './eModuleType';
 import { EShipClassType } from './eShipClassType';
 import { Mass } from './mass';
+import { PropertyDescriptor } from './propertyDescriptor';
 
 /**
  * .
@@ -44,6 +45,7 @@ export interface BaseModule {
     techLevel: BaseModule.TechLevelEnum;
     shipClassType?: EShipClassType;
     moduleType?: EModuleType;
+    propertyDescriptor: PropertyDescriptor;
 }
 export namespace BaseModule {
     export type TechLevelEnum = 'TECH_I' | 'TECH_II' | 'TECH_III';

@@ -8,14 +8,14 @@
         <mat-tab label="{{ 'library.modules.title.armor' | translate }}">
             <div class="flex-items-container content-area">
                 <app-base-module-display *ngFor="let module of filteredArmors"
-                                         showIcon [module]="module"></app-base-module-display>
+                                         libraryMode showIcon [module]="module"></app-base-module-display>
             </div>
         </mat-tab>
         <mat-tab label="{{ 'library.modules.title.weapon' | translate }}">
             <ng-template matTabContent>
                 <div class="flex-items-container content-area">
                     <app-base-module-display *ngFor="let module of filteredWeapons"
-                                             showIcon [module]="module"></app-base-module-display>
+                                             libraryMode showIcon [module]="module"></app-base-module-display>
                 </div>
             </ng-template>
         </mat-tab>
@@ -23,15 +23,21 @@
             <ng-template matTabContent>
                 <div class="flex-items-container content-area">
                     <app-base-module-display *ngFor="let module of filteredLaunchers"
-                                             showIcon [module]="module"></app-base-module-display>
+                                             libraryMode showIcon [module]="module"></app-base-module-display>
                 </div>
             </ng-template>
+        </mat-tab>
+        <mat-tab label="{{ 'library.modules.title.missiles' | translate }}">
+            <div class="flex-items-container content-area">
+                <app-base-module-display *ngFor="let module of filteredMissiles"
+                                         libraryMode showIcon [module]="module"></app-base-module-display>
+            </div>
         </mat-tab>
         <mat-tab label="{{ 'library.modules.title.sidewall' | translate }}">
             <ng-template matTabContent>
                 <div class="flex-items-container content-area">
                     <app-base-module-display *ngFor="let module of filteredSidewalls"
-                                             showIcon [module]="module"></app-base-module-display>
+                                             libraryMode showIcon [module]="module"></app-base-module-display>
                 </div>
             </ng-template>
         </mat-tab>
@@ -39,7 +45,7 @@
             <ng-template matTabContent>
                 <div class="flex-items-container content-area">
                     <app-base-module-display *ngFor="let module of filteredEloka"
-                                             showIcon [module]="module"></app-base-module-display>
+                                             libraryMode showIcon [module]="module"></app-base-module-display>
                 </div>
             </ng-template>
         </mat-tab>
@@ -47,7 +53,7 @@
             <ng-template matTabContent>
                 <div class="flex-items-container content-area">
                     <app-base-module-display *ngFor="let module of filteredPassiveModules"
-                                             [module]="module"></app-base-module-display>
+                                             libraryMode showIcon [module]="module"></app-base-module-display>
                 </div>
             </ng-template>
         </mat-tab>

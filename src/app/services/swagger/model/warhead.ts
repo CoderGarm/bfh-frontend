@@ -31,6 +31,6 @@ export namespace Warhead {
         LASER: 'LASER' as WarheadTypeEnum,
         EXPLOSION: 'EXPLOSION' as WarheadTypeEnum,
         KINETIC: 'KINETIC' as WarheadTypeEnum,
-        COUNTERMISSILE: 'COUNTER_MISSILE' as WarheadTypeEnum
+        COUNTER_MISSILE: 'COUNTER_MISSILE' as WarheadTypeEnum
     };
 }

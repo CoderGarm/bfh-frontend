@@ -1,0 +1,12 @@
+<mat-list *ngIf="!!propertyDescriptor && !!propertyDescriptor.passiveModuleDescriptor">
+    <mat-list-item *ngIf="propertyDescriptor.passiveModuleDescriptor.isStandalone">
+        <span matListItemLine>Effect type: {{ propertyDescriptor.passiveModuleDescriptor.supportType }}</span>
+        <span matListItemLine>Effect value change: {{ propertyDescriptor.passiveModuleDescriptor.calculationType == 'ADD' ? '+' : '-' }} {{ propertyDescriptor.passiveModuleDescriptor.effectValue }}</span>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="!propertyDescriptor.passiveModuleDescriptor.isStandalone">
+        <span matListItemLine
+              *ngIf="!!propertyDescriptor.passiveModuleDescriptor.cargoCapacity">Cargo capacity: {{ propertyDescriptor.passiveModuleDescriptor.cargoCapacity | mass: 'T' }}</span>
+        <span matListItemLine *ngIf="!!propertyDescriptor.passiveModuleDescriptor.passengers">Passenger capacity: {{ propertyDescriptor.passiveModuleDescriptor.passengers }}</span>
+    </mat-list-item>
+</mat-list>

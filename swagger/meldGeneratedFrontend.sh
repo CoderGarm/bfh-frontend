@@ -70,7 +70,18 @@ for filename in ./*; do
   sed -i 's/MISSION/MISSION/' $filename
   sed -i 's/COLONIZATIONINFO/COLONIZATION_INFO/' $filename
   sed -i 's/FLEETDETACHMENT/FLEET_DETACHMENT/' $filename
+  sed -i 's/PASSIVEMODULE/PASSIVE_MODULE/' $filename
   sed -i 's/ORBITALMODULE/ORBITAL_MODULE/' $filename
+  sed -i 's/MOVEMENTPHASE/MOVEMENT_PHASE/' $filename
+  sed -i 's/ELOKAPHASE/ELOKA_PHASE/' $filename
+  sed -i 's/COUNTERMISSILEPHASE/COUNTER_MISSILE_PHASE/' $filename
+  sed -i 's/MISSILEMOVEMENTPHASE/MISSILE_MOVEMENT_PHASE/' $filename
+  sed -i 's/BEAMFIREINCOMINGPHASE/BEAM_FIRE_INCOMING_PHASE/' $filename
+  sed -i 's/MISSILEFIREINCOMINGPHASE/MISSILE_FIRE_INCOMING_PHASE/' $filename
+  sed -i 's/BEAMFIREPHASE/BEAM_FIRE_PHASE/' $filename
+  sed -i 's/MISSILEFIREPHASE/MISSILE_FIRE_PHASE/' $filename
+  sed -i 's/COUNTERMISSILE/COUNTER_MISSILE/' $filename
+  sed -i 's/POINTDEFENSE/POINT_DEFENSE/' $filename
 done
 
 cd ../..

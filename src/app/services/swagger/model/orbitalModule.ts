@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { PropertyDescriptor } from './propertyDescriptor';
 import { ResourceDeposit } from './resourceDeposit';
 
 /**
@@ -25,6 +26,10 @@ export interface OrbitalModule {
      */
     name: string;
     /**
+     * The description of this module.
+     */
+    description: string;
+    /**
      * The effect value of this module.
      */
     effectValue: number;
@@ -32,6 +37,7 @@ export interface OrbitalModule {
      * The effect of this module.
      */
     effect: OrbitalModule.EffectEnum;
+    propertyDescriptor: PropertyDescriptor;
 }
 export namespace OrbitalModule {
     export type EffectEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE' | 'CREDITS' | 'METALORE' | 'RARE_ELEMENTS' | 'HEAVY_METALS' | 'POPULATION' | 'PASSENGER' | 'FREIGHT';

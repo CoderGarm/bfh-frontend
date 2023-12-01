@@ -33,7 +33,7 @@ export namespace Launcher {
     export const WeaponTypeEnum = {
         MISSILE: 'MISSILE' as WeaponTypeEnum,
         BEAM: 'BEAM' as WeaponTypeEnum,
-        COUNTERMISSILE: 'COUNTER_MISSILE' as WeaponTypeEnum,
-        POINTDEFENSE: 'POINT_DEFENSE' as WeaponTypeEnum
+        COUNTER_MISSILE: 'COUNTER_MISSILE' as WeaponTypeEnum,
+        POINT_DEFENSE: 'POINT_DEFENSE' as WeaponTypeEnum
     };
 }

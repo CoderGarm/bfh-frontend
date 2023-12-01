@@ -28,13 +28,13 @@ export interface CombatRoundKey {
 export namespace CombatRoundKey {
     export type CombatPhaseEnum = 'MOVEMENT_PHASE' | 'ELOKA_PHASE' | 'COUNTER_MISSILE_PHASE' | 'MISSILE_MOVEMENT_PHASE' | 'BEAM_FIRE_INCOMING_PHASE' | 'MISSILE_FIRE_INCOMING_PHASE' | 'BEAM_FIRE_PHASE' | 'MISSILE_FIRE_PHASE';
     export const CombatPhaseEnum = {
-        MOVEMENTPHASE: 'MOVEMENT_PHASE' as CombatPhaseEnum,
-        ELOKAPHASE: 'ELOKA_PHASE' as CombatPhaseEnum,
-        COUNTERMISSILEPHASE: 'COUNTER_MISSILE_PHASE' as CombatPhaseEnum,
-        MISSILEMOVEMENTPHASE: 'MISSILE_MOVEMENT_PHASE' as CombatPhaseEnum,
-        BEAMFIREINCOMINGPHASE: 'BEAM_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
-        MISSILEFIREINCOMINGPHASE: 'MISSILE_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
-        BEAMFIREPHASE: 'BEAM_FIRE_PHASE' as CombatPhaseEnum,
-        MISSILEFIREPHASE: 'MISSILE_FIRE_PHASE' as CombatPhaseEnum
+        MOVEMENT_PHASE: 'MOVEMENT_PHASE' as CombatPhaseEnum,
+        ELOKA_PHASE: 'ELOKA_PHASE' as CombatPhaseEnum,
+        COUNTER_MISSILE_PHASE: 'COUNTER_MISSILE_PHASE' as CombatPhaseEnum,
+        MISSILEMOVEMENT_PHASE: 'MISSILE_MOVEMENT_PHASE' as CombatPhaseEnum,
+        BEAM_FIRE_INCOMING_PHASE: 'BEAM_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
+        MISSILE_FIRE_INCOMING_PHASE: 'MISSILE_FIRE_INCOMING_PHASE' as CombatPhaseEnum,
+        BEAM_FIRE_PHASE: 'BEAM_FIRE_PHASE' as CombatPhaseEnum,
+        MISSILE_FIRE_PHASE: 'MISSILE_FIRE_PHASE' as CombatPhaseEnum
     };
 }

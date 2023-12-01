@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { HasIcon } from './hasIcon';
+import { PropertyDescriptor } from './propertyDescriptor';
 
 /**
  * .
@@ -40,6 +41,7 @@ export interface ResearchResult {
      * The description of this result.
      */
     additionalProperties: { [key: string]: string; };
+    propertyDescriptor: PropertyDescriptor;
 }
 export namespace ResearchResult {
     export type TranslationTargetEnum = 'BUILDING' | 'RESEARCH' | 'MISSILE' | 'LAUNCHER' | 'ARMOR' | 'ELECTRONIC_WARFARE' | 'PROPULSION' | 'WEAPON' | 'PASSIVE_MODULE' | 'SIDEWALL' | 'ORBITAL_MODULE';
@@ -52,7 +54,7 @@ export namespace ResearchResult {
         ELECTRONIC_WARFARE: 'ELECTRONIC_WARFARE' as TranslationTargetEnum,
         PROPULSION: 'PROPULSION' as TranslationTargetEnum,
         WEAPON: 'WEAPON' as TranslationTargetEnum,
-        PASSIVEMODULE: 'PASSIVE_MODULE' as TranslationTargetEnum,
+        PASSIVE_MODULE: 'PASSIVE_MODULE' as TranslationTargetEnum,
         SIDEWALL: 'SIDEWALL' as TranslationTargetEnum,
         ORBITAL_MODULE: 'ORBITAL_MODULE' as TranslationTargetEnum
     };

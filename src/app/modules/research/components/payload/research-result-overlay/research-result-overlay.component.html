@@ -19,6 +19,8 @@
             <div *ngFor="let prop of researchResult.additionalProperties  | keyvalue">
                 <span matListItemLine>{{ prop.key }}: {{ prop.value }}</span>
             </div>
+
+            <app-property-descriptor-display [propertyDescriptor]="researchResult.propertyDescriptor"></app-property-descriptor-display>
         </mat-card-content>
     </mat-card>
 </ng-template>

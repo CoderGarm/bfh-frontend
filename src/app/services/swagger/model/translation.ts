@@ -50,7 +50,7 @@ export namespace Translation {
         ELECTRONIC_WARFARE: 'ELECTRONIC_WARFARE' as TranslationTargetEnum,
         PROPULSION: 'PROPULSION' as TranslationTargetEnum,
         WEAPON: 'WEAPON' as TranslationTargetEnum,
-        PASSIVEMODULE: 'PASSIVE_MODULE' as TranslationTargetEnum,
+        PASSIVE_MODULE: 'PASSIVE_MODULE' as TranslationTargetEnum,
         SIDEWALL: 'SIDEWALL' as TranslationTargetEnum,
         ORBITAL_MODULE: 'ORBITAL_MODULE' as TranslationTargetEnum
     };

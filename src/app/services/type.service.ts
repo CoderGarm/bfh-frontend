@@ -23,7 +23,7 @@ export class TypeService extends SubscriptionManager {
     readonly militaryEducationTypes: ReplaySubject<EEducationType[]> = new ReplaySubject<EEducationType[]>();
     readonly collectableResourceTypes: ReplaySubject<EResourceType[]> = new ReplaySubject<EResourceType[]>();
 
-    readonly weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTERMISSILE, EWeaponTypeEnum.POINTDEFENSE];
+    readonly weaponTypes: EWeaponTypeEnum[] = [EWeaponTypeEnum.MISSILE, EWeaponTypeEnum.BEAM, EWeaponTypeEnum.COUNTER_MISSILE, EWeaponTypeEnum.POINT_DEFENSE];
     readonly weaponAlignmentTypes: EWeaponAlignmentEnum[] = [EWeaponAlignmentEnum.STERN, EWeaponAlignmentEnum.BROADSIDE, EWeaponAlignmentEnum.BOW];
     readonly alignmentAreas: EAlignmentTypeEnum[] = [EAlignmentTypeEnum.CHASEALIGNMENT, EAlignmentTypeEnum.BATTLEALIGNMENT];
     readonly hyperBands: EHyperBandsEnum[] = [

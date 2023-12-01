@@ -17,6 +17,11 @@ export class BaseModuleDisplayComponent<MODULE extends { baseModule: BaseModule,
     get showIcon() { return this._showIcon; }
     set showIcon(value: any) { this._showIcon = coerceBooleanProperty(value); }
     _showIcon: boolean = false;
+
+    @Input()
+    get libraryMode() { return this._libraryMode; }
+    set libraryMode(value: any) { this._libraryMode = coerceBooleanProperty(value); }
+    _libraryMode: boolean = false;
     // @formatter:on
 
 }

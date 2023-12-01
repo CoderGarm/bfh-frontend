@@ -12,7 +12,7 @@ export class ModuleHelper {
      */
     static isLauncher(weapon: Weapon | Launcher): boolean {
         let weaponType = weapon.weaponType;
-        return weaponType === Launcher.WeaponTypeEnum.MISSILE || weaponType === Launcher.WeaponTypeEnum.COUNTERMISSILE;
+        return weaponType === Launcher.WeaponTypeEnum.MISSILE || weaponType === Launcher.WeaponTypeEnum.COUNTER_MISSILE;
 
     }
 
@@ -23,7 +23,7 @@ export class ModuleHelper {
      */
     static isWeapon(weapon: Weapon | Launcher): boolean {
         let weaponType = weapon.weaponType;
-        return weaponType === Weapon.WeaponTypeEnum.BEAM || weaponType === Weapon.WeaponTypeEnum.POINTDEFENSE;
+        return weaponType === Weapon.WeaponTypeEnum.BEAM || weaponType === Weapon.WeaponTypeEnum.POINT_DEFENSE;
 
     }
 

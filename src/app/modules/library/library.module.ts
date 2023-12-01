@@ -19,7 +19,7 @@ import {ResearchModule} from "../research/research.module";
         LibraryTabViewComponent,
         LibraryModuleDisplayComponent,
         LibraryBuildingDisplayComponent,
-        LibraryOrbitalModuleDisplayComponent
+        LibraryOrbitalModuleDisplayComponent,
     ],
     imports: [
         CommonModule,

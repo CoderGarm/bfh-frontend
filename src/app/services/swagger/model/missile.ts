@@ -12,12 +12,14 @@
 import { BaseModule } from './baseModule';
 import { Mass } from './mass';
 import { MissileMotor } from './missileMotor';
+import { ResourceDeposit } from './resourceDeposit';
 import { Warhead } from './warhead';
 
 /**
  * .
  */
 export interface Missile { 
+    costs?: ResourceDeposit;
     baseModule: BaseModule;
     /**
      * The engine capacity of this missile.

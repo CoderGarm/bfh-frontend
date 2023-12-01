@@ -44,6 +44,17 @@ import {FleetMovementListComponent} from "./fleet-movement-list/fleet-movement-l
 import {PropulsionModuleDisplayComponent} from './propulsion-module-display/propulsion-module-display.component';
 import {BuildingDisplayComponent} from './building-display/building-display.component';
 import {OrbitalModuleDisplayComponent} from "./orbital-module-display/orbital-module-display.component";
+import {PropertyDescriptorDisplayComponent} from "./property-descriptor-display/property-descriptor-display.component";
+import {PropertiesArmorComponent} from './property-descriptor-display/payload/properties-armor/properties-armor.component';
+import {PropertiesElokaComponent} from './property-descriptor-display/payload/properties-eloka/properties-eloka.component';
+import {PropertiesLauncherComponent} from './property-descriptor-display/payload/properties-launcher/properties-launcher.component';
+import {PropertiesMissileComponent} from './property-descriptor-display/payload/properties-missile/properties-missile.component';
+import {PropertiesOrbitalModuleComponent} from './property-descriptor-display/payload/properties-orbital-module/properties-orbital-module.component';
+import {PropertiesPassiveModuleComponent} from './property-descriptor-display/payload/properties-passive-module/properties-passive-module.component';
+import {PropertiesPropulsionComponent} from './property-descriptor-display/payload/properties-propulsion/properties-propulsion.component';
+import {PropertiesSidewallComponent} from './property-descriptor-display/payload/properties-sidewall/properties-sidewall.component';
+import {PropertiesWeaponComponent} from './property-descriptor-display/payload/properties-weapon/properties-weapon.component';
+import {PropertyHolder} from "./property-descriptor-display/payload/property-holder";
 
 @NgModule({
     declarations: [
@@ -91,6 +102,17 @@ import {OrbitalModuleDisplayComponent} from "./orbital-module-display/orbital-mo
         PropulsionModuleDisplayComponent,
         BuildingDisplayComponent,
         OrbitalModuleDisplayComponent,
+        PropertyDescriptorDisplayComponent,
+        PropertiesArmorComponent,
+        PropertiesElokaComponent,
+        PropertiesLauncherComponent,
+        PropertiesMissileComponent,
+        PropertiesOrbitalModuleComponent,
+        PropertiesPassiveModuleComponent,
+        PropertiesPropulsionComponent,
+        PropertiesSidewallComponent,
+        PropertiesWeaponComponent,
+        PropertyHolder,
     ],
     imports: [
         SharedModuleModule,
@@ -139,6 +161,7 @@ import {OrbitalModuleDisplayComponent} from "./orbital-module-display/orbital-mo
         PropulsionModuleDisplayComponent,
         BuildingDisplayComponent,
         OrbitalModuleDisplayComponent,
+        PropertyDescriptorDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

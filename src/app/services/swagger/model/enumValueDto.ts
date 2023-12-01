@@ -165,7 +165,7 @@ export namespace EnumValueDto {
         LASER: 'LASER' as EWarheadTypeEnum,
         EXPLOSION: 'EXPLOSION' as EWarheadTypeEnum,
         KINETIC: 'KINETIC' as EWarheadTypeEnum,
-        COUNTERMISSILE: 'COUNTER_MISSILE' as EWarheadTypeEnum
+        COUNTER_MISSILE: 'COUNTER_MISSILE' as EWarheadTypeEnum
     };
     export type EWeaponAlignmentEnum = 'BOW' | 'STERN' | 'BROADSIDE';
     export const EWeaponAlignmentEnum = {
@@ -177,8 +177,8 @@ export namespace EnumValueDto {
     export const EWeaponTypeEnum = {
         MISSILE: 'MISSILE' as EWeaponTypeEnum,
         BEAM: 'BEAM' as EWeaponTypeEnum,
-        COUNTERMISSILE: 'COUNTER_MISSILE' as EWeaponTypeEnum,
-        POINTDEFENSE: 'POINT_DEFENSE' as EWeaponTypeEnum
+        COUNTER_MISSILE: 'COUNTER_MISSILE' as EWeaponTypeEnum,
+        POINT_DEFENSE: 'POINT_DEFENSE' as EWeaponTypeEnum
     };
     export type EWikiCategoriesEnum = 'WELCOME_MESSAGE' | 'MISSION_TYPES' | 'GAME_MECHANICS';
     export const EWikiCategoriesEnum = {

@@ -60,6 +60,11 @@ export class ResourceDisplayComponent extends SubscriptionManager {
     get constructionMode() { return this._constructionMode; }
     set constructionMode(value: any) { this._constructionMode = coerceBooleanProperty(value); }
     _constructionMode: boolean = false;
+
+    @Input()
+    get libraryMode() { return this._libraryMode; }
+    set libraryMode(value: any) { this._libraryMode = coerceBooleanProperty(value); }
+    _libraryMode: boolean = false;
     // @formatter:on
 
     resourceTypes: EResourceType[] = [];
@@ -230,6 +235,12 @@ export class ResourceDisplayComponent extends SubscriptionManager {
                 .filter(c => c.resourceType.collectableType == CollectableTypeEnum.COLLECTABLE || c.resourceType.typeName === EResourceTypeEnum.ORBITAL_CONSTRUCTION);
             result.humanResources = result.humanResources
                 .filter(c => c.resourceType.typeName === EEducationTypeEnum.COLLEGE || c.resourceType.typeName === EEducationTypeEnum.UNIVERSITY);
+        }
+        if (!!result && this._libraryMode) {
+            result.resources = result.resources
+                .filter(c => c.amount > 0 && c.resourceType.typeName != EResourceTypeEnum.POPULATION);
+            result.humanResources = result.humanResources
+                .filter(c => c.amount > 0);
         }
         return result;
     }
