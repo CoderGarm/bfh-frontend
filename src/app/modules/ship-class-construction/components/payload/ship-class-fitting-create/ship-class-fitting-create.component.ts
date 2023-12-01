@@ -625,7 +625,7 @@ export class ShipClassFittingCreateComponent extends SubscriptionManager impleme
         if (!module.baseModule.technicalTypeName) {
             return module.baseModule.name;
         }
-        return module.baseModule.name + ", " + module.baseModule.technicalTypeName;
+        return module.baseModule.name + ' "' + module.baseModule.technicalTypeName + '"';
     }
 
     getMissilesOfLoadout(shipClass?: ShipClass | ShipClassMock): Missile[] {
