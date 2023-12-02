@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Fleet, Job} from "../../../services/swagger";
+import {Fleet, Job, OrbitalStructures, WarShip} from "../../../services/swagger";
+import {coerceBooleanProperty} from "@angular/cdk/coercion";
 
 @Component({
     selector: 'app-job-display',
@@ -14,29 +15,38 @@ export class JobDisplayComponent implements OnChanges {
     // @formatter:off
     @Input()
     get noIcon() { return this._noIcon; }
-    set noIcon(value: any) { this._noIcon = this.coerceBooleanProperty(value); }
+    set noIcon(value: any) { this._noIcon = coerceBooleanProperty(value); }
     _noIcon: boolean = false;
 
     @Input()
     get paused() { return this._paused; }
-    set paused(value: any) { this._paused = this.coerceBooleanProperty(value); }
+    set paused(value: any) { this._paused = coerceBooleanProperty(value); }
     _paused: boolean = false;
     // @formatter:on
 
     shipClassMap: Map<string, number> = new Map<string, number>();
-
-    private coerceBooleanProperty(value: any): boolean {
-        return value != null && `${value}` !== 'false';
-    }
+    orbitalStructureMap: Map<string, number> = new Map<string, number>();
+    title: string = '';
 
     ngOnChanges(changes: SimpleChanges) {
         this.shipClassMap.clear();
-        if (!!this.job && !!this.job.fleet) {
-            this.job.fleet.ships.forEach(s => {
-                const key = s.shipClass.name + " Flt. " + s.shipClass.mark;
-                let count = this.shipClassMap.has(key) ? this.shipClassMap.get(key)! : 0;
+        this.orbitalStructureMap.clear();
+        if (!!this.job) {
+            if (!!this.job.fleet) {
+                this.title = this.job.fleet.name;
+                this.job.fleet.ships.forEach((s: WarShip) => {
+                    const key = s.shipClass.name + " Flt. " + s.shipClass.mark;
+                    let count = this.shipClassMap.has(key) ? this.shipClassMap.get(key)! : 0;
+                    count++;
+                    this.shipClassMap.set(key, count);
+                });
+            }
+            this.title = this.title.length > 0 ? this.title : 'Orbitals';
+            this.job.orbitalStructures.forEach((s: OrbitalStructures) => {
+                const key = s.module.name;
+                let count = this.orbitalStructureMap.has(key) ? this.orbitalStructureMap.get(key)! : 0;
                 count++;
-                this.shipClassMap.set(key, count);
+                this.orbitalStructureMap.set(key, count);
             });
         }
     }

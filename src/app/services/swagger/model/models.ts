@@ -85,6 +85,7 @@ export * from './movementAction';
 export * from './orbit';
 export * from './orbitalModule';
 export * from './orbitalModuleDescriptor';
+export * from './orbitalStructures';
 export * from './passiveModule';
 export * from './passiveModuleDescriptor';
 export * from './pirateRaidActionItem';

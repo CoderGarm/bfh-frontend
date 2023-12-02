@@ -13,6 +13,7 @@ import { Building } from './building';
 import { Construction } from './construction';
 import { EResourceType } from './eResourceType';
 import { Fleet } from './fleet';
+import { OrbitalStructures } from './orbitalStructures';
 import { Planet } from './planet';
 import { Player } from './player';
 import { Research } from './research';
@@ -68,6 +69,10 @@ export interface Job {
      */
     targetLevel?: number;
     fleet?: Fleet;
+    /**
+     * The orbital structures, when build.
+     */
+    orbitalStructures: Array<OrbitalStructures>;
 }
 export namespace Job {
     export type PriorityEnum = 'NONE' | 'PRIORITY';

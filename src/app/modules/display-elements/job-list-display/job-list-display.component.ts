@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EShipClassType, Fleet, Job, JobApiService, Planet} from "../../../services/swagger";
+import {Fleet, Job, JobApiService, Planet} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -158,20 +158,12 @@ export class JobListDisplayComponent extends SubscriptionManager implements OnIn
         return Math.round((current / max) * 100) + " %";
     }
 
-    getHullCount(fleet: Fleet) {
-        let m: Map<EShipClassType, number> = new Map<EShipClassType, number>();
-        fleet.ships.forEach(w => {
-            const hullType = w.shipClass.shipClassType;
-            let amount = m.get(hullType);
-            if (!amount) {
-                amount = 0;
-            }
-            amount += 1;
-            m.set(hullType, amount);
-        });
-        let result = "";
-        m.forEach((amount, hullType) => result += ", " + amount + " " + hullType.typeName);
-        return fleet.ships.length + " ships";
+    getHullCount(job: Job) {
+        let fleet = job.fleet;
+        if (!!fleet) {
+            return fleet.ships.length + " ships";
+        }
+        return job.orbitalStructures.length + " orbitals";
     }
 
     cancelJob(job: Job) {
