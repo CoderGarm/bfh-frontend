@@ -1,6 +1,6 @@
-<mat-card *ngIf="!!module" style="background-color: transparent;" class="blue-card">
+<mat-card *ngIf="!!module" style="background-color: transparent;" class="right-blue-card">
     <mat-card-header>
-        <app-icon matCardAvatar [icon]="getIcon()" *ngIf="_showIcon" png32px></app-icon>
+        <app-icon matCardAvatar png32px orbitalStructure></app-icon>
         <mat-card-title>{{ module.name }}</mat-card-title>
         <mat-card-subtitle style="max-width: 350px;">{{ module.description }}</mat-card-subtitle>
     </mat-card-header>
@@ -12,5 +12,6 @@
         </mat-list>
         <app-properties-orbital-module [propertyDescriptor]="module.propertyDescriptor"></app-properties-orbital-module>
         <app-resource-display [libraryMode]="_libraryMode" [showTick]="false" [costs]="module.costs"></app-resource-display>
+        <app-icon [icon]="getIcon()" *ngIf="_showIcon" png32px></app-icon>
     </mat-card-content>
 </mat-card>

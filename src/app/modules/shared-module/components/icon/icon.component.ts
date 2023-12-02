@@ -67,6 +67,11 @@ export class IconComponent implements OnChanges {
     _research: boolean = false;
 
     @Input()
+    get orbitalStructure() { return this._orbitalStructure; }
+    set orbitalStructure(value: any) { this._orbitalStructure = coerceBooleanProperty(value); }
+    _orbitalStructure: boolean = false;
+
+    @Input()
     get png64px() { return this._png64px; }
     set png64px(value: any) { this._png64px = coerceBooleanProperty(value); }
     _png64px: boolean = false;

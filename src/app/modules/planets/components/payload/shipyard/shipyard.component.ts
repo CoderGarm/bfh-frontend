@@ -4,6 +4,7 @@ import {
     EShipClassType,
     Fleet,
     Mass,
+    OrbitalModule,
     Planet,
     PlanetApiService,
     ResourceDeposit,
@@ -11,7 +12,8 @@ import {
     ShipClass,
     ShipyardApiService,
     ShipyardConstructionOrder,
-    ShipyardConstructionSelection
+    ShipyardConstructionSelection,
+    ShipyardOrbitalModuleConstructionSelection
 } from "../../../../../services/swagger";
 import {UntypedFormControl} from "@angular/forms";
 import {MatChip, MatChipListbox} from "@angular/material/chips";
@@ -31,15 +33,11 @@ import ECapacityAreaTypesEnum = EnumValueDto.ECapacityAreaTypesEnum;
 })
 export class ShipyardComponent extends SubscriptionManager implements AfterContentInit, OnChanges {
 
-    /**
-     * the producible ship classes
-     */
     possibleShipClasses: ShipClass[] = [];
 
-    /**
-     * all possibly constructable ship classes which are filtered to display
-     */
     filteredShipClasses: ShipClass[] = [];
+
+    possibleOrbitalModules: OrbitalModule[] = [];
 
     /**
      * the current selected planet
@@ -77,21 +75,17 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
     shipyardJobPossible: boolean = false;
     jobTooExpensive: boolean = false;
 
-    /**
-     * the job order which will be used at this planet
-     */
     order?: ShipyardConstructionOrder;
 
-    /**
-     * the complete selection for the job
-     */
-    selection: ShipyardConstructionSelection[] = [];
+    shipJobSelection: ShipyardConstructionSelection[] = [];
+    structureJobSelection: ShipyardOrbitalModuleConstructionSelection[] = [];
 
     costsToDisplay?: ResourceDeposit;
 
     hasSomeShipsForBuildSelected: boolean = false;
 
     translations: Map<string, string> = new Map<string, string>();
+    tabIndex: number = 0;
 
     constructor(private shipyardApi: ShipyardApiService,
                 private typeService: TypeService,
@@ -143,6 +137,11 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                     this.filterDisplayedShipClasses();
                 });
                 this.subscriptions.push(sub);
+
+                sub = this.shipyardApi.getOrbitalModulesByUser().subscribe(resp => {
+                    this.possibleOrbitalModules = resp
+                });
+                this.subscriptions.push(sub);
             }
 
             if (!!this.selectedPlanet && !!this.selectedPlanet.idPlanet) {
@@ -183,9 +182,9 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
         this.subscriptions.push(sub);
     }
 
-    buildConstruction() {
+    constructionShips() {
         if (!!this.order) {
-            this.order.shipJobPayload = this.selection;
+            this.order.shipJobPayload = this.shipJobSelection;
             let subscription = this.planetApi.buildShip(this.order).subscribe(resp => {
                 if (!!resp) {
                     this.shipyardJobPossible = !resp.ticksLeft || resp.ticksLeft == 0;
@@ -202,6 +201,10 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
             });
             this.subscriptions.push(subscription);
         }
+    }
+
+    constructionStructures() {
+        // fixme hier weiter
     }
 
     /**
@@ -236,11 +239,11 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
 
     setAmount(amount: number, shipClass: ShipClass) {
         let element: ShipyardConstructionSelection;
-        const selection: ShipyardConstructionSelection[] = this.selection.filter(s => s.idShipClass === shipClass.idShipClass);
+        const selection: ShipyardConstructionSelection[] = this.shipJobSelection.filter(s => s.idShipClass === shipClass.idShipClass);
         if (!!selection && selection.length > 0) {
             element = selection[0];
-            const indexOf = this.selection.indexOf(element);
-            this.selection.splice(indexOf, 1);
+            const indexOf = this.shipJobSelection.indexOf(element);
+            this.shipJobSelection.splice(indexOf, 1);
             element.amount = amount;
         } else {
             element = {
@@ -248,9 +251,31 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                 amount: amount
             }
         }
-        this.selection.push(element);
+        this.shipJobSelection.push(element);
         if (!!this.order) {
-            this.order.shipJobPayload = this.selection;
+            this.order.shipJobPayload = this.shipJobSelection;
+        }
+        this.getCostsAndCheckBalances();
+    }
+
+
+    setAmountOrbital(amount: number, module: OrbitalModule) {
+        let element: ShipyardOrbitalModuleConstructionSelection;
+        const selection: ShipyardOrbitalModuleConstructionSelection[] = this.structureJobSelection.filter(s => s.idOrbitalModule === module.idOrbitalModule);
+        if (!!selection && selection.length > 0) {
+            element = selection[0];
+            const indexOf = this.structureJobSelection.indexOf(element);
+            this.structureJobSelection.splice(indexOf, 1);
+            element.amount = amount;
+        } else {
+            element = {
+                idOrbitalModule: module.idOrbitalModule!,
+                amount: amount
+            }
+        }
+        this.structureJobSelection.push(element);
+        if (!!this.order) {
+            this.order.orbitalsJobPayload = this.structureJobSelection;
         }
         this.getCostsAndCheckBalances();
     }
@@ -260,8 +285,16 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
      * @private
      */
     private getCostsAndCheckBalances() {
-        if (!!this.order && this.selection.length != 0) {
-            let sub = this.resourceService.getShipyardOrderCosts(this.selection)
+        if (!!this.order && this.shipJobSelection.length != 0) {
+            let sub = this.resourceService.getShipyardOrderCosts(this.shipJobSelection)
+                .subscribe(resp => {
+                    this.costsToDisplay = resp;
+                    this.checkBalances();
+                });
+            this.subscriptions.push(sub);
+        }
+        if (!!this.order && this.structureJobSelection.length != 0) {
+            let sub = this.resourceService.getShipyardStructureOrderCosts(this.structureJobSelection)
                 .subscribe(resp => {
                     this.costsToDisplay = resp;
                     this.checkBalances();
@@ -303,7 +336,8 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
             this.hasSomeShipsForBuildSelected = false;
         } else {
             let amount = 0;
-            this.selection.forEach(o => amount += o.amount);
+            this.shipJobSelection.forEach(o => amount += o.amount);
+            this.structureJobSelection.forEach(o => amount += o.amount);
             this.hasSomeShipsForBuildSelected = amount != 0;
         }
     }
@@ -325,5 +359,13 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
         return shipClass.spacecraftCapacityAreas.capacityValues.filter(c => c.capacityArea === ECapacityAreaTypesEnum.OVERALL)[0].tonnage;
     }
 
-    protected readonly eval = eval;
+    changeTab(event: number) {
+        this.tabIndex = event;
+        if (this.tabIndex == 0) {
+            this.structureJobSelection = [];
+        } else {
+            this.shipJobSelection = [];
+        }
+        this.getCostsAndCheckBalances();
+    }
 }

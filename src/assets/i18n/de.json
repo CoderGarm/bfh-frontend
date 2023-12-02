@@ -728,7 +728,8 @@
 			"build": {
 				"already-in-use": "Es wird bereits gebaut",
 				"nothing-to-do": "Keine Schiffe ausgewählt",
-				"start-building": "Baue die Flotte",
+				"start-orbital-module-build": "Bau von orbitalen Strukturen starten",
+				"start-ship-build": "Schiffsbau starten",
 				"too-expensive": "Auftrag zu teuer"
 			},
 			"capacity": {
@@ -736,6 +737,12 @@
 			},
 			"fleet-state": "Flottenstatus",
 			"fleet-to-repair": "Flotte im Dock",
+			"orbital-structures": {
+				"title": "Orbitale Strukturen"
+			},
+			"ships": {
+				"title": "Raumschiffe"
+			},
 			"title": "Schiffsbau",
 			"weapon-amount-by-alignment": {
 				"title": "Bewaffnung"

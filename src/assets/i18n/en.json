@@ -729,7 +729,8 @@
 			"build": {
 				"already-in-use": "Shipyard already in use",
 				"nothing-to-do": "No ships selected",
-				"start-building": "Start construction of warships",
+				"start-orbital-module-build": "Start construction of orbital structures",
+				"start-ship-build": "Start construction of warships",
 				"too-expensive": "Job is too expensive"
 			},
 			"capacity": {
@@ -737,6 +738,12 @@
 			},
 			"fleet-state": "Fleet state",
 			"fleet-to-repair": "Fleet in dock",
+			"orbital-structures": {
+				"title": "Orbital structures"
+			},
+			"ships": {
+				"title": "Space ships"
+			},
 			"title": "Shipyard constructions",
 			"weapon-amount-by-alignment": {
 				"title": "Weaponry"

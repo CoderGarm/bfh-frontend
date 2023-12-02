@@ -24,6 +24,11 @@
          alt="{{ altText }}"
          matTooltip="{{ toolTip }}">
 
+    <img *ngIf="!icon && _orbitalStructure" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/hulls/orbital-structures.png"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
+         alt="{{ altText }}"
+         matTooltip="{{ toolTip }}">
+
     <img *ngIf="!icon && !!fleetIcon" class="icon" [ngClass]="{'centered': _circleBorder}" src="assets/icons/fleets/{{ fleetIcon }}.png"
          [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
          alt="{{ altText }}"

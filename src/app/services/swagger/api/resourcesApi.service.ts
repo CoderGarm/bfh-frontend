@@ -25,6 +25,7 @@ import { ResourceDeposit } from '../model/resourceDeposit';
 import { ResourceTransfer } from '../model/resourceTransfer';
 import { ShipClassMock } from '../model/shipClassMock';
 import { ShipyardConstructionSelection } from '../model/shipyardConstructionSelection';
+import { ShipyardOrbitalModuleConstructionSelection } from '../model/shipyardOrbitalModuleConstructionSelection';
 import { SpacecraftCapabilities } from '../model/spacecraftCapabilities';
 import { SpacecraftCapacityAreas } from '../model/spacecraftCapacityAreas';
 
@@ -905,6 +906,54 @@ export class ResourcesApiService {
         }
 
         return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipyard`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the costs of the given shipyard order.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getShipyardStructureOrderCosts(body: Array<ShipyardOrbitalModuleConstructionSelection>, observe?: 'body', reportProgress?: boolean): Observable<ResourceDeposit>;
+    public getShipyardStructureOrderCosts(body: Array<ShipyardOrbitalModuleConstructionSelection>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResourceDeposit>>;
+    public getShipyardStructureOrderCosts(body: Array<ShipyardOrbitalModuleConstructionSelection>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResourceDeposit>>;
+    public getShipyardStructureOrderCosts(body: Array<ShipyardOrbitalModuleConstructionSelection>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getShipyardStructureOrderCosts.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<ResourceDeposit>('post',`${this.basePath}/api/private/resources/costsShipyard/structure`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

@@ -38,26 +38,60 @@
 
     <div [matTooltip]="getJobButtonText()" class="tooltip-container">
         <button mat-raised-button color="secondary"
-                (click)="buildConstruction()"
-                [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected">{{ 'shipyard.constructions.build.start-building' | translate }}</button>
+                *ngIf="tabIndex == 0"
+                (click)="constructionShips()"
+                [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected">
+            {{ 'shipyard.constructions.build.start-ship-build' | translate }}
+        </button>
+        <button mat-raised-button color="secondary"
+                *ngIf="tabIndex == 1"
+                (click)="constructionStructures()"
+                [disabled]="!shipyardJobPossible || jobTooExpensive || !hasSomeShipsForBuildSelected">
+            {{ 'shipyard.constructions.build.start-orbital-module-build' | translate }}
+        </button>
     </div>
 
-    <app-outlined titleValue="Fleet setup">
+    <app-outlined titleValue="Build setup">
+        <mat-tab-group animationDuration="500ms" (selectedIndexChange)="changeTab($event)">
+            <mat-tab label="{{ 'shipyard.constructions.ships.title' | translate }}">
+                <ng-template matTabContent>
 
-        <div class="flex-items-container">
-            <app-blue-card rightBlueCard *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
-                <mat-card-header header>
-                    <app-icon matCardAvatar png32px
-                              [icon]="shipClass.shipClassType"
-                              [altText]="shipClass.shipClassType.typeName"
-                              [toolTip]="shipClass.shipClassType.typeName"></app-icon>
-                    <span matCardTitle>{{ shipClass.name }} Flt. {{ shipClass.mark }}</span>
-                    <span matCardSubtitle>{{ shipClass.shipClassType.typeName }} - {{ getMass(shipClass) | mass: 'T' }}</span>
-                </mat-card-header>
-                <app-numeric-counter actions [inputDisabled]="false"
-                                     caption="Amount"
-                                     (amount)="setAmount($event, shipClass)"></app-numeric-counter>
-            </app-blue-card>
-        </div>
+                    <div class="flex-items-container yard-tab-content">
+                        <app-blue-card rightBlueCard *ngFor="let shipClass of filteredShipClasses" class="ship-class-card">
+                            <mat-card-header header>
+                                <app-icon matCardAvatar png32px
+                                          [icon]="shipClass.shipClassType"
+                                          [altText]="shipClass.shipClassType.typeName"
+                                          [toolTip]="shipClass.shipClassType.typeName"></app-icon>
+                                <span matCardTitle>{{ shipClass.name }} Flt. {{ shipClass.mark }}</span>
+                                <span matCardSubtitle>{{ shipClass.shipClassType.typeName }} - {{ getMass(shipClass) | mass: 'T' }}</span>
+                            </mat-card-header>
+                            <app-numeric-counter actions [inputDisabled]="false"
+                                                 caption="Amount"
+                                                 (amount)="setAmount($event, shipClass)"></app-numeric-counter>
+                        </app-blue-card>
+                    </div>
+
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="{{ 'shipyard.constructions.orbital-structures.title' | translate }}">
+                <ng-template matTabContent>
+
+                    <div class="flex-items-container yard-tab-content">
+                        <app-blue-card rightBlueCard *ngFor="let module of possibleOrbitalModules" class="ship-class-card">
+                            <mat-card-header header>
+                                <app-icon matCardAvatar png32px orbitalStructure></app-icon>
+                                <span matCardTitle>{{ module.name }}</span>
+                                <span matCardSubtitle>{{ module.description }}</span>
+                            </mat-card-header>
+                            <app-numeric-counter actions [inputDisabled]="false"
+                                                 caption="Amount"
+                                                 (amount)="setAmountOrbital($event, module)"></app-numeric-counter>
+                        </app-blue-card>
+                    </div>
+
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
     </app-outlined>
 </div>
