@@ -26,6 +26,11 @@ export class OrbitalModuleDisplayComponent {
     get libraryMode() { return this._libraryMode; }
     set libraryMode(value: any) { this._libraryMode = coerceBooleanProperty(value); }
     _libraryMode: boolean = false;
+
+    @Input()
+    get resourceMode() { return this._resourceMode; }
+    set resourceMode(value: any) { this._resourceMode = coerceBooleanProperty(value); }
+    _resourceMode: boolean = false;
     // @formatter:on
 
     getIcon(): HasIcon | undefined {

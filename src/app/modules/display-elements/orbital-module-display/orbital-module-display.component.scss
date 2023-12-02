@@ -12,3 +12,16 @@ app-resource-display {
   height: 90px;
   display: block;
 }
+
+mat-card-actions {
+  min-height: 0;
+}
+
+.the-other-icon {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-bottom: 16px;
+  object-fit: cover;
+}

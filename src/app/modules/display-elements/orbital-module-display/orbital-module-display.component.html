@@ -1,17 +1,24 @@
 <mat-card *ngIf="!!module" style="background-color: transparent;" class="right-blue-card">
     <mat-card-header>
         <app-icon matCardAvatar png32px orbitalStructure></app-icon>
+        <app-icon class="the-other-icon" [icon]="getIcon()" *ngIf="_showIcon" png32px></app-icon>
         <mat-card-title>{{ module.name }}</mat-card-title>
         <mat-card-subtitle style="max-width: 350px;">{{ module.description }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+
         <mat-list>
             <mat-list-item *ngIf="!module.propertyDescriptor?.orbitalModuleDescriptor?.inhabitants">
                 <span matListItemLine>System wide effect: + {{ module.effectValue }}</span>
             </mat-list-item>
         </mat-list>
+
         <app-properties-orbital-module [propertyDescriptor]="module.propertyDescriptor"></app-properties-orbital-module>
-        <app-resource-display [libraryMode]="_libraryMode" [showTick]="false" [costs]="module.costs"></app-resource-display>
-        <app-icon [icon]="getIcon()" *ngIf="_showIcon" png32px></app-icon>
+
+        <app-resource-display *ngIf="_resourceMode" [libraryMode]="_libraryMode" [showTick]="false" [costs]="module.costs"></app-resource-display>
+
     </mat-card-content>
+    <mat-card-actions>
+        <ng-content select="[actions]"></ng-content>
+    </mat-card-actions>
 </mat-card>

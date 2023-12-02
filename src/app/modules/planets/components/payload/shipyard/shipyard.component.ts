@@ -187,7 +187,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
             this.order.shipJobPayload = this.shipJobSelection;
             let subscription = this.planetApi.buildShip(this.order).subscribe(resp => {
                 if (!!resp) {
-                    this.shipyardJobPossible = !resp.ticksLeft || resp.ticksLeft == 0;
+                    this.shipyardJobPossible = resp.pointsLeft == 0;
                     if (!this.shipyardJobPossible) {
                         this.notificationService.open("Construction started.")
                     } else {
@@ -208,7 +208,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
             this.order.orbitalsJobPayload = this.structureJobSelection;
             let subscription = this.planetApi.buildOrbitalModule(this.order).subscribe(resp => {
                 if (!!resp) {
-                    this.shipyardJobPossible = !resp.ticksLeft || resp.ticksLeft == 0;
+                    this.shipyardJobPossible = resp.pointsLeft == 0;
                     if (!this.shipyardJobPossible) {
                         this.notificationService.open("Construction started.")
                     } else {
