@@ -28,6 +28,7 @@ import { FleetMove } from '../model/fleetMove';
 import { FleetSplit } from '../model/fleetSplit';
 import { FrontendError } from '../model/frontendError';
 import { Move } from '../model/move';
+import { OrbitalStructures } from '../model/orbitalStructures';
 import { TransportJob } from '../model/transportJob';
 import { WarShip } from '../model/warShip';
 
@@ -386,6 +387,48 @@ export class FleetApiService {
         ];
 
         return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/movingPerUser`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all fleets inside the orbit of a planet.
+     * 
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getOrbitalStructuresByPlanet(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<Array<OrbitalStructures>>;
+    public getOrbitalStructuresByPlanet(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<OrbitalStructures>>>;
+    public getOrbitalStructuresByPlanet(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<OrbitalStructures>>>;
+    public getOrbitalStructuresByPlanet(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getOrbitalStructuresByPlanet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<OrbitalStructures>>('get',`${this.basePath}/api/private/fleet/inOrbit/${encodeURIComponent(String(idPlanet))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

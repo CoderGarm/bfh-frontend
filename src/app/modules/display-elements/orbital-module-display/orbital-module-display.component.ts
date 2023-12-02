@@ -31,6 +31,11 @@ export class OrbitalModuleDisplayComponent {
     get resourceMode() { return this._resourceMode; }
     set resourceMode(value: any) { this._resourceMode = coerceBooleanProperty(value); }
     _resourceMode: boolean = false;
+
+    @Input()
+    get smallDisplay() { return this._smallDisplay; }
+    set smallDisplay(value: any) { this._smallDisplay = coerceBooleanProperty(value); }
+    _smallDisplay: boolean = false;
     // @formatter:on
 
     getIcon(): HasIcon | undefined {

@@ -1,7 +1,10 @@
 <div class="holder content-area">
     <app-outlined titleValue="{{ 'planetary.mining-factors.title' | translate }}">
-        <p>{{ '' | translate }}</p>
         <app-mining-factors-display [miningFactors]="miningFactors"></app-mining-factors-display>
+    </app-outlined>
+
+    <app-outlined titleValue="{{ 'planetary.orbital-infrastructure.title' | translate }}">
+        <app-structures-in-orbit [orbitalStructures]="orbitalStructures"></app-structures-in-orbit>
     </app-outlined>
 
     <app-outlined titleValue="{{ 'planetary.population-development.title' | translate }}">
@@ -22,4 +25,6 @@
     <app-outlined titleValue="{{ 'planetary.fleets-in-orbit.title' | translate }}">
         <app-fleets-in-orbit [planet]="planet" [fleetsInOrbit]="fleetsInOrbit"></app-fleets-in-orbit>
     </app-outlined>
+
+    <!-- fixme display structures and explain effects -->
 </div>

@@ -14,6 +14,7 @@ import {NgxEchartsModule} from "ngx-echarts";
 import {OfferMarketComponent} from './components/payload/offer-market/offer-market.component';
 import {SpotMarketComponent} from './components/payload/spot-market/spot-market.component';
 import {FleetsAtYardComponent} from "./components/payload/shipyard/fleets-at-yard/fleets-at-yard.component";
+import {StructuresInOrbitComponent} from './components/payload/planetary-dashboard/structures-in-orbit/structures-in-orbit.component';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import {FleetsAtYardComponent} from "./components/payload/shipyard/fleets-at-yar
         PlanetaryMarketplaceComponent,
         OfferMarketComponent,
         SpotMarketComponent,
+        StructuresInOrbitComponent,
     ],
     imports: [
         SharedModuleModule,

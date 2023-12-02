@@ -1,0 +1,6 @@
+<div class="flex-items-container">
+    <app-orbital-module-display showIcon smallDisplay *ngFor="let entry of orbitalStructureTypes | keyvalue"
+                                [module]="entry.value">
+        <p amount>{{ orbitalStructureAmounts.get(entry.key) }}x</p>
+    </app-orbital-module-display>
+</div>

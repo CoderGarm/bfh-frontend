@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {PropertyHolder} from "../property-holder";
+import {coerceBooleanProperty} from "@angular/cdk/coercion";
 
 @Component({
     selector: 'app-properties-orbital-module',
@@ -8,4 +9,11 @@ import {PropertyHolder} from "../property-holder";
 })
 export class PropertiesOrbitalModuleComponent extends PropertyHolder {
 
+
+    // @formatter:off
+    @Input()
+    get smallDisplay() { return this._smallDisplay; }
+    set smallDisplay(value: any) { this._smallDisplay = coerceBooleanProperty(value); }
+    _smallDisplay: boolean = false;
+    // @formatter:on
 }

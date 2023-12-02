@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
-import {Fleet, FleetApiService, MiningFactors, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
+import {Fleet, FleetApiService, MiningFactors, OrbitalStructures, Planet, PlanetApiService, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {PlanetsEventService} from "../../../planets-event.service";
 
@@ -14,6 +14,7 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
 
     selectedPlanet?: Planet;
     fleetsInOrbit?: Fleet[];
+    orbitalStructures: OrbitalStructures[] = [];
 
     shipyardJobPossible: boolean = false;
     shipyardExists: boolean = false;
@@ -50,7 +51,9 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
     }
 
     private fetchFleetsInOrbit() {
-        const sub = this.fleetApi.getFleetsByPlanet(this.selectedPlanet!.idPlanet).subscribe(resp => this.fleetsInOrbit = resp);
+        let sub = this.fleetApi.getFleetsByPlanet(this.selectedPlanet!.idPlanet).subscribe(resp => this.fleetsInOrbit = resp);
+        this.subscriptions.push(sub);
+        sub = this.fleetApi.getOrbitalStructuresByPlanet(this.selectedPlanet!.idPlanet).subscribe(resp => this.orbitalStructures = resp);
         this.subscriptions.push(sub);
     }
 

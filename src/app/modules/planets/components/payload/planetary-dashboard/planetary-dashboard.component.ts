@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, MiningFactors, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
+import {Fleet, MiningFactors, OrbitalStructures, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 
 @Component({
@@ -25,6 +25,9 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
 
     @Input()
     fleetsInOrbit?: Fleet[];
+
+    @Input()
+    orbitalStructures: OrbitalStructures[] = [];
 
     @Input()
     sumOfPops: number = 0;
@@ -67,7 +70,7 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
         let sub = this.resourceService.getResourceDemand(this.planet.idPlanet).subscribe(resp => {
             this.demand = resp;
         });
-        this.subscriptions.push(sub)
+        this.subscriptions.push(sub);
     }
 
 }
