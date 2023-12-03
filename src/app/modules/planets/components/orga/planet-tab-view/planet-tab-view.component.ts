@@ -83,13 +83,10 @@ export class PlanetTabViewComponent extends SubscriptionManager implements After
         sub = this.resourceService.getPlanetaryIncome(idPlanet).subscribe(resp => this.income = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceService.getPlanetaryCapacity(idPlanet)
-            .subscribe(resp => this.capacity = resp);
+        sub = this.resourceService.getPlanetaryCapacity(idPlanet).subscribe(resp => this.capacity = resp);
         this.subscriptions.push(sub);
 
-        sub = this.resourceService.getMiningFactors(idPlanet).subscribe(resp => {
-            this.miningFactors = resp;
-        });
+        sub = this.resourceService.getMiningFactors(idPlanet).subscribe(resp => this.miningFactors = resp);
         this.subscriptions.push(sub);
     }
 

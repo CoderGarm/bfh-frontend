@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, Inject, Input, Optional} from '@angular/core';
+import {Component, Inject, Input, OnChanges, Optional, SimpleChanges} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {EResourceType, MiningFactors} from "../../../services/swagger";
+import {EResourceType, MiningFactors, ResourceAmount} from "../../../services/swagger";
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
@@ -8,10 +8,14 @@ import {TranslateService} from "@ngx-translate/core";
     templateUrl: './mining-factors-display.component.html',
     styleUrls: ['./mining-factors-display.component.scss']
 })
-export class MiningFactorsDisplayComponent extends SubscriptionManager implements AfterViewInit {
+export class MiningFactorsDisplayComponent extends SubscriptionManager implements OnChanges {
 
     @Input()
     miningFactors?: MiningFactors;
+
+    @Input()
+    miningFactorModifications: ResourceAmount[] = [];
+    modifications: Map<string, string> = new Map<string, string>();
 
     translations: Map<string, string> = new Map<string, string>();
 
@@ -70,7 +74,9 @@ export class MiningFactorsDisplayComponent extends SubscriptionManager implement
         });
     }
 
-    ngAfterViewInit(): void {
+    ngOnChanges(changes: SimpleChanges) {
+        this.modifications.clear();
+        this.miningFactorModifications.forEach(r => this.modifications.set(r.resourceType.typeName, r.amount + ''));
     }
 
     getTooltip(resourceType: EResourceType) {
@@ -80,9 +86,5 @@ export class MiningFactorsDisplayComponent extends SubscriptionManager implement
             return "";
         }
         return translation;
-    }
-
-    getAsString(amount: number) {
-        return amount + " %";
     }
 }

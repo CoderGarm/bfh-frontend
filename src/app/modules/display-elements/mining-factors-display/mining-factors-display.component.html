@@ -7,8 +7,11 @@
                           [altText]="resource.resourceType.typeName"
                           png24px [toolTip]="getTooltip(resource.resourceType)"></app-icon>
             </div>
-            <label class="amount-present">
-                {{getAsString(resource.amount)}}
+            <label class="amount-present" *ngIf="modifications.has(resource.resourceType.typeName)">
+                {{ resource.amount }} (+ {{ modifications.get(resource.resourceType.typeName) }}) %
+            </label>
+            <label class="amount-present" *ngIf="!modifications.has(resource.resourceType.typeName)">
+                {{ resource.amount }} %
             </label>
         </div>
     </div>

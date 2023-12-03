@@ -1,6 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Fleet, MiningFactors, OrbitalStructures, Planet, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
+import {EnumValueDto, EResourceType, Fleet, MiningFactors, OrbitalStructures, Planet, ResourceAmount, ResourceDeposit, ResourcesApiService} from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
+import {TypeService} from "../../../../../services/type.service";
+import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 @Component({
     selector: 'app-planetary-dashboard',
@@ -49,8 +51,15 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
     @Input()
     miningFactors?: MiningFactors;
 
-    constructor(private resourceService: ResourcesApiService) {
+    miningFactorModifications: ResourceAmount[] = [];
+
+    private resourceType: EResourceType[] = [];
+
+    constructor(private resourceService: ResourcesApiService,
+                private typeService: TypeService) {
         super();
+
+        this.typeService.eResourceTypes.subscribe(resp => this.resourceType = resp);
     }
 
     ngOnInit(): void {
@@ -60,6 +69,15 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
         if (changes[this.planetDefinition]) {
             this.fetchData();
         }
+
+        this.miningFactorModifications = [];
+        const popFactorModification = this.orbitalStructures.filter(o => !!o.module.propertyDescriptor.orbitalModuleDescriptor && !!o.module.propertyDescriptor.orbitalModuleDescriptor.popFactorIncreasement)
+            .map(o => o.module.propertyDescriptor.orbitalModuleDescriptor!.popFactorIncreasement!)
+            .reduce((sum, current) => sum + current, 0);
+        if (!!popFactorModification) {
+            this.miningFactorModifications.push({resourceType: this.resourceType.filter(r => r.typeName === EResourceTypeEnum.POPULATION)[0], amount: popFactorModification});
+        }
+
     }
 
     private fetchData() {
