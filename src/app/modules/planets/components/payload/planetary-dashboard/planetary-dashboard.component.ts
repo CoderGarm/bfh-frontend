@@ -77,7 +77,6 @@ export class PlanetaryDashboardComponent extends SubscriptionManager implements 
         if (!!popFactorModification) {
             this.miningFactorModifications.push({resourceType: this.resourceType.filter(r => r.typeName === EResourceTypeEnum.POPULATION)[0], amount: popFactorModification});
         }
-
     }
 
     private fetchData() {

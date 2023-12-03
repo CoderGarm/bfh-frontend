@@ -4,12 +4,14 @@ import {
     Construction,
     ConstructionApiService,
     EEducationType,
+    EnumValueDto,
     ERefinementSequence,
     EResourceType,
     HumanResourceAmount,
     Job,
     JobApiService,
     MiningFactors,
+    OrbitalStructures,
     Planet,
     PlanetApiService,
     PlannedConstruction,
@@ -26,6 +28,7 @@ import {TypeService} from "../../../../../services/type.service";
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import ProductionCategoryEnum = Building.ProductionCategoryEnum;
+import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 @Component({
     selector: 'app-ground-construct',
@@ -67,9 +70,13 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     @Input()
     capacity?: ResourceDeposit;
+    clonedCapacity?: ResourceDeposit;
 
     @Input()
     miningFactors?: MiningFactors;
+
+    @Input()
+    orbitalStructures: OrbitalStructures[] = [];
 
     levelImprovementResources?: ResourceAmount;
     levelImprovementHumanResources?: HumanResourceAmount;
@@ -103,6 +110,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
 
     runningJobs: Job[] = [];
     miningFactor: number = 1;
+    miningFactorModifications: ResourceAmount[] = [];
 
     constructor(private constructionApi: ConstructionApiService,
                 private planetApi: PlanetApiService,
@@ -156,6 +164,18 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
         if (changes[this.planetDefinition]) {
             this.setConstruction(undefined);
             this.fetchPlanet();
+        }
+
+        this.miningFactorModifications = [];
+        const additionalInhabitantCapacity = this.orbitalStructures.filter(o => !!o.module.propertyDescriptor.orbitalModuleDescriptor && !!o.module.propertyDescriptor.orbitalModuleDescriptor.inhabitants)
+            .map(o => o.module.propertyDescriptor.orbitalModuleDescriptor!.inhabitants!)
+            .reduce((sum, current) => sum + current, 0);
+
+        if (!!this.capacity) {
+            this.clonedCapacity = JSON.parse(JSON.stringify(this.capacity));
+            this.clonedCapacity?.resources.filter(r => r.resourceType.typeName == EResourceTypeEnum.POPULATION).forEach(r => r.amount += additionalInhabitantCapacity)
+        } else {
+            this.clonedCapacity = undefined;
         }
     }
 
