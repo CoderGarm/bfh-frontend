@@ -120,6 +120,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.drawOrbits(orbitDefinitions);
         let sub = this.fleetApi.getFleetDistribution().subscribe(resp => {
             this.distribution = resp;
+            this.starMapCommService.galaxyFleetDistribution = resp;
             this.setFleets(this.distribution);
             this.spinnerService.hide('universe-map');
         });

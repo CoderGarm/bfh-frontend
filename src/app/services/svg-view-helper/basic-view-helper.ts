@@ -963,7 +963,11 @@ export class BasicViewHelper extends BasicViewHelperData {
         return NavigationCalculator.calculateDistanceOfOrbits(firstOrbit, secondOrbit, this.standardDistanceMetric);
     }
 
-    protected createFleetGroup(fleetMarker: FleetMarker, x: number, y: number, orbit: Orbit): G {
+    protected createFleetGroup(fleetMarker: FleetMarker, x: number, y: number, orbit: Orbit) {
+
+        if (!fleetMarker.hyperPrintSensorValue) {
+            return;
+        }
 
         let fleetSharkPoints: ArrayXY[] = this.createFleetSharkPoints(x, y, orbit);
         const userIsOwner = fleetMarker.owner.id == this.userId;
@@ -1018,7 +1022,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.canvas?.add(group);
         this.setTextById(fleetSharkID, text);
         this.setFleetTextByMarker(text, fleetMarker);
-        return group;
     }
 
     protected enrichWithVirtualOrbit(pointAt: { x: number; y: number }, fleetMarker: FleetMarker) {

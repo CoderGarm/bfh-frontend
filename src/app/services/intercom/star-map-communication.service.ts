@@ -39,6 +39,8 @@ export class StarMapCommunicationService extends SubscriptionManager {
     private storage: Map<number, Fleet> = new Map<number, Fleet>();
     private storageUsedPersonal: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
+    galaxyFleetDistribution: FleetMarker[] = [];
+
     selectedStarSystem?: StarSystem;
 
     selectedFleets: Fleet[] = [];

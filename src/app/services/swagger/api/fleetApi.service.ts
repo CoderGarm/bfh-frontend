@@ -276,53 +276,6 @@ export class FleetApiService {
     }
 
     /**
-     * Get all fleets inside of a star system for a specific user.
-     * 
-     * @param idStarSystem 
-     * @param idOwner 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getFleetsBySystemAndOwner(idStarSystem: number, idOwner: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Fleet>>;
-    public getFleetsBySystemAndOwner(idStarSystem: number, idOwner: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Fleet>>>;
-    public getFleetsBySystemAndOwner(idStarSystem: number, idOwner: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Fleet>>>;
-    public getFleetsBySystemAndOwner(idStarSystem: number, idOwner: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (idStarSystem === null || idStarSystem === undefined) {
-            throw new Error('Required parameter idStarSystem was null or undefined when calling getFleetsBySystemAndOwner.');
-        }
-
-        if (idOwner === null || idOwner === undefined) {
-            throw new Error('Required parameter idOwner was null or undefined when calling getFleetsBySystemAndOwner.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<Fleet>>('get',`${this.basePath}/api/private/fleet/inSystem/${encodeURIComponent(String(idStarSystem))}/perUser/${encodeURIComponent(String(idOwner))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Get all fleets of an owner.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

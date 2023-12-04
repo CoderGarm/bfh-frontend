@@ -1,4 +1,4 @@
-<div *ngIf="!!fleet && !_smallDisplay && isOwnFleet(fleet)">
+<div *ngIf="!!fleet && !_smallDisplay && displayAsOwnFleet">
     <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
 
     <div class="flex-container">
@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div *ngIf="!!fleet && _smallDisplay && isOwnFleet(fleet)">
+<div *ngIf="!!fleet && _smallDisplay && displayAsOwnFleet">
     <div class="flex-container">
         <div *ngFor="let entry of warShipsByTypeAndFlight  | keyvalue" class="flex-container">
             <mat-list class="ship-list">
@@ -45,9 +45,9 @@
 </div>
 
 
-<div *ngIf="!!fleet && !_smallDisplay && !isOwnFleet(fleet)">
+<div *ngIf="!!fleet && !_smallDisplay && !displayAsOwnFleet">
     <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
-    <div mat-subheader>{{fleet.ships.length}} Ships</div> <!-- todo make it better -->
+    <div mat-subheader *ngFor="let e of shipsByTonnage | keyvalue">{{ e.value }} Ships of {{ e.key | numberShort }}T</div>
 </div>
 
 <div *ngIf="!!warships">

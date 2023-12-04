@@ -187,6 +187,9 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
             },
             ammunitionState: {
                 shotsPerMissile: []
+            },
+            tonnage: {
+                coordinate: 0, massMetric: "T"
             }
         };
 

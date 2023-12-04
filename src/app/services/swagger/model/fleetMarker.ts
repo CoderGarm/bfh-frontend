@@ -31,4 +31,8 @@ export interface FleetMarker {
     orbit?: FleetOrbit;
     move?: Move;
     state: StateBlock;
+    /**
+     * The value of the user's sensors in that system. Defines how good other ships can be seen.
+     */
+    hyperPrintSensorValue: number;
 }

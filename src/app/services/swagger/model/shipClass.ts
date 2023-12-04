@@ -14,6 +14,7 @@ import { AmmunitionFitting } from './ammunitionFitting';
 import { Armor } from './armor';
 import { EShipClassType } from './eShipClassType';
 import { ElectronicWarfare } from './electronicWarfare';
+import { Mass } from './mass';
 import { MissileAmmunitionState } from './missileAmmunitionState';
 import { Player } from './player';
 import { Propulsion } from './propulsion';
@@ -71,4 +72,5 @@ export interface ShipClass {
     shipClassCapabilities: SpacecraftCapabilities;
     spacecraftCapacityAreas: SpacecraftCapacityAreas;
     ammunitionState: MissileAmmunitionState;
+    tonnage: Mass;
 }

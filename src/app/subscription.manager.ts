@@ -32,8 +32,8 @@ export class SubscriptionManager implements OnDestroy {
     }
 
 
-    isOwnFleet(fleet: Fleet) {
-        return fleet.owner.idUser == this.userId;
+    isOwnFleet(fleet?: Fleet) {
+        return !fleet ? false : fleet.owner.idUser == this.userId;
     }
 
     ngOnDestroy() {
