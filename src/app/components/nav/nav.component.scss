@@ -17,3 +17,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.santa {
+  pointer-events: none;
+  transform: rotate(45deg);
+  width: 45px;
+  background: transparent;
+  position: absolute;
+  top: -11px;
+  right: -32px;
+}

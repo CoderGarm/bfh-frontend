@@ -12,7 +12,11 @@
             <span matListItemLine>{{ 'burger-menu.external-star-map-manager' | translate }}</span>
         </a>
     </mat-menu>
-    <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">Battle for Honor</button>
+    <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">
+        Battle for Honor
+        <img *ngIf="showSantasHat" src="/assets/special/Hat_of_Santa.svg" alt="santa's hat" class="santa">
+    </button>
+
     <span class="spacer"></span>
     <div *ngIf="!!currentTickService.currentTick">{{ 'tick.current' | translate }} {{currentTickService.currentTick.tickNo}}</div>
     <span class="spacer"></span>

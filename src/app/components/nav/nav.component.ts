@@ -30,6 +30,8 @@ export class NavComponent extends SubscriptionManager implements OnInit {
 
     isDark: boolean = true;
 
+    showSantasHat: boolean = false;
+
     constructor(private router: Router,
                 private colorSchemeService: ColorSchemeService,
                 private authenticationService: AuthenticationService,
@@ -52,6 +54,14 @@ export class NavComponent extends SubscriptionManager implements OnInit {
                     break;
             }
         });
+
+        this.detectSantaMode();
+    }
+
+    private detectSantaMode() {
+        const date = new Date();
+        const month = date.getMonth() + 1;
+        this.showSantasHat = month == 12;
     }
 
     ngOnInit(): void {
