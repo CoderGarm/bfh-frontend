@@ -674,7 +674,7 @@
 		"capacity": {
 			"info": {
 				"population": "The living space for AMOUNT people will be enough for TICKS ticks",
-				"population-growth-warning": "The population is at the limit of the living space and will not growth.",
+				"population-grow-warning": "The population is at the limit of the living space and will not grow.",
 				"resource": "The storage space for AMOUNT RESOURCE_NAME will still be enough for TICKS ticks"
 			}
 		},

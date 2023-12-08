@@ -673,7 +673,7 @@
 		"capacity": {
 			"info": {
 				"population": "Der Wohnraum für AMOUNT Menschen wird noch TICKS Ticks ausreichen",
-				"population-growth-warning": "Die Bevölkerung hat den Wohnraum ausgeschöpft.",
+				"population-grow-warning": "Die Bevölkerung hat den Wohnraum ausgeschöpft.",
 				"resource": "Der Lagerplatz für AMOUNT RESOURCE_NAME wird noch TICKS Ticks ausreichen"
 			}
 		},

@@ -76,7 +76,7 @@ export class ResourceDisplayComponent extends SubscriptionManager {
     private readonly incomePopulation: string = 'resource-overlay.income.population';
     private readonly costsPopulation: string = 'resource-overlay.costs.population';
     private readonly capacityPopulationKey: string = 'resource-overlay.capacity.info.population';
-    private readonly capacityPopulationWarningKey: string = 'resource-overlay.capacity.info.population-growth-warning';
+    private readonly capacityPopulationWarningKey: string = 'resource-overlay.capacity.info.population-grow-warning';
     private readonly capacityResourceKey: string = 'resource-overlay.capacity.info.resource';
 
     constructor(private typeService: TypeService,
@@ -114,7 +114,7 @@ export class ResourceDisplayComponent extends SubscriptionManager {
         this.subscriptions.push(sub);
 
         this.translations.set(this.capacityPopulationWarningKey, this.capacityPopulationWarningKey);
-        sub = this.translate.get('resource-overlay.capacity.info.population-growth-warning').subscribe((translated: string) => {
+        sub = this.translate.get('resource-overlay.capacity.info.population-grow-warning').subscribe((translated: string) => {
             this.translations.set(this.capacityPopulationWarningKey, translated);
         });
         this.subscriptions.push(sub);
