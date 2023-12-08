@@ -7,9 +7,23 @@
             <mat-icon>menu_book</mat-icon>
             <span>{{ 'burger-menu.' + route.path | translate }}</span>
         </button>
-        <a mat-menu-item href="{{ honorverseMapPath }}" target="_blank">
+        <mat-divider></mat-divider>
+        <a mat-menu-item href="https://map.battleforhonor.de/external-star-map?center=Manticore_System" target="_blank">
             <mat-icon>menu_book</mat-icon>
-            <span matListItemLine>{{ 'burger-menu.external-star-map-manager' | translate }}</span>
+            <span class="mat-mdc-menu-item-text">{{ 'burger-menu.external-star-map' | translate }}</span>
+        </a>
+        <a mat-menu-item href="https://map.battleforhonor.de/" target="_blank">
+            <mat-icon>menu_book</mat-icon>
+            <span class="mat-mdc-menu-item-text">{{ 'burger-menu.external-star-map-manager' | translate }}</span>
+        </a>
+        <a mat-menu-item href="https://honor-harrington.fandom.com/de/wiki/Interaktive_Karte_(im_Aufbau)" target="_blank">
+            <mat-icon>menu_book</mat-icon>
+            <span class="mat-mdc-menu-item-text">{{ 'burger-menu.external-star-map-wiki' | translate }}</span>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-menu-item href="https://www.reddit.com/r/battleForHonor" target="_blank">
+            <mat-icon><img src="/assets/external/Reddit_Icon_1Color_Silhouette.svg" alt="reddit ling"></mat-icon>
+            <span class="mat-mdc-menu-item-text">{{ 'burger-menu.our-subreddit' | translate }}</span>
         </a>
     </mat-menu>
     <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">

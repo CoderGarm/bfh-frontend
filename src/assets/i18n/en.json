@@ -28,8 +28,11 @@
 		"thousand": "1000"
 	},
 	"burger-menu": {
-		"external-star-map-manager": "External star map",
+		"external-star-map": "Star map",
+		"external-star-map-manager": "Map configuration",
+		"external-star-map-wiki": "Star map in the wiki",
 		"library": "Library",
+		"our-subreddit": "Community subreddit",
 		"take-a-tour": "Take a tour",
 		"wiki": "Wiki"
 	},

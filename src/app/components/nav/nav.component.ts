@@ -25,7 +25,6 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     applicationInfo?: ApplicationInfo;
 
     activeRoute?: Route;
-    honorverseMapPath: string;
     profilePic: string;
 
     isDark: boolean = true;
@@ -41,7 +40,6 @@ export class NavComponent extends SubscriptionManager implements OnInit {
                 protected currentTickService: CurrentTickService) {
         super();
 
-        this.honorverseMapPath = 'https://map.battleforhonor.de/';
         this.profilePic = 'perspective-dice-six-faces-random';
 
         this.colorSchemeService.getSchemaEmitter().subscribe(schema => {
