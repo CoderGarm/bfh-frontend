@@ -12,6 +12,7 @@
 import { AbstractId } from './abstractId';
 import { HumanResourceAmount } from './humanResourceAmount';
 import { ResourceAmount } from './resourceAmount';
+import { Tick } from './tick';
 import { WarShip } from './warShip';
 
 /**
@@ -32,4 +33,13 @@ export interface TransportJob {
      * If ships were moved.
      */
     ships: Array<WarShip>;
+    /**
+     * If the job can be edited
+     */
+    canBeEdited: boolean;
+    started?: Tick;
+    /**
+     * The left duration of this job.
+     */
+    ticksLeft?: number;
 }

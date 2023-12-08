@@ -20,7 +20,8 @@
 
                 <div *ngFor="let warship of mothballByPlanet.get(planet.idPlanet)"
                      cdkDrag
-                     [cdkDragDisabled]="dragDisabled"
+                     [cdkDragDisabled]="dragDisabled || (!!warship.transportJob && !warship.transportJob.canBeEdited)"
+                     [class.drag-disabled]="dragDisabled || (!!warship.transportJob && !warship.transportJob.canBeEdited)"
                      [cdkDragData]="warship"
                      [class.active-ship]="warship.warshipHealthState.state.isOperational"
                      class="warship-box">
@@ -35,7 +36,7 @@
                             {{ 'jobs.transports.ships.action' | translate }}:
                             {{ warship.transportJob.from.name }}
                             →
-                            {{ warship.transportJob.to.name }}
+                            {{ warship.transportJob.to.name }}, {{ 'jobs.ticks-left' | translate }}: {{ warship.transportJob.ticksLeft }}
                         </div>
                     </div>
                 </div>

@@ -59,6 +59,11 @@ app-icon {
   margin-right: 15px;
 }
 
+.drag-disabled {
+  cursor: pointer !important;
+  opacity: 0.5 !important;
+}
+
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
