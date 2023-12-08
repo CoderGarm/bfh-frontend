@@ -568,11 +568,14 @@
 				"create-for": "Erstelle ein Angebot für",
 				"created-notif": "Angebot erstellt",
 				"edit": "Handelsangebot bearbeiten",
+				"how-to": "Klicke auf ein beliebiges Element, um einen Handel durchzuführen.",
 				"market": "Angebotsmarkt",
 				"offer-taken": "Du hast das Angebot angenommen.",
+				"protection-info": "Denk daran: Konvois brauchen Schutz!",
 				"sell": "Verkaufen",
 				"spot": {
 					"create": "Accept a spot offer",
+					"how-to": "Klicke auf ein beliebiges Element, um einen sofortigen Handel durchzuführen.",
 					"price": "Spotpreis für",
 					"title": "Spotmarkt",
 					"warning": "Die Spotpreise ändern sich schnell. Bitte beachten Sie dies beim Handel auf dem Spotmarkt."

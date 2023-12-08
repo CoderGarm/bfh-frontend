@@ -569,11 +569,14 @@
 				"create-for": "Create an offer about",
 				"created-notif": "Offer released",
 				"edit": "Edit the offer",
+				"how-to": "Click on any element to make a trade.",
 				"market": "Offer market",
 				"offer-taken": "You accepted the offer.",
+				"protection-info": "Remember: Convoys need protection!",
 				"sell": "Sell",
 				"spot": {
 					"create": "Accept a spot offer",
+					"how-to": "Click on any element to make an instant trade.",
 					"price": "Spot price for",
 					"title": "Spot market",
 					"warning": "Spot prices are changing fast, please keep that in mind while trading at the spot market."
