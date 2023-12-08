@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$1" == 'time' ];
-  then grep -s EOL spacebattle/log/*;
+  then grep -s '>>>Login:' spacebattle/log/*;
   exit 0;
 fi
 
