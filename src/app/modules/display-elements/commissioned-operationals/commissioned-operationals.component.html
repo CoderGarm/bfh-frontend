@@ -47,6 +47,17 @@
                         </mat-list>
                     </app-outlined>
                 </div>
+                <div *ngIf="node.parent.orbitalModules.length > 0">
+
+                    <app-outlined titleValue="{{ 'journal.commissioned-operationals.title.constructions' | translate }}">
+                        <mat-list role="list">
+                            <mat-list-item *ngFor="let c of node.parent.orbitalModules" style="font-size: small; height: fit-content; margin: 5px;" role="listitem">
+                                <app-icon orbitalStructure matListItemAvatar circleBorder png24px [toolTip]="c.name"></app-icon>
+                                {{ c.name }}
+                            </mat-list-item>
+                        </mat-list>
+                    </app-outlined>
+                </div>
             </div>
         </mat-nested-tree-node>
     </mat-tree>

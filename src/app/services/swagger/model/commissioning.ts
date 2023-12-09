@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Construction } from './construction';
+import { OrbitalModule } from './orbitalModule';
 import { WarshipsByFleet } from './warshipsByFleet';
 
 /**
@@ -28,6 +29,10 @@ export interface Commissioning {
      * The constructions which are newly active.
      */
     constructions: Array<Construction>;
+    /**
+     * The orbital constructions which are newly active.
+     */
+    orbitalModules: Array<OrbitalModule>;
     /**
      * The activated warships to their fleet.
      */
