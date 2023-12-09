@@ -26,7 +26,7 @@ export class SeeExpansionComponent extends ExpansionManager implements AfterView
     }
 
     ngAfterViewInit(): void {
-        this.starSystems = [];
+        this.systemColonizations = [];
         this.fetchData();
         this.initializePaginator();
     }
@@ -35,9 +35,9 @@ export class SeeExpansionComponent extends ExpansionManager implements AfterView
         this.fetchBaseData();
         let sub = this.colonizationApi.getPendingColonizationsForUser()
             .subscribe(resp => {
-                this.starSystems = resp;
+                this.systemColonizations = resp;
                 this.sortColonizations();
-                this.dataSource.data = this.starSystems;
+                this.dataSource.data = this.systemColonizations;
             });
         this.subscriptions.push(sub);
     }

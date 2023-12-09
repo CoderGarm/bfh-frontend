@@ -11,12 +11,17 @@
 
         <ng-container matColumnDef="Orbit">
             <th mat-header-cell *matHeaderCellDef>Orbit</th>
-            <td mat-cell *matCellDef="let colo"> {{getOrbitString(colo.starSystem.orbit)}} </td>
+            <td mat-cell *matCellDef="let colo"> {{ getOrbitString(colo.starSystem.orbit) }} </td>
         </ng-container>
 
         <ng-container matColumnDef="Distance">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Distance</th>
-            <td mat-cell *matCellDef="let colo"> {{getDistance(colo)}} LY</td>
+            <td mat-cell *matCellDef="let colo"> {{ getDistance(colo) }} LY</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Duration">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration</th>
+            <td mat-cell *matCellDef="let colo"> {{ getDuration(colo) }} Ticks</td>
         </ng-container>
 
         <ng-container matColumnDef="star-system-filter">
@@ -77,7 +82,7 @@
                                         <button mat-raised-button color="secondary" (click)="colonizePlanet(planet)">Colonize</button>
                                     </div>
                                     <div [hidden]="!checkIfColonizationIsInProgress(colo, planet)">
-                                        {{ planet.name }}  has a colonization in progress - Ticks left: {{getTicksLeft(colo, planet)}}
+                                        {{ planet.name }}  has a colonization in progress - Ticks left: {{ getTicksLeft(colo, planet) }}
                                     </div>
                                     <div [hidden]="!checkIfColonizationIsPlanned(colo, planet)">
                                         The colonization of {{ planet.name }}  is already in planning.

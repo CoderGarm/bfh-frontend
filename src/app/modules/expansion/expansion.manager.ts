@@ -31,8 +31,8 @@ export class ExpansionManager extends SubscriptionManager {
     homeSystem?: StarSystem;
     reference?: StarSystem;
 
-    starSystems: StarSystemColonization[] = [];
-    dataSource = new MatTableDataSource<StarSystemColonization>(this.starSystems);
+    systemColonizations: StarSystemColonization[] = [];
+    dataSource = new MatTableDataSource<StarSystemColonization>(this.systemColonizations);
 
     @ViewChild(MatPaginator) paginator?: MatPaginator;
     @ViewChild(MatSort, {static: false}) sort?: MatSort;
@@ -52,6 +52,14 @@ export class ExpansionManager extends SubscriptionManager {
         }
         let distanceMapElement = colonization.distanceMap[this.reference.idStarSystem];
         return Math.round(distanceMapElement.coordinate);
+    }
+
+    getDuration(colonization: StarSystemColonization): number {
+        if (!this.reference) {
+            return NaN;
+        }
+        let distanceMapElement = colonization.travelTimeMap[this.reference.idStarSystem];
+        return !!distanceMapElement ? distanceMapElement : 0;
     }
 
     initializePaginator() {
@@ -99,7 +107,7 @@ export class ExpansionManager extends SubscriptionManager {
 
 
     protected sortColonizations() {
-        this.starSystems = this.starSystems.sort((a, b) => {
+        this.systemColonizations = this.systemColonizations.sort((a, b) => {
             if (!this.reference) {
                 return 1;
             }
@@ -108,7 +116,7 @@ export class ExpansionManager extends SubscriptionManager {
 
             return dA - dB;
         });
-        this.dataSource.data = this.starSystems;
+        this.dataSource.data = this.systemColonizations;
     }
 
     checkIfInsideQuadrantSelection(orbit: Orbit): boolean {

@@ -25,7 +25,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
     @ViewChild("onlyKnownSystems", {static: false})
     onlyKnownCheckBox?: MatCheckbox;
 
-    private static COLUMNS: string[] = ['Star system', 'Orbit', 'Distance'];
+    private static COLUMNS: string[] = ['Star system', 'Orbit', 'Distance', 'Duration'];
 
     private resourceTypes?: EResourceType[];
     private educationTypes?: EEducationType[];
@@ -56,7 +56,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
     }
 
     ngAfterViewInit() {
-        this.starSystems = [];
+        this.systemColonizations = [];
         this.fetchData();
         this.initializePaginator();
     }
@@ -73,9 +73,9 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         this.fetchBaseData();
         let sub = this.backgroundService.getColonizationStarSystemsForUser()
             .subscribe(resp => {
-                this.starSystems = resp;
+                this.systemColonizations = resp;
                 this.updateWithFreshColonization(colo);
-                this.dataSource.data = this.starSystems;
+                this.dataSource.data = this.systemColonizations;
                 this.sortColonizations();
                 this.spinnerService.deactivateSpinner();
             });
@@ -87,7 +87,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         if (!!colo) {
             const idStarSystem: number | undefined = colo?.target.starSystem.id;
             const idPlanet = colo?.target.idPlanet;
-            this.starSystems.forEach(sys => {
+            this.systemColonizations.forEach(sys => {
                 if (!!idPlanet && sys.starSystem.idStarSystem === idStarSystem) {
                     const colonizationsByPlanetElement = sys.colonizationsByPlanet[idPlanet];
                     if (!colonizationsByPlanetElement) {

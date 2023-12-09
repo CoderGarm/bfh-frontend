@@ -24,6 +24,10 @@ export interface StarSystemColonization {
      */
     distanceMap: { [key: string]: Distance; };
     /**
+     * The star system with its travel time to all known systems by id.
+     */
+    travelTimeMap: { [key: string]: number; };
+    /**
      * The costs to buy the colonization information about the system.
      */
     costsToBuyColonizationInformation: string;
