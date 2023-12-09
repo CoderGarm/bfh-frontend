@@ -6,8 +6,9 @@
 </form>
 
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
-    <mat-list-option *ngFor="let user of foundPossibleChatPartners" (click)="displayChatHistoryBetweenMeAnd(user)">
-        {{user.username}}
+    <mat-list-option *ngFor="let user of foundPossibleChatPartners" (click)="displayChatHistoryBetweenMeAnd(user)"
+                     matTooltip="{{ user.rolePlayData.titleAbbreviation }} {{ user.rolePlayData.firstname }} {{ user.rolePlayData.surname }}">
+        {{ user.username }}
     </mat-list-option>
 </mat-selection-list>
 
@@ -17,6 +18,6 @@
 <mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
     <mat-list-option *ngFor="let chat of activeChats" (click)="displayChatHistoryBetweenMeAnd(getChatPartner(chat))">
         <app-icon *ngIf="hasUnread(chat)" hasUnread></app-icon>
-        {{getChatPartner(chat).username}}
+        {{ getChatPartner(chat).username }}
     </mat-list-option>
 </mat-selection-list>

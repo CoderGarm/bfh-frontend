@@ -1,7 +1,7 @@
 <mat-drawer-container class="drawer-container">
   <mat-drawer mode="side" opened="true" class="drawer-list">
-    <app-chat-list (selectedUserChatListOutput)="selectedUserChatInput = $event"
-                   [newChatStartedChatListInput]="newChatStartedChatInput"></app-chat-list>
+    <app-chat-selection-list (selectedUserChatListOutput)="selectedUserChatInput = $event"
+                             [newChatStartedChatListInput]="newChatStartedChatInput"></app-chat-selection-list>
   </mat-drawer>
   <mat-drawer-content class="no-scrolling">
     <app-chat-history [selectedUserChatHistoryInput]="selectedUserChatInput"

@@ -8,11 +8,11 @@ import {AppComponent} from "../../../../app.component";
 
 
 @Component({
-    selector: 'app-chat-list',
-    templateUrl: './chat-list.component.html',
-    styleUrls: ['./chat-list.component.scss']
+    selector: 'app-chat-selection-list',
+    templateUrl: './chat-selection-list.component.html',
+    styleUrls: ['./chat-selection-list.component.scss']
 })
-export class ChatListComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class ChatSelectionListComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
 
     /**
      * Holds every user which is not part of an active chat, not the logged in user but found by the search-by-username.
