@@ -17,7 +17,7 @@
         <mat-icon matSuffix (click)="selectedCenter(undefined); $event.stopPropagation();">clear</mat-icon>
         <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectedCenter($event)">
             <mat-option *ngFor="let coord of filteredCenter | async" [value]="coord">
-                {{coord.name}}
+                {{ coord.name }}
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>

@@ -72,7 +72,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     selectedCenter(event?: MatAutocompleteSelectedEvent): void {
 
         if (!!event) {
-            this.starMapCommService.selectedStarSystem = event.option.value;
+            this.handleSearchedStarSystem(event.option.value);
         } else {
             this.starMapCommService.selectedStarSystem = undefined;
         }
@@ -81,6 +81,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         } else {
             this.centerFormControl.setValue(null);
         }
+
     }
 
     zoomTo() {

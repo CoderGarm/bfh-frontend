@@ -531,6 +531,15 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
     };
 
+    handleSearchedStarSystem(celestial?: StarSystem) {
+        if (!!celestial) {
+            let x = this.convertToStandardMetric(celestial.orbit.xCoordinate);
+            let y = this.convertToStandardMetric(celestial.orbit.yCoordinate);
+            const id = this.getCelestialBodyID(celestial.orbit);
+            this.handleClickedStarSystem(celestial, x, y, id);
+        }
+    }
+
     private handleClickedStarSystem(celestial: StarSystem, x: number, y: number, id: string) {
         const isSelected = this.starMapCommService.isSelectedStarSystem();
         const selectionAlreadySelected = this.starMapCommService.isSelectedStarSystem(celestial.idStarSystem);
