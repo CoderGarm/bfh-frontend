@@ -8,6 +8,10 @@ import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {BackgroundService} from "../../../../../services/prefetch/background.service";
 import {ExpansionManager} from "../../../expansion.manager";
+import {DialogConfigHelper} from "../../../../../services/helper/dialog-config.helper";
+import {DialogData} from "../../../../../components/confirmation-dialog/DialogData";
+import {ConfirmDialogComponent} from "../../../../../components/confirmation-dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-organize-expansion',
@@ -41,7 +45,8 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
                 private spinnerService: SpinnerService,
                 private backgroundService: BackgroundService,
                 private change: ChangeDetectorRef,
-                public translate: TranslateService) {
+                public translate: TranslateService,
+                private dialog: MatDialog) {
         super(OrganizeExpansionComponent.COLUMNS);
         this.defineFilterPredicate();
 
@@ -198,13 +203,33 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
         }
     }
 
-    colonizePlanet(planet: Planet) {
+    private colonizePlanet(planet: Planet) {
         this.spinnerService.activateSpinner('expansion.organize.spinner-message.wait');
         let sub = this.colonizationApi.startColonizingPlanet(planet).subscribe(resp => {
             this.spinnerService.deactivateSpinner();
             this.fetchData(resp);
         });
         this.subscriptions.push(sub);
+    }
+
+    openColoDialog(planet: Planet) {
+
+        const idStarSystem = planet.starSystem.id;
+        const starSystemColonization = this.systemColonizations
+            .filter(c => c.starSystem.idStarSystem == this.reference?.idStarSystem)[0];
+        const travelTime = starSystemColonization.travelTimeMap[idStarSystem];
+
+        const dialogConfig = DialogConfigHelper.createDialog();
+        dialogConfig.data = new DialogData(
+            'Start colonization of ' + planet.name + '?',
+            'This will take ' + travelTime + ' Ticks.',
+            'Please be aware that a new colony need a lot people. A colony could disturb the activation of buildings and ships.');
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.colonizePlanet(planet);
+            }
+        })
     }
 
     checkIfColonizationIsInProgress(colo: StarSystemColonization, planet: Planet) {

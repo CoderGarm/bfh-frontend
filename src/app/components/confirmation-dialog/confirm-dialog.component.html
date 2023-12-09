@@ -5,6 +5,8 @@
     <h1 mat-dialog-title>{{ data.title }}</h1>
 </div>
 <div mat-dialog-content>
+    <p *ngIf="!!data.bodyText">{{ data.bodyText }}</p>
+    <p *ngIf="!!data.bodyText2">{{ data.bodyText2 }}</p>
     <div *ngFor="let dataPerTemplate of data.dataPerTemplate">
         <ng-container *ngComponentOutlet="dataPerTemplate.template; injector: injectors.get(dataPerTemplate.template)!;"></ng-container>
     </div>
