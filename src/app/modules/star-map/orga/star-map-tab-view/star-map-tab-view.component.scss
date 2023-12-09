@@ -93,6 +93,10 @@
   fill: var(--map-text-color);
 }
 
+.svg-text:hover {
+  opacity: 0.3;
+}
+
 .notch-container {
   position: fixed;
   bottom: 25px;

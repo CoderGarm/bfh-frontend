@@ -435,7 +435,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             this.setTextById(orbitID, text);
         } else {
             // display constantly
-            mainGroup.add(text);
+            this.getOrCreateMainSubLayerGroup().add(text);
         }
     }
 
