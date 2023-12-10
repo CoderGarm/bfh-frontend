@@ -21,5 +21,6 @@ rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.css
 rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.txt
 rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.svg
 rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/*.ico
+rm /home/karsten/uploadTarget/bfh-frontend/bfh-fe/src/assets/i18n/*.json
 echo 'deployment of frontend done'
 
