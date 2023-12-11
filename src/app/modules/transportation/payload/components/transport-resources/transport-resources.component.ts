@@ -5,6 +5,10 @@ import {SnackbarNotificationService} from "../../../../../services/snackbar-noti
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {MatStepper} from "@angular/material/stepper";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogConfigHelper} from "../../../../../services/helper/dialog-config.helper";
+import {DialogData} from "../../../../../components/confirmation-dialog/DialogData";
+import {ConfirmDialogComponent} from "../../../../../components/confirmation-dialog/confirm-dialog.component";
 import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
 
 export interface CarrierAmount {
@@ -58,7 +62,8 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
 
     constructor(private planetService: PlanetApiService,
                 private fleetService: FleetApiService,
-                private snackbar: SnackbarNotificationService) {
+                private snackbar: SnackbarNotificationService,
+                private dialog: MatDialog) {
         super();
     }
 
@@ -131,21 +136,34 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
 
     drop(event: CdkDragDrop<WarShip[]>) {
         this.dragDisabled = true;
-        const warShip = event.item.data;
+        const warShip = <WarShip>event.item.data;
         const idPlanet = Number.parseFloat(event.container.id);
-        if (event.previousContainer === event.container) {
-            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-        } else {
-            transferArrayItem(
-                event.previousContainer.data,
-                event.container.data,
-                event.previousIndex,
-                event.currentIndex,
-            );
-        }
-        let sub = this.fleetService.transferPooledWarship(warShip.idWarship, idPlanet).subscribe(resp => {
-            warShip.transportJob = resp;
-            setTimeout(() => this.dragDisabled = false, 300);
+
+        let sub = this.fleetService.getTransferTime(warShip.idWarship, idPlanet).subscribe(resp => {
+            const dialogConfig = DialogConfigHelper.createDialog();
+            dialogConfig.data = new DialogData(
+                'Transfer ' + warShip.name + '?',
+                'This will take ' + resp + ' Ticks.');
+            const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    if (event.previousContainer === event.container) {
+                        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+                    } else {
+                        transferArrayItem(
+                            event.previousContainer.data,
+                            event.container.data,
+                            event.previousIndex,
+                            event.currentIndex,
+                        );
+                    }
+                    let sub = this.fleetService.transferPooledWarship(warShip.idWarship, idPlanet).subscribe(resp => {
+                        warShip.transportJob = resp;
+                        setTimeout(() => this.dragDisabled = false, 300);
+                    });
+                    this.subscriptions.push(sub);
+                }
+            });
         });
         this.subscriptions.push(sub);
     }

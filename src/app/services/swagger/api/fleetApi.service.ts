@@ -434,6 +434,53 @@ export class FleetApiService {
     }
 
     /**
+     * Renames a fleet.
+     * 
+     * @param idWarship 
+     * @param idPlanet 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getTransferTime(idWarship: number, idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
+    public getTransferTime(idWarship: number, idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
+    public getTransferTime(idWarship: number, idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
+    public getTransferTime(idWarship: number, idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idWarship === null || idWarship === undefined) {
+            throw new Error('Required parameter idWarship was null or undefined when calling getTransferTime.');
+        }
+
+        if (idPlanet === null || idPlanet === undefined) {
+            throw new Error('Required parameter idPlanet was null or undefined when calling getTransferTime.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<number>('get',`${this.basePath}/api/private/fleet/pool/duration/${encodeURIComponent(String(idWarship))}/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Transfer the warships between existing fleets.
      * 
      * @param body default response

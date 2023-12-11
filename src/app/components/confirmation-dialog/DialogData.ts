@@ -13,6 +13,7 @@ export class DialogData {
 
     constructor(title: string, bodyText?: string, bodyText2?: string) {
         this.title = title;
+        this.bodyText = bodyText;
         this.bodyText2 = bodyText2;
     }
 
