@@ -122,9 +122,9 @@ export class TokenStorage {
         return Number(token);
     }
 
-    getAllianceID(): number {
+    getAllianceID(): number | undefined {
         const token: string = <string>localStorage.getItem(this.allianceID);
-        return Number(token);
+        return !!token ? Number(token) : undefined;
     }
 
     /**

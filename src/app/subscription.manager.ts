@@ -16,6 +16,7 @@ export class SubscriptionManager implements OnDestroy {
     breakpointObserver = AppInjector.get(BreakpointObserver);
 
     readonly userId: number;
+    readonly userIdAlliance?: number;
     readonly userName: string;
     readonly profilePic: string;
 
@@ -24,6 +25,7 @@ export class SubscriptionManager implements OnDestroy {
 
     constructor() {
         this.userId = this.tokenStorage.getUserID();
+        this.userIdAlliance = this.tokenStorage.getAllianceID();
         this.userName = this.tokenStorage.getLogin();
         this.profilePic = this.tokenStorage.getProfilePic();
 
@@ -31,9 +33,12 @@ export class SubscriptionManager implements OnDestroy {
         this.subscriptions.push(sub);
     }
 
-
     isOwnFleet(fleet?: Fleet) {
         return !fleet ? false : fleet.owner.idUser == this.userId;
+    }
+
+    isFriendlyFleet(fleet?: Fleet) {
+        return !fleet ? false : (!!fleet.owner.idAlliance && !!this.userIdAlliance ? fleet.owner.idAlliance == this.userIdAlliance : false);
     }
 
     ngOnDestroy() {

@@ -42,8 +42,7 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.displayAsOwnFleet = this.isOwnFleet(this.fleet);
-
+        this.displayAsOwnFleet = this.isOwnFleet(this.fleet) || this.isFriendlyFleet(this.fleet);
         if (!!this.fleet || !!this.warships) {
             this.hullTypes.clear();
             this.hullsByType.clear();
