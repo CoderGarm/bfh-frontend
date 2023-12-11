@@ -590,7 +590,7 @@
 			"title": "Mining factors"
 		},
 		"orbital-infrastructure": {
-			"nothing": "",
+			"nothing": "Keine Strukturen im Orbit.",
 			"title": "Orbitale Infrastruktur"
 		},
 		"population-development": {
