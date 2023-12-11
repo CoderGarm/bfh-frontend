@@ -591,6 +591,7 @@
 			"title": "Mining factors"
 		},
 		"orbital-infrastructure": {
+			"nothing": "",
 			"title": "Orbital infrastructure"
 		},
 		"population-development": {

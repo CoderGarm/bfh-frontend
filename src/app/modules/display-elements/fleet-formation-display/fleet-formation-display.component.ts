@@ -99,15 +99,11 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
     }
 
     private sortWarshipsForSensorStrength() {
-        if (!this.fleet) {
+        if (!this.fleet || this.isOwnFleet(this.fleet)) {
             this.shipsByTonnage.clear();
             return;
         }
         let hyperPrintSensorValue = this.getHyperprintSensorValue(this.getSystemOfFleet());
-        /*
-        - Höchste Eloka-Punkte im System / 10 (aufgerundet) = Anzahl der individuell auflösbaren Schiffe
-        - Höchste Eloka-Punkte im System * Kilotonne = auflösbare individuelle Tonnage
-        */
 
         const resolvableSize = Math.floor(this.fleet.ships.length / 10);
         const warShips = this.fleet.ships
@@ -135,7 +131,9 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
                 const interplanetaryMove = origin?.idStarSystem == destination?.idStarSystem;
                 return sameSystem || (interplanetaryMove && origin?.idStarSystem == system?.idStarSystem);
             });
-            return fleetMarkers.length > 0 ? fleetMarkers[0].hyperPrintSensorValue : 0;
+            // base detection value for present ships
+            const hyperPrintSensorValue = fleetMarkers[0].hyperPrintSensorValue == 0 ? 10 : fleetMarkers[0].hyperPrintSensorValue;
+            return fleetMarkers.length > 0 ? hyperPrintSensorValue : 0;
         }
         return 0;
     }

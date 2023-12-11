@@ -15,6 +15,8 @@ export class StructuresInOrbitComponent implements OnChanges {
     orbitalStructureTypes: Map<string, OrbitalModule> = new Map<string, OrbitalModule>();
 
     ngOnChanges(changes: SimpleChanges) {
+        this.orbitalStructureAmounts.clear();
+        this.orbitalStructureTypes.clear();
         this.orbitalStructures.forEach((s: OrbitalStructures) => {
             const key = s.module.name;
             let count = this.orbitalStructureAmounts.has(key) ? this.orbitalStructureAmounts.get(key)! : 0;

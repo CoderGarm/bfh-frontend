@@ -1,3 +1,5 @@
+<div *ngIf="orbitalStructureTypes.size == 0">{{ 'planetary.orbital-infrastructure.nothing' | translate }}</div>
+
 <div class="flex-items-container">
     <app-orbital-module-display showIcon smallDisplay *ngFor="let entry of orbitalStructureTypes | keyvalue"
                                 [module]="entry.value">
