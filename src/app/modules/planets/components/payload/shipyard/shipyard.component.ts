@@ -154,7 +154,10 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                     shipJobPayload: [],
                     orbitalsJobPayload: []
                 }
+                this.shipJobSelection = [];
+                this.structureJobSelection = [];
                 this.updateDepositsAndIncome();
+                this.getCostsAndCheckBalances();
             }
         }
 
