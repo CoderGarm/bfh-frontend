@@ -23,7 +23,7 @@ export class PlayerPointsListComponent extends SubscriptionManager implements Af
     private points: UserPoints[] = [];
     private rankedUserPoints: RankedUserPoints[] = [];
 
-    displayedColumns: string[] = ['rank', 'name', 'overallPoints', 'planetaryPoints', 'fleetPoints', 'researchPoints'];
+    displayedColumns: string[] = ['rank', 'name', 'ally-tag', 'overallPoints', 'planetaryPoints', 'fleetPoints', 'researchPoints'];
     dataSource = new MatTableDataSource<RankedUserPoints>(this.rankedUserPoints);
 
 
