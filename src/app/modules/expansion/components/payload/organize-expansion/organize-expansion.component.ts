@@ -216,7 +216,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
 
         const idStarSystem = planet.starSystem.id;
         const starSystemColonization = this.systemColonizations
-            .filter(c => c.starSystem.idStarSystem == this.reference?.idStarSystem)[0];
+            .filter(c => c.starSystem.idStarSystem == idStarSystem)[0];
         const travelTime = starSystemColonization.travelTimeMap[idStarSystem];
 
         const dialogConfig = DialogConfigHelper.createDialog();
