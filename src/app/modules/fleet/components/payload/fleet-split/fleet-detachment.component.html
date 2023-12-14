@@ -64,7 +64,7 @@
                 <div class="pool-item">
                     <div>
                         <app-military-people preSelect [utilization]="deposit"></app-military-people>
-                        <mat-chip-listbox (change)="setVenue($event.value)" [multiple]="false" [disabled]="!isFleetCreation">
+                        <mat-chip-listbox (change)="setVenue($event.value)" [multiple]="false" [disabled]="!isFleetCreation || !planetChangeAllowed()">
                             <mat-chip-option *ngFor="let p of planets" [value]="p" [selected]="p.idPlanet === planet?.idPlanet" color="primary">
                                 {{ p.name }}
                             </mat-chip-option>

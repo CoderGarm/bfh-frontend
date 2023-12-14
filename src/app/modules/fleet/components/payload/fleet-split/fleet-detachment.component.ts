@@ -355,4 +355,13 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
             });
         this.subscriptions.push(sub);
     }
+
+    planetChangeAllowed() {
+        if (!this.changeHappened) {
+            return true;
+        }
+        const allMovedShips = this.fleets.filter(f => f.idFleet != FleetDetachmentComponent.POOL_FLEET_ID)
+            .flatMap(f => f.ships);
+        return allMovedShips.length == 0;
+    }
 }
