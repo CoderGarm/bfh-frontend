@@ -974,7 +974,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected createFleetGroup(fleetMarker: FleetMarker, x: number, y: number, orbit: Orbit) {
 
-        if (!fleetMarker.hyperPrintSensorValue) {
+        if (!fleetMarker.hyperPrintSensorValue && !this.isOwnFleetMarker(fleetMarker)) {
             return;
         }
 

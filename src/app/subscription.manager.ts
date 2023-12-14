@@ -2,7 +2,7 @@ import {Subscription} from "rxjs";
 import {Component, OnDestroy} from "@angular/core";
 import {AppInjector} from "./app.module";
 import {TokenStorage} from "./services/authentication/token-storage.service";
-import {Fleet} from "./services/swagger";
+import {Fleet, FleetMarker} from "./services/swagger";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 @Component({
@@ -35,6 +35,10 @@ export class SubscriptionManager implements OnDestroy {
 
     isOwnFleet(fleet?: Fleet) {
         return !fleet ? false : fleet.owner.idUser == this.userId;
+    }
+
+    isOwnFleetMarker(fleet?: FleetMarker) {
+        return !fleet ? false : fleet.owner.id == this.userId;
     }
 
     isFriendlyFleet(fleet?: Fleet) {
