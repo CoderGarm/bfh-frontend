@@ -41,8 +41,12 @@
 }
 
 .wormhole {
-  opacity: 0.3;
+  opacity: 0.5;
   stroke: dimgray;
+}
+
+.wormhole-highlight {
+  stroke: orange;
 }
 
 .star {

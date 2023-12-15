@@ -188,15 +188,19 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     }
 
     private drawJunctions() {
+        const mainCelestialGroup = this.getOrCreateMainCelestialGroup();
         let sub = this.backgroundService.getAllWormholeJunctions().subscribe(junctions => {
             junctions.forEach(junction => {
                 junction.termini.forEach(terminus => {
-                    const mainCelestialGroup = this.getOrCreateMainCelestialGroup();
-                    mainCelestialGroup
-                        .line(junction.position.x, junction.position.y, terminus.x, terminus.y)
-                        .addClass(MapData.RESIZE_ON_ZOOM_MARKER)
-                        .addClass(MapData.WORMHOLE_MARKER)
-                        .stroke({width: 1, color: 'irrelevant'});
+                    let nexus = this.getBySystemName(junction.nexus.name);
+                    let terminal = this.getBySystemName(terminus.name);
+                    if (!!nexus && !!terminal) {
+                        mainCelestialGroup
+                            .line(nexus.x, nexus.y, terminal.x, terminal.y)
+                            .addClass(MapData.RESIZE_ON_ZOOM_MARKER)
+                            .addClass(MapData.WORMHOLE_MARKER)
+                            .stroke({width: 1, color: 'irrelevant'});
+                    }
                 });
             });
         });

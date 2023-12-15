@@ -2,14 +2,23 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
-import {Coords} from "../../modules/strategic-operations/payload/mission-administration/mission-administration.component";
+
+
+export interface NamedThing {
+    name: string;
+}
 
 export interface Junction {
-    position: Coords;
+    nexus: NamedThing;
     /**
      * All termini of the junction.
      */
-    termini: Array<Coords>;
+    termini: Array<NamedThing>;
+}
+
+export interface SimpleCoord {
+    x: number;
+    y: number;
 }
 
 @Injectable()

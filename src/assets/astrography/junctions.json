@@ -1,169 +1,240 @@
 [
   {
-    "position": {
-      "name": "Manticore",
-      "x": 214,
-      "y": -2037
+    "nexus": {
+      "name": "Manticore"
     },
     "termini": [
       {
-        "name": "Basilisk",
-        "x": 251,
-        "y": -2863
+        "name": "Basilisk"
+      },
+      {
+        "name": "Trevor's Star"
+      },
+      {
+        "name": "Hennesy"
+      },
+      {
+        "name": "Sigma Draconis"
+      },
+      {
+        "name": "Lynx B (Terminus)"
+      },
+      {
+        "name": "Matapan"
+      },
+      {
+        "name": "Gregor"
       }
     ]
   },
   {
-    "position": {
-      "name": "Manticore",
-      "x": 214,
-      "y": -2037
+    "nexus": {
+      "name": "Erewhon"
     },
     "termini": [
       {
-        "name": "Trevor’s Star",
-        "x": 911,
-        "y": -2331
+        "name": "Terra Haute"
+      },
+      {
+        "name": "Joshua"
+      },
+      {
+        "name": "Sasebo"
       }
     ]
   },
   {
-    "position": {
-      "name": "Manticore",
-      "x": 214,
-      "y": -2037
+    "nexus": {
+      "name": "Asgard"
     },
     "termini": [
       {
-        "name": "Hannessy",
-        "x": 2471,
-        "y": -261
+        "name": "Durandel"
+      },
+      {
+        "name": "Midgard"
       }
     ]
   },
   {
-    "position": {
-      "name": "Manticore",
-      "x": 214,
-      "y": -2037
+    "nexus": {
+      "name": "Prime"
     },
     "termini": [
       {
-        "name": "Beowulf",
-        "x": -12,
-        "y": -156
+        "name": "Ajay"
       }
     ]
   },
   {
-    "position": {
-      "name": "Manticore",
-      "x": 214,
-      "y": -2037
+    "nexus": {
+      "name": "Agueda"
     },
     "termini": [
       {
-        "name": "Lynx B (Terminus)",
-        "x": -1153,
-        "y": -51
+        "name": "Stine"
       }
     ]
   },
   {
-    "position": {
-      "name": "Manticore",
-      "x": 214,
-      "y": -2037
+    "nexus": {
+      "name": "Clarence"
     },
     "termini": [
       {
-        "name": "Matapan",
-        "x": -1604,
-        "y": -1816
+        "name": "Artesia"
       }
     ]
   },
   {
-    "position": {
-      "name": "Manticore",
-      "x": 214,
-      "y": -2037
+    "nexus": {
+      "name": "Dionigi"
     },
     "termini": [
       {
-        "name": "Gregor",
-        "x": -425,
-        "y": -2218
+        "name": "Katharina"
       }
     ]
   },
   {
-    "position": {
-      "name": "Erewhon",
-      "x": 1497,
-      "y": -1566
+    "nexus": {
+      "name": "Franzeki"
     },
     "termini": [
       {
-        "name": "Terra Haute",
-        "x": 2498,
-        "y": -413
+        "name": "Bessie"
       }
     ]
   },
   {
-    "position": {
-      "name": "Erewhon",
-      "x": 1497,
-      "y": -1566
+    "nexus": {
+      "name": "Idaho"
     },
     "termini": [
       {
-        "name": "Joshua",
-        "x": 476,
-        "y": 377
+        "name": "Zunker"
       }
     ]
   },
   {
-    "position": {
-      "name": "Erewhon",
-      "x": 1497,
-      "y": -1566
+    "nexus": {
+      "name": "J-156-18(L)"
     },
     "termini": [
       {
-        "name": "Sasebo",
-        "x": -568,
-        "y": 88
+        "name": "Calvin"
       }
     ]
   },
   {
-    "position": {
-      "name": "Asgard",
-      "x": -1088,
-      "y": -1479
+    "nexus": {
+      "name": "Mannerheim"
     },
     "termini": [
       {
-        "name": "Durandel",
-        "x": -597,
-        "y": -2182
+        "name": "Warner"
       }
     ]
   },
   {
-    "position": {
-      "name": "Asgard",
-      "x": -1088,
-      "y": -1479
+    "nexus": {
+      "name": "Nolan"
     },
     "termini": [
       {
-        "name": "Midgard",
-        "x": -1458,
-        "y": -2512
+        "name": "Katharina"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Syou-tang"
+    },
+    "termini": [
+      {
+        "name": "Olivia"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Włocławek"
+    },
+    "termini": [
+      {
+        "name": "Sarduchi"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Visigoth"
+    },
+    "termini": [
+      {
+        "name": "Mesa"
+      },
+      {
+        "name": "Epsilon Virgo"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Titania"
+    },
+    "termini": [
+      {
+        "name": "Mullins"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Yildun"
+    },
+    "termini": [
+      {
+        "name": "Templar"
+      },
+      {
+        "name": "Dickerson"
+      },
+      {
+        "name": "Mascot"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Congo"
+    },
+    "termini": [
+      {
+        "name": "SGC-902-36-G"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Felix"
+    },
+    "termini": [
+      {
+        "name": "SGC-902-36-G"
+      },
+      {
+        "name": "Darius"
+      }
+    ]
+  },
+  {
+    "nexus": {
+      "name": "Roulette"
+    },
+    "termini": [
+      {
+        "name": "Limbo"
       }
     ]
   }

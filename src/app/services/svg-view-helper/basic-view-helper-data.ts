@@ -5,6 +5,7 @@ import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component} from "@angular/core";
 import {RestrictedFleetArea} from "../../modules/star-map/payload/restricted-fleet-area";
+import {Junction, NamedThing, SimpleCoord} from "../assets/assets.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 
@@ -40,6 +41,9 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly ROUND_CAP_SUFFIX = "-roundCapSuffix";
     protected static readonly RESIZE_ON_ZOOM_MARKER = "no-resize";
     protected static readonly WORMHOLE_MARKER = "wormhole";
+    protected static readonly WORMHOLE_MARKER_ID_PREFIX = "wormholeName-";
+    protected static readonly WORMHOLE_MARKER_ID_CONNECTOR = "^id^";
+    protected static readonly WORMHOLE_HIGHLIGHT_MARKER = "wormhole-highlight";
     protected static readonly STAR_MARKER = "star";
     protected static readonly STAR_COLOR_MARKER = "star-color";
     protected static readonly STAR_IN_SYSTEM_MARKER = "star-in-system";
@@ -48,7 +52,8 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly CENTER_COORDINATES_MARKER = "center-";
     protected static readonly CENTER_COORDINATES_SEPARATOR = "|";
 
-    private orbits?: Orbit[];
+    private orbits: Orbit[] = [];
+    private orbitDefinitions: OrbitDefinition[] = [];
 
     private smallestXOrbit?: Orbit;
     private biggestXOrbit?: Orbit;
@@ -97,7 +102,7 @@ export class BasicViewHelperData extends SubscriptionManager {
     }
 
     private sortByOrbit() {
-        if (!this.orbits) {
+        if (this.orbits.length == 0) {
             throw new Error("The orbits must be present to calculate the map view.");
         }
         let sortedByX: Orbit[] = this.orbits.sort((a, b) => {
@@ -279,6 +284,16 @@ export class BasicViewHelperData extends SubscriptionManager {
         return id + BasicViewHelperData.CYCLING_CIRCLE_SUFFIX;
     }
 
+    protected getIdForWormhole(junction: Junction, terminus: NamedThing) {
+        return BasicViewHelperData.WORMHOLE_MARKER_ID_PREFIX + this.getWormholeTrip(junction) + BasicViewHelperData.WORMHOLE_MARKER_ID_CONNECTOR + terminus.name;
+    }
+
+    private getWormholeTrip(junction: Junction) {
+        let name = junction.nexus.name;
+        junction.termini.forEach(terminus => name += '|' + terminus.name);
+        return name;
+    }
+
     protected getFleetSharkID(fleet: Fleet | AbstractId | FleetMarker): string {
         let prefix: string = BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX;
         let id;
@@ -380,6 +395,7 @@ export class BasicViewHelperData extends SubscriptionManager {
     }
 
     protected setOrbits(orbits: OrbitDefinition[]) {
+        this.orbitDefinitions = orbits;
         this.orbits = orbits.map(od => od.orbit);
         this.sortByOrbit();
     }
@@ -399,5 +415,41 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected clearFleetGroups() {
         const groups = this.getFleetGroups();
         groups.forEach(g => this.groupsByID.delete(g.id()));
+    }
+
+    protected getBySystemName(name: string): SimpleCoord | undefined {
+        let filteredByName = this.orbitDefinitions.filter(c => BasicViewHelperData.compareSystemNames(c.name, name));
+        if (filteredByName.length == 0) {
+            console.log("A system for the name wasn't found: " + name);
+            return undefined;
+        }
+        const o = filteredByName[0];
+        return {
+            x: this.convertToStandardMetric(o.orbit.xCoordinate),
+            y: this.convertToStandardMetric(o.orbit.yCoordinate)
+        };
+    }
+
+    static compareSystemNames(o1: string, o2: string) {
+        return BasicViewHelperData.stripSystemName(o1) === BasicViewHelperData.stripSystemName(o2);
+    }
+
+    static stripSystemName(name: string) {
+        return name
+            .replace('-System', '')
+            .replace('_System', '')
+            .replace('system', '')
+            .replace('System', '')
+            .replace('Stern', '')
+            .replace('Star', '')
+            .replace('Neu', '')
+            .replace('New', '')
+            .replace('_', '')
+            .replace('-', '')
+            .replace(' ', '')
+            .replace('’', '')
+            .replace("'", '')
+            .trim()
+            .toLowerCase();
     }
 }

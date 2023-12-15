@@ -1,5 +1,5 @@
 import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
-import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
+import {Array, ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component, HostListener} from "@angular/core";
@@ -133,6 +133,8 @@ export class BasicViewHelper extends BasicViewHelperData {
                 .on('zoom', this.zoomModification)
                 .mouseover(this.mouseoverForText)
                 .mouseout(this.mouseoutForText)
+                .mouseover(this.mouseoverForWormhole)
+                .mouseout(this.mouseoutForWormhole)
                 .click(this.clickEventForCelestial)
                 .click(this.clickEventForFleetGroup)
         }
@@ -606,6 +608,37 @@ export class BasicViewHelper extends BasicViewHelperData {
             } else {
                 this.removeCyclingCircle(id);
             }
+        }
+    }
+
+    mouseoverForWormhole = (event: PointerEvent) => {
+        let id = this.getIdFromEvent(event);
+        if (id.includes(BasicViewHelperData.WORMHOLE_MARKER_ID_PREFIX) && id.includes(BasicViewHelperData.WORMHOLE_MARKER_ID_CONNECTOR)) {
+            let wormholeName = id.replaceAll(BasicViewHelperData.WORMHOLE_MARKER_ID_PREFIX, '').split(BasicViewHelperData.WORMHOLE_MARKER_ID_CONNECTOR)[0];
+            this.getOrCreateMainSubLayerGroup().children()
+                .filter(e => this.filterWormhole(e.id(), wormholeName))
+                .forEach(e => e.addClass(BasicViewHelperData.WORMHOLE_HIGHLIGHT_MARKER));
+        }
+    }
+
+    private filterWormhole(id: string, wormholeName: string) {
+        let fromWH = new Set<string>(wormholeName.split('|').map(s => BasicViewHelperData.stripSystemName(s)));
+        let fromId = new Set<string>(
+            id.replaceAll(BasicViewHelperData.WORMHOLE_MARKER_ID_PREFIX, '')
+                .replaceAll(BasicViewHelperData.WORMHOLE_MARKER_ID_CONNECTOR, '')
+                .split('|').map(s => BasicViewHelperData.stripSystemName(s)));
+
+        let presentInWH = Array.from(fromId.keys()).filter(id => Array.from(fromWH).includes(id)).length > 0;
+        let presentInID = Array.from(fromWH.keys()).filter(id => Array.from(fromId).includes(id)).length > 0;
+        return presentInID || presentInWH;
+    }
+
+    mouseoutForWormhole = (event: PointerEvent) => {
+        let id = this.getIdFromEvent(event);
+        if (id.includes(BasicViewHelperData.WORMHOLE_MARKER_ID_PREFIX) && id.includes(BasicViewHelperData.WORMHOLE_MARKER_ID_CONNECTOR)) {
+            this.getOrCreateMainSubLayerGroup().children()
+                .filter(e => e.id().includes(BasicViewHelperData.WORMHOLE_MARKER_ID_PREFIX))
+                .forEach(e => e.removeClass(BasicViewHelperData.WORMHOLE_HIGHLIGHT_MARKER));
         }
     }
 

@@ -48,11 +48,16 @@ export class InterstellarViewHelper extends BasicViewHelper {
             const subLayerGroup = this.getOrCreateMainSubLayerGroup();
             junctions.forEach(junction => {
                 junction.termini.forEach(terminus => {
-                    subLayerGroup
-                        .line(junction.position.x, junction.position.y, terminus.x, terminus.y)
-                        .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER)
-                        .addClass(BasicViewHelperData.WORMHOLE_MARKER)
-                        .stroke({width: 1, color: 'irrelevant'});
+                    let nexus = this.getBySystemName(junction.nexus.name);
+                    let terminal = this.getBySystemName(terminus.name);
+                    if (!!nexus && !!terminal) {
+                        subLayerGroup
+                            .line(nexus.x, nexus.y, terminal.x, terminal.y)
+                            .id(this.getIdForWormhole(junction, terminus))
+                            .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER)
+                            .addClass(BasicViewHelperData.WORMHOLE_MARKER)
+                            .stroke({width: 2, color: 'irrelevant'});
+                    }
                 });
             });
         });

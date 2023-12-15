@@ -3,6 +3,8 @@ import {Component} from "@angular/core";
 import {SubscriptionManager} from "../../../../subscription.manager";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 import {Coords} from "../mission-administration/mission-administration.component";
+import {SimpleCoord} from "../../../../services/assets/assets.service";
+import {BasicViewHelperData} from "../../../../services/svg-view-helper/basic-view-helper-data";
 
 
 @Component({
@@ -36,7 +38,7 @@ export class MapData extends SubscriptionManager {
     protected static readonly CENTER_COORDINATES_MARKER = "center-";
     protected static readonly CENTER_COORDINATES_SEPARATOR = "|";
 
-    private orbits?: Coords[];
+    private orbits: Coords[] = [];
 
     protected smallestXOrbit?: Coords;
     protected biggestXOrbit?: Coords;
@@ -71,7 +73,7 @@ export class MapData extends SubscriptionManager {
     }
 
     private sortByOrbit() {
-        if (!this.orbits) {
+        if (this.orbits.length == 0) {
             throw new Error("The orbits must be present to calculate the map view.");
         }
         let sortedByX: Coords[] = this.orbits.sort((a, b) => {
@@ -195,5 +197,18 @@ export class MapData extends SubscriptionManager {
     protected setOrbits(orbits: LocalMapOrbitDefinition[]) {
         this.orbits = orbits.map(od => od.celestial);
         this.sortByOrbit();
+    }
+
+    protected getBySystemName(name: string): SimpleCoord | undefined {
+        let filteredByName = this.orbits.filter(c => BasicViewHelperData.compareSystemNames(c.name, name));
+        if (filteredByName.length == 0) {
+            console.log("A system for the name wasn't found: " + name);
+            return undefined;
+        }
+        const o = filteredByName[0];
+        return {
+            x: o.x,
+            y: o.y
+        };
     }
 }
