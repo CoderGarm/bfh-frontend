@@ -1150,7 +1150,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected calculatePositionOnTrack(startOrbit: Orbit, targetOrbit: Orbit, fleetMarker: FleetMarker, arr: LineCommand[]) {
         let distance = this.calculateDistanceOfOrbits(startOrbit, targetOrbit);
-        let part = (fleetMarker.move!.originalDuration - fleetMarker.move!.moveDoneAtZero) / fleetMarker.move!.originalDuration;
+        let part = (fleetMarker.move!.originalDuration - fleetMarker.move!.ticksLeft) / fleetMarker.move!.originalDuration;
         if (part < 0.1) {
             part = 0.1;
         } else if (part > 0.9) {

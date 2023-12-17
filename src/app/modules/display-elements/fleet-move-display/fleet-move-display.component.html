@@ -2,7 +2,7 @@
     <div mat-subheader *ngIf="!!fleet.move">
         {{  'fleet.display.move.movement.title' | translate  }} towards {{ destinationRepresentation }}
         <br>
-        {{ fleet.move.moveDoneAtZero }} of {{ fleet.move!.originalDuration }} ticks left
+        {{ fleet.move.ticksLeft }} of {{ fleet.move!.originalDuration }} ticks left
     </div>
     <div mat-subheader *ngIf="!!fleet.orbit">
         {{  'fleet.display.move.orbit.title' | translate  }}: {{ orbitRepresentation }}
@@ -13,7 +13,7 @@
     <div mat-subheader *ngIf="!!fleet.move">
         towards {{ destinationRepresentation }}
         <br>
-        {{ fleet.move.moveDoneAtZero }} of {{ fleet.move!.originalDuration }} ticks left
+        {{ fleet.move.ticksLeft }} of {{ fleet.move!.originalDuration }} ticks left
     </div>
     <div mat-subheader *ngIf="!!fleet.orbit">{{ orbitRepresentation }}</div>
 </div>
@@ -22,7 +22,7 @@
     <div mat-subheader *ngIf="!!fleet.move">
         towards {{ destinationRepresentation }}
         <br>
-        {{ fleet.move.moveDoneAtZero }} ticks left
+        {{ fleet.move.ticksLeft }} ticks left
     </div>
     <div mat-subheader *ngIf="!!fleet.orbit">currently at  {{ orbitRepresentation }}</div>
 </div>

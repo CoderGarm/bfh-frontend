@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 import { FleetOrbit } from './fleetOrbit';
+import { FlightPlan } from './flightPlan';
+import { Tick } from './tick';
 
 /**
  * .
@@ -21,12 +23,17 @@ export interface Move {
     idFleetInMotion: number;
     startOrbit: FleetOrbit;
     targetOrbit: FleetOrbit;
+    started: Tick;
     /**
      * The current left over duration of this movement.
      */
-    moveDoneAtZero: number;
+    ticksLeft: number;
     /**
      * The original duration of this movement.
      */
     originalDuration: number;
+    /**
+     * The waypoints of this move.
+     */
+    waypoints: Array<FlightPlan>;
 }

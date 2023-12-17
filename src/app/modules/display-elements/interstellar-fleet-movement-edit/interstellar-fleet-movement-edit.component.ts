@@ -168,7 +168,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         if (moves.length != 1) {
             return "";
         }
-        return moves[0].moveDoneAtZero;
+        return moves[0].ticksLeft;
     }
 
     isSameOrbit(fleet: Fleet) {

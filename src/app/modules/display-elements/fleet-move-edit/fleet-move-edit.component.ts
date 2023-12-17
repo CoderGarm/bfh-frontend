@@ -133,11 +133,11 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         if (moves.length != 1) {
             return "";
         }
-        return moves[0].moveDoneAtZero;
+        return moves[0].ticksLeft;
     }
 
     getTicksLeft(fleet: Fleet) {
-        return fleet.move!.originalDuration - fleet!.move!.moveDoneAtZero;
+        return fleet.move!.originalDuration - fleet!.move!.ticksLeft;
     }
 
     private createDestinationRepresentation() {

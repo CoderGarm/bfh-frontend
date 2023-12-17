@@ -94,7 +94,7 @@ export class FleetNotchDisplayComponent extends SubscriptionManager implements O
                 destination += this.fleet.move.targetOrbit.system.name;
             }
             if (!!this.fleet.move) {
-                destination += ', ' + this.fleet.move.moveDoneAtZero + ' ticks';
+                destination += ', ' + this.fleet.move.ticksLeft + ' ticks';
             }
         }
         this.destinationRepresentation = destination;
