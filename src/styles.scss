@@ -422,3 +422,7 @@ mat-step-header {
 .capitalize:first-letter {
   text-transform: uppercase;
 }
+
+app-home > app-display-article > div > markdown > pre {
+  height: 600px;
+}
