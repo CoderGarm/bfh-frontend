@@ -47,6 +47,9 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         let sub = this.starMapCommService.getInterstellarMoveEmitter().subscribe(resp => this.moveFleet(resp));
         this.subscriptions.push(sub);
 
+        sub = this.starMapCommService.getPlannedInterstellarMoveEmitter().subscribe(resp => this.drawPlannedMoves(resp));
+        this.subscriptions.push(sub);
+
         this.filteredCenter = this.centerFormControl.valueChanges.pipe(
             startWith(null),
             map((c: string | null) => (c ? this._filter(c) : this.coords.slice()))
@@ -142,5 +145,9 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             this.setFleets(this.distribution);
         });
         this.subscriptions.push(sub);
+    }
+
+    private drawPlannedMoves(moves: FleetMove[]) {
+// fixme draw moves
     }
 }

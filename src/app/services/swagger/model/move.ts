@@ -35,5 +35,9 @@ export interface Move {
     /**
      * The waypoints of this move.
      */
-    waypoints: Array<FlightPlan>;
+    waypoints: Array<FleetOrbit>;
+    /**
+     * The real flight plan of this move.
+     */
+    flightPlan: Array<FlightPlan>;
 }

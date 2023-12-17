@@ -38,20 +38,17 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     }
 
     ngAfterViewInit(): void {
-        this.fetchPossibleMovements();
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes[this.fleetsInputDefinition]) {
             this.fleets = this.fleets.filter(f => f.owner.idUser === this.userId).filter(f => !f.move);
-            this.fetchPossibleMovements();
-        }
-        if (changes[this.destinationDefinition]) {
-            this.fetchPossibleMovements();
         }
         if (changes['deselectAllMovements']) {
             this.fleets.forEach(f => this.selectForFlight(false, f));
         }
+        this.fetchPossibleMovements();
     }
 
     /**

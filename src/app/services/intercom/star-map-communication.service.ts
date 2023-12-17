@@ -32,6 +32,8 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private interstellarMoveEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
 
+    private plannedInterstellarMovesEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
+
     private stellarMoveEmitter: EventEmitter<StellarMovement> = new EventEmitter<StellarMovement>();
 
     private mergeFleetsEmitter: EventEmitter<FleetMerge> = new EventEmitter<FleetMerge>();
@@ -101,6 +103,10 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     getInterstellarMoveEmitter() {
         return this.interstellarMoveEmitter;
+    }
+
+    getPlannedInterstellarMoveEmitter() {
+        return this.plannedInterstellarMovesEmitter;
     }
 
     getMergeFleetsEmitter() {
@@ -318,6 +324,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     setPlannedInterstellarMovements(plannedMoves: FleetMove[]) {
         this.plannedInterstellarMoves = plannedMoves;
+        this.plannedInterstellarMovesEmitter.emit(this.plannedInterstellarMoves);
     }
 
     setPlannedStellarMovements(plannedMoves: FleetMove[]) {
