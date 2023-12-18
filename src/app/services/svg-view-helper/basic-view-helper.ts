@@ -145,32 +145,9 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.zoomLevel = ev.detail.level;
         this.zoomResizableContents();
         this.zoomFleetGroups();
-        this.zoomWarshipPolygons();
         // must be zoomed after all others
         this.zoomCyclingCircles();
         this.zoomStateDots();
-        this.zoomTexts();
-    }
-
-    private zoomTexts() {
-        if (this.zoomLevel <= 1) {
-            return;
-        }
-
-        let texts = this.canvas!.children()
-            // dont resize dot texts
-            .filter(c => c.classes().filter(css => css == BasicViewHelperData.MOVABLE_STATE_DOT_MARKER).length == 0)
-            .filter(c => c.classes().filter(css => css == BasicViewHelperData.TEXT_MARKER).length > 0);
-        texts.forEach(text => this.resizeText(<Text>text));
-    }
-
-    private zoomWarshipPolygons() {
-        if (this.zoomLevel <= 1) {
-            return;
-        }
-
-        const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX) && c.id().endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX));
-        // todo zoom it
     }
 
     private zoomFleetGroups() {
@@ -315,6 +292,16 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
     }
 
+    protected getOrCreateFleetConfirmedMoveGroup() {
+        const mainGroups = this.canvas!.children().filter(c => c.id() === BasicViewHelperData.CONFIRMED_MOVE_GROUP);
+        if (mainGroups.length > 0) {
+            return <G>mainGroups[0]!;
+        } else {
+            this.getOrCreateMainSubLayerGroup();
+            return this.canvas!.group().id(BasicViewHelperData.CONFIRMED_MOVE_GROUP);
+        }
+    }
+
     protected getOrCreateMainSubLayerGroup() {
         const mainGroups = this.canvas!.children().filter(c => c.id() === BasicViewHelperData.SUB_LAYER_GROUP);
         if (mainGroups.length > 0) {
@@ -432,7 +419,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
         this.setTextOptions(text);
 
-        if (!orbitDefinition.isColonizedByLoggedInUser && !orbitDefinition.isColonizedByOtherUser && !orbitDefinition.isNpc) {
+        if (!orbitDefinition.isColonizedByLoggedInUser) {
             // add only texts which must be switched
             this.setTextById(orbitID, text);
         } else {
@@ -720,7 +707,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
         const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
-
+        // fixme replace by animation for circle
         const elementToParent = this.findElementAndParentById(id);
         let parent: Dom = elementToParent.parent;
         let element: Element | undefined = elementToParent.element;

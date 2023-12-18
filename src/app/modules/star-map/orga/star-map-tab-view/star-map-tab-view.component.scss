@@ -62,6 +62,17 @@
   stroke-linecap: round;
 }
 
+.waypoint-marker {
+  stroke: aquamarine;
+  stroke-width: 1;
+}
+
+.course-plot {
+  stroke: darkorange;
+  stroke-dasharray: 100;
+  stroke-width: 1;
+}
+
 .colonizable {
   stroke: #306f91;
   stroke-width: 1;
@@ -95,10 +106,6 @@
 
 .svg-text {
   fill: var(--map-text-color);
-}
-
-.svg-text:hover {
-  opacity: 0.3;
 }
 
 .notch-container {

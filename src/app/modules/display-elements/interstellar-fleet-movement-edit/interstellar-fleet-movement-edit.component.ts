@@ -123,6 +123,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         }
         let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
+            this.commService.setConfirmedInterstellarMovements(this.plannedMovements);
             const fleetsForMove = this.plannedMovements.flatMap(m => this.fleets.filter(f => f.idFleet === m.idFleetInMotion));
             fleetsForMove.forEach(f => this.selectForFlight(true, f));
         });

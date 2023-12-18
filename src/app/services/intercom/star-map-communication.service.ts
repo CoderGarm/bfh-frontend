@@ -9,6 +9,7 @@ import {
     FleetMerge,
     FleetMove,
     FleetOrbit,
+    Move,
     Orbit,
     Planet,
     ResourceDeposit,
@@ -32,7 +33,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private interstellarMoveEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
 
-    private plannedInterstellarMovesEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
+    private confirmedInterstellarMovesEmitter: EventEmitter<Move[]> = new EventEmitter<Move[]>();
 
     private stellarMoveEmitter: EventEmitter<StellarMovement> = new EventEmitter<StellarMovement>();
 
@@ -54,6 +55,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     private selectedFleetMarker: FleetMarker[] = [];
     private plannedStellarMoves: FleetMove[] = [];
     private plannedInterstellarMoves: FleetMove[] = [];
+    private confirmedInterstellarMoves: Move[] = [];
     private fleetsToCancelMovement: Fleet[] = [];
     private fleetMerge?: FleetMerge;
 
@@ -105,8 +107,8 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return this.interstellarMoveEmitter;
     }
 
-    getPlannedInterstellarMoveEmitter() {
-        return this.plannedInterstellarMovesEmitter;
+    getConfirmedInterstellarMoveEmitter() {
+        return this.confirmedInterstellarMovesEmitter;
     }
 
     getMergeFleetsEmitter() {
@@ -324,7 +326,11 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     setPlannedInterstellarMovements(plannedMoves: FleetMove[]) {
         this.plannedInterstellarMoves = plannedMoves;
-        this.plannedInterstellarMovesEmitter.emit(this.plannedInterstellarMoves);
+    }
+
+    setConfirmedInterstellarMovements(confirmedMoves: Move[]) {
+        this.confirmedInterstellarMoves = confirmedMoves;
+        this.confirmedInterstellarMovesEmitter.emit(this.confirmedInterstellarMoves);
     }
 
     setPlannedStellarMovements(plannedMoves: FleetMove[]) {

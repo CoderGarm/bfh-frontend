@@ -418,7 +418,7 @@ export class MapDataProvider extends MapData {
 
     drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
         const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
-
+        // fixme replace by animation for circle
         const elementToParent = this.findElementAndParentById(id);
         let parent: Dom = elementToParent.parent;
         let element: Element | undefined = elementToParent.element;

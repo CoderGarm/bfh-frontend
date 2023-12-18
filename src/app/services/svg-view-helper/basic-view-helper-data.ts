@@ -16,6 +16,7 @@ export class BasicViewHelperData extends SubscriptionManager {
 
     protected static readonly CELESTIAL_MAIN_GROUP = 'celestial-main-group';
     protected static readonly SUB_LAYER_GROUP = 'sub-layer-group';
+    protected static readonly CONFIRMED_MOVE_GROUP = 'confirmed_move_group';
 
     protected static readonly ORBIT_ID_MARKER = "orbitId-";
     protected static readonly GROUP_SELECTOR_SUFFIX: string = "-group";

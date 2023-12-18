@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {FleetApiService, FleetMarker, FleetMove, StarSystem} from "../../../../services/swagger";
+import {FleetApiService, FleetMarker, FleetMove, Move, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
@@ -11,8 +11,9 @@ import {Observable, startWith} from "rxjs";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {FormControl} from "@angular/forms";
 import {map} from "rxjs/operators";
-import {Point} from "@svgdotjs/svg.js";
+import {ArrayXY, Point} from "@svgdotjs/svg.js";
 import {FleetEventService} from "../../../../services/intercom/fleet-event.service";
+import {BasicViewHelper} from "../../../../services/svg-view-helper/basic-view-helper";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -47,7 +48,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         let sub = this.starMapCommService.getInterstellarMoveEmitter().subscribe(resp => this.moveFleet(resp));
         this.subscriptions.push(sub);
 
-        sub = this.starMapCommService.getPlannedInterstellarMoveEmitter().subscribe(resp => this.drawPlannedMoves(resp));
+        sub = this.starMapCommService.getConfirmedInterstellarMoveEmitter().subscribe(resp => this.drawPlannedMoves(resp));
         this.subscriptions.push(sub);
 
         this.filteredCenter = this.centerFormControl.valueChanges.pipe(
@@ -147,7 +148,46 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.subscriptions.push(sub);
     }
 
-    private drawPlannedMoves(moves: FleetMove[]) {
-// fixme draw moves
+    private drawPlannedMoves(moves: Move[]) {
+        const group = this.getOrCreateFleetConfirmedMoveGroup();
+        moves.forEach(m => {
+            const waypoints = m.waypoints
+                .filter(w => {
+                    const atUniMapLooseWaypoint = !!w.orbit && !w.system;
+                    const atUniMapSystemWaypoint = !w.orbit && !!w.system;
+                    return atUniMapLooseWaypoint || atUniMapSystemWaypoint;
+                }).map(w => !!w.orbit ? w.orbit : w.system!.orbit);
+
+            const idFleet = m.idFleetInMotion;
+            const fleetMarker = this.distribution.filter(fm => fm.fleet.id === idFleet)[0];
+
+            for (let i = 0; i < waypoints.length; i++) {
+                const orbit = waypoints[i];
+                const circle = group.circle()
+                    .x(this.convertToStandardMetric(orbit.xCoordinate))
+                    .y(this.convertToStandardMetric(orbit.yCoordinate))
+                    .id(`waypoint-no-${i}-of-${idFleet}`)
+                    .fill(BasicViewHelper.NONE_FILL_COLOR)
+                    .addClass("waypoint-marker")
+                    .radius(BasicViewHelper.STAR_RADIUS * 2);
+
+                circle
+                    .animate(1600, 0, 'after').transform({scale: [2, 2]}).css('opacity', '0')
+                    .animate(1600, 0, 'after').transform({scale: [1, 1]}).css('opacity', '1')
+                    .loop(500, true, 300);
+            }
+
+            const course = waypoints.map(w => <ArrayXY>[
+                this.convertToStandardMetric(w.xCoordinate),
+                this.convertToStandardMetric(w.yCoordinate)
+            ]);
+            const polyline = group.polyline(course)
+                .fill(BasicViewHelper.NONE_FILL_COLOR)
+                .addClass('course-plot');
+
+            polyline
+                .animate(10000, 0, 'after').css('stroke-dashoffset', '-1000')
+                .loop(500, false, 0);
+        });
     }
 }
