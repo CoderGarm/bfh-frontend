@@ -48,6 +48,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             if (!!elements && elements.length > 0) {
                 elements.forEach(elem => this.getOrCreateMainCelestialGroup().removeElement(elem));
             }
+            this.getOrCreateFleetConfirmedMoveGroup().clear();
         });
         this.subscriptions.push(sub);
     }

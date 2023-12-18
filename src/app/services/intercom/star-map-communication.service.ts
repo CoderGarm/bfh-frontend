@@ -39,15 +39,15 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private mergeFleetsEmitter: EventEmitter<FleetMerge> = new EventEmitter<FleetMerge>();
 
+    private fleetsDesignatedForMotionEmitter: EventEmitter<Fleet[]> = new EventEmitter<Fleet[]>();
+
     private storage: Map<number, Fleet> = new Map<number, Fleet>();
     private storageUsedPersonal: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
+    private fleetsDesignatedForMotion: Fleet[] = [];
     galaxyFleetDistribution: FleetMarker[] = [];
-
     selectedStarSystem?: StarSystem;
-
     selectedFleets: Fleet[] = [];
-
     fleetOrbit?: FleetOrbit;
     selectedPlanet?: Planet;
     displayedStarSystem?: StarSystem;
@@ -121,6 +121,15 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     getMovingFleetMarker() {
         return this.selectedFleetMarker.filter(fm => !!fm.move);
+    }
+
+    getFleetsDesignatedForMotionEmitter() {
+        return this.fleetsDesignatedForMotionEmitter;
+    }
+
+
+    getFleetsDesignatedForMotion() {
+        return this.fleetsDesignatedForMotion;
     }
 
     displaySystem(system?: StarSystem) {
@@ -351,5 +360,15 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     mergeDisabled() {
         return !this.fleetMerge;
+    }
+
+    pushFleetsDesignatedForMotion(fleet: Fleet) {
+        this.fleetsDesignatedForMotion.push(fleet);
+        this.fleetsDesignatedForMotionEmitter.emit(this.fleetsDesignatedForMotion);
+    }
+
+    spliceFleetsDesignatedForMotion(indexOf: number, number: number) {
+        this.fleetsDesignatedForMotion.splice(indexOf, number);
+        this.fleetsDesignatedForMotionEmitter.emit(this.fleetsDesignatedForMotion);
     }
 }

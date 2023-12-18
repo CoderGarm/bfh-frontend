@@ -14,6 +14,7 @@ import {map} from "rxjs/operators";
 import {ArrayXY, Point} from "@svgdotjs/svg.js";
 import {FleetEventService} from "../../../../services/intercom/fleet-event.service";
 import {BasicViewHelper} from "../../../../services/svg-view-helper/basic-view-helper";
+import {BasicViewHelperData} from "../../../../services/svg-view-helper/basic-view-helper-data";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -49,6 +50,21 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.subscriptions.push(sub);
 
         sub = this.starMapCommService.getConfirmedInterstellarMoveEmitter().subscribe(resp => this.drawPlannedMoves(resp));
+        this.subscriptions.push(sub);
+
+        sub = this.starMapCommService.getFleetsDesignatedForMotionEmitter().subscribe(resp => {
+            const fleetIDs = resp.map(f => f.idFleet);
+            const group = this.getOrCreateFleetConfirmedMoveGroup();
+            group
+                .children()
+                .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
+                .forEach(c => {
+                    const cssClasses = c.classes().filter(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
+                    if (cssClasses.length == 1 && !fleetIDs.includes(Number.parseInt(cssClasses[0].replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '')))) {
+                        group.removeElement(c);
+                    }
+                });
+        });
         this.subscriptions.push(sub);
 
         this.filteredCenter = this.centerFormControl.valueChanges.pipe(
@@ -159,7 +175,6 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 }).map(w => !!w.orbit ? w.orbit : w.system!.orbit);
 
             const idFleet = m.idFleetInMotion;
-            const fleetMarker = this.distribution.filter(fm => fm.fleet.id === idFleet)[0];
 
             for (let i = 0; i < waypoints.length; i++) {
                 const orbit = waypoints[i];
@@ -168,7 +183,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                     .y(this.convertToStandardMetric(orbit.yCoordinate))
                     .id(`waypoint-no-${i}-of-${idFleet}`)
                     .fill(BasicViewHelper.NONE_FILL_COLOR)
-                    .addClass("waypoint-marker")
+                    .addClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER)
+                    .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + idFleet)
                     .radius(BasicViewHelper.STAR_RADIUS * 2);
 
                 circle
@@ -183,7 +199,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             ]);
             const polyline = group.polyline(course)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
-                .addClass('course-plot');
+                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER)
+                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + idFleet);
 
             polyline
                 .animate(10000, 0, 'after').css('stroke-dashoffset', '-1000')

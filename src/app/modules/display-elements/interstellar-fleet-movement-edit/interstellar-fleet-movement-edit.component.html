@@ -9,7 +9,7 @@
                                   [disabled]="true">{{ fleet.name }}: {{ 'fleets.movement.select-for-move.no-ftl.title' | translate }}</mat-checkbox>
 
                     <mat-checkbox *ngIf="!nonFtlFleets.includes(fleet.idFleet)"
-                                  (change)="selectForFlight($event.checked, fleet)" [checked]="fleetsDesignatedForMotion.includes(fleet)">
+                                  (change)="selectForFlight($event.checked, fleet)" [checked]="commService.getFleetsDesignatedForMotion().includes(fleet)">
                         <div *ngIf="!!plannedMovements">
                             {{ fleet.name }}: {{ 'fleets.movement.select-for-move.checkbox' | translate }} in {{getTicks(fleet)}} ticks
                         </div>

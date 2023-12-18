@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
@@ -11,7 +11,7 @@ import DistanceMetricEnum = Distance.DistanceMetricEnum;
     templateUrl: './interstellar-fleet-movement-edit.component.html',
     styleUrls: ['./interstellar-fleet-movement-edit.component.scss']
 })
-export class InterstellarFleetMovementEditComponent extends SubscriptionManager implements AfterViewInit, OnChanges {
+export class InterstellarFleetMovementEditComponent extends SubscriptionManager implements OnChanges {
 
     @Input()
     deselectAllMovements: number = 0;
@@ -20,25 +20,15 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     fleets: Fleet[] = [];
     fleetsInputDefinition: string = "fleets";
 
-    fleetsDesignatedForMotion: Fleet[] = [];
-
-    /**
-     * the destination system
-     */
     @Input()
     destination?: StarSystem;
-    destinationDefinition: string = "destination";
 
     plannedMovements: Move[] = [];
     nonFtlFleets: number[] = [];
 
     constructor(private fleetService: FleetApiService,
-                private commService: StarMapCommunicationService) {
+                protected commService: StarMapCommunicationService) {
         super();
-    }
-
-    ngAfterViewInit(): void {
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -51,10 +41,6 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         this.fetchPossibleMovements();
     }
 
-    /**
-     * calculates the hyper limit
-     * @private
-     */
     private calculateHyperLimit() {
         if (!this.destination) {
             return 0;
@@ -123,6 +109,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         }
         let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
+            console.log(resp) // fixme will not be fetched in every case when changing the selected fleets -> refactor to "move from to" in storage
             this.commService.setConfirmedInterstellarMovements(this.plannedMovements);
             const fleetsForMove = this.plannedMovements.flatMap(m => this.fleets.filter(f => f.idFleet === m.idFleetInMotion));
             fleetsForMove.forEach(f => this.selectForFlight(true, f));
@@ -135,8 +122,9 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         this.plannedMovements.forEach(move => {
             m.set(move.idFleetInMotion, move);
         })
-        let plannedMoves: FleetMove[] = this.fleetsDesignatedForMotion.map(fleet => {
-            let plannedMove: Move | undefined = m.get(fleet.idFleet);
+        let plannedMoves: FleetMove[] = this.commService.getFleetsDesignatedForMotion().map(fleet => {
+            const moves = this.plannedMovements.filter(pm => pm.idFleetInMotion === fleet.idFleet);
+            let plannedMove: Move | undefined = moves.length == 1 ? moves[0] : undefined;
             if (!plannedMove) {
                 throw new Error("There should be a movement already planned and validated.");
             }
@@ -152,11 +140,11 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     }
 
     selectForFlight(checked: boolean, fleet: Fleet) {
-        let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
+        let indexOf = this.commService.getFleetsDesignatedForMotion().indexOf(fleet);
         if (checked && indexOf == -1) {
-            this.fleetsDesignatedForMotion.push(fleet);
+            this.commService.pushFleetsDesignatedForMotion(fleet);
         } else {
-            this.fleetsDesignatedForMotion.splice(indexOf, 1);
+            this.commService.spliceFleetsDesignatedForMotion(indexOf, 1);
         }
         this.sendPlannedFlights();
     }
