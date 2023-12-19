@@ -1,6 +1,7 @@
 import {SubscriptionManager} from "../../subscription.manager";
 import {EventEmitter, Injectable} from "@angular/core";
 import {
+    ConfirmedMove,
     Distance,
     EnumValueDto,
     Fleet,
@@ -9,7 +10,6 @@ import {
     FleetMerge,
     FleetMove,
     FleetOrbit,
-    Move,
     Orbit,
     Planet,
     ResourceDeposit,
@@ -33,7 +33,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private interstellarMoveEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
 
-    private confirmedInterstellarMovesEmitter: EventEmitter<Move[]> = new EventEmitter<Move[]>();
+    private confirmedInterstellarMovesEmitter: EventEmitter<ConfirmedMove[]> = new EventEmitter<ConfirmedMove[]>();
 
     private stellarMoveEmitter: EventEmitter<StellarMovement> = new EventEmitter<StellarMovement>();
 
@@ -55,7 +55,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     private selectedFleetMarker: FleetMarker[] = [];
     private plannedStellarMoves: FleetMove[] = [];
     private plannedInterstellarMoves: FleetMove[] = [];
-    private confirmedInterstellarMoves: Move[] = [];
+    private confirmedInterstellarMoves: ConfirmedMove[] = [];
     private fleetsToCancelMovement: Fleet[] = [];
     private fleetMerge?: FleetMerge;
 
@@ -337,7 +337,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
         this.plannedInterstellarMoves = plannedMoves;
     }
 
-    setConfirmedInterstellarMovements(confirmedMoves: Move[]) {
+    setConfirmedInterstellarMovements(confirmedMoves: ConfirmedMove[]) {
         this.confirmedInterstellarMoves = confirmedMoves;
         this.confirmedInterstellarMovesEmitter.emit(this.confirmedInterstellarMoves);
     }
@@ -370,5 +370,9 @@ export class StarMapCommunicationService extends SubscriptionManager {
     spliceFleetsDesignatedForMotion(indexOf: number, number: number) {
         this.fleetsDesignatedForMotion.splice(indexOf, number);
         this.fleetsDesignatedForMotionEmitter.emit(this.fleetsDesignatedForMotion);
+    }
+
+    getConfirmedInterstellarMoves(fleetIDs: number[]) {
+        return this.confirmedInterstellarMoves.filter(cm => !!cm.attendants.find(a => fleetIDs.includes(a.fleet.id)));
     }
 }

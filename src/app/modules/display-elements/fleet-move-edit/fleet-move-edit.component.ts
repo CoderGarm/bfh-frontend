@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMove, Move, Orbit, Planet, PlanetApiService, StarSystem} from "../../../services/swagger";
+import {ConfirmedMove, Fleet, FleetApiService, FleetMove, Move, Orbit, Planet, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {StarMapCommunicationService} from "../../../services/intercom/star-map-communication.service";
 import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
@@ -31,10 +31,9 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
 
     destinationRepresentation: string = "";
 
-    plannedMovements: Move[] = [];
+    plannedMovements: ConfirmedMove[] = [];
 
     constructor(private fleetService: FleetApiService,
-                private planetService: PlanetApiService,
                 private commService: StarMapCommunicationService) {
         super();
     }
@@ -77,8 +76,9 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         }
         let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
-            const fleetsForMove = this.plannedMovements.flatMap(m => this.fleets.filter(f => f.idFleet === m.idFleetInMotion));
-            fleetsForMove.forEach(f => this.selectForFlight(true, f));
+            this.plannedMovements
+                .flatMap(m => this.fleets.filter(f => !!m.attendants.find(fm => fm.fleet.id == f.idFleet)))
+                .forEach(f => this.selectForFlight(true, f));
         });
         this.subscriptions.push(sub);
     }
@@ -96,7 +96,9 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     sendPlannedFlights() {
         const m: Map<number, Move> = new Map<number, Move>();
         this.plannedMovements.forEach(move => {
-            m.set(move.idFleetInMotion, move);
+            move.attendants.forEach(fm =>
+                m.set(fm.fleet.id, move.move)
+            );
         })
         let plannedMoves: FleetMove[] = this.fleetsDesignatedForMotion.map(fleet => {
             let plannedMove: Move | undefined = m.get(fleet.idFleet);
@@ -129,11 +131,8 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     }
 
     getTicks(fleet: Fleet) {
-        let moves = this.plannedMovements.filter(fl => fl.idFleetInMotion == fleet.idFleet);
-        if (moves.length != 1) {
-            return "";
-        }
-        return moves[0].ticksLeft;
+        let moves = this.plannedMovements.find(fl => !!fl.attendants.find(fm => fm.fleet.id == fleet.idFleet));
+        return moves ? moves.move.ticksLeft : '';
     }
 
     getTicksLeft(fleet: Fleet) {

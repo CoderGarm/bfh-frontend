@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
+import {ConfirmedMove, Distance, Fleet, FleetApiService, FleetMove, Move, Orbit, StarSystem} from "../../../services/swagger";
 import {SubscriptionManager} from "../../../subscription.manager";
 import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
 import {SystemViewHelper} from "../../star-map/payload/system-view-helper";
@@ -23,7 +23,7 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     @Input()
     destination?: StarSystem;
 
-    plannedMovements: Move[] = [];
+    plannedMovements: ConfirmedMove[] = [];
     nonFtlFleets: number[] = [];
 
     constructor(private fleetService: FleetApiService,
@@ -109,10 +109,10 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
         }
         let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
-            console.log(resp) // fixme will not be fetched in every case when changing the selected fleets -> refactor to "move from to" in storage
             this.commService.setConfirmedInterstellarMovements(this.plannedMovements);
-            const fleetsForMove = this.plannedMovements.flatMap(m => this.fleets.filter(f => f.idFleet === m.idFleetInMotion));
-            fleetsForMove.forEach(f => this.selectForFlight(true, f));
+            this.plannedMovements
+                .flatMap(m => this.fleets.filter(f => !!m.attendants.find(fm => fm.fleet.id == f.idFleet)))
+                .forEach(f => this.selectForFlight(true, f));
         });
         this.subscriptions.push(sub);
     }
@@ -120,11 +120,12 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     sendPlannedFlights() {
         const m: Map<number, Move> = new Map<number, Move>();
         this.plannedMovements.forEach(move => {
-            m.set(move.idFleetInMotion, move);
+            move.attendants.forEach(fm =>
+                m.set(fm.fleet.id, move.move)
+            );
         })
         let plannedMoves: FleetMove[] = this.commService.getFleetsDesignatedForMotion().map(fleet => {
-            const moves = this.plannedMovements.filter(pm => pm.idFleetInMotion === fleet.idFleet);
-            let plannedMove: Move | undefined = moves.length == 1 ? moves[0] : undefined;
+            const plannedMove = m.get(fleet.idFleet);
             if (!plannedMove) {
                 throw new Error("There should be a movement already planned and validated.");
             }
@@ -150,11 +151,8 @@ export class InterstellarFleetMovementEditComponent extends SubscriptionManager 
     }
 
     getTicks(fleet: Fleet) {
-        let moves = this.plannedMovements.filter(fl => fl.idFleetInMotion == fleet.idFleet);
-        if (moves.length != 1) {
-            return "";
-        }
-        return moves[0].ticksLeft;
+        let moves = this.plannedMovements.find(fl => !!fl.attendants.find(fm => fm.fleet.id == fleet.idFleet));
+        return moves ? moves.move.ticksLeft : '';
     }
 
     isSameOrbit(fleet: Fleet) {

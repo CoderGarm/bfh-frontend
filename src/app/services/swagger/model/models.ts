@@ -26,6 +26,7 @@ export * from './colonization';
 export * from './combatRound';
 export * from './combatRoundKey';
 export * from './commissioning';
+export * from './confirmedMove';
 export * from './construction';
 export * from './convoyRaidActionItem';
 export * from './convoyRaidActionItemGroup';

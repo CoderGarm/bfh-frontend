@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { AbstractId } from '../model/abstractId';
+import { ConfirmedMove } from '../model/confirmedMove';
 import { Fleet } from '../model/fleet';
 import { FleetFormationMultiAction } from '../model/fleetFormationMultiAction';
 import { FleetFormationMultiActionResult } from '../model/fleetFormationMultiActionResult';
@@ -27,7 +28,6 @@ import { FleetMergeResult } from '../model/fleetMergeResult';
 import { FleetMove } from '../model/fleetMove';
 import { FleetSplit } from '../model/fleetSplit';
 import { FrontendError } from '../model/frontendError';
-import { Move } from '../model/move';
 import { OrbitalStructures } from '../model/orbitalStructures';
 import { TransportJob } from '../model/transportJob';
 import { WarShip } from '../model/warShip';
@@ -673,9 +673,9 @@ export class FleetApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public planMovements(body: Array<FleetMove>, observe?: 'body', reportProgress?: boolean): Observable<Array<Move>>;
-    public planMovements(body: Array<FleetMove>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Move>>>;
-    public planMovements(body: Array<FleetMove>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Move>>>;
+    public planMovements(body: Array<FleetMove>, observe?: 'body', reportProgress?: boolean): Observable<Array<ConfirmedMove>>;
+    public planMovements(body: Array<FleetMove>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ConfirmedMove>>>;
+    public planMovements(body: Array<FleetMove>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ConfirmedMove>>>;
     public planMovements(body: Array<FleetMove>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -703,7 +703,7 @@ export class FleetApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Array<Move>>('post',`${this.basePath}/api/private/fleet/planMoves`,
+        return this.httpClient.request<Array<ConfirmedMove>>('post',`${this.basePath}/api/private/fleet/planMoves`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

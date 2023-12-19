@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {FleetApiService, FleetMarker, FleetMove, Move, StarSystem} from "../../../../services/swagger";
+import {ConfirmedMove, FleetApiService, FleetMarker, FleetMove, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
@@ -54,16 +54,9 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
         sub = this.starMapCommService.getFleetsDesignatedForMotionEmitter().subscribe(resp => {
             const fleetIDs = resp.map(f => f.idFleet);
-            const group = this.getOrCreateFleetConfirmedMoveGroup();
-            group
-                .children()
-                .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
-                .forEach(c => {
-                    const cssClasses = c.classes().filter(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
-                    if (cssClasses.length == 1 && !fleetIDs.includes(Number.parseInt(cssClasses[0].replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '')))) {
-                        group.removeElement(c);
-                    }
-                });
+            const selectedMovesHashes = this.starMapCommService.getConfirmedInterstellarMoves(fleetIDs);
+            this.dropUnusedCoursePlots(selectedMovesHashes);
+            this.addMissingCoursePlots(selectedMovesHashes);
         });
         this.subscriptions.push(sub);
 
@@ -164,9 +157,11 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.subscriptions.push(sub);
     }
 
-    private drawPlannedMoves(moves: Move[]) {
+    private drawPlannedMoves(confirmedMoves: ConfirmedMove[]) {
         const group = this.getOrCreateFleetConfirmedMoveGroup();
-        moves.forEach(m => {
+        confirmedMoves.forEach(cm => {
+            const m = cm.move;
+            const moveHash = cm.moveHash;
             const waypoints = m.waypoints
                 .filter(w => {
                     const atUniMapLooseWaypoint = !!w.orbit && !w.system;
@@ -174,17 +169,18 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                     return atUniMapLooseWaypoint || atUniMapSystemWaypoint;
                 }).map(w => !!w.orbit ? w.orbit : w.system!.orbit);
 
-            const idFleet = m.idFleetInMotion;
+            const attendants = cm.attendants.map(fm => fm.fleet.id);
+            const idJoin: string = attendants.join("|");
 
             for (let i = 0; i < waypoints.length; i++) {
                 const orbit = waypoints[i];
                 const circle = group.circle()
                     .x(this.convertToStandardMetric(orbit.xCoordinate))
                     .y(this.convertToStandardMetric(orbit.yCoordinate))
-                    .id(`waypoint-no-${i}-of-${idFleet}`)
+                    .id(`waypoint-no-${i}-of-${idJoin}`)
                     .fill(BasicViewHelper.NONE_FILL_COLOR)
                     .addClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER)
-                    .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + idFleet)
+                    .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
                     .radius(BasicViewHelper.STAR_RADIUS * 2);
 
                 circle
@@ -197,14 +193,60 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 this.convertToStandardMetric(w.xCoordinate),
                 this.convertToStandardMetric(w.yCoordinate)
             ]);
+
             const polyline = group.polyline(course)
+                .id(`course-plot-of-${idJoin}`)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
-                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER)
-                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + idFleet);
+                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
+                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER);
 
             polyline
                 .animate(10000, 0, 'after').css('stroke-dashoffset', '-1000')
                 .loop(500, false, 0);
+
         });
+    }
+
+    private addMissingCoursePlots(confirmedMoves: ConfirmedMove[]) {
+        const selectedMovesHashes = confirmedMoves.map(cm => cm.moveHash + '');
+        const hashesOnMap: string[] = this.getMovementHashesOnMap();
+        hashesOnMap.forEach(h => {
+            const indexOf = selectedMovesHashes.indexOf(h);
+            if (indexOf != -1) {
+                selectedMovesHashes.splice(indexOf, 1);
+            }
+        });
+
+        const toDraw = confirmedMoves.filter(cm => selectedMovesHashes.includes(cm.moveHash + ''));
+        this.drawPlannedMoves(toDraw);
+    }
+
+    private dropUnusedCoursePlots(confirmedMoves: ConfirmedMove[]) {
+        const selectedMovesHashes = confirmedMoves.map(cm => cm.moveHash);
+        const group = this.getOrCreateFleetConfirmedMoveGroup();
+        group.children()
+            .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
+            .forEach(c => {
+                const cssClasses = c.classes().find(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
+                const moveHash = cssClasses?.replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '');
+                if (!!moveHash && !selectedMovesHashes.includes(Number.parseInt(moveHash))) {
+                    group.removeElement(c);
+                }
+            });
+    }
+
+    private getMovementHashesOnMap() {
+        const hashesOnMap: string[] = [];
+        const group = this.getOrCreateFleetConfirmedMoveGroup();
+        group.children()
+            .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
+            .forEach(c => {
+                const cssClasses = c.classes().find(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
+                const moveHash = cssClasses?.replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '');
+                if (!!moveHash) {
+                    hashesOnMap.push(moveHash);
+                }
+            });
+        return hashesOnMap;
     }
 }
