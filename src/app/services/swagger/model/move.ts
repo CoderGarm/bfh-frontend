@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { FleetOrbit } from './fleetOrbit';
-import { FlightPlan } from './flightPlan';
 import { Tick } from './tick';
 
 /**
@@ -36,8 +35,4 @@ export interface Move {
      * The waypoints of this move.
      */
     waypoints: Array<FleetOrbit>;
-    /**
-     * The real flight plan of this move.
-     */
-    flightPlan: Array<FlightPlan>;
 }

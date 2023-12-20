@@ -57,7 +57,6 @@ export * from './fleetMove';
 export * from './fleetMovement';
 export * from './fleetOrbit';
 export * from './fleetSplit';
-export * from './flightPlan';
 export * from './forum';
 export * from './forumIdContainer';
 export * from './forumMessage';

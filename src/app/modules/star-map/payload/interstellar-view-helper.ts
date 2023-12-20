@@ -12,26 +12,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
         super(InterstellarViewHelper.STANDARD_METRIC);
     }
 
-    enrichFleetsInInterstellarMotion(fleetsInMotion: FleetMarker[]) {
-
-        fleetsInMotion.forEach(fleetMarker => {
-            if (!fleetMarker.move || !fleetMarker.move.startOrbit.orbit || !fleetMarker.move.targetOrbit.orbit
-                || !fleetMarker.move.startOrbit.system || !fleetMarker.move.targetOrbit.system) {
-                return;
-            }
-            let arr = this.createInterstellarCoursePlot(fleetMarker.move!);
-            let startOrbit = fleetMarker.move.startOrbit.system.orbit;
-            let targetOrbit = fleetMarker.move.targetOrbit.system.orbit;
-            let pointAt = this.calculatePositionOnTrack(startOrbit, targetOrbit, fleetMarker, arr);
-            this.enrichWithVirtualOrbit(pointAt, fleetMarker);
-        });
-    }
-
     setFleets(fleetMarkers: FleetMarker[]) {
-
-        const moving = fleetMarkers.filter(f => !!f.move);
-        this.enrichFleetsInInterstellarMotion(moving);
-
         this.drawFleets(fleetMarkers);
     }
 

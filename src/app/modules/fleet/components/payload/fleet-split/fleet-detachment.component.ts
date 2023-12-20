@@ -107,7 +107,7 @@ export class FleetDetachmentComponent extends SubscriptionManager implements Aft
     }
 
     private showSpinner() {
-        this.spinner.show('detachment-spinner'); /* fixme spinner logic open and close by event type? if no events running just close */
+        this.spinner.show('detachment-spinner'); /* todo spinner logic open and close by event type? if no events running just close */
     }
 
     private fetchMainPlanetOrbit() {

@@ -1,4 +1,4 @@
-import {Distance, FleetMarker, Move, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
+import {Distance, FleetMarker, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
 import {Array, ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
@@ -7,6 +7,7 @@ import {StarMapCommunicationService} from "../intercom/star-map-communication.se
 import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
 import {BackgroundService} from "../prefetch/background.service";
+import {CurrentTickService} from "../intercom/current-tick.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 interface ElementToParent {
@@ -21,6 +22,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected canvas?: Svg;
 
+    tickService = AppInjector.get(CurrentTickService);
     starMapCommService = AppInjector.get(StarMapCommunicationService);
     assetsService: BackgroundService = AppInjector.get(BackgroundService);
 
@@ -1054,23 +1056,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.setFleetTextByMarker(text, fleetMarker);
     }
 
-    protected enrichWithVirtualOrbit(pointAt: { x: number; y: number }, fleetMarker: FleetMarker) {
-        const orbit: Orbit = {
-            xCoordinate: {
-                coordinate: pointAt.x,
-                distanceMetric: this.STANDARD_METRIC
-            },
-            yCoordinate: {
-                coordinate: pointAt.y,
-                distanceMetric: this.STANDARD_METRIC
-            }
-        }
-        if (!fleetMarker.orbit) {
-            fleetMarker.orbit = {};
-        }
-        fleetMarker.orbit.orbit = orbit;
-    }
-
     protected drawFleets(fleetMarkers: FleetMarker[]) {
 
         this.clearFleets();
@@ -1084,7 +1069,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private getOrbitFromFleetMarker(fleetMarker: FleetMarker): Orbit {
         if (!!fleetMarker.move) {
-            return fleetMarker.orbit!.orbit!;
+            return fleetMarker.currentOrbit!.orbit!;
         } else {
             if (this.isInterstellarViewHelper()) {
                 return fleetMarker.orbit!.system!.orbit!;
@@ -1096,56 +1081,6 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected isInterstellarViewHelper() {
         return this.STANDARD_METRIC === DistanceMetricEnum.LY;
-    }
-
-    protected createStellarCoursePlot(move: Move): LineCommand[] {
-        if (!move.startOrbit.orbit || !move.targetOrbit.orbit) {
-            throw new Error("The move should have a origin and a destination.");
-        }
-        const xOrigin = move.startOrbit.orbit.xCoordinate;
-        const yOrigin = move.startOrbit.orbit.yCoordinate;
-        const xDestination = move.targetOrbit.orbit.xCoordinate;
-        const yDestination = move.targetOrbit.orbit.yCoordinate;
-
-        return this.createCoursePlot(xOrigin, yOrigin, xDestination, yDestination);
-    }
-
-    protected createInterstellarCoursePlot(move: Move): LineCommand[] {
-        if (!move.startOrbit.orbit || !move.startOrbit.system || !move.targetOrbit.orbit || !move.targetOrbit.system) {
-            throw new Error("The move should have a origin and a destination.");
-        }
-
-        const xOrigin = move.startOrbit.system.orbit.xCoordinate;
-        const yOrigin = move.startOrbit.system.orbit.yCoordinate;
-        const xDestination = move.targetOrbit.system.orbit.xCoordinate;
-        const yDestination = move.targetOrbit.system.orbit.yCoordinate;
-
-        return this.createCoursePlot(xOrigin, yOrigin, xDestination, yDestination);
-    }
-
-    protected createCoursePlot(xOrigin: Distance, yOrigin: Distance, xDestination: Distance, yDestination: Distance): LineCommand[] {
-        let startX: number = this.convertToStandardMetric(xOrigin);
-        let startY: number = this.convertToStandardMetric(yOrigin);
-
-        let endX: number = this.convertToStandardMetric(xDestination);
-        let endY: number = this.convertToStandardMetric(yDestination);
-
-        let p1: LineCommand = ["M", startX, startY];
-        let p2: LineCommand = ["L", endX, endY];
-
-        return [p1, p2];
-    }
-
-    protected calculatePositionOnTrack(startOrbit: Orbit, targetOrbit: Orbit, fleetMarker: FleetMarker, arr: LineCommand[]) {
-        let distance = this.calculateDistanceOfOrbits(startOrbit, targetOrbit);
-        let part = (fleetMarker.move!.originalDuration - fleetMarker.move!.ticksLeft) / fleetMarker.move!.originalDuration;
-        if (part < 0.1) {
-            part = 0.1;
-        } else if (part > 0.9) {
-            part = 0.9;
-        }
-        let coveredTrackLength = distance * part;
-        return new Path().plot(arr).pointAt(coveredTrackLength);
     }
 
     protected displayMovePath(fleetMarker: FleetMarker) {

@@ -35,6 +35,7 @@ export interface Fleet {
      */
     ships: Array<WarShip>;
     orbit?: FleetOrbit;
+    currentOrbit?: FleetOrbit;
     move?: Move;
     spacecraftCapabilities: SpacecraftCapabilities;
     baseSpacecraftCapabilities: SpacecraftCapabilities;

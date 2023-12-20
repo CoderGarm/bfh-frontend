@@ -11,24 +11,7 @@ export class SystemViewHelper extends BasicViewHelper {
         super(SystemViewHelper.STANDARD_METRIC);
     }
 
-    enrichFleetsInStellarMotion(fleetsInMotion: FleetMarker[]) {
-
-        fleetsInMotion.forEach(fleetMarker => {
-            if (!fleetMarker.move || !fleetMarker.move.startOrbit.orbit || !fleetMarker.move.targetOrbit.orbit) {
-                return;
-            }
-            let arr = this.createStellarCoursePlot(fleetMarker.move!);
-            let startOrbit = fleetMarker.move.startOrbit.orbit;
-            let targetOrbit = fleetMarker.move.targetOrbit.orbit;
-            let pointAt = this.calculatePositionOnTrack(startOrbit, targetOrbit, fleetMarker, arr);
-            this.enrichWithVirtualOrbit(pointAt, fleetMarker);
-        });
-    }
-
     setFleets(fleetMarkers: FleetMarker[]) {
-        const moving = fleetMarkers.filter(f => !!f.move);
-        this.enrichFleetsInStellarMotion(moving);
-
         this.drawFleets(fleetMarkers);
     }
 

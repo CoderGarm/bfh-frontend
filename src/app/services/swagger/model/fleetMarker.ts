@@ -29,6 +29,7 @@ export interface FleetMarker {
      */
     ships: Array<AbstractId>;
     orbit?: FleetOrbit;
+    currentOrbit?: FleetOrbit;
     move?: Move;
     state: StateBlock;
     /**
