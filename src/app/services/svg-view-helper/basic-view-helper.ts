@@ -165,8 +165,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             return;
         }
 
-        this.clearRestrictedAreas(); // fixme the fleet will be zoomed to nowhere when on move?
-
+        this.clearRestrictedAreas();
         const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX) && c.id().endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX));
         const polygons: Element[] = [];
         fleetGroups.forEach(g => g.children().filter(c => c.classes().filter(css => css == BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER).length > 0).forEach(polygon => polygons.push(polygon)));
@@ -186,10 +185,8 @@ export class BasicViewHelper extends BasicViewHelperData {
                         orbit = fleet.orbit.orbit!;
                     }
                 }
-                //x = this.convertToStandardMetric(orbit.xCoordinate);
-                //y = this.convertToStandardMetric(orbit.yCoordinate);
-                x = orbit.xCoordinate.coordinate;
-                y = orbit.yCoordinate.coordinate;
+                x = this.convertToStandardMetric(orbit.xCoordinate);
+                y = this.convertToStandardMetric(orbit.yCoordinate);
             } else {
                 const center = this.getCoordsFromCenterMarker(polygon);
                 if (!!center) {
