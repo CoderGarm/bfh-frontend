@@ -33,7 +33,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private interstellarMoveEmitter: EventEmitter<FleetMove[]> = new EventEmitter<FleetMove[]>();
 
-    private confirmedInterstellarMovesEmitter: EventEmitter<ConfirmedMove[]> = new EventEmitter<ConfirmedMove[]>();
+    private confirmedMovesEmitter: EventEmitter<ConfirmedMove[]> = new EventEmitter<ConfirmedMove[]>();
 
     private stellarMoveEmitter: EventEmitter<StellarMovement> = new EventEmitter<StellarMovement>();
 
@@ -55,7 +55,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     private selectedFleetMarker: FleetMarker[] = [];
     private plannedStellarMoves: FleetMove[] = [];
     private plannedInterstellarMoves: FleetMove[] = [];
-    private confirmedInterstellarMoves: ConfirmedMove[] = [];
+    private confirmedMovements: ConfirmedMove[] = [];
     private fleetsToCancelMovement: Fleet[] = [];
     private fleetMerge?: FleetMerge;
 
@@ -107,8 +107,8 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return this.interstellarMoveEmitter;
     }
 
-    getConfirmedInterstellarMoveEmitter() {
-        return this.confirmedInterstellarMovesEmitter;
+    getConfirmedMovesEmitter() {
+        return this.confirmedMovesEmitter;
     }
 
     getMergeFleetsEmitter() {
@@ -337,9 +337,9 @@ export class StarMapCommunicationService extends SubscriptionManager {
         this.plannedInterstellarMoves = plannedMoves;
     }
 
-    setConfirmedInterstellarMovements(confirmedMoves: ConfirmedMove[]) {
-        this.confirmedInterstellarMoves = confirmedMoves;
-        this.confirmedInterstellarMovesEmitter.emit(this.confirmedInterstellarMoves);
+    setConfirmedMovements(confirmedMoves: ConfirmedMove[]) {
+        this.confirmedMovements = confirmedMoves;
+        this.confirmedMovesEmitter.emit(this.confirmedMovements);
     }
 
     setPlannedStellarMovements(plannedMoves: FleetMove[]) {
@@ -373,6 +373,6 @@ export class StarMapCommunicationService extends SubscriptionManager {
     }
 
     getConfirmedInterstellarMoves(fleetIDs: number[]) {
-        return this.confirmedInterstellarMoves.filter(cm => !!cm.attendants.find(a => fleetIDs.includes(a.fleet.id)));
+        return this.confirmedMovements.filter(cm => !!cm.attendants.find(a => fleetIDs.includes(a.fleet.id)));
     }
 }

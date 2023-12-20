@@ -43,7 +43,6 @@ export class MissionJournalComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log(this.missionResults)
         this.missionResults?.actionItemGroups.forEach(item => this.missionItems.push(item));
         this.missionResults?.convoyActionItemGroups.forEach(item => this.missionItems.push(item));
     }

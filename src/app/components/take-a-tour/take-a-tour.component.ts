@@ -40,7 +40,6 @@ export class TakeATourComponent extends SubscriptionManager {
             if (result.matches) {
                 // todo I am an ugly hack - please repair me
                 this.maxWidth = 800 + 'px';
-                console.log(this.maxWidth)
             }
         });
     }

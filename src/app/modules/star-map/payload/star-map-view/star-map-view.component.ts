@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Fleet, FleetApiService, FleetMarker, FleetMerge, FleetMove, StarMapApiService, StarSystem} from "../../../../services/swagger";
 import {SystemViewHelper} from "../system-view-helper";
 import {StellarMovement} from "../../../../services/intercom/star-map-communication.service";
@@ -10,7 +10,7 @@ import {FleetEventService} from "../../../../services/intercom/fleet-event.servi
     templateUrl: './star-map-view.component.html',
     styleUrls: ['./star-map-view.component.scss']
 })
-export class StarMapViewComponent extends SystemViewHelper implements OnInit, OnChanges {
+export class StarMapViewComponent extends SystemViewHelper implements OnChanges {
 
     @Input()
     starSystem?: StarSystem;
@@ -100,9 +100,6 @@ export class StarMapViewComponent extends SystemViewHelper implements OnInit, On
         });
         this.subscriptions.push(sub);
 
-    }
-
-    ngOnInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges) {

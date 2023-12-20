@@ -1,4 +1,4 @@
-import {Distance, FleetMarker, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
+import {ConfirmedMove, Distance, FleetMarker, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
 import {Array, ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
@@ -7,7 +7,6 @@ import {StarMapCommunicationService} from "../intercom/star-map-communication.se
 import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
 import {BackgroundService} from "../prefetch/background.service";
-import {CurrentTickService} from "../intercom/current-tick.service";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 interface ElementToParent {
@@ -22,7 +21,6 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected canvas?: Svg;
 
-    tickService = AppInjector.get(CurrentTickService);
     starMapCommService = AppInjector.get(StarMapCommunicationService);
     assetsService: BackgroundService = AppInjector.get(BackgroundService);
 
@@ -38,19 +36,30 @@ export class BasicViewHelper extends BasicViewHelperData {
         super(standardDistanceMetric);
 
         this.STANDARD_METRIC = standardDistanceMetric;
-        const sub = this.starMapCommService.getDeselectEverythingEmitter().subscribe(() => {
+        let sub = this.starMapCommService.getDeselectEverythingEmitter().subscribe(() => {
             if (!this.canvas) {
                 return;
             }
-            let elements = this.canvas.children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
+            let elements = this.canvas.children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX));
             if (!!elements && elements.length > 0) {
                 elements.forEach(elem => !!this.canvas ? this.canvas.removeElement(elem) : '');
             }
-            elements = this.getOrCreateMainCelestialGroup().children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX) || elem.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
+            elements = this.getOrCreateMainCelestialGroup().children().filter(elem => elem.id().endsWith(BasicViewHelperData.CYCLING_CIRCLE_SUFFIX));
             if (!!elements && elements.length > 0) {
                 elements.forEach(elem => this.getOrCreateMainCelestialGroup().removeElement(elem));
             }
             this.getOrCreateFleetConfirmedMoveGroup().clear();
+        });
+        this.subscriptions.push(sub);
+
+        sub = this.starMapCommService.getConfirmedMovesEmitter().subscribe(resp => this.drawPlannedMoves(resp));
+        this.subscriptions.push(sub);
+
+        sub = this.starMapCommService.getFleetsDesignatedForMotionEmitter().subscribe(resp => {
+            const fleetIDs = resp.map(f => f.idFleet);
+            const selectedMovesHashes = this.starMapCommService.getConfirmedInterstellarMoves(fleetIDs);
+            this.dropUnusedCoursePlots(selectedMovesHashes);
+            this.addMissingCoursePlots(selectedMovesHashes);
         });
         this.subscriptions.push(sub);
     }
@@ -92,15 +101,13 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected zoomLevel: number = 1;
 
-    // noinspection JSUnusedLocalSymbols
     @HostListener('window:resize', ['$event'])
-    onResize(event?: UIEvent) {
+    onResize() {
         this.determineAspectRatio();
     }
 
-    // noinspection JSUnusedLocalSymbols
     @HostListener('window:click', ['$event'])
-    onClick(event?: UIEvent) {
+    onClick() {
         this.determineAspectRatio();
     }
 
@@ -158,7 +165,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             return;
         }
 
-        this.clearRestrictedAreas();
+        this.clearRestrictedAreas(); // fixme the fleet will be zoomed to nowhere when on move?
 
         const fleetGroups = this.canvas!.children().filter(c => c.id().startsWith(BasicViewHelperData.FLEET_SHARK_SELECTOR_ID_PREFIX) && c.id().endsWith(BasicViewHelperData.GROUP_SELECTOR_SUFFIX));
         const polygons: Element[] = [];
@@ -653,23 +660,19 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     private drawMovePathOnClick() {
-        const selectedFleetMarker = this.starMapCommService.getSelectedFleetMarker();
-        // add
+
+        const group = this.getOrCreateFleetConfirmedMoveGroup();
+        group
+            .children()
+            .filter(c => !!c.classes().find(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + '-')))
+            .forEach(c => group.removeElement(c));
+
         this.starMapCommService.getMovingFleetMarker().forEach(fm => {
-            const fleetSharkID = this.getFleetSharkID(fm);
-            const movePaths = this.canvas!.children().filter(c => c.id() === fleetSharkID + BasicViewHelperData.MOVE_SUFFIX);
-            if (movePaths.length == 0) {
-                this.displayMovePath(fm);
-            }
-        });
-        // remove
-        const movePaths = this.canvas!.children().filter(c => c.id().endsWith(BasicViewHelperData.MOVE_SUFFIX));
-        movePaths.forEach(mp => {
-            const sanitizedID = mp.id().replace(BasicViewHelperData.MOVE_SUFFIX, '');
-            const withDisplayedMove = this.getFleetByID(sanitizedID);
-            if (!!withDisplayedMove && selectedFleetMarker.filter(fm => fm.fleet.id == withDisplayedMove.fleet.id).length == 0) {
-                this.canvas!.removeElement(mp);
-            }
+            this.drawPlannedMoves([{
+                moveHash: -fm.fleet.id,
+                move: fm.move!,
+                attendants: [fm]
+            }]);
         });
     }
 
@@ -1083,60 +1086,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         return this.STANDARD_METRIC === DistanceMetricEnum.LY;
     }
 
-    protected displayMovePath(fleetMarker: FleetMarker) {
-        if (!fleetMarker.move) {
-            return;
-        }
-
-        let fleetSharkId = this.getFleetSharkID(fleetMarker);
-        let startOrbit = fleetMarker.move!.startOrbit.system!.orbit;
-        let targetOrbit = fleetMarker.move!.targetOrbit.system!.orbit;
-        const isSameSystem = fleetMarker.move!.startOrbit.system!.idStarSystem === fleetMarker.move!.targetOrbit.system!.idStarSystem;
-        if (isSameSystem) {
-            startOrbit = fleetMarker.move!.startOrbit.orbit!;
-            targetOrbit = fleetMarker.move!.targetOrbit.orbit!;
-        }
-        const xStart = this.convertToStandardMetric(startOrbit.xCoordinate);
-        const yStart = this.convertToStandardMetric(startOrbit.yCoordinate);
-        const xEnd = this.convertToStandardMetric(targetOrbit.xCoordinate);
-        const yEnd = this.convertToStandardMetric(targetOrbit.yCoordinate);
-
-        const distance = NavigationCalculator.calculateDistanceOfPoints([xStart, yStart], [xEnd, yEnd]);
-
-        let angle = NavigationCalculator.getRestrictedAngle(xStart, yStart, xEnd, yEnd);
-
-        const runner: G = new G()
-            .group()
-            .addClass('coursePlot')
-            .id(fleetSharkId + BasicViewHelperData.MOVE_SUFFIX);
-
-        const pitch = Math.tan(NavigationCalculator.toRad(angle));
-        for (let i = 0; i < Math.ceil(distance / 200); i++) {
-            const xOffset = i * 10;
-            const yOffset = pitch * xOffset;
-            let p1: ArrayXY = [xOffset + xStart, yOffset + yStart + 10];
-            let p2: ArrayXY = [xOffset + xStart + 20, yOffset + yStart + 10];
-            let p3: ArrayXY = [xOffset + xStart + 10, yOffset + yStart];
-
-            p2 = NavigationCalculator.rotatePoint(p1, angle + 90, p2);
-            p3 = NavigationCalculator.rotatePoint(p1, angle + 90, p3);
-            runner.polygon([p1, p2, p3])
-        }
-
-        runner.animate({
-            duration: 2000 * (distance / 300),
-            delay: 1000,
-            when: 'now',
-            swing: false,
-            times: 50000,
-            wait: 200
-        }).transform({
-            positionX: xEnd,
-            positionY: yEnd
-        });
-        this.canvas!.add(runner);
-    }
-
     protected displayFleetStates(onMove: boolean, state: StateBlock, sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[], group: G | undefined, fleetSharkID: string) {
 
         let txt;
@@ -1184,5 +1133,107 @@ export class BasicViewHelper extends BasicViewHelperData {
 
             this.setTextById(fleetSharkID + BasicViewHelperData.MOVABLE_STATE_DOT_MARKER, text);
         }
+    }
+
+    protected drawPlannedMoves(confirmedMoves: ConfirmedMove[]) {
+        const group = this.getOrCreateFleetConfirmedMoveGroup();
+        confirmedMoves.forEach(cm => {
+            const m = cm.move;
+            const moveHash = cm.moveHash;
+            const waypoints = m.waypoints
+                .filter(w => {
+                    const atUniMapLooseWaypoint = !!w.orbit && !w.system;
+                    const atUniMapSystemWaypoint = !w.orbit && !!w.system;
+                    return atUniMapLooseWaypoint || atUniMapSystemWaypoint;
+                }).map(w => !!w.orbit ? w.orbit : w.system!.orbit);
+
+            const attendants = cm.attendants.map(fm => fm.fleet.id);
+            const idJoin: string = attendants.join("|");
+
+            for (let i = 0; i < waypoints.length; i++) {
+                const orbit = waypoints[i];
+                const circle = group.circle()
+                    .x(this.convertToStandardMetric(orbit.xCoordinate))
+                    .y(this.convertToStandardMetric(orbit.yCoordinate))
+                    .id(`waypoint-no-${i}-of-${idJoin}`)
+                    .fill(BasicViewHelper.NONE_FILL_COLOR)
+                    .addClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER)
+                    .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
+                    .radius(BasicViewHelper.STAR_RADIUS * 2);
+
+                circle
+                    .animate(1600, 0, 'after').transform({scale: [2, 2]}).css('opacity', '0')
+                    .animate(1600, 0, 'after').transform({scale: [1, 1]}).css('opacity', '1')
+                    .loop(500, true, 300);
+            }
+
+            const course = waypoints.map(w => <ArrayXY>[
+                this.convertToStandardMetric(w.xCoordinate),
+                this.convertToStandardMetric(w.yCoordinate)
+            ]);
+
+            if (waypoints.length == 0) {
+                const start = m.startOrbit;
+                const origin = !!start.orbit ? start.orbit : start.planet!.orbit;
+                const target = m.targetOrbit;
+                const destination = !!target.orbit ? target.orbit : target.planet!.orbit;
+                course.push([this.convertToStandardMetric(origin.xCoordinate), this.convertToStandardMetric(origin.yCoordinate)])
+                course.push([this.convertToStandardMetric(destination.xCoordinate), this.convertToStandardMetric(destination.yCoordinate)])
+            }
+
+            const polyline = group.polyline(course)
+                .id(`course-plot-of-${idJoin}`)
+                .fill(BasicViewHelper.NONE_FILL_COLOR)
+                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
+                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER);
+
+            polyline
+                .animate(10000, 0, 'after').css('stroke-dashoffset', '-1000')
+                .loop(500, false, 0);
+
+        });
+    }
+
+    protected addMissingCoursePlots(confirmedMoves: ConfirmedMove[]) {
+        const selectedMovesHashes = confirmedMoves.map(cm => cm.moveHash + '');
+        const hashesOnMap: string[] = this.getMovementHashesOnMap();
+        hashesOnMap.forEach(h => {
+            const indexOf = selectedMovesHashes.indexOf(h);
+            if (indexOf != -1) {
+                selectedMovesHashes.splice(indexOf, 1);
+            }
+        });
+
+        const toDraw = confirmedMoves.filter(cm => selectedMovesHashes.includes(cm.moveHash + ''));
+        this.drawPlannedMoves(toDraw);
+    }
+
+    protected dropUnusedCoursePlots(confirmedMoves: ConfirmedMove[]) {
+        const selectedMovesHashes = confirmedMoves.map(cm => cm.moveHash);
+        const group = this.getOrCreateFleetConfirmedMoveGroup();
+        group.children()
+            .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
+            .forEach(c => {
+                const cssClasses = c.classes().find(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
+                const moveHash = cssClasses?.replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '');
+                if (!!moveHash && !selectedMovesHashes.includes(Number.parseInt(moveHash))) {
+                    group.removeElement(c);
+                }
+            });
+    }
+
+    private getMovementHashesOnMap() {
+        const hashesOnMap: string[] = [];
+        const group = this.getOrCreateFleetConfirmedMoveGroup();
+        group.children()
+            .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
+            .forEach(c => {
+                const cssClasses = c.classes().find(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
+                const moveHash = cssClasses?.replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '');
+                if (!!moveHash) {
+                    hashesOnMap.push(moveHash);
+                }
+            });
+        return hashesOnMap;
     }
 }

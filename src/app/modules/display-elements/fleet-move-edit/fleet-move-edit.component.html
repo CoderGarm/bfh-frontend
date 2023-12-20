@@ -4,7 +4,7 @@
         <div *ngFor="let fleet of fleetsForMove">
             <mat-card-header>
                 <div *ngIf="!isSameOrbit(fleet)">
-                    <mat-checkbox (change)="selectForFlight($event.checked, fleet)" [checked]="fleetsDesignatedForMotion.includes(fleet)">
+                    <mat-checkbox (change)="selectForFlight($event.checked, fleet)" [checked]="commService.getFleetsDesignatedForMotion().includes(fleet)">
                         <div *ngIf="!!plannedMovements">
                             {{fleet.name}} {{ 'fleets.movement.select-for-move.checkbox' | translate }} in {{getTicks(fleet)}} ticks
                         </div>

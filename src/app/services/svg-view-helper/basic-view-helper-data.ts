@@ -20,8 +20,7 @@ export class BasicViewHelperData extends SubscriptionManager {
 
     protected static readonly ORBIT_ID_MARKER = "orbitId-";
     protected static readonly GROUP_SELECTOR_SUFFIX: string = "-group";
-    protected static readonly CYCLING_CIRCLE_SUFFIX = "-circle-cycle";
-    protected static readonly MOVE_SUFFIX = "-move";
+    protected static readonly CYCLING_CIRCLE_SUFFIX = "-circle-cycle"; // fixme remove cycling circle for animation
     protected static readonly ORBIT_SUFFIX = "-orbit";
 
     protected static readonly CELESTIAL_BODY_SELECTOR_ID_PREFIX: string = "-orbit"; // todo strange things happen - needs to be unraveled

@@ -26,7 +26,6 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     @Input()
     system?: StarSystem;
 
-    fleetsDesignatedForMotion: Fleet[] = [];
     fleetsDesignatedForCancel: Fleet[] = [];
 
     destinationRepresentation: string = "";
@@ -34,7 +33,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     plannedMovements: ConfirmedMove[] = [];
 
     constructor(private fleetService: FleetApiService,
-                private commService: StarMapCommunicationService) {
+                protected commService: StarMapCommunicationService) {
         super();
     }
 
@@ -76,6 +75,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
         }
         let sub = this.fleetService.planMovements(fleetMoves).subscribe(resp => {
             this.plannedMovements = resp;
+            this.commService.setConfirmedMovements(this.plannedMovements);
             this.plannedMovements
                 .flatMap(m => this.fleets.filter(f => !!m.attendants.find(fm => fm.fleet.id == f.idFleet)))
                 .forEach(f => this.selectForFlight(true, f));
@@ -84,11 +84,11 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
     }
 
     selectForFlight(checked: boolean, fleet: Fleet) {
-        if (checked) {
-            this.fleetsDesignatedForMotion.push(fleet);
+        let indexOf = this.commService.getFleetsDesignatedForMotion().indexOf(fleet);
+        if (checked && indexOf == -1) {
+            this.commService.getFleetsDesignatedForMotion().push(fleet);
         } else {
-            let indexOf = this.fleetsDesignatedForMotion.indexOf(fleet);
-            this.fleetsDesignatedForMotion.splice(indexOf, 1);
+            this.commService.spliceFleetsDesignatedForMotion(indexOf, 1);
         }
         this.sendPlannedFlights();
     }
@@ -100,7 +100,7 @@ export class FleetMoveEditComponent extends SubscriptionManager implements After
                 m.set(fm.fleet.id, move.move)
             );
         })
-        let plannedMoves: FleetMove[] = this.fleetsDesignatedForMotion.map(fleet => {
+        let plannedMoves: FleetMove[] = this.commService.getFleetsDesignatedForMotion().map(fleet => {
             let plannedMove: Move | undefined = m.get(fleet.idFleet);
             if (!plannedMove) {
                 throw new Error("There should be a movement already planned and validated.");

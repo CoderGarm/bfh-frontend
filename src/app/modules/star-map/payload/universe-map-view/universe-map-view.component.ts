@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {ConfirmedMove, FleetApiService, FleetMarker, FleetMove, StarSystem} from "../../../../services/swagger";
+import {FleetApiService, FleetMarker, FleetMove, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
@@ -11,10 +11,8 @@ import {Observable, startWith} from "rxjs";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {FormControl} from "@angular/forms";
 import {map} from "rxjs/operators";
-import {ArrayXY, Point} from "@svgdotjs/svg.js";
+import {Point} from "@svgdotjs/svg.js";
 import {FleetEventService} from "../../../../services/intercom/fleet-event.service";
-import {BasicViewHelper} from "../../../../services/svg-view-helper/basic-view-helper";
-import {BasicViewHelperData} from "../../../../services/svg-view-helper/basic-view-helper-data";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -47,17 +45,6 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         this.translate.get('star-map.universe-map.loading-spinner-message');
 
         let sub = this.starMapCommService.getInterstellarMoveEmitter().subscribe(resp => this.moveFleet(resp));
-        this.subscriptions.push(sub);
-
-        sub = this.starMapCommService.getConfirmedInterstellarMoveEmitter().subscribe(resp => this.drawPlannedMoves(resp));
-        this.subscriptions.push(sub);
-
-        sub = this.starMapCommService.getFleetsDesignatedForMotionEmitter().subscribe(resp => {
-            const fleetIDs = resp.map(f => f.idFleet);
-            const selectedMovesHashes = this.starMapCommService.getConfirmedInterstellarMoves(fleetIDs);
-            this.dropUnusedCoursePlots(selectedMovesHashes);
-            this.addMissingCoursePlots(selectedMovesHashes);
-        });
         this.subscriptions.push(sub);
 
         this.filteredCenter = this.centerFormControl.valueChanges.pipe(
@@ -152,101 +139,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 }
             });
             this.fleetEventService.reload();
-            this.setFleets(this.distribution);
+            this.setFleets(this.distribution); // fixme check why updating is not reliable
         });
         this.subscriptions.push(sub);
-    }
-
-    private drawPlannedMoves(confirmedMoves: ConfirmedMove[]) {
-        const group = this.getOrCreateFleetConfirmedMoveGroup();
-        confirmedMoves.forEach(cm => {
-            const m = cm.move;
-            const moveHash = cm.moveHash;
-            const waypoints = m.waypoints
-                .filter(w => {
-                    const atUniMapLooseWaypoint = !!w.orbit && !w.system;
-                    const atUniMapSystemWaypoint = !w.orbit && !!w.system;
-                    return atUniMapLooseWaypoint || atUniMapSystemWaypoint;
-                }).map(w => !!w.orbit ? w.orbit : w.system!.orbit);
-
-            const attendants = cm.attendants.map(fm => fm.fleet.id);
-            const idJoin: string = attendants.join("|");
-
-            for (let i = 0; i < waypoints.length; i++) {
-                const orbit = waypoints[i];
-                const circle = group.circle()
-                    .x(this.convertToStandardMetric(orbit.xCoordinate))
-                    .y(this.convertToStandardMetric(orbit.yCoordinate))
-                    .id(`waypoint-no-${i}-of-${idJoin}`)
-                    .fill(BasicViewHelper.NONE_FILL_COLOR)
-                    .addClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER)
-                    .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
-                    .radius(BasicViewHelper.STAR_RADIUS * 2);
-
-                circle
-                    .animate(1600, 0, 'after').transform({scale: [2, 2]}).css('opacity', '0')
-                    .animate(1600, 0, 'after').transform({scale: [1, 1]}).css('opacity', '1')
-                    .loop(500, true, 300);
-            }
-
-            const course = waypoints.map(w => <ArrayXY>[
-                this.convertToStandardMetric(w.xCoordinate),
-                this.convertToStandardMetric(w.yCoordinate)
-            ]);
-
-            const polyline = group.polyline(course)
-                .id(`course-plot-of-${idJoin}`)
-                .fill(BasicViewHelper.NONE_FILL_COLOR)
-                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
-                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER);
-
-            polyline
-                .animate(10000, 0, 'after').css('stroke-dashoffset', '-1000')
-                .loop(500, false, 0);
-
-        });
-    }
-
-    private addMissingCoursePlots(confirmedMoves: ConfirmedMove[]) {
-        const selectedMovesHashes = confirmedMoves.map(cm => cm.moveHash + '');
-        const hashesOnMap: string[] = this.getMovementHashesOnMap();
-        hashesOnMap.forEach(h => {
-            const indexOf = selectedMovesHashes.indexOf(h);
-            if (indexOf != -1) {
-                selectedMovesHashes.splice(indexOf, 1);
-            }
-        });
-
-        const toDraw = confirmedMoves.filter(cm => selectedMovesHashes.includes(cm.moveHash + ''));
-        this.drawPlannedMoves(toDraw);
-    }
-
-    private dropUnusedCoursePlots(confirmedMoves: ConfirmedMove[]) {
-        const selectedMovesHashes = confirmedMoves.map(cm => cm.moveHash);
-        const group = this.getOrCreateFleetConfirmedMoveGroup();
-        group.children()
-            .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
-            .forEach(c => {
-                const cssClasses = c.classes().find(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
-                const moveHash = cssClasses?.replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '');
-                if (!!moveHash && !selectedMovesHashes.includes(Number.parseInt(moveHash))) {
-                    group.removeElement(c);
-                }
-            });
-    }
-
-    private getMovementHashesOnMap() {
-        const hashesOnMap: string[] = [];
-        const group = this.getOrCreateFleetConfirmedMoveGroup();
-        group.children()
-            .filter(c => c.hasClass(BasicViewHelperData.COURSE_PLOT_MARKER) || c.hasClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER))
-            .forEach(c => {
-                const cssClasses = c.classes().find(css => css.startsWith(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX));
-                const moveHash = cssClasses?.replace(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX, '');
-                if (!!moveHash) {
-                    hashesOnMap.push(moveHash);
-                }
-            });
-        return hashesOnMap;
     }
 }

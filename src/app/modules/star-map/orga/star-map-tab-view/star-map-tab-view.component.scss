@@ -119,15 +119,6 @@
   pointer-events: none;
 }
 
-.coursePlot {
-  fill: transparent;
-  stroke: yellow;
-  stroke-width: 1px;
-  stroke-opacity: 0.5;
-  stroke-dasharray: 0 20 28.284;
-  animation: infinite;
-}
-
 .circle-cycle {
   animation: cycling-circle 5s infinite;
   stroke-linecap: square;
