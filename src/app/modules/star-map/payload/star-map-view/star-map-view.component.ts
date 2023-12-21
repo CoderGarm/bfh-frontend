@@ -59,7 +59,6 @@ export class StarMapViewComponent extends SystemViewHelper implements OnChanges 
     }
 
     private executeStellarMovement(m: StellarMovement) {
-        // fixme flotten verschwinden?
         const plannedMoves: FleetMove[] = m.plannedMoves;
         const toCancel: Fleet[] = m.toCancel;
 

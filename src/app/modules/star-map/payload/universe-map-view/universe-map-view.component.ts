@@ -139,7 +139,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 }
             });
             this.fleetEventService.reload();
-            this.setFleets(this.distribution); // fixme check why updating is not reliable
+            this.setFleets(this.distribution);
         });
         this.subscriptions.push(sub);
     }
