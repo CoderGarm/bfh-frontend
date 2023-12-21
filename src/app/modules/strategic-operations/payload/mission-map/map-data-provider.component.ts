@@ -7,6 +7,7 @@ import {MissionMapComponent} from "./mission-map.component";
 import {LocalMapOrbitDefinition} from "./local-map-orbit-definition";
 import {EnumValueDto} from "../../../../services/swagger";
 import {Coords} from "../mission-administration/mission-administration.component";
+import {BasicViewHelper} from "../../../../services/svg-view-helper/basic-view-helper";
 import EMissionTypesEnum = EnumValueDto.EMissionTypesEnum;
 
 interface ElementToParent {
@@ -31,9 +32,6 @@ export class MapDataProvider extends MapData {
     constructor() {
         super();
     }
-
-    // noinspection CssConvertColorToRgbInspection
-    protected static readonly STROKE_CYCLING_CIRCLE: StrokeData = {color: "orange", width: 3, dasharray: "15px"}; // $metal-glance in variables
 
     protected static readonly ROUND_CAP_MARKER_X_PIXEL_SHIFT: number = 9;
     protected static readonly ROUND_CAP_MARKER_Y_PIXEL_SHIFT: number = 8;
@@ -418,24 +416,25 @@ export class MapDataProvider extends MapData {
 
     drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
         const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
-        // fixme replace by animation for circle
         const elementToParent = this.findElementAndParentById(id);
         let parent: Dom = elementToParent.parent;
         let element: Element | undefined = elementToParent.element;
         if (!!element) {
             const radius = this.getRadius(element, zoomFactor);
             const circle = new Circle().x(x).y(y)
+                .id(this.getCyclingCircleId(id))
                 .radius(radius)
-                .stroke(this.zoomStroke(MapDataProvider.STROKE_CYCLING_CIRCLE))
+                .fill(MapDataProvider.NONE_FILL_COLOR)
                 .addClass(MapDataProvider.CYCLING_CIRCLE_MARKER)
                 .addClass(MapDataProvider.CLICKABLE_CSS_CLASS)
                 .addClass(MapData.ICON_ID_MARKER + id)
-                .id(this.getCyclingCircleId(id));
+                .radius(MapDataProvider.STAR_RADIUS * 2);
 
             if (isInvisible) {
                 circle.addClass(MapDataProvider.INVISIBLE_CLASS);
             }
 
+            BasicViewHelper.attachClickMarker(circle);
             parent.removeElement(element);
             parent.add(circle);
             parent.add(element);

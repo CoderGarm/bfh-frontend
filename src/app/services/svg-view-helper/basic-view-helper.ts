@@ -1,5 +1,5 @@
 import {ConfirmedMove, Distance, FleetMarker, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
-import {Array, ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
+import {Array, ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, Shape, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component, HostListener} from "@angular/core";
@@ -65,9 +65,6 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     protected static readonly STROKE_BLACK: StrokeData = {color: "black", width: 1};
-    // noinspection CssConvertColorToRgbInspection
-    protected static readonly STROKE_CYCLING_CIRCLE: StrokeData = {color: "orange", width: 3, dasharray: "15px"}; // $metal-glance in variables
-
     protected static readonly ROUND_CAP_MARKER_X_PIXEL_SHIFT: number = 9;
     protected static readonly ROUND_CAP_MARKER_Y_PIXEL_SHIFT: number = 8;
     protected static readonly STATE_DOT_RADIUS: number = 5;
@@ -710,28 +707,40 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private drawCyclingCircle(x: number, y: number, id: string, isInvisible: boolean) {
         const zoomFactor = this.getOrDefaultZoomFactor(this.zoomLevel);
-        // fixme replace by animation for circle
         const elementToParent = this.findElementAndParentById(id);
         let parent: Dom = elementToParent.parent;
         let element: Element | undefined = elementToParent.element;
         if (!!element) {
             const radius = this.getRadius(element, zoomFactor);
             const circle = new Circle().x(x).y(y)
+                .id(this.getCyclingCircleId(id))
                 .radius(radius)
-                .stroke(this.zoomStroke(BasicViewHelper.STROKE_CYCLING_CIRCLE))
+                .fill(BasicViewHelper.NONE_FILL_COLOR)
                 .addClass(BasicViewHelper.CYCLING_CIRCLE_MARKER)
                 .addClass(BasicViewHelper.CLICKABLE_CSS_CLASS)
                 .addClass(BasicViewHelperData.ICON_ID_MARKER + id)
-                .id(this.getCyclingCircleId(id));
+                .radius(BasicViewHelper.STAR_RADIUS * 2);
 
             if (isInvisible) {
                 circle.addClass(BasicViewHelper.INVISIBLE_CLASS);
             }
 
+            BasicViewHelper.attachClickMarker(circle);
+
             parent.removeElement(element);
             parent.add(circle);
             parent.add(element);
         }
+    }
+
+    static attachClickMarker(shape: Shape) {
+        const number = 1.3;
+        shape
+            .animate(100, 500, 'after').transform({scale: [number, number]}).css({'opacity': '0.5'})
+            .animate(100, 100, 'after').transform({scale: [1, 1]}).css({'opacity': '1'})
+            .animate(100, 100, 'after').transform({scale: [number, number]}).css({'opacity': '0.5'})
+            .animate(100, 100, 'after').transform({scale: [1, 1]}).css({'opacity': '1'})
+            .loop(500, true, 1500);
     }
 
     private removeCyclingCircle(id: string) {
