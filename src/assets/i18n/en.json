@@ -143,6 +143,10 @@
 	"filter": "Filter",
 	"fleet": {
 		"composition": {
+			"by-mass": {
+				"ships": "ship(s) between",
+				"up-to": "and"
+			},
 			"class": {
 				"title": "Class"
 			},
@@ -163,6 +167,9 @@
 				},
 				"title": "Create detachments",
 				"tooltip": "Add next detachment"
+			},
+			"detail": {
+				"title": "Fleet composition, details"
 			},
 			"fleet-name": {
 				"title": "Fleet"

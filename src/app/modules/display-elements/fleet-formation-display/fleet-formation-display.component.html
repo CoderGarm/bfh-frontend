@@ -46,8 +46,18 @@
 
 
 <div *ngIf="!!fleet && !_smallDisplay && !displayAsOwnFleet">
-    <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
-    <div mat-subheader *ngFor="let e of shipsByTonnage | keyvalue">{{ e.value }} Ships of {{ e.key | numberShort }}T</div>
+    <div (click)="displayDetails = !displayDetails" *ngIf="displayDetails">
+        <div mat-subheader>{{ 'fleet.composition.detail.title' | translate }}</div>
+        <div mat-subheader *ngFor="let e of shipsByTonnage">
+            {{ e.low | mass: 'T' }} to {{ e.high | mass: 'T' }}
+        </div>
+    </div>
+    <div (click)="displayDetails = !displayDetails" *ngIf="!displayDetails">
+        <div mat-subheader>{{ 'fleet.composition.title' | translate }}</div>
+        <div mat-subheader *ngFor="let e of massRangeAmounts" (click)="displayDetails = !displayDetails">
+            {{ e.amount }} {{ 'fleet.composition.by-mass.ships' | translate }}  {{ e.range.low | mass: 'T' }} {{ 'fleet.composition.by-mass.up-to' | translate }} {{ e.range.high | mass: 'T' }}
+        </div>
+    </div>
 </div>
 
 <div *ngIf="!!warships">
@@ -60,10 +70,10 @@
                               [altText]="entry.value[0].shipClass.shipClassType.typeName"
                               png24px [toolTip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"></app-icon>
 
-                    {{entry.value[0].shipClass.name}} Flt. {{ entry.value[0].shipClass.mark }} {{ 'fleet.composition.class.title' | translate }}
+                    {{ entry.value[0].shipClass.name }} Flt. {{ entry.value[0].shipClass.mark }} {{ 'fleet.composition.class.title' | translate }}
                 </div>
                 <mat-list-item *ngFor="let warShip of entry.value" class="height-fit-content-forced">
-                    <span matListItemTitle>{{warShip.name}}</span>
+                    <span matListItemTitle>{{ warShip.name }}</span>
                 </mat-list-item>
             </mat-list>
         </div>

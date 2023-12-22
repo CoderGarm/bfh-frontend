@@ -143,6 +143,10 @@
 	"filter": "Filter",
 	"fleet": {
 		"composition": {
+			"by-mass": {
+				"ships": "Schiff(e) zwischen",
+				"up-to": "und"
+			},
 			"class": {
 				"title": "Klasse"
 			},
@@ -163,6 +167,9 @@
 				},
 				"title": "Detachiere Flottenteile",
 				"tooltip": "Erzeuge neues Detachment"
+			},
+			"detail": {
+				"title": "Flottenzusammensetzung, Details"
 			},
 			"fleet-name": {
 				"title": "Flotte"

@@ -4,7 +4,7 @@ import {SubscriptionManager} from "../../../subscription.manager";
 import {coerceBooleanProperty} from "@angular/cdk/coercion";
 import {StarMapCommunicationService} from "../../../services/intercom/star-map-communication.service";
 import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
-import {HyperprintCalculatorHelper} from "../../../services/helper/hyperprint-calculator.helper";
+import {HyperprintCalculatorHelper, MassRange, MassRangeAmount} from "../../../services/helper/hyperprint-calculator.helper";
 import MassMetricEnum = Mass.MassMetricEnum;
 
 @Component({
@@ -25,7 +25,8 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
     warShipsByType: Map<string, WarShip[]> = new Map<string, WarShip[]>();
     warShipsByTypeAndFlight: Map<string, WarShip[]> = new Map<string, WarShip[]>();
 
-    shipsByTonnage: Map<number, number> = new Map<number, number>();
+    shipsByTonnage: MassRange[] = [];
+    massRangeAmounts: MassRangeAmount[] = [];
 
     // @formatter:off
     @Input()
@@ -35,7 +36,7 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
     // @formatter:on
 
     displayAsOwnFleet: boolean = true;
-
+    displayDetails: boolean = false;
 
     constructor(private commService: StarMapCommunicationService) {
         super();
@@ -99,26 +100,62 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
 
     private sortWarshipsForSensorStrength() {
         if (!this.fleet || this.isOwnFleet(this.fleet)) {
-            this.shipsByTonnage.clear();
+            this.shipsByTonnage = [];
             return;
         }
-        let hyperPrintSensorValue = this.getHyperprintSensorValue(this.getSystemOfFleet());
 
-        const resolvableSize = Math.floor(this.fleet.ships.length / 10);
+        const shipsByTonnage: MassRange[] = [];
+        const massRangeAmounts: MassRangeAmount[] = [];
         const warShips = this.fleet.ships
-            .sort((a, b) => FleetFormationDisplay.getTons(a.shipClass.tonnage, MassMetricEnum.T) - FleetFormationDisplay.getTons(b.shipClass.tonnage, MassMetricEnum.T));
-        const resolvableLimit = (warShips.length - 1) - resolvableSize;
-        for (let i = warShips.length - 1; i >= resolvableLimit; i--) {
-            const warShip = warShips[i];
-            const resolvedTonnage: Mass = HyperprintCalculatorHelper.getResolvedTonnage(warShip.shipClass.tonnage, hyperPrintSensorValue);
-            const tons = FleetFormationDisplay.getTons(resolvedTonnage, MassMetricEnum.T);
-            let amount = this.shipsByTonnage.has(tons) ? this.shipsByTonnage.get(tons)! : 0;
-            this.shipsByTonnage.set(tons, ++amount);
-        }
+            .sort((a, b) => FleetFormationDisplay.diff(a.shipClass.tonnage, b.shipClass.tonnage));
+
+        // Höchste Eloka-Punkte im System / 10 (aufgerundet) = Anzahl der individuell auflösbaren Schiffe fixme
+        // Höchste Eloka-Punkte im System * Kilotonne = auflösbare individuelle Tonnage -> check
+
+        const hyperPrintSensorValue = this.getHyperprintSensorValue(this.getSystemOfFleet());
+        const resolvableSize = Math.floor(hyperPrintSensorValue / 10);
+        console.log("hyperPrintSensorValue", hyperPrintSensorValue, "resolvableSize", resolvableSize)
+
+        warShips.forEach(warShip => {
+            const range: MassRange = HyperprintCalculatorHelper.getResolvedTonnage(warShip.shipClass.tonnage, hyperPrintSensorValue);
+            shipsByTonnage.push(range);
+            let matchingMassRange = massRangeAmounts.find(massRangeAmount => {
+                return FleetFormationDisplay.matchesRangeGroup(massRangeAmount.range.low, range.low) && FleetFormationDisplay.matchesRangeGroup(massRangeAmount.range.high, range.high);
+            });
+            if (!matchingMassRange) {
+                massRangeAmounts.push({
+                    range: range,
+                    amount: 1
+                });
+            } else {
+                matchingMassRange.range.low.coordinate = Math.min(FleetFormationDisplay.getTons(matchingMassRange.range.low, MassMetricEnum.T), FleetFormationDisplay.getTons(range.low, MassMetricEnum.T));
+                matchingMassRange.range.low.massMetric = MassMetricEnum.T;
+                matchingMassRange.range.high.coordinate = Math.max(FleetFormationDisplay.getTons(matchingMassRange.range.high, MassMetricEnum.T), FleetFormationDisplay.getTons(range.high, MassMetricEnum.T));
+                matchingMassRange.range.high.massMetric = MassMetricEnum.T;
+                matchingMassRange.amount += 1;
+            }
+        });
+
+        this.shipsByTonnage = shipsByTonnage.sort((a, b) => FleetFormationDisplay.diffRange(a, b));
+        this.massRangeAmounts = massRangeAmounts;
+    }
+
+    private static matchesRangeGroup(o1: Mass, o2: Mass) {
+        const knownMass = FleetFormationDisplay.getTons(o1, MassMetricEnum.T);
+        const otherMass = FleetFormationDisplay.getTons(o2, MassMetricEnum.T);
+        return Math.abs(knownMass * 0.3) >= Math.abs(otherMass - knownMass);
     }
 
     private static getTons(mass: Mass, targetMetric: MassMetricEnum) {
         return NavigationCalculator.convertMassToMetric(mass, targetMetric);
+    }
+
+    private static diff(o1: Mass, o2: Mass) {
+        return FleetFormationDisplay.getTons(o1, MassMetricEnum.T) - FleetFormationDisplay.getTons(o2, MassMetricEnum.T);
+    }
+
+    private static diffRange(o1: MassRange, o2: MassRange) {
+        return FleetFormationDisplay.diff(o1.low, o2.low) + FleetFormationDisplay.diff(o1.high, o2.high);
     }
 
     private getHyperprintSensorValue(system?: StarSystem) {
@@ -151,4 +188,6 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
         }
         return system;
     }
+
+    protected readonly console = console;
 }
