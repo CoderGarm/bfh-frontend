@@ -33,6 +33,8 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
     centerFormControl = new FormControl('');
 
+    showLegend: boolean = true;
+
     constructor(private fleetApi: FleetApiService,
                 private fleetEventService: FleetEventService,
                 private spinnerService: SpinnerService,

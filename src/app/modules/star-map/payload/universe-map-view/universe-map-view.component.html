@@ -5,29 +5,53 @@
     {{ knownStarSystems.length }}
 </app-red-box>
 
-<form class="search-box" [class.invertColor]="tokenStorage.isGeorge()">
-    <mat-form-field class="center-field" appearance="fill">
-        <mat-label>Search for system</mat-label>
-        <input matInput
-               placeholder="Search..."
-               #centerInput
-               [formControl]="centerFormControl"
-               matAutocompletePosition="above"
-               [matAutocomplete]="auto1"/>
-        <mat-icon matSuffix (click)="selectedCenter(undefined); $event.stopPropagation();">clear</mat-icon>
-        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectedCenter($event)">
-            <mat-option *ngFor="let coord of filteredCenter | async" [value]="coord">
-                {{ coord.name }}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-    <button mat-mini-fab color="primary" (click)="zoomTo()"
-            [disabled]="!starMapCommService.selectedStarSystem"
-            matTooltip="Zoom to target"
-            class="zoom-btn">
-        <mat-icon>zoom_in_map</mat-icon>
+<div class="legend-box" [class.invertColor]="tokenStorage.isGeorge()" [class.hidden-legend]="!showLegend">
+
+    <button type="button" class="legend-toggle" mat-button (click)="showLegend = !showLegend">
+        <mat-icon *ngIf="!showLegend">switch_right</mat-icon>
+        <mat-icon *ngIf="showLegend">switch_left</mat-icon>
     </button>
-</form>
+
+    <span>Legend</span>
+    <ul>
+        <li id="legend-solarian">Solarian League</li>
+        <li id="legend-manticore">Manticore Empire</li>
+        <li id="legend-haven">Haven Republic</li>
+        <li id="legend-malign">Renaissance Factor</li>
+        <li id="legend-anderman">Andermani Empire</li>
+        <li id="legend-silesia">Silesia Confederacy</li>
+        <li id="legend-midgard">Midgard Federation</li>
+        <li id="legend-matapan">Matapan</li>
+        <li id="legend-asgard">Asgard Association</li>
+        <li id="legend-Monica">Republic of Monica</li>
+        <li id="legend-torch">Kingdom of Torch</li>
+        <li id="legend-famous">Phoenix clusters</li>
+    </ul>
+
+    <form class="search-box">
+        <mat-form-field class="center-field" appearance="fill">
+            <mat-label>Search for system</mat-label>
+            <input matInput
+                   placeholder="Search..."
+                   #centerInput
+                   [formControl]="centerFormControl"
+                   matAutocompletePosition="above"
+                   [matAutocomplete]="auto1"/>
+            <mat-icon matSuffix (click)="selectedCenter(undefined); $event.stopPropagation();">clear</mat-icon>
+            <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectedCenter($event)">
+                <mat-option *ngFor="let coord of filteredCenter | async" [value]="coord">
+                    {{ coord.name }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <button mat-mini-fab color="primary" (click)="zoomTo()"
+                [disabled]="!starMapCommService.selectedStarSystem"
+                matTooltip="Zoom to target"
+                class="zoom-btn">
+            <mat-icon>zoom_in_map</mat-icon>
+        </button>
+    </form>
+</div>
 
 <app-system-info class="system-info-div" [starSystem]="starMapCommService.selectedStarSystem"></app-system-info>
 
