@@ -241,10 +241,10 @@
                                (mouseout)="hoverWeapon()" lines="{{wep.allowedMissiles.length + 9}}">
                     <div class="container">
                         <div class="list-head">
-                            <span matListItemTitle>{{getDisplayName(wep)}}</span>
+                            <span matListItemTitle>{{ getDisplayName(wep) }}</span>
                             <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.shipClassType?.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                             <span matListItemLine>Tonnage: {{ wep.baseModule.tonnage | mass: 'T' }}</span>
-                            <span matListItemLine>Intended for ship class: {{wep.baseModule.shipClassType!.typeName}}</span>
+                            <span matListItemLine>Intended for ship class: {{ wep.baseModule.shipClassType!.typeName }}</span>
                             <span matListItemLine *ngFor="let m of wep.allowedMissiles">{{getDisplayName(m)}}</span>
                         </div>
                         <div class="list-cont">
@@ -262,7 +262,7 @@
                 <div class="flex-items-container">
                     <mat-card *ngFor="let missile of getMissilesOfLoadout(shipClassMock)" class="ammo-card">
                         <mat-card-header>
-                            <mat-card-title>{{getDisplayName(missile)}}</mat-card-title>
+                            <mat-card-title>{{ getDisplayName(missile) }}</mat-card-title>
                             <mat-card-subtitle>
                                 <span matListItemLine>Range: {{ missile.missileMotor | missileEndurance: 'KM' }}</span>
                                 <span matListItemLine>Attack type: {{ missile.warhead.warheadType }}</span>

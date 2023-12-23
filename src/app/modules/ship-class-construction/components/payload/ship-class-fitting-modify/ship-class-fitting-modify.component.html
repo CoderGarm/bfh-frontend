@@ -7,7 +7,7 @@
     <mat-step>
         <ng-template matStepLabel>
             <div *ngIf="!armorSelection">{{ 'shipyard.fitting.armor.title' | translate }}</div>
-            <div *ngIf="!!armorSelection">{{getDisplayName(armorSelection)}}</div>
+            <div *ngIf="!!armorSelection">{{ getDisplayName(armorSelection) }}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.armor' | translate }}</div>
         </ng-template>
         <ng-template matStepContent>
@@ -39,7 +39,7 @@
     <mat-step>
         <ng-template matStepLabel>
             <div *ngIf="!sidewallSelection">{{ 'shipyard.fitting.sidewall.title' | translate }}</div>
-            <div *ngIf="!!sidewallSelection">{{getDisplayName(sidewallSelection)}}</div>
+            <div *ngIf="!!sidewallSelection">{{ getDisplayName(sidewallSelection) }}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.sidewall' | translate }}</div>
         </ng-template>
         <ng-template matStepContent>
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <p>{{exampleSidewall?.baseModule?.description}}</p>
+            <p>{{ exampleSidewall?.baseModule?.description }}</p>
 
             <mat-selection-list [multiple]="false">
                 <mat-list-option *ngFor="let module of sidewalls"
@@ -76,7 +76,7 @@
     <mat-step>
         <ng-template matStepLabel>
             <div *ngIf="!elokaSelection">{{ 'shipyard.fitting.electronic-warfare.title' | translate }}</div>
-            <div *ngIf="!!elokaSelection">{{getDisplayName(elokaSelection)}}</div>
+            <div *ngIf="!!elokaSelection">{{ getDisplayName(elokaSelection) }}</div>
             <div class="mat-step-optional ng-star-inserted">{{ 'shipyard.fitting.not-selected.warship-needs.eloka' | translate }}</div>
         </ng-template>
         <ng-template matStepContent>
@@ -203,11 +203,11 @@
                                (mouseout)="hoverWeapon()" lines="{{wep.allowedMissiles.length + 9}}">
                     <div class="container">
                         <div class="list-head">
-                            <span matListItemTitle>{{getDisplayName(wep)}}</span>
+                            <span matListItemTitle>{{ getDisplayName(wep) }}</span>
                             <span matListItemLine>{{ 'enum.name.hullType.' + wep.baseModule.shipClassType?.typeName | translate }} {{ 'shipyard.fitting.weapon-for.weaponType.' + wep.weaponType | translate }}</span>
                             <span matListItemLine>Tonnage: {{ wep.baseModule.tonnage | mass: 'T' }}</span>
                             <span matListItemLine>Intended for ship class: {{wep.baseModule.shipClassType!.typeName}}</span>
-                            <span matListItemLine *ngFor="let m of wep.allowedMissiles">{{getDisplayName(m)}}</span>
+                            <span matListItemLine *ngFor="let m of wep.allowedMissiles">{{ getDisplayName(m) }}</span>
                         </div>
                         <div class="list-cont">
                             <app-weapon-per-alignment-counter class="numeric-counter"
