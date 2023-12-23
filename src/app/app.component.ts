@@ -63,7 +63,8 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     @ViewChild('drawer')
     drawer!: MatDrawer;
 
-    private static readonly IMG_NO: number = 21;
+    private static readonly IMG_START_NO: number = 21;
+    private static readonly IMG_NO: number = 25;
 
     imageLink: string = '';
 
@@ -267,7 +268,9 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     }
 
     private getImageURL() {
-        const number = this.randomIntFromInterval(1, AppComponent.IMG_NO);
-        return "assets/images/" + number + ".jpeg";
+        const number = this.randomIntFromInterval(AppComponent.IMG_START_NO, AppComponent.IMG_NO);
+        const isPng: boolean = number >= 22 && number <= 25;
+        const ending: string = isPng ? '.png' : '.jpeg';
+        return 'assets/images/' + number + ending;
     }
 }

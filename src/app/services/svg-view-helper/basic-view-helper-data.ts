@@ -29,6 +29,9 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly FLEET_SHARK_SELECTOR_ID_PREFIX: string = BasicViewHelperData.FLEET_SHARK_MARKER + "-icon";
     protected static readonly WARSHIP_SELECTOR_ID_PREFIX: string = "-warship";
     protected static readonly MISSILE_SALVO_SELECTOR_ID_PREFIX: string = "-missile-salvo";
+    protected static readonly FTL_CAPABLE: string = "ftl";
+    protected static readonly IN_MOTION: string = "in-motion";
+    protected static readonly INOPERATIONAL: string = "inop";
 
     protected static readonly CLICKABLE_CSS_CLASS = "clickable";
     protected static readonly CELESTIAL_BODY_CSS_CLASS: string = "celestial";

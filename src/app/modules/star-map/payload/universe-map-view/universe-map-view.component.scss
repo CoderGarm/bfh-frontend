@@ -1,5 +1,19 @@
 .search-box {
-  z-index: 999;
+
+}
+
+.legend-box > mat-divider {
+  margin: 4px 0;
+}
+
+.legend-title {
+  margin-top: 25px;
+}
+
+.map-control {
+  position: relative;
+  top: -40px;
+  left: calc(100% - 130px);
 }
 
 .zoom-btn {
@@ -10,6 +24,7 @@
   transform: rotate(90deg);
   position: relative;
   left: -30px;
+  top: -5px;
 }
 
 .hidden-legend {
@@ -18,7 +33,7 @@
 
 .legend-box {
   overflow: hidden;
-  transition: height 3s;
+  transition: height 2s;
   height: 425px;
   z-index: 98;
   position: absolute;
@@ -36,50 +51,15 @@
   }
 }
 
-#legend-solarian {
-  color: #B31616;
+#legend-colonized {
+  color: var(--success-color);
 }
 
-#legend-manticore {
-  color: #ff00ff;
+#legend-colonized-by-other {
+  color: #6f1585;
 }
 
-#legend-haven {
-  color: #57ffc7;
+#legend-colonized-by-npc {
+  color: #8B0000;
 }
 
-#legend-malign {
-  color: #996633;
-}
-
-#legend-anderman {
-  color: #ffcc00;
-}
-
-#legend-silesia {
-  color: #99ff33;
-}
-
-#legend-midgard {
-  color: #ff9900;
-}
-
-#legend-matapan {
-  color: #6666ff;
-}
-
-#legend-asgard {
-  color: #009999;
-}
-
-#legend-Monica {
-  color: #669999;
-}
-
-#legend-torch {
-  color: #ff0066;
-}
-
-#legend-famous {
-  color: #3366cc;
-}

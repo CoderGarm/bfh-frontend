@@ -98,6 +98,13 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected zoomLevel: number = 1;
 
+    highlightFTLCapable: boolean = true;
+    highlightNonFTL: boolean = true;
+    highlightMovement: boolean = true;
+    highlightNonMovement: boolean = true;
+    highlightOperational: boolean = true;
+    highlightInOperational: boolean = true;
+
     @HostListener('window:resize', ['$event'])
     onResize() {
         this.determineAspectRatio();
@@ -1024,12 +1031,18 @@ export class BasicViewHelper extends BasicViewHelperData {
             fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
         }
 
+        const ftlCapable = fleetMarker.state.isFTLCapable;
+        const inMotion = fleetMarker.state.isInMotion;
+        const inOp = !fleetMarker.state.isOperational;
         const fleetShark = group
             .polygon(fleetSharkPoints)
             .fill(fleetSharkColor)
             .stroke(BasicViewHelper.STROKE_BLACK)
             .addClass(BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER)
             .addClass(BasicViewHelperData.CLICKABLE_CSS_CLASS)
+            .addClass(ftlCapable ? BasicViewHelperData.FTL_CAPABLE : '')
+            .addClass(inMotion ? BasicViewHelperData.IN_MOTION : '')
+            .addClass(inOp ? BasicViewHelperData.INOPERATIONAL : '')
             .id(fleetSharkID);
 
         if (!!orbit) {
@@ -1241,5 +1254,56 @@ export class BasicViewHelper extends BasicViewHelperData {
                 }
             });
         return hashesOnMap;
+    }
+
+    highlightFleetByDrive(highlightFTLCapable: boolean, highlightNonFTL: boolean) {
+        this.highlightFTLCapable = highlightFTLCapable;
+        this.highlightNonFTL = highlightNonFTL;
+        this.getFleetPolygons()
+            .forEach(star => {
+                const ftlCapable = !!star.classes().find(css => css == BasicViewHelperData.FTL_CAPABLE);
+                if (highlightFTLCapable && ftlCapable || highlightNonFTL && !ftlCapable) {
+                    star.removeClass('legend-un-highlighted');
+                } else {
+                    star.addClass('legend-un-highlighted');
+                }
+            });
+    }
+
+    private getFleetPolygons() {
+        const fleetGroups = this.getFleetGroups();
+        return fleetGroups
+            .filter(c => c.children().filter(c => c.classes().includes(BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER)).length != 0)
+            .map(c => c.children()[0]);
+    }
+
+    highlightFleetByMovement(highlightMovement: boolean, highlightNonMovement: boolean) {
+        this.highlightMovement = highlightMovement;
+        this.highlightNonMovement = highlightNonMovement;
+        this.getFleetPolygons()
+            .forEach(star => {
+                const inMotion = !!star.classes().find(css => css == BasicViewHelperData.IN_MOTION);
+
+                if (highlightMovement && inMotion || highlightNonMovement && !inMotion) {
+                    star.removeClass('legend-un-highlighted');
+                } else {
+                    star.addClass('legend-un-highlighted');
+                }
+            });
+    }
+
+    highlightFleetByOperational(highlightOperational: boolean, highlightInOperational: boolean) {
+        this.highlightOperational = highlightOperational;
+        this.highlightInOperational = highlightInOperational;
+        this.getFleetPolygons()
+            .forEach(star => {
+                const inOperational = !!star.classes().find(css => css == BasicViewHelperData.INOPERATIONAL);
+                // switched stated due craziness
+                if (highlightOperational && !inOperational || highlightInOperational && inOperational) {
+                    star.removeClass('legend-un-highlighted');
+                } else {
+                    star.addClass('legend-un-highlighted');
+                }
+            });
     }
 }

@@ -12,20 +12,60 @@
         <mat-icon *ngIf="showLegend">switch_left</mat-icon>
     </button>
 
-    <span>Legend</span>
+    <div class="map-control">Map Control</div>
+
+    <mat-divider></mat-divider>
+    <!--@formatter:off-->
+    <div class="flex-items-container">
+        <button color="{{ highlightFTLCapable && highlightNonFTL ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByDrive(true,true)">ALL
+        </button>
+
+        <button color="{{ highlightFTLCapable && !highlightNonFTL ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByDrive(true,false)">FTL
+        </button>
+
+        <button color="{{ !highlightFTLCapable && highlightNonFTL ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByDrive(false,true)">non FTL
+        </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="flex-items-container">
+        <button color="{{ highlightMovement && highlightNonMovement ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByMovement(true,true)">ALL
+        </button>
+
+        <button color="{{ highlightMovement && !highlightNonMovement ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByMovement(true,false)">Move
+        </button>
+
+        <button color="{{ !highlightMovement && highlightNonMovement ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByMovement(false,true)">no Move
+        </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="flex-items-container">
+        <button color="{{ highlightMovement && highlightNonMovement ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByOperational(true,true)">ALL
+        </button>
+
+        <button color="{{ highlightMovement && !highlightNonMovement ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByOperational(true,false)">OP
+        </button>
+
+        <button color="{{ !highlightOperational && highlightInOperational ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button
+                (click)="highlightFleetByOperational(false,true)">INOP
+        </button>
+    </div>
+    <!--@formatter:on-->
+
+    <mat-divider></mat-divider>
+
+    <div class="legend-title">Legend</div>
     <ul>
-        <li id="legend-solarian">Solarian League</li>
-        <li id="legend-manticore">Manticore Empire</li>
-        <li id="legend-haven">Haven Republic</li>
-        <li id="legend-malign">Renaissance Factor</li>
-        <li id="legend-anderman">Andermani Empire</li>
-        <li id="legend-silesia">Silesia Confederacy</li>
-        <li id="legend-midgard">Midgard Federation</li>
-        <li id="legend-matapan">Matapan</li>
-        <li id="legend-asgard">Asgard Association</li>
-        <li id="legend-Monica">Republic of Monica</li>
-        <li id="legend-torch">Kingdom of Torch</li>
-        <li id="legend-famous">Phoenix clusters</li>
+        <li id="legend-colonized">{{ 'mission.legend.colonized-systems' | translate }}</li>
+        <li id="legend-colonized-by-other">{{ 'mission.legend.colonized-systems-by-other' | translate }}</li>
+        <li id="legend-colonized-by-npc">{{ 'mission.legend.colonized-systems-by-npc' | translate }}</li>
     </ul>
 
     <form class="search-box">
