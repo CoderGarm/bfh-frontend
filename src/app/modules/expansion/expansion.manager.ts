@@ -40,6 +40,10 @@ export class ExpansionManager extends SubscriptionManager {
     protected colonizationApi = AppInjector.get(ColonizationApiService);
     protected resourceApi = AppInjector.get(ResourcesApiService);
 
+    pagedStarSystems: number[] = [];
+    knownColoDurations: Map<number, number> = new Map<number, number>();
+    askedColoDurations: Map<number, number> = new Map<number, number>();
+
     constructor(@Inject('columns') columns: string[]) {
         super();
 
@@ -58,8 +62,29 @@ export class ExpansionManager extends SubscriptionManager {
         if (!this.reference) {
             return NaN;
         }
-        let distanceMapElement = colonization.travelTimeMap[this.reference.idStarSystem];
-        return !!distanceMapElement ? distanceMapElement : 0;
+        this.getSkip();
+        const idStarSystem = colonization.starSystem.idStarSystem;
+
+        const travelTime = this.knownColoDurations.has(idStarSystem) ? this.knownColoDurations.get(idStarSystem) : this.askedColoDurations.get(idStarSystem);
+        if (!travelTime && this.pagedStarSystems.includes(idStarSystem)) {
+            this.askedColoDurations.set(idStarSystem, 1);
+            const indexOf = this.pagedStarSystems.indexOf(idStarSystem);
+            this.pagedStarSystems.splice(indexOf, 1);
+            this.colonizationApi.fetchColonizingTime(idStarSystem).subscribe(travelTime => {
+                this.knownColoDurations.set(idStarSystem, travelTime);
+            });
+        }
+        return !!travelTime ? travelTime : NaN;
+    }
+
+
+    getSkip() {
+        const skip = this.paginator!.pageSize * this.paginator!.pageIndex;
+
+        this.pagedStarSystems = this.dataSource.data.filter((u, i) => i >= skip)
+            .filter((u, i) => i < this.paginator!.pageSize)
+            .map(c => c.starSystem.idStarSystem);
+        console.log(this.pagedStarSystems)
     }
 
     initializePaginator() {

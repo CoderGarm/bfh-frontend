@@ -215,10 +215,17 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
     openColoDialog(planet: Planet) {
 
         const idStarSystem = planet.starSystem.id;
-        const starSystemColonization = this.systemColonizations
-            .filter(c => c.starSystem.idStarSystem == idStarSystem)[0];
-        const travelTime = starSystemColonization.travelTimeMap[idStarSystem];
+        const travelTime = this.knownColoDurations.get(idStarSystem);
+        if (!!travelTime || travelTime == 0) {
+            this.setUpDialog(planet, travelTime);
+            return;
+        }
+        this.colonizationApi.fetchColonizingTime(idStarSystem).subscribe(travelTime => {
+            this.setUpDialog(planet, travelTime);
+        });
+    }
 
+    private setUpDialog(planet: Planet, travelTime: number) {
         const dialogConfig = DialogConfigHelper.createDialog();
         dialogConfig.data = new DialogData(
             'Start colonization of ' + planet.name + '?',
@@ -229,7 +236,7 @@ export class OrganizeExpansionComponent extends ExpansionManager implements Afte
             if (result) {
                 this.colonizePlanet(planet);
             }
-        })
+        });
     }
 
     checkIfColonizationIsInProgress(colo: StarSystemColonization, planet: Planet) {

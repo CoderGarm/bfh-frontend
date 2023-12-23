@@ -112,17 +112,17 @@ export class ColonizationApiService {
     /**
      * Fetches the time which is needed for the colonization of a planet.
      * 
-     * @param idPlanet 
+     * @param idStarSystem 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public fetchColonizingTime(idPlanet: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
-    public fetchColonizingTime(idPlanet: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
-    public fetchColonizingTime(idPlanet: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
-    public fetchColonizingTime(idPlanet: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public fetchColonizingTime(idStarSystem: number, observe?: 'body', reportProgress?: boolean): Observable<number>;
+    public fetchColonizingTime(idStarSystem: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<number>>;
+    public fetchColonizingTime(idStarSystem: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<number>>;
+    public fetchColonizingTime(idStarSystem: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (idPlanet === null || idPlanet === undefined) {
-            throw new Error('Required parameter idPlanet was null or undefined when calling fetchColonizingTime.');
+        if (idStarSystem === null || idStarSystem === undefined) {
+            throw new Error('Required parameter idStarSystem was null or undefined when calling fetchColonizingTime.');
         }
 
         let headers = this.defaultHeaders;
@@ -141,7 +141,7 @@ export class ColonizationApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<number>('get',`${this.basePath}/api/private/colonization/duration/${encodeURIComponent(String(idPlanet))}`,
+        return this.httpClient.request<number>('get',`${this.basePath}/api/private/colonization/duration/${encodeURIComponent(String(idStarSystem))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
