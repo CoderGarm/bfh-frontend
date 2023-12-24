@@ -9,6 +9,7 @@
 	"action": {
 		"clear": "Zurücksetzen",
 		"filter": "Filtern",
+		"skip": "Überspringen",
 		"submit": "Abschicken"
 	},
 	"alliance": {
@@ -670,7 +671,11 @@
 				"tooltip": "Wählst du diese Option, kannst du dein Passwort nicht ändern."
 			}
 		},
-		"spinner-message": "Bitte warte ein paar Sekunden, während deine Marine kämpft."
+		"hello": {
+			"change-if-want": "ändere hier ein paar persönliche Einstellungen, wenn du möchtest.",
+			"title": "Willkommen auf dem Schlachtfeld, Commander.",
+			"welcome": "Hallo"
+		}
 	},
 	"research": {
 		"insta-finished": "Forschung erfolgreich",

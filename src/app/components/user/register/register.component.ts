@@ -1,26 +1,23 @@
-import {AuthApiService, UserApiService, UserReq} from '../../../services/swagger';
+import {AuthApiService, UserReq} from '../../../services/swagger';
 import {PasswordErrorMessages} from '../../../validators/password.validator';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {UserErrorMessages} from "../../../validators/username.validator";
 import {SubscriptionManager} from "../../../subscription.manager";
-import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {TokenStorage} from "../../../services/authentication/token-storage.service";
 import {TranslateService} from "@ngx-translate/core";
-import {SpinnerService} from "../../../services/spinner.service";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {DialogConfigHelper} from "../../../services/helper/dialog-config.helper";
-import {DialogData} from "../../confirmation-dialog/DialogData";
-import {ConfirmDialogComponent} from "../../confirmation-dialog/confirm-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {DetailsStepComponent} from "./payload/details-step/details-step.component";
+import {DetailsStepComponent, InitialPlayerSettings} from "./payload/details-step/details-step.component";
+import {RegisterEventService} from "./register-event.service";
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent extends SubscriptionManager implements OnInit {
+export class RegisterComponent extends SubscriptionManager {
 
     static path: string = 'register';
 
@@ -30,11 +27,9 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
 
     inProgress: boolean = false;
 
-    constructor(private userApiService: UserApiService,
+    constructor(private registerEventService: RegisterEventService,
                 private authService: AuthApiService,
                 private tokenService: TokenStorage,
-                private snackbarService: SnackbarNotificationService,
-                private spinnerService: SpinnerService,
                 public translate: TranslateService,
                 private dialog: MatDialog) {
         super();
@@ -52,19 +47,9 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
             this.registerForm.controls.passRepeat.setValue('12457aA!');
             this.registerForm.controls.email.setValue(utcDate + '@' + utcDate);
         }
-
-        // just make sure that the key exists
-        this.translate.get('register.spinner-message');
-    }
-
-    ngOnInit(): void {
     }
 
     submitRegister(): void {
-
-        this.openRetireFleetDialog();
-
-        // fixme in usage ? this.spinnerService.activateSpinner('register.spinner-message');
         let email: string = this.registerForm.controls.email.value;
         const noEMailWanted: boolean = this.registerForm.controls.noEMailWanted.value;
         const userName: string = this.registerForm.controls.login.value;
@@ -77,11 +62,9 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
             password: this.registerForm.controls.pass.value,
             username: userName
         };
+        this.openRegisterStep2(newUser);
         const sub = this.authService.createUser(newUser)
-            .subscribe(() => {
-                this.spinnerService.deactivateSpinner();
-                this.snackbarService.open("Yeah nice, you are registered! Log in now.");
-            });
+            .subscribe(resp => this.registerEventService.sendIdUser(resp.idUser));
         this.subscriptions.push(sub);
     }
 
@@ -115,17 +98,13 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
         return (unCrit && mailValid) || this.inProgress;
     }
 
-    openRetireFleetDialog() {
+    openRegisterStep2(newUser: UserReq) {
         const dialogConfig = DialogConfigHelper.createDialog();
-        dialogConfig.data = new DialogData('Hello');
-        dialogConfig.width = 'calc(80%)';
-        dialogConfig.height = 'calc(80%)';
-        dialogConfig.data.addDialogDataPerTemplate(DetailsStepComponent, [], []);
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                console.log("do something")
-            }
-        })
+        dialogConfig.data = newUser;
+        dialogConfig.width = 'calc(90%)';
+        const dialogRef = this.dialog.open(DetailsStepComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((result?: InitialPlayerSettings) => {
+            console.log("do something", result)
+        });
     }
 }

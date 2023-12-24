@@ -87,6 +87,7 @@ import {ColorSchemeService} from "./services/color-scheme.service";
 import {LayoutModule} from "@angular/cdk/layout";
 import {LibraryModule} from "./modules/library/library.module";
 import {DetailsStepComponent} from './components/user/register/payload/details-step/details-step.component';
+import {RegisterEventService} from "./components/user/register/register-event.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -186,6 +187,7 @@ export let AppInjector: Injector;
         SpinnerService,
         DoNotScrollService,
         FleetEventService,
+        RegisterEventService,
         CurrentTickService,
         TypeService,
         {

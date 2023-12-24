@@ -1,9 +1,12 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, HostListener, Inject, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {SingleTouchedFormFieldErrorStateMatcher} from "../../../../../validators/single-touched-form-field-error-state-matcher";
 import {MatSelectionList} from "@angular/material/list";
 import {ProfileComponent} from "../../../profile/profile.component";
+import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {UserReq} from "../../../../../services/swagger";
+import {RegisterEventService} from "../../register-event.service";
 
 
 export interface InitialPlayerSettings {
@@ -36,7 +39,13 @@ export class DetailsStepComponent extends SubscriptionManager {
         profilePic: 'perspective-dice-six-faces-random.png'
     }
 
-    constructor(private formBuilder: FormBuilder) {
+    newUser?: UserReq;
+    idUser?: number;
+
+    constructor(private formBuilder: FormBuilder,
+                private registerEventService: RegisterEventService,
+                private dialogRef: MatDialogRef<DetailsStepComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: MatDialogConfig) {
         super();
 
         this.rpgFormGroup = this.formBuilder.group({
@@ -45,6 +54,10 @@ export class DetailsStepComponent extends SubscriptionManager {
             firstname: undefined,
             surname: undefined,
         });
+
+        this.newUser = <UserReq>data;
+
+        this.registerEventService.getUserIdEmitter().subscribe(resp => this.idUser = resp);
     }
 
     ngAfterViewInit(): void {
@@ -90,5 +103,22 @@ export class DetailsStepComponent extends SubscriptionManager {
         this.result.firstname = this.rpgFormGroup.controls.firstname.value;
         this.result.surname = this.rpgFormGroup.controls.surname.value;
         this.result.shipPrefix = undefined;
+    }
+
+    public cancel() {
+        this.close(undefined);
+    }
+
+    public close(result?: InitialPlayerSettings) {
+        this.dialogRef.close(result);
+    }
+
+    public confirm() {
+        this.close(this.result);
+    }
+
+    @HostListener("keydown.esc")
+    public onEsc() {
+        this.close(undefined);
     }
 }

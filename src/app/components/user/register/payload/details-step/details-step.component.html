@@ -1,80 +1,105 @@
-<div class="content-area">
-    <mat-card appearance="outlined" class="streamline-background">
-        <mat-card-header class="streamline-background">
-            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ result.profilePic }}" alt="{{ result.profilePic }}">
-            <mat-card-title>
-                I am {{ userName }}.
-            </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
+<div class="header streamline-background"
+     cdkDrag
+     cdkDragRootElement=".confirm-mat-dialog-panel"
+     cdkDragBoundary=".cdk-overlay-container">
+    <h1 mat-dialog-title>{{ 'register.hello.title' | translate }}</h1>
+</div>
+<div mat-dialog-content class="streamline-background">
+    <div class="content-area">
+        <mat-card appearance="raised" class="streamline-background">
+            <mat-card-header class="streamline-background">
+                <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ result.profilePic }}" alt="{{ result.profilePic }}">
+                <mat-card-title>
+                    {{ 'register.hello.welcome' | translate }} {{ newUser?.username }},
+                </mat-card-title>
+                <mat-card-subtitle>
+                    {{ 'register.hello.change-if-want' | translate }}
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="flex-items-container">
+                    <mat-card appearance="outlined" class="width-fit-content height-fit-content">
+                        <mat-card-content>
+                            <mat-selection-list #iconSelector [multiple]="false" id="icon-card">
+                                <mat-list-option *ngFor="let fileName of userIcons" [value]="fileName" [selected]="result.profilePic === fileName">
+                                    <img matListItemAvatar src="assets/icons/user/{{ fileName }}" alt="{{ fileName }}">
+                                    <h3 matListItemTitle>{{ fileName.split('.')[0] }}</h3>
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </mat-card-content>
+                    </mat-card>
 
-            <mat-selection-list #iconSelector [multiple]="false">
-                <mat-list-option *ngFor="let fileName of userIcons" [value]="fileName" [selected]="result.profilePic === fileName">
-                    <img matListItemAvatar src="assets/icons/user/{{ fileName }}" alt="{{ fileName }}">
-                    <h3 matListItemTitle>{{ fileName.split('.')[0] }}</h3>
-                </mat-list-option>
-            </mat-selection-list>
+                    <mat-card appearance="outlined" class="width-fit-content height-fit-content">
+                        <mat-card-content>
+                            <div class="title">{{ 'role-play.personal.placeholder.title' | translate }}</div>
 
-            <div class="title">{{ 'role-play.personal.placeholder.title' | translate }}</div>
+                            <form [formGroup]="rpgFormGroup">
 
-            <form [formGroup]="rpgFormGroup">
+                                <div class="flex-items-container title-container">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>{{ 'role-play.personal.title.title' | translate }}</mat-label>
+                                        <input matInput type='text'
+                                               placeholder="{{ 'role-play.personal.placeholder.title' | translate }}"
+                                               formControlName='title'
+                                               [errorStateMatcher]="matcher"
+                                               required>
+                                        <mat-error *ngIf="rpgFormGroup.controls.title.hasError('tooLong')">
+                                            {{ 'role-play.personal.hint.title' | translate }}
+                                        </mat-error>
+                                        <mat-hint>{{ 'role-play.personal.hint.title' | translate }}</mat-hint>
+                                    </mat-form-field>
 
-                <div class="flex-items-container title-container">
-                    <mat-form-field appearance="outline">
-                        <mat-label>{{ 'role-play.personal.title.title' | translate }}</mat-label>
-                        <input matInput type='text'
-                               placeholder="{{ 'role-play.personal.placeholder.title' | translate }}"
-                               formControlName='title'
-                               [errorStateMatcher]="matcher"
-                               required>
-                        <mat-error *ngIf="rpgFormGroup.controls.title.hasError('tooLong')">
-                            {{ 'role-play.personal.hint.title' | translate }}
-                        </mat-error>
-                        <mat-hint>{{ 'role-play.personal.hint.title' | translate }}</mat-hint>
-                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>{{ 'role-play.personal.title.titleAbbreviation' | translate }}</mat-label>
+                                        <input matInput type='text'
+                                               placeholder="{{ 'role-play.personal.placeholder.titleAbbreviation' | translate }}"
+                                               formControlName='titleAbbreviation'
+                                               [errorStateMatcher]="matcher"
+                                               required>
+                                        <mat-error *ngIf="rpgFormGroup.controls.titleAbbreviation.hasError('tooLong')">
+                                            {{ 'role-play.personal.hint.titleAbbreviation' | translate }}
+                                        </mat-error>
+                                        <mat-hint>{{ 'role-play.personal.hint.titleAbbreviation' | translate }}</mat-hint>
+                                    </mat-form-field>
+                                </div>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>{{ 'role-play.personal.title.titleAbbreviation' | translate }}</mat-label>
-                        <input matInput type='text'
-                               placeholder="{{ 'role-play.personal.placeholder.titleAbbreviation' | translate }}"
-                               formControlName='titleAbbreviation'
-                               [errorStateMatcher]="matcher"
-                               required>
-                        <mat-error *ngIf="rpgFormGroup.controls.titleAbbreviation.hasError('tooLong')">
-                            {{ 'role-play.personal.hint.titleAbbreviation' | translate }}
-                        </mat-error>
-                        <mat-hint>{{ 'role-play.personal.hint.titleAbbreviation' | translate }}</mat-hint>
-                    </mat-form-field>
+                                <div class="flex-items-container name-container">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>{{ 'role-play.personal.title.firstname' | translate }}</mat-label>
+                                        <input matInput type='text'
+                                               placeholder="{{ 'role-play.personal.placeholder.firstname' | translate }}"
+                                               formControlName='firstname'
+                                               [errorStateMatcher]="matcher"
+                                               required>
+                                        <mat-error *ngIf="rpgFormGroup.controls.firstname.hasError('tooLong')">
+                                            {{ 'role-play.personal.hint.firstname' | translate }}
+                                        </mat-error>
+                                        <mat-hint>{{ 'role-play.personal.hint.firstname' | translate }}</mat-hint>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>{{ 'role-play.personal.title.surname' | translate }}</mat-label>
+                                        <input matInput type='text'
+                                               placeholder="{{ 'role-play.personal.placeholder.surname' | translate }}"
+                                               formControlName='surname'
+                                               [errorStateMatcher]="matcher"
+                                               required>
+                                        <mat-error *ngIf="rpgFormGroup.controls.surname.hasError('tooLong')">
+                                            {{ 'role-play.personal.hint.surname' | translate }}
+                                        </mat-error>
+                                        <mat-hint>{{ 'role-play.personal.hint.surname' | translate }}</mat-hint>
+                                    </mat-form-field>
+                                </div>
+                            </form>
+                        </mat-card-content>
+                    </mat-card>
                 </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
 
-                <div class="flex-items-container name-container">
-                    <mat-form-field appearance="outline">
-                        <mat-label>{{ 'role-play.personal.title.firstname' | translate }}</mat-label>
-                        <input matInput type='text'
-                               placeholder="{{ 'role-play.personal.placeholder.firstname' | translate }}"
-                               formControlName='firstname'
-                               [errorStateMatcher]="matcher"
-                               required>
-                        <mat-error *ngIf="rpgFormGroup.controls.firstname.hasError('tooLong')">
-                            {{ 'role-play.personal.hint.firstname' | translate }}
-                        </mat-error>
-                        <mat-hint>{{ 'role-play.personal.hint.firstname' | translate }}</mat-hint>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>{{ 'role-play.personal.title.surname' | translate }}</mat-label>
-                        <input matInput type='text'
-                               placeholder="{{ 'role-play.personal.placeholder.surname' | translate }}"
-                               formControlName='surname'
-                               [errorStateMatcher]="matcher"
-                               required>
-                        <mat-error *ngIf="rpgFormGroup.controls.surname.hasError('tooLong')">
-                            {{ 'role-play.personal.hint.surname' | translate }}
-                        </mat-error>
-                        <mat-hint>{{ 'role-play.personal.hint.surname' | translate }}</mat-hint>
-                    </mat-form-field>
-                </div>
-            </form>
-        </mat-card-content>
-    </mat-card>
+</div>
+<div mat-dialog-actions class="streamline-background" align="end">
+    <button mat-raised-button (click)="confirm()" [disabled]="!idUser">{{ 'action.submit' | translate }}</button>
+    <button mat-raised-button (click)="cancel()">{{ 'action.skip' | translate }}</button>
 </div>

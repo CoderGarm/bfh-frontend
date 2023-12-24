@@ -9,6 +9,7 @@
 	"action": {
 		"clear": "Clear",
 		"filter": "Filter",
+		"skip": "Skip",
 		"submit": "Submit"
 	},
 	"alliance": {
@@ -671,7 +672,11 @@
 				"tooltip": "If you chose this option, you can't change the password later."
 			}
 		},
-		"spinner-message": "Please wait while you navy is fighting for you."
+		"hello": {
+			"change-if-want": "change a few personal settings here if you want.",
+			"title": "Welcome to the battlefield, Commander.",
+			"welcome": "Hello"
+		}
 	},
 	"research": {
 		"insta-finished": "Research successful",

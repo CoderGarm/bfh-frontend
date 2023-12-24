@@ -1,0 +1,20 @@
+@import "src/styles/variables";
+
+#icon-card {
+  max-height: 430px;
+  overflow-y: scroll;
+}
+
+.title-container > *, .name-container > * {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.title-container {
+  min-width: 550px;
+}
+
+.title {
+  font-weight: 500;
+  margin-bottom: 25px;
+}
