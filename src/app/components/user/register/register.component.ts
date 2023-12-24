@@ -9,6 +9,11 @@ import {TokenStorage} from "../../../services/authentication/token-storage.servi
 import {TranslateService} from "@ngx-translate/core";
 import {SpinnerService} from "../../../services/spinner.service";
 import {MatCheckboxChange} from "@angular/material/checkbox";
+import {DialogConfigHelper} from "../../../services/helper/dialog-config.helper";
+import {DialogData} from "../../confirmation-dialog/DialogData";
+import {ConfirmDialogComponent} from "../../confirmation-dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {DetailsStepComponent} from "./payload/details-step/details-step.component";
 
 @Component({
     selector: 'app-register',
@@ -30,7 +35,8 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
                 private tokenService: TokenStorage,
                 private snackbarService: SnackbarNotificationService,
                 private spinnerService: SpinnerService,
-                public translate: TranslateService) {
+                public translate: TranslateService,
+                private dialog: MatDialog) {
         super();
         let utcDate = new Date().getMilliseconds();
         this.registerForm = new UntypedFormGroup({
@@ -55,7 +61,10 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
     }
 
     submitRegister(): void {
-        this.spinnerService.activateSpinner('register.spinner-message');
+
+        this.openRetireFleetDialog();
+
+        // fixme in usage ? this.spinnerService.activateSpinner('register.spinner-message');
         let email: string = this.registerForm.controls.email.value;
         const noEMailWanted: boolean = this.registerForm.controls.noEMailWanted.value;
         const userName: string = this.registerForm.controls.login.value;
@@ -104,5 +113,19 @@ export class RegisterComponent extends SubscriptionManager implements OnInit {
             mailValid = true;
         }
         return (unCrit && mailValid) || this.inProgress;
+    }
+
+    openRetireFleetDialog() {
+        const dialogConfig = DialogConfigHelper.createDialog();
+        dialogConfig.data = new DialogData('Hello');
+        dialogConfig.width = 'calc(80%)';
+        dialogConfig.height = 'calc(80%)';
+        dialogConfig.data.addDialogDataPerTemplate(DetailsStepComponent, [], []);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                console.log("do something")
+            }
+        })
     }
 }

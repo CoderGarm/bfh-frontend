@@ -31,7 +31,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
     /**
      * Please update if there are new icons.
      */
-    userIcons: string[] = [
+    static readonly USER_ICONS: string[] = [
         'dragon-head.png',
         'disintegrate.png',
         'bear-head.png',
@@ -46,6 +46,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
         'dwarf-face.png',
         'drop-weapon.png'
     ];
+    userIcons: string[] = ProfileComponent.USER_ICONS;
 
     selectedIcon: string = 'perspective-dice-six-faces-random.png';
 
