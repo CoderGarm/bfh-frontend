@@ -67,6 +67,7 @@ export * from './hasIcon';
 export * from './heatMap';
 export * from './hitLog';
 export * from './humanResourceAmount';
+export * from './initialPlayerSettings';
 export * from './jWT';
 export * from './job';
 export * from './launcher';

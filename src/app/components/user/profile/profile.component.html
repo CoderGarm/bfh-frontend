@@ -83,18 +83,21 @@
                 <section [formGroup]="eMailFormGroup">
                     <span matListItemLine>eMail status</span>
                     <ul>
-                        <li>
+                        <div>
                             <mat-checkbox formControlName="eMailVerified">eMail is verified.</mat-checkbox>
-                        </li>
-                        <li>
+                        </div>
+                        <div>
                             <mat-checkbox formControlName="noEMailWanted">No eMail address provided.</mat-checkbox>
-                        </li>
+                        </div>
                     </ul>
                     <span matListItemLine>Change eMail settings</span>
                     <ul>
-                        <li>
+                        <div>
                             <mat-checkbox formControlName="receiveChangelogInfos">I want to receive mails about a new release.</mat-checkbox>
-                        </li>
+                        </div>
+                        <div>
+                            <mat-checkbox formControlName="receiveTickAdvice">I want to receive once a day a mail about the current state of the empire.</mat-checkbox>
+                        </div>
                     </ul>
                 </section>
             </mat-card-content>

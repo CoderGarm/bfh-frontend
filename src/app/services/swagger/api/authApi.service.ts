@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { AuthRequest } from '../model/authRequest';
 import { ChangePassword } from '../model/changePassword';
 import { FrontendError } from '../model/frontendError';
+import { InitialPlayerSettings } from '../model/initialPlayerSettings';
 import { JWT } from '../model/jWT';
 import { Player } from '../model/player';
 import { UserReq } from '../model/userReq';
@@ -183,6 +184,61 @@ export class AuthApiService {
         }
 
         return this.httpClient.request<Player>('post',`${this.basePath}/api/public/auth/create`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Changes settings for the user.
+     * 
+     * @param idUser 
+     * @param auth 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public initialPlayerSettings(idUser: number, auth: string, body?: InitialPlayerSettings, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public initialPlayerSettings(idUser: number, auth: string, body?: InitialPlayerSettings, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public initialPlayerSettings(idUser: number, auth: string, body?: InitialPlayerSettings, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public initialPlayerSettings(idUser: number, auth: string, body?: InitialPlayerSettings, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling initialPlayerSettings.');
+        }
+
+        if (auth === null || auth === undefined) {
+            throw new Error('Required parameter auth was null or undefined when calling initialPlayerSettings.');
+        }
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/public/auth/settings/${encodeURIComponent(String(idUser))}/${encodeURIComponent(String(auth))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

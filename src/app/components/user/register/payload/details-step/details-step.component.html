@@ -13,11 +13,30 @@
                     {{ 'register.hello.welcome' | translate }} {{ newUser?.username }},
                 </mat-card-title>
                 <mat-card-subtitle>
-                    {{ 'register.hello.change-if-want' | translate }}
+                    {{ 'register.hello.change-if-want' | translate }}<br>
+                    <div>{{ 'role-play.hint.change-later' | translate }}</div>
                 </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
+
+                <mat-card appearance="outlined" id="mail-config">
+                    <mat-card-content class="streamline-background">
+                        <section [formGroup]="eMailFormGroup" class="height-fit-content">
+                            <span matListItemLine>Change eMail settings</span>
+                            <ul>
+                                <div>
+                                    <mat-checkbox formControlName="receiveChangelogInfos">I want to receive mails about a new release.</mat-checkbox>
+                                </div>
+                                <div>
+                                    <mat-checkbox formControlName="receiveTickAdvice">I want to receive once a day a mail about the current state of the empire.</mat-checkbox>
+                                </div>
+                            </ul>
+                        </section>
+                    </mat-card-content>
+                </mat-card>
+
                 <div class="flex-items-container">
+
                     <mat-card appearance="outlined" class="width-fit-content height-fit-content">
                         <mat-card-content>
                             <mat-selection-list #iconSelector [multiple]="false" id="icon-card">
@@ -34,15 +53,26 @@
                             <div class="title">{{ 'role-play.personal.placeholder.title' | translate }}</div>
 
                             <form [formGroup]="rpgFormGroup">
-
+                                <button mat-icon-button (click)="clear();" matTooltip="Clear data" id="clear-btn">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
                                 <div class="flex-items-container title-container">
+                                    <mat-form-field appearance="outline" class="prefix-field">
+                                        <mat-label>{{ 'profile.navy.ship-prefix.label' | translate }}</mat-label>
+                                        <input type="text" matInput formControlName='shipPrefix' [errorStateMatcher]="matcher"
+                                               placeholder="{{ 'profile.navy.ship-prefix.label' | translate }}">
+                                        <mat-error *ngIf="rpgFormGroup.controls.shipPrefix.hasError('too-long')">
+                                            {{ 'profile.navy.ship-prefix.hint' | translate }}
+                                        </mat-error>
+                                        <mat-hint>{{ 'profile.navy.ship-prefix.hint' | translate }}</mat-hint>
+                                    </mat-form-field>
+
                                     <mat-form-field appearance="outline">
                                         <mat-label>{{ 'role-play.personal.title.title' | translate }}</mat-label>
                                         <input matInput type='text'
                                                placeholder="{{ 'role-play.personal.placeholder.title' | translate }}"
                                                formControlName='title'
-                                               [errorStateMatcher]="matcher"
-                                               required>
+                                               [errorStateMatcher]="matcher">
                                         <mat-error *ngIf="rpgFormGroup.controls.title.hasError('tooLong')">
                                             {{ 'role-play.personal.hint.title' | translate }}
                                         </mat-error>
@@ -54,8 +84,7 @@
                                         <input matInput type='text'
                                                placeholder="{{ 'role-play.personal.placeholder.titleAbbreviation' | translate }}"
                                                formControlName='titleAbbreviation'
-                                               [errorStateMatcher]="matcher"
-                                               required>
+                                               [errorStateMatcher]="matcher">
                                         <mat-error *ngIf="rpgFormGroup.controls.titleAbbreviation.hasError('tooLong')">
                                             {{ 'role-play.personal.hint.titleAbbreviation' | translate }}
                                         </mat-error>
@@ -69,8 +98,7 @@
                                         <input matInput type='text'
                                                placeholder="{{ 'role-play.personal.placeholder.firstname' | translate }}"
                                                formControlName='firstname'
-                                               [errorStateMatcher]="matcher"
-                                               required>
+                                               [errorStateMatcher]="matcher">
                                         <mat-error *ngIf="rpgFormGroup.controls.firstname.hasError('tooLong')">
                                             {{ 'role-play.personal.hint.firstname' | translate }}
                                         </mat-error>
@@ -82,8 +110,7 @@
                                         <input matInput type='text'
                                                placeholder="{{ 'role-play.personal.placeholder.surname' | translate }}"
                                                formControlName='surname'
-                                               [errorStateMatcher]="matcher"
-                                               required>
+                                               [errorStateMatcher]="matcher">
                                         <mat-error *ngIf="rpgFormGroup.controls.surname.hasError('tooLong')">
                                             {{ 'role-play.personal.hint.surname' | translate }}
                                         </mat-error>
@@ -97,7 +124,6 @@
             </mat-card-content>
         </mat-card>
     </div>
-
 </div>
 <div mat-dialog-actions class="streamline-background" align="end">
     <button mat-raised-button (click)="confirm()" [disabled]="!idUser">{{ 'action.submit' | translate }}</button>

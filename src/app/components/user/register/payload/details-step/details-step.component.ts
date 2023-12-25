@@ -9,9 +9,10 @@ import {UserReq} from "../../../../../services/swagger";
 import {RegisterEventService} from "../../register-event.service";
 
 
-export interface InitialPlayerSettings {
+export interface PlayerSettings {
+    idUser?: number;
     receiveChangelogInfos?: boolean;
-    noEMailWanted?: boolean;
+    receiveTickAdvice?: boolean;
     profilePic?: string;
     title?: string;
     titleAbbreviation?: string;
@@ -29,13 +30,14 @@ export class DetailsStepComponent extends SubscriptionManager {
 
     matcher = new SingleTouchedFormFieldErrorStateMatcher();
     rpgFormGroup: FormGroup;
+    eMailFormGroup: FormGroup;
 
     userIcons: string[] = ProfileComponent.USER_ICONS;
 
     @ViewChild("iconSelector")
     iconSelector?: MatSelectionList;
 
-    result: InitialPlayerSettings = {
+    result: PlayerSettings = {
         profilePic: 'perspective-dice-six-faces-random.png'
     }
 
@@ -48,16 +50,17 @@ export class DetailsStepComponent extends SubscriptionManager {
                 @Inject(MAT_DIALOG_DATA) public data: MatDialogConfig) {
         super();
 
-        this.rpgFormGroup = this.formBuilder.group({
-            title: undefined,
-            titleAbbreviation: undefined,
-            firstname: undefined,
-            surname: undefined,
-        });
-
         this.newUser = <UserReq>data;
-
+        this.rpgFormGroup = this.createRPGForm();
+        this.eMailFormGroup = this.createMailForm();
         this.registerEventService.getUserIdEmitter().subscribe(resp => this.idUser = resp);
+    }
+
+    private setMailSettings(val: PlayerSettings) {
+        console.log("1", val)
+        this.result.receiveTickAdvice = val.receiveTickAdvice;
+        this.result.receiveChangelogInfos = val.receiveChangelogInfos;
+        console.log("2", this.result)
     }
 
     ngAfterViewInit(): void {
@@ -65,10 +68,17 @@ export class DetailsStepComponent extends SubscriptionManager {
             this.result.profilePic = this.iconSelector!.selectedOptions.hasValue() ? this.iconSelector!.selectedOptions.selected[0].value : this.result.profilePic;
         });
         this.subscriptions.push(sub);
-        this.createRPGForm()
+        this.rpgFormGroup = this.createRPGForm();
+        this.eMailFormGroup = this.createMailForm();
+
+        sub = this.rpgFormGroup.valueChanges.subscribe(() => this.setRPGStuff());
+        this.subscriptions.push(sub);
+        sub = this.eMailFormGroup.valueChanges.subscribe(val => this.setMailSettings(<PlayerSettings>val));
+        this.subscriptions.push(sub);
     }
 
     clear() {
+        this.rpgFormGroup.controls.shipPrefix.setValue('undefined');
         this.rpgFormGroup.controls.title.setValue(undefined);
         this.rpgFormGroup.controls.titleAbbreviation.setValue(undefined);
         this.rpgFormGroup.controls.firstname.setValue(undefined);
@@ -76,14 +86,21 @@ export class DetailsStepComponent extends SubscriptionManager {
     }
 
     private createRPGForm() {
-        this.rpgFormGroup = this.formBuilder.group({
+        return this.formBuilder.group({
+            shipPrefix: this.createFormControlTextLengthValidation(1, 6, ''),
             title: this.createFormControlTextLengthValidation(3, 50, ''),
             titleAbbreviation: this.createFormControlTextLengthValidation(3, 8, ''),
             firstname: this.createFormControlTextLengthValidation(3, 50, ''),
             surname: this.createFormControlTextLengthValidation(3, 50, '')
         });
-        let sub = this.rpgFormGroup.valueChanges.subscribe(() => this.setRPGStuff());
-        this.subscriptions.push(sub);
+    }
+
+    private createMailForm() {
+        const noEMailWanted = <boolean>this.newUser?.noEMailWanted;
+        return this.formBuilder.group({
+            receiveChangelogInfos: new FormControl({value: '', disabled: noEMailWanted}),
+            receiveTickAdvice: new FormControl({value: '', disabled: noEMailWanted})
+        });
     }
 
     private createFormControlTextLengthValidation(min: number, max: number, initialValue?: string) {
@@ -98,22 +115,23 @@ export class DetailsStepComponent extends SubscriptionManager {
     }
 
     setRPGStuff() {
+        this.result.shipPrefix = this.rpgFormGroup.controls.shipPrefix.value;
         this.result.title = this.rpgFormGroup.controls.title.value;
         this.result.titleAbbreviation = this.rpgFormGroup.controls.titleAbbreviation.value;
         this.result.firstname = this.rpgFormGroup.controls.firstname.value;
         this.result.surname = this.rpgFormGroup.controls.surname.value;
-        this.result.shipPrefix = undefined;
     }
 
     public cancel() {
         this.close(undefined);
     }
 
-    public close(result?: InitialPlayerSettings) {
+    public close(result?: PlayerSettings) {
         this.dialogRef.close(result);
     }
 
     public confirm() {
+        this.result.idUser = this.idUser;
         this.close(this.result);
     }
 

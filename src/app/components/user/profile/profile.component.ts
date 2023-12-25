@@ -62,6 +62,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
 
         this.eMailFormGroup = this.formBuilder.group({
             receiveChangelogInfos: false,
+            receiveTickAdvice: false,
             eMailVerified: false,
             noEMailWanted: false,
         });
@@ -120,10 +121,13 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             }
 
             this.eMailFormGroup.controls.receiveChangelogInfos.setValue(resp.receiveChangelogInfos);
+            this.eMailFormGroup.controls.receiveTickAdvice.setValue(resp.receiveTickAdvice);
             if (this.noEMailConfigPossible) {
                 this.eMailFormGroup.controls.receiveChangelogInfos.disable({onlySelf: true});
+                this.eMailFormGroup.controls.receiveTickAdvice.disable({onlySelf: true});
             } else {
                 this.eMailFormGroup.controls.receiveChangelogInfos.enable();
+                this.eMailFormGroup.controls.receiveTickAdvice.enable();
             }
             this.eMailFormGroup.controls.eMailVerified.setValue(eMailVerified);
             this.eMailFormGroup.controls.noEMailWanted.setValue(noEMailWanted);

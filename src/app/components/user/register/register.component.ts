@@ -1,4 +1,4 @@
-import {AuthApiService, UserReq} from '../../../services/swagger';
+import {AuthApiService, InitialPlayerSettings, UserReq} from '../../../services/swagger';
 import {PasswordErrorMessages} from '../../../validators/password.validator';
 import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Component} from '@angular/core';
@@ -9,7 +9,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {DialogConfigHelper} from "../../../services/helper/dialog-config.helper";
 import {MatDialog} from "@angular/material/dialog";
-import {DetailsStepComponent, InitialPlayerSettings} from "./payload/details-step/details-step.component";
+import {DetailsStepComponent, PlayerSettings} from "./payload/details-step/details-step.component";
 import {RegisterEventService} from "./register-event.service";
 
 @Component({
@@ -101,10 +101,32 @@ export class RegisterComponent extends SubscriptionManager {
     openRegisterStep2(newUser: UserReq) {
         const dialogConfig = DialogConfigHelper.createDialog();
         dialogConfig.data = newUser;
-        dialogConfig.width = 'calc(90%)';
+        dialogConfig.width = '90%';
+        (<string[]>dialogConfig.panelClass).push('register-step-2')
         const dialogRef = this.dialog.open(DetailsStepComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe((result?: InitialPlayerSettings) => {
-            console.log("do something", result)
+        dialogRef.afterClosed().subscribe((result?: PlayerSettings) => {
+            if (!result) {
+                return;
+            }
+
+            const settings: InitialPlayerSettings = {
+                receiveChangelogInfos: result.receiveChangelogInfos!,
+                receiveTickAdvice: result.receiveTickAdvice!,
+                rolePlayData: {
+                    title: result.title,
+                    titleAbbreviation: result.titleAbbreviation,
+                    firstname: result.firstname,
+                    surname: result.surname,
+                    shipPrefix: result.shipPrefix,
+                    shipNameTemplates: [],
+                    shipNames: []
+                },
+                profilePic: !!result.profilePic ? result.profilePic.replace('.png', '') : 'perspective-dice-six-faces-random'
+            };
+            let sub = this.authService.initialPlayerSettings(result.idUser!, newUser.password, settings)
+                .subscribe(() => {
+                });
+            this.subscriptions.push(sub);
         });
     }
 }

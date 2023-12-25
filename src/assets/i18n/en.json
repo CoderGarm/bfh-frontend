@@ -719,6 +719,9 @@
 		"ticks-to-done": "Ticks needed"
 	},
 	"role-play": {
+		"hint": {
+			"change-later": "This and much more can be edited in your profile at any time."
+		},
 		"personal": {
 			"hint": {
 				"firstname": "The first name must contain between 3 and 50 characters.",

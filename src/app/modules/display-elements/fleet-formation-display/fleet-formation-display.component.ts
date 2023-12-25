@@ -109,9 +109,6 @@ export class FleetFormationDisplay extends SubscriptionManager implements OnChan
         const warShips = this.fleet.ships
             .sort((a, b) => FleetFormationDisplay.diff(a.shipClass.tonnage, b.shipClass.tonnage));
 
-        // Höchste Eloka-Punkte im System / 10 (aufgerundet) = Anzahl der individuell auflösbaren Schiffe fixme
-        // Höchste Eloka-Punkte im System * Kilotonne = auflösbare individuelle Tonnage -> check
-
         const hyperPrintSensorValue = this.getHyperprintSensorValue(this.getSystemOfFleet());
         const resolvableSize = Math.floor(hyperPrintSensorValue / 10);
         console.log("hyperPrintSensorValue", hyperPrintSensorValue, "resolvableSize", resolvableSize)

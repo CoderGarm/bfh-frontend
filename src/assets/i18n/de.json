@@ -718,6 +718,9 @@
 		"ticks-to-done": "benötigte Ticks"
 	},
 	"role-play": {
+		"hint": {
+			"change-later": "Das und noch einiges mehr kann jederzeit im Profil bearbeitet werden."
+		},
 		"personal": {
 			"hint": {
 				"firstname": "Der Vorname muss zwischen 3 und 50 Zeichen enthalten.",

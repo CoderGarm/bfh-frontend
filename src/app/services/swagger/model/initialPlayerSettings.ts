@@ -9,11 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { RolePlayData } from './rolePlayData';
 
 /**
  * .
  */
-export interface UserSettings { 
+export interface InitialPlayerSettings { 
     /**
      * If the user want to receive infos about a new released version via mail.
      */
@@ -22,22 +23,7 @@ export interface UserSettings {
      * If the user want to receive infos about the current's tick advice.
      */
     receiveTickAdvice: boolean;
-    /**
-     * If the user must not log in.
-     */
-    loginForbidden: boolean;
-    /**
-     * If the user has verified the mail address.
-     */
-    eMailVerified: boolean;
-    /**
-     * The mail address.
-     */
-    eMail?: string;
-    /**
-     * If the user does not want receive any mail.
-     */
-    noEMailWanted: boolean;
+    rolePlayData?: RolePlayData;
     /**
      * The profile pic name.
      */
