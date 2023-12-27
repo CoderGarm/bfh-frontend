@@ -1091,7 +1091,8 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private getOrbitFromFleetMarker(fleetMarker: FleetMarker): Orbit {
         if (!!fleetMarker.move) {
-            return fleetMarker.currentOrbit!.orbit!;
+            const o = fleetMarker.currentOrbit!;
+            return !!o.orbit ? o.orbit : (!!o.system ? o.system.orbit : o.planet!.orbit!);
         } else {
             if (this.isInterstellarViewHelper()) {
                 return fleetMarker.orbit!.system!.orbit!;
