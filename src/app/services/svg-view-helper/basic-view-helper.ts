@@ -1298,6 +1298,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     highlightFleetByOperational(highlightOperational: boolean, highlightInOperational: boolean) {
+        /* fixme separate in setter and evaluator to match multiple setups */
         this.highlightOperational = highlightOperational;
         this.highlightInOperational = highlightInOperational;
         this.getFleetPolygons()
