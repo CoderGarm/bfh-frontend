@@ -1090,15 +1090,19 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     private getOrbitFromFleetMarker(fleetMarker: FleetMarker): Orbit {
+        let orbit = fleetMarker.orbit;
         if (!!fleetMarker.move) {
-            const o = fleetMarker.currentOrbit!;
-            return !!o.orbit ? o.orbit : (!!o.system ? o.system.orbit : o.planet!.orbit!);
+            orbit = fleetMarker.currentOrbit;
+        }
+
+        if (!orbit) {
+            throw new Error("Please reload the map - if this error occurs, notify the admin.");
+        }
+
+        if (this.isInterstellarViewHelper()) {
+            return !!orbit.system ? orbit.system.orbit : orbit.orbit!;
         } else {
-            if (this.isInterstellarViewHelper()) {
-                return fleetMarker.orbit!.system!.orbit!;
-            } else {
-                return fleetMarker.orbit!.orbit!;
-            }
+            return !!orbit.planet ? orbit.planet.orbit : orbit.orbit!;
         }
     }
 
