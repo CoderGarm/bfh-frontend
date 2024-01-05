@@ -10,11 +10,11 @@
                               [altText]="entry.value[0].shipClass.shipClassType.typeName"
                               png24px [toolTip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"></app-icon>
 
-                    {{entry.value[0].shipClass.name}} {{ 'fleet.composition.class.title' | translate }}
+                    {{ entry.value[0].shipClass.name }} {{ 'fleet.composition.class.title' | translate }}, {{ entry.value[0].shipClass.tonnage | mass: 'T' }}
                 </div>
 
                 <app-outlined titleValue="{{ 'fleet.composition.warship.title' | translate }}" *ngFor="let warShip of entry.value">
-                    <span matListItemTitle>{{warShip.name}}</span>
+                    <span matListItemTitle>{{ warShip.name }}</span>
                     <span matListItemLine>{{ warShip.shipClass.name }} Flt. {{ warShip.shipClass.mark }}</span>
                     <app-spacecraft-state-block-display [stateBlock]="warShip.warshipHealthState.state"
                                                         isWarship></app-spacecraft-state-block-display>
@@ -34,10 +34,10 @@
                               [altText]="entry.value[0].shipClass.shipClassType.typeName"
                               png24px [toolTip]="getHullDescription(entry.value[0].shipClass.shipClassType.typeName)"></app-icon>
 
-                    {{entry.value[0].shipClass.name}} Flt. {{ entry.value[0].shipClass.mark }} {{ 'fleet.composition.class.title' | translate }}
+                    {{ entry.value[0].shipClass.name }} Flt. {{ entry.value[0].shipClass.mark }} {{ 'fleet.composition.class.title' | translate }}
                 </div>
                 <mat-list-item *ngFor="let warShip of entry.value" class="height-fit-content-forced">
-                    <span matListItemTitle>{{warShip.name}}</span>
+                    <span matListItemTitle>{{ warShip.name }}</span>
                 </mat-list-item>
             </mat-list>
         </div>
