@@ -80,6 +80,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     protected static readonly IS_COLONIZED_BY_USER_COLOR_CSS_CLASS = "colonized-by-user";
     protected static readonly COLONIZED_BY_OTHERS_COLOR_CSS_CLASS = "colonized-by-others";
     protected static readonly COLONIZED_BY_NPC_COLOR_CSS_CLASS = "colonized-by-npc";
+    protected static readonly COLONIZED_BY_KERSEY_COLOR_CSS_CLASS = "colonized-by-kersey";
     protected static readonly COLONIZABLE_SYSTEM_MARKER_CSS_CLASS = "colonizable";
 
     protected static readonly PLANET_RADIUS = 5;
@@ -400,6 +401,8 @@ export class BasicViewHelper extends BasicViewHelperData {
             circle.addClass(BasicViewHelper.IS_COLONIZED_BY_USER_COLOR_CSS_CLASS);
         } else if (orbitDefinition.isColonizedByOtherUser) {
             circle.addClass(BasicViewHelper.COLONIZED_BY_OTHERS_COLOR_CSS_CLASS);
+        } else if (orbitDefinition.isKersey) {
+            circle.addClass(BasicViewHelper.COLONIZED_BY_KERSEY_COLOR_CSS_CLASS);
         } else if (orbitDefinition.isNpc) {
             circle.addClass(BasicViewHelper.COLONIZED_BY_NPC_COLOR_CSS_CLASS);
         } else {
@@ -413,6 +416,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             circle.removeClass(BasicViewHelper.IS_COLONIZED_BY_USER_COLOR_CSS_CLASS);
             circle.removeClass(BasicViewHelper.COLONIZED_BY_OTHERS_COLOR_CSS_CLASS);
             circle.removeClass(BasicViewHelper.COLONIZED_BY_NPC_COLOR_CSS_CLASS);
+            circle.removeClass(BasicViewHelper.COLONIZED_BY_KERSEY_COLOR_CSS_CLASS);
             circle.removeClass(BasicViewHelper.NOT_COLONIZED_COLOR_CSS_CLASS);
         }
 

@@ -34,7 +34,7 @@
 .legend-box {
   overflow: hidden;
   transition: height 2s;
-  height: 425px;
+  height: 450px;
   z-index: 98;
   position: absolute;
   width: 350px;
@@ -61,5 +61,9 @@
 
 #legend-colonized-by-npc {
   color: #8B0000;
+}
+
+#legend-colonized-by-kersey {
+  color: #66ff99;
 }
 

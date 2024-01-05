@@ -22,6 +22,7 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
     public static readonly COLONIZED_COLOR: string = '#556B2F';
     public static readonly COLONIZED_BY_OTHERS_COLOR: string = '#6f1585';
     public static readonly COLONIZED_BY_NPC_COLOR: string = '#8B0000';
+    public static readonly COLONIZED_BY_KERSEY_COLOR: string = '#66ff99';
     public static readonly PIRATE_HUNT_COLOR: string = '#375a7f';
     public static readonly CONVOY_PROTECTION_COLOR: string = '#6F64AA';
     // noinspection JSUnusedGlobalSymbols

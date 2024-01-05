@@ -452,6 +452,7 @@
 		},
 		"legend": {
 			"colonized-systems": "Own system",
+			"colonized-systems-by-kersey": "Kersey naval base",
 			"colonized-systems-by-npc": "Great power",
 			"colonized-systems-by-other": "Foreign system",
 			"highlighted": "highlighted",

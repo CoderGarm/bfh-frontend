@@ -17,6 +17,8 @@ export class OrbitDefinition {
 
     readonly isNpc: boolean;
 
+    readonly isKersey: boolean;
+
     readonly isColonizable: boolean;
 
     readonly isMain: boolean;
@@ -27,6 +29,7 @@ export class OrbitDefinition {
                 isColonizedByLoggedInUser: boolean,
                 isColonizedByOtherUser: boolean,
                 isNpc: boolean,
+                isKersey: boolean,
                 isColonizable: boolean,
                 isMain: boolean,
                 color?: string) {
@@ -36,6 +39,7 @@ export class OrbitDefinition {
         this.isColonizedByLoggedInUser = isColonizedByLoggedInUser;
         this.isColonizedByOtherUser = isColonizedByOtherUser;
         this.isNpc = isNpc;
+        this.isKersey = isKersey;
         this.isColonizable = isColonizable;
         this.isMain = isMain;
         this.color = color;
@@ -47,6 +51,7 @@ export class OrbitDefinition {
             let isColonizedByLoggedInUser: boolean = false;
             let isColonizedByOtherUser: boolean = false;
             let isNpc: boolean = false;
+            let isKersey: boolean = false;
             let isColonizable: boolean = false;
             let isMain: boolean = false;
             system.planets.forEach(planet => {
@@ -61,11 +66,16 @@ export class OrbitDefinition {
                     } else {
                         isColonizedByOtherUser = true;
                     }
+
+                    if (planet.owner.idUser == 15) {
+                        isKersey = true;
+                    }
                 } else {
                     isColonizable = true;
                 }
+
             });
-            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isColonizable, isMain));
+            od.push(new OrbitDefinition(system, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isKersey, isColonizable, isMain));
         });
         return od;
     }
@@ -76,6 +86,7 @@ export class OrbitDefinition {
             let isColonizedByLoggedInUser: boolean = false;
             let isColonizedByOtherUser: boolean = false;
             let isNpc: boolean = false;
+            let isKersey: boolean = false;
             let isColonizable: boolean = false;
             let isMain: boolean = false;
             if (!!planet.owner) {
@@ -89,10 +100,14 @@ export class OrbitDefinition {
                 } else {
                     isColonizedByOtherUser = true;
                 }
+
+                if (planet.owner.idUser == 15) {
+                    isKersey = true;
+                }
             } else {
                 isColonizable = true;
             }
-            od.push(new OrbitDefinition(planet, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isColonizable, isMain));
+            od.push(new OrbitDefinition(planet, isColonizedByLoggedInUser, isColonizedByOtherUser, isNpc, isKersey, isColonizable, isMain));
         });
         return od;
     }

@@ -12,6 +12,7 @@ export class LocalMapOrbitDefinition {
     readonly isColonized: boolean;
     readonly isColonizedByOther: boolean;
     readonly isNpc: boolean;
+    readonly isKersey: boolean;
     readonly missionTypes: EMissionTypesEnum[];
 
     constructor(celestial: Coords,
@@ -19,12 +20,14 @@ export class LocalMapOrbitDefinition {
                 isColonized: boolean,
                 isColonizedByOther: boolean,
                 isNpc: boolean,
+                isKersey: boolean,
                 missionTypes: EMissionTypesEnum[]) {
         this.celestial = celestial;
         this.isMain = isMain;
         this.isColonized = isColonized;
         this.isColonizedByOther = isColonizedByOther;
         this.isNpc = isNpc;
+        this.isKersey = isKersey;
         this.missionTypes = missionTypes;
     }
 }

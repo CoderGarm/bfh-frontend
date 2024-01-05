@@ -72,6 +72,7 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
             let isColonized: boolean = false;
             let isColonizedByOtherUser: boolean = false;
             let isNpc: boolean = false;
+            let isKersey: boolean = false;
             let isMain: boolean = false;
             system.planets.forEach(planet => {
                 if (!!planet.owner) {
@@ -85,10 +86,14 @@ export class MissionAdministrationComponent extends SubscriptionManager implemen
                     } else {
                         isColonizedByOtherUser = true;
                     }
+
+                    if (planet.owner.idUser == 15) {
+                        isKersey = true;
+                    }
                 }
             });
 
-            return new LocalMapOrbitDefinition(coords, isMain, isColonized, isColonizedByOtherUser, isNpc, missionTypes);
+            return new LocalMapOrbitDefinition(coords, isMain, isColonized, isColonizedByOtherUser, isNpc, isKersey, missionTypes);
         });
     }
 
