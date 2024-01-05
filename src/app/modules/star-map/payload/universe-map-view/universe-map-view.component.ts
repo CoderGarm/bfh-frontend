@@ -53,6 +53,10 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             startWith(null),
             map((c: string | null) => (c ? this._filter(c) : this.coords.slice()))
         );
+
+        if (this.isHandheldDisplaySize) {
+            this.showLegend = false;
+        }
     }
 
     private _filter(value: string): StarSystem[] {
