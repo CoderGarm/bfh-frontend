@@ -82,6 +82,11 @@ for filename in ./*; do
   sed -i 's/MISSILEFIREPHASE/MISSILE_FIRE_PHASE/' $filename
   sed -i 's/COUNTERMISSILE/COUNTER_MISSILE/' $filename
   sed -i 's/POINTDEFENSE/POINT_DEFENSE/' $filename
+  sed -i 's/WARHARVEST23/WAR_HARVEST_23/' $filename
+  sed -i 's/GAINEDPLANETS/GAINED_PLANETS/' $filename
+  sed -i 's/GAINEDCONSTRUCTIONLEVELS/GAINED_CONSTRUCTION_LEVELS/' $filename
+  sed -i 's/FLEETTONNAGELOST/FLEET_TONNAGE_LOST/' $filename
+  sed -i 's/FLEETTONNAGEDESTROYED/FLEET_TONNAGE_DESTROYED/' $filename
 done
 
 cd ../..

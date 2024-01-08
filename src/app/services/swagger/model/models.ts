@@ -45,6 +45,7 @@ export * from './eStarClassType';
 export * from './electronicWarfare';
 export * from './electronicWarfareDescriptor';
 export * from './enumValueDto';
+export * from './eventRanking';
 export * from './fileUpload';
 export * from './finishedColonization';
 export * from './fleet';

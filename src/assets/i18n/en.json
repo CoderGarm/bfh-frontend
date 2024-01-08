@@ -610,6 +610,26 @@
 			"title": "Resource development"
 		}
 	},
+	"points": {
+		"event": {
+			"ranking": {
+				"title": "Event Ranking"
+			},
+			"war-harvest": {
+				"category": {
+					"fleet-mass-destroyed": "Fleet displacement destroyed",
+					"fleet-mass-loss": "Fleet displacement lost",
+					"gained-constructions": "Conquered Constructions Levels",
+					"gained-planets": "Conquered Planets"
+				}
+			}
+		},
+		"player": {
+			"ranking": {
+				"title": "Player Ranking"
+			}
+		}
+	},
 	"population-development": {
 		"demand": {
 			"toolTip": "The needed people"

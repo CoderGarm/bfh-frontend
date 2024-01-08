@@ -5,7 +5,7 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="Name" #input>
     </mat-form-field>
 
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 demo-table">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <ng-container matColumnDef="rank">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Rank</th>
@@ -15,7 +15,8 @@
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element">
-                <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ element.user.profilePic }}.png" alt="member icon">
+                <img mat-card-avatar class="avatar-image" matTooltip="{{ element.user.username }}"
+                     src="assets/icons/user/{{ element.user.profilePic }}.png" alt="member icon">
                 {{ element.user.username }}
             </td>
         </ng-container>

@@ -397,12 +397,12 @@ export class BasicViewHelper extends BasicViewHelperData {
             circle.radius(BasicViewHelper.STAR_RADIUS);
         }
 
-        if (orbitDefinition.isColonizedByLoggedInUser) {
+        if (orbitDefinition.isKersey) {
+            circle.addClass(BasicViewHelper.COLONIZED_BY_KERSEY_COLOR_CSS_CLASS);
+        } else if (orbitDefinition.isColonizedByLoggedInUser) {
             circle.addClass(BasicViewHelper.IS_COLONIZED_BY_USER_COLOR_CSS_CLASS);
         } else if (orbitDefinition.isColonizedByOtherUser) {
             circle.addClass(BasicViewHelper.COLONIZED_BY_OTHERS_COLOR_CSS_CLASS);
-        } else if (orbitDefinition.isKersey) {
-            circle.addClass(BasicViewHelper.COLONIZED_BY_KERSEY_COLOR_CSS_CLASS);
         } else if (orbitDefinition.isNpc) {
             circle.addClass(BasicViewHelper.COLONIZED_BY_NPC_COLOR_CSS_CLASS);
         } else {

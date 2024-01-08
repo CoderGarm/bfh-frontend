@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {SubscriptionManager} from "../../../subscription.manager";
-import {Player, UserApiService, UserPoints} from "../../../services/swagger";
+import {SubscriptionManager} from "../../../../subscription.manager";
+import {Player, UserApiService, UserPoints} from "../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
@@ -12,19 +12,18 @@ export interface RankedUserPoints {
 }
 
 @Component({
-    selector: 'app-points-list',
+    selector: 'app-player-points-list',
     templateUrl: './player-points-list.component.html',
     styleUrls: ['./player-points-list.component.scss']
 })
 export class PlayerPointsListComponent extends SubscriptionManager implements AfterViewInit {
 
-    static path: string = 'player';
     private users: Player[] = [];
     private points: UserPoints[] = [];
     private rankedUserPoints: RankedUserPoints[] = [];
 
     displayedColumns: string[] = ['rank', 'name', 'ally-tag', 'overallPoints', 'planetaryPoints', 'fleetPoints', 'researchPoints'];
-    dataSource = new MatTableDataSource<RankedUserPoints>(this.rankedUserPoints);
+    dataSource: MatTableDataSource<RankedUserPoints> = new MatTableDataSource<RankedUserPoints>(this.rankedUserPoints);
 
 
     @ViewChild(MatPaginator)

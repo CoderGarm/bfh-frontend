@@ -14,6 +14,7 @@ import { ConstructionApiService } from './api/constructionApi.service';
 import { FakeApiService } from './api/fakeApi.service';
 import { FleetApiService } from './api/fleetApi.service';
 import { ForumApiService } from './api/forumApi.service';
+import { GameEventApiService } from './api/gameEventApi.service';
 import { JobApiService } from './api/jobApi.service';
 import { JournalApiService } from './api/journalApi.service';
 import { MarketplaceApiService } from './api/marketplaceApi.service';
@@ -46,6 +47,7 @@ import { WikiApiService } from './api/wikiApi.service';
     FakeApiService,
     FleetApiService,
     ForumApiService,
+    GameEventApiService,
     JobApiService,
     JournalApiService,
     MarketplaceApiService,

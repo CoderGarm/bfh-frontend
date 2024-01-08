@@ -609,6 +609,26 @@
 			"title": "Ressourcenentwicklung"
 		}
 	},
+	"points": {
+		"event": {
+			"ranking": {
+				"title": "Event Ranking"
+			},
+			"war-harvest": {
+				"category": {
+					"fleet-mass-destroyed": "Schiffstonnage zerstört",
+					"fleet-mass-loss": "Schiffstonnage verloren",
+					"gained-constructions": "Eroberte Gebäudelevel",
+					"gained-planets": "Eroberte Planeten"
+				}
+			}
+		},
+		"player": {
+			"ranking": {
+				"title": "Player Ranking"
+			}
+		}
+	},
 	"population-development": {
 		"demand": {
 			"toolTip": "Die benötigte Bevölkerung"

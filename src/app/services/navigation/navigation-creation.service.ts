@@ -20,12 +20,12 @@ import {PlanetTabViewComponent} from "../../modules/planets/components/orga/plan
 import {FleetTabViewComponent} from "../../modules/fleet/components/orga/fleet-tab-view/fleet-tab-view.component";
 import {FittingCreateComponent} from "../../modules/ship-class-construction/components/payload/fitting-create/fitting-create.component";
 import {ForgottenPasswordComponent} from "../../components/user/forgotten-password/forgotten-password.component";
-import {PlayerPointsListComponent} from "../../modules/user-points/player-points-list/player-points-list.component";
 import {StratOpsTabViewComponent} from "../../modules/strategic-operations/orga/strat-ops-tab-view/strat-ops-tab-view.component";
 import {TakeATourComponent} from "../../components/take-a-tour/take-a-tour.component";
 import {protectedGuard} from "ngx-auth";
 import {ProfileTabViewComponent} from "../../components/user/profile-tab-view/profile-tab-view.component";
 import {LibraryTabViewComponent} from "../../modules/library/orga/library-main-view/library-tab-view.component";
+import {PlayerPointsTabViewComponent} from "../../modules/user-points/orga/player-points-tab-view/player-points-tab-view.component";
 
 
 export class NavigationCreationService {
@@ -55,7 +55,7 @@ export class NavigationCreationService {
 
     static createSidenavRoutes(): Routes {
         return [
-            {path: PlayerPointsListComponent.path, component: PlayerPointsListComponent, canActivate: [protectedGuard]},
+            {path: PlayerPointsTabViewComponent.path, component: PlayerPointsTabViewComponent, canActivate: [protectedGuard]},
             {path: AllianceTabViewComponent.path, component: AllianceTabViewComponent, canActivate: [protectedGuard]},
             {path: ChatComponent.path, component: ChatComponent, canActivate: [protectedGuard]},
             {path: ForumsListComponent.path, component: ForumsListComponent, canActivate: [protectedGuard]},

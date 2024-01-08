@@ -263,9 +263,10 @@ export class MapDataProvider extends MapData {
             celestialColor = MissionMapComponent.COLONIZED_BY_OTHERS_COLOR;
         } else if (orbitDefinition.isNpc) {
             celestialColor = MissionMapComponent.COLONIZED_BY_NPC_COLOR;
-            if (orbitDefinition.isKersey) {
-                celestialColor = MissionMapComponent.COLONIZED_BY_KERSEY_COLOR;
-            }
+        }
+
+        if (orbitDefinition.isKersey) {
+            celestialColor = MissionMapComponent.COLONIZED_BY_KERSEY_COLOR;
         }
 
         if (missionTypes.length == 1) {
