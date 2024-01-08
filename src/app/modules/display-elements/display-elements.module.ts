@@ -55,6 +55,9 @@ import {PropertiesPropulsionComponent} from './property-descriptor-display/paylo
 import {PropertiesSidewallComponent} from './property-descriptor-display/payload/properties-sidewall/properties-sidewall.component';
 import {PropertiesWeaponComponent} from './property-descriptor-display/payload/properties-weapon/properties-weapon.component';
 import {PropertyHolder} from "./property-descriptor-display/payload/property-holder";
+import {FileUploadComponent} from './file-upload/file-upload.component';
+import {DndDirective} from "./file-upload/dnd.directive";
+import {ProgressComponent} from "./file-upload/progress/progress.component";
 
 @NgModule({
     declarations: [
@@ -113,6 +116,9 @@ import {PropertyHolder} from "./property-descriptor-display/payload/property-hol
         PropertiesSidewallComponent,
         PropertiesWeaponComponent,
         PropertyHolder,
+        FileUploadComponent,
+        ProgressComponent,
+        DndDirective,
     ],
     imports: [
         SharedModuleModule,
@@ -162,6 +168,7 @@ import {PropertyHolder} from "./property-descriptor-display/payload/property-hol
         BuildingDisplayComponent,
         OrbitalModuleDisplayComponent,
         PropertyDescriptorDisplayComponent,
+        FileUploadComponent,
     ]
 })
 export class DisplayElementsModule {
