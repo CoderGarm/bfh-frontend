@@ -108,6 +108,7 @@ export * from './researchResult';
 export * from './researchTree';
 export * from './researchTreeChain';
 export * from './researchTreeElement';
+export * from './resource';
 export * from './resourceAmount';
 export * from './resourceDeposit';
 export * from './resourceTransfer';

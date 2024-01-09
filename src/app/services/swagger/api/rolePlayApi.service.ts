@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { FileUpload } from '../model/fileUpload';
 import { FrontendError } from '../model/frontendError';
 import { RolePlayData } from '../model/rolePlayData';
 
@@ -132,6 +133,48 @@ export class RolePlayApiService {
         ];
 
         return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/rpg/shipNames/${encodeURIComponent(String(name))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the emblem of the empire of the given user.
+     * 
+     * @param idUser 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getEmpireEmblem(idUser: number, observe?: 'body', reportProgress?: boolean): Observable<FileUpload>;
+    public getEmpireEmblem(idUser: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileUpload>>;
+    public getEmpireEmblem(idUser: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileUpload>>;
+    public getEmpireEmblem(idUser: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idUser === null || idUser === undefined) {
+            throw new Error('Required parameter idUser was null or undefined when calling getEmpireEmblem.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<FileUpload>('get',`${this.basePath}/api/private/rpg/empire-emblem/${encodeURIComponent(String(idUser))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -533,6 +576,44 @@ export class RolePlayApiService {
         ];
 
         return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/rpg/shipPrefix/${encodeURIComponent(String(prefix))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Uploads the empires emblem.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public uploadEmpireEmblemBUTFAKE(observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public uploadEmpireEmblemBUTFAKE(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public uploadEmpireEmblemBUTFAKE(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public uploadEmpireEmblemBUTFAKE(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/rpg/empire-emblem/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -1,11 +1,7 @@
 <div class="content-area">
     <mat-card appearance="outlined" class="streamline-background">
         <mat-card-header class="streamline-background">
-            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ selectedIcon }}" alt="{{ selectedIcon }}">
-            <mat-card-title>
-                I am Groot.
-            </mat-card-title>
-            <mat-card-subtitle>But in {{ role }}. And {{ userName }}</mat-card-subtitle>
+            <app-player-display [player]="me" png64px></app-player-display>
         </mat-card-header>
         <mat-card-content>
 
@@ -14,6 +10,19 @@
             <form [formGroup]="rpgFormGroup">
 
                 <div class="flex-items-container title-container">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{ 'role-play.personal.title.empireName' | translate }}</mat-label>
+                        <input matInput type='text'
+                               placeholder="{{ 'role-play.personal.placeholder.title' | translate }}"
+                               formControlName='empireName'
+                               [errorStateMatcher]="matcher"
+                               required>
+                        <mat-error *ngIf="rpgFormGroup.controls.empireName.hasError('tooLong')">
+                            {{ 'role-play.personal.hint.title' | translate }}
+                        </mat-error>
+                        <mat-hint>{{ 'role-play.personal.hint.title' | translate }}</mat-hint>
+                    </mat-form-field>
+
                     <mat-form-field appearance="outline">
                         <mat-label>{{ 'role-play.personal.title.title' | translate }}</mat-label>
                         <input matInput type='text'
@@ -71,8 +80,11 @@
             </form>
         </mat-card-content>
         <mat-card-actions align="end">
+            <!--suppress AngularBindingTypeMismatch -->
             <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitRPGStuff()"
-                    [disabled]="rpgFormGroup.invalid">{{ 'action.submit' | translate }}</button>
+                    [disabled]="rpgFormGroup.invalid">{{ 'action.submit' | translate }}
+            </button>
+            <!--suppress AngularBindingTypeMismatch -->
             <button mat-raised-button class="action-button" color="secondary" (click)="clear()">{{ 'action.clear' | translate }}</button>
         </mat-card-actions>
     </mat-card>
@@ -111,13 +123,16 @@
                     <input matInput autocomplete="off" type='email' formControlName="eMail"
                            email
                            [errorStateMatcher]="matcher" required>
-                    <mat-error *ngIf="eMailChangeFormGroup.get('eMail')?.hasError('eMailInvalid')">{{ userErrors.eMailInvalid }} </mat-error>
-                    <mat-error *ngIf="eMailChangeFormGroup.get('eMail')?.hasError('email')">{{ userErrors.eMailWrongFormat }} </mat-error>
+                    <mat-error *ngIf="eMailChangeFormGroup.get('eMail')?.hasError('eMailInvalid')">{{ userErrors.eMailInvalid }}</mat-error>
+                    <mat-error *ngIf="eMailChangeFormGroup.get('eMail')?.hasError('email')">{{ userErrors.eMailWrongFormat }}</mat-error>
                 </mat-form-field>
             </mat-card-content>
             <mat-card-actions align="end">
+                <!--suppress AngularBindingTypeMismatch -->
                 <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitEMailChange()"
-                        [disabled]="eMailChangeFormGroup.invalid">{{ 'action.submit' | translate }}</button>
+                        [disabled]="eMailChangeFormGroup.invalid">{{ 'action.submit' | translate }}
+                </button>
+                <!--suppress AngularBindingTypeMismatch -->
                 <button mat-raised-button class="action-button" color="secondary" (click)="clearEMailChange()">{{ 'action.clear' | translate }}</button>
             </mat-card-actions>
         </mat-card>
@@ -126,7 +141,7 @@
     <mat-card appearance="outlined" class="streamline-background" id="icon-card">
         <mat-card-content class="streamline-background">
             <mat-selection-list #iconSelector [multiple]="false">
-                <mat-list-option *ngFor="let fileName of userIcons" [value]="fileName" [selected]="selectedIcon === fileName">
+                <mat-list-option *ngFor="let fileName of userIcons" [value]="fileName" [selected]="selectedIcon === fileName" (click)="setProfilePicToMe()">
                     <img matListItemAvatar src="assets/icons/user/{{ fileName }}" alt="{{ fileName }}">
                     <h3 matListItemTitle>{{ fileName.split('.')[0] }}</h3>
                 </mat-list-option>

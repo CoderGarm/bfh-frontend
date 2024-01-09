@@ -3,7 +3,8 @@
      cdkDragRootElement=".player-embassy-mat-dialog-panel"
      cdkDragBoundary=".cdk-overlay-container">
     <div mat-dialog-title>
-        <h5>{{ 'player.embassy.main-page.title' | translate }} {{ PlayerEmbassyService.getPlayerEmpireName(player) }}</h5>
+        <h4>{{ 'player.embassy.main-page.title' | translate }}</h4>
+        <h5>{{ PlayerEmbassyService.getEmpireOrPlayerName(player) }}</h5>
         <button mat-mini-fab color="accent" class="close-btn"
                 (click)="close()"
                 matTooltip="{{ 'action.close' | translate }}">
@@ -12,7 +13,23 @@
     </div>
 </div>
 <div mat-dialog-content class="streamline-background">
+    <div>
+        {{ PlayerEmbassyService.getPlayerEmpireName(player) }}
 
-    {{ PlayerEmbassyService.getPlayerEmpireName(player) }}
+        <app-file-upload *ngIf="!imageIsPresent" (fileOutput)="uploadFiles($event)"></app-file-upload>
 
+        <div class="flex-items-from-start-container">
+            <!--suppress AngularNgOptimizedImage -->
+            <img *ngIf="!!image" [src]='image' alt="img" width="15%">
+
+            <div>
+                <mat-list>
+                    <mat-list-item>
+                        <span matListItemLine>{{ PlayerEmbassyService.getPlayerTitle(player) }}</span>
+                        <span matListItemTitle>{{ PlayerEmbassyService.getPlayerName(player) }}</span>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+    </div>
 </div>

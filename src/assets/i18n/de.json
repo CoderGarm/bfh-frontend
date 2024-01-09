@@ -765,6 +765,7 @@
 				"titleAbbreviation": "Die Abkürzung deines Titels"
 			},
 			"title": {
+				"empireName": "Der Name deines Reiches",
 				"firstname": "Dein Vorname",
 				"surname": "Dein Nachname",
 				"title": "Dein herrschaftlicher Titel",

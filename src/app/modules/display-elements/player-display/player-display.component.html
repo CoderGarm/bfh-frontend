@@ -1,6 +1,12 @@
-<div *ngIf="!!player">
-    <img mat-card-avatar class="avatar-image" matTooltip="{{ player.username }}"
+<div *ngIf="!!player" class="flex-items-from-start-container">
+    <img mat-card-avatar class="avatar-image"
+         matTooltip="{{ player.username }}"
+         [ngStyle]="{'width':sizeComplement,'height':sizeComplement}"
          (click)="embassyService.openEmbassy(player)"
          src="assets/icons/user/{{ player.profilePic }}.png" alt="member icon">
-    {{ PlayerEmbassyService.getPlayerName(player) }}
+    <div class="title-block">
+        <div class="name">{{ PlayerEmbassyService.getPlayerName(player) }}</div>
+        <div class="empire">{{ PlayerEmbassyService.getPlayerEmpireName(player) }}</div>
+        <div *ngIf="player.role === 'ADMIN'" class="role">{{ player.role.toLowerCase() }}</div>
+    </div>
 </div>

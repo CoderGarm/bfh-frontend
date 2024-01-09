@@ -5,12 +5,15 @@
     <div id="message-container">
         <mat-card appearance="outlined" #chatCardList *ngFor="let message of messages" [className]="chooseStyleFromSender(message)">
             <mat-card-header>
+                <!-- fixme change it here
+                <app-player-display [player]="message.author"></app-player-display>
+                -->
                 <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.sender.profilePic }}.png">
                 <mat-card-title>
-                    {{message.sender.username}}
+                    {{ message.sender.username }}
                     <app-icon *ngIf="!message.receivedAt && message.sender.idUser != userId" hasUnread></app-icon>
                 </mat-card-title>
-                <mat-card-subtitle>{{message.sentAt  | date: 'dd.MM.yyyy HH:mm'}}</mat-card-subtitle>
+                <mat-card-subtitle>{{ message.sentAt  | date: 'dd.MM.yyyy HH:mm' }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
                 <markdown [data]="message.message"></markdown>

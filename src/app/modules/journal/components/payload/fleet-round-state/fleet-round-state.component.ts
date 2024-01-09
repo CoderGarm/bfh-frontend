@@ -211,7 +211,7 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
             return "";
         }
 
-        const username = PlayerEmbassyService.getPlayerEmpireName(this.fleet.owner);
+        const username = PlayerEmbassyService.getEmpireOrPlayerName(this.fleet.owner);
         console.log(this.fleet.owner.rolePlayData)
         return username + " - " + this.fleet.name;
     }

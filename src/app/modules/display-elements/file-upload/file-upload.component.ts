@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 
 @Component({
     selector: 'app-file-upload',
@@ -11,6 +11,11 @@ export class FileUploadComponent {
     fileDropEl?: ElementRef;
 
     files: any[] = [];
+
+    @Output()
+    fileOutput: EventEmitter<any[]> = new EventEmitter<any[]>();
+
+    /* fixme use https://www.npmjs.com/package/ngx-image-compress */
 
     /**
      * on file drop handler
@@ -69,6 +74,7 @@ export class FileUploadComponent {
         }
         this.fileDropEl!.nativeElement.value = "";
         this.uploadFilesSimulator(0);
+        this.fileOutput.emit(this.files);
     }
 
     /**

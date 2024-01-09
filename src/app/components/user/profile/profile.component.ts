@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
-import {AuthApiService, RolePlayApiService, RolePlayData, UserApiService, UserSettings} from "../../../services/swagger";
+import {AuthApiService, Player, RolePlayApiService, RolePlayData, UserApiService, UserSettings} from "../../../services/swagger";
 import {FormBuilder, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
 import {SnackbarNotificationService} from "../../../services/snackbar-notification.service";
 import {MatSelectionList} from "@angular/material/list";
@@ -53,6 +53,8 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
     @ViewChild("iconSelector")
     iconSelector?: MatSelectionList;
 
+    me?: Player;
+
     constructor(private formBuilder: FormBuilder,
                 private authService: AuthApiService,
                 private notif: SnackbarNotificationService,
@@ -81,6 +83,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
         });
 
         this.rpgFormGroup = this.formBuilder.group({
+            empireName: undefined,
             title: undefined,
             titleAbbreviation: undefined,
             firstname: undefined,
@@ -103,6 +106,9 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             this.subscriptions.push(sub);
         });
         let sub = this.rpgService.getRPGData().subscribe(resp => this.createRPGForm(resp));
+        this.subscriptions.push(sub);
+
+        sub = this.userService.getSingleUser(this.userId).subscribe(resp => this.me = resp);
         this.subscriptions.push(sub);
     }
 
@@ -137,7 +143,15 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
         this.subscriptions.push(sub);
     }
 
+
+    setProfilePicToMe() {
+        if (!!this.me) {
+            this.me.profilePic = this.selectedIcon.replace('.png', '');
+        }
+    }
+
     clear() {
+        this.rpgFormGroup.controls.empireName.setValue(undefined);
         this.rpgFormGroup.controls.title.setValue(undefined);
         this.rpgFormGroup.controls.titleAbbreviation.setValue(undefined);
         this.rpgFormGroup.controls.firstname.setValue(undefined);
@@ -146,6 +160,7 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
 
     submitRPGStuff() {
         const rpg: RolePlayData = {
+            empireName: this.rpgFormGroup.controls.empireName.value,
             title: this.rpgFormGroup.controls.title.value,
             titleAbbreviation: this.rpgFormGroup.controls.titleAbbreviation.value,
             firstname: this.rpgFormGroup.controls.firstname.value,
@@ -155,12 +170,16 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             shipPrefix: undefined
         }
         let sub = this.rpgService.setRPGData(rpg).subscribe(() => {
+            if (!!this.me) {
+                this.me.rolePlayData = rpg;
+            }
         });
         this.subscriptions.push(sub);
     }
 
     private createRPGForm(resp: RolePlayData) {
         this.rpgFormGroup = this.formBuilder.group({
+            empireName: this.createFormControlTextLengthValidation(3, 50, resp.empireName),
             title: this.createFormControlTextLengthValidation(3, 50, resp.title),
             titleAbbreviation: this.createFormControlTextLengthValidation(3, 8, resp.titleAbbreviation),
             firstname: this.createFormControlTextLengthValidation(3, 50, resp.firstname),
