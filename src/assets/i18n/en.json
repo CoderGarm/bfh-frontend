@@ -8,6 +8,7 @@
 	},
 	"action": {
 		"clear": "Clear",
+		"close": "Close",
 		"filter": "Filter",
 		"skip": "Skip",
 		"submit": "Submit"
@@ -610,6 +611,13 @@
 			"title": "Resource development"
 		}
 	},
+	"player": {
+		"embassy": {
+			"main-page": {
+				"title": "The Empire's Embassy"
+			}
+		}
+	},
 	"points": {
 		"event": {
 			"ranking": {
@@ -617,9 +625,9 @@
 			},
 			"war-harvest": {
 				"category": {
-					"fleet-mass-destroyed": "Fleet displacement destroyed",
-					"fleet-mass-loss": "Fleet displacement lost",
-					"gained-constructions": "Conquered Constructions Levels",
+					"fleet-mass-destroyed": "Fleet displacement destroyed (kt)",
+					"fleet-mass-loss": "Fleet displacement lost (kt)",
+					"gained-constructions": "Conquered Construction Levels",
 					"gained-planets": "Conquered Planets"
 				}
 			}

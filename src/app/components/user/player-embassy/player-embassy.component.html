@@ -1,0 +1,18 @@
+<div class="header streamline-background"
+     cdkDrag
+     cdkDragRootElement=".player-embassy-mat-dialog-panel"
+     cdkDragBoundary=".cdk-overlay-container">
+    <div mat-dialog-title>
+        <h5>{{ 'player.embassy.main-page.title' | translate }} {{ PlayerEmbassyService.getPlayerEmpireName(player) }}</h5>
+        <button mat-mini-fab color="accent" class="close-btn"
+                (click)="close()"
+                matTooltip="{{ 'action.close' | translate }}">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>
+<div mat-dialog-content class="streamline-background">
+
+    {{ PlayerEmbassyService.getPlayerEmpireName(player) }}
+
+</div>

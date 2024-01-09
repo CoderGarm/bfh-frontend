@@ -23,6 +23,10 @@ export interface RolePlayData {
      */
     shipPrefix?: string;
     /**
+     * The empire's name.
+     */
+    empireName?: string;
+    /**
      * The user's selected ship name templates.
      */
     shipNameTemplates: Array<RolePlayData.ShipNameTemplatesEnum>;

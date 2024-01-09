@@ -9,4 +9,12 @@ export class DialogConfigHelper {
         dialogConfig.panelClass = ['confirm-mat-dialog-panel', 'mat-elevation-z8'];
         return dialogConfig;
     }
+
+    static createPlayerEmbassyDialog(): MatDialogConfig {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.panelClass = ['player-embassy-mat-dialog-panel', 'mat-elevation-z8'];
+        return dialogConfig;
+    }
 }

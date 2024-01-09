@@ -58,6 +58,7 @@ import {PropertyHolder} from "./property-descriptor-display/payload/property-hol
 import {FileUploadComponent} from './file-upload/file-upload.component';
 import {DndDirective} from "./file-upload/dnd.directive";
 import {ProgressComponent} from "./file-upload/progress/progress.component";
+import {PlayerDisplayComponent} from './player-display/player-display.component';
 
 @NgModule({
     declarations: [
@@ -119,6 +120,7 @@ import {ProgressComponent} from "./file-upload/progress/progress.component";
         FileUploadComponent,
         ProgressComponent,
         DndDirective,
+        PlayerDisplayComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -169,6 +171,7 @@ import {ProgressComponent} from "./file-upload/progress/progress.component";
         OrbitalModuleDisplayComponent,
         PropertyDescriptorDisplayComponent,
         FileUploadComponent,
+        PlayerDisplayComponent,
     ]
 })
 export class DisplayElementsModule {

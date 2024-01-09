@@ -5,6 +5,7 @@ import {ForumMessagesComponent} from './components/forum-messages/forum-messages
 import {ForumThreadsComponent} from './components/forum-threads/forum-threads.component';
 import {ForumsCommunicationService} from "./forums-communication.service";
 import {CreateForumThreadComponent} from './components/create-forum-thread/create-forum-thread.component';
+import {DisplayElementsModule} from "../display-elements/display-elements.module";
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {CreateForumThreadComponent} from './components/create-forum-thread/creat
     ],
     imports: [
         SharedModuleModule,
+        DisplayElementsModule,
     ],
     exports: [
         ForumsListComponent,

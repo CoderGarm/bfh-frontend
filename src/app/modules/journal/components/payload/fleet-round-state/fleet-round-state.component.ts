@@ -3,6 +3,7 @@ import {AbstractId, CapabilityValue, EShipClassType, Fleet, FleetMarker, HitLog,
 import {TranslateService} from "@ngx-translate/core";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {CombatArenaData} from "../../../combat-arena-data";
+import {PlayerEmbassyService} from "../../../../../services/intercom/player-embassy.service";
 
 export interface StateByRound {
     round: number;
@@ -209,7 +210,10 @@ export class FleetRoundStateComponent extends SubscriptionManager implements OnI
         if (!this.fleet) {
             return "";
         }
-        return this.fleet.owner.username + " - " + this.fleet.name;
+
+        const username = PlayerEmbassyService.getPlayerEmpireName(this.fleet.owner);
+        console.log(this.fleet.owner.rolePlayData)
+        return username + " - " + this.fleet.name;
     }
 
     getCurrentWarshipState(warShip: WarShip): StateByRound | undefined {

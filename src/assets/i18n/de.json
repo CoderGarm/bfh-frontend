@@ -8,6 +8,7 @@
 	},
 	"action": {
 		"clear": "Zurücksetzen",
+		"close": "Schließen",
 		"filter": "Filtern",
 		"skip": "Überspringen",
 		"submit": "Abschicken"
@@ -609,6 +610,13 @@
 			"title": "Ressourcenentwicklung"
 		}
 	},
+	"player": {
+		"embassy": {
+			"main-page": {
+				"title": "Das Auswärtige Amt"
+			}
+		}
+	},
 	"points": {
 		"event": {
 			"ranking": {
@@ -616,8 +624,8 @@
 			},
 			"war-harvest": {
 				"category": {
-					"fleet-mass-destroyed": "Schiffstonnage zerstört",
-					"fleet-mass-loss": "Schiffstonnage verloren",
+					"fleet-mass-destroyed": "Schiffstonnage zerstört (kt)",
+					"fleet-mass-loss": "Schiffstonnage verloren (kt)",
 					"gained-constructions": "Eroberte Gebäudelevel",
 					"gained-planets": "Eroberte Planeten"
 				}

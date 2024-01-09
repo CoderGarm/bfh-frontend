@@ -1,0 +1,6 @@
+<div *ngIf="!!player">
+    <img mat-card-avatar class="avatar-image" matTooltip="{{ player.username }}"
+         (click)="embassyService.openEmbassy(player)"
+         src="assets/icons/user/{{ player.profilePic }}.png" alt="member icon">
+    {{ PlayerEmbassyService.getPlayerName(player) }}
+</div>
