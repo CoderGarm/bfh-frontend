@@ -9,7 +9,9 @@
 	"action": {
 		"clear": "Clear",
 		"close": "Close",
+		"edit-mode": "Edit mode",
 		"filter": "Filter",
+		"preview-mode": "Preview mode",
 		"skip": "Skip",
 		"submit": "Submit"
 	},

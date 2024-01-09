@@ -26,7 +26,7 @@ export class PlayerEmbassyService extends SubscriptionManager {
         (<string[]>dialogConfig.panelClass).push('player-embassy-dialog')
         const dialogRef = this.dialog.open(PlayerEmbassyComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(() => {
-            console.log('closed')
+            console.log('save rollplay setting')
         });
     }
 
@@ -88,6 +88,10 @@ export class PlayerEmbassyService extends SubscriptionManager {
         return !!text ? text : "";
     }
 
+
+    static getPlayersAllianceTag(player?: Player) {
+        return !!player && !!player.allianceTag ? '[ ' + player.allianceTag + ' ]' : '';
+    }
 
     /**
      * Uploads the empires emblem.

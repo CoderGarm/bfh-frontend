@@ -430,3 +430,7 @@ app-home > app-display-article > div > markdown > pre {
 .register-step-2 {
   max-width: 100% !important;
 }
+
+app-player-embassy > .mat-mdc-dialog-content {
+  max-height: 90%;
+}

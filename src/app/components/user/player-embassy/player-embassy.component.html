@@ -12,11 +12,12 @@
         </button>
     </div>
 </div>
-<div mat-dialog-content class="streamline-background">
+<div mat-dialog-content class="streamline-background" style="height: 100%;">
     <div>
         {{ PlayerEmbassyService.getPlayerEmpireName(player) }}
 
         <app-file-upload *ngIf="!imageIsPresent" (fileOutput)="uploadFiles($event)"></app-file-upload>
+
 
         <div class="flex-items-from-start-container">
             <!--suppress AngularNgOptimizedImage -->
@@ -26,10 +27,56 @@
                 <mat-list>
                     <mat-list-item>
                         <span matListItemLine>{{ PlayerEmbassyService.getPlayerTitle(player) }}</span>
-                        <span matListItemTitle>{{ PlayerEmbassyService.getPlayerName(player) }}</span>
+                        <span matListItemTitle>
+                            {{ PlayerEmbassyService.getPlayerName(player) }}{{ PlayerEmbassyService.getPlayersAllianceTag(player) }}
+                        </span>
                     </mat-list-item>
                 </mat-list>
             </div>
         </div>
+
+        <ng-template
+                cdkConnectedOverlay
+                [cdkConnectedOverlayOrigin]="triggerOrigin"
+                [cdkConnectedOverlayOpen]="editMode">
+            <mat-card appearance="outlined">
+                <mat-card-content>
+                    <angular-markdown-editor
+                            textareaId="edit"
+                            name="markdownText"
+                            [(ngModel)]="text"
+                            [options]="editorOptions"
+                            class="angular-markdown-editor-minimalistic"></angular-markdown-editor>
+                </mat-card-content>
+            </mat-card>
+        </ng-template>
+
+        <div class="flex-items-from-start-container">
+            <mat-card appearance="outlined">
+                <mat-card-content (click)="selectForEdit(leftUpper, trigger)" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                    <markdown class="left-upper"
+                              [data]="leftUpper"></markdown>
+
+                    <button mat-mini-fab color="accent" class="toggle-btn" (click)="editMode = !editMode">
+                        <!-- fixme why are the buttons partially hidden? -->
+                        <mat-icon *ngIf="!editMode">edit</mat-icon>
+                        <mat-icon *ngIf="editMode">preview</mat-icon>
+                    </button>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card appearance="outlined">
+                <mat-card-content (click)="selectForEdit(rightUpper, trigger)" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                    <markdown class="right-upper"
+                              [data]="rightUpper"></markdown>
+
+                    <button mat-mini-fab color="accent" class="toggle-btn" (click)="editMode = !editMode">
+                        <mat-icon *ngIf="!editMode">edit</mat-icon>
+                        <mat-icon *ngIf="editMode">preview</mat-icon>
+                    </button>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
     </div>
 </div>

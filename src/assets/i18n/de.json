@@ -9,7 +9,9 @@
 	"action": {
 		"clear": "Zurücksetzen",
 		"close": "Schließen",
+		"edit-mode": "Editieren",
 		"filter": "Filtern",
+		"preview-mode": "Vorschau",
 		"skip": "Überspringen",
 		"submit": "Abschicken"
 	},
