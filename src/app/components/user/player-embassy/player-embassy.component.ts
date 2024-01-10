@@ -139,6 +139,11 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
 
     closeAndSave() {
 
+        if (!this.isMyself) {
+            this.dialogRef.close();
+            return;
+        }
+
         const tb = this.player!.rolePlayData.textBlocks;
         let isEquals = this.textMap.get('leftUpper') == tb.leftUpper;
         isEquals = isEquals ? this.textMap.get('rightUpper') == tb.rightUpper : isEquals;
