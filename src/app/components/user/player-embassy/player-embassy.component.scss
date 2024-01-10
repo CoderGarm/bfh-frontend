@@ -1,14 +1,32 @@
 @import "src/styles/variables";
 @import "src/app/modules/shared-module/components/markdown-editor/markdown-editor.component.scss";
 
-.close-btn {
+.delete-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -20px;
+  right: -35px;
+}
+
+.rel {
+  position: relative;
+}
+
+.mat-mdc-icon-button ::ng-deep .mat-mdc-button-persistent-ripple {
+  // disable focus background
+  display: none;
 }
 
 mat-card, mat-dialog-title {
   margin: 15px;
+}
+
+.emblem {
+  width: 15%;
+  margin: 35px;
+}
+
+img {
+  width: 100%;
 }
 
 .left-upper {

@@ -46,9 +46,20 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
 
         this.player = <Player>data;
         this.isMyself = this.player.idUser == this.userId;
-        let sub = this.embassyService.getEmpireEmblem().subscribe(resp => {
+        this.fetchEmpireEmblem(this.player);
+    }
+
+    private fetchEmpireEmblem(player?: Player) {
+        if (!player) {
+            return;
+        }
+        let sub = this.embassyService.getEmpireEmblem(player.idUser).subscribe(resp => {
             this.imageIsPresent = !!resp;
-            this.image = this.sanitizer.bypassSecurityTrustUrl(this.imageType + resp.content);
+            if (this.imageIsPresent) {
+                this.image = this.sanitizer.bypassSecurityTrustUrl(this.imageType + resp.content);
+            } else {
+                this.image = undefined;
+            }
         });
         this.subscriptions.push(sub);
     }
@@ -70,12 +81,20 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
         };
     }
 
+    deleteEmblem() {
+        let sub = this.embassyService.deleteEmpireEmblem().subscribe(resp => this.fetchEmpireEmblem(this.player));
+        this.subscriptions.push(sub);
+    }
+
     close() {
         this.dialogRef.close();
     }
 
     uploadFiles(files: File[]) {
         this.embassyService.uploadFiles(files);
+        setTimeout(() => {
+            this.fetchEmpireEmblem(this.player);
+        }, 500);
     }
 
     selectForEdit(toEdit: string, trigger: CdkOverlayOrigin) {

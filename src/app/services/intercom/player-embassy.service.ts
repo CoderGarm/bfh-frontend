@@ -30,8 +30,12 @@ export class PlayerEmbassyService extends SubscriptionManager {
         });
     }
 
-    getEmpireEmblem(): Observable<FileUpload> {
-        return this.rpgService.getEmpireEmblem(this.userId);
+    getEmpireEmblem(idUser: number): Observable<FileUpload> {
+        return this.rpgService.getEmpireEmblem(idUser);
+    }
+
+    deleteEmpireEmblem(): Observable<Boolean> {
+        return this.rpgService.deleteEmpireEmblem();
     }
 
     uploadFiles(files: File[]) {
@@ -56,7 +60,7 @@ export class PlayerEmbassyService extends SubscriptionManager {
         return PlayerEmbassyService.g(rpg.title);
     }
 
-    static getPlayerName(player?: Player) {
+    static getPlayerNameWithTitle(player?: Player) {
         if (!player) {
             return '';
         }
@@ -68,6 +72,18 @@ export class PlayerEmbassyService extends SubscriptionManager {
         return PlayerEmbassyService.g(rpg.titleAbbreviation) + " " + this.g(rpg.firstname) + " " + this.g(rpg.surname);
     }
 
+    static getPlayerName(player?: Player) {
+        if (!player) {
+            return '';
+        }
+
+        const rpg = player.rolePlayData;
+        if (!rpg.surname) {
+            return player.username;
+        }
+        return this.g(rpg.firstname) + " " + this.g(rpg.surname);
+    }
+
     static getEmpireOrPlayerName(player?: Player) {
         if (!player) {
             return '';
@@ -75,7 +91,7 @@ export class PlayerEmbassyService extends SubscriptionManager {
 
         const rpg = player.rolePlayData;
         if (!rpg.empireName) {
-            return PlayerEmbassyService.getPlayerName(player);
+            return PlayerEmbassyService.getPlayerNameWithTitle(player);
         }
         return rpg.empireName;
     }

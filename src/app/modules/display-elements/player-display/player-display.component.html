@@ -5,7 +5,7 @@
          (click)="embassyService.openEmbassy(player)"
          src="assets/icons/user/{{ player.profilePic }}.png" alt="member icon">
     <div class="title-block">
-        <div class="name">{{ PlayerEmbassyService.getPlayerName(player) }}</div>
+        <div class="name">{{ PlayerEmbassyService.getPlayerNameWithTitle(player) }}</div>
         <div class="empire">{{ PlayerEmbassyService.getPlayerEmpireName(player) }}</div>
         <div *ngIf="player.role === 'ADMIN'" class="role">{{ player.role.toLowerCase() }}</div>
     </div>

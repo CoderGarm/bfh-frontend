@@ -5,30 +5,28 @@
     <div mat-dialog-title>
         <h4>{{ 'player.embassy.main-page.title' | translate }}</h4>
         <h5>{{ PlayerEmbassyService.getEmpireOrPlayerName(player) }}</h5>
-        <button mat-mini-fab color="accent" class="close-btn"
-                (click)="close()"
-                matTooltip="{{ 'action.close' | translate }}">
-            <mat-icon>close</mat-icon>
-        </button>
     </div>
 </div>
 <div mat-dialog-content class="streamline-background" style="height: 100%;">
     <div>
-        {{ PlayerEmbassyService.getPlayerEmpireName(player) }}
-
-        <app-file-upload *ngIf="!imageIsPresent" (fileOutput)="uploadFiles($event)"></app-file-upload>
-
-
         <div class="flex-items-from-start-container">
-            <!--suppress AngularNgOptimizedImage -->
-            <img *ngIf="!!image" [src]='image' alt="img" width="15%">
+            <div [ngClass]="imageIsPresent ? 'emblem' : ''" class="rel">
+                <!--suppress AngularNgOptimizedImage -->
+                <img *ngIf="!!image" [src]='image' alt="img">
+                <app-file-upload *ngIf="!imageIsPresent" (fileOutput)="uploadFiles($event)" class="emblem"></app-file-upload>
+                <button mat-icon-button disableRipple="true" color="accent" class="delete-btn"
+                        *ngIf="imageIsPresent"
+                        (click)="deleteEmblem()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
 
             <div>
                 <mat-list>
                     <mat-list-item>
-                        <span matListItemLine>{{ PlayerEmbassyService.getPlayerTitle(player) }}</span>
-                        <span matListItemTitle>
-                            {{ PlayerEmbassyService.getPlayerName(player) }}{{ PlayerEmbassyService.getPlayersAllianceTag(player) }}
+                        <span matListItemTitle>{{ PlayerEmbassyService.getPlayerTitle(player) }}</span>
+                        <span matListItemLine>
+                            {{ PlayerEmbassyService.getPlayerName(player) }} {{ PlayerEmbassyService.getPlayersAllianceTag(player) }}
                         </span>
                     </mat-list-item>
                 </mat-list>
@@ -57,7 +55,7 @@
                     <markdown class="left-upper"
                               [data]="leftUpper"></markdown>
 
-                    <button mat-mini-fab color="accent" class="toggle-btn" (click)="editMode = !editMode">
+                    <button mat-icon-button color="accent" class="toggle-btn" (click)="editMode = !editMode">
                         <!-- fixme why are the buttons partially hidden? -->
                         <mat-icon *ngIf="!editMode">edit</mat-icon>
                         <mat-icon *ngIf="editMode">preview</mat-icon>
@@ -70,7 +68,7 @@
                     <markdown class="right-upper"
                               [data]="rightUpper"></markdown>
 
-                    <button mat-mini-fab color="accent" class="toggle-btn" (click)="editMode = !editMode">
+                    <button mat-icon-button color="accent" class="toggle-btn" (click)="editMode = !editMode">
                         <mat-icon *ngIf="!editMode">edit</mat-icon>
                         <mat-icon *ngIf="editMode">preview</mat-icon>
                     </button>
