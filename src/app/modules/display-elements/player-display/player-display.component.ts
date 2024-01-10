@@ -17,6 +17,11 @@ export class PlayerDisplayComponent implements OnChanges {
 
     //@formatter:off
     @Input()
+    get asList() { return this._asList; }
+    set asList(value: any) { this._asList = coerceBooleanProperty(value); }
+    _asList: boolean = false;
+
+    @Input()
     get png64px() { return this._png64px; }
     set png64px(value: any) { this._png64px = coerceBooleanProperty(value); }
     _png64px: boolean = false;

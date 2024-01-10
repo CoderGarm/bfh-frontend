@@ -17,20 +17,7 @@
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element">
-                <img mat-card-avatar class="avatar-image" matTooltip="{{ element.user.username }}"
-                     src="assets/icons/user/{{ element.user.profilePic }}.png" alt="member icon">
-                {{ getName(element.user) }}
-
-                <!-- fixme change it here
-            <app-player-display [player]="message.author"></app-player-display>
-            -->
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="ally-tag">
-            <th mat-header-cell *matHeaderCellDef>Alliance</th>
-            <td mat-cell *matCellDef="let element">
-                <span *ngIf="!!element.user.allianceTag">[ {{ element.user.allianceTag }} ]</span>
+                <app-player-display asList [player]="element.user"></app-player-display>
             </td>
         </ng-container>
 

@@ -434,3 +434,9 @@ app-home > app-display-article > div > markdown > pre {
 app-player-embassy > .mat-mdc-dialog-content {
   max-height: 90%;
 }
+
+
+.mat-mdc-dialog-surface {
+  // should be applied ony at child of .player-embassy-mat-dialog-panel but didnt work well
+  overflow: hidden !important;
+}

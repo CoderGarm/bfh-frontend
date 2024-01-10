@@ -22,7 +22,7 @@ export interface EventPoints {
 })
 export class EventPointsListComponent extends SubscriptionManager implements AfterViewInit {
 
-    displayedColumns: string[] = ['rank', 'name', 'ally-tag', 'gainedPlanets', 'gainedConstructionLevels', 'fleetTonnageLost', 'fleetTonnageDestroyed'];
+    displayedColumns: string[] = ['rank', 'name', 'gainedPlanets', 'gainedConstructionLevels', 'fleetTonnageLost', 'fleetTonnageDestroyed'];
     dataSource: MatTableDataSource<EventPoints> = new MatTableDataSource<EventPoints>([]);
 
     @ViewChild(MatPaginator)
@@ -103,17 +103,5 @@ export class EventPointsListComponent extends SubscriptionManager implements Aft
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
-    }
-
-    getName(user: Player) {
-        const rpg = user.rolePlayData;
-        if (!rpg.surname) {
-            return user.username;
-        }
-        return this.g(rpg.titleAbbreviation) + " " + this.g(rpg.firstname) + " " + this.g(rpg.surname);
-    }
-
-    g(text?: string) {
-        return !!text ? text : "";
     }
 }

@@ -13,9 +13,9 @@
             <div [ngClass]="imageIsPresent ? 'emblem' : ''" class="rel">
                 <!--suppress AngularNgOptimizedImage -->
                 <img *ngIf="!!image" [src]='image' alt="img">
-                <app-file-upload *ngIf="!imageIsPresent" (fileOutput)="uploadFiles($event)" class="emblem"></app-file-upload>
+                <app-file-upload *ngIf="!imageIsPresent && isMyself" (fileOutput)="uploadFiles($event)" class="emblem"></app-file-upload>
                 <button mat-icon-button color="accent" class="delete-btn"
-                        *ngIf="imageIsPresent"
+                        *ngIf="imageIsPresent && isMyself"
                         (click)="deleteEmblem()">
                     <mat-icon>delete</mat-icon>
                 </button>
@@ -49,7 +49,7 @@
                             [options]="editorOptions"
                             class="angular-markdown-editor-minimalistic"></angular-markdown-editor>
                 </mat-card-content>
-                <mat-card-actions align="end">
+                <mat-card-actions align="end" *ngIf="isMyself">
                     <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheat Sheet</a>
                 </mat-card-actions>
             </mat-card>
@@ -60,7 +60,7 @@
                 <mat-card-content cdkOverlayOrigin #trigger1="cdkOverlayOrigin">
                     <markdown class="left-upper" [data]="textMap.get('leftUpper')"></markdown>
                 </mat-card-content>
-                <mat-card-actions align="end">
+                <mat-card-actions align="end" *ngIf="isMyself">
                     <button mat-icon-button color="accent" (click)="selectForEdit('leftUpper',  trigger1)">
                         <mat-icon *ngIf="showEditButton()">edit</mat-icon>
                         <mat-icon *ngIf="showSaveButton(trigger1)">save</mat-icon>
@@ -77,7 +77,7 @@
                     <markdown class="right-upper" [data]="textMap.get('rightUpper')"></markdown>
 
                 </mat-card-content>
-                <mat-card-actions align="end">
+                <mat-card-actions align="end" *ngIf="isMyself">
                     <button mat-icon-button color="accent" (click)="selectForEdit('rightUpper', trigger2)">
                         <mat-icon *ngIf="showEditButton()">edit</mat-icon>
                         <mat-icon *ngIf="showSaveButton(trigger2)">save</mat-icon>
@@ -97,7 +97,7 @@
                               [data]="textMap.get('leftBottom')"></markdown>
 
                 </mat-card-content>
-                <mat-card-actions align="end">
+                <mat-card-actions align="end" *ngIf="isMyself">
                     <button mat-icon-button color="accent" (click)="selectForEdit('leftBottom',  trigger3)">
                         <mat-icon *ngIf="showEditButton()">edit</mat-icon>
                         <mat-icon *ngIf="showSaveButton(trigger3)">save</mat-icon>
@@ -115,7 +115,7 @@
                               [data]="textMap.get('rightBottom')"></markdown>
 
                 </mat-card-content>
-                <mat-card-actions align="end">
+                <mat-card-actions align="end" *ngIf="isMyself">
                     <button mat-icon-button color="accent" (click)="selectForEdit('rightBottom', trigger4)">
                         <mat-icon *ngIf="showEditButton()">edit</mat-icon>
                         <mat-icon *ngIf="showSaveButton(trigger4)">save</mat-icon>

@@ -22,7 +22,6 @@ export class PlayerEmbassyService extends SubscriptionManager {
     openEmbassy(player: Player) {
         const dialogConfig = DialogConfigHelper.createPlayerEmbassyDialog();
         dialogConfig.data = player;
-        dialogConfig.width = '90%';
         (<string[]>dialogConfig.panelClass).push('player-embassy-dialog')
         const dialogRef = this.dialog.open(PlayerEmbassyComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((result: RPGTextBlocks) => {

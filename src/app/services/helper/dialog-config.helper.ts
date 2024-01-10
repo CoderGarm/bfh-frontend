@@ -14,7 +14,8 @@ export class DialogConfigHelper {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.height = '90%';
+        dialogConfig.height = '85%';
+        dialogConfig.width = '90%';
         dialogConfig.panelClass = ['player-embassy-mat-dialog-panel', 'mat-elevation-z8'];
         return dialogConfig;
     }

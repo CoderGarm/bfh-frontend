@@ -9,22 +9,9 @@
     </mat-paginator>
     <mat-card appearance="outlined" class="forum-card" *ngFor="let message of messagesInThread" ngClass="messageId-{{ message.idForumMessage }}">
         <mat-card-header>
-
-            <!-- fixme change it here
-            <app-player-display [player]="message.author"></app-player-display>
-            -->
-
-            <img mat-card-avatar class="avatar-image" src="assets/icons/user/{{ message.profilePic }}.png" matTooltip="{{ message.author.username }}"
-                 alt="profile icon">
-
             <mat-card-title>
-                <span *ngIf="!!message.author.allianceTag">[{{ message.author.allianceTag }}]</span>
-                <span *ngIf="!message.author.rolePlayData.title">
-                    {{ message.author.username }}
-                </span>
-                <span *ngIf="!!message.author.rolePlayData.title">
-                    {{ message.author.rolePlayData.title }} {{ message.author.rolePlayData.firstname }} {{ message.author.rolePlayData.surname }}
-                </span>
+                <app-player-display [player]="message.author"></app-player-display>
+
                 <app-icon *ngIf="forumsCommService.unreadMessages.includes(message.idForumMessage)" hasUnread></app-icon>
             </mat-card-title>
             <mat-card-subtitle>{{ message.sentAt | date: 'dd.MM.yyyy HH:mm' }}</mat-card-subtitle>
