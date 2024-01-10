@@ -3,7 +3,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {SubscriptionManager} from "../../subscription.manager";
 import {DialogConfigHelper} from "../helper/dialog-config.helper";
 import {PlayerEmbassyComponent} from "../../components/user/player-embassy/player-embassy.component";
-import {FileUpload, Player, RolePlayApiService} from "../swagger";
+import {FileUpload, Player, RolePlayApiService, RolePlayData, RPGTextBlocks} from "../swagger";
 import {Observable} from "rxjs";
 import {HttpClient, HttpEvent, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
@@ -25,13 +25,21 @@ export class PlayerEmbassyService extends SubscriptionManager {
         dialogConfig.width = '90%';
         (<string[]>dialogConfig.panelClass).push('player-embassy-dialog')
         const dialogRef = this.dialog.open(PlayerEmbassyComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(() => {
-            console.log('save rollplay setting')
+        dialogRef.afterClosed().subscribe((result: RPGTextBlocks) => {
+            if (!!result) {
+                let sub = this.rpgService.editRPGTextBlocks(result).subscribe(() => {
+                });
+                this.subscriptions.push(sub);
+            }
         });
     }
 
     getEmpireEmblem(idUser: number): Observable<FileUpload> {
         return this.rpgService.getEmpireEmblem(idUser);
+    }
+
+    getRPGData(): Observable<RolePlayData> {
+        return this.rpgService.getRPGData();
     }
 
     deleteEmpireEmblem(): Observable<Boolean> {

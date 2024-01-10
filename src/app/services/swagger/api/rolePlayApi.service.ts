@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { FileUpload } from '../model/fileUpload';
 import { FrontendError } from '../model/frontendError';
+import { RPGTextBlocks } from '../model/rPGTextBlocks';
 import { RolePlayData } from '../model/rolePlayData';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -143,7 +144,7 @@ export class RolePlayApiService {
     }
 
     /**
-     * Uploads the empires emblem.
+     * Deletes the empires emblem.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -171,6 +172,54 @@ export class RolePlayApiService {
 
         return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/rpg/empire-emblem`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Changes the empire texts.
+     * 
+     * @param body default response
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public editRPGTextBlocks(body: RPGTextBlocks, observe?: 'body', reportProgress?: boolean): Observable<RPGTextBlocks>;
+    public editRPGTextBlocks(body: RPGTextBlocks, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RPGTextBlocks>>;
+    public editRPGTextBlocks(body: RPGTextBlocks, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RPGTextBlocks>>;
+    public editRPGTextBlocks(body: RPGTextBlocks, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling editRPGTextBlocks.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<RPGTextBlocks>('post',`${this.basePath}/api/private/rpg/rpg-texts`,
+            {
+                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

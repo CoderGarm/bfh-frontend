@@ -1,14 +1,14 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
 import {PlayerEmbassyService} from "../../../services/intercom/player-embassy.service";
-import {Player} from "../../../services/swagger";
+import {Player, RPGTextBlocks} from "../../../services/swagger";
 import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {DomSanitizer} from "@angular/platform-browser";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
 import * as DOMPurify from "dompurify";
 import {MarkdownService} from "ngx-markdown";
 import {EditorInstance} from "angular-markdown-editor";
-import {CdkOverlayOrigin} from "@angular/cdk/overlay";
+import {CdkOverlayOrigin, ConnectionPositionPair} from "@angular/cdk/overlay";
 
 @Component({
     selector: 'app-player-embassy',
@@ -22,6 +22,10 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
     editorOptions?: EditorOption;
     bsEditorInstance?: EditorInstance;
 
+    position: ConnectionPositionPair[] = [
+        new ConnectionPositionPair({originX: 'start', originY: 'top'}, {overlayX: 'start', overlayY: 'top'}, 0, -320)
+    ];
+
     triggerOrigin: any;
 
     player?: Player;
@@ -33,9 +37,9 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
     image: any;
     private readonly imageType: string = 'data:image/JPEG;base64,';
 
+    textKeyToEdit?: string;
     text: string = '';
-    leftUpper: string = '';
-    rightUpper: string = '';
+    textMap: Map<string, string> = new Map<string, string>();
 
     constructor(private sanitizer: DomSanitizer,
                 private markdownService: MarkdownService,
@@ -47,6 +51,16 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
         this.player = <Player>data;
         this.isMyself = this.player.idUser == this.userId;
         this.fetchEmpireEmblem(this.player);
+        let sub = this.dialogRef.backdropClick().subscribe(() => this.closeAndSave());
+        this.subscriptions.push(sub);
+        if (this.isMyself && !!this.player) {
+            sub = this.embassyService.getRPGData().subscribe(resp => {
+                this.player!.rolePlayData = resp;
+                this.reset();
+            });
+            this.subscriptions.push(sub);
+        }
+        this.reset();
     }
 
     private fetchEmpireEmblem(player?: Player) {
@@ -86,8 +100,62 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
         this.subscriptions.push(sub);
     }
 
-    close() {
-        this.dialogRef.close();
+    showEditButton() {
+        return !this.editMode && !this.triggerOrigin;
+    }
+
+    showSaveButton(trigger: CdkOverlayOrigin) {
+        const mainCondition = this.editMode;
+        if (!this.triggerOrigin) {
+            return mainCondition;
+        }
+        return mainCondition && this.triggerOrigin === trigger;
+    }
+
+    resetSingleText(keyToEdit: string) {
+        const tb = this.player!.rolePlayData.textBlocks;
+
+        const map = new Map<string, string>();
+        map.set('leftUpper', !!tb.leftUpper ? tb.leftUpper : '');
+        map.set('rightUpper', !!tb.rightUpper ? tb.rightUpper : '');
+        map.set('leftBottom', !!tb.leftBottom ? tb.leftBottom : '');
+        map.set('rightBottom', !!tb.rightBottom ? tb.rightBottom : '');
+
+        this.textMap.set(keyToEdit, map.get(keyToEdit)!);
+    }
+
+    reset() {
+        if (!this.player) {
+            this.textMap.clear();
+            return;
+        }
+
+        const tb = this.player!.rolePlayData.textBlocks;
+        this.textMap.set('leftUpper', !!tb.leftUpper ? tb.leftUpper : '');
+        this.textMap.set('rightUpper', !!tb.rightUpper ? tb.rightUpper : '');
+        this.textMap.set('leftBottom', !!tb.leftBottom ? tb.leftBottom : '');
+        this.textMap.set('rightBottom', !!tb.rightBottom ? tb.rightBottom : '');
+    }
+
+    closeAndSave() {
+
+        const tb = this.player!.rolePlayData.textBlocks;
+        let isEquals = this.textMap.get('leftUpper') == tb.leftUpper;
+        isEquals = isEquals ? this.textMap.get('rightUpper') == tb.rightUpper : isEquals;
+        isEquals = isEquals ? this.textMap.get('leftBottom') == tb.leftBottom : isEquals;
+        isEquals = isEquals ? this.textMap.get('rightBottom') == tb.rightBottom : isEquals;
+
+        if (isEquals) {
+            this.dialogRef.close();
+            return;
+        }
+
+        this.dialogRef.close(<RPGTextBlocks>{
+            leftUpper: this.textMap.get('leftUpper'),
+            rightUpper: this.textMap.get('rightUpper'),
+            leftBottom: this.textMap.get('leftBottom'),
+            rightBottom: this.textMap.get('rightBottom'),
+        });
     }
 
     uploadFiles(files: File[]) {
@@ -97,9 +165,24 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
         }, 500);
     }
 
-    selectForEdit(toEdit: string, trigger: CdkOverlayOrigin) {
-        // fixme edit different texts
-        this.text = toEdit;
-        this.triggerOrigin = trigger;
+    selectForEdit(keyToEdit: string, trigger: CdkOverlayOrigin) {
+        this.editMode = !this.editMode;
+        const unsetTrigger = this.triggerOrigin == trigger;
+        if (unsetTrigger) {
+            this.triggerOrigin = undefined;
+            this.textKeyToEdit = undefined;
+            this.text = '';
+        } else {
+            this.triggerOrigin = trigger;
+            this.textKeyToEdit = keyToEdit;
+            this.text = this.textMap.has(this.textKeyToEdit) ? this.textMap.get(this.textKeyToEdit)! : '';
+        }
+    }
+
+    setText() {
+        if (!!this.textKeyToEdit) {
+            let text = !!this.text ? this.text : '';
+            this.textMap.set(this.textKeyToEdit, text);
+        }
     }
 }

@@ -14,7 +14,7 @@
                 <!--suppress AngularNgOptimizedImage -->
                 <img *ngIf="!!image" [src]='image' alt="img">
                 <app-file-upload *ngIf="!imageIsPresent" (fileOutput)="uploadFiles($event)" class="emblem"></app-file-upload>
-                <button mat-icon-button disableRipple="true" color="accent" class="delete-btn"
+                <button mat-icon-button color="accent" class="delete-btn"
                         *ngIf="imageIsPresent"
                         (click)="deleteEmblem()">
                     <mat-icon>delete</mat-icon>
@@ -35,44 +35,96 @@
 
         <ng-template
                 cdkConnectedOverlay
+                [cdkConnectedOverlayPositions]="position"
                 [cdkConnectedOverlayOrigin]="triggerOrigin"
                 [cdkConnectedOverlayOpen]="editMode">
             <mat-card appearance="outlined">
                 <mat-card-content>
+                    <!-- fixme make editor as wide as the preview box really is-->
                     <angular-markdown-editor
                             textareaId="edit"
                             name="markdownText"
                             [(ngModel)]="text"
+                            (ngModelChange)="setText()"
                             [options]="editorOptions"
                             class="angular-markdown-editor-minimalistic"></angular-markdown-editor>
                 </mat-card-content>
+                <mat-card-actions align="end">
+                    <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheat Sheet</a>
+                </mat-card-actions>
             </mat-card>
         </ng-template>
 
         <div class="flex-items-from-start-container">
             <mat-card appearance="outlined">
-                <mat-card-content (click)="selectForEdit(leftUpper, trigger)" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-                    <markdown class="left-upper"
-                              [data]="leftUpper"></markdown>
-
-                    <button mat-icon-button color="accent" class="toggle-btn" (click)="editMode = !editMode">
-                        <!-- fixme why are the buttons partially hidden? -->
-                        <mat-icon *ngIf="!editMode">edit</mat-icon>
-                        <mat-icon *ngIf="editMode">preview</mat-icon>
-                    </button>
+                <mat-card-content cdkOverlayOrigin #trigger1="cdkOverlayOrigin">
+                    <markdown class="left-upper" [data]="textMap.get('leftUpper')"></markdown>
                 </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-icon-button color="accent" (click)="selectForEdit('leftUpper',  trigger1)">
+                        <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                        <mat-icon *ngIf="showSaveButton(trigger1)">save</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="accent" *ngIf="showEditButton()" (click)="resetSingleText('leftUpper')" matTooltip="{{ 'action.reset' | translate }}">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-card-actions>
             </mat-card>
 
             <mat-card appearance="outlined">
-                <mat-card-content (click)="selectForEdit(rightUpper, trigger)" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-                    <markdown class="right-upper"
-                              [data]="rightUpper"></markdown>
+                <mat-card-content cdkOverlayOrigin #trigger2="cdkOverlayOrigin">
+                    <markdown class="right-upper" [data]="textMap.get('rightUpper')"></markdown>
 
-                    <button mat-icon-button color="accent" class="toggle-btn" (click)="editMode = !editMode">
-                        <mat-icon *ngIf="!editMode">edit</mat-icon>
-                        <mat-icon *ngIf="editMode">preview</mat-icon>
-                    </button>
                 </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-icon-button color="accent" (click)="selectForEdit('rightUpper', trigger2)">
+                        <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                        <mat-icon *ngIf="showSaveButton(trigger2)">save</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="accent" *ngIf="showEditButton()" (click)="resetSingleText('rightUpper')" matTooltip="{{ 'action.reset' | translate }}">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+
+        <div class="flex-items-from-start-container">
+            <mat-card appearance="outlined">
+                <mat-card-content cdkOverlayOrigin #trigger3="cdkOverlayOrigin">
+                    <markdown class="left-bottom"
+                              [data]="textMap.get('leftBottom')"></markdown>
+
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-icon-button color="accent" (click)="selectForEdit('leftBottom',  trigger3)">
+                        <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                        <mat-icon *ngIf="showSaveButton(trigger3)">save</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="accent" *ngIf="showEditButton()" (click)="resetSingleText('leftBottom')" matTooltip="{{ 'action.reset' | translate }}">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+
+            <mat-card appearance="outlined">
+                <mat-card-content cdkOverlayOrigin #trigger4="cdkOverlayOrigin">
+                    <markdown class="right-bottom"
+                              [data]="textMap.get('rightBottom')"></markdown>
+
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-icon-button color="accent" (click)="selectForEdit('rightBottom', trigger4)">
+                        <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                        <mat-icon *ngIf="showSaveButton(trigger4)">save</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="accent" *ngIf="showEditButton()" (click)="resetSingleText('rightBottom')" matTooltip="{{ 'action.reset' | translate }}">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-card-actions>
             </mat-card>
         </div>
 

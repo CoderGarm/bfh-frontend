@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { RPGTextBlocks } from './rPGTextBlocks';
 
 /**
  * .
@@ -34,6 +35,7 @@ export interface RolePlayData {
      * The user's selected ship names.
      */
     shipNames: Array<string>;
+    textBlocks: RPGTextBlocks;
 }
 export namespace RolePlayData {
     export type ShipNameTemplatesEnum = 'MANTICORE' | 'HAVEN' | 'ANDERMAN' | 'SILESIA' | 'SOLARIAN_LEAGUE';

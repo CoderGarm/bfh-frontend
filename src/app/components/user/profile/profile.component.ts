@@ -167,7 +167,8 @@ export class ProfileComponent extends SubscriptionManager implements OnInit, Aft
             surname: this.rpgFormGroup.controls.surname.value,
             shipNames: [],
             shipNameTemplates: [],
-            shipPrefix: undefined
+            shipPrefix: undefined,
+            textBlocks: {}
         }
         let sub = this.rpgService.setRPGData(rpg).subscribe(() => {
             if (!!this.me) {

@@ -197,7 +197,8 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 role: this.tokenStorage.getRole(),
                 rolePlayData: {
                     shipNames: [],
-                    shipNameTemplates: []
+                    shipNameTemplates: [],
+                    textBlocks: {}
                 }
             },
             sentAt: new Date()
@@ -219,7 +220,8 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                     role: this.tokenStorage.getRole(),
                     rolePlayData: {
                         shipNames: [],
-                        shipNameTemplates: []
+                        shipNameTemplates: [],
+                        textBlocks: {}
                     }
                 },
                 userTwo: this.selectedUserChatHistoryInput!,
@@ -250,7 +252,8 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                     username: this.tokenStorage.getLogin(),
                     rolePlayData: {
                         shipNames: [],
-                        shipNameTemplates: []
+                        shipNameTemplates: [],
+                        textBlocks: {}
                     }
                 },
                 userTwo: this.selectedUserChatHistoryInput,
