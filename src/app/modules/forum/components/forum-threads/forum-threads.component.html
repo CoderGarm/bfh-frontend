@@ -15,11 +15,11 @@
     <mat-card appearance="outlined" class="forum-card clickable" *ngFor="let thread of displayedThreads" (click)="selectThread(thread)">
         <!-- no mat-card-header please -->
         <mat-card-title>
-            {{thread.title}}
+            {{ thread.title }}
             <app-icon *ngIf="hasThreadUnread(thread)" hasUnread></app-icon>
         </mat-card-title>
         <mat-card-subtitle>
-            {{thread.description}}
+            {{ thread.description }}
             <div class="set-right">
                 {{ thread.lastChanged  | date: 'HH:mm' }}<br>
                 {{ thread.lastChanged  | date: 'dd.MM.yyyy' }}<br>
