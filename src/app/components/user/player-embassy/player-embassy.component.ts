@@ -26,6 +26,9 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
         new ConnectionPositionPair({originX: 'start', originY: 'top'}, {overlayX: 'start', overlayY: 'top'}, 0, -320)
     ];
 
+    width: string = '100%';
+    height: string = '100%';
+
     triggerOrigin: any;
 
     player?: Player;
@@ -79,8 +82,30 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
     }
 
     ngOnInit(): void {
+        this.createEditorOptions();
+    }
+
+    private createEditorOptions(keyToEdit?: string) {
+
+        switch (keyToEdit) {
+            case 'leftUpper':
+                this.setSizeByTextBlock('left-upper');
+                break;
+            case 'rightUpper':
+                this.setSizeByTextBlock('right-upper');
+                break;
+            case 'leftBottom':
+                this.setSizeByTextBlock('left-bottom');
+                break;
+            case 'rightBottom':
+                this.setSizeByTextBlock('left-bottom');
+                break;
+        }
+
         this.editorOptions = {
+            autofocus: true,
             iconlibrary: 'fa',
+            resize: "both",
             fullscreen: {
                 enable: false,
                 icons: {}
@@ -93,6 +118,14 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
             },
             onShow: (e) => this.bsEditorInstance = e
         };
+    }
+
+    private setSizeByTextBlock(keyToEdit: string) {
+        const elementsByClassName = document.getElementsByClassName(keyToEdit);
+        if (!!elementsByClassName) {
+            this.width = elementsByClassName[0].clientWidth + 'px';
+            this.height = elementsByClassName[0].clientHeight + 'px';
+        }
     }
 
     deleteEmblem() {
@@ -182,6 +215,7 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
             this.textKeyToEdit = keyToEdit;
             this.text = this.textMap.has(this.textKeyToEdit) ? this.textMap.get(this.textKeyToEdit)! : '';
         }
+        this.createEditorOptions(keyToEdit);
     }
 
     setText() {

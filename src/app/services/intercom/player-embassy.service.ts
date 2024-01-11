@@ -7,6 +7,7 @@ import {FileUpload, Player, RolePlayApiService, RolePlayData, RPGTextBlocks} fro
 import {Observable} from "rxjs";
 import {HttpClient, HttpEvent, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
+import {SnackbarNotificationService} from "../snackbar-notification.service";
 
 @Injectable()
 export class PlayerEmbassyService extends SubscriptionManager {
@@ -14,12 +15,19 @@ export class PlayerEmbassyService extends SubscriptionManager {
     protected basePath = environment.backendServer;
 
     constructor(private dialog: MatDialog,
+                private notif: SnackbarNotificationService,
                 private rpgService: RolePlayApiService,
                 private httpClient: HttpClient) {
         super();
     }
 
     openEmbassy(player: Player) {
+
+        if (this.isHandheldDisplaySize) {
+            this.notif.open('No embassy in mobile devices, sorry! I\'m working on a solution.');
+            return;
+        }
+
         const dialogConfig = DialogConfigHelper.createPlayerEmbassyDialog();
         dialogConfig.data = player;
         (<string[]>dialogConfig.panelClass).push('player-embassy-dialog')

@@ -38,13 +38,15 @@ $error-text-color: $error-color;
 /* Background colors */
 $dark-background-color: #25242F;
 $dark-secondary-background-color: #2E3338;
+$dark-tertiary-background-color: hsla(214, 90%, 52%, 0.1);
+$dark-quaternary-background-color: #424242;
 
 $light-card-background: #d3d9de;
 $light-background-color: #99a6b2;
 $light-secondary-background-color: #abb3ba;
-
-$dark-tertiary-background-color: hsla(214, 90%, 52%, 0.1);
 $light-tertiary-background-color: hsla(214, 30%, 50%, 0.8);
+$light-quaternary-background-color: #d3d9de;
+
 $disabled-color: rgba(255, 255, 255, 0.3);
 
 $divider-color: rgba(255, 255, 255, 0.12);
