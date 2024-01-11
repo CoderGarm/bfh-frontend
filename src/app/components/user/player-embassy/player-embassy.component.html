@@ -42,7 +42,7 @@
                 [cdkConnectedOverlayOpen]="editMode">
             <div class="editor-block text-block"
                  cdkDrag
-                 cdkDragRootElement=".editor-block"
+                 cdkDragRootElement=".cdk-overlay-pane"
                  cdkDragBoundary=".cdk-overlay-container">
 
                 <div class="draggor" cdkDragHandle></div>
@@ -55,7 +55,7 @@
                         [options]="editorOptions"
                         class="angular-markdown-editor-minimalistic"></angular-markdown-editor>
 
-                <div *ngIf="isMyself">
+                <div *ngIf="isMyself" class="draggor" cdkDragHandle>
                     <mat-divider></mat-divider>
                     <div class="action-holder">
                         <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheat Sheet</a>

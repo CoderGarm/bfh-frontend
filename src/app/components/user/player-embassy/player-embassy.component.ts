@@ -23,7 +23,7 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
     bsEditorInstance?: EditorInstance;
 
     position: ConnectionPositionPair[] = [
-        new ConnectionPositionPair({originX: 'start', originY: 'top'}, {overlayX: 'start', overlayY: 'top'}, 0, -320)
+        new ConnectionPositionPair({originX: 'center', originY: 'center'}, {overlayX: 'center', overlayY: 'center'})
     ];
 
     width: string = '100%';
