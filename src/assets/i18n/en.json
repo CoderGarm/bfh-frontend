@@ -23,6 +23,11 @@
 			"submit": "Found",
 			"title": "Found an alliance"
 		},
+		"embassy": {
+			"main-page": {
+				"title": "The Alliance Embassy"
+			}
+		},
 		"founder": "Founder",
 		"members": "Members",
 		"no-applicants": "No applicants"

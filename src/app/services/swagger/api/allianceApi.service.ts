@@ -529,6 +529,48 @@ export class AllianceApiService {
     }
 
     /**
+     * Get the rpg data
+     * 
+     * @param idAlliance 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllianceRPGData(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<RPGTextBlocks>;
+    public getAllianceRPGData(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RPGTextBlocks>>;
+    public getAllianceRPGData(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RPGTextBlocks>>;
+    public getAllianceRPGData(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling getAllianceRPGData.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<RPGTextBlocks>('get',`${this.basePath}/api/private/alliances/rpg-texts/${encodeURIComponent(String(idAlliance))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all alliances.
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

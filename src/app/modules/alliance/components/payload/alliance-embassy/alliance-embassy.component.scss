@@ -1,0 +1,116 @@
+@import "src/styles/variables";
+@import "src/app/modules/shared-module/components/markdown-editor/markdown-editor.component.scss";
+
+.reset-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.delete-btn {
+  position: absolute;
+  bottom: -20px;
+  right: -35px;
+}
+
+.rel {
+  position: relative;
+}
+
+.mat-mdc-icon-button ::ng-deep .mat-mdc-button-persistent-ripple {
+  // disable focus background
+  display: none;
+}
+
+mat-card, mat-dialog-title {
+  margin: 15px;
+}
+
+.emblem {
+  width: 15%;
+  margin: 35px;
+}
+
+img {
+  width: 100%;
+}
+
+mat-divider {
+  margin: 25px 0;
+}
+
+.action-btn {
+  padding: 0;
+  margin: 0;
+}
+
+.text-block {
+  background-color: var(--outlined-card-background-color);
+  border: solid var(--outlined-card-outline-color) 2px;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 15px;
+}
+
+.draggor {
+  height: 30px;
+  cursor: move;
+}
+
+.action-holder {
+  margin-right: auto;
+  float: right;
+}
+
+.editor-block {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  min-width: 450px;
+}
+
+.left-upper {
+  min-width: 30%;
+  min-height: 25%;
+  max-width: 67%;
+  max-height: 30%;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
+}
+
+.right-upper {
+  min-width: 30%;
+  min-height: 25%;
+  max-width: 27%;
+  max-height: 30%;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
+}
+
+.left-bottom {
+  min-width: 250px;
+  min-height: 100px;
+  max-width: 800px;
+  max-height: 600px;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
+}
+
+.right-bottom {
+  min-width: 250px;
+  min-height: 100px;
+  max-width: 800px;
+  max-height: 600px;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
+}
+
+.toggle-btn, mat-slide-toggle {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}

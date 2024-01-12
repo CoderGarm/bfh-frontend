@@ -90,6 +90,7 @@ import {DetailsStepComponent} from './components/user/register/payload/details-s
 import {RegisterEventService} from "./components/user/register/register-event.service";
 import {PlayerEmbassyComponent} from './components/user/player-embassy/player-embassy.component';
 import {PlayerEmbassyService} from "./services/intercom/player-embassy.service";
+import {AllianceEmbassyService} from "./services/intercom/alliance-embassy.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -193,6 +194,7 @@ export let AppInjector: Injector;
         RegisterEventService,
         CurrentTickService,
         PlayerEmbassyService,
+        AllianceEmbassyService,
         TypeService,
         {
             provide: APP_INITIALIZER,

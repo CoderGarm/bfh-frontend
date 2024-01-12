@@ -1,23 +1,36 @@
 <div class="bottom-spacer content-area">
     <mat-card appearance="outlined" *ngFor="let alliance of alliances" class="ally-card">
         <mat-card-header>
-            <div mat-card-avatar class="avatar-image"></div>
-            <mat-card-title>{{alliance.name}}</mat-card-title>
-            <mat-card-subtitle>{{alliance.code}}</mat-card-subtitle>
+            <div mat-card-avatar
+                 *ngIf="!imageMap.has(alliance.idAlliance)"
+                 class="avatar-image" (click)="embassyService.openEmbassy(alliance)"></div>
+
+            <!--suppress AngularNgOptimizedImage -->
+            <img mat-card-avatar
+                 *ngIf="imageMap.has(alliance.idAlliance)"
+                 [src]='imageMap.get(alliance.idAlliance)'
+                 class="ally-icon" alt="img" (click)="embassyService.openEmbassy(alliance)">
+
+            <mat-card-title>{{ alliance.name }}</mat-card-title>
+            <mat-card-subtitle>{{ alliance.code }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-            <p>{{ 'alliance.founder' | translate }}: {{alliance.founder.username}}</p>
-            <p>{{ 'alliance.members' | translate }}: {{alliance.membersAmount}}</p>
+            <p>{{ 'alliance.founder' | translate }}: {{ alliance.founder.username }}</p>
+            <p>{{ 'alliance.members' | translate }}: {{ alliance.membersAmount }}</p>
         </mat-card-content>
         <mat-card-actions *ngIf="!isAdmin">
             <div *ngIf="!idAlliance && !isApplicantAt(alliance)">
+                <!--suppress AngularBindingTypeMismatch -->
                 <button mat-raised-button color="secondary" (click)="apply(alliance)">Apply</button>
             </div>
             <div *ngIf="isApplicantAt(alliance)">
+                <!--suppress AngularBindingTypeMismatch -->
                 <button mat-raised-button color="secondary" disabled>Applied</button>
+                <!--suppress AngularBindingTypeMismatch -->
                 <button mat-raised-button color="secondary" (click)="revoke(alliance)">Revoke application</button>
             </div>
             <div *ngIf="!!idAlliance && idAlliance === alliance.idAlliance">
+                <!--suppress AngularBindingTypeMismatch -->
                 <button mat-raised-button color="secondary" (click)="leave()">Leave alliance</button>
             </div>
         </mat-card-actions>

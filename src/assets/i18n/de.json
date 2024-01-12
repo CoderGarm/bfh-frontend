@@ -23,6 +23,11 @@
 			"submit": "Gründe",
 			"title": "Gründe eine Allianz"
 		},
+		"embassy": {
+			"main-page": {
+				"title": "Das noch Auswärtigere Amt"
+			}
+		},
 		"founder": "Gründer",
 		"members": "Mitglieder",
 		"no-applicants": "Keine Anwärter."

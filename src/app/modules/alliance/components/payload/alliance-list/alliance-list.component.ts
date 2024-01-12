@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {Alliance, AllianceApiService, JWT} from "../../../../../services/swagger";
 import {AllianceHelper} from "../../../alliance.helper";
+import {AllianceEmbassyService} from "../../../../../services/intercom/alliance-embassy.service";
+import {SafeUrl} from "@angular/platform-browser";
 import GameUserRolesEnum = JWT.GameUserRolesEnum;
 
 @Component({
@@ -16,7 +18,10 @@ export class AllianceListComponent extends SubscriptionManager implements OnInit
     alliances: Alliance[] = [];
     applicationOpenAt: Alliance[] = [];
 
-    constructor(private allianceApi: AllianceApiService) {
+    imageMap: Map<number, SafeUrl | undefined> = new Map<number, SafeUrl | undefined>();
+
+    constructor(private allianceApi: AllianceApiService,
+                protected embassyService: AllianceEmbassyService) {
         super();
     }
 
@@ -25,12 +30,27 @@ export class AllianceListComponent extends SubscriptionManager implements OnInit
     }
 
     private reload() {
-        let sub = this.allianceApi.getAlliances().subscribe(resp => this.alliances = resp);
+        let sub = this.allianceApi.getAlliances().subscribe(resp => {
+            this.alliances = resp;
+            this.fetchAllyImages();
+        });
         this.subscriptions.push(sub);
         sub = this.allianceApi.getOpenApplications().subscribe(resp => this.applicationOpenAt = resp);
         this.subscriptions.push(sub);
         this.idAlliance = this.tokenStorage.getAllianceID();
         this.isAdmin = AllianceHelper.isAllianceAdmin(this.tokenStorage.getGameRoles());
+    }
+
+    private fetchAllyImages() {
+        this.alliances.map(alliance => alliance.idAlliance)
+            .forEach(idAlliance => {
+                this.embassyService.getAllyEmblem(idAlliance).subscribe(resp => {
+                    const allyEmblemAsImage = this.embassyService.getAllyEmblemAsImage(resp);
+                    if (!!allyEmblemAsImage) {
+                        this.imageMap.set(idAlliance, allyEmblemAsImage);
+                    }
+                });
+            });
     }
 
     isApplicantAt(alliance?: Alliance): boolean {

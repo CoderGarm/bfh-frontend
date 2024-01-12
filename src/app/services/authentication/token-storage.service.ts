@@ -223,4 +223,8 @@ export class TokenStorage {
     getProfilePic() {
         return <string>localStorage.getItem(this.profilePic);
     }
+
+    hasGameRole(gameRole: JWT.GameUserRolesEnum) {
+        return this.getGameRoles().filter(role => role === gameRole).length == 1;
+    }
 }

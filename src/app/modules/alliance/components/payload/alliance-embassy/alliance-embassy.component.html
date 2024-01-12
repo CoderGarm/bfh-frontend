@@ -1,0 +1,146 @@
+<div class="header streamline-background"
+     cdkDrag
+     cdkDragRootElement=".alliance-embassy-mat-dialog-panel"
+     cdkDragBoundary=".cdk-overlay-container">
+    <div mat-dialog-title>
+        <h4>{{ 'alliance.embassy.main-page.title' | translate }}</h4>
+        <h5>{{ alliance?.name }} [ {{ alliance?.code }} ]</h5>
+    </div>
+</div>
+<div mat-dialog-content class="streamline-background" style="height: 100%;">
+    <div>
+        <div class="flex-items-from-start-container">
+            <div [ngClass]="imageIsPresent ? 'emblem' : ''" class="rel">
+                <!--suppress AngularNgOptimizedImage -->
+                <img *ngIf="!!image" [src]='image' alt="img">
+                <app-file-upload *ngIf="!imageIsPresent && isFounder" (fileOutput)="uploadFiles($event)" class="emblem"></app-file-upload>
+                <button mat-icon-button color="accent" class="delete-btn"
+                        *ngIf="imageIsPresent && isFounder"
+                        (click)="deleteEmblem()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <div>
+                <mat-list>
+                    <mat-list-item>
+                        <span matListItemTitle>{{ alliance?.name }}</span>
+                        <span matListItemLine>[ {{ alliance?.code }} ]</span>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+
+        <ng-template
+                cdkConnectedOverlay
+                [cdkConnectedOverlayPositions]="position"
+                [cdkConnectedOverlayOrigin]="triggerOrigin"
+                [cdkConnectedOverlayMinWidth]="width"
+                [cdkConnectedOverlayMinHeight]="height"
+                [cdkConnectedOverlayOpen]="editMode">
+            <div class="editor-block text-block"
+                 cdkDrag
+                 cdkDragRootElement=".cdk-overlay-pane"
+                 cdkDragBoundary=".cdk-overlay-container">
+
+                <div class="draggor" cdkDragHandle></div>
+
+                <angular-markdown-editor
+                        textareaId="embassy-edit-textarea"
+                        name="markdownText"
+                        [(ngModel)]="text"
+                        (ngModelChange)="setText()"
+                        [options]="editorOptions"
+                        class="angular-markdown-editor-minimalistic"></angular-markdown-editor>
+
+                <div *ngIf="isFounder" class="draggor" cdkDragHandle>
+                    <mat-divider></mat-divider>
+                    <div class="action-holder">
+                        <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheat Sheet</a>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="flex-items-from-start-container">
+            <div class="left-upper text-block" cdkOverlayOrigin #trigger1="cdkOverlayOrigin">
+                <markdown [data]="textMap.get('leftUpper')"></markdown>
+
+                <div *ngIf="isFounder">
+                    <mat-divider></mat-divider>
+                    <div class="action-holder">
+                        <button mat-icon-button color="accent" class="action-btn" (click)="selectForEdit('leftUpper',  trigger1)">
+                            <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                            <mat-icon *ngIf="showSaveButton(trigger1)">save</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="accent" class="action-btn" *ngIf="showEditButton()" (click)="resetSingleText('leftUpper')"
+                                matTooltip="{{ 'action.reset' | translate }}">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-upper text-block" cdkOverlayOrigin #trigger2="cdkOverlayOrigin">
+                <markdown [data]="textMap.get('rightUpper')"></markdown>
+
+                <div *ngIf="isFounder">
+                    <mat-divider></mat-divider>
+                    <div class="action-holder">
+                        <button mat-icon-button color="accent" class="action-btn" (click)="selectForEdit('rightUpper', trigger2)">
+                            <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                            <mat-icon *ngIf="showSaveButton(trigger2)">save</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="accent" class="action-btn" *ngIf="showEditButton()" (click)="resetSingleText('rightUpper')"
+                                matTooltip="{{ 'action.reset' | translate }}">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-items-from-start-container">
+                <div class="left-bottom text-block" cdkOverlayOrigin #trigger3="cdkOverlayOrigin">
+                    <markdown [data]="textMap.get('leftBottom')"></markdown>
+
+                    <div *ngIf="isFounder">
+                        <mat-divider></mat-divider>
+                        <div class="action-holder">
+                            <button mat-icon-button color="accent" class="action-btn" (click)="selectForEdit('leftBottom',  trigger3)">
+                                <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                                <mat-icon *ngIf="showSaveButton(trigger3)">save</mat-icon>
+                            </button>
+
+                            <button mat-icon-button color="accent" class="action-btn" *ngIf="showEditButton()" (click)="resetSingleText('leftBottom')"
+                                    matTooltip="{{ 'action.reset' | translate }}">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-bottom text-block" cdkOverlayOrigin #trigger4="cdkOverlayOrigin">
+                    <markdown [data]="textMap.get('rightBottom')"></markdown>
+
+                    <div *ngIf="isFounder">
+                        <mat-divider></mat-divider>
+                        <div class="action-holder">
+                            <button mat-icon-button color="accent" class="action-btn" (click)="selectForEdit('rightBottom', trigger4)">
+                                <mat-icon *ngIf="showEditButton()">edit</mat-icon>
+                                <mat-icon *ngIf="showSaveButton(trigger4)">save</mat-icon>
+                            </button>
+
+                            <button mat-icon-button color="accent" class="action-btn" *ngIf="showEditButton()" (click)="resetSingleText('rightBottom')"
+                                    matTooltip="{{ 'action.reset' | translate }}">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

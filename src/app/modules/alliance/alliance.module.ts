@@ -10,6 +10,7 @@ import {AllianceCreateComponent} from "./components/payload/alliance-create/alli
 import {AllianceCodeValidatorDirective, AllianceNameValidatorDirective} from "./validators/alliance.validator";
 import {DisplayElementsModule} from "../display-elements/display-elements.module";
 import {AllianceCommunicationService} from "./alliance-communication.service";
+import {AllianceEmbassyComponent} from "./components/payload/alliance-embassy/alliance-embassy.component";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {AllianceCommunicationService} from "./alliance-communication.service";
         AllianceForumComponent,
         AllianceDashboardComponent,
         MembersListComponent,
-        AllianceCreateComponent
+        AllianceCreateComponent,
+        AllianceEmbassyComponent,
     ],
     imports: [
         SharedModuleModule,
