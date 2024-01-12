@@ -18,8 +18,10 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { Alliance } from '../model/alliance';
+import { FileUpload } from '../model/fileUpload';
 import { FrontendError } from '../model/frontendError';
 import { Player } from '../model/player';
+import { RPGTextBlocks } from '../model/rPGTextBlocks';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -269,6 +271,48 @@ export class AllianceApiService {
     }
 
     /**
+     * Deletes the empires emblem.
+     * 
+     * @param idAlliance 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteAllianceEmblem(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public deleteAllianceEmblem(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public deleteAllianceEmblem(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public deleteAllianceEmblem(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling deleteAllianceEmblem.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<boolean>('delete',`${this.basePath}/api/private/alliances/empire-emblem/${encodeURIComponent(String(idAlliance))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Denies the application of user to an alliances.
      * 
      * @param idUserToRemove 
@@ -311,6 +355,59 @@ export class AllianceApiService {
     }
 
     /**
+     * Changes the empire texts.
+     * 
+     * @param body default response
+     * @param idAlliance 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public editAllianceTextBlocks(body: RPGTextBlocks, idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<RPGTextBlocks>;
+    public editAllianceTextBlocks(body: RPGTextBlocks, idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RPGTextBlocks>>;
+    public editAllianceTextBlocks(body: RPGTextBlocks, idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RPGTextBlocks>>;
+    public editAllianceTextBlocks(body: RPGTextBlocks, idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling editAllianceTextBlocks.');
+        }
+
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling editAllianceTextBlocks.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<RPGTextBlocks>('post',`${this.basePath}/api/private/alliances/rpg-texts/${encodeURIComponent(String(idAlliance))}`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Gets an alliance.
      * 
      * @param idAlliance 
@@ -343,6 +440,48 @@ export class AllianceApiService {
         ];
 
         return this.httpClient.request<Alliance>('get',`${this.basePath}/api/private/alliances/${encodeURIComponent(String(idAlliance))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the emblem of the empire of the given user.
+     * 
+     * @param idAlliance 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllianceEmblem(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<FileUpload>;
+    public getAllianceEmblem(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileUpload>>;
+    public getAllianceEmblem(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileUpload>>;
+    public getAllianceEmblem(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling getAllianceEmblem.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<FileUpload>('get',`${this.basePath}/api/private/alliances/empire-emblem/${encodeURIComponent(String(idAlliance))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -612,6 +751,49 @@ export class AllianceApiService {
         ];
 
         return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/alliances/leave`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Uploads the empires emblem.
+     * 
+     * @param idAlliance 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public uploadAllianceEmblemBUTFAKE(idAlliance: number, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public uploadAllianceEmblemBUTFAKE(idAlliance: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public uploadAllianceEmblemBUTFAKE(idAlliance: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public uploadAllianceEmblemBUTFAKE(idAlliance: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idAlliance === null || idAlliance === undefined) {
+            throw new Error('Required parameter idAlliance was null or undefined when calling uploadAllianceEmblemBUTFAKE.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        return this.httpClient.request<boolean>('post',`${this.basePath}/api/private/alliances/empire-emblem/${encodeURIComponent(String(idAlliance))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

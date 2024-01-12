@@ -11,13 +11,14 @@
         <mat-card-header>
             <mat-card-title>
                 <app-player-display [player]="message.author"></app-player-display>
-
-                <app-icon *ngIf="forumsCommService.unreadMessages.includes(message.idForumMessage)" hasUnread></app-icon>
             </mat-card-title>
         </mat-card-header>
 
         <mat-card-content class="message rel">
-            <div class="datestamp">{{ message.sentAt | date: 'dd.MM.yyyy HH:mm' }}</div>
+            <div class="datestamp">
+                <app-icon *ngIf="forumsCommService.unreadMessages.includes(message.idForumMessage)" hasUnread></app-icon>
+                {{ message.sentAt | date: 'dd.MM.yyyy HH:mm' }}
+            </div>
             <mat-divider></mat-divider>
             <markdown [data]="message.message"></markdown>
         </mat-card-content>

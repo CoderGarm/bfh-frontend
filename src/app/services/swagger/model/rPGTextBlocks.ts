@@ -27,7 +27,7 @@ export interface RPGTextBlocks {
      */
     leftBottom?: string;
     /**
-     * The text. max 8000
+     * The text. max 6000
      */
     rightBottom?: string;
 }

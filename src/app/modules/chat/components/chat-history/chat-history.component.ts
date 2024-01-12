@@ -160,12 +160,12 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
         const sub = this.chatApi.markMessageRead(idChatMessage).subscribe(resp => {
             if (resp && !!chatMessageFromLibrary) {
                 // mark it read in a transient way
-                if (!!chatMessageFromLibrary) {
-                    chatMessageFromLibrary.receivedAt = new Date();
-                }
-                if (!!chatMessage) {
-                    chatMessage.receivedAt = new Date();
-                }
+                //if (!!chatMessageFromLibrary) {
+                //    chatMessageFromLibrary.receivedAt = new Date();
+                //}
+                //if (!!chatMessage) {
+                //    chatMessage.receivedAt = new Date();
+                //}
             }
         });
         this.subscriptions.push(sub);

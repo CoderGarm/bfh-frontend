@@ -15,8 +15,7 @@
                         <input matInput type='text'
                                placeholder="{{ 'role-play.personal.placeholder.title' | translate }}"
                                formControlName='empireName'
-                               [errorStateMatcher]="matcher"
-                               required>
+                               [errorStateMatcher]="matcher">
                         <mat-error *ngIf="rpgFormGroup.controls.empireName.hasError('tooLong')">
                             {{ 'role-play.personal.hint.title' | translate }}
                         </mat-error>
@@ -28,8 +27,7 @@
                         <input matInput type='text'
                                placeholder="{{ 'role-play.personal.placeholder.title' | translate }}"
                                formControlName='title'
-                               [errorStateMatcher]="matcher"
-                               required>
+                               [errorStateMatcher]="matcher">
                         <mat-error *ngIf="rpgFormGroup.controls.title.hasError('tooLong')">
                             {{ 'role-play.personal.hint.title' | translate }}
                         </mat-error>
@@ -41,8 +39,7 @@
                         <input matInput type='text'
                                placeholder="{{ 'role-play.personal.placeholder.titleAbbreviation' | translate }}"
                                formControlName='titleAbbreviation'
-                               [errorStateMatcher]="matcher"
-                               required>
+                               [errorStateMatcher]="matcher">
                         <mat-error *ngIf="rpgFormGroup.controls.titleAbbreviation.hasError('tooLong')">
                             {{ 'role-play.personal.hint.titleAbbreviation' | translate }}
                         </mat-error>
@@ -56,8 +53,7 @@
                         <input matInput type='text'
                                placeholder="{{ 'role-play.personal.placeholder.firstname' | translate }}"
                                formControlName='firstname'
-                               [errorStateMatcher]="matcher"
-                               required>
+                               [errorStateMatcher]="matcher">
                         <mat-error *ngIf="rpgFormGroup.controls.firstname.hasError('tooLong')">
                             {{ 'role-play.personal.hint.firstname' | translate }}
                         </mat-error>
@@ -69,8 +65,7 @@
                         <input matInput type='text'
                                placeholder="{{ 'role-play.personal.placeholder.surname' | translate }}"
                                formControlName='surname'
-                               [errorStateMatcher]="matcher"
-                               required>
+                               [errorStateMatcher]="matcher">
                         <mat-error *ngIf="rpgFormGroup.controls.surname.hasError('tooLong')">
                             {{ 'role-play.personal.hint.surname' | translate }}
                         </mat-error>

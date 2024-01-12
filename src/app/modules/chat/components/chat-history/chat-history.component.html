@@ -7,14 +7,17 @@
             <mat-card-header>
                 <mat-card-title>
                     <app-player-display [player]="message.sender"></app-player-display>
-                    <app-icon *ngIf="!message.receivedAt && message.sender.idUser != userId" hasUnread></app-icon>
                 </mat-card-title>
-                <mat-card-subtitle>{{ message.sentAt  | date: 'dd.MM.yyyy HH:mm' }}</mat-card-subtitle>
             </mat-card-header>
-            <mat-card-content>
+            <mat-card-content class="rel">
+                <div class="datestamp">
+                    <app-icon *ngIf="!message.receivedAt && message.sender.idUser != userId" hasUnread></app-icon>
+                    {{ message.sentAt | date: 'dd.MM.yyyy HH:mm' }}
+                </div>
+                <mat-divider></mat-divider>
                 <markdown [data]="message.message"></markdown>
             </mat-card-content>
-            <mat-card-footer class="completely-hidden" [lang]="message.idUserMessage">If you see that, you are a hacker.</mat-card-footer>
+            <mat-card-footer class="completely-hidden" [lang]="message.idUserMessage">If you see that, you are a hacker. And I'm used to mark messages as read.</mat-card-footer>
         </mat-card>
     </div>
     <div class="arrow">

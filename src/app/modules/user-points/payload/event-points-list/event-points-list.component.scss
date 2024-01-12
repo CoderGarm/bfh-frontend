@@ -17,3 +17,14 @@
   position: relative;
   z-index: 100;
 }
+
+.mat-column-rank {
+  width: 32px; // is a fake with belause the column header defined min with
+}
+
+.mat-column-gainedPlanets,
+.mat-column-gainedConstructionLevels,
+.mat-column-fleetTonnageLost,
+.mat-column-fleetTonnageDestroyed {
+  width: 65px;
+}

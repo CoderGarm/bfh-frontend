@@ -93,3 +93,17 @@
 .completely-hidden {
   display: none;
 }
+
+mat-divider {
+  margin: 15px 0;
+}
+
+.datestamp {
+  position: absolute;
+  right: 0;
+  top: -30px;
+}
+
+.rel {
+  position: relative;
+}

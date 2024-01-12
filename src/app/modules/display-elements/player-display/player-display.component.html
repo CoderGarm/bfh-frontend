@@ -7,7 +7,6 @@
     <div class="title-block">
         <div class="name">{{ PlayerEmbassyService.getPlayerNameWithTitle(player) }}</div>
         <div class="empire">{{ PlayerEmbassyService.getPlayerEmpireName(player) }}</div>
-        <div *ngIf="player.role === 'ADMIN'" class="role">{{ player.role.toLowerCase() }}</div>
     </div>
 </div>
 <div *ngIf="!!player && _asList">
@@ -19,6 +18,5 @@
     <div class="title-block" [ngClass]="_asList ? 'as-list-titles' : ''">
         <div class="name">{{ PlayerEmbassyService.getPlayerNameWithTitle(player) }}</div>
         <div class="empire">{{ PlayerEmbassyService.getPlayerEmpireName(player) }}</div>
-        <div *ngIf="player.role === 'ADMIN'" class="role">{{ player.role.toLowerCase() }}</div>
     </div>
 </div>
