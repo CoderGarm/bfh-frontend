@@ -26,13 +26,13 @@
             <span class="mat-mdc-menu-item-text">{{ 'burger-menu.our-subreddit' | translate }}</span>
         </a>
     </mat-menu>
-    <button mat-flat-button color="primary" routerLink='/home' style="font-size: 1.1rem;">
-        Battle for Honor
+    <span>
+        <img class="bfh-logo" src="assets/decorations/bfh-logo-wargaming.png" alt="bfh logo">
         <img *ngIf="showSantasHat" src="/assets/special/Hat_of_Santa.svg" alt="santa's hat" class="santa">
-    </button>
+    </span>
 
     <span class="spacer"></span>
-    <div *ngIf="!!currentTickService.currentTick">{{ 'tick.current' | translate }} {{currentTickService.currentTick.tickNo}}</div>
+    <div *ngIf="!!currentTickService.currentTick">{{ 'tick.current' | translate }} {{ currentTickService.currentTick.tickNo }}</div>
     <span class="spacer"></span>
     <button mat-icon-button (click)="toggleDarkMode()">
         <mat-icon *ngIf="isDark" class="centered-icon">light_mode</mat-icon>

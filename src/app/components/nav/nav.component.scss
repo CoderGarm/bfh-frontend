@@ -27,3 +27,15 @@
   top: -11px;
   right: -32px;
 }
+
+.bfh-logo {
+  height: 50px;
+  transition: 2s;
+  z-index: 100;
+  position: relative;
+}
+
+.bfh-logo:hover {
+  transform: scale(4) translate(55px, 35px);
+}
+
