@@ -38,9 +38,11 @@
         <mat-icon *ngIf="isDark" class="centered-icon">light_mode</mat-icon>
         <mat-icon *ngIf="!isDark" class="centered-icon">dark_mode</mat-icon>
     </button>
-    <button mat-flat-button color="primary" *ngIf="!!applicationInfo" disabled>
-        {{applicationInfo.applicationVersion}}
-    </button>
+
+    <span matTooltip="{{ 'application.tick.countdown' | translate }}" class="tick-countdown">{{ tickCountdown | date: 'HH:mm:ss' }}</span>
+
+    <span matTooltip="{{ 'application.version' | translate }}" class="version">{{ applicationInfo?.applicationVersion }}</span>
+
     <button mat-flat-button color="primary" routerLink='/register' *ngIf='!isLoggedIn'>
         {{ 'path.button.register' | translate }}
     </button>

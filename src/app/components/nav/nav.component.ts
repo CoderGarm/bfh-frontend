@@ -7,6 +7,7 @@ import {NavigationCreationService} from "../../services/navigation/navigation-cr
 import {CurrentTickService} from "../../services/intercom/current-tick.service";
 import {ColorSchemeService} from "../../services/color-scheme.service";
 import {NavigationCommunicationService} from "../../services/navigation/navigation-communication.service";
+import {interval} from "rxjs";
 import RoleEnum = JWT.RoleEnum;
 
 
@@ -30,6 +31,7 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     isDark: boolean = true;
 
     showSantasHat: boolean = false;
+    tickCountdown: Date;
 
     constructor(private router: Router,
                 private colorSchemeService: ColorSchemeService,
@@ -54,12 +56,48 @@ export class NavComponent extends SubscriptionManager implements OnInit {
         });
 
         this.detectSantaMode();
+        this.tickCountdown = this.getTickCountdown();
+        const source = interval(1000);
+        let sub = source.subscribe(() => {
+            this.tickCountdown = this.getTickCountdown();
+        });
+        this.subscriptions.push(sub);
     }
 
     private detectSantaMode() {
         const date = new Date();
         const month = date.getMonth() + 1;
         this.showSantasHat = month == 12;
+    }
+
+    getTickCountdown(): Date {
+        const now = this.createDateInBerlinTimezone();
+        const tickTime = new Date();
+        tickTime.setHours(23, 59, 59, 999);
+
+        const untilTick = tickTime.getTime() - now.getTime();
+        const date = new Date();
+        date.setTime(untilTick);
+        return date;
+    }
+
+    createDateInBerlinTimezone(): Date {
+        // Aktuelles UTC-Datum und -Uhrzeit abrufen
+        const utcDateTime = new Date();
+
+        // Zeitunterschied zwischen UTC und 'Europe/Berlin' in Minuten (UTC+1 oder UTC+2 je nach Sommer- oder Winterzeit)
+        const berlinTimezoneOffset = this.isSummerTimeInGermany() ? 60 : 120; // Sommerzeit: 120, Winterzeit: 60
+        // Das UTC-Datum und die -Uhrzeit um den Zeitunterschied anpassen
+        return new Date(utcDateTime.getTime() + berlinTimezoneOffset * 60000);
+    }
+
+    isSummerTimeInGermany(): boolean {
+        const now = new Date();
+        const january = new Date(now.getFullYear(), 0, 1);
+        const july = new Date(now.getFullYear(), 6, 1);
+
+        // Überprüfen, ob die aktuelle Zeitzone UTC+2 (Sommerzeit) ist
+        return now.getTimezoneOffset() < Math.max(january.getTimezoneOffset(), july.getTimezoneOffset());
     }
 
     ngOnInit(): void {

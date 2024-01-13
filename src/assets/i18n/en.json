@@ -37,6 +37,12 @@
 		"hundred": "100",
 		"thousand": "1000"
 	},
+	"application": {
+		"tick": {
+			"countdown": "Countdown till tick"
+		},
+		"version": "Release Version"
+	},
 	"burger-menu": {
 		"external-star-map": "Star map",
 		"external-star-map-manager": "Map configuration",
