@@ -82,13 +82,9 @@ export class NavComponent extends SubscriptionManager implements OnInit {
     }
 
     createDateInBerlinTimezone(): Date {
-        // Aktuelles UTC-Datum und -Uhrzeit abrufen
         const utcDateTime = new Date();
-
-        // Zeitunterschied zwischen UTC und 'Europe/Berlin' in Minuten (UTC+1 oder UTC+2 je nach Sommer- oder Winterzeit)
-        const berlinTimezoneOffset = this.isSummerTimeInGermany() ? 60 : 120; // Sommerzeit: 120, Winterzeit: 60
-        // Das UTC-Datum und die -Uhrzeit um den Zeitunterschied anpassen
-        return new Date(utcDateTime.getTime() + berlinTimezoneOffset * 60000);
+        utcDateTime.toLocaleString('de-DE', {hour: '2-digit', hour12: false, timeZone: 'Europe/Berlin'})
+        return utcDateTime;
     }
 
     isSummerTimeInGermany(): boolean {

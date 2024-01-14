@@ -56,9 +56,10 @@ export class AllianceEmbassyComponent extends SubscriptionManager implements OnI
         this.fetchAllyEmblem(this.alliance);
         let sub = this.dialogRef.backdropClick().subscribe(() => this.closeAndSave());
         this.subscriptions.push(sub);
-        if (this.isFounder && !!this.alliance) {
+        if (!!this.alliance) {
             sub = this.embassyService.getRPGData(this.alliance.idAlliance).subscribe(resp => {
                 this.rolePlayData = resp;
+                console.log(resp)
                 this.reset();
             });
             this.subscriptions.push(sub);
