@@ -100,43 +100,6 @@ export class JobApiService {
     }
 
     /**
-     * Get all jobs which are running for the questioning user.
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getJobsForEmpire(observe?: 'body', reportProgress?: boolean): Observable<Array<Job>>;
-    public getJobsForEmpire(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Job>>>;
-    public getJobsForEmpire(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Job>>>;
-    public getJobsForEmpire(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json',
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<Job>>('get',`${this.basePath}/api/private/job/runningAt`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Get all jobs which are running on this planet.
      * 
      * @param idPlanet 
@@ -169,6 +132,43 @@ export class JobApiService {
         ];
 
         return this.httpClient.request<Array<Job>>('get',`${this.basePath}/api/private/job/runningAt/${encodeURIComponent(String(idPlanet))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all jobs which are running for the questioning user.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getResearchJobsForEmpire(observe?: 'body', reportProgress?: boolean): Observable<Array<Job>>;
+    public getResearchJobsForEmpire(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Job>>>;
+    public getResearchJobsForEmpire(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Job>>>;
+    public getResearchJobsForEmpire(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<Job>>('get',`${this.basePath}/api/private/job/runningResearch`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

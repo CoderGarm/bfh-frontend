@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {EnumValueDto, Job, Planet} from "../../../../../services/swagger";
+import {EnumValueDto, Job, JobApiService, Planet} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
+import {SubscriptionManager} from "../../../../../subscription.manager";
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
 
@@ -19,7 +20,7 @@ export interface PlanetaryJobs {
     templateUrl: './job-overview.component.html',
     styleUrls: ['./job-overview.component.scss']
 })
-export class JobOverviewComponent implements OnChanges {
+export class JobOverviewComponent extends SubscriptionManager implements OnChanges {
 
     dataSource: MatTableDataSource<PlanetaryJobs> = new MatTableDataSource<PlanetaryJobs>();
 
@@ -30,9 +31,6 @@ export class JobOverviewComponent implements OnChanges {
     finishedResearches: Job[] = []
 
     @Input()
-    runningJobs: Job[] = [];
-
-    @Input()
     runningResearch?: Job;
 
     @Input()
@@ -40,10 +38,55 @@ export class JobOverviewComponent implements OnChanges {
 
     planetaryJobs: PlanetaryJobs[] = [];
 
-    constructor() {
+    fetchCounter: number = 0;
+
+    constructor(private jobService: JobApiService) {
+        super();
     }
 
     ngOnChanges(changes: SimpleChanges) {
+
+        if (!!changes['planets']) {
+            this.fetchCounter = this.planets.length;
+            this.planets
+                .sort((a, b) => new Date(a.colonizedAt!).getTime() - new Date(b.colonizedAt!).getTime())
+                .forEach(planet => {
+                    let sub = this.jobService.getJobsOnPlanet(planet.idPlanet).subscribe(resp => {
+                        resp.forEach(job => {
+                            const buildingJob = job.isBuildingJob;
+                            const shipyardJob = job.isShipyardJob;
+
+                            let facilityPlanet = job.facilityPlanet;
+                            const planetaryJobs = this.planetaryJobs.filter(pj => pj.idPlanet == facilityPlanet.idPlanet);
+                            if (planetaryJobs.length == 0) {
+                                const jobsPerPlanet: PlanetaryJobs = {
+                                    idPlanet: facilityPlanet.idPlanet,
+                                    planetName: facilityPlanet.name,
+                                    construction: buildingJob ? job : undefined,
+                                    shipyard: shipyardJob ? [job] : [],
+                                    finishedConstructions: [],
+                                    finishedShipyards: [],
+                                    isShipyardPresent: this.isShipyardPresent(facilityPlanet)
+                                }
+                                this.planetaryJobs.push(jobsPerPlanet);
+                            } else {
+                                const jobsPerPlanet = planetaryJobs[0];
+                                if (buildingJob) {
+                                    jobsPerPlanet.construction = job;
+                                } else if (shipyardJob) {
+                                    if (!jobsPerPlanet.shipyard) {
+                                        jobsPerPlanet.shipyard = [];
+                                    }
+                                    jobsPerPlanet.shipyard.push(job);
+                                }
+                            }
+                            this.fetchCounter--;
+                            this.dataSource.data = this.planetaryJobs;
+                        });
+                    });
+                    this.subscriptions.push(sub);
+                });
+        }
         this.organizeJobsPerPlanet();
     }
 
@@ -58,35 +101,6 @@ export class JobOverviewComponent implements OnChanges {
             isShipyardPresent: this.isShipyardPresent(p)
         }));
 
-        this.runningJobs.forEach(job => {
-            const buildingJob = job.isBuildingJob;
-            const shipyardJob = job.isShipyardJob;
-
-            let facilityPlanet = job.facilityPlanet;
-            const planetaryJobs = this.planetaryJobs.filter(pj => pj.idPlanet == facilityPlanet.idPlanet);
-            if (planetaryJobs.length == 0) {
-                const jobsPerPlanet: PlanetaryJobs = {
-                    idPlanet: facilityPlanet.idPlanet,
-                    planetName: facilityPlanet.name,
-                    construction: buildingJob ? job : undefined,
-                    shipyard: shipyardJob ? [job] : [],
-                    finishedConstructions: [],
-                    finishedShipyards: [],
-                    isShipyardPresent: this.isShipyardPresent(facilityPlanet)
-                }
-                this.planetaryJobs.push(jobsPerPlanet);
-            } else {
-                const jobsPerPlanet = planetaryJobs[0];
-                if (buildingJob) {
-                    jobsPerPlanet.construction = job;
-                } else if (shipyardJob) {
-                    if (!jobsPerPlanet.shipyard) {
-                        jobsPerPlanet.shipyard = [];
-                    }
-                    jobsPerPlanet.shipyard.push(job);
-                }
-            }
-        });
 
         this.finishedJobs.forEach(job => {
             const buildingJob = job.isBuildingJob;

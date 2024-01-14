@@ -30,7 +30,6 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     finishedJobs: Job[] = [];
     finishedResearches: Job[] = [];
 
-    runningJobs: Job[] = [];
     runningResearch?: Job;
 
     transportJobs: TransportJob[] = [];
@@ -67,10 +66,8 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
     }
 
     ngOnInit(): void {
-        let sub = this.jobService.getJobsForEmpire().subscribe(resp => {
-            this.runningJobs = resp;
-            const jobs = resp.filter(j => j.isResearchJob);
-            this.runningResearch = jobs.length == 1 ? jobs[0] : undefined;
+        let sub = this.jobService.getResearchJobsForEmpire().subscribe(resp => {
+            this.runningResearch = resp.length == 1 ? resp[0] : undefined;
         });
         this.subscriptions.push(sub);
 

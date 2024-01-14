@@ -10,6 +10,10 @@
     </div>
 </mat-card>
 
+<div class="la-3x la-ball-clip-rotate-multiple job-loading-indicator" style="color: rgb(55, 90, 127);" *ngIf="fetchCounter > 0">
+    <div class="ng-star-inserted"></div>
+    <div class="ng-star-inserted"></div>
+</div>
 
 <table mat-table [dataSource]="dataSource">
 
