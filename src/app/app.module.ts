@@ -91,6 +91,8 @@ import {RegisterEventService} from "./components/user/register/register-event.se
 import {PlayerEmbassyComponent} from './components/user/player-embassy/player-embassy.component';
 import {PlayerEmbassyService} from "./services/intercom/player-embassy.service";
 import {AllianceEmbassyService} from "./services/intercom/alliance-embassy.service";
+import {NewspaperComponent} from './components/newspaper/newspaper.component';
+import {NewsEntryComponent} from './components/newspaper/news-entry/news-entry.component';
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -135,6 +137,8 @@ export let AppInjector: Injector;
         ProfileTabViewComponent,
         DetailsStepComponent,
         PlayerEmbassyComponent,
+        NewspaperComponent,
+        NewsEntryComponent,
     ],
     imports: [
         LayoutModule,

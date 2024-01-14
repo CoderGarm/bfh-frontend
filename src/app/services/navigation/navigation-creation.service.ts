@@ -26,6 +26,7 @@ import {protectedGuard} from "ngx-auth";
 import {ProfileTabViewComponent} from "../../components/user/profile-tab-view/profile-tab-view.component";
 import {LibraryTabViewComponent} from "../../modules/library/orga/library-main-view/library-tab-view.component";
 import {PlayerPointsTabViewComponent} from "../../modules/user-points/orga/player-points-tab-view/player-points-tab-view.component";
+import {NewspaperComponent} from "../../components/newspaper/newspaper.component";
 
 
 export class NavigationCreationService {
@@ -39,6 +40,7 @@ export class NavigationCreationService {
     static createBasicRoutes(): Routes {
         return [
             {path: HomeComponent.path, component: HomeComponent},
+            {path: NewspaperComponent.path, component: NewspaperComponent},
             {path: RegisterComponent.path, component: RegisterComponent},
             {path: LoginComponent.path, component: LoginComponent},
             {path: ForgottenPasswordComponent.path, component: ForgottenPasswordComponent},

@@ -29,6 +29,7 @@ import {TutorialScopeService} from "./modules/tutorial/tutorial-scope.service";
 import {ColorSchemeService} from "./services/color-scheme.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {LibraryTabViewComponent} from "./modules/library/orga/library-main-view/library-tab-view.component";
+import {NewspaperComponent} from "./components/newspaper/newspaper.component";
 
 @Component({
     selector: 'app-root',
@@ -254,6 +255,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         return !this.isLoggedIn
             && !this.router.url.endsWith(LoginComponent.path)
             && !this.router.url.endsWith(HomeComponent.path)
+            && !this.router.url.endsWith(NewspaperComponent.path)
             && !this.router.url.endsWith(RegisterComponent.path)
             && !this.router.url.includes(ForgottenPasswordComponent.path)
             && !this.router.url.endsWith(WikiMainViewComponent.path)
