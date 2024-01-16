@@ -280,6 +280,41 @@ hr {
   width: 20%;
 }
 
+.loss-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-loss-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.loss-list > * {
+  margin: 0 15px;
+}
+
+.loss-element {
+  margin: 15px;
+}
+
+.loss-title {
+
+}
+
+.ship {
+  font-size: x-small;
+}
+
+.class-complement {
+  font-size: xx-small;
+}
+
 /*________________________________________________________________________________________________________________________________*/
 /*MEDIAQUERIES*/
 @media only all and (max-width: 1300px) {
