@@ -8,8 +8,8 @@ export class CombatStatistics {
 
     isLoggedInUser: boolean;
     fleetName: string;
-    losses: number = 0;
-    kills: number = 0;
+    losses: Set<number> = new Set<number>();
+    kills: Set<number> = new Set<number>();
     releasedMissiles: number = 0;
     releasedBeams: number = 0;
 }
