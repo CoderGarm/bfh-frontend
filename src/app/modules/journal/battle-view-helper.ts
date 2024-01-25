@@ -29,10 +29,6 @@ export class BattleViewHelper extends BasicViewHelper {
 
     private static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
-    /**
-     * The multiplier is just to make all relevant distances and positions more visible.
-     */
-    private readonly POSITION_MULTIPLIER = 20;
     private readonly BATTLE_COORDINATE_SYSTEM_RADIUS = 50;
 
     battleReport?: BattleReport;
@@ -227,7 +223,7 @@ export class BattleViewHelper extends BasicViewHelper {
         let position = missileMovement.position;
 
         let direction: boolean = lastPosition.xCoordinate.coordinate < position.xCoordinate.coordinate;
-        position = this.modifyOrbit(position, centerOrbit, this.POSITION_MULTIPLIER);
+        position = this.modifyOrbit(position, centerOrbit);
 
         let x = this.convertToStandardMetric(position.xCoordinate);
         let y = this.convertToStandardMetric(position.yCoordinate);
@@ -294,7 +290,7 @@ export class BattleViewHelper extends BasicViewHelper {
             }
             const angle: number = this.getAngle(startOrbit, targetOrbit);
             // expanding the coordinates by the multiplier but center it at the combat orbit
-            startOrbit = this.modifyOrbit(startOrbit, baseOrbit, this.POSITION_MULTIPLIER);
+            startOrbit = this.modifyOrbit(startOrbit, baseOrbit);
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
@@ -335,30 +331,32 @@ export class BattleViewHelper extends BasicViewHelper {
 
     /**
      * Centers the given orbit to the base orbit - it's a simple galileo transformation.
-     * @param orbit
-     * @param baseOrbit
-     * @param multiplier
      * @private
      */
-    private modifyOrbit(orbit: Orbit, baseOrbit: Orbit, multiplier: number): Orbit {
+    private modifyOrbit(orbit: Orbit, baseOrbit: Orbit): Orbit {
         let orbX = this.convertToStandardMetric(orbit.xCoordinate);
         let baseX = this.convertToStandardMetric(baseOrbit.xCoordinate);
         let orbY = this.convertToStandardMetric(orbit.yCoordinate);
         let baseY = this.convertToStandardMetric(baseOrbit.yCoordinate);
+
+        if (baseX == 0 && baseY == 0) {
+            return orbit;
+        }
+
         return {
             xCoordinate: {
-                coordinate: (baseX - orbX) + orbX * multiplier,
+                coordinate: (baseX - orbX) + orbX,
                 distanceMetric: this.STANDARD_METRIC
             },
             yCoordinate: {
-                coordinate: (baseY - orbY) + orbY * multiplier,
+                coordinate: (baseY - orbY) + orbY,
                 distanceMetric: this.STANDARD_METRIC
             }
         };
     }
 
     private createBaseOrbit() {
-        return !!this.battleReport ? this.battleReport.battleReportStatistics.orbit!.orbit! : {
+        return /*!!this.battleReport ? this.battleReport.battleReportStatistics.orbit!.orbit! :*/ {
             xCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS},
             yCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS}
         };
@@ -619,18 +617,16 @@ export class BattleViewHelper extends BasicViewHelper {
                 .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
                 .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);
 
-            let multiplier = this.getScalingMultiplierForOrbit(orbit);
-
             this.createLocalPolarCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), this.BATTLE_COORDINATE_SYSTEM_RADIUS, orbitID);
 
             this.setOrbitById(orbitID, orbit);
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
-                let x1 = (this.convertToStandardMetric(orbit.xCoordinate) - 9) * multiplier;
-                let y1 = (this.convertToStandardMetric(orbit.yCoordinate) - 8) * multiplier;
-                let x2 = (this.convertToStandardMetric(orbit.xCoordinate) + 9) * multiplier;
-                let y2 = (this.convertToStandardMetric(orbit.yCoordinate) + 8) * multiplier;
+                let x1 = (this.convertToStandardMetric(orbit.xCoordinate) - 9);
+                let y1 = (this.convertToStandardMetric(orbit.yCoordinate) - 8);
+                let x2 = (this.convertToStandardMetric(orbit.xCoordinate) + 9);
+                let y2 = (this.convertToStandardMetric(orbit.yCoordinate) + 8);
 
                 let p1: LineCommand = ["M", x1, y1];
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
@@ -659,18 +655,6 @@ export class BattleViewHelper extends BasicViewHelper {
 
             this.setCelestialOrbitById(celestialBodyID, orbit);
         });
-    }
-
-    private getScalingMultiplierForOrbit(orbit: Orbit) {
-        if (this.isBattleOrbit(orbit)) {
-            // if the orbit is for the one which is part of the battle, increase all relevant geometric points
-            return this.POSITION_MULTIPLIER;
-        }
-        return 1;
-    }
-
-    private isBattleOrbit(orbit: Orbit) {
-        return !!this.battleReport && NavigationCalculator.isSameOrbit(this.battleReport.battleReportStatistics.orbit!.orbit!, orbit);
     }
 
     private getWarshipByID(id: string): AbstractId | undefined {
