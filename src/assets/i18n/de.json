@@ -975,7 +975,22 @@
 			"deselect": "Auswahl aufheben"
 		},
 		"universe-map": {
-			"loading-spinner-message": "Lade Sternenkarte..."
+			"fleet-box": {
+				"title": "Flotten"
+			},
+			"loading-spinner-message": "Lade Sternenkarte ...",
+			"map-control": {
+				"title": "Kartensteuerung"
+			},
+			"system-box": {
+				"title": "Systeme"
+			},
+			"system-search": {
+				"placeholder": "Suche System ..."
+			},
+			"zoom-btn": {
+				"tooltip": "Zoom zu ..."
+			}
 		}
 	},
 	"tab": {

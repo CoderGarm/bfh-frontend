@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {FleetApiService, FleetMarker, FleetMove, StarSystem} from "../../../../services/swagger";
+import {FleetApiService, FleetMarker, FleetMove, Orbit, StarSystem} from "../../../../services/swagger";
 import '@svgdotjs/svg.panzoom.js'
 import '@svgdotjs/svg.draggable.js'
 import {OrbitDefinition} from "../orbit-definition";
@@ -33,7 +33,13 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
 
     centerFormControl = new FormControl('');
 
-    showLegend: boolean = true;
+    showLegendBox: boolean = true;
+    showPlanetBox: boolean = true;
+    showFleetBox: boolean = true;
+
+    ownSystems: StarSystem[] = [];
+    ownFleets: FleetMarker[] = [];
+    focussedOrbit?: Orbit;
 
     constructor(private fleetApi: FleetApiService,
                 private fleetEventService: FleetEventService,
@@ -55,7 +61,9 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
         );
 
         if (this.isHandheldDisplaySize) {
-            this.showLegend = false;
+            this.showLegendBox = false;
+            this.showPlanetBox = false;
+            this.showFleetBox = false;
         }
     }
 
@@ -76,28 +84,91 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     }
 
     selectedCenter(event?: MatAutocompleteSelectedEvent): void {
-
         if (!!event) {
             this.handleSearchedStarSystem(event.option.value);
         } else {
             this.starMapCommService.selectedStarSystem = undefined;
         }
+        this.setSearchFieldText();
+    }
+
+    private setSearchFieldText() {
         if (!!this.starMapCommService.selectedStarSystem) {
             this.centerFormControl.setValue(this.starMapCommService.selectedStarSystem.name);
         } else {
             this.centerFormControl.setValue(null);
         }
-
     }
 
-    zoomTo() {
-        if (!this.starMapCommService.selectedStarSystem) {
+    selectOutlineSystem(starSystem: StarSystem): void {
+        if (starSystem.idStarSystem == this.starMapCommService.selectedStarSystem?.idStarSystem) {
+            this.starMapCommService.removeSelectedStarSystem();
+        } else {
+            this.starMapCommService.setSelectedStarSystem(starSystem);
+        }
+        this.setSearchFieldText();
+        this.tidyUpFocussedOrbit();
+    }
+
+    private tidyUpFocussedOrbit() {
+        if (!this.starMapCommService.selectedStarSystem && this.starMapCommService.getSelectedFleetMarker().length == 0) {
+            this.focussedOrbit = undefined;
+        }
+    }
+
+    selectOutlineFleet(fleet: FleetMarker) {
+        if (this.starMapCommService.isSelectedFleetMarker(fleet.fleet.id)) {
+            this.starMapCommService.removeSelectedFleetMarker(fleet);
+        } else {
+            this.starMapCommService.addFleetMarker(fleet);
+        }
+        this.tidyUpFocussedOrbit();
+    }
+
+    zoomToNext() {
+        let focussedOrbits: Orbit[] = [];
+        if (!!this.starMapCommService.selectedStarSystem) {
+            focussedOrbits.push(this.starMapCommService.selectedStarSystem.orbit);
+        }
+        this.starMapCommService.getSelectedFleetMarker().forEach(fm => focussedOrbits.push(fm.currentOrbit!.system!.orbit!));
+        focussedOrbits = focussedOrbits.sort((a, b) => {
+            let xA = this.convertToStandardMetric(a.xCoordinate);
+            let yA = this.convertToStandardMetric(a.yCoordinate);
+            let xB = this.convertToStandardMetric(b.xCoordinate);
+            let yB = this.convertToStandardMetric(b.yCoordinate);
+            return xA + yA - xB + yB;
+        });
+
+        if (focussedOrbits.length == 0) {
             return;
         }
-        let x = this.convertToStandardMetric(this.starMapCommService.selectedStarSystem.orbit.xCoordinate);
-        let y = this.convertToStandardMetric(this.starMapCommService.selectedStarSystem.orbit.yCoordinate);
 
-        this.canvas!.zoom(0).animate().zoom(2, new Point(x, y));
+        let orbit: Orbit;
+        if (!this.focussedOrbit) {
+            orbit = focussedOrbits[0];
+        } else {
+            const findIndex = focussedOrbits.findIndex(a => {
+                let xA = this.convertToStandardMetric(a.xCoordinate);
+                let yA = this.convertToStandardMetric(a.yCoordinate);
+                let xB = this.convertToStandardMetric(this.focussedOrbit!.xCoordinate);
+                let yB = this.convertToStandardMetric(this.focussedOrbit!.yCoordinate);
+                return xA == xB && yA == yB;
+            });
+
+            if (findIndex == focussedOrbits.length - 1) {
+                orbit = focussedOrbits[0];
+            } else {
+                orbit = focussedOrbits[findIndex + 1];
+            }
+        }
+
+        if (!!orbit) {
+            this.focussedOrbit = orbit;
+            let x = this.convertToStandardMetric(orbit.xCoordinate);
+            let y = this.convertToStandardMetric(orbit.yCoordinate);
+            this.canvas!.zoom(0).animate().zoom(2, new Point(x, y));
+        }
+
     }
 
     private createUniverseMap() {
@@ -129,9 +200,11 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             this.distribution = resp;
             this.starMapCommService.galaxyFleetDistribution = resp;
             this.setFleets(this.distribution);
+            this.distribution.filter(fm => fm.owner.id == this.userId).forEach(fm => this.ownFleets.push(fm));
             this.spinnerService.hide('universe-map');
         });
         this.subscriptions.push(sub);
+        orbitDefinitions.filter(od => od.isColonizedByLoggedInUser).forEach(od => this.ownSystems.push(<StarSystem>od.celestial));
         this.change.detectChanges();
     }
 

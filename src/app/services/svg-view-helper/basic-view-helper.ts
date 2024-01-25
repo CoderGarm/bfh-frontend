@@ -99,12 +99,9 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected zoomLevel: number = 1;
 
-    highlightFTLCapable: boolean = true;
-    highlightNonFTL: boolean = true;
-    highlightMovement: boolean = true;
-    highlightNonMovement: boolean = true;
-    highlightOperational: boolean = true;
-    highlightInOperational: boolean = true;
+    highlightFTLDrive?: boolean;
+    highlightMovement?: boolean;
+    highlightOperational?: boolean;
 
     @HostListener('window:resize', ['$event'])
     onResize() {
@@ -1265,18 +1262,19 @@ export class BasicViewHelper extends BasicViewHelperData {
         return hashesOnMap;
     }
 
-    highlightFleetByDrive(highlightFTLCapable: boolean, highlightNonFTL: boolean) {
-        this.highlightFTLCapable = highlightFTLCapable;
-        this.highlightNonFTL = highlightNonFTL;
-        this.getFleetPolygons()
-            .forEach(star => {
-                const ftlCapable = !!star.classes().find(css => css == BasicViewHelperData.FTL_CAPABLE);
-                if (highlightFTLCapable && ftlCapable || highlightNonFTL && !ftlCapable) {
-                    star.removeClass('legend-un-highlighted');
-                } else {
-                    star.addClass('legend-un-highlighted');
-                }
-            });
+    highlightFleetByDrive(highlightFTLDrive: boolean) {
+        this.highlightFTLDrive = highlightFTLDrive == this.highlightFTLDrive ? undefined : highlightFTLDrive;
+        this.highlightFleetSharksByFiler();
+    }
+
+    highlightFleetByMovement(highlightMovement: boolean) {
+        this.highlightMovement = highlightMovement == this.highlightMovement ? undefined : highlightMovement;
+        this.highlightFleetSharksByFiler();
+    }
+
+    highlightFleetByOperational(highlightOperational: boolean) {
+        this.highlightOperational = highlightOperational == this.highlightOperational ? undefined : highlightOperational;
+        this.highlightFleetSharksByFiler();
     }
 
     private getFleetPolygons() {
@@ -1286,30 +1284,24 @@ export class BasicViewHelper extends BasicViewHelperData {
             .map(c => c.children()[0]);
     }
 
-    highlightFleetByMovement(highlightMovement: boolean, highlightNonMovement: boolean) {
-        this.highlightMovement = highlightMovement;
-        this.highlightNonMovement = highlightNonMovement;
-        this.getFleetPolygons()
-            .forEach(star => {
-                const inMotion = !!star.classes().find(css => css == BasicViewHelperData.IN_MOTION);
-
-                if (highlightMovement && inMotion || highlightNonMovement && !inMotion) {
-                    star.removeClass('legend-un-highlighted');
-                } else {
-                    star.addClass('legend-un-highlighted');
-                }
-            });
-    }
-
-    highlightFleetByOperational(highlightOperational: boolean, highlightInOperational: boolean) {
-        /* fixme separate in setter and evaluator to match multiple setups */
-        this.highlightOperational = highlightOperational;
-        this.highlightInOperational = highlightInOperational;
+    private highlightFleetSharksByFiler() {
         this.getFleetPolygons()
             .forEach(star => {
                 const inOperational = !!star.classes().find(css => css == BasicViewHelperData.INOPERATIONAL);
-                // switched stated due craziness
-                if (highlightOperational && !inOperational || highlightInOperational && inOperational) {
+                const isOperationalHighlighted = this.highlightOperational && !inOperational || !this.highlightOperational && inOperational;
+
+                const inMotion = !!star.classes().find(css => css == BasicViewHelperData.IN_MOTION);
+                const isMotionHighlighted = this.highlightMovement && inMotion || !this.highlightMovement && !inMotion;
+
+                const ftlCapable = !!star.classes().find(css => css == BasicViewHelperData.FTL_CAPABLE);
+                const isDriveHighlighted = this.highlightFTLDrive && ftlCapable || !this.highlightFTLDrive && !ftlCapable;
+
+                let isHighlighted = true;
+                isHighlighted = this.highlightOperational != undefined ? isOperationalHighlighted && isHighlighted : isHighlighted;
+                isHighlighted = this.highlightMovement != undefined ? isMotionHighlighted && isHighlighted : isHighlighted;
+                isHighlighted = this.highlightFTLDrive != undefined ? isDriveHighlighted && isHighlighted : isHighlighted;
+
+                if (isHighlighted) {
                     star.removeClass('legend-un-highlighted');
                 } else {
                     star.addClass('legend-un-highlighted');

@@ -48,3 +48,11 @@ mat-card-actions::before {
 mat-card-actions > button {
   margin: 5px 15px;
 }
+
+mat-icon, .mat-mdc-icon-button {
+  color: var(--map-text-color);
+}
+
+.mat-mdc-icon-button[disabled] {
+  opacity: 0.3;
+}

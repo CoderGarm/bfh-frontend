@@ -4,40 +4,41 @@
 
 .legend-box > mat-divider {
   margin: 4px 0;
+  border-top-color: var(--map-text-color);
+  opacity: 0.5;
 }
 
 .legend-title {
   margin-top: 25px;
 }
 
-.map-control {
-  position: relative;
-  top: -40px;
-  left: calc(100% - 130px);
+.box-title {
+  transition: margin-top 1s;
+  cursor: pointer;
+  width: 100%;
+  height: 34px;
+  font-size: initial;
 }
 
-.zoom-btn {
-  margin-left: 15px;
-}
-
-.legend-toggle {
-  transform: rotate(90deg);
-  position: relative;
-  left: -30px;
-  top: -5px;
+.box-title.collapsed {
+  margin-top: -6px;
 }
 
 .hidden-legend {
-  height: 50px !important;
+  height: 45px !important;
+}
+
+.zoom-btn {
+  margin: auto;
 }
 
 .legend-box {
   overflow: hidden;
-  transition: height 2s;
-  height: 450px;
+  transition: height 1s;
+  width: 300px;
+  height: 405px;
   z-index: 98;
   position: absolute;
-  width: 350px;
   bottom: 137px;
   left: 25px;
   opacity: 0.5;
@@ -45,10 +46,16 @@
   border-radius: 5px;
   padding: 15px;
   background: linear-gradient(-45deg, dimgray 20px, transparent 20px) no-repeat border-box, linear-gradient(-135deg, dimgray 20px, transparent 20px) no-repeat border-box;
+  color: var(--map-text-color);
+  font-size: small;
 
   & li {
     z-index: 99;
   }
+}
+
+mat-icon, .mat-mdc-icon-button {
+  color: var(--map-text-color);
 }
 
 #legend-colonized {
@@ -67,3 +74,63 @@
   color: #66ff99;
 }
 
+.box-container {
+  height: 80%;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  color: var(--map-text-color);
+  display: flex;
+  flex-direction: column;
+  font-size: small;
+}
+
+.outline-box {
+  overflow: hidden;
+  z-index: 98;
+  opacity: 0.5;
+  border: solid 1px white;
+  border-radius: 5px;
+  padding: 15px;
+  background: linear-gradient(-45deg, dimgray 20px, transparent 20px) no-repeat border-box, linear-gradient(-135deg, dimgray 20px, transparent 20px) no-repeat border-box;
+}
+
+.system-box {
+  transition: height 1s;
+  max-width: 200px;
+  max-height: 50%;
+  position: relative;
+  margin-bottom: 25px;
+  margin-top: auto;
+}
+
+.fleet-box {
+  transition: height 1s;
+  max-width: 200px;
+  max-height: 50%;
+  position: relative;
+  margin-bottom: auto;
+}
+
+.outline-item {
+  word-wrap: break-word;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.scroll-container {
+  overflow-y: auto;
+  max-height: 90%;
+  margin-bottom: 15px;
+}
+
+.outline-selected {
+  color: var(--success-color);
+}
+
+.legend-holder {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}

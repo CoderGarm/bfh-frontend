@@ -976,7 +976,22 @@
 			"deselect": "Deselect"
 		},
 		"universe-map": {
-			"loading-spinner-message": "Gather information for star map..."
+			"fleet-box": {
+				"title": "Fleets"
+			},
+			"loading-spinner-message": "Gather information for star map ...",
+			"map-control": {
+				"title": "Map Control"
+			},
+			"system-box": {
+				"title": "Systems"
+			},
+			"system-search": {
+				"placeholder": "Search for ..."
+			},
+			"zoom-btn": {
+				"tooltip": "Zoom to ..."
+			}
 		}
 	},
 	"tab": {
