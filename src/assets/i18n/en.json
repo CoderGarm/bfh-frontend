@@ -58,6 +58,9 @@
 		"news": "Newspaper",
 		"our-subreddit": "Community subreddit",
 		"take-a-tour": "Take a tour",
+		"voting": {
+			"gs": "Voting at GameSphere"
+		},
 		"wiki": "Wiki"
 	},
 	"chats": {
