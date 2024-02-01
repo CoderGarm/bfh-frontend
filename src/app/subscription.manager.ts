@@ -19,6 +19,7 @@ export class SubscriptionManager implements OnDestroy {
     readonly userIdAlliance?: number;
     readonly userName: string;
     readonly profilePic: string;
+    readonly isLocalhost: boolean;
 
     isMobileBrowser: boolean = false;
     isHandheldDisplaySize: boolean = false;
@@ -28,6 +29,7 @@ export class SubscriptionManager implements OnDestroy {
         this.userIdAlliance = this.tokenStorage.getAllianceID();
         this.userName = this.tokenStorage.getLogin();
         this.profilePic = this.tokenStorage.getProfilePic();
+        this.isLocalhost = this.tokenStorage.isLocalhost();
 
         let sub = this.breakpointObserver.observe(Breakpoints.Handset).subscribe(result => this.isHandheldDisplaySize = result.matches);
         this.subscriptions.push(sub);

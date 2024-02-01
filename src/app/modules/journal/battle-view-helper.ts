@@ -53,6 +53,28 @@ export class BattleViewHelper extends BasicViewHelper {
         this.battleReport = report;
     }
 
+    private drawCourses() {
+        if (!this.isLocalhost) {
+            return;
+        }
+        this.battleReport!.movementActions.sort((a, b) => a.combatRoundKey.combatRound.no - b.combatRoundKey.combatRound.no)
+            .forEach(value => {
+
+                const origin = value.origin;
+                const interimDestination = value.interimDestination;
+
+                this.canvas!.line(
+                    this.convertToStandardMetric(origin.xCoordinate),
+                    this.convertToStandardMetric(origin.yCoordinate),
+                    this.convertToStandardMetric(interimDestination.xCoordinate),
+                    this.convertToStandardMetric(interimDestination.yCoordinate),
+                )
+                    .stroke({color: 'yellow', width: 3})
+
+
+            });
+    }
+
     protected clickForFleet = (event: PointerEvent) => {
         let fleetMarker = this.getFleetByEvent(event);
         if (!fleetMarker) {
@@ -71,6 +93,7 @@ export class BattleViewHelper extends BasicViewHelper {
     setActiveRound(activeRound: number | undefined, starSystem: StarSystem) {
         this.clearData();
         this.drawOrbits(starSystem);
+        this.drawCourses();
         if (!activeRound || !this.combatArenaData) {
             return;
         }
