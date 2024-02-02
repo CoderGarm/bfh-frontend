@@ -1,17 +1,18 @@
 import {AuthRequest, PublicResourcesApiService} from '../../../services/swagger';
 import {AuthenticationService} from '../../../services/authentication';
 
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../../subscription.manager";
+import {RegisterEventService} from "../register/register-event.service";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent extends SubscriptionManager implements OnInit {
+export class LoginComponent extends SubscriptionManager implements AfterViewInit {
 
     static path: string = 'login';
 
@@ -22,6 +23,7 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
     userNames: string[] = [];
 
     constructor(protected authService: AuthenticationService,
+                protected registerEventService: RegisterEventService,
                 protected publicResourceService: PublicResourcesApiService,
                 private permissionsService: NgxPermissionsService) {
         super();
@@ -37,7 +39,9 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
         }
     }
 
-    ngOnInit(): void {
+    ngAfterViewInit() {
+        this.setLogin(this.registerEventService.freshUser?.username);
+        this.setPassword(this.registerEventService.freshUser?.password);
     }
 
     submitLogin() {
@@ -77,7 +81,11 @@ export class LoginComponent extends SubscriptionManager implements OnInit {
         }
     }
 
-    setLogin(name: string) {
+    setLogin(name?: string) {
         this.loginForm.controls.login.setValue(name);
+    }
+
+    private setPassword(pass?: string) {
+        this.loginForm.controls.pass.setValue(pass);
     }
 }

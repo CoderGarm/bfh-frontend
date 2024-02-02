@@ -1,4 +1,5 @@
 import {EventEmitter, Injectable} from "@angular/core";
+import {UserReq} from "../../../services/swagger";
 
 @Injectable()
 export class RegisterEventService {
@@ -11,5 +12,11 @@ export class RegisterEventService {
 
     sendIdUser(idUser: number) {
         this.userIdEmitter.emit(idUser);
+    }
+
+    freshUser?: UserReq;
+
+    setNewLogin(newUser: UserReq) {
+        this.freshUser = newUser;
     }
 }

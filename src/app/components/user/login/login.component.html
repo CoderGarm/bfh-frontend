@@ -15,7 +15,7 @@
                 <mat-label>Password</mat-label>
                 <input matInput placeholder="Passwort" [type]="hide ? 'password' : 'text'" formControlName="pass" min="0" required>
                 <button mat-icon-button matSuffix (click)="toggleHide($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
                 <mat-hint>
                     <button mat-button routerLink='/forgotten-password' style="font-size: 0.8rem;">Password forgotten</button>
@@ -24,9 +24,11 @@
         </mat-grid-tile>
 
         <mat-grid-tile>
-            <button mat-raised-button class="action-button" color="secondary" type="submit" (click)="submitLogin()"
-                    [disabled]="isSubmitDisabled()">{{ 'action.submit' | translate }}</button>
-            <button mat-raised-button class="action-button" color="secondary" (click)="clear()" [disabled]="isAuthenticated">{{ 'action.clear' | translate }}</button>
+            <button mat-raised-button class="action-button" color="primary" type="submit" (click)="submitLogin()"
+                    [class.pulse-button]="!!registerEventService.freshUser"
+                    [disabled]="isSubmitDisabled()">{{ 'action.submit' | translate }}
+            </button>
+            <button mat-raised-button class="action-button" color="accent" (click)="clear()" [disabled]="isAuthenticated">{{ 'action.clear' | translate }}</button>
         </mat-grid-tile>
 
     </mat-grid-list>

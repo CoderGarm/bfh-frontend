@@ -11,6 +11,8 @@ import {DialogConfigHelper} from "../../../services/helper/dialog-config.helper"
 import {MatDialog} from "@angular/material/dialog";
 import {DetailsStepComponent, PlayerSettings} from "./payload/details-step/details-step.component";
 import {RegisterEventService} from "./register-event.service";
+import {NavigationCommunicationService} from "../../../services/navigation/navigation-communication.service";
+import {NavigationCreationService} from "../../../services/navigation/navigation-creation.service";
 
 @Component({
     selector: 'app-register',
@@ -28,6 +30,7 @@ export class RegisterComponent extends SubscriptionManager {
     inProgress: boolean = false;
 
     constructor(private registerEventService: RegisterEventService,
+                private navService: NavigationCommunicationService,
                 private authService: AuthApiService,
                 private tokenService: TokenStorage,
                 public translate: TranslateService,
@@ -106,6 +109,8 @@ export class RegisterComponent extends SubscriptionManager {
         const dialogRef = this.dialog.open(DetailsStepComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((result?: PlayerSettings) => {
             if (!result) {
+                this.registerEventService.setNewLogin(newUser);
+                this.navService.navigate(NavigationCreationService.getLoginRoute());
                 return;
             }
 
@@ -128,6 +133,7 @@ export class RegisterComponent extends SubscriptionManager {
                 .subscribe(() => {
                 });
             this.subscriptions.push(sub);
+            this.navService.navigate(NavigationCreationService.getLoginRoute());
         });
     }
 }

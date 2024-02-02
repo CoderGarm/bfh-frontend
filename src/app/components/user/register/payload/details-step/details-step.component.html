@@ -126,6 +126,15 @@
     </div>
 </div>
 <div mat-dialog-actions class="streamline-background" align="end">
-    <button mat-raised-button (click)="confirm()" [disabled]="!idUser">{{ 'action.submit' | translate }}</button>
-    <button mat-raised-button (click)="cancel()">{{ 'action.skip' | translate }}</button>
+    <span *ngIf="!idUser" style="margin-right: 15px;">
+        {{ 'account.will-be-created.msg' | translate }}
+    </span>
+    <button mat-raised-button (click)="confirm()" [disabled]="!idUser">
+        {{ 'account.will-be-created.action.submit' | translate }}
+        <mat-icon *ngIf="!idUser" [@rotatedState]='state'>hourglass_bottom</mat-icon>
+    </button>
+    <button mat-raised-button (click)="cancel()" [disabled]="!idUser">
+        {{ 'account.will-be-created.action.skip' | translate }}
+        <mat-icon *ngIf="!idUser" [@rotatedState]='state'>hourglass_bottom</mat-icon>
+    </button>
 </div>

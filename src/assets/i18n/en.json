@@ -4,6 +4,13 @@
 		"eMail": {
 			"hint": "Change the eMail address",
 			"prefix": "eMail"
+		},
+		"will-be-created": {
+			"action": {
+				"skip": "Skip and log in",
+				"submit": "Submit and log in"
+			},
+			"msg": "Your account will be created, this can take around 10 seconds."
 		}
 	},
 	"action": {

@@ -1,4 +1,4 @@
-import {Component, HostListener, Inject, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Inject, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {SingleTouchedFormFieldErrorStateMatcher} from "../../../../../validators/single-touched-form-field-error-state-matcher";
@@ -7,6 +7,9 @@ import {ProfileComponent} from "../../../profile/profile.component";
 import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {UserReq} from "../../../../../services/swagger";
 import {RegisterEventService} from "../../register-event.service";
+
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {interval} from "rxjs";
 
 
 export interface PlayerSettings {
@@ -24,9 +27,20 @@ export interface PlayerSettings {
 @Component({
     selector: 'app-details-step',
     templateUrl: './details-step.component.html',
-    styleUrls: ['./details-step.component.scss']
+    styleUrls: ['./details-step.component.scss'],
+    animations: [
+        // Each unique animation requires its own trigger. The first argument of the trigger function is the name
+        trigger('rotatedState', [
+            state('default', style({transform: 'rotate(0)'})),
+            state('rotated', style({transform: 'rotate(-180deg)'})),
+            transition('rotated => default', animate('1500ms ease-out')),
+            transition('default => rotated', animate('1500ms ease-in'))
+        ])
+    ]
 })
-export class DetailsStepComponent extends SubscriptionManager {
+export class DetailsStepComponent extends SubscriptionManager implements AfterViewInit {
+
+    state: string = 'default';
 
     matcher = new SingleTouchedFormFieldErrorStateMatcher();
     rpgFormGroup: FormGroup;
@@ -56,15 +70,23 @@ export class DetailsStepComponent extends SubscriptionManager {
         this.registerEventService.getUserIdEmitter().subscribe(resp => this.idUser = resp);
     }
 
+    rotate() {
+        this.state = (this.state === 'default' ? 'rotated' : 'default');
+    }
+
     private setMailSettings(val: PlayerSettings) {
-        console.log("1", val)
         this.result.receiveTickAdvice = val.receiveTickAdvice;
         this.result.receiveChangelogInfos = val.receiveChangelogInfos;
-        console.log("2", this.result)
     }
 
     ngAfterViewInit(): void {
-        let sub = this.iconSelector!.selectionChange.subscribe(change => {
+
+        const source = interval(1500);
+        let sub = source.subscribe(() => this.rotate());
+        this.subscriptions.push(sub);
+
+
+        sub = this.iconSelector!.selectionChange.subscribe(change => {
             this.result.profilePic = this.iconSelector!.selectedOptions.hasValue() ? this.iconSelector!.selectedOptions.selected[0].value : this.result.profilePic;
         });
         this.subscriptions.push(sub);
@@ -98,8 +120,8 @@ export class DetailsStepComponent extends SubscriptionManager {
     private createMailForm() {
         const noEMailWanted = <boolean>this.newUser?.noEMailWanted;
         return this.formBuilder.group({
-            receiveChangelogInfos: new FormControl({value: '', disabled: noEMailWanted}),
-            receiveTickAdvice: new FormControl({value: '', disabled: noEMailWanted})
+            receiveChangelogInfos: new FormControl({value: !noEMailWanted, disabled: noEMailWanted}),
+            receiveTickAdvice: new FormControl({value: !noEMailWanted, disabled: noEMailWanted})
         });
     }
 
