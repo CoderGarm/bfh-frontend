@@ -60,3 +60,11 @@ table.mat-mdc-table {
 .battle-register-btn {
   position: absolute;
 }
+
+.action-chart {
+  height: 100px;
+  width: 100%;
+  z-index: -99;
+  position: absolute;
+  top: -55px;
+}

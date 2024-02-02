@@ -7,6 +7,7 @@ import {StarMapCommunicationService} from "../intercom/star-map-communication.se
 import {AppInjector} from "../../app.module";
 import {BasicViewHelperData} from "./basic-view-helper-data";
 import {BackgroundService} from "../prefetch/background.service";
+import {options} from "@svgdotjs/svg.panzoom.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 interface ElementToParent {
@@ -24,18 +25,21 @@ export class BasicViewHelper extends BasicViewHelperData {
     starMapCommService = AppInjector.get(StarMapCommunicationService);
     assetsService: BackgroundService = AppInjector.get(BackgroundService);
 
-    public static readonly PAN_ZOOM_OPTIONS = {
+    public static readonly PAN_ZOOM_OPTIONS: options = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
         zoomFactor: 0.3, // zooming per wheel tick
         zoomMin: 0.1, // zoom max out to display the full svg payload as 20% of the screen
         zoomMax: 4 // zoom max 4 times in
     };
-    public readonly STANDARD_METRIC;
+    public readonly standardMetric;
 
-    constructor(standardDistanceMetric: DistanceMetricEnum) {
+    protected panZoomOptions?: options;
+
+    constructor(standardDistanceMetric: Distance.DistanceMetricEnum) {
         super(standardDistanceMetric);
 
-        this.STANDARD_METRIC = standardDistanceMetric;
+        this.standardMetric = standardDistanceMetric;
+        this.panZoomOptions = BasicViewHelper.PAN_ZOOM_OPTIONS;
         let sub = this.starMapCommService.getDeselectEverythingEmitter().subscribe(() => {
             if (!this.canvas) {
                 return;
@@ -140,7 +144,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     createCanvas(id: string, parentCssId: string, externalMapPrefix: string = ''): Svg {
         if (!this.canvas) {
             this.externalMapPrefix = externalMapPrefix;
-            this.canvas = SVG().id(id).addTo(parentCssId).panZoom(BasicViewHelper.PAN_ZOOM_OPTIONS);
+            this.canvas = SVG().id(id).addTo(parentCssId).panZoom(this.panZoomOptions);
             this.canvas
                 .on('zoom', this.zoomModification)
                 .mouseover(this.mouseoverForText)
@@ -1108,7 +1112,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     protected isInterstellarViewHelper() {
-        return this.STANDARD_METRIC === DistanceMetricEnum.LY;
+        return this.standardMetric === DistanceMetricEnum.LY;
     }
 
     protected displayFleetStates(onMove: boolean, state: StateBlock, sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[], group: G | undefined, fleetSharkID: string) {

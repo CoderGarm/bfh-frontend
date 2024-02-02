@@ -2,7 +2,7 @@ import {BattleReport, CombatRound, CounterMissileHit, Fleet, HitLog, MissileMove
 
 export class CombatArenaData {
 
-    combatRounds: Int8Array = new Int8Array();
+    combatRounds: number[] = [];
     movementsByRound: Map<number, MovementAction[]> = new Map<number, MovementAction[]>();
     missileMovementsByRound: Map<number, MissileMovement[]> = new Map<number, MissileMovement[]>();
     volleysByRound: Map<number, ReleasedVolley[]> = new Map<number, ReleasedVolley[]>();
@@ -10,6 +10,9 @@ export class CombatArenaData {
     counterMissileHitsByRound: Map<number, CounterMissileHit[]> = new Map<number, CounterMissileHit[]>();
     hitLogsByRound: Map<number, HitLog[]> = new Map<number, HitLog[]>();
     shipClasses: Map<number, ShipClass> = new Map<number, ShipClass>();
+
+    combatStartsAtRound: number = Number.MAX_VALUE;
+    combatEndsAtRound: number = Number.MIN_VALUE;
 
     constructor(report: BattleReport) {
 
@@ -23,6 +26,18 @@ export class CombatArenaData {
         this.mergeCombatRounds();
     }
 
+    private setStart(combatRound: number) {
+        this.combatStartsAtRound = combatRound < this.combatStartsAtRound ? combatRound : this.combatEndsAtRound;
+    }
+
+    private setEnd(combatRound: number) {
+        this.combatEndsAtRound = combatRound > this.combatEndsAtRound ? combatRound : this.combatEndsAtRound;
+    }
+
+    private adaptCombatRoundRange(combatRound: number) {
+        this.setStart(combatRound);
+        this.setEnd(combatRound);
+    }
 
     private setCounterMissileHitsMapValue(volley: CounterMissileHit) {
         const combatRound = volley.combatRoundKey.combatRound;
@@ -30,6 +45,7 @@ export class CombatArenaData {
         if (!valueMap) {
             valueMap = [];
             this.counterMissileHitsByRound.set(combatRound.no, valueMap);
+            this.adaptCombatRoundRange(combatRound.no);
         }
         valueMap.push(volley);
     }
@@ -40,6 +56,7 @@ export class CombatArenaData {
         if (!valueMap) {
             valueMap = [];
             this.shipKillerHitsByRound.set(combatRound.no, valueMap);
+            this.adaptCombatRoundRange(combatRound.no);
         }
         valueMap.push(volley);
         this.setHitLogMapValue(combatRound, volley.hitLogs);
@@ -51,6 +68,7 @@ export class CombatArenaData {
         if (!valueMap) {
             valueMap = [];
             this.hitLogsByRound.set(combatRound.no, valueMap);
+            this.adaptCombatRoundRange(combatRound.no);
         }
         volley.forEach(hitLog => valueMap!.push(hitLog));
     }
@@ -61,6 +79,7 @@ export class CombatArenaData {
         if (!valueMap) {
             valueMap = [];
             this.missileMovementsByRound.set(combatRound.no, valueMap);
+            this.adaptCombatRoundRange(combatRound.no);
         }
         valueMap.push(volley);
     }
@@ -71,6 +90,7 @@ export class CombatArenaData {
         if (!valueMap) {
             valueMap = [];
             this.volleysByRound.set(combatRound.no, valueMap);
+            this.adaptCombatRoundRange(combatRound.no);
         }
         valueMap.push(volley);
     }
@@ -96,8 +116,7 @@ export class CombatArenaData {
         const combatRounds: Set<number> = new Set<number>();
         Array.from(this.movementsByRound.keys()).forEach(cr => combatRounds.add(cr));
         Array.from(this.volleysByRound.keys()).forEach(cr => combatRounds.add(cr));
-        let sorted = Array.from(combatRounds).sort((a, b) => a - b);
-        this.combatRounds = new Int8Array(sorted);
+        this.combatRounds = Array.from(combatRounds).sort((a, b) => a - b);
     }
 
 }

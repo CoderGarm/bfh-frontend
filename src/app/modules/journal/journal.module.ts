@@ -12,6 +12,7 @@ import {MissionJournalComponent} from './components/payload/mission-journal/miss
 import {JobOverviewComponent} from './components/payload/job-overview/job-overview.component';
 import {AdvisoryBoardComponent} from './components/payload/advisory-board/advisory-board.component';
 import {NgxSpinnerModule} from "ngx-spinner";
+import {NgxEchartsModule} from "ngx-echarts";
 import {BattleRegisterComponent} from './components/payload/battle-register/battle-register.component';
 import {BattleReportStatisticsDisplayComponent} from './components/payload/battle-report-statistics-display/battle-report-statistics-display.component';
 import {BattleReportShareComponent} from './components/payload/battle-report-share/battle-report-share.component';
@@ -37,6 +38,7 @@ import {BattleReportShareComponent} from './components/payload/battle-report-sha
         DisplayElementsModule,
         NgOptimizedImage,
         NgxSpinnerModule,
+        NgxEchartsModule,
     ]
 })
 export class JournalModule {

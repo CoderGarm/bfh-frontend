@@ -123,8 +123,8 @@ export class BasicViewHelperData extends SubscriptionManager {
         this.biggestYOrbit = sortedByY[sortedByY.length - 1];
     }
 
-    protected convertToStandardMetric(distance: Distance): number {
-        return NavigationCalculator.convertDistanceToMetric(distance, this.standardDistanceMetric);
+    protected convertToStandardMetric(distance: Distance, factor: number = 1): number {
+        return NavigationCalculator.convertDistanceToMetric(distance, this.standardDistanceMetric) * factor;
     }
 
     protected calculateHyperLimit(system: StarSystem) {

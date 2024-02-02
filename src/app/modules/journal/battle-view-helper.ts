@@ -21,6 +21,7 @@ import {BasicViewHelper} from "../../services/svg-view-helper/basic-view-helper"
 import {NavigationCalculator} from "../../services/helper/navigation-calculator.helper";
 import {CombatArenaData} from "./combat-arena-data";
 import {BasicViewHelperData} from "../../services/svg-view-helper/basic-view-helper-data";
+import {options} from "@svgdotjs/svg.panzoom.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
@@ -29,7 +30,15 @@ export class BattleViewHelper extends BasicViewHelper {
 
     private static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
-    private readonly BATTLE_COORDINATE_SYSTEM_RADIUS = 50;
+    private static readonly BATTLE_COORDINATE_SYSTEM_RADIUS = 5000;
+    private static readonly MULTIPLIER = 500;
+
+    public static readonly PAN_ZOOM_OPTIONS: options = {
+        // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
+        zoomFactor: 0.3, // zooming per wheel tick
+        zoomMin: 0.0001, // zoom max out to display the full svg payload as 20% of the screen
+        zoomMax: 400 // zoom max 4 times in
+    };
 
     battleReport?: BattleReport;
     combatArenaData?: CombatArenaData;
@@ -47,6 +56,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
     constructor() {
         super(BattleViewHelper.STANDARD_METRIC);
+        this.panZoomOptions = BattleViewHelper.PAN_ZOOM_OPTIONS;
     }
 
     protected setBattleReport(report: BattleReport | undefined) {
@@ -57,21 +67,19 @@ export class BattleViewHelper extends BasicViewHelper {
         if (!this.isLocalhost) {
             return;
         }
+
+        const g = this.getOrCreateFleetConfirmedMoveGroup();
         this.battleReport!.movementActions.sort((a, b) => a.combatRoundKey.combatRound.no - b.combatRoundKey.combatRound.no)
             .forEach(value => {
 
                 const origin = value.origin;
                 const interimDestination = value.interimDestination;
-
-                this.canvas!.line(
-                    this.convertToStandardMetric(origin.xCoordinate),
-                    this.convertToStandardMetric(origin.yCoordinate),
-                    this.convertToStandardMetric(interimDestination.xCoordinate),
-                    this.convertToStandardMetric(interimDestination.yCoordinate),
-                )
-                    .stroke({color: 'yellow', width: 3})
-
-
+                g.line(
+                    this.convertToStandardMetric(origin.xCoordinate, BattleViewHelper.MULTIPLIER),
+                    this.convertToStandardMetric(origin.yCoordinate, BattleViewHelper.MULTIPLIER),
+                    this.convertToStandardMetric(interimDestination.xCoordinate, BattleViewHelper.MULTIPLIER),
+                    this.convertToStandardMetric(interimDestination.yCoordinate, BattleViewHelper.MULTIPLIER),
+                ).stroke({color: 'yellow', width: 30});
             });
     }
 
@@ -91,6 +99,7 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     setActiveRound(activeRound: number | undefined, starSystem: StarSystem) {
+        // fixme clear stuff particular, orbits etc can stay - only if performance increases
         this.clearData();
         this.drawOrbits(starSystem);
         this.drawCourses();
@@ -248,8 +257,8 @@ export class BattleViewHelper extends BasicViewHelper {
         let direction: boolean = lastPosition.xCoordinate.coordinate < position.xCoordinate.coordinate;
         position = this.modifyOrbit(position, centerOrbit);
 
-        let x = this.convertToStandardMetric(position.xCoordinate);
-        let y = this.convertToStandardMetric(position.yCoordinate);
+        let x = this.convertToStandardMetric(position.xCoordinate, BattleViewHelper.MULTIPLIER);
+        let y = this.convertToStandardMetric(position.yCoordinate, BattleViewHelper.MULTIPLIER);
 
         return this.createMissileOutlines(x, y, direction, missileAmount);
     }
@@ -304,7 +313,7 @@ export class BattleViewHelper extends BasicViewHelper {
                               hitLogsByRound: Map<number, HitLog[]>) {
         const baseOrbit = this.createBaseOrbit();
 
-        movementActions.forEach((move) => {
+        movementActions.forEach((move) => { // fixme jede movementaction kennt die verschiedenen aura-klassen
             let fleet = move.actor;
             let startOrbit = move.origin;
             let targetOrbit = move.destination;
@@ -322,10 +331,11 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     private getAngle(origin: Orbit, destination: Orbit): number {
-        return NavigationCalculator.getAngle(this.convertToStandardMetric(origin.xCoordinate),
-            this.convertToStandardMetric(origin.yCoordinate),
-            this.convertToStandardMetric(destination.xCoordinate),
-            this.convertToStandardMetric(destination.yCoordinate)
+        return NavigationCalculator.getAngle(
+            this.convertToStandardMetric(origin.xCoordinate, BattleViewHelper.MULTIPLIER),
+            this.convertToStandardMetric(origin.yCoordinate, BattleViewHelper.MULTIPLIER),
+            this.convertToStandardMetric(destination.xCoordinate, BattleViewHelper.MULTIPLIER),
+            this.convertToStandardMetric(destination.yCoordinate, BattleViewHelper.MULTIPLIER)
         );
     }
 
@@ -357,10 +367,10 @@ export class BattleViewHelper extends BasicViewHelper {
      * @private
      */
     private modifyOrbit(orbit: Orbit, baseOrbit: Orbit): Orbit {
-        let orbX = this.convertToStandardMetric(orbit.xCoordinate);
-        let baseX = this.convertToStandardMetric(baseOrbit.xCoordinate);
-        let orbY = this.convertToStandardMetric(orbit.yCoordinate);
-        let baseY = this.convertToStandardMetric(baseOrbit.yCoordinate);
+        let baseX = this.convertToStandardMetric(baseOrbit.xCoordinate, BattleViewHelper.MULTIPLIER);
+        let baseY = this.convertToStandardMetric(baseOrbit.yCoordinate, BattleViewHelper.MULTIPLIER);
+        let orbX = this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER);
+        let orbY = this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER);
 
         if (baseX == 0 && baseY == 0) {
             return orbit;
@@ -369,11 +379,11 @@ export class BattleViewHelper extends BasicViewHelper {
         return {
             xCoordinate: {
                 coordinate: (baseX - orbX) + orbX,
-                distanceMetric: this.STANDARD_METRIC
+                distanceMetric: this.standardMetric
             },
             yCoordinate: {
                 coordinate: (baseY - orbY) + orbY,
-                distanceMetric: this.STANDARD_METRIC
+                distanceMetric: this.standardMetric
             }
         };
     }
@@ -463,11 +473,11 @@ export class BattleViewHelper extends BasicViewHelper {
         let horizontalLift = 0;
         let verticalLift = 0;
 
-        let x = this.convertToStandardMetric(orbit.xCoordinate);
-        let y = this.convertToStandardMetric(orbit.yCoordinate);
+        let x = this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER);
+        let y = this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER);
         let modifiedX = (warShips.length / 2 * xShift);
         let modifiedY = (warShips.length / 2 * yShift) + yShift;
-        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate) ? -1 : 0;
+        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate, BattleViewHelper.MULTIPLIER) ? -1 : 0;
         // todo build groups of three ships (one is a dot, two is a line) and form a triangle
         //  build groups of triangles and place them in a triangle by permuting top and bottom (one or two items in the top)
 
@@ -584,8 +594,8 @@ export class BattleViewHelper extends BasicViewHelper {
                 return;
             }
 
-            let x = this.convertToStandardMetric(c.xCoordinate);
-            let y = this.convertToStandardMetric(c.yCoordinate);
+            let x = this.convertToStandardMetric(c.xCoordinate, BattleViewHelper.MULTIPLIER);
+            let y = this.convertToStandardMetric(c.yCoordinate, BattleViewHelper.MULTIPLIER);
 
             let width = this.radiusOfCoordinateCross! * 0.9;
             let height = this.radiusOfCoordinateCross! * 0.9;
@@ -621,7 +631,10 @@ export class BattleViewHelper extends BasicViewHelper {
             const orbit = orbitDefinition.orbit;
             let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
-            let radius: number = BasicViewHelper.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
+            let radius: number = BasicViewHelper.calculateDistance(
+                this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER),
+                this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER)
+            );
 
             celestialGroup.circle()
                 .x(0)
@@ -640,16 +653,19 @@ export class BattleViewHelper extends BasicViewHelper {
                 .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
                 .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);
 
-            this.createLocalPolarCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), this.BATTLE_COORDINATE_SYSTEM_RADIUS, orbitID);
+            this.createLocalPolarCoordinateSystem(
+                this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER),
+                this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER),
+                BattleViewHelper.BATTLE_COORDINATE_SYSTEM_RADIUS, orbitID);
 
             this.setOrbitById(orbitID, orbit);
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
-                let x1 = (this.convertToStandardMetric(orbit.xCoordinate) - 9);
-                let y1 = (this.convertToStandardMetric(orbit.yCoordinate) - 8);
-                let x2 = (this.convertToStandardMetric(orbit.xCoordinate) + 9);
-                let y2 = (this.convertToStandardMetric(orbit.yCoordinate) + 8);
+                let x1 = (this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER) - 9);
+                let y1 = (this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER) - 8);
+                let x2 = (this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER) + 9);
+                let y2 = (this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER) + 8);
 
                 let p1: LineCommand = ["M", x1, y1];
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
@@ -662,8 +678,8 @@ export class BattleViewHelper extends BasicViewHelper {
             }
 
             const circle = celestialGroup.circle()
-                .x(this.convertToStandardMetric(orbit.xCoordinate))
-                .y(this.convertToStandardMetric(orbit.yCoordinate))
+                .x(this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER))
+                .y(this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER))
                 .radius(5)
                 .id(celestialBodyID)
                 .addClass(BasicViewHelper.CELESTIAL_BODY_CSS_CLASS);
