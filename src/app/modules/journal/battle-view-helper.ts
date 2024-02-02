@@ -57,6 +57,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
     constructor() {
         super(BattleViewHelper.STANDARD_METRIC);
+
         this.panZoomOptions = BattleViewHelper.PAN_ZOOM_OPTIONS;
     }
 
@@ -80,7 +81,9 @@ export class BattleViewHelper extends BasicViewHelper {
                     this.convertToStandardMetric(origin.yCoordinate, BattleViewHelper.MULTIPLIER),
                     this.convertToStandardMetric(interimDestination.xCoordinate, BattleViewHelper.MULTIPLIER),
                     this.convertToStandardMetric(interimDestination.yCoordinate, BattleViewHelper.MULTIPLIER),
-                ).stroke({color: 'yellow', width: 30});
+                ).addClass("course-plot")
+                    .addClass(BattleViewHelper.RESIZE_ON_ZOOM_MARKER)
+                    .stroke(this.zoomStroke(BasicViewHelper.STROKE_YELLOW)); // fixme repair zoom for this and course
             });
     }
 
@@ -368,7 +371,11 @@ export class BattleViewHelper extends BasicViewHelper {
         g.ellipse(rx * 2, ry * 2)
             .cx(cx)
             .cy(cy)
-            .fill('red')
+            .addClass("missile-aura")
+            .addClass(BattleViewHelper.RESIZE_ON_ZOOM_MARKER)
+            .fill(BattleViewHelper.NONE_FILL_COLOR)
+            .stroke(this.zoomStroke(BasicViewHelper.STROKE_YELLOW))
+            .rotate(angle, cx, cy);
     }
 
     private getAngle(origin: Orbit, destination: Orbit): number {

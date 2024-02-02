@@ -69,6 +69,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     protected static readonly STROKE_BLACK: StrokeData = {color: "black", width: 1};
+    protected static readonly STROKE_YELLOW: StrokeData = {color: "irrelevant", width: 30};
     protected static readonly ROUND_CAP_MARKER_X_PIXEL_SHIFT: number = 9;
     protected static readonly ROUND_CAP_MARKER_Y_PIXEL_SHIFT: number = 8;
     protected static readonly STATE_DOT_RADIUS: number = 5;
