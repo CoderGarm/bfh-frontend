@@ -1,5 +1,6 @@
 export * from './abstractId';
 export * from './acceleration';
+export * from './alignedAuraState';
 export * from './alignedFitting';
 export * from './alliance';
 export * from './ammunitionFitting';
@@ -12,6 +13,7 @@ export * from './articleCreate';
 export * from './articleEdit';
 export * from './articlePlainContent';
 export * from './articleRevision';
+export * from './auraState';
 export * from './authRequest';
 export * from './baseModule';
 export * from './battleReport';

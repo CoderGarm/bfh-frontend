@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AuraState } from './auraState';
 import { CombatRoundKey } from './combatRoundKey';
 import { FleetMarker } from './fleetMarker';
 import { Orbit } from './orbit';
@@ -26,6 +27,7 @@ export interface MovementAction {
     origin: Orbit;
     interimDestination: Orbit;
     destination: Orbit;
+    auraState: AuraState;
 }
 export namespace MovementAction {
     export type MovementTypeEnum = 'REDUCE_DISTANCE' | 'INCREASE_DISTANCE' | 'HOLD_DISTANCE' | 'IMPELLER_WEDGE_PROTECTION' | 'OFFENSIVE_ROLL' | 'EVASION_MOVEMENT';

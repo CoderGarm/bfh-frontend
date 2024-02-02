@@ -1,6 +1,7 @@
 import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Polygon} from "@svgdotjs/svg.js";
 import {
     AbstractId,
+    AuraState,
     BattleReport,
     CounterMissileHit,
     Distance,
@@ -326,8 +327,48 @@ export class BattleViewHelper extends BasicViewHelper {
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
+
+            this.createAuraEllipse(move.auraState, startOrbit, angle);
+
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
         });
+    }
+
+    private createAuraEllipse(auraState: AuraState, position: Orbit, angle: number) {
+
+        let rx: number = 0;
+        let ry: number = 0;
+
+        let cx = this.convertToStandardMetric(position.xCoordinate, BattleViewHelper.MULTIPLIER);
+        let cy = this.convertToStandardMetric(position.yCoordinate, BattleViewHelper.MULTIPLIER);
+
+        // fixme modify center pos by angle
+
+        auraState.auraStates.forEach(aura => {
+            const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange, BattleViewHelper.MULTIPLIER);
+
+            const alignment = aura.alignment;
+            switch (alignment) {
+                case "BOW":
+                    rx += antiShipMissileRange;
+                    break;
+                case "STERN":
+                    rx += antiShipMissileRange;
+                    break;
+                case "BROADSIDE":
+                    ry += antiShipMissileRange;
+                    break;
+
+            }
+            const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange, BattleViewHelper.MULTIPLIER);
+            const weaponRange = this.convertToStandardMetric(aura.weaponRange, BattleViewHelper.MULTIPLIER);
+        });
+
+        const g = this.getOrCreateMainSubLayerGroup();
+        g.ellipse(rx * 2, ry * 2)
+            .cx(cx)
+            .cy(cy)
+            .fill('red')
     }
 
     private getAngle(origin: Orbit, destination: Orbit): number {
