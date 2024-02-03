@@ -33,7 +33,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     };
     public readonly standardMetric;
 
-    protected panZoomOptions?: options;
+    protected panZoomOptions: options;
 
     constructor(standardDistanceMetric: Distance.DistanceMetricEnum) {
         super(standardDistanceMetric);
@@ -103,6 +103,9 @@ export class BasicViewHelper extends BasicViewHelperData {
     protected aspectRatio: number = 1;
 
     protected zoomLevel: number = 1;
+    protected zoomScale: number = 80;
+    protected viewBoxWidth?: Distance;
+    protected viewBoxHeight?: Distance;
 
     highlightFTLDrive?: boolean;
     highlightMovement?: boolean;
@@ -160,6 +163,12 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private zoomModification = (ev: any) => {
         this.zoomLevel = ev.detail.level;
+
+        this.zoomScale = this.zoomLevel * 100 / this.panZoomOptions.zoomMax!;
+        const box = this.canvas!.viewbox();
+        this.viewBoxWidth = {coordinate: box.width, distanceMetric: this.standardMetric}
+        this.viewBoxHeight = {coordinate: box.height, distanceMetric: this.standardMetric}
+
         this.zoomResizableContents();
         this.zoomFleetGroups();
         // must be zoomed after all others

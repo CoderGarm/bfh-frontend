@@ -65,18 +65,17 @@
 
 .waypoint-marker {
   stroke: aquamarine;
-  stroke-width: 1;
+  stroke-width: 0.1%;
 }
 
 .course-plot {
-  stroke: darkorange;
   stroke-dasharray: 100;
-  stroke-width: 1;
+  stroke-width: 0.1%;
 }
 
 .colonizable {
   stroke: #306f91;
-  stroke-width: 1;
+  stroke-width: 0.1%;
 }
 
 .colonized-by-others {
@@ -101,11 +100,20 @@
 
 .orbit {
   stroke: cadetblue;
-  stroke-width: 1;
+  stroke-width: 0.1%;
 }
 
 .missile-aura {
-  stroke: cadetblue;
+  fill: none;
+  stroke-width: 0.1%;
+}
+
+.friendly-aura {
+  stroke: green;
+}
+
+.enemy-aura {
+  stroke: red;
 }
 
 .course-plot {
@@ -114,7 +122,7 @@
 
 .hyper-limit {
   stroke: darkorange;
-  stroke-width: 1;
+  stroke-width: 0.1%;
 }
 
 .svg-text {

@@ -1,7 +1,6 @@
 import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Polygon} from "@svgdotjs/svg.js";
 import {
     AbstractId,
-    AuraState,
     BattleReport,
     CounterMissileHit,
     Distance,
@@ -37,8 +36,8 @@ export class BattleViewHelper extends BasicViewHelper {
     public static readonly PAN_ZOOM_OPTIONS: options = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
         zoomFactor: 0.3, // zooming per wheel tick
-        zoomMin: 0.0001, // zoom max out to display the full svg payload as 20% of the screen
-        zoomMax: 400 // zoom max 4 times in
+        zoomMin: 0.001, // zoom max out to display the full svg payload as 20% of the screen
+        zoomMax: 4 // zoom max 4 times in
     };
 
     battleReport?: BattleReport;
@@ -331,13 +330,13 @@ export class BattleViewHelper extends BasicViewHelper {
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
 
-            this.createAuraEllipse(move.auraState, startOrbit, angle);
+            this.createAuraEllipse(move, startOrbit, angle);
 
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
         });
     }
 
-    private createAuraEllipse(auraState: AuraState, position: Orbit, angle: number) {
+    private createAuraEllipse(move: MovementAction, position: Orbit, angle: number) {
 
         let rx: number = 0;
         let ry: number = 0;
@@ -346,8 +345,7 @@ export class BattleViewHelper extends BasicViewHelper {
         let cy = this.convertToStandardMetric(position.yCoordinate, BattleViewHelper.MULTIPLIER);
 
         // fixme modify center pos by angle
-
-        auraState.auraStates.forEach(aura => {
+        move.auraState.auraStates.forEach(aura => {
             const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange, BattleViewHelper.MULTIPLIER);
 
             const alignment = aura.alignment;
@@ -371,11 +369,9 @@ export class BattleViewHelper extends BasicViewHelper {
         g.ellipse(rx * 2, ry * 2)
             .cx(cx)
             .cy(cy)
-            .addClass("missile-aura")
-            .addClass(BattleViewHelper.RESIZE_ON_ZOOM_MARKER)
-            .fill(BattleViewHelper.NONE_FILL_COLOR)
-            .stroke(this.zoomStroke(BasicViewHelper.STROKE_YELLOW))
-            .rotate(angle, cx, cy);
+            .addClass('missile-aura')
+            .addClass(move.actor.owner.id == this.userId ? 'friendly-aura' : 'enemy-aura')
+            .rotate(-angle, cx, cy);
     }
 
     private getAngle(origin: Orbit, destination: Orbit): number {
