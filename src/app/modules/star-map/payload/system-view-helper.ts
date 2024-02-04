@@ -1,6 +1,7 @@
 import {Distance, FleetMarker, StarSystem} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
 import {BasicViewHelper} from "../../../services/svg-view-helper/basic-view-helper";
+import {BasicViewHelperData} from "../../../services/svg-view-helper/basic-view-helper-data";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export class SystemViewHelper extends BasicViewHelper {
@@ -30,6 +31,7 @@ export class SystemViewHelper extends BasicViewHelper {
             .id("hyper-limit-of-" + system.idStarSystem)
             .fill(BasicViewHelper.NONE_FILL_COLOR)
             .addClass(BasicViewHelper.HYPER_LIMIT_MARKER)
+            .addClass(BasicViewHelperData.RELATIVE_STROKE)
             .radius(this.hyperLimitRadius);
 
         mainGroup.circle()
@@ -53,6 +55,7 @@ export class SystemViewHelper extends BasicViewHelper {
                 .id(orbitID + BasicViewHelper.ORBIT_SUFFIX)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
                 .addClass(BasicViewHelper.ORBIT_MARKER)
+                .addClass(BasicViewHelper.RELATIVE_STROKE)
                 .radius(radius);
 
             this.createLocalPolarCoordinateSystem(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate), 50, orbitID);

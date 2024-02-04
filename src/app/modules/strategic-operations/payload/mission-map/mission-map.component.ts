@@ -198,7 +198,8 @@ export class MissionMapComponent extends MapDataProvider implements AfterViewIni
                     if (!!nexus && !!terminal) {
                         mainCelestialGroup
                             .line(nexus.x, nexus.y, terminal.x, terminal.y)
-                            .addClass(MapData.WORMHOLE_MARKER);
+                            .addClass(MapData.WORMHOLE_MARKER)
+                            .addClass(MapDataProvider.RELATIVE_STROKE);
                     }
                 });
             });

@@ -80,7 +80,9 @@ export class BattleViewHelper extends BasicViewHelper {
                     this.convertToStandardMetric(origin.yCoordinate),
                     this.convertToStandardMetric(interimDestination.xCoordinate),
                     this.convertToStandardMetric(interimDestination.yCoordinate),
-                ).addClass("course-plot");
+                )
+                    .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
+                    .addClass(BasicViewHelper.RELATIVE_STROKE);
             });
     }
 
@@ -302,6 +304,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 this.canvas!
                     .line([[shooterG.cx(), shooterG.cy()], [targetG.cx(), targetG.cy()]])
                     .addClass("beamVolley")
+                    .addClass(BattleViewHelper.RELATIVE_STROKE)
                     .id(damageDealerId);
             }
             if (weaponType === WeaponTypeEnum.POINT_DEFENSE) {
@@ -323,8 +326,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 return;
             }
             const angle: number = this.getAngle(startOrbit, targetOrbit);
-            // expanding the coordinates by the multiplier but center it at the combat orbit
-            startOrbit = this.modifyOrbit(startOrbit, baseOrbit);
+            console.log(angle, startOrbit, targetOrbit)
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
@@ -370,6 +372,7 @@ export class BattleViewHelper extends BasicViewHelper {
             .cx(cx)
             .cy(cy)
             .addClass('missile-aura')
+            .addClass(BasicViewHelper.RELATIVE_STROKE)
             .addClass(move.actor.owner.id == this.userId ? 'friendly-aura' : 'enemy-aura')
             .rotate(-angle, cx, cy);
     }
@@ -669,6 +672,7 @@ export class BattleViewHelper extends BasicViewHelper {
             .id("hyper-limit-of-" + system.idStarSystem)
             .fill(BasicViewHelper.NONE_FILL_COLOR)
             .addClass(BasicViewHelper.HYPER_LIMIT_MARKER)
+            .addClass(BasicViewHelperData.RELATIVE_STROKE)
             .radius(this.hyperLimitRadius);
 
         celestialGroup.circle()
@@ -693,7 +697,8 @@ export class BattleViewHelper extends BasicViewHelper {
                 .y(0)
                 .id(orbitID)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
-                .addClass("orbit")
+                .addClass(BasicViewHelper.ORBIT_MARKER)
+                .addClass(BasicViewHelper.RELATIVE_STROKE)
                 .radius(radius);
 
             this.createLocalPolarCoordinateSystem(
@@ -718,6 +723,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 celestialGroup.path(arr)
                     .fill(BasicViewHelper.NONE_FILL_COLOR)
                     .addClass(BasicViewHelper.COLONIZABLE_SYSTEM_MARKER_CSS_CLASS)
+                    .addClass(BasicViewHelper.RELATIVE_STROKE)
                     .addClass("roundCap");
             }
 

@@ -45,7 +45,6 @@
 .wormhole {
   opacity: 0.5;
   stroke: dimgray;
-  stroke-width: 0.1%;
 }
 
 .wormhole-highlight {
@@ -67,17 +66,14 @@
 
 .waypoint-marker {
   stroke: aquamarine;
-  stroke-width: 0.1%;
 }
 
 .course-plot {
   stroke-dasharray: 100;
-  stroke-width: 0.1%;
 }
 
 .colonizable {
   stroke: #306f91;
-  stroke-width: 0.1%;
 }
 
 .colonized-by-others {
@@ -102,12 +98,10 @@
 
 .orbit {
   stroke: cadetblue;
-  stroke-width: 0.1%;
 }
 
 .missile-aura {
   fill: none;
-  stroke-width: 0.1%;
 }
 
 .friendly-aura {
@@ -124,11 +118,11 @@
 
 .hyper-limit {
   stroke: darkorange;
-  stroke-width: 0.1%;
 }
 
 .svg-text {
   fill: var(--map-text-color);
+  font-size: medium;
 }
 
 .notch-container {
@@ -145,7 +139,7 @@
 .circle-cycle {
   stroke: orange;
   stroke-dasharray: 10;
-  stroke-width: 2;
+  stroke-width: 0.2%;
 }
 
 .legend-un-highlighted {
@@ -153,6 +147,9 @@
 }
 
 .fleetSharkIcon, .movableStateDot {
-  stroke-width: 0.1%;
   stroke: black;
+}
+
+.relative-stroke {
+  stroke-width: 0.1%;
 }

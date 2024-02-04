@@ -460,6 +460,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             .fill(BasicViewHelper.NONE_FILL_COLOR)
             .id(id + BasicViewHelperData.ROUND_CAP_SUFFIX)
             .addClass(BasicViewHelper.COLONIZABLE_SYSTEM_MARKER_CSS_CLASS)
+            .addClass(BasicViewHelper.RELATIVE_STROKE)
             .addClass(BasicViewHelperData.RESIZE_ON_ZOOM_MARKER)
             .addClass(BasicViewHelperData.ROUND_CAP_MARKER)
             .addClass(this.getCenterMarker(x, y));
@@ -1073,6 +1074,7 @@ export class BasicViewHelper extends BasicViewHelperData {
             .polygon(fleetSharkPoints)
             .fill(fleetSharkColor)
             .addClass(BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER)
+            .addClass(BasicViewHelperData.RELATIVE_STROKE)
             .addClass(BasicViewHelperData.CLICKABLE_CSS_CLASS)
             .addClass(ftlCapable ? BasicViewHelperData.FTL_CAPABLE : '')
             .addClass(inMotion ? BasicViewHelperData.IN_MOTION : '')
@@ -1170,6 +1172,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
             group!.circle(BasicViewHelper.STATE_DOT_RADIUS)
                 .addClass(BasicViewHelperData.MOVABLE_STATE_DOT_MARKER)
+                .addClass(BasicViewHelperData.RELATIVE_STROKE)
                 .addClass(BasicViewHelperData.ICON_ID_MARKER + fleetSharkID)
                 .x(xMarker[0] - halfRadius)
                 .y(yMarker[1] - halfRadius)
@@ -1215,6 +1218,7 @@ export class BasicViewHelper extends BasicViewHelperData {
                     .id(`waypoint-no-${i}-of-${idJoin}`)
                     .fill(BasicViewHelper.NONE_FILL_COLOR)
                     .addClass(BasicViewHelperData.WAYPOINT_PLOT_MARKER)
+                    .addClass(BasicViewHelper.RELATIVE_STROKE)
                     .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
                     .radius(BasicViewHelper.STAR_RADIUS * 2);
 

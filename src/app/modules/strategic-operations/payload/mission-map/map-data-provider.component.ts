@@ -42,6 +42,7 @@ export class MapDataProvider extends MapData {
     protected static readonly HIGHLIGHTED_SYSTEM_MARKER_CSS_CLASS = "highlighted";
     protected static readonly NO_MISSION_SYSTEM_MARKER_CSS_CLASS = "no-mission";
     protected static readonly MULTI_MISSION_SYSTEM_MARKER_CSS_CLASS = "multi-mission";
+    protected static readonly RELATIVE_STROKE = "relative-stroke";
 
     protected static readonly PLANET_RADIUS = 5;
     protected static readonly STAR_RADIUS = 5;

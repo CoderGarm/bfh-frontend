@@ -57,6 +57,7 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly ORBIT_MARKER = "orbit";
     protected static readonly CENTER_COORDINATES_MARKER = "center-";
     protected static readonly CENTER_COORDINATES_SEPARATOR = "|";
+    protected static readonly RELATIVE_STROKE = "relative-stroke";
 
     private orbits: Orbit[] = [];
     private orbitDefinitions: OrbitDefinition[] = [];
