@@ -318,15 +318,16 @@ export class BattleViewHelper extends BasicViewHelper {
                               hitLogsByRound: Map<number, HitLog[]>) {
         const baseOrbit = this.createBaseOrbit();
 
-        movementActions.forEach((move) => { // fixme jede movementaction kennt die verschiedenen aura-klassen
+        movementActions.forEach((move) => {
             let fleet = move.actor;
             let startOrbit = move.origin;
-            let targetOrbit = move.destination;
+            let targetOrbit = move.interimDestination;
             if (!startOrbit || !targetOrbit) {
                 return;
             }
+
             const angle: number = this.getAngle(startOrbit, targetOrbit);
-            console.log(angle, startOrbit, targetOrbit)
+            // fixme funny angle flipping here
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
@@ -378,11 +379,11 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     private getAngle(origin: Orbit, destination: Orbit): number {
-        return NavigationCalculator.getAngle(
+        return NavigationCalculator.getAngleDegrees(
             this.convertToStandardMetric(origin.xCoordinate),
             this.convertToStandardMetric(origin.yCoordinate),
             this.convertToStandardMetric(destination.xCoordinate),
-            this.convertToStandardMetric(destination.yCoordinate)
+            this.convertToStandardMetric(destination.yCoordinate), true
         );
     }
 

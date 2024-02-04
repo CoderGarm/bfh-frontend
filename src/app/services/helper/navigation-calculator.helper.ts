@@ -182,8 +182,24 @@ export class NavigationCalculator {
 
     static getAngle(x1: number, y1: number, x2: number, y2: number): number {
         let theta = NavigationCalculator.getRestrictedAngle(x1, y1, x2, y2);
-        if (theta < 0) theta = 360 + theta; // range [0, 360)
+        if (theta < 0) {
+            theta = 360 + theta;
+            // range [0, 360)
+        }
         return theta;
+    }
+
+    static getAngleDegrees(x1: number, y1: number, x2: number, y2: number, force360 = true) {
+        let deltaX = x1 - x2;
+        let deltaY = y1 - y2; // reverse
+        let radians = Math.atan2(deltaY, deltaX)
+        let degrees = (radians * 180) / Math.PI - 90; // rotate
+        if (force360) {
+            while (degrees >= 360) degrees -= 360;
+            while (degrees < 0) degrees += 360;
+        }
+        //console.log('angle to degree:', {deltaX, deltaY, radians, degrees})
+        return degrees;
     }
 
     /**
