@@ -21,4 +21,9 @@ app-fleet-round-state {
   height: 100%;
   width: 150px;
   display: flex;
+
+  & app-map-zoom-scale {
+    margin: auto;
+  }
 }
+

@@ -8,7 +8,7 @@ export class SystemViewHelper extends BasicViewHelper {
     static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
     constructor() {
-        super(SystemViewHelper.STANDARD_METRIC);
+        super(SystemViewHelper.STANDARD_METRIC, 1);
     }
 
     setFleets(fleetMarkers: FleetMarker[]) {

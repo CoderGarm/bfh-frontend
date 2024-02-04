@@ -1,5 +1,5 @@
 import {ConfirmedMove, Distance, FleetMarker, Orbit, Planet, StarSystem, StateBlock} from "../swagger";
-import {Array, ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, Shape, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
+import {Array, ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Polygon, Shape, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {OrbitDefinition} from "../../modules/star-map/payload/orbit-definition";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component, HostListener} from "@angular/core";
@@ -31,14 +31,14 @@ export class BasicViewHelper extends BasicViewHelperData {
         zoomMin: 0.1, // zoom max out to display the full svg payload as 20% of the screen
         zoomMax: 4 // zoom max 4 times in
     };
-    public readonly standardMetric;
 
     protected panZoomOptions: options;
+    protected distanceScaleFactor: number = 1;
 
-    constructor(standardDistanceMetric: Distance.DistanceMetricEnum) {
-        super(standardDistanceMetric);
+    constructor(standardDistanceMetric: Distance.DistanceMetricEnum,
+                distanceMultiplier: Number) {
+        super(standardDistanceMetric, distanceMultiplier);
 
-        this.standardMetric = standardDistanceMetric;
         this.panZoomOptions = BasicViewHelper.PAN_ZOOM_OPTIONS;
         let sub = this.starMapCommService.getDeselectEverythingEmitter().subscribe(() => {
             if (!this.canvas) {
@@ -68,8 +68,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.subscriptions.push(sub);
     }
 
-    protected static readonly STROKE_BLACK: StrokeData = {color: "black", width: 1};
-    protected static readonly STROKE_YELLOW: StrokeData = {color: "irrelevant", width: 30};
     protected static readonly ROUND_CAP_MARKER_X_PIXEL_SHIFT: number = 9;
     protected static readonly ROUND_CAP_MARKER_Y_PIXEL_SHIFT: number = 8;
     protected static readonly STATE_DOT_RADIUS: number = 5;
@@ -102,8 +100,8 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     protected aspectRatio: number = 1;
 
-    protected zoomLevel: number = 1;
-    protected zoomScale: number = 80;
+    protected zoomLevel: number = 0.001;
+    protected zoomScale: number = 0;
     protected viewBoxWidth?: Distance;
     protected viewBoxHeight?: Distance;
 
@@ -163,17 +161,34 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private zoomModification = (ev: any) => {
         this.zoomLevel = ev.detail.level;
-
-        this.zoomScale = this.zoomLevel * 100 / this.panZoomOptions.zoomMax!;
-        const box = this.canvas!.viewbox();
-        this.viewBoxWidth = {coordinate: box.width, distanceMetric: this.standardMetric}
-        this.viewBoxHeight = {coordinate: box.height, distanceMetric: this.standardMetric}
-
+        this.calculateMapScale();
         this.zoomResizableContents();
         this.zoomFleetGroups();
         // must be zoomed after all others
         this.zoomCyclingCircles();
         this.zoomStateDots();
+    }
+
+    protected calculateMapScale() {
+        // set normalized zoom level
+        let max = this.panZoomOptions.zoomMax!;
+        const min = this.panZoomOptions.zoomMin!;
+
+        const log_value = this.log(this.zoomLevel, min, max);
+        this.zoomScale = (log_value - this.log(min, min, max)) / (this.log(max, max, min) - this.log(min, min, max)) * 100;
+
+        // set distance scale
+        const box = this.canvas!.viewbox();
+        const width = Math.ceil(box.width / this.distanceScaleFactor);
+        const height = Math.ceil(box.height / this.distanceScaleFactor);
+
+        // fixme width and height always same scale?
+        this.viewBoxWidth = {coordinate: width, distanceMetric: this.standardDistanceMetric};
+        this.viewBoxHeight = {coordinate: height, distanceMetric: this.standardDistanceMetric};
+    }
+
+    private log(value: number, min: number, max: number) {
+        return Math.log(value) / Math.log(max / min);
     }
 
     private zoomFleetGroups() {
@@ -220,7 +235,6 @@ export class BasicViewHelper extends BasicViewHelperData {
                 }
 
                 polygon.plot(points);
-                polygon.stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK));
             }
         });
     }
@@ -251,7 +265,7 @@ export class BasicViewHelper extends BasicViewHelperData {
                 const radius = BasicViewHelper.STATE_DOT_RADIUS / (this.zoomLevel * 1.6);
                 x -= radius;
                 y -= radius;
-                dot.radius(radius).x(x).y(y).stroke(this.zoomStroke(BasicViewHelper.STROKE_BLACK));
+                dot.radius(radius).x(x).y(y);
             }
         });
     }
@@ -278,17 +292,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         });
     }
 
-    protected zoomStroke(strokeData: StrokeData) {
-        const stroke = strokeData;
-        const width = stroke.width! / this.zoomLevel;
-        stroke.width = width < 0.3 ? 0.3 : width;
-        if (!!stroke.dasharray) {
-            let number = stroke.width * 3 < 4 ? 4 : stroke.width * 3;
-            stroke.dasharray = (number / this.zoomLevel) + "px";
-        }
-        return stroke;
-    }
-
     private zoomResizableContents() {
         const drawingGroup = this.getOrCreateMainCelestialGroup();
         const elements = drawingGroup.children().filter(c => c.classes().filter(c => c == BasicViewHelperData.RESIZE_ON_ZOOM_MARKER).length != 0);
@@ -298,9 +301,6 @@ export class BasicViewHelper extends BasicViewHelperData {
             }
             if (c.classes().filter(c => c == BasicViewHelperData.ROUND_CAP_MARKER).length != 0) {
                 this.repositioningRoundCapMarker(c);
-            }
-            if (c.classes().filter(c => c == BasicViewHelperData.WORMHOLE_MARKER).length != 0) {
-                c.stroke(this.zoomStroke({width: 1, color: 'irrelevant'}));
             }
         });
     }
@@ -851,6 +851,26 @@ export class BasicViewHelper extends BasicViewHelperData {
         this.createPolarCoordinateSystem();
     }
 
+    protected createDistanceScalingFactor() {
+        const star: Orbit = {xCoordinate: {coordinate: 0, distanceMetric: this.standardDistanceMetric}, yCoordinate: {coordinate: 0, distanceMetric: this.standardDistanceMetric}};
+        const orbit = this.getFirstPlanetaryOrbit();
+        if (!orbit) {
+            return;
+        }
+
+        const distanceOfOrbits = Math.ceil(this.calculateDistanceOfOrbits(star, orbit));
+        const celestialBodyID = this.getCelestialBodyID(orbit);
+        const celestial = this.getCelestialByID(celestialBodyID)!;
+        if (!celestial) {
+            return;
+        }
+        const x: number = <number>celestial.x();
+        const y: number = <number>celestial.y();
+        const distanceOfPoints = Math.ceil(NavigationCalculator.calculateDistanceOfPoints([0, 0], [x, y]));
+
+        this.distanceScaleFactor = distanceOfPoints / distanceOfOrbits;
+    }
+
     private createPolarCoordinateSystem() {
         let {x, y} = this.getWidestExpanse();
         this.radiusOfCoordinateCross = BasicViewHelper.calculateDistance(x, y);
@@ -1052,7 +1072,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         const fleetShark = group
             .polygon(fleetSharkPoints)
             .fill(fleetSharkColor)
-            .stroke(BasicViewHelper.STROKE_BLACK)
             .addClass(BasicViewHelperData.FLEET_SHARK_POLYGON_MARKER)
             .addClass(BasicViewHelperData.CLICKABLE_CSS_CLASS)
             .addClass(ftlCapable ? BasicViewHelperData.FTL_CAPABLE : '')
@@ -1122,7 +1141,7 @@ export class BasicViewHelper extends BasicViewHelperData {
     }
 
     protected isInterstellarViewHelper() {
-        return this.standardMetric === DistanceMetricEnum.LY;
+        return this.standardDistanceMetric === DistanceMetricEnum.LY;
     }
 
     protected displayFleetStates(onMove: boolean, state: StateBlock, sortedPointsX: ArrayXY[], sortedPointsY: ArrayXY[], group: G | undefined, fleetSharkID: string) {
@@ -1150,7 +1169,6 @@ export class BasicViewHelper extends BasicViewHelperData {
             let yMarker = sortedPointsY[sortedPointsY.length - 1];
 
             group!.circle(BasicViewHelper.STATE_DOT_RADIUS)
-                .stroke(BasicViewHelper.STROKE_BLACK)
                 .addClass(BasicViewHelperData.MOVABLE_STATE_DOT_MARKER)
                 .addClass(BasicViewHelperData.ICON_ID_MARKER + fleetSharkID)
                 .x(xMarker[0] - halfRadius)

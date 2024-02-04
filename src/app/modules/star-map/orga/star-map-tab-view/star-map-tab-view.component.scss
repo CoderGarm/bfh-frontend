@@ -37,6 +37,7 @@
 
 .coordCross {
   stroke: darkgoldenrod;
+  stroke-width: 0.05%;
   opacity: 0.4;
   filter: alpha(opacity=40);
 }
@@ -44,6 +45,7 @@
 .wormhole {
   opacity: 0.5;
   stroke: dimgray;
+  stroke-width: 0.1%;
 }
 
 .wormhole-highlight {
@@ -148,4 +150,9 @@
 
 .legend-un-highlighted {
   opacity: 0.3 !important;
+}
+
+.fleetSharkIcon, .movableStateDot {
+  stroke-width: 0.1%;
+  stroke: black;
 }

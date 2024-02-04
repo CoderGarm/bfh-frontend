@@ -1,4 +1,4 @@
-import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Rect, StrokeData, SVG, Svg, Text} from "@svgdotjs/svg.js";
+import {ArrayXY, Circle, CurveCommand, Dom, Element, G, LineCommand, Path, PathArrayAlias, Rect, SVG, Svg, Text} from "@svgdotjs/svg.js";
 import {Component, HostListener} from "@angular/core";
 import {MapData} from "./map-data.component";
 import '@svgdotjs/svg.panzoom.js'
@@ -133,17 +133,6 @@ export class MapDataProvider extends MapData {
         });
     }
 
-    protected zoomStroke(strokeData: StrokeData) {
-        const stroke = strokeData;
-        const width = stroke.width! / this.zoomLevel;
-        stroke.width = width < 0.3 ? 0.3 : width;
-        if (!!stroke.dasharray) {
-            let number = stroke.width * 3 < 4 ? 4 : stroke.width * 3;
-            stroke.dasharray = (number / this.zoomLevel) + "px";
-        }
-        return stroke;
-    }
-
     private zoomResizableContents() {
         const drawingGroup = this.getOrCreateMainCelestialGroup();
         const elements = drawingGroup.children().filter(c => c.classes().filter(c => c == MapData.RESIZE_ON_ZOOM_MARKER).length != 0);
@@ -153,9 +142,6 @@ export class MapDataProvider extends MapData {
             }
             if (c.classes().filter(c => c == MapData.ROUND_CAP_MARKER).length != 0) {
                 this.repositioningRoundCap(c);
-            }
-            if (c.classes().filter(c => c == MapData.WORMHOLE_MARKER).length != 0) {
-                c.stroke(this.zoomStroke({width: 1, color: 'irrelevant'}));
             }
         });
         this.getOrCreateMainHeatMapGroup().children()

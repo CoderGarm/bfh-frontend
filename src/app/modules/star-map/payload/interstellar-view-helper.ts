@@ -9,7 +9,7 @@ export class InterstellarViewHelper extends BasicViewHelper {
     public static readonly STANDARD_METRIC = DistanceMetricEnum.LY;
 
     constructor() {
-        super(InterstellarViewHelper.STANDARD_METRIC);
+        super(InterstellarViewHelper.STANDARD_METRIC, 1);
     }
 
     setFleets(fleetMarkers: FleetMarker[]) {

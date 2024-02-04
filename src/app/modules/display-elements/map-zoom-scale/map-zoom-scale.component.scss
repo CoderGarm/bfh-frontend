@@ -1,26 +1,23 @@
 
 .zoom-scale {
-  height: 100%;
-  width: 150px;
+  height: 350px;
+  width: 200px;
   display: flex;
+  align-items: center;
 }
 
 mat-progress-bar {
   transform: rotate(-90deg);
-  width: 200px;
-  top: 45%;
-  right: -50px;
 }
 
 .height-scale {
   transform: rotate(-90deg);
   position: absolute;
-  top: 45%;
   right: 10px;
 }
 
 .width-scale {
   position: absolute;
-  top: 58%;
+  top: 60%;
   right: 25px;
 }

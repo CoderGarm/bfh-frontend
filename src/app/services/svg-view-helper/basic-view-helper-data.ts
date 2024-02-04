@@ -68,6 +68,7 @@ export class BasicViewHelperData extends SubscriptionManager {
 
     protected radiusOfCoordinateCross?: number;
     protected hyperLimitRadius?: number;
+    protected distanceMultiplier: number;
 
     private knownStarSystemByOrbit: Map<Orbit, StarSystem> = new Map<Orbit, StarSystem>();
     private planetByOrbit: Map<Orbit, Planet> = new Map<Orbit, Planet>();
@@ -84,8 +85,11 @@ export class BasicViewHelperData extends SubscriptionManager {
     private restrictedAreasByOrbitId: Map<String, RestrictedFleetArea[]> = new Map<String, RestrictedFleetArea[]>();
     private groupsByID: Map<String, G> = new Map<String, G>();
 
-    constructor(protected standardDistanceMetric: DistanceMetricEnum) {
+    constructor(protected standardDistanceMetric: DistanceMetricEnum,
+                private distanceMultiplierAsInjectableNumber: Number) {
         super();
+
+        this.distanceMultiplier = <number>this.distanceMultiplierAsInjectableNumber;
     }
 
     protected clearData() {
@@ -123,8 +127,8 @@ export class BasicViewHelperData extends SubscriptionManager {
         this.biggestYOrbit = sortedByY[sortedByY.length - 1];
     }
 
-    protected convertToStandardMetric(distance: Distance, factor: number = 1): number {
-        return NavigationCalculator.convertDistanceToMetric(distance, this.standardDistanceMetric) * factor;
+    protected convertToStandardMetric(distance: Distance): number {
+        return NavigationCalculator.convertDistanceToMetric(distance, this.standardDistanceMetric) * this.distanceMultiplier;
     }
 
     protected calculateHyperLimit(system: StarSystem) {
@@ -404,6 +408,10 @@ export class BasicViewHelperData extends SubscriptionManager {
         this.orbitDefinitions = orbits;
         this.orbits = orbits.map(od => od.orbit);
         this.sortByOrbit();
+    }
+
+    protected getFirstPlanetaryOrbit(): Orbit | undefined {
+        return this.orbits.length > 0 ? this.orbits[0] : undefined;
     }
 
     protected setPlanetsByOrbit(system: StarSystem) {

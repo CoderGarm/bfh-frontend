@@ -30,8 +30,8 @@ export class BattleViewHelper extends BasicViewHelper {
 
     private static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
-    private static readonly BATTLE_COORDINATE_SYSTEM_RADIUS = 5000;
-    private static readonly MULTIPLIER = 500;
+    private static readonly BATTLE_COORDINATE_SYSTEM_RADIUS: number = 50;
+    private static readonly MULTIPLIER: number = 500;
 
     public static readonly PAN_ZOOM_OPTIONS: options = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
@@ -55,7 +55,7 @@ export class BattleViewHelper extends BasicViewHelper {
     clickedFleet?: FleetMarker;
 
     constructor() {
-        super(BattleViewHelper.STANDARD_METRIC);
+        super(BattleViewHelper.STANDARD_METRIC, BattleViewHelper.MULTIPLIER);
 
         this.panZoomOptions = BattleViewHelper.PAN_ZOOM_OPTIONS;
     }
@@ -76,13 +76,11 @@ export class BattleViewHelper extends BasicViewHelper {
                 const origin = value.origin;
                 const interimDestination = value.interimDestination;
                 g.line(
-                    this.convertToStandardMetric(origin.xCoordinate, BattleViewHelper.MULTIPLIER),
-                    this.convertToStandardMetric(origin.yCoordinate, BattleViewHelper.MULTIPLIER),
-                    this.convertToStandardMetric(interimDestination.xCoordinate, BattleViewHelper.MULTIPLIER),
-                    this.convertToStandardMetric(interimDestination.yCoordinate, BattleViewHelper.MULTIPLIER),
-                ).addClass("course-plot")
-                    .addClass(BattleViewHelper.RESIZE_ON_ZOOM_MARKER)
-                    .stroke(this.zoomStroke(BasicViewHelper.STROKE_YELLOW)); // fixme repair zoom for this and course
+                    this.convertToStandardMetric(origin.xCoordinate),
+                    this.convertToStandardMetric(origin.yCoordinate),
+                    this.convertToStandardMetric(interimDestination.xCoordinate),
+                    this.convertToStandardMetric(interimDestination.yCoordinate),
+                ).addClass("course-plot");
             });
     }
 
@@ -106,6 +104,7 @@ export class BattleViewHelper extends BasicViewHelper {
         this.clearData();
         this.drawOrbits(starSystem);
         this.drawCourses();
+
         if (!activeRound || !this.combatArenaData) {
             return;
         }
@@ -260,8 +259,8 @@ export class BattleViewHelper extends BasicViewHelper {
         let direction: boolean = lastPosition.xCoordinate.coordinate < position.xCoordinate.coordinate;
         position = this.modifyOrbit(position, centerOrbit);
 
-        let x = this.convertToStandardMetric(position.xCoordinate, BattleViewHelper.MULTIPLIER);
-        let y = this.convertToStandardMetric(position.yCoordinate, BattleViewHelper.MULTIPLIER);
+        let x = this.convertToStandardMetric(position.xCoordinate);
+        let y = this.convertToStandardMetric(position.yCoordinate);
 
         return this.createMissileOutlines(x, y, direction, missileAmount);
     }
@@ -341,12 +340,13 @@ export class BattleViewHelper extends BasicViewHelper {
         let rx: number = 0;
         let ry: number = 0;
 
-        let cx = this.convertToStandardMetric(position.xCoordinate, BattleViewHelper.MULTIPLIER);
-        let cy = this.convertToStandardMetric(position.yCoordinate, BattleViewHelper.MULTIPLIER);
+        let cx = this.convertToStandardMetric(position.xCoordinate);
+        let cy = this.convertToStandardMetric(position.yCoordinate);
 
         // fixme modify center pos by angle
+        // fixme check stroke scaling
         move.auraState.auraStates.forEach(aura => {
-            const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange, BattleViewHelper.MULTIPLIER);
+            const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange);
 
             const alignment = aura.alignment;
             switch (alignment) {
@@ -361,8 +361,8 @@ export class BattleViewHelper extends BasicViewHelper {
                     break;
 
             }
-            const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange, BattleViewHelper.MULTIPLIER);
-            const weaponRange = this.convertToStandardMetric(aura.weaponRange, BattleViewHelper.MULTIPLIER);
+            const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange);
+            const weaponRange = this.convertToStandardMetric(aura.weaponRange);
         });
 
         const g = this.getOrCreateMainSubLayerGroup();
@@ -376,10 +376,10 @@ export class BattleViewHelper extends BasicViewHelper {
 
     private getAngle(origin: Orbit, destination: Orbit): number {
         return NavigationCalculator.getAngle(
-            this.convertToStandardMetric(origin.xCoordinate, BattleViewHelper.MULTIPLIER),
-            this.convertToStandardMetric(origin.yCoordinate, BattleViewHelper.MULTIPLIER),
-            this.convertToStandardMetric(destination.xCoordinate, BattleViewHelper.MULTIPLIER),
-            this.convertToStandardMetric(destination.yCoordinate, BattleViewHelper.MULTIPLIER)
+            this.convertToStandardMetric(origin.xCoordinate),
+            this.convertToStandardMetric(origin.yCoordinate),
+            this.convertToStandardMetric(destination.xCoordinate),
+            this.convertToStandardMetric(destination.yCoordinate)
         );
     }
 
@@ -411,10 +411,10 @@ export class BattleViewHelper extends BasicViewHelper {
      * @private
      */
     private modifyOrbit(orbit: Orbit, baseOrbit: Orbit): Orbit {
-        let baseX = this.convertToStandardMetric(baseOrbit.xCoordinate, BattleViewHelper.MULTIPLIER);
-        let baseY = this.convertToStandardMetric(baseOrbit.yCoordinate, BattleViewHelper.MULTIPLIER);
-        let orbX = this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER);
-        let orbY = this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER);
+        let baseX = this.convertToStandardMetric(baseOrbit.xCoordinate);
+        let baseY = this.convertToStandardMetric(baseOrbit.yCoordinate);
+        let orbX = this.convertToStandardMetric(orbit.xCoordinate);
+        let orbY = this.convertToStandardMetric(orbit.yCoordinate);
 
         if (baseX == 0 && baseY == 0) {
             return orbit;
@@ -423,11 +423,11 @@ export class BattleViewHelper extends BasicViewHelper {
         return {
             xCoordinate: {
                 coordinate: (baseX - orbX) + orbX,
-                distanceMetric: this.standardMetric
+                distanceMetric: this.standardDistanceMetric
             },
             yCoordinate: {
                 coordinate: (baseY - orbY) + orbY,
-                distanceMetric: this.standardMetric
+                distanceMetric: this.standardDistanceMetric
             }
         };
     }
@@ -517,11 +517,11 @@ export class BattleViewHelper extends BasicViewHelper {
         let horizontalLift = 0;
         let verticalLift = 0;
 
-        let x = this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER);
-        let y = this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER);
+        let x = this.convertToStandardMetric(orbit.xCoordinate);
+        let y = this.convertToStandardMetric(orbit.yCoordinate);
         let modifiedX = (warShips.length / 2 * xShift);
         let modifiedY = (warShips.length / 2 * yShift) + yShift;
-        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate, BattleViewHelper.MULTIPLIER) ? -1 : 0;
+        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate) ? -1 : 0;
         // todo build groups of three ships (one is a dot, two is a line) and form a triangle
         //  build groups of triangles and place them in a triangle by permuting top and bottom (one or two items in the top)
 
@@ -638,8 +638,8 @@ export class BattleViewHelper extends BasicViewHelper {
                 return;
             }
 
-            let x = this.convertToStandardMetric(c.xCoordinate, BattleViewHelper.MULTIPLIER);
-            let y = this.convertToStandardMetric(c.yCoordinate, BattleViewHelper.MULTIPLIER);
+            let x = this.convertToStandardMetric(c.xCoordinate);
+            let y = this.convertToStandardMetric(c.yCoordinate);
 
             let width = this.radiusOfCoordinateCross! * 0.9;
             let height = this.radiusOfCoordinateCross! * 0.9;
@@ -671,13 +671,21 @@ export class BattleViewHelper extends BasicViewHelper {
             .addClass(BasicViewHelper.HYPER_LIMIT_MARKER)
             .radius(this.hyperLimitRadius);
 
+        celestialGroup.circle()
+            .x(0)
+            .y(0)
+            .id("star-of-" + system.idStarSystem)
+            .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM * BattleViewHelper.MULTIPLIER)
+            .addClass(BasicViewHelper.STAR_MARKER)
+            .addClass(BasicViewHelperData.STAR_COLOR_MARKER);
+
         orbitDefinitions.forEach(orbitDefinition => {
             const orbit = orbitDefinition.orbit;
             let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
             let radius: number = BasicViewHelper.calculateDistance(
-                this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER),
-                this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER)
+                this.convertToStandardMetric(orbit.xCoordinate),
+                this.convertToStandardMetric(orbit.yCoordinate)
             );
 
             celestialGroup.circle()
@@ -688,28 +696,20 @@ export class BattleViewHelper extends BasicViewHelper {
                 .addClass("orbit")
                 .radius(radius);
 
-            celestialGroup.circle()
-                .x(0)
-                .y(0)
-                .id("star-of-" + system.idStarSystem)
-                .addClass(BasicViewHelper.STAR_MARKER)
-                .addClass(BasicViewHelperData.STAR_COLOR_MARKER)
-                .addClass(BasicViewHelper.RESIZE_ON_ZOOM_MARKER)
-                .radius(BasicViewHelper.STAR_RADIUS_IN_SYSTEM);
-
             this.createLocalPolarCoordinateSystem(
-                this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER),
-                this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER),
-                BattleViewHelper.BATTLE_COORDINATE_SYSTEM_RADIUS, orbitID);
+                this.convertToStandardMetric(orbit.xCoordinate),
+                this.convertToStandardMetric(orbit.yCoordinate),
+                BattleViewHelper.BATTLE_COORDINATE_SYSTEM_RADIUS * BattleViewHelper.MULTIPLIER,
+                orbitID);
 
             this.setOrbitById(orbitID, orbit);
 
             if (orbitDefinition.isColonizable) {
                 // to rotate around the center just flip the + and -
-                let x1 = (this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER) - 9);
-                let y1 = (this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER) - 8);
-                let x2 = (this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER) + 9);
-                let y2 = (this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER) + 8);
+                let x1 = (this.convertToStandardMetric(orbit.xCoordinate) - 9);
+                let y1 = (this.convertToStandardMetric(orbit.yCoordinate) - 8);
+                let x2 = (this.convertToStandardMetric(orbit.xCoordinate) + 9);
+                let y2 = (this.convertToStandardMetric(orbit.yCoordinate) + 8);
 
                 let p1: LineCommand = ["M", x1, y1];
                 let p2: CurveCommand = ["A", 1, 1, 1, 1, 1, x2, y2];
@@ -722,9 +722,9 @@ export class BattleViewHelper extends BasicViewHelper {
             }
 
             const circle = celestialGroup.circle()
-                .x(this.convertToStandardMetric(orbit.xCoordinate, BattleViewHelper.MULTIPLIER))
-                .y(this.convertToStandardMetric(orbit.yCoordinate, BattleViewHelper.MULTIPLIER))
-                .radius(5)
+                .x(this.convertToStandardMetric(orbit.xCoordinate))
+                .y(this.convertToStandardMetric(orbit.yCoordinate))
+                .radius(BasicViewHelper.PLANET_RADIUS * BattleViewHelper.MULTIPLIER)
                 .id(celestialBodyID)
                 .addClass(BasicViewHelper.CELESTIAL_BODY_CSS_CLASS);
 
@@ -737,7 +737,9 @@ export class BattleViewHelper extends BasicViewHelper {
             }
 
             this.setCelestialOrbitById(celestialBodyID, orbit);
+            this.setCelestialCircleById(celestialBodyID, circle);
         });
+        this.createDistanceScalingFactor();
     }
 
     private getWarshipByID(id: string): AbstractId | undefined {

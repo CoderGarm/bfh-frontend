@@ -9,7 +9,7 @@ import {Distance} from "../../../services/swagger";
 export class MapZoomScaleComponent {
 
     @Input()
-    zoomScale: number = 1;
+    zoomScale: number = 0;
 
     @Input()
     height?: Distance;
