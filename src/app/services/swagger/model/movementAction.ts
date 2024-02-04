@@ -26,7 +26,6 @@ export interface MovementAction {
     movementType: MovementAction.MovementTypeEnum;
     origin: Orbit;
     interimDestination: Orbit;
-    destination: Orbit;
     auraState: AuraState;
 }
 export namespace MovementAction {

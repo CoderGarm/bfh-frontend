@@ -327,7 +327,29 @@ export class BattleViewHelper extends BasicViewHelper {
             }
 
             const angle: number = this.getAngle(startOrbit, targetOrbit);
-            // fixme funny angle flipping here
+
+            // fixme die kurve muss geglättet werden - alternativ wird der kurs als folge von bezierkurven betrachtet
+
+            let x1 = this.convertToStandardMetric(startOrbit.xCoordinate);
+            let y1 = this.convertToStandardMetric(startOrbit.yCoordinate);
+            let x2 = this.convertToStandardMetric(targetOrbit.xCoordinate);
+            let y2 = this.convertToStandardMetric(targetOrbit.yCoordinate);
+
+            const g = this.getOrCreateMainSubLayerGroup();
+            g.circle()
+                .x(x1)
+                .y(y1)
+                .radius(500)
+                .fill('green')
+
+            g.circle()
+                .x(x2)
+                .y(y2)
+                .radius(500)
+                .fill('yellow')
+
+
+            console.log(move.combatRoundKey.combatRound.no, angle, move.actor.owner.name)
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
