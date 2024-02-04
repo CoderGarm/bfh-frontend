@@ -14,31 +14,11 @@ app-fleet-round-state {
   direction: rtl;
 }
 
-.zoom-scale {
+.zoom-scale-container {
   position: absolute;
   right: 0;
   top: 0;
   height: 100%;
   width: 150px;
   display: flex;
-}
-
-mat-progress-bar {
-  transform: rotate(-90deg);
-  width: 200px;
-  top: 45%;
-  right: -50px;
-}
-
-.height-scale {
-  transform: rotate(-90deg);
-  position: absolute;
-  top: 45%;
-  right: 10px;
-}
-
-.width-scale {
-  position: absolute;
-  top: 58%;
-  right: 25px;
 }

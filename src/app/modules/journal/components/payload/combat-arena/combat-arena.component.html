@@ -16,11 +16,7 @@
     <div id="arena">
         <!-- svg elements will be created programmatically -->
     </div>
-    <div class="zoom-scale">
-        <mat-progress-bar mode="determinate" [value]="zoomScale"></mat-progress-bar>
-        <!-- zoomScale does not match -->
-        <span class="height-scale">{{ viewBoxHeight | distance: standardMetric }}</span>
-        <!-- fixme scale metric must match -->
-        <span class="width-scale">{{ viewBoxWidth | distance: standardMetric }}</span>
+    <div class="zoom-scale-container">
+        <app-map-zoom-scale [zoomScale]="zoomScale" [width]="viewBoxWidth" [height]="viewBoxHeight"></app-map-zoom-scale>
     </div>
 </div>

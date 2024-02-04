@@ -59,6 +59,7 @@ import {FileUploadComponent} from './file-upload/file-upload.component';
 import {DndDirective} from "./file-upload/dnd.directive";
 import {ProgressComponent} from "./file-upload/progress/progress.component";
 import {PlayerDisplayComponent} from './player-display/player-display.component';
+import {MapZoomScaleComponent} from './map-zoom-scale/map-zoom-scale.component';
 
 @NgModule({
     declarations: [
@@ -121,6 +122,7 @@ import {PlayerDisplayComponent} from './player-display/player-display.component'
         ProgressComponent,
         DndDirective,
         PlayerDisplayComponent,
+        MapZoomScaleComponent,
     ],
     imports: [
         SharedModuleModule,
@@ -172,6 +174,7 @@ import {PlayerDisplayComponent} from './player-display/player-display.component'
         PropertyDescriptorDisplayComponent,
         FileUploadComponent,
         PlayerDisplayComponent,
+        MapZoomScaleComponent,
     ]
 })
 export class DisplayElementsModule {

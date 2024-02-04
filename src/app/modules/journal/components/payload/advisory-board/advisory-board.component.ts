@@ -28,7 +28,7 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
     }
 
     ngAfterViewInit() {
-        this.spinner.show('advisory-spinner');
+        // fixme rollback this.spinner.show('advisory-spinner');
 
         let sub = this.advisoryService.getPirateHuntAdvice().subscribe(resp => this.pirateHunt = resp);
         this.subscriptions.push(sub);

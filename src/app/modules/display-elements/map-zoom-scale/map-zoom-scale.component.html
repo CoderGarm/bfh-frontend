@@ -1,0 +1,12 @@
+<div class="zoom-scale">
+    <mat-progress-bar mode="determinate" [value]="zoomScale"></mat-progress-bar>
+
+    <span class="height-scale" *ngIf="!!height">
+        {{ height | distance: height.distanceMetric }}
+    </span>
+    <span class="width-scale" *ngIf="!!height">
+        {{ width | distance: width!.distanceMetric }}
+    </span>
+    <!-- fixme zoomScale does not match -->
+    <!-- fixme scale metric must match -->
+</div>
