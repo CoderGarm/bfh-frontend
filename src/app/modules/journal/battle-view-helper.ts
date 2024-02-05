@@ -64,7 +64,7 @@ export class BattleViewHelper extends BasicViewHelper {
         this.battleReport = report;
     }
 
-    private drawCourses() {
+    protected drawCourses() {
         if (!this.isLocalhost) {
             return;
         }
@@ -101,11 +101,16 @@ export class BattleViewHelper extends BasicViewHelper {
         this.hoveredWarship = this.getWarshipByEvent(event);
     }
 
+    clearData() {
+        if (!!this.canvas) {
+            // remove all elements from canvas a little bit more performant
+            this.getOrCreateMainSubLayerGroup().node.innerHTML = '';
+
+        }
+    }
+
     setActiveRound(activeRound: number | undefined, starSystem: StarSystem) {
-        // fixme clear stuff particular, orbits etc can stay - only if performance increases
         this.clearData();
-        this.drawOrbits(starSystem);
-        this.drawCourses();
 
         if (!activeRound || !this.combatArenaData) {
             return;
@@ -145,7 +150,7 @@ export class BattleViewHelper extends BasicViewHelper {
             const x = icon.x();
             const y = icon.y();
             let explosionOutlines = this.createExplosionOutlines(x, y, 20);
-            this.canvas!.polygon(explosionOutlines).addClass("explosion").fill(color);
+            this.getOrCreateMainSubLayerGroup().polygon(explosionOutlines).addClass("explosion").fill(color);
         });
     }
 
@@ -170,7 +175,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 const x = pos[0];
                 const y = pos[1];
                 let explosionOutlines = this.createExplosionOutlines(x, y, 10);
-                this.canvas!.polygon(explosionOutlines).addClass("explosion").fill(color);
+                this.getOrCreateMainSubLayerGroup().polygon(explosionOutlines).addClass("explosion").fill(color);
             });
         });
     }
@@ -223,7 +228,7 @@ export class BattleViewHelper extends BasicViewHelper {
                                               volley: MissileMovement) {
         const missileAmount = volley.missileAmount;
         const fleetOwnerId = volley.actorOwner.id;
-        let group = this.canvas!.group()
+        let group = this.getOrCreateMainSubLayerGroup().group()
             .id(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX);
 
         this.setGroupById(missileSalvoId + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group);
@@ -249,7 +254,7 @@ export class BattleViewHelper extends BasicViewHelper {
             .cx(icon.cx() + xShift)
             .cy(icon.cy())
 
-        this.canvas!.add(group);
+        this.getOrCreateMainSubLayerGroup().add(group);
     }
 
     private defineMissileHullPoints(missileMovement: MissileMovement, centerOrbit: Orbit): ArrayXY[] {
@@ -301,7 +306,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
             }
             if (weaponType === WeaponTypeEnum.BEAM) {
-                this.canvas!
+                this.getOrCreateMainSubLayerGroup()
                     .line([[shooterG.cx(), shooterG.cy()], [targetG.cx(), targetG.cy()]])
                     .addClass("beamVolley")
                     .addClass(BattleViewHelper.RELATIVE_STROKE)
@@ -473,7 +478,7 @@ export class BattleViewHelper extends BasicViewHelper {
                                        warshipHullPoints: Array<Array<ArrayXY[]>>) {
         let fleetSharkID = this.getFleetSharkID(fleet);
 
-        let group = this.canvas!.group()
+        let group = this.getOrCreateMainSubLayerGroup().group()
             .id(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX)
             .click(this.clickForFleet);
 
