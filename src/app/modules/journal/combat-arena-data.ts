@@ -1,4 +1,17 @@
-import {BattleReport, CombatRound, CounterMissileHit, Fleet, HitLog, MissileMovement, MovementAction, ReleasedVolley, ShipClass, ShipKillerHit} from "../../services/swagger";
+import {
+    BattleReport,
+    CombatRound,
+    CounterMissileHit,
+    Fleet,
+    FleetMarker,
+    HitLog,
+    Maneuver,
+    MissileMovement,
+    MovementAction,
+    ReleasedVolley,
+    ShipClass,
+    ShipKillerHit
+} from "../../services/swagger";
 
 export class CombatArenaData {
 
@@ -10,19 +23,19 @@ export class CombatArenaData {
     counterMissileHitsByRound: Map<number, CounterMissileHit[]> = new Map<number, CounterMissileHit[]>();
     hitLogsByRound: Map<number, HitLog[]> = new Map<number, HitLog[]>();
     shipClasses: Map<number, ShipClass> = new Map<number, ShipClass>();
+    maneuvers: Map<FleetMarker, Maneuver> = new Map<FleetMarker, Maneuver>();
 
     combatStartsAtRound: number = Number.MAX_VALUE;
     combatEndsAtRound: number = Number.MIN_VALUE;
 
     constructor(report: BattleReport) {
-
-
         report.movementActions.forEach(ma => this.setMovementMapValue(ma));
         report.missileMovements.forEach(rv => this.setMissileMovementMapValue(rv));
         report.releasedVolleys.forEach(rv => this.setReleasedVolleyMapValue(rv));
         report.shipKillerHits.forEach(rv => this.setShipKillerHitsMapValue(rv));
         report.counterMissileHits.forEach(rv => this.setCounterMissileHitsMapValue(rv));
         report.participatingFleets.forEach(fleet => this.setShipClasses(fleet));
+        report.maneuvers.forEach(m => this.maneuvers.set(m.actor, m));
         this.mergeCombatRounds();
     }
 

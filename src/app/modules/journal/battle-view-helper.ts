@@ -70,20 +70,27 @@ export class BattleViewHelper extends BasicViewHelper {
         }
 
         const g = this.getOrCreateFleetConfirmedMoveGroup();
-        this.battleReport!.movementActions.sort((a, b) => a.combatRoundKey.combatRound.no - b.combatRoundKey.combatRound.no)
-            .forEach(value => {
+        Array.from(this.combatArenaData!.maneuvers.values()).map(m => m.maneuverElements.forEach(me => {
 
-                const origin = value.origin;
-                const interimDestination = value.interimDestination;
-                g.line(
-                    this.convertToStandardMetric(origin.xCoordinate),
-                    this.convertToStandardMetric(origin.yCoordinate),
-                    this.convertToStandardMetric(interimDestination.xCoordinate),
-                    this.convertToStandardMetric(interimDestination.yCoordinate),
-                )
-                    .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
-                    .addClass(BasicViewHelper.RELATIVE_STROKE);
-            });
+            const p1 = me.p1;
+            const cp1 = me.cp1;
+            const cp2 = me.cp2;
+            const p2 = me.p2;
+            const c1: LineCommand = [
+                'M',
+                this.convertToStandardMetric(p1.xCoordinate), this.convertToStandardMetric(p1.yCoordinate),
+            ];
+            const c2: CurveCommand = [
+                'C',
+                this.convertToStandardMetric(cp1.xCoordinate), this.convertToStandardMetric(cp1.yCoordinate),
+                this.convertToStandardMetric(cp2.xCoordinate), this.convertToStandardMetric(cp2.yCoordinate),
+                this.convertToStandardMetric(p2.xCoordinate), this.convertToStandardMetric(p2.yCoordinate)
+            ];
+
+            g.path([c1, c2])
+                .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
+                .addClass(BasicViewHelper.RELATIVE_STROKE);
+        }));
     }
 
     protected clickForFleet = (event: PointerEvent) => {
@@ -323,6 +330,7 @@ export class BattleViewHelper extends BasicViewHelper {
                               hitLogsByRound: Map<number, HitLog[]>) {
         const baseOrbit = this.createBaseOrbit();
 
+        /* fixme umstellen auf bezier
         movementActions.forEach((move) => {
             let fleet = move.actor;
             let startOrbit = move.origin;
@@ -362,7 +370,7 @@ export class BattleViewHelper extends BasicViewHelper {
             this.createAuraEllipse(move, startOrbit, angle);
 
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
-        });
+        });*/
     }
 
     private createAuraEllipse(move: MovementAction, position: Orbit, angle: number) {

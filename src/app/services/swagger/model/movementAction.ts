@@ -12,7 +12,6 @@
 import { AuraState } from './auraState';
 import { CombatRoundKey } from './combatRoundKey';
 import { FleetMarker } from './fleetMarker';
-import { Orbit } from './orbit';
 
 /**
  * .
@@ -24,8 +23,6 @@ export interface MovementAction {
      * The selected movement option for this action.
      */
     movementType: MovementAction.MovementTypeEnum;
-    origin: Orbit;
-    interimDestination: Orbit;
     auraState: AuraState;
 }
 export namespace MovementAction {

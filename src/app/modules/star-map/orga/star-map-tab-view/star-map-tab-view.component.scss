@@ -68,10 +68,6 @@
   stroke: aquamarine;
 }
 
-.course-plot {
-  stroke-dasharray: 100;
-}
-
 .colonizable {
   stroke: #306f91;
 }
@@ -114,6 +110,8 @@
 
 .course-plot {
   stroke: darkorange;
+  stroke-dasharray: 100;
+  fill: none;
 }
 
 .hyper-limit {

@@ -13,6 +13,7 @@ import { BattleReportStatistics } from './battleReportStatistics';
 import { CounterMissileHit } from './counterMissileHit';
 import { Fleet } from './fleet';
 import { LossRole } from './lossRole';
+import { Maneuver } from './maneuver';
 import { MissileMovement } from './missileMovement';
 import { MovementAction } from './movementAction';
 import { Player } from './player';
@@ -40,6 +41,10 @@ export interface BattleReport {
      * The movements which were done in this clash.
      */
     movementActions: Array<MovementAction>;
+    /**
+     * The maneuvers which were done in this clash.
+     */
+    maneuvers: Array<Maneuver>;
     /**
      * The hits against missile salvos.
      */

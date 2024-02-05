@@ -77,6 +77,8 @@ export * from './job';
 export * from './launcher';
 export * from './launcherDescriptor';
 export * from './lossRole';
+export * from './maneuver';
+export * from './maneuverElement';
 export * from './mass';
 export * from './miningFactors';
 export * from './missile';
