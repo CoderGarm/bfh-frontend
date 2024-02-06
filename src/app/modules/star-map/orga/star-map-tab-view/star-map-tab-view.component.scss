@@ -96,16 +96,44 @@
   stroke: cadetblue;
 }
 
-.missile-aura {
-  fill: none;
-}
-
 .friendly-aura {
-  stroke: green;
+  fill: none;
+
+  &.missile-aura {
+    stroke: hsl(227, 28%, 53%);
+  }
+
+  &.anti-missile-aura {
+    stroke: hsl(30, 28%, 53%);
+  }
+
+  &.weapon-aura {
+    stroke: hsl(276, 28%, 53%);
+  }
+
+  &.pd-aura {
+    stroke: hsl(351, 47%, 55%);
+  }
 }
 
 .enemy-aura {
-  stroke: red;
+  fill: none;
+
+  &.missile-aura {
+    stroke: hsl(351, 47%, 55%);
+  }
+
+  &.anti-missile-aura {
+    stroke: hsl(276, 28%, 53%);
+  }
+
+  &.weapon-aura {
+    stroke: hsl(30, 28%, 53%);
+  }
+
+  &.pd-aura {
+    stroke: hsl(285, 21%, 30%);
+  }
 }
 
 .course-plot {

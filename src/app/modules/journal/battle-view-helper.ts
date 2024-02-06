@@ -28,7 +28,6 @@ import {options} from "@svgdotjs/svg.panzoom.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
-import EDistanceMetricsEnum = EnumValueDto.EDistanceMetricsEnum;
 
 export class BattleViewHelper extends BasicViewHelper {
 
@@ -147,7 +146,7 @@ export class BattleViewHelper extends BasicViewHelper {
             return;
         }
 
-        const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound);
+        const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound)!;
         if (!!movementByFleet) {
             this.setFleetsInBattle(movementByFleet, activeRound, this.combatArenaData.maneuvers, this.combatArenaData.hitLogsByRound);
         }
@@ -356,7 +355,6 @@ export class BattleViewHelper extends BasicViewHelper {
 
         movementActions.forEach((move) => {
             let fleet = move.actor;
-
             let lengthOnTrack = this.convertToStandardMetric(move.lengthOnTrack);
             const maneuver = Array.from(maneuvers.values()).find(m => m.actor.fleet.id === fleet.fleet.id)!;
             const maneuverElements = maneuver.maneuverElements.sort((a, b) => a.sequenceNo - b.sequenceNo);
@@ -373,146 +371,101 @@ export class BattleViewHelper extends BasicViewHelper {
                 lengthToNow += curve.length();
                 if (lengthToNow >= lengthOnTrack) {
                     myTrack = curve;
-                    /*console.log(
-                        "lengthOnTrack", lengthOnTrack,
-                        "move.lengthOnTrack", move.lengthOnTrack,
-                        "seqNo", me.sequenceNo,
-                        "for", move.actor.owner.name
-                    )*/
                     break;
                 }
             }
 
-
-            lengthOnTrack = Number.parseFloat('0.' + move.combatRoundKey.combatRound.no) * totalLength//myTrack!.length();
-
-            const position = myTrack!.pointAt(lengthOnTrack);
-            if (move.actor.owner.id == 1) { // fixme weir issue -.-
-                console.log(
-                    "lengthOnTrack", lengthOnTrack,
-                    "position", position,
-                    "for", move.actor.owner.name)
-            }
-            let startOrbit: Orbit = this.createOrbitFromCoordinates(position);
-            let targetOrbit: Orbit = this.createOrbitFromCoordinates(myTrack!.pointAt(lengthOnTrack + 1));
-
-            if (!startOrbit || !targetOrbit) {
-                return;
-            }
-
-            const angle: number = Math.ceil(this.getAngle(startOrbit, targetOrbit));
-
-            let x = this.convertToStandardMetric(move.position.xCoordinate);
-            let y = this.convertToStandardMetric(move.position.yCoordinate);
-            let x1 = this.convertToStandardMetric(startOrbit.xCoordinate);
-            let y1 = this.convertToStandardMetric(startOrbit.yCoordinate);
-            let x2 = this.convertToStandardMetric(targetOrbit.xCoordinate);
-            let y2 = this.convertToStandardMetric(targetOrbit.yCoordinate);
+            const position: { x: number, y: number } = myTrack!.pointAt(lengthOnTrack);
+            let targetOrbit: { x: number, y: number } = myTrack!.pointAt(lengthOnTrack + 1);
 
             const g = this.getOrCreateMainSubLayerGroup();
-
+            // fixme replace by fleet marker only on bigger zoom
             g.circle()
-                .x(x)
-                .y(y)
-                .radius(1500)
-                .fill('white')
-
-            g.circle()
-                .x(x1)
-                .y(y1)
+                .x(position.x)
+                .y(position.y)
                 .radius(500)
                 .fill('green')
 
-            g.circle()
-                .x(x2)
-                .y(y2)
-                .radius(500)
-                .fill('yellow')
-
-            /*
-            console.log(
-                "round", move.combatRoundKey.combatRound.no,
-                "angle", angle, move.actor.owner.name)
-                */
-
+            const angle: number = Math.ceil(this.getAngle(position, targetOrbit));
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
-            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, -angle);
-
-            this.createAuraEllipse(move, startOrbit, angle);
-
+            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, position, angle);
+            this.createAuraEllipse(move, position, angle);
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
         });
     }
 
-    private createOrbitFromCoordinates(position: { x: number; y: number }): Orbit {
-        const orb: Orbit = {
-            xCoordinate: {
-                coordinate: position.x,
-                distanceMetric: EDistanceMetricsEnum.KM
-            },
-            yCoordinate: {
-                coordinate: position.y,
-                distanceMetric: EDistanceMetricsEnum.KM
-            }
-        };
-        return {
-            xCoordinate: {
-                coordinate: this.convertToStandardMetric(orb.xCoordinate),
-                distanceMetric: this.standardDistanceMetric
-            },
-            yCoordinate: {
-                coordinate: this.convertToStandardMetric(orb.xCoordinate),
-                distanceMetric: this.standardDistanceMetric
-            }
-        };
-    }
+    private createAuraEllipse(move: MovementAction, position: { x: number, y: number }, angle: number) {
+        // fixme create useful methods for it
+        let antiShipMissileRangeRadiusX: number = 0;
+        let antiShipMissileRangeRadiusY: number = 0;
+        let antiMissileMissileRangeRadiusX: number = 0;
+        let antiMissileMissileRangeRadiusY: number = 0;
+        let weaponRangeRadiusX: number = 0;
+        let weaponRangeRadiusY: number = 0;
 
-    private createAuraEllipse(move: MovementAction, position: Orbit, angle: number) {
+        let cx = position.x;
+        let cy = position.y;
 
-        let rx: number = 0;
-        let ry: number = 0;
-
-        let cx = this.convertToStandardMetric(position.xCoordinate);
-        let cy = this.convertToStandardMetric(position.yCoordinate);
-
-        // fixme modify center pos by angle
-        // fixme check stroke scaling
+        // fixme modify center pos by angle and check stroke scaling
         move.auraState.auraStates.forEach(aura => {
             const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange);
+            const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange);
+            const weaponRange = this.convertToStandardMetric(aura.weaponRange);
 
             const alignment = aura.alignment;
             switch (alignment) {
                 case "BOW":
-                    rx += antiShipMissileRange;
+                    antiShipMissileRangeRadiusX += antiShipMissileRange;
+                    antiShipMissileRangeRadiusX += antiMissileMissileRange;
+                    weaponRangeRadiusX += weaponRange;
                     break;
                 case "STERN":
-                    rx += antiShipMissileRange;
+                    antiShipMissileRangeRadiusX += antiShipMissileRange;
+                    antiMissileMissileRangeRadiusX += antiMissileMissileRange;
+                    antiShipMissileRangeRadiusX += weaponRange;
                     break;
                 case "BROADSIDE":
-                    ry += antiShipMissileRange;
+                    antiShipMissileRangeRadiusY += antiShipMissileRange;
+                    antiMissileMissileRangeRadiusY += antiMissileMissileRange;
+                    weaponRangeRadiusY += weaponRange;
                     break;
 
             }
-            const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange);
-            const weaponRange = this.convertToStandardMetric(aura.weaponRange);
         });
 
+        // fixme add text on hover - change fill on hover
         const g = this.getOrCreateMainSubLayerGroup();
-        g.ellipse(rx * 2, ry * 2)
+        g.ellipse(antiShipMissileRangeRadiusY * 2, antiShipMissileRangeRadiusX * 2)
             .cx(cx)
             .cy(cy)
-            .addClass('missile-aura')
             .addClass(BasicViewHelper.RELATIVE_STROKE)
             .addClass(move.actor.owner.id == this.userId ? 'friendly-aura' : 'enemy-aura')
-            .rotate(-angle, cx, cy);
+            .addClass('missile-aura')
+            .rotate(angle, cx, cy);
+
+        g.ellipse(antiMissileMissileRangeRadiusY * 2, antiMissileMissileRangeRadiusX * 2)
+            .cx(cx)
+            .cy(cy)
+            .addClass(BasicViewHelper.RELATIVE_STROKE)
+            .addClass(move.actor.owner.id == this.userId ? 'friendly-aura' : 'enemy-aura')
+            .addClass('anti-missile-aura')
+            .rotate(angle, cx, cy);
+
+        g.ellipse(weaponRangeRadiusY * 2, weaponRangeRadiusX * 2)
+            .cx(cx)
+            .cy(cy)
+            .addClass(BasicViewHelper.RELATIVE_STROKE)
+            .addClass(move.actor.owner.id == this.userId ? 'friendly-aura' : 'enemy-aura')
+            .addClass('weapon-aura')
+            .rotate(angle, cx, cy);
     }
 
-    private getAngle(origin: Orbit, destination: Orbit): number {
+    private getAngle(origin: { x: number, y: number }, destination: { x: number, y: number }): number {
         return NavigationCalculator.getAngleDegrees(
-            this.convertToStandardMetric(origin.xCoordinate),
-            this.convertToStandardMetric(origin.yCoordinate),
-            this.convertToStandardMetric(destination.xCoordinate),
-            this.convertToStandardMetric(destination.yCoordinate), true
+            origin.x,
+            origin.y,
+            destination.x,
+            destination.y, true
         );
     }
 
@@ -626,7 +579,7 @@ export class BattleViewHelper extends BasicViewHelper {
                 this.setWarshipPolygonById(warshipID, polygon);
             });
         }
-        this.canvas?.add(group);
+        this.getOrCreateMainSubLayerGroup().add(group);
     }
 
     private setWarshipPolygonById(id: string, polygon: Polygon) {
@@ -642,7 +595,7 @@ export class BattleViewHelper extends BasicViewHelper {
         return this.warshipPolygonById.get(id);
     }
 
-    private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, angle: number): Array<Array<ArrayXY[]>> {
+    private defineWarshipHullPoints(warShips: AbstractId[], orbit: { x: number, y: number }, angle: number): Array<Array<ArrayXY[]>> {
         const yShift = 7.5;
         const xShift = 37.5;
 
@@ -650,8 +603,8 @@ export class BattleViewHelper extends BasicViewHelper {
         let horizontalLift = 0;
         let verticalLift = 0;
 
-        let x = this.convertToStandardMetric(orbit.xCoordinate);
-        let y = this.convertToStandardMetric(orbit.yCoordinate);
+        let x = orbit.x;
+        let y = orbit.y;
         let modifiedX = (warShips.length / 2 * xShift);
         let modifiedY = (warShips.length / 2 * yShift) + yShift;
         let upDownY = y < 0 ? -1 : 0;
