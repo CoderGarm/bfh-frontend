@@ -11,7 +11,9 @@
  */
 import { AuraState } from './auraState';
 import { CombatRoundKey } from './combatRoundKey';
+import { Distance } from './distance';
 import { FleetMarker } from './fleetMarker';
+import {Orbit} from "./orbit";
 
 /**
  * .
@@ -24,6 +26,8 @@ export interface MovementAction {
      */
     movementType: MovementAction.MovementTypeEnum;
     auraState: AuraState;
+    lengthOnTrack: Distance;
+    position: Orbit;
 }
 export namespace MovementAction {
     export type MovementTypeEnum = 'REDUCE_DISTANCE' | 'INCREASE_DISTANCE' | 'HOLD_DISTANCE' | 'IMPELLER_WEDGE_PROTECTION' | 'OFFENSIVE_ROLL' | 'EVASION_MOVEMENT';

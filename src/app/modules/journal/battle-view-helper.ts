@@ -1,13 +1,16 @@
-import {ArrayXY, CurveCommand, LineCommand, PathArrayAlias, Polygon} from "@svgdotjs/svg.js";
+import {ArrayXY, CurveCommand, LineCommand, Path, PathArrayAlias, Polygon} from "@svgdotjs/svg.js";
 import {
     AbstractId,
     BattleReport,
     CounterMissileHit,
     Distance,
+    EnumValueDto,
     FleetMarker,
     FleetOrbit,
     HitLog,
     Launcher,
+    Maneuver,
+    ManeuverElement,
     MissileMovement,
     MovementAction,
     Orbit,
@@ -25,6 +28,7 @@ import {options} from "@svgdotjs/svg.panzoom.js";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
+import EDistanceMetricsEnum = EnumValueDto.EDistanceMetricsEnum;
 
 export class BattleViewHelper extends BasicViewHelper {
 
@@ -50,6 +54,7 @@ export class BattleViewHelper extends BasicViewHelper {
     private latestWarshipPositionById: Map<String, ArrayXY> = new Map<String, ArrayXY>();
     private warshipPolygonById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
     private missileSalvoPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
+    private maneuverPathByIdFleet: Map<string, Path> = new Map<string, Path>();
 
     hoveredWarship?: AbstractId;
     clickedFleet?: FleetMarker;
@@ -65,32 +70,52 @@ export class BattleViewHelper extends BasicViewHelper {
     }
 
     protected drawCourses() {
-        if (!this.isLocalhost) {
-            return;
-        }
 
         const g = this.getOrCreateFleetConfirmedMoveGroup();
-        Array.from(this.combatArenaData!.maneuvers.values()).map(m => m.maneuverElements.forEach(me => {
+        Array.from(this.combatArenaData!.maneuvers.values()).map(m => m.maneuverElements
+            .sort((a, b) => a.sequenceNo - b.sequenceNo)
+            .forEach(me => {
 
-            const p1 = me.p1;
-            const cp1 = me.cp1;
-            const cp2 = me.cp2;
-            const p2 = me.p2;
-            const c1: LineCommand = [
-                'M',
-                this.convertToStandardMetric(p1.xCoordinate), this.convertToStandardMetric(p1.yCoordinate),
-            ];
-            const c2: CurveCommand = [
-                'C',
-                this.convertToStandardMetric(cp1.xCoordinate), this.convertToStandardMetric(cp1.yCoordinate),
-                this.convertToStandardMetric(cp2.xCoordinate), this.convertToStandardMetric(cp2.yCoordinate),
-                this.convertToStandardMetric(p2.xCoordinate), this.convertToStandardMetric(p2.yCoordinate)
-            ];
+                const p1 = me.p1;
+                const cp1 = me.cp1;
+                const cp2 = me.cp2;
+                const p2 = me.p2;
+                const c1: LineCommand = [
+                    'M',
+                    this.convertToStandardMetric(p1.xCoordinate), this.convertToStandardMetric(p1.yCoordinate),
+                ];
+                const c2: CurveCommand = [
+                    'C',
+                    this.convertToStandardMetric(cp1.xCoordinate), this.convertToStandardMetric(cp1.yCoordinate),
+                    this.convertToStandardMetric(cp2.xCoordinate), this.convertToStandardMetric(cp2.yCoordinate),
+                    this.convertToStandardMetric(p2.xCoordinate), this.convertToStandardMetric(p2.yCoordinate)
+                ];
 
-            g.path([c1, c2])
-                .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
-                .addClass(BasicViewHelper.RELATIVE_STROKE);
-        }));
+                const maneuverElementKey = BattleViewHelper.getManeuverElementKey(me);
+                const maneuverCurve = g
+                    .path([c1, c2])
+                    .id(maneuverElementKey)
+                    .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
+                    .addClass(BasicViewHelper.RELATIVE_STROKE);
+
+                this.maneuverPathByIdFleet.set(maneuverElementKey, maneuverCurve);
+            }));
+    }
+
+    private static getManeuverElementKey(maneuverElement: ManeuverElement) {
+        return maneuverElement.maneuver.id + '-' + maneuverElement.sequenceNo;
+    }
+
+    private static getIDsByManeuverSequenceKey(key: string): { idManeuver: number, maneuverSequenceNo: number } | undefined {
+        if (!key.includes('-')) {
+            return undefined;
+        }
+        const split = key.split('-');
+        return {idManeuver: Number.parseFloat(split[0]), maneuverSequenceNo: Number.parseFloat(split[1])};
+    }
+
+    private getManeuverCurveByElement(maneuverElement: ManeuverElement): Path {
+        return this.maneuverPathByIdFleet.get(BattleViewHelper.getManeuverElementKey(maneuverElement))!;
     }
 
     protected clickForFleet = (event: PointerEvent) => {
@@ -112,11 +137,10 @@ export class BattleViewHelper extends BasicViewHelper {
         if (!!this.canvas) {
             // remove all elements from canvas a little bit more performant
             this.getOrCreateMainSubLayerGroup().node.innerHTML = '';
-
         }
     }
 
-    setActiveRound(activeRound: number | undefined, starSystem: StarSystem) {
+    setActiveRound(activeRound: number | undefined) {
         this.clearData();
 
         if (!activeRound || !this.combatArenaData) {
@@ -125,7 +149,7 @@ export class BattleViewHelper extends BasicViewHelper {
 
         const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound);
         if (!!movementByFleet) {
-            this.setFleetsInBattle(movementByFleet, activeRound, this.combatArenaData.hitLogsByRound);
+            this.setFleetsInBattle(movementByFleet, activeRound, this.combatArenaData.maneuvers, this.combatArenaData.hitLogsByRound);
         }
         let missileMovements = this.combatArenaData.missileMovementsByRound.get(activeRound);
         if (!!missileMovements) {
@@ -327,28 +351,72 @@ export class BattleViewHelper extends BasicViewHelper {
 
     private setFleetsInBattle(movementActions: MovementAction[],
                               activeRound: number,
+                              maneuvers: Map<FleetMarker, Maneuver>,
                               hitLogsByRound: Map<number, HitLog[]>) {
-        const baseOrbit = this.createBaseOrbit();
 
-        /* fixme umstellen auf bezier
         movementActions.forEach((move) => {
             let fleet = move.actor;
-            let startOrbit = move.origin;
-            let targetOrbit = move.interimDestination;
+
+            let lengthOnTrack = this.convertToStandardMetric(move.lengthOnTrack);
+            const maneuver = Array.from(maneuvers.values()).find(m => m.actor.fleet.id === fleet.fleet.id)!;
+            const maneuverElements = maneuver.maneuverElements.sort((a, b) => a.sequenceNo - b.sequenceNo);
+
+            const totalLength = maneuverElements.map(me => {
+                const curve = this.getManeuverCurveByElement(me);
+                return curve.length();
+            }).reduce((sum, current) => sum + current, 0);
+
+            let lengthToNow: number = 0;
+            let myTrack: Path | undefined;
+            for (let me of maneuverElements) {
+                const curve = this.getManeuverCurveByElement(me);
+                lengthToNow += curve.length();
+                if (lengthToNow >= lengthOnTrack) {
+                    myTrack = curve;
+                    /*console.log(
+                        "lengthOnTrack", lengthOnTrack,
+                        "move.lengthOnTrack", move.lengthOnTrack,
+                        "seqNo", me.sequenceNo,
+                        "for", move.actor.owner.name
+                    )*/
+                    break;
+                }
+            }
+
+
+            lengthOnTrack = Number.parseFloat('0.' + move.combatRoundKey.combatRound.no) * totalLength//myTrack!.length();
+
+            const position = myTrack!.pointAt(lengthOnTrack);
+            if (move.actor.owner.id == 1) { // fixme weir issue -.-
+                console.log(
+                    "lengthOnTrack", lengthOnTrack,
+                    "position", position,
+                    "for", move.actor.owner.name)
+            }
+            let startOrbit: Orbit = this.createOrbitFromCoordinates(position);
+            let targetOrbit: Orbit = this.createOrbitFromCoordinates(myTrack!.pointAt(lengthOnTrack + 1));
+
             if (!startOrbit || !targetOrbit) {
                 return;
             }
 
-            const angle: number = this.getAngle(startOrbit, targetOrbit);
+            const angle: number = Math.ceil(this.getAngle(startOrbit, targetOrbit));
 
-            // fixme die kurve muss geglättet werden - alternativ wird der kurs als folge von bezierkurven betrachtet
-
+            let x = this.convertToStandardMetric(move.position.xCoordinate);
+            let y = this.convertToStandardMetric(move.position.yCoordinate);
             let x1 = this.convertToStandardMetric(startOrbit.xCoordinate);
             let y1 = this.convertToStandardMetric(startOrbit.yCoordinate);
             let x2 = this.convertToStandardMetric(targetOrbit.xCoordinate);
             let y2 = this.convertToStandardMetric(targetOrbit.yCoordinate);
 
             const g = this.getOrCreateMainSubLayerGroup();
+
+            g.circle()
+                .x(x)
+                .y(y)
+                .radius(1500)
+                .fill('white')
+
             g.circle()
                 .x(x1)
                 .y(y1)
@@ -361,16 +429,42 @@ export class BattleViewHelper extends BasicViewHelper {
                 .radius(500)
                 .fill('yellow')
 
-
-            console.log(move.combatRoundKey.combatRound.no, angle, move.actor.owner.name)
+            /*
+            console.log(
+                "round", move.combatRoundKey.combatRound.no,
+                "angle", angle, move.actor.owner.name)
+                */
 
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
-            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, baseOrbit, -angle);
+            let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, startOrbit, -angle);
 
             this.createAuraEllipse(move, startOrbit, angle);
 
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
-        });*/
+        });
+    }
+
+    private createOrbitFromCoordinates(position: { x: number; y: number }): Orbit {
+        const orb: Orbit = {
+            xCoordinate: {
+                coordinate: position.x,
+                distanceMetric: EDistanceMetricsEnum.KM
+            },
+            yCoordinate: {
+                coordinate: position.y,
+                distanceMetric: EDistanceMetricsEnum.KM
+            }
+        };
+        return {
+            xCoordinate: {
+                coordinate: this.convertToStandardMetric(orb.xCoordinate),
+                distanceMetric: this.standardDistanceMetric
+            },
+            yCoordinate: {
+                coordinate: this.convertToStandardMetric(orb.xCoordinate),
+                distanceMetric: this.standardDistanceMetric
+            }
+        };
     }
 
     private createAuraEllipse(move: MovementAction, position: Orbit, angle: number) {
@@ -548,7 +642,7 @@ export class BattleViewHelper extends BasicViewHelper {
         return this.warshipPolygonById.get(id);
     }
 
-    private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, centerOrbit: Orbit, angle: number): Array<Array<ArrayXY[]>> {
+    private defineWarshipHullPoints(warShips: AbstractId[], orbit: Orbit, angle: number): Array<Array<ArrayXY[]>> {
         const yShift = 7.5;
         const xShift = 37.5;
 
@@ -560,7 +654,7 @@ export class BattleViewHelper extends BasicViewHelper {
         let y = this.convertToStandardMetric(orbit.yCoordinate);
         let modifiedX = (warShips.length / 2 * xShift);
         let modifiedY = (warShips.length / 2 * yShift) + yShift;
-        let upDownY = y < this.convertToStandardMetric(centerOrbit.yCoordinate) ? -1 : 0;
+        let upDownY = y < 0 ? -1 : 0;
         // todo build groups of three ships (one is a dot, two is a line) and form a triangle
         //  build groups of triangles and place them in a triangle by permuting top and bottom (one or two items in the top)
 

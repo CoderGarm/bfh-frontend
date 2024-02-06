@@ -54,7 +54,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         if (changes[this.activeRoundInputDefinition]) {
             if (!!this.starSystem) {
-                this.setActiveRound(this.activeRound, this.starSystem);
+                this.setActiveRound(this.activeRound);
                 let orbit = this.battleReport!.battleReportStatistics.orbit;
                 this.setViewBoxByFleetOrbit(orbit);
                 this.calculateMapScale();

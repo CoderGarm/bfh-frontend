@@ -116,7 +116,7 @@ export class BattleReportComponent extends ActionChartHelper implements AfterVie
     }
 
     formatLabel(value: number) {
-        return "# " + value;
+        return '' + value;
     }
 
     slide(val: number | null) {
