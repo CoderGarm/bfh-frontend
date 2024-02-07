@@ -48,6 +48,9 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
 
         if (!!changes['planets']) {
             this.fetchCounter = this.planets.length;
+            // fixme countdown funzt nicht immer
+            // fixme carrier aufklappen
+            // fixme planet icons for possible constructions
             this.planets
                 .sort((a, b) => new Date(a.colonizedAt!).getTime() - new Date(b.colonizedAt!).getTime())
                 .forEach(planet => {
