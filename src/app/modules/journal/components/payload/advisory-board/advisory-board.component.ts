@@ -28,7 +28,7 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
     }
 
     ngAfterViewInit() {
-        // fixme rollback this.spinner.show('advisory-spinner');
+        this.spinner.show('advisory-spinner');
 
         let sub = this.advisoryService.getPirateHuntAdvice().subscribe(resp => this.pirateHunt = resp);
         this.subscriptions.push(sub);
@@ -50,9 +50,7 @@ export class AdvisoryBoardComponent extends SubscriptionManager implements After
             }
 
             this.nothing = !resp.constructionPossible && !resp.researchPossible && !resp.shipyardPossible && !resp.suggestedResearch && !resp.suggestedBuilding && !this.missionResults?.newBattleReports;
-            setTimeout(() => {
-                this.spinner.hide('advisory-spinner');
-            }, 1000);
+            this.spinner.hide('advisory-spinner');
             this.spinnerActive = false;
         });
         this.subscriptions.push(sub);
