@@ -132,6 +132,10 @@ export class BattleViewHelper extends BasicViewHelper {
         this.hoveredWarship = this.getWarshipByEvent(event);
     }
 
+    protected onZoom = (event: Event) => {
+        console.log("fixme please repaint") // fixme
+    }
+
     clearData() {
         if (!!this.canvas) {
             // remove all elements from canvas a little bit more performant

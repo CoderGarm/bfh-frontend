@@ -42,6 +42,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         this.createCanvas("combat-arena", '#arena');
         this.canvas!
             .click(this.clickForFleet)
+            .on('zoom', this.onZoom)
             .mouseover(this.mouseoverForWarship);
 
         this.getOrCreateMainSubLayerGroup()
