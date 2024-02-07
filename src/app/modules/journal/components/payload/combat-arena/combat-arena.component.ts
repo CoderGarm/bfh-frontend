@@ -40,7 +40,13 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
 
     ngAfterViewInit(): void {
         this.createCanvas("combat-arena", '#arena');
-        this.canvas!.click(this.clickForFleet).mouseover(this.mouseoverForWarship);
+        this.canvas!
+            .click(this.clickForFleet)
+            .mouseover(this.mouseoverForWarship);
+
+        this.getOrCreateMainSubLayerGroup()
+            .mouseover(this.mouseoverForEllipse)
+            .mouseout(this.mouseoutForEllipse);
     }
 
     ngOnChanges(changes: SimpleChanges) {

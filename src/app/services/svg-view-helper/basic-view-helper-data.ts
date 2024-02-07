@@ -39,6 +39,7 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly ICON_ID_MARKER: string = "iconId-";
     protected static readonly MOVABLE_STATE_DOT_MARKER: string = "movableStateDot";
     protected static readonly TEXT_MARKER: string = "svg-text";
+    protected static readonly TEXT_FILL_MARKER: string = "svg-text-fill";
     protected static readonly FLEET_SHARK_POLYGON_MARKER = "fleetSharkIcon";
     protected static readonly ROUND_CAP_MARKER = "roundCap";
     protected static readonly ROUND_CAP_SUFFIX = "-roundCapSuffix";

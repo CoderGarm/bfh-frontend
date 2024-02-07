@@ -1344,4 +1344,9 @@ export class BasicViewHelper extends BasicViewHelperData {
                 }
             });
     }
+
+    getSvgCoordinateFromPointerEvent(event: PointerEvent) {
+        let p = new DOMPoint(event.clientX, event.clientY).matrixTransform(this.canvas!.screenCTM().inverse());
+        return {x: p.x, y: p.y};
+    }
 }

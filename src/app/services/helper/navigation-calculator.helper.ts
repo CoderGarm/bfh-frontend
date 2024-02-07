@@ -209,6 +209,13 @@ export class NavigationCalculator {
         return NavigationCalculator.getAngle(x1, -y1, x2, -y2);
     }
 
+    static moveAbout(x: number, y: number, angle: number, distance: number): { x: number, y: number } {
+        const radians = angle * (Math.PI / 180);
+        const x1 = x + (Math.sin(radians) * distance);
+        const y1 = y - (Math.cos(radians) * distance);
+        return {x: x1, y: y1};
+    }
+
     static rotatePoint(center: ArrayXY, angle: number, toRotate: ArrayXY): ArrayXY {
         let s = Math.sin(NavigationCalculator.toRad(angle));
         let c = Math.cos(NavigationCalculator.toRad(angle));

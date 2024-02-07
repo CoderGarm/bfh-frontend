@@ -96,43 +96,93 @@
   stroke: cadetblue;
 }
 
+.aura {
+  fill: transparent;
+}
+
 .friendly-aura {
-  fill: none;
 
   &.missile-aura {
-    stroke: hsl(227, 28%, 53%);
+    $color: hsl(227, 28%, 53%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 
   &.anti-missile-aura {
-    stroke: hsl(30, 28%, 53%);
+    $color: hsl(30, 28%, 53%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 
   &.weapon-aura {
-    stroke: hsl(276, 28%, 53%);
+    $color: hsl(276, 28%, 53%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 
   &.pd-aura {
-    stroke: hsl(351, 47%, 55%);
+    $color: hsl(351, 47%, 55%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 }
 
 .enemy-aura {
-  fill: none;
 
   &.missile-aura {
-    stroke: hsl(351, 47%, 55%);
+    $color: hsl(351, 47%, 55%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 
   &.anti-missile-aura {
-    stroke: hsl(276, 28%, 53%);
+    $color: hsl(276, 28%, 53%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 
   &.weapon-aura {
-    stroke: hsl(30, 28%, 53%);
+    $color: hsl(30, 28%, 53%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 
   &.pd-aura {
-    stroke: hsl(285, 21%, 30%);
+    $color: hsl(285, 21%, 30%);
+    stroke: $color;
+
+    &.aura-hovered {
+      fill: $color;
+      opacity: 0.3;
+    }
   }
 }
 
@@ -149,6 +199,11 @@
 .svg-text {
   fill: var(--map-text-color);
   font-size: medium;
+}
+
+.svg-text-fill {
+  fill: var(--map-text-color);
+  pointer-events: none;
 }
 
 .notch-container {
