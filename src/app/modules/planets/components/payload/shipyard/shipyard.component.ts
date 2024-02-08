@@ -196,7 +196,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                     } else {
                         this.notificationService.open("Construction finished.")
                     }
-                    this.planetsNotificationService.pushStartedConstruction();
+                    this.planetsNotificationService.pushStartedConstruction(this.selectedPlanet!.idPlanet);
                     this.fleetEventservice.reload();
                 } else {
                     this.notificationService.open("This was not possible.")
@@ -217,7 +217,7 @@ export class ShipyardComponent extends SubscriptionManager implements AfterConte
                     } else {
                         this.notificationService.open("Construction finished.")
                     }
-                    this.planetsNotificationService.pushStartedConstruction();
+                    this.planetsNotificationService.pushStartedConstruction(this.selectedPlanet!.idPlanet);
                 } else {
                     this.notificationService.open("This was not possible.")
                 }

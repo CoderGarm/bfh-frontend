@@ -310,7 +310,7 @@ export class GroundConstructComponent extends SubscriptionManager implements OnC
                         this.notificationService.open("Construction of " + construction.building.name + " finished.");
                     }
                     this.fetchPlanet();
-                    this.planetsNotificationService.pushStartedConstruction();
+                    this.planetsNotificationService.pushStartedConstruction(this.planet!.idPlanet);
                 } else {
                     this.notificationService.open("This was not possible.");
                 }

@@ -6,10 +6,11 @@
                          [selected]="isSelected(planet.idPlanet)"
                          matTooltipDisabled
                          class="sidenav-item">
-            <span matListItemTitle>
-                <app-icon matListItemAvatar
-                          [icon]="planet.planetType"></app-icon>
-                {{ planet.name }}</span>
+
+            <app-icon style="width: 16px;" matListItemAvatar [icon]="planet.planetType"></app-icon>
+            <div matListItemTitle>{{ planet.name }}</div>
+            <mat-icon *ngIf="groundConstructionPossibleByPlanetId.get(planet.idPlanet)" inline>construction</mat-icon>
+            <mat-icon *ngIf="shipYardPossibleByPlanetId.get(planet.idPlanet)" inline>rocket</mat-icon>
         </mat-list-option>
     </div>
 </mat-selection-list>

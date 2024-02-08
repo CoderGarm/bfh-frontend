@@ -8,13 +8,13 @@ import {Planet} from "../../services/swagger";
 @Injectable()
 export class PlanetsEventService {
 
-    private constructionStartsEmitter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private constructionStartsEmitter: BehaviorSubject<number> = new BehaviorSubject<number>(-1);
 
     /**
      * Tell the others that some kind of construction was started.
      */
-    public pushStartedConstruction() {
-        this.constructionStartsEmitter.next(true);
+    public pushStartedConstruction(idPlanet: number) {
+        this.constructionStartsEmitter.next(idPlanet);
     }
 
     /**
