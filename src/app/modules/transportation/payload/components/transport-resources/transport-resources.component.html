@@ -8,6 +8,19 @@
         </mat-button-toggle>
     </mat-button-toggle-group>
 
+    <div class="expander-control width-fit-content height-fit-content">
+        <div>
+            <button mat-icon-button (click)="expandAll()">
+                <mat-icon class="centered-icon">unfold_more</mat-icon>
+            </button>
+        </div>
+        <div>
+            <button mat-icon-button (click)="closeAll()">
+                <mat-icon class="centered-icon">unfold_less</mat-icon>
+            </button>
+        </div>
+    </div>
+
     <div cdkDropListGroup *ngIf="!showStepper" class="ship-dropbox inner-list">
         <div class="fleet-container" *ngFor="let planet of planets">
             <div cdkDropList
@@ -45,7 +58,10 @@
     </div>
 
     <mat-accordion multi *ngIf="showStepper">
-        <mat-expansion-panel *ngFor="let planet of sortedPlanets" class="margin-bottom">
+        <mat-expansion-panel *ngFor="let planet of sortedPlanets" class="margin-bottom"
+                             (opened)="expandedPlanetId.push(planet.idPlanet)"
+                             (closed)="expandedPlanetId.splice(expandedPlanetId.indexOf(planet.idPlanet), 1)"
+                             [expanded]="expandedPlanetId.includes(planet.idPlanet)">
             <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="{{ 'transportation.resources.help' | translate }}">
                     <app-icon matListItemAvatar png24px planet></app-icon>

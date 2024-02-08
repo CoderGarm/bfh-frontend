@@ -25,10 +25,15 @@ mat-expansion-panel {
   position: relative;
 }
 
+.expander-control {
+  position: fixed;
+  left: calc(120px + 200px);
+}
+
 .mat-button-toggle-group {
   transform: rotate(-90deg);
   position: fixed;
-  top: 300px;
+  top: 400px;
   left: 120px;
 }
 

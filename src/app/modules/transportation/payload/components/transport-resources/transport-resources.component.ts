@@ -59,6 +59,7 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
 
     showStepper: boolean = true;
     dragDisabled: boolean = false;
+    expandedPlanetId: number[] = [];
 
     planetsBySystem: Map<number, number[]> = new Map<number, number[]>();
     sortedPlanetsBySystem: Map<AbstractId, Planet[]> = new Map<AbstractId, Planet[]>();
@@ -192,5 +193,19 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
             });
         });
         this.subscriptions.push(sub);
+    }
+
+    expandAll() {
+        const allPlanets = this.sortedPlanets.map(p => p.idPlanet);
+        for (let i = 0; i < allPlanets.length - 1; i++) {
+            const number = allPlanets[i];
+            if (!this.expandedPlanetId.includes(number)) {
+                this.expandedPlanetId.push(number);
+            }
+        }
+    }
+
+    closeAll() {
+        this.expandedPlanetId = [];
     }
 }
