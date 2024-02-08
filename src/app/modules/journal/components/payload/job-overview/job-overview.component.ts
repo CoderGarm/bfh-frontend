@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {EnumValueDto, Job, JobApiService, Planet} from "../../../../../services/swagger";
+import {AbstractId, EnumValueDto, Job, JobApiService, Planet} from "../../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
@@ -40,6 +40,10 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
 
     fetchCounter: number = 0;
 
+    planetsBySystem: Map<number, number[]> = new Map<number, number[]>();
+    sortedPlanetsBySystem: Map<AbstractId, Planet[]> = new Map<AbstractId, Planet[]>();
+    sortedPlanets: Planet[] = [];
+
     constructor(private jobService: JobApiService) {
         super();
     }
@@ -49,7 +53,6 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
         if (!!changes['planets']) {
             this.fetchCounter = this.planets.length;
             // fixme countdown funzt nicht immer
-            // fixme carrier aufklappen
             // fixme planet icons for possible constructions
             this.planets
                 .sort((a, b) => new Date(a.colonizedAt!).getTime() - new Date(b.colonizedAt!).getTime())
@@ -95,6 +98,24 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
 
     private organizeJobsPerPlanet() {
         this.planetaryJobs = [];
+        this.planets.forEach(p => {
+            const idStarSystem = p.starSystem.id;
+            const idPlanet = p.idPlanet;
+            let planets = this.planetsBySystem.get(idStarSystem);
+            if (!planets) {
+                planets = [];
+            }
+            planets.push(idPlanet);
+            this.planetsBySystem.set(idStarSystem, planets);
+        });
+
+        this.planetsBySystem.forEach((planetIDs, idStarSystem) => {
+            const planets = this.planets.filter(p => planetIDs.includes(p.idPlanet));
+            const starSystem = planets[0].starSystem;
+            this.sortedPlanetsBySystem.set(starSystem, planets);
+            this.sortedPlanets.push(...planets);
+        });
+
         this.planets.forEach(p => this.planetaryJobs.push({
             idPlanet: p.idPlanet,
             planetName: p.name,
@@ -131,6 +152,7 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
             }
         });
         this.dataSource.data = this.planetaryJobs;
+        this.sortDataSource();
     }
 
     private isShipyardPresent(facilityPlanet: Planet) {
@@ -145,5 +167,13 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
             return false;
         }
         return shipyard.filter(job => job.priority === Job.PriorityEnum.PRIORITY).sort((a, b) => a.pointsLeft - b.pointsLeft).indexOf(job) == 0;
+    }
+
+    sortDataSource() {
+        this.dataSource.data.sort((a: PlanetaryJobs, b: PlanetaryJobs) => {
+            const o1 = this.sortedPlanets.findIndex(p => p.idPlanet == a.idPlanet);
+            const o2 = this.sortedPlanets.findIndex(p => p.idPlanet == b.idPlanet);
+            return o1 - o2;
+        });
     }
 }

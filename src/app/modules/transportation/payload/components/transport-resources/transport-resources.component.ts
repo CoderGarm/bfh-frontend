@@ -1,6 +1,6 @@
-import {Component, Input, OnInit, ViewChildren} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChildren} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {EnumValueDto, FleetApiService, Planet, PlanetApiService, ResourceDeposit, WarShip} from "../../../../../services/swagger";
+import {AbstractId, EnumValueDto, FleetApiService, Planet, PlanetApiService, ResourceDeposit, WarShip} from "../../../../../services/swagger";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
 import {ResourceHelper} from "../../../../../services/helper/resource.helper";
 import {MatStepper} from "@angular/material/stepper";
@@ -37,7 +37,7 @@ enum Items {
     templateUrl: './transport-resources.component.html',
     styleUrls: ['./transport-resources.component.scss']
 })
-export class TransportResourcesComponent extends SubscriptionManager implements OnInit {
+export class TransportResourcesComponent extends SubscriptionManager implements OnInit, OnChanges {
 
     @Input()
     planets: Planet[] = [];
@@ -60,11 +60,37 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     showStepper: boolean = true;
     dragDisabled: boolean = false;
 
+    planetsBySystem: Map<number, number[]> = new Map<number, number[]>();
+    sortedPlanetsBySystem: Map<AbstractId, Planet[]> = new Map<AbstractId, Planet[]>();
+    sortedPlanets: Planet[] = [];
+
     constructor(private planetService: PlanetApiService,
                 private fleetService: FleetApiService,
                 private snackbar: SnackbarNotificationService,
                 private dialog: MatDialog) {
         super();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!!changes['planets']) {
+            this.planets.forEach(p => {
+                const idStarSystem = p.starSystem.id;
+                const idPlanet = p.idPlanet;
+                let planets = this.planetsBySystem.get(idStarSystem);
+                if (!planets) {
+                    planets = [];
+                }
+                planets.push(idPlanet);
+                this.planetsBySystem.set(idStarSystem, planets);
+            });
+
+            this.planetsBySystem.forEach((planetIDs, idStarSystem) => {
+                const planets = this.planets.filter(p => planetIDs.includes(p.idPlanet));
+                const starSystem = planets[0].starSystem;
+                this.sortedPlanetsBySystem.set(starSystem, planets);
+                this.sortedPlanets.push(...planets);
+            });
+        }
     }
 
     ngOnInit(): void {

@@ -15,7 +15,7 @@ export class FileUploadComponent {
     @Output()
     fileOutput: EventEmitter<any[]> = new EventEmitter<any[]>();
 
-    /* fixme use https://www.npmjs.com/package/ngx-image-compress */
+    /* todo use https://www.npmjs.com/package/ngx-image-compress */
 
     /**
      * on file drop handler

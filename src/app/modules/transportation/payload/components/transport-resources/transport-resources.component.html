@@ -45,7 +45,7 @@
     </div>
 
     <mat-accordion multi *ngIf="showStepper">
-        <mat-expansion-panel *ngFor="let planet of planets" class="margin-bottom">
+        <mat-expansion-panel *ngFor="let planet of sortedPlanets" class="margin-bottom">
             <mat-expansion-panel-header>
                 <mat-panel-title matTooltip="{{ 'transportation.resources.help' | translate }}">
                     <app-icon matListItemAvatar png24px planet></app-icon>
