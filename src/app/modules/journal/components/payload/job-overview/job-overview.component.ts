@@ -52,7 +52,6 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
 
         if (!!changes['planets']) {
             this.fetchCounter = this.planets.length;
-            // fixme countdown funzt nicht immer
             // fixme planet icons for possible constructions
             this.planets
                 .sort((a, b) => new Date(a.colonizedAt!).getTime() - new Date(b.colonizedAt!).getTime())
@@ -86,9 +85,9 @@ export class JobOverviewComponent extends SubscriptionManager implements OnChang
                                     jobsPerPlanet.shipyard.push(job);
                                 }
                             }
-                            this.fetchCounter--;
                             this.dataSource.data = this.planetaryJobs;
                         });
+                        this.fetchCounter--;
                     });
                     this.subscriptions.push(sub);
                 });
