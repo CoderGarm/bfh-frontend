@@ -37,7 +37,8 @@
 
 .coordCross {
   stroke: darkgoldenrod;
-  stroke-width: 0.05%;
+  stroke-width: 0.25px;
+  vector-effect: non-scaling-stroke;
   opacity: 0.4;
   filter: alpha(opacity=40);
 }
@@ -188,9 +189,14 @@
 
 .course-plot {
   stroke: darkorange;
-  stroke-dasharray: 100;
   fill: none;
+  opacity: 0.5;
 }
+
+.dashed-course-plot {
+  stroke-dasharray: 100;
+}
+
 
 .hyper-limit {
   stroke: darkorange;
@@ -220,7 +226,8 @@
 .circle-cycle {
   stroke: orange;
   stroke-dasharray: 10;
-  stroke-width: 0.2%;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
 }
 
 .legend-un-highlighted {

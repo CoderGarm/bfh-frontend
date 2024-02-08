@@ -1246,7 +1246,8 @@ export class BasicViewHelper extends BasicViewHelperData {
                 .id(`course-plot-of-${idJoin}`)
                 .fill(BasicViewHelper.NONE_FILL_COLOR)
                 .addClass(BasicViewHelperData.COURSE_PLOT_MARKER_ID_PREFIX + moveHash)
-                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER);
+                .addClass(BasicViewHelperData.COURSE_PLOT_MARKER)
+                .addClass('dashed-course-plot');
 
             polyline
                 .animate(10000, 0, 'after').css('stroke-dashoffset', '-1000')
