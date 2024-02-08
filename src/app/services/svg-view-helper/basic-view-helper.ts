@@ -843,10 +843,6 @@ export class BasicViewHelper extends BasicViewHelperData {
         }
     }
 
-    public static calculateDistance(firstCoordinate: number, secondCoordinate: number): number {
-        return Math.sqrt(Math.pow(firstCoordinate, 2) + Math.pow(secondCoordinate, 2));
-    }
-
     protected setOrbits(orbits: OrbitDefinition[]) {
         super.setOrbits(orbits);
         this.createPolarCoordinateSystem();
@@ -874,7 +870,7 @@ export class BasicViewHelper extends BasicViewHelperData {
 
     private createPolarCoordinateSystem() {
         let {x, y} = this.getWidestExpanse();
-        this.radiusOfCoordinateCross = BasicViewHelper.calculateDistance(x, y);
+        this.radiusOfCoordinateCross = NavigationCalculator.calculateDistance(x, y);
         this.radiusOfCoordinateCross *= 1.1;
 
         this.createLocalPolarCoordinateSystem(0, 0, this.radiusOfCoordinateCross, 'main');

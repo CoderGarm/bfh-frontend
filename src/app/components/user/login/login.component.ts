@@ -1,4 +1,4 @@
-import {AuthRequest, PublicResourcesApiService} from '../../../services/swagger';
+import {AuthRequest, EnumValueDto, PublicResourcesApiService} from '../../../services/swagger';
 import {AuthenticationService} from '../../../services/authentication';
 
 import {AfterViewInit, Component} from '@angular/core';

@@ -173,20 +173,17 @@ export class NavigationCalculator {
         return originalMetricValue! / targetMetricValue!;
     }
 
-    static getRestrictedAngle(x1: number, y1: number, x2: number, y2: number): number {
-        let dy = y2 - y1;
-        let dx = x2 - x1;
-        // rads to degs, range (-180, 180]
-        return Math.atan2(dy, dx) * 180 / Math.PI;
+    static calculateDistance(firstCoordinate: number, secondCoordinate: number): number {
+        return Math.sqrt(Math.pow(firstCoordinate, 2) + Math.pow(secondCoordinate, 2));
     }
 
-    static getAngle(x1: number, y1: number, x2: number, y2: number): number {
-        let theta = NavigationCalculator.getRestrictedAngle(x1, y1, x2, y2);
-        if (theta < 0) {
-            theta = 360 + theta;
-            // range [0, 360)
-        }
-        return theta;
+    static getAngle(origin: { x: number, y: number }, destination: { x: number, y: number }): number {
+        return NavigationCalculator.getAngleDegrees(
+            origin.x,
+            origin.y,
+            destination.x,
+            destination.y, true
+        );
     }
 
     static getAngleDegrees(x1: number, y1: number, x2: number, y2: number, force360 = true) {
@@ -200,13 +197,6 @@ export class NavigationCalculator {
         }
         //console.log('angle to degree:', {deltaX, deltaY, radians, degrees})
         return degrees;
-    }
-
-    /**
-     * Flips the y coordinate to represent the screen-is-upside-down-topic.
-     */
-    static getAngleFlippedY(x1: number, y1: number, x2: number, y2: number): number {
-        return NavigationCalculator.getAngle(x1, -y1, x2, -y2);
     }
 
     static moveAbout(x: number, y: number, angle: number, distance: number): { x: number, y: number } {

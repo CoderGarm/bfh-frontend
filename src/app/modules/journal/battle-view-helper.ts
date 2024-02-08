@@ -24,16 +24,19 @@ import {NavigationCalculator} from "../../services/helper/navigation-calculator.
 import {CombatArenaData} from "./combat-arena-data";
 import {BasicViewHelperData} from "../../services/svg-view-helper/basic-view-helper-data";
 import {options} from "@svgdotjs/svg.panzoom.js";
+import {BizarrometerHelper} from "../../services/svg-view-helper/bizarrometer-helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
 
-export class BattleViewHelper extends BasicViewHelper {
+export class BattleViewHelper extends BizarrometerHelper {
 
     private static readonly STANDARD_METRIC = DistanceMetricEnum.LS;
 
     private static readonly BATTLE_COORDINATE_SYSTEM_RADIUS: number = 50;
     private static readonly MULTIPLIER: number = 500;
+    protected static readonly AURA_MARKER: string = 'aura';
+    protected static readonly AURA_TEXT_MARKER: string = 'aura-text';
 
     public static readonly PAN_ZOOM_OPTIONS: options = {
         // https://github.com/svgdotjs/svg.panzoom.js/blob/master/readme.md
@@ -356,31 +359,20 @@ export class BattleViewHelper extends BasicViewHelper {
         movementActions.forEach((move) => {
             let fleet = move.actor;
             let lengthOnTrack = this.convertToStandardMetric(move.lengthOnTrack);
-            const maneuver = Array.from(maneuvers.values()).find(m => m.actor.fleet.id === fleet.fleet.id)!;
-            const maneuverElements = maneuver.maneuverElements.sort((a, b) => a.sequenceNo - b.sequenceNo);
+            const maneuverElements = this.extractedManeuverElements(maneuvers, fleet);
 
-            let lengthToNow: number = 0;
-            let myTrack: Path | undefined;
-            for (let me of maneuverElements) {
-                const curve = this.getManeuverCurveByElement(me);
-                lengthToNow += curve.length();
-                if (lengthToNow >= lengthOnTrack) {
-                    // fixme this works only because its the only maneuver element - lengthontrack must be not over total but over the element itself - same for backend
-                    myTrack = curve;
-                    break;
-                }
-            }
+            let myTrack: Path = this.extractCurrentCurve(maneuverElements, lengthOnTrack)!;
 
-            const position: { x: number, y: number } = myTrack!.pointAt(lengthOnTrack);
-            let lastPosition: { x: number, y: number } = myTrack!.pointAt(lengthOnTrack - 1);
-            const angle: number = Math.ceil(this.getAngle(position, lastPosition));
+            const position: { x: number, y: number } = myTrack.pointAt(lengthOnTrack);
+            let lastPosition: { x: number, y: number } = myTrack.pointAt(lengthOnTrack - 1);
+            const angle: number = Math.ceil(NavigationCalculator.getAngle(position, lastPosition));
 
 
             const auraShift: { missileForwardShift: number, antiMissileForwardShift: number } = this.calculateAuraEllipseShift(move);
-            let missileCenterPos: { x: number, y: number } = myTrack!.pointAt(lengthOnTrack + auraShift.missileForwardShift);
-            const missileForwardAngle: number = Math.ceil(this.getAngle(position, missileCenterPos));
-            let antiMissileCenterPos: { x: number, y: number } = myTrack!.pointAt(lengthOnTrack + auraShift.missileForwardShift);
-            const antiMissileForwardAngle: number = Math.ceil(this.getAngle(position, antiMissileCenterPos));
+            let missileCenterPos: { x: number, y: number } = myTrack.pointAt(lengthOnTrack + auraShift.missileForwardShift);
+            const missileForwardAngle: number = Math.ceil(NavigationCalculator.getAngle(position, missileCenterPos));
+            let antiMissileCenterPos: { x: number, y: number } = myTrack.pointAt(lengthOnTrack + auraShift.missileForwardShift);
+            const antiMissileForwardAngle: number = Math.ceil(NavigationCalculator.getAngle(position, antiMissileCenterPos));
 
             missileCenterPos = NavigationCalculator.moveAbout(position.x, position.y, missileForwardAngle, auraShift.missileForwardShift);
             antiMissileCenterPos = NavigationCalculator.moveAbout(position.x, position.y, antiMissileForwardAngle, auraShift.antiMissileForwardShift);
@@ -389,7 +381,36 @@ export class BattleViewHelper extends BasicViewHelper {
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, position, angle);
             this.createAuraEllipse(move, missileCenterPos, antiMissileCenterPos, position, missileForwardAngle, antiMissileForwardAngle, angle);
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
+
+            const enemyMove = movementActions.find(ma => ma.actor.fleet.id != fleet.fleet.id)!;
+            let enemyLengthOnTrack = this.convertToStandardMetric(enemyMove.lengthOnTrack);
+            const enemyManeuverElements = this.extractedManeuverElements(maneuvers, enemyMove.actor);
+            let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyLengthOnTrack)!;
+
+            const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(lengthOnTrack);
+            this.createSVG(position, enemyPosition, auraShift, fleet, this.getOrCreateMainSubLayerGroup());
+
         });
+    }
+
+    private extractedManeuverElements(maneuvers: Map<FleetMarker, Maneuver>, fleet: FleetMarker) {
+        const maneuver = Array.from(maneuvers.values()).find(m => m.actor.fleet.id === fleet.fleet.id)!;
+        return maneuver.maneuverElements.sort((a, b) => a.sequenceNo - b.sequenceNo);
+    }
+
+    private extractCurrentCurve(maneuverElements: Array<ManeuverElement>, lengthOnTrack: number) {
+        let lengthToNow: number = 0;
+        let myTrack: Path | undefined;
+        for (let me of maneuverElements) {
+            const curve = this.getManeuverCurveByElement(me);
+            lengthToNow += curve.length();
+            if (lengthToNow >= lengthOnTrack) {
+                // fixme this works only because its the only maneuver element - lengthontrack must be not over total but over the element itself - same for backend
+                myTrack = curve;
+                break;
+            }
+        }
+        return myTrack;
     }
 
     private createAuraEllipse(move: MovementAction,
@@ -431,14 +452,15 @@ export class BattleViewHelper extends BasicViewHelper {
             }
         });
 
-        // fixme add text on hover - change fill on hover
         const auraCss = this.isOwnFleetMarker(move.actor) ? 'friendly-aura' : 'enemy-aura';
         this.createAura(antiShipMissileRangeWidthRadiusY, antiShipMissileRangeHeightRadiusX, missileCenterPos.x, missileCenterPos.y, missileForwardAngle, auraCss, 'missile-aura');
         this.createAura(antiMissileMissileRangeWidthRadiusY, antiMissileMissileRangeHeightRadiusX, antiMissileCenterPos.x, antiMissileCenterPos.y, antiMissileForwardAngle, auraCss, 'anti-missile-aura');
         this.createAura(weaponRangeWidthRadiusY, weaponRangeHeightRadiusX, position.x, position.y, weaponForwardAngle, auraCss, 'weapon-aura');
     }
 
-    private createAura(widthRadius: number, heightRadius: number, cx: number, cy: number, angle: number, auraBaseCss: string, auraSpecificCss: string) {
+    private createAura(widthRadius: number, heightRadius: number,
+                       cx: number, cy: number, angle: number,
+                       auraBaseCss: string, auraSpecificCss: string) {
         if (widthRadius == 0) {
             return;
         }
@@ -449,7 +471,7 @@ export class BattleViewHelper extends BasicViewHelper {
             .cy(cy)
             .id(auraBaseCss + "-" + auraSpecificCss)
             .addClass(BasicViewHelper.RELATIVE_STROKE)
-            .addClass('aura')
+            .addClass(BattleViewHelper.AURA_MARKER)
             .addClass(auraBaseCss)
             .addClass(auraSpecificCss)
             .rotate(angle, cx, cy);
@@ -468,14 +490,15 @@ export class BattleViewHelper extends BasicViewHelper {
             .filter(child => child.id() == BattleViewHelper.TEXT_MARKER + '-' + ellipse!.id()).length > 0;
         if (!isAttached) {
             const c = this.getSvgCoordinateFromPointerEvent(event);
-            const zoomedSize = Math.ceil(50000 / Math.max(1, this.zoomScale));
             const text = ellipse.id().replace('friendly-aura', '').replace('enemy-aura', '').replaceAll('-', ' ').toLocaleUpperCase();
+            const fontSize = {size: Math.ceil(50000 / Math.max(1, this.zoomScale))};
             this.getOrCreateMainSubLayerGroup()
                 .text(text)
                 .id(BasicViewHelper.TEXT_MARKER + '-' + ellipse.id())
                 .cx(c.x)
                 .cy(c.y)
-                .font({size: zoomedSize})
+                .font(fontSize)
+                .addClass(BattleViewHelper.AURA_TEXT_MARKER)
                 .addClass(BasicViewHelper.TEXT_FILL_MARKER);
 
             ellipse.addClass('aura-hovered');
@@ -489,6 +512,7 @@ export class BattleViewHelper extends BasicViewHelper {
         }
 
         const texts = this.getOrCreateMainSubLayerGroup().children()
+            .filter(c => c.hasClass(BattleViewHelper.AURA_TEXT_MARKER))
             .filter(child => child.id() == BattleViewHelper.TEXT_MARKER + '-' + ellipse!.id());
 
         if (texts.length == 1) {
@@ -521,15 +545,6 @@ export class BattleViewHelper extends BasicViewHelper {
         });
 
         return {missileForwardShift: missileForwardShift, antiMissileForwardShift: antiMissileForwardShift}
-    }
-
-    private getAngle(origin: { x: number, y: number }, destination: { x: number, y: number }): number {
-        return NavigationCalculator.getAngleDegrees(
-            origin.x,
-            origin.y,
-            destination.x,
-            destination.y, true
-        );
     }
 
     private getFightingWarships(fleet: FleetMarker, activeRound: number, hitLogsByRound: Map<number, HitLog[]>) {
@@ -833,7 +848,7 @@ export class BattleViewHelper extends BasicViewHelper {
             const orbit = orbitDefinition.orbit;
             let celestialBodyID = this.getCelestialBodyID(orbit);
             let orbitID = this.getOrbitID(orbit);
-            let radius: number = BasicViewHelper.calculateDistance(
+            let radius: number = NavigationCalculator.calculateDistance(
                 this.convertToStandardMetric(orbit.xCoordinate),
                 this.convertToStandardMetric(orbit.yCoordinate)
             );

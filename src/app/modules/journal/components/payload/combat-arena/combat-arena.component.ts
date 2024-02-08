@@ -2,6 +2,7 @@ import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angula
 import {BattleReport, Fleet, Planet, StarSystem} from "../../../../../services/swagger";
 import {BattleViewHelper} from "../../../battle-view-helper";
 import {CombatArenaData} from "../../../combat-arena-data";
+import {Text} from "@svgdotjs/svg.js";
 
 @Component({
     selector: 'app-combat-arena',
@@ -41,6 +42,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     ngAfterViewInit(): void {
         this.createCanvas("combat-arena", '#arena');
         this.canvas!
+            .on('zoom', this.onZoom)
             .click(this.clickForFleet)
             .mouseover(this.mouseoverForWarship);
 
@@ -59,17 +61,20 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
             this.drawCourses();
         }
         if (changes[this.activeRoundInputDefinition]) {
-            if (!!this.starSystem) {
-                this.setActiveRound(this.activeRound);
-                let orbit = this.battleReport!.battleReportStatistics.orbit;
-                this.setViewBoxByFleetOrbit(orbit);
-                this.calculateMapScale();
-            }
+            this.displayActiveRound();
         }
         if (changes[this.combatArenaDataInputDefinition]) {
             if (!this.combatArenaData && !this.starSystem) {
                 this.clearData();
             }
+        }
+    }
+
+    private displayActiveRound() {
+        if (!!this.starSystem) {
+            this.setActiveRound(this.activeRound);
+            this.setViewBoxByFleetOrbit(this.battleReport!.battleReportStatistics.orbit);
+            this.calculateMapScale();
         }
     }
 
@@ -80,6 +85,18 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         } else {
             this.clearData();
         }
+    }
+
+    private onZoom = (ev: any) => {
+        this.displayActiveRound();
+        this.zoomAuraTexts();
+    }
+
+    private zoomAuraTexts() {
+        const fontSize = {size: Math.ceil(50000 / Math.max(1, this.zoomScale))};
+        const texts = this.getOrCreateMainSubLayerGroup().children()
+            .filter(child => child.hasClass(BattleViewHelper.AURA_TEXT_MARKER));
+        texts.forEach(element => (<Text>element).font(fontSize));
     }
 
     private setUpCombat() {

@@ -2,6 +2,7 @@ import {Distance, FleetMarker, StarSystem} from "../../../services/swagger";
 import {OrbitDefinition} from "./orbit-definition";
 import {BasicViewHelper} from "../../../services/svg-view-helper/basic-view-helper";
 import {BasicViewHelperData} from "../../../services/svg-view-helper/basic-view-helper-data";
+import {NavigationCalculator} from "../../../services/helper/navigation-calculator.helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export class SystemViewHelper extends BasicViewHelper {
@@ -47,7 +48,7 @@ export class SystemViewHelper extends BasicViewHelper {
         orbitDefinitions.forEach(orbitDefinition => {
             const orbit = orbitDefinition.orbit;
             let orbitID = this.getOrbitID(orbit);
-            let radius: number = BasicViewHelper.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
+            let radius: number = NavigationCalculator.calculateDistance(this.convertToStandardMetric(orbit.xCoordinate), this.convertToStandardMetric(orbit.yCoordinate));
 
             mainGroup.circle()
                 .x(0)

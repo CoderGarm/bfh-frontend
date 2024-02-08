@@ -27,11 +27,12 @@ import {ProfileTabViewComponent} from "../../components/user/profile-tab-view/pr
 import {LibraryTabViewComponent} from "../../modules/library/orga/library-main-view/library-tab-view.component";
 import {PlayerPointsTabViewComponent} from "../../modules/user-points/orga/player-points-tab-view/player-points-tab-view.component";
 import {NewspaperComponent} from "../../components/newspaper/newspaper.component";
+import {BattleReportComponent} from "../../modules/journal/components/payload/battle-report/battle-report.component";
 
 
 export class NavigationCreationService {
 
-    public static AFTER_LOGIN_ROUTE: string = JournalTabViewComponent.path;
+    public static AFTER_LOGIN_ROUTE: string = BattleReportComponent.path;// fixme rollback
 
     static getLoginRoute(): Route {
         return {path: LoginComponent.path, component: LoginComponent};
@@ -45,6 +46,7 @@ export class NavigationCreationService {
             {path: LoginComponent.path, component: LoginComponent},
             {path: ForgottenPasswordComponent.path, component: ForgottenPasswordComponent},
             {path: ForgottenPasswordComponent.paramPath, component: ForgottenPasswordComponent},
+            {path: BattleReportComponent.path, component: BattleReportComponent},// fixme rollback
             {path: ProfileTabViewComponent.path, component: ProfileTabViewComponent, canActivate: [protectedGuard]},
         ];
     }

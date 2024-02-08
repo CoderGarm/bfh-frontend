@@ -13,6 +13,8 @@ import {ActionChartHelper} from "./action-chart.helper";
 })
 export class BattleReportComponent extends ActionChartHelper implements AfterViewInit {
 
+    static path: string = 'battle' // fixme rollback
+
     @ViewChild(MatSlider)
     matSlider?: MatSlider;
 

@@ -1,0 +1,63 @@
+.bizarro-headline-box,
+.lidar-box,
+.impeller-box,
+.radar-box,
+.ecm-box {
+  fill: transparent;
+  stroke: var(--map-text-color);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.bizarro-headline,
+.lidar-headline,
+.impeller-headline,
+.radar-headline,
+.ecm-headline {
+  text-anchor: middle;
+}
+
+.bizarro-headline-box {
+}
+
+.bizarro-headline {
+}
+
+
+.lidar-headline {
+  transform: rotate(-90deg);
+  transform-box: border-box;
+}
+
+.lidar-box {
+
+}
+
+.lidar-line {
+  stroke: yellow;
+  stroke-width: 0.001px;
+  vector-effect: non-scaling-stroke;
+}
+
+.impeller-box {
+
+}
+
+.impeller-headline {
+}
+
+.radar-box {
+
+}
+
+.radar-headline {
+
+}
+
+.ecm-box {
+
+}
+
+.ecm-headline {
+
+}
