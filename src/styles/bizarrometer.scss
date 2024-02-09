@@ -33,7 +33,7 @@
 
 }
 
-.lidar-line {
+.lidar-line, .impeller-line {
   stroke-width: 1px;
   vector-effect: non-scaling-stroke;
 }
@@ -43,6 +43,10 @@
 }
 
 .impeller-headline {
+}
+
+.impeller-line {
+  stroke: var(--map-text-color);
 }
 
 .radar-box {

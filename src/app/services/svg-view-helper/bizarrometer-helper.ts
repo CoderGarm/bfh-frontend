@@ -1,5 +1,5 @@
 import {FleetMarker} from "../swagger";
-import {G} from "@svgdotjs/svg.js";
+import {G, Line, Rect} from "@svgdotjs/svg.js";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component} from "@angular/core";
 import {BasicViewHelper} from "./basic-view-helper";
@@ -59,25 +59,7 @@ export class BizarrometerHelper extends BasicViewHelper {
             .addClass('lidar-headline')
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
 
-        const y1 = <number>lidarBox.y();
-        const y2 = <number>lidarBox.y() + <number>lidarBox.height();
-        const xStart = <number>lidarBox.x() + (textHeight * 2);
-        const xEnd = xStart + <number>lidarBox.width() - (textHeight * 2);
-        const interval = (xEnd - xStart) / 55;
-        let intervalRunner: number = interval;
-
-        for (let xRunner = xStart; xRunner < xEnd;) {
-
-            const i = Math.ceil(intervalRunner) / Math.ceil(interval * 55) * 100;
-            if (BizarrometerHelper.randomIntFromInterval(0, 100) < 33 && i <= 100) {
-                const stroke = BizarrometerHelper.numberToColorRgb(i);
-                svg.line(xRunner, y1, xRunner, y2)
-                    .addClass('lidar-line')
-                    .stroke(stroke);
-            }
-            xRunner += interval;
-            intervalRunner += interval;
-        }
+        this.createLidarBoxSpectrum(lidarBox, textHeight, svg);
 
         x = <number>lidarBox.x();
         y = <number>lidarBox.y() + (<number>lidarBox.height() * 1.1);
@@ -92,6 +74,8 @@ export class BizarrometerHelper extends BasicViewHelper {
             .font(fontSize)
             .addClass('impeller-headline')
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+
+        this.createImpellerBoxSpectrum(impellerBox, textHeight, svg);
 
         x = <number>impellerBox.x() + (boxWidth / 2);
         const radarBox = svg.rect(boxWidth / 2, boxHeigth)
@@ -118,6 +102,61 @@ export class BizarrometerHelper extends BasicViewHelper {
             .font(fontSize)
             .addClass('ecm-headline')
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+    }
+
+    private createImpellerBoxSpectrum(box: Rect, textHeight: number, svg: G) {
+        const xStart = <number>box.x();
+        const xEnd = xStart + <number>box.width();
+        const yStart = <number>box.y() + (textHeight * 2);
+        const yEnd = <number>box.y() + <number>box.height();
+
+        const interval = (yEnd - yStart) / 5;
+        const lines: Line[] = [];
+
+        let x = xStart;
+        let y = yStart;
+        let x1 = xStart;
+        let y1 = yStart;
+        while (y < yEnd) {
+            y += interval;
+            x = BizarrometerHelper.randomIntFromInterval(xStart, xEnd);
+
+            if (lines.length > 0) {
+                const line1 = lines[lines.length - 1];
+                const pointArray = line1.plot();
+                const point = pointArray[pointArray.length - 1];
+                x1 = point[0];
+                y1 = point[1];
+            }
+            if (y + interval >= yEnd) {
+                x = xStart;
+                y = yEnd;
+            }
+            const line = svg.line(x1, y1, x, y).addClass('impeller-line');
+            lines.push(line);
+        }
+    }
+
+    private createLidarBoxSpectrum(box: Rect, textHeight: number, svg: G) {
+        const y1 = <number>box.y();
+        const y2 = <number>box.y() + <number>box.height();
+        const xStart = <number>box.x() + (textHeight * 2);
+        const xEnd = xStart + <number>box.width() - (textHeight * 2);
+        const interval = (xEnd - xStart) / 55;
+        let intervalRunner: number = interval;
+
+        for (let xRunner = xStart; xRunner <= xEnd;) {
+
+            const i = Math.ceil(intervalRunner) / Math.ceil(interval * 55) * 100;
+            if (BizarrometerHelper.randomIntFromInterval(0, 100) < 33 && i <= 100) {
+                const stroke = BizarrometerHelper.numberToColorRgb(i);
+                svg.line(xRunner, y1, xRunner, y2)
+                    .addClass('lidar-line')
+                    .stroke(stroke);
+            }
+            xRunner += interval;
+            intervalRunner += interval;
+        }
     }
 
     private scale(value: number) {
