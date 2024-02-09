@@ -33,7 +33,7 @@
 
 }
 
-.lidar-line, .impeller-line, .radar-line {
+.lidar-line, .impeller-line, .radar-line, .ecm-line {
   stroke-width: 1px;
   vector-effect: non-scaling-stroke;
 }
@@ -67,4 +67,9 @@
 
 .ecm-headline {
 
+}
+
+.ecm-line {
+  stroke: deepskyblue;
+  stroke-width: 3px;
 }

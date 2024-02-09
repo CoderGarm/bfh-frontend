@@ -15,11 +15,13 @@ export class BizarrometerHelper extends BasicViewHelper {
               auraShift: { missileForwardShift: number, antiMissileForwardShift: number },
               fm: FleetMarker, parent: G) {
 
+        // fixme must be look slightly better
+
         const auraDistance = Math.max(auraShift.missileForwardShift, auraShift.antiMissileForwardShift);
         let angleFromEnemy: number = Math.ceil(NavigationCalculator.getAngle(enemyPosition, position));
         const placeOnTheLeft: boolean = angleFromEnemy > 180;
 
-        const moved = NavigationCalculator.moveAbout(position.x, position.y, angleFromEnemy, auraDistance);
+        const moved = NavigationCalculator.moveAbout(position.x, position.y, angleFromEnemy, auraDistance * 1.5);
         let x: number = moved.x;
         let y: number = moved.y;
 
@@ -104,6 +106,43 @@ export class BizarrometerHelper extends BasicViewHelper {
             .font(fontSize)
             .addClass('ecm-headline')
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+
+        this.createECMBoxSpectrum(ecmBox, textHeight, svg);
+    }
+
+    private createECMBoxSpectrum(box: Rect, textHeight: number, svg: G) {
+        const xStart = <number>box.x();
+        const xEnd = xStart + <number>box.width();
+        const yStart = <number>box.y() + (textHeight * 2);
+        const yEnd = <number>box.y() + <number>box.height();
+
+        const interval = (xEnd - xStart) / 5;
+        const yRange = (yEnd - yStart) / 2.5;
+        const yMedian = yStart + ((yEnd - yStart) / 2);
+        const lines: Line[] = [];
+
+        let x = xStart;
+        let y = yMedian;
+        let x1 = xStart;
+        let y1 = yMedian;
+        while (x < xEnd) { // fixme implement as path - but was not visible: why?
+            x += interval;
+            y = yMedian + BizarrometerHelper.randomIntFromInterval(-yRange, yRange);
+
+            if (lines.length > 0) {
+                const line1 = lines[lines.length - 1];
+                const pointArray = line1.plot();
+                const point = pointArray[pointArray.length - 1];
+                x1 = point[0];
+                y1 = point[1];
+            }
+            if (x + interval >= xEnd) {
+                x = xEnd;
+                y = yMedian;
+            }
+            const line = svg.line(x1, y1, x, y).addClass('ecm-line');
+            lines.push(line);
+        }
     }
 
     private createRadarBoxSpectrum(box: Rect, textHeight: number, svg: G) {
