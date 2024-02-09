@@ -23,12 +23,11 @@ export class BizarrometerHelper extends BasicViewHelper {
         let x: number = moved.x;
         let y: number = moved.y;
 
-
         const svg = parent.group()
             .id('bizarro-' + fm.fleet.id)
             .addClass('bizarrometer');
 
-        const fontSize = {size: this.scale(50000)};// fixme scaling is jumpy here, too
+        const fontSize = {size: this.scale(35000)};// fixme scaling is jumpy here, too
         const unit = this.scaleWithDefault(50000, 15000) * 3;
         const boxWidth = unit * 4;
         const boxHeigth = unit;
@@ -60,10 +59,24 @@ export class BizarrometerHelper extends BasicViewHelper {
             .addClass('lidar-headline')
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
 
-        for (let i = 0; i < 15; i++) {
-            let xi = x + (i * 2);
-            svg.line(xi, y, xi, y + 10)
-                .addClass('lidar-line');
+        const y1 = <number>lidarBox.y();
+        const y2 = <number>lidarBox.y() + <number>lidarBox.height();
+        const xStart = <number>lidarBox.x() + (textHeight * 2);
+        const xEnd = xStart + <number>lidarBox.width() - (textHeight * 2);
+        const interval = (xEnd - xStart) / 55;
+        let intervalRunner: number = interval;
+
+        for (let xRunner = xStart; xRunner < xEnd;) {
+
+            const i = Math.ceil(intervalRunner) / Math.ceil(interval * 55) * 100;
+            if (BizarrometerHelper.randomIntFromInterval(0, 100) < 33 && i <= 100) {
+                const stroke = BizarrometerHelper.numberToColorRgb(i);
+                svg.line(xRunner, y1, xRunner, y2)
+                    .addClass('lidar-line')
+                    .stroke(stroke);
+            }
+            xRunner += interval;
+            intervalRunner += interval;
         }
 
         x = <number>lidarBox.x();
@@ -115,5 +128,52 @@ export class BizarrometerHelper extends BasicViewHelper {
         // the scaling is way to jumpy from 0 to 5 to work without this kind of mechanic
         const scaler = Math.max(1, this.zoomScale);
         return scaler == 1 ? defaultValue : Math.ceil(valueToScale / scaler);
+    }
+
+    private static randomIntFromInterval(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
+    private static numberToColorRgb(i: number) {
+        // we calculate red and green from percent
+        var red = Math.floor(255 - (255 * i / 100));
+        var green = Math.floor(255 * i / 100);
+        // we format to css value and return
+        return 'rgb(' + red + ',' + green + ',0)'
+    }
+
+    private static numberToColorHsl(i: number) {
+        // as the function expects a value between 0 and 1, and red = 0° and green = 120°
+        // we convert the input to the appropriate hue value
+        var hue = i * 1.2 / 360;
+        // we convert hsl to rgb (saturation 100%, lightness 50%)
+        var rgb = BizarrometerHelper.hslToRgb(hue, 1, .5);
+        // we format to css value and return
+        return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+    }
+
+    private static hslToRgb(h: number, s: number, l: number) {
+        var r, g, b;
+
+        if (s == 0) {
+            r = g = b = l; // achromatic
+        } else {
+            function hue2rgb(p: number, q: number, t: number) {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            }
+
+            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            var p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
     }
 }
