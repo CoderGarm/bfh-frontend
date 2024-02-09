@@ -33,7 +33,7 @@
 
 }
 
-.lidar-line, .impeller-line {
+.lidar-line, .impeller-line, .radar-line {
   stroke-width: 1px;
   vector-effect: non-scaling-stroke;
 }
@@ -46,7 +46,7 @@
 }
 
 .impeller-line {
-  stroke: var(--map-text-color);
+  stroke: orange;
 }
 
 .radar-box {
@@ -55,6 +55,10 @@
 
 .radar-headline {
 
+}
+
+.radar-line {
+  stroke: greenyellow;
 }
 
 .ecm-box {
