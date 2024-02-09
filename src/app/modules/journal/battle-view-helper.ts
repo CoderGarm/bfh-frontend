@@ -129,6 +129,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             }
         }
         this.clickedFleet = fleetMarker;
+        console.log(this.clickedFleet) // fixme open details and bizarrometer on click
     }
 
     protected mouseoverForWarship = (event: PointerEvent) => {

@@ -1,19 +1,14 @@
-<app-red-box titleValue="Known star systems"
-             class="universe-info"
-             [class.invertColor]="tokenStorage.isGeorge()"
-             *ngIf="!starMapCommService.selectedStarSystem">
-    {{ knownStarSystems.length }}
-</app-red-box>
-
-
 <div class="box-container">
 
-    <div class="outline-box system-box" [class.invertColor]="tokenStorage.isGeorge()" [class.hidden-legend]="!showPlanetBox"
+    <div class="outline-box system-box red-box" [class.invertColor]="tokenStorage.isGeorge()" [class.hidden-legend]="!showPlanetBox"
          [ngStyle]="{'height.px': 65 + (ownSystems.length * 50)}">
 
-        <div class="box-title" [class.collapsed]="!showPlanetBox" (click)="showPlanetBox = !showPlanetBox">{{ 'star-map.universe-map.system-box.title' | translate }}</div>
+        <div class="box-title red-box-title" [class.collapsed]="!showPlanetBox"
+             (click)="showPlanetBox = !showPlanetBox">
+            {{ 'star-map.universe-map.system-box.title' | translate }}
+        </div>
 
-        <div class="scroll-container">
+        <div class="scroll-container red-box-content">
             <div *ngFor="let sys of ownSystems" class="outline-item"
                  [class.outline-selected]="starMapCommService.selectedStarSystem?.idStarSystem == sys.idStarSystem"
                  (click)="selectOutlineSystem(sys)">
@@ -22,12 +17,14 @@
         </div>
     </div>
 
-    <div class="outline-box fleet-box" [class.invertColor]="tokenStorage.isGeorge()" [class.hidden-legend]="!showFleetBox"
+    <div class="outline-box fleet-box red-box" [class.invertColor]="tokenStorage.isGeorge()" [class.hidden-legend]="!showFleetBox"
          [ngStyle]="{'height.px': 65 + (ownFleets.length * 50)}">
 
-        <div class="box-title" [class.collapsed]="!showFleetBox" (click)="showFleetBox = !showFleetBox">{{ 'star-map.universe-map.fleet-box.title' | translate }}</div>
+        <div class="box-title red-box-title" [class.collapsed]="!showFleetBox" (click)="showFleetBox = !showFleetBox">
+            {{ 'star-map.universe-map.fleet-box.title' | translate }}
+        </div>
 
-        <div class="scroll-container">
+        <div class="scroll-container red-box-content">
             <div *ngFor="let fleet of ownFleets" class="outline-item"
                  [class.outline-selected]="starMapCommService.isSelectedFleetMarker(fleet.fleet.id)"
                  (click)="selectOutlineFleet(fleet)">
@@ -37,11 +34,11 @@
     </div>
 </div>
 
-<div class="legend-box" [class.invertColor]="tokenStorage.isGeorge()" [class.hidden-legend]="!showLegendBox">
+<div class="legend-box red-box" [class.invertColor]="tokenStorage.isGeorge()" [class.hidden-legend]="!showLegendBox">
 
-    <div class="box-title" [class.collapsed]="!showLegendBox" (click)="showLegendBox = !showLegendBox">{{ 'star-map.universe-map.map-control.title' | translate }}</div>
+    <div class="box-title red-box-title" [class.collapsed]="!showLegendBox" (click)="showLegendBox = !showLegendBox">{{ 'star-map.universe-map.map-control.title' | translate }}
+    </div>
 
-    <mat-divider></mat-divider>
     <!--@formatter:off-->
     <div class="flex-items-container">
         <button color="{{ highlightFTLDrive != undefined && highlightFTLDrive ? 'accent' : 'primary' }}" type="button" class="legend-btn" mat-button

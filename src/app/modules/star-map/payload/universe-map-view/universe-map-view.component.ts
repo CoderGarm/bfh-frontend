@@ -13,6 +13,7 @@ import {FormControl} from "@angular/forms";
 import {map} from "rxjs/operators";
 import {Point} from "@svgdotjs/svg.js";
 import {FleetEventService} from "../../../../services/intercom/fleet-event.service";
+import {DoNotScrollService} from "../../../../services/intercom/do-not-scroll.service";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -46,8 +47,11 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 private spinnerService: SpinnerService,
                 private backgroundService: BackgroundService,
                 private translate: TranslateService,
+                private noScrollService: DoNotScrollService,
                 private change: ChangeDetectorRef) {
         super();
+
+        this.noScrollService.setNoScroll();
 
         // just make sure that the key exists
         this.translate.get('star-map.universe-map.loading-spinner-message');
@@ -65,6 +69,11 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
             this.showPlanetBox = false;
             this.showFleetBox = false;
         }
+    }
+
+    ngOnDestroy() {
+        this.noScrollService.clearScrolling();
+        super.ngOnDestroy();
     }
 
     private _filter(value: string): StarSystem[] {

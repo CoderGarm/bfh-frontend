@@ -11,8 +11,6 @@ $box-border-color2: rgba($box-border-color, 0.2);
 .red-box {
   position: relative;
   border-width: 1px;
-  width: fit-content;
-  height: fit-content;
   border-color: $box-border-color2;
   border-style: solid;
   padding: 10px;
