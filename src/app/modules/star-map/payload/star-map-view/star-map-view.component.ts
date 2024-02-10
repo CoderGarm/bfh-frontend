@@ -1,5 +1,5 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Fleet, FleetApiService, FleetMarker, FleetMerge, FleetMove, StarMapApiService, StarSystem} from "../../../../services/swagger";
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Fleet, FleetApiService, FleetMarker, FleetMerge, FleetMove, StarSystem} from "../../../../services/swagger";
 import {SystemViewHelper} from "../system-view-helper";
 import {StellarMovement} from "../../../../services/intercom/star-map-communication.service";
 import {timer} from "rxjs";
@@ -10,15 +10,14 @@ import {FleetEventService} from "../../../../services/intercom/fleet-event.servi
     templateUrl: './star-map-view.component.html',
     styleUrls: ['./star-map-view.component.scss']
 })
-export class StarMapViewComponent extends SystemViewHelper implements OnChanges {
+export class StarMapViewComponent extends SystemViewHelper implements OnChanges, AfterViewInit {
 
     @Input()
     starSystem?: StarSystem;
 
     private distribution: FleetMarker[] = [];
 
-    constructor(private starMapApi: StarMapApiService,
-                private fleetEventService: FleetEventService,
+    constructor(private fleetEventService: FleetEventService,
                 private fleetService: FleetApiService) {
         super();
 
@@ -26,6 +25,10 @@ export class StarMapViewComponent extends SystemViewHelper implements OnChanges 
         this.subscriptions.push(sub);
         sub = this.starMapCommService.getMergeFleetsEmitter().subscribe(resp => this.executeMergeFleets(resp))
         this.subscriptions.push(sub);
+    }
+
+    ngAfterViewInit() {
+        this.starMapCommService.stellarMode = true;
     }
 
     private executeMergeFleets(fm: FleetMerge) {

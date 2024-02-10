@@ -6,7 +6,6 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {SubscriptionManager} from "../../../subscription.manager";
 import {RegisterEventService} from "../register/register-event.service";
-import {RadialMenuItem} from "../../../modules/shared-module/components/radial-menu-component/radial-menu.component";
 
 @Component({
     selector: 'app-login',
@@ -38,19 +37,7 @@ export class LoginComponent extends SubscriptionManager implements AfterViewInit
             let sub = this.publicResourceService.getUsernames().subscribe(resp => this.userNames = resp.sort((a, b) => a.localeCompare(b)));
             this.subscriptions.push(sub);
         }
-
-
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-info"});
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-move"});
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-merge"});
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-transport"});
     }
-
-    menuItemsModel: RadialMenuItem[] = [];
-
-
-
-
 
     ngAfterViewInit() {
         this.setLogin(this.registerEventService.freshUser?.username);

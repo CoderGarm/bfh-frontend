@@ -1,15 +1,10 @@
-<div id="radial-menu" class="radial-menu bottom-sticky active" *ngIf="!!menuItems">
-
-    <span class="floating-btn">
-        <i class="fa fa-plus"></i>
-    </span>
-
-    <menu class="items-wrapper four-menu">
-        <span class="fab-menu-item" *ngFor="let item of menuItems" (click)="onMenuItemOneClick(item)">
-            <img *ngIf="!!item.icon" class="navbar-img-link" src="{{ item.icon }}" alt="{{ item.label }}"/>
-            <span *ngIf="!!item.label">{{ item.label }}</span>
-            <span *ngIf="!!item.labelKey">{{ item.labelKey | translate }}</span>
-        </span>
-    </menu>
-
-</div>
+<ng-template #menu>
+    <mat-button-toggle-group cdkMenu>
+    <!-- todo I would like to be a circular radial menu - please build one and if you have finished make it FOSS -->
+        <mat-button-toggle *ngFor="let item of menuItems" (click)="onMenuItemOneClick(item)" [value]="item" [disabled]="item.disabled" cdkMenuItem>
+        <img *ngIf="!!item.icon" src="{{ item.icon }}" alt="{{ item.label }}"/>
+        <span *ngIf="!!item.label">{{ item.label }}</span>
+        <span *ngIf="!!item.labelKey">{{ item.labelKey | translate }}</span>
+    </mat-button-toggle>
+</mat-button-toggle-group>
+</ng-template>

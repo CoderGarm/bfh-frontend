@@ -1,33 +1,14 @@
 <div id="notch-content" class="pointer-events red-box"
      [class.invertColor]="tokenStorage.isGeorge()"
-     *ngIf="foreignSelected() || !showInfoDisabled() || !showMoveDisabled() || !showMergeDisabled() || !showTransportDisabled()">
+     *ngIf="actionPossible()">
 
     <app-fleet-notch-display-list *ngIf="displayActive()"></app-fleet-notch-display-list>
 
     <app-fleet-notch-info *ngIf="displayInfo"></app-fleet-notch-info>
 
-    <app-fleet-notch-move [stellarMode]="stellarMode" *ngIf="displayMove"></app-fleet-notch-move>
+    <app-fleet-notch-move [stellarMode]="commService.stellarMode" *ngIf="displayMove"></app-fleet-notch-move>
 
     <app-fleet-notch-merge *ngIf="displayMerge"></app-fleet-notch-merge>
 
     <app-fleet-notch-transport *ngIf="displayTransport"></app-fleet-notch-transport>
-</div>
-
-<div id="notch-actions" [class.invertColor]="tokenStorage.isGeorge()">
-    <mat-button-toggle-group class="pointer-events" [(ngModel)]="notchType">
-        <mat-button-toggle value="info" (click)="toggleNotchElement()" [disabled]="showInfoDisabled()">{{ 'star-map.notch.action.show-info' | translate }}</mat-button-toggle>
-        <mat-button-toggle value="move" (click)="toggleNotchElement()" [disabled]="showMoveDisabled()">{{ 'star-map.notch.action.show-move' | translate }}</mat-button-toggle>
-        <mat-button-toggle value="merge" (click)="toggleNotchElement()" [disabled]="showMergeDisabled()"
-                           *ngIf="stellarMode">{{ 'star-map.notch.action.show-merge' | translate }}</mat-button-toggle>
-        <mat-button-toggle value="transport" (click)="toggleNotchElement()" [disabled]="showTransportDisabled()"
-                           *ngIf="stellarMode">{{ 'star-map.notch.action.show-transport' | translate }}</mat-button-toggle>
-    </mat-button-toggle-group>
-
-    <button mat-icon-button
-            class="pointer-events"
-            [disabled]="deselectDisabled()"
-            (click)="deselect()"
-            matTooltip="{{ 'star-map.notch.deselect' | translate }}">
-        <mat-icon>close</mat-icon>
-    </button>
 </div>

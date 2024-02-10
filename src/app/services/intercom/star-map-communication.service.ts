@@ -18,6 +18,8 @@ import {
 } from "../swagger";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {RadialMenuItem} from "../../modules/shared-module/components/radial-menu-component/radial-menu.component";
+import {ENotchType} from "../../modules/star-map/payload/notch/notch.component";
+import {Subject} from "rxjs";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export interface StellarMovement {
@@ -42,6 +44,8 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     private fleetsDesignatedForMotionEmitter: EventEmitter<Fleet[]> = new EventEmitter<Fleet[]>();
 
+    private radialMenuEmitter: Subject<string> = new Subject<string>();
+
     private storage: Map<number, Fleet> = new Map<number, Fleet>();
     private storageUsedPersonal: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
 
@@ -60,21 +64,48 @@ export class StarMapCommunicationService extends SubscriptionManager {
     private fleetsToCancelMovement: Fleet[] = [];
     private fleetMerge?: FleetMerge;
 
+    stellarMode: boolean = false;
+
     menuItemsModel: RadialMenuItem[] = [];
 
     constructor(private fleetService: FleetApiService,
                 private resourceService: ResourcesApiService) {
         super();
 
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-info"});
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-move"});
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-merge"});
-        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-transport"});
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-info", menuItemKey: ENotchType.INFO, disabled: this.infoDisabled()});
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-move", menuItemKey: ENotchType.MOVE, disabled: this.showMoveDisabled()});
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-merge", menuItemKey: ENotchType.MERGE, disabled: this.mergeDisabled()});
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-transport", menuItemKey: ENotchType.TRANSPORT, disabled: this.showTransportDisabled()});
+        this.menuItemsModel.push({labelKey: "star-map.notch.deselect", menuItemKey: 'DESELECT', disabled: this.deselectDisabled()});
     }
 
+    updateMenuState() {
+        this.menuItemsModel.forEach(item => {
+            const menuItemKey = item.menuItemKey;
+            switch (menuItemKey) {
+                case ENotchType.INFO:
+                    item.disabled = this.infoDisabled();
+                    break;
+                case ENotchType.MOVE:
+                    item.disabled = this.showMoveDisabled() && this.showCancelMoveDisabled();
+                    break;
+                case ENotchType.MERGE:
+                    item.disabled = this.mergeDisabled();
+                    break;
+                case ENotchType.TRANSPORT:
+                    item.disabled = this.showTransportDisabled();
+                    break;
+                default:
+                    // I am currently the only one without enum expression
+                    item.disabled = this.infoDisabled();
+                    break
+            }
+        });
+    }
 
     menuClicked(event: RadialMenuItem) {
-        console.log('menuClicked', event.label);
+        console.log("CommService", event)
+        this.radialMenuEmitter.next(event.menuItemKey);
     }
 
     clear() {
@@ -86,6 +117,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
         this.plannedInterstellarMoves = [];
         this.fleetsToCancelMovement = [];
         this.storage.clear();
+        this.updateMenuState();
     }
 
     deselect() {
@@ -93,15 +125,18 @@ export class StarMapCommunicationService extends SubscriptionManager {
         this.selectedFleetMarker = [];
         this.selectedFleets = [];
         this.deselectEverythingEmitter.emit(true);
+        this.updateMenuState();
     }
 
     removeSelectedStarSystem() {
         this.selectedStarSystem = undefined;
+        this.updateMenuState();
     }
 
     removeSelectedPlanet() {
         this.fleetOrbit = undefined;
         this.selectedPlanet = undefined;
+        this.updateMenuState();
     }
 
     getDisplaySystemEmitter() {
@@ -140,6 +175,9 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return this.fleetsDesignatedForMotionEmitter;
     }
 
+    getRadialMenuEmitter() {
+        return this.radialMenuEmitter;
+    }
 
     getFleetsDesignatedForMotion() {
         return this.fleetsDesignatedForMotion;
@@ -148,6 +186,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
     displaySystem(system?: StarSystem) {
         this.displayedStarSystem = system;
         this.displayStarSystemEmitter.emit(system);
+        this.updateMenuState();
     }
 
     isSelectedStarSystem(idStarSystem?: number) {
@@ -180,6 +219,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     setSelectedStarSystem(system: StarSystem) {
         this.selectedStarSystem = system;
+        this.updateMenuState();
     }
 
     setSelectedPlanet(planet: Planet) {
@@ -188,6 +228,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
             orbit: planet.orbit,
             system: this.displayedStarSystem
         }
+        this.updateMenuState();
     }
 
     addFleetMarker(fleetMarker: FleetMarker) {
@@ -196,6 +237,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
             this.selectedFleetMarker.push(fleetMarker);
             this.fetchFleet(fleetMarker);
         }
+        this.updateMenuState();
     }
 
     private fetchFleet(fleetMarker: FleetMarker) {
@@ -226,11 +268,13 @@ export class StarMapCommunicationService extends SubscriptionManager {
         this.selectedFleets.forEach(f => newArr.push(f));
         newArr.push(fleet);
         this.selectedFleets = newArr;
+        this.updateMenuState();
     }
 
     removeSelectedFleetMarker(fleetMarker: FleetMarker) {
         this.selectedFleetMarker = this.selectedFleetMarker.filter(fm => fm.fleet.id != fleetMarker.fleet.id);
         this.selectedFleets = this.selectedFleets.filter(f => f.idFleet != fleetMarker.fleet.id);
+        this.updateMenuState();
     }
 
     executeMoveDisabled() {
@@ -275,6 +319,10 @@ export class StarMapCommunicationService extends SubscriptionManager {
         return !movableFleetsPresent || !(fleetsWithDifferentOrbits.length != 0);
     }
 
+    foreignSelected() {
+        return this.selectedFleets.filter(f => f.owner.idUser !== this.userId).length > 0;
+    }
+
     showCancelMoveDisabled() {
         const fleetsWithCancelableMovementPresent = this.selectedFleets
             .filter(f => f.owner.idUser == this.userId)
@@ -282,7 +330,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
             .filter(f => !!f.move!.startOrbit.system)
             .filter(f => !!f.move!.targetOrbit.system)
             .filter(f => f.move!.startOrbit.system!.idStarSystem == f.move!.targetOrbit.system!.idStarSystem).length > 0;
-        return !fleetsWithCancelableMovementPresent;
+        return !this.stellarMode || !fleetsWithCancelableMovementPresent;
     }
 
     showMergeDisabled() {
@@ -309,11 +357,11 @@ export class StarMapCommunicationService extends SubscriptionManager {
             }
             nope = mergeCandidates < 2;
         }
-        return nope;
+        return !this.stellarMode || nope;
     }
 
     showTransportDisabled() {
-        return !(this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => f.state.isOperational).length > 0 && this.isStarSystemDisplayed());
+        return !this.stellarMode || !(this.selectedFleets.filter(f => f.owner.idUser == this.userId).filter(f => f.state.isOperational).length > 0 && this.isStarSystemDisplayed());
     }
 
     deselectDisabled() {
@@ -344,23 +392,28 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     resetMerge() {
         this.fleetMerge = undefined;
+        this.updateMenuState();
     }
 
     setPlannedInterstellarMovements(plannedMoves: FleetMove[]) {
         this.plannedInterstellarMoves = plannedMoves;
+        this.updateMenuState();
     }
 
     setConfirmedMovements(confirmedMoves: ConfirmedMove[]) {
         this.confirmedMovements = confirmedMoves;
         this.confirmedMovesEmitter.emit(this.confirmedMovements);
+        this.updateMenuState();
     }
 
     setPlannedStellarMovements(plannedMoves: FleetMove[]) {
         this.plannedStellarMoves = plannedMoves;
+        this.updateMenuState();
     }
 
     setFleetToCancelMovement(fleetsToStopMoving: Fleet[]) {
         this.fleetsToCancelMovement = fleetsToStopMoving;
+        this.updateMenuState();
     }
 
     getUtilizedPersonal(fleet: Fleet) {
@@ -369,6 +422,7 @@ export class StarMapCommunicationService extends SubscriptionManager {
 
     setFleetConstellationForMerge(fm: FleetMerge) {
         this.fleetMerge = fm;
+        this.updateMenuState();
     }
 
     mergeDisabled() {
@@ -378,11 +432,13 @@ export class StarMapCommunicationService extends SubscriptionManager {
     pushFleetsDesignatedForMotion(fleet: Fleet) {
         this.fleetsDesignatedForMotion.push(fleet);
         this.fleetsDesignatedForMotionEmitter.emit(this.fleetsDesignatedForMotion);
+        this.updateMenuState();
     }
 
     spliceFleetsDesignatedForMotion(indexOf: number, number: number) {
         this.fleetsDesignatedForMotion.splice(indexOf, number);
         this.fleetsDesignatedForMotionEmitter.emit(this.fleetsDesignatedForMotion);
+        this.updateMenuState();
     }
 
     getConfirmedInterstellarMoves(fleetIDs: number[]) {

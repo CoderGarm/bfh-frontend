@@ -1,10 +1,12 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
 
 
 export interface RadialMenuItem {
     label?: string;
     labelKey?: string;
     icon?: string;
+    menuItemKey: string;
+    disabled: boolean;
 }
 
 @Component({
@@ -13,6 +15,9 @@ export interface RadialMenuItem {
     styleUrls: ['./radial-menu.component.scss']
 })
 export class RadialMenuComponent {
+
+    @ViewChild('menu', {static: true})
+    menu!: TemplateRef<any>;
 
     @Input()
     menuItems: RadialMenuItem[] = [];
@@ -24,6 +29,7 @@ export class RadialMenuComponent {
     }
 
     onMenuItemOneClick(selected: RadialMenuItem) {
+        console.log("RadialMenuComponent", selected)
         this.menuItemClick.emit(selected);
     }
 }

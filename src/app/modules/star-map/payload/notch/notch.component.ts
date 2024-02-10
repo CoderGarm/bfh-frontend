@@ -1,12 +1,12 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {StarMapCommunicationService} from "../../../../services/intercom/star-map-communication.service";
 import {SubscriptionManager} from "../../../../subscription.manager";
 
-enum NotchType {
-    info = 'info',
-    move = 'move',
-    merge = 'merge',
-    transport = 'transport'
+export enum ENotchType {
+    INFO = 'INFO',
+    MOVE = 'MOVE',
+    MERGE = 'MERGE',
+    TRANSPORT = 'TRANSPORT'
 }
 
 @Component({
@@ -16,9 +16,6 @@ enum NotchType {
 })
 export class NotchComponent extends SubscriptionManager implements OnInit, OnChanges, OnDestroy {
 
-    @Input()
-    stellarMode: boolean = false;
-
     displayMove: boolean = false;
     displayInfo: boolean = false;
     displayMerge: boolean = false;
@@ -27,6 +24,16 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
 
     constructor(protected commService: StarMapCommunicationService) {
         super();
+
+        let sub = this.commService.getRadialMenuEmitter().subscribe(event => {
+            if (event == 'DESELECT') {
+                this.deselect();
+            } else {
+                this.notchType = <ENotchType><unknown>event;
+                this.toggleNotchElement();
+            }
+        });
+        this.subscriptions.push(sub);
     }
 
     ngOnInit(): void {
@@ -53,22 +60,22 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
 
     toggleNotchElement() {
         if (!!this.notchType) {
-            let key: NotchType = NotchType[this.notchType as keyof typeof NotchType];
+            let key: ENotchType = ENotchType[this.notchType as keyof typeof ENotchType];
 
             switch (key) {
                 case undefined:
                     this.undisplayNotchElement(false, false, false, false);
                     break;
-                case NotchType.info:
+                case ENotchType.INFO:
                     this.undisplayNotchElement(!this.displayInfo, false, false, false);
                     break;
-                case NotchType.move:
+                case ENotchType.MOVE:
                     this.undisplayNotchElement(false, !this.displayMove, false, false);
                     break;
-                case NotchType.merge:
+                case ENotchType.MERGE:
                     this.undisplayNotchElement(false, false, !this.displayMerge, false);
                     break;
-                case NotchType.transport:
+                case ENotchType.TRANSPORT:
                     this.undisplayNotchElement(false, false, false, !this.displayTransport);
                     break;
                 default:
@@ -77,36 +84,12 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
         }
     }
 
-    showInfoDisabled() {
-        return this.commService.infoDisabled();
-    }
-
-    showMoveDisabled() {
-        return this.commService.showMoveDisabled() && this.cancelMoveDisabled();
-    }
-
-
-    showMergeDisabled() {
-        return !this.stellarMode || this.commService.showMergeDisabled();
-    }
-
-    showTransportDisabled() {
-        return !this.stellarMode || this.commService.showTransportDisabled();
-    }
-
-    foreignSelected() {
-        return this.commService.selectedFleets.filter(f => f.owner.idUser !== this.userId).length > 0;
-    }
-
-    deselectDisabled() {
-        return this.commService.deselectDisabled();
-    }
-
-    cancelMoveDisabled() {
-        return !this.stellarMode || this.commService.showCancelMoveDisabled();
-    }
-
     ngOnDestroy(): void {
         this.commService.clear();
+    }
+
+    actionPossible() {
+        const isMoveDisabled = this.commService.showMoveDisabled() && this.commService.showCancelMoveDisabled();
+        return this.commService.foreignSelected() || !this.commService.infoDisabled() || !isMoveDisabled || !this.commService.showMergeDisabled() || !this.commService.showTransportDisabled();
     }
 }

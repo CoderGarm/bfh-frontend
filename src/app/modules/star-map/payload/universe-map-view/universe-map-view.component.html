@@ -114,13 +114,11 @@
 <app-system-info class="system-info-div" [starSystem]="starMapCommService.selectedStarSystem"></app-system-info>
 
 
-<div id="universe" [class.invertColor]="tokenStorage.isGeorge()" [cdkContextMenuTriggerFor]="radialMenuTrigger">
+<div id="universe" [class.invertColor]="tokenStorage.isGeorge()" [cdkContextMenuTriggerFor]="radialMenuTrigger.menu">
     <!-- svg elements will be created programmatically -->
 </div>
 
-<ng-template #radialMenuTrigger>
-    <app-radial-menu cdkMenu [menuItems]="commService.menuItemsModel" (menuItemClick)="commService.menuClicked($event)"></app-radial-menu>
-</ng-template>
+<app-radial-menu #radialMenuTrigger [menuItems]="starMapCommService.menuItemsModel" (menuItemClick)="starMapCommService.menuClicked($event)"></app-radial-menu>
 
 
 <app-notch class="notch-container"></app-notch>

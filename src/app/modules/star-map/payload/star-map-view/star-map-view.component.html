@@ -1,7 +1,9 @@
 <app-system-info class="system-info-div" [starSystem]="starSystem"></app-system-info>
 
-<div id="starsystem" [class.invertColor]="tokenStorage.isGeorge()">
+<div id="starsystem" [class.invertColor]="tokenStorage.isGeorge()" [cdkContextMenuTriggerFor]="radialMenuTrigger.menu">
     <!-- svg elements will be created programmatically -->
 </div>
 
-<app-notch class="notch-container" [stellarMode]="true"></app-notch>
+<app-radial-menu #radialMenuTrigger [menuItems]="starMapCommService.menuItemsModel" (menuItemClick)="starMapCommService.menuClicked($event)"></app-radial-menu>
+
+<app-notch class="notch-container"></app-notch>
