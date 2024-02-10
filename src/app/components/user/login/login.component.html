@@ -1,48 +1,54 @@
-<form [formGroup]="loginForm" (keyup.enter)="submitLogin()">
-    <mat-grid-list cols="1" rowHeight="100px">
-        <mat-grid-tile>
-            <h2>Login</h2>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <mat-form-field appearance="outline">
-                <mat-label>Login</mat-label>
-                <input matInput type='text' formControlName='login' required>
-            </mat-form-field>
-        </mat-grid-tile>
+<div [cdkContextMenuTriggerFor]="radialMenuTrigger">
+    <form [formGroup]="loginForm" (keyup.enter)="submitLogin()">
+        <mat-grid-list cols="1" rowHeight="100px">
+            <mat-grid-tile>
+                <h2>Login</h2>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Login</mat-label>
+                    <input matInput type='text' formControlName='login' required>
+                </mat-form-field>
+            </mat-grid-tile>
 
-        <mat-grid-tile>
-            <mat-form-field appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput placeholder="Passwort" [type]="hide ? 'password' : 'text'" formControlName="pass" min="0" required>
-                <button mat-icon-button matSuffix (click)="toggleHide($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput placeholder="Passwort" [type]="hide ? 'password' : 'text'" formControlName="pass" min="0" required>
+                    <button mat-icon-button matSuffix (click)="toggleHide($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-hint>
+                        <button mat-button routerLink='/forgotten-password' style="font-size: 0.8rem;">Password forgotten</button>
+                    </mat-hint>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <button mat-raised-button class="action-button" color="primary" type="submit" (click)="submitLogin()"
+                        [class.pulse-button]="!!registerEventService.freshUser"
+                        [disabled]="isSubmitDisabled()">{{ 'action.submit' | translate }}
                 </button>
-                <mat-hint>
-                    <button mat-button routerLink='/forgotten-password' style="font-size: 0.8rem;">Password forgotten</button>
-                </mat-hint>
-            </mat-form-field>
-        </mat-grid-tile>
+                <button mat-raised-button class="action-button" color="accent" (click)="clear()" [disabled]="isAuthenticated">{{ 'action.clear' | translate }}</button>
+            </mat-grid-tile>
 
-        <mat-grid-tile>
-            <button mat-raised-button class="action-button" color="primary" type="submit" (click)="submitLogin()"
-                    [class.pulse-button]="!!registerEventService.freshUser"
-                    [disabled]="isSubmitDisabled()">{{ 'action.submit' | translate }}
-            </button>
-            <button mat-raised-button class="action-button" color="accent" (click)="clear()" [disabled]="isAuthenticated">{{ 'action.clear' | translate }}</button>
-        </mat-grid-tile>
+        </mat-grid-list>
+    </form>
 
-    </mat-grid-list>
-</form>
+    <ng-template #radialMenuTrigger>
+        <app-radial-menu cdkMenu [menuItems]="menuItemsModel"></app-radial-menu>
+    </ng-template>
 
-<div *ngIf="userNames.length > 0">
-    <div class="flex-items-container">
-        <div>I should be visible on localhost only! But don't worry, I don't so magic.</div>
-    </div>
-    <div class="flex-items-container">
-        <mat-chip-listbox>
-            <mat-chip-option *ngFor="let name of userNames" [value]="name" (click)="setLogin(name)">
-                {{ name }}
-            </mat-chip-option>
-        </mat-chip-listbox>
+    <div *ngIf="userNames.length > 0">
+        <div class="flex-items-container">
+            <div>I should be visible on localhost only! But don't worry, I don't so magic.</div>
+        </div>
+        <div class="flex-items-container">
+            <mat-chip-listbox>
+                <mat-chip-option *ngFor="let name of userNames" [value]="name" (click)="setLogin(name)">
+                    {{ name }}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </div>
     </div>
 </div>

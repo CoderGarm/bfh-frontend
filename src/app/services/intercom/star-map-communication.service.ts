@@ -17,6 +17,7 @@ import {
     StarSystem
 } from "../swagger";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
+import {RadialMenuItem} from "../../modules/shared-module/components/radial-menu-component/radial-menu.component";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 
 export interface StellarMovement {
@@ -59,9 +60,21 @@ export class StarMapCommunicationService extends SubscriptionManager {
     private fleetsToCancelMovement: Fleet[] = [];
     private fleetMerge?: FleetMerge;
 
+    menuItemsModel: RadialMenuItem[] = [];
+
     constructor(private fleetService: FleetApiService,
                 private resourceService: ResourcesApiService) {
         super();
+
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-info"});
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-move"});
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-merge"});
+        this.menuItemsModel.push({labelKey: "star-map.notch.action.show-transport"});
+    }
+
+
+    menuClicked(event: RadialMenuItem) {
+        console.log('menuClicked', event.label);
     }
 
     clear() {

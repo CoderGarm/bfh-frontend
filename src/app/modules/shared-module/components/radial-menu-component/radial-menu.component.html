@@ -1,0 +1,15 @@
+<div id="radial-menu" class="radial-menu bottom-sticky active" *ngIf="!!menuItems">
+
+    <span class="floating-btn">
+        <i class="fa fa-plus"></i>
+    </span>
+
+    <menu class="items-wrapper four-menu">
+        <span class="fab-menu-item" *ngFor="let item of menuItems" (click)="onMenuItemOneClick(item)">
+            <img *ngIf="!!item.icon" class="navbar-img-link" src="{{ item.icon }}" alt="{{ item.label }}"/>
+            <span *ngIf="!!item.label">{{ item.label }}</span>
+            <span *ngIf="!!item.labelKey">{{ item.labelKey | translate }}</span>
+        </span>
+    </menu>
+
+</div>

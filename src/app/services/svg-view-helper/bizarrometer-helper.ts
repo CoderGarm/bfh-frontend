@@ -240,7 +240,7 @@ export class BizarrometerHelper extends BasicViewHelper {
     }
 
     private scaleWithDefault(valueToScale: number, defaultValue: number) {
-        // the scaling is way to jumpy from 0 to 5 to work without this kind of mechanic
+        // the scaling is way too jumpy from 0 to 5 to work without this kind of mechanic
         const scaler = Math.max(1, this.zoomScale);
         return scaler == 1 ? defaultValue : Math.ceil(valueToScale / scaler);
     }

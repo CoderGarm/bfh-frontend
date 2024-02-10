@@ -35,6 +35,7 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
 import {ColorPickerModule} from "ngx-color-picker";
 import {SafeUrlPipe} from "../../services/pipes/safe-url.pipe";
 import {IconComponent} from "./components/icon/icon.component";
+import {RadialMenuComponent} from "./components/radial-menu-component/radial-menu.component";
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import {IconComponent} from "./components/icon/icon.component";
         AmountShifterComponent,
         MarkdownEditorComponent,
         IconComponent,
+        RadialMenuComponent,
     ],
     imports: [
         CommonModule,
@@ -115,6 +117,7 @@ import {IconComponent} from "./components/icon/icon.component";
         MarkdownEditorComponent,
         ClipboardModule,
         ColorPickerModule,
+        RadialMenuComponent,
         IconComponent,
     ]
 })

@@ -1,6 +1,5 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {StarMapCommunicationService} from "../../../../services/intercom/star-map-communication.service";
-import {FleetApiService} from "../../../../services/swagger";
 import {SubscriptionManager} from "../../../../subscription.manager";
 
 enum NotchType {
@@ -20,17 +19,14 @@ export class NotchComponent extends SubscriptionManager implements OnInit, OnCha
     @Input()
     stellarMode: boolean = false;
 
-    commService: StarMapCommunicationService;
     displayMove: boolean = false;
     displayInfo: boolean = false;
     displayMerge: boolean = false;
     displayTransport: boolean = false;
     notchType?: string = undefined;
 
-    constructor(private fleetService: FleetApiService,
-                commService: StarMapCommunicationService) {
+    constructor(protected commService: StarMapCommunicationService) {
         super();
-        this.commService = commService;
     }
 
     ngOnInit(): void {

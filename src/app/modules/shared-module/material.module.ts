@@ -34,6 +34,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTreeModule} from "@angular/material/tree";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
+import {CdkContextMenuTrigger, CdkMenu, CdkMenuItem} from "@angular/cdk/menu";
 
 @NgModule({
 
@@ -75,6 +76,9 @@ import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
         MatButtonToggleModule,
         MatBadgeModule,
         MatBottomSheetModule,
+        CdkMenu,
+        CdkMenuItem,
+        CdkContextMenuTrigger,
     ],
     exports: [
         MatButtonModule,
@@ -113,6 +117,9 @@ import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
         MatButtonToggleModule,
         MatBadgeModule,
         MatBottomSheetModule,
+        CdkMenu,
+        CdkMenuItem,
+        CdkContextMenuTrigger,
     ],
     providers: []
 })

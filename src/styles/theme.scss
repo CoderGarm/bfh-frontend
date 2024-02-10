@@ -31,6 +31,7 @@ $theme-dark: palette-helper.modify-text-color($theme-dark, variables.$dark-secon
   --tertiary-background-color: #{variables.$dark-tertiary-background-color};
   --outlined-card-background-color: #{variables.$dark-quaternary-background-color};
   --outlined-card-outline-color: #{variables.$dark-background-color};
+  --radial-menu-background-color: #{variables.$dark-quaternary-background-color};
   --primary-text-color: #{variables.$dark-secondary-text-color};
   --secondary-text-color: #{variables.$dark-secondary-text-color};
   --spinner-text-color: #{variables.$dark-secondary-text-color};
@@ -77,6 +78,7 @@ $theme-light: palette-helper.modify-text-color($theme-light, variables.$light-se
   --tertiary-background-color: #{variables.$light-tertiary-background-color};
   --outlined-card-background-color: #{variables.$light-quaternary-background-color};
   --outlined-card-outline-color: #{variables.$dark-secondary-text-color};
+  --radial-menu-background-color: #{variables.$dark-quaternary-background-color};
   --primary-text-color: #{variables.$dark-secondary-text-color};
   --secondary-text-color: #{variables.$light-secondary-text-color};
   --spinner-text-color: #{variables.$dark-secondary-text-color};

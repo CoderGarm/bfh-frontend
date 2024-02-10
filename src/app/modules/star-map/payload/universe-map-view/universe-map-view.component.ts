@@ -14,6 +14,7 @@ import {map} from "rxjs/operators";
 import {Point} from "@svgdotjs/svg.js";
 import {FleetEventService} from "../../../../services/intercom/fleet-event.service";
 import {DoNotScrollService} from "../../../../services/intercom/do-not-scroll.service";
+import {StarMapCommunicationService} from "../../../../services/intercom/star-map-communication.service";
 
 @Component({
     selector: 'app-universe-map-view',
@@ -48,6 +49,7 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
                 private backgroundService: BackgroundService,
                 private translate: TranslateService,
                 private noScrollService: DoNotScrollService,
+                protected commService: StarMapCommunicationService,
                 private change: ChangeDetectorRef) {
         super();
 
@@ -87,7 +89,6 @@ export class UniverseMapViewComponent extends InterstellarViewHelper implements 
     }
 
     ngAfterViewInit(): void {
-        // unfortunately necessary in this constellation - ng destroy is called by ng template in tab view on tab switch
         this.createCanvas("universe-canvas", '#universe');
         this.createUniverseMap();
     }
