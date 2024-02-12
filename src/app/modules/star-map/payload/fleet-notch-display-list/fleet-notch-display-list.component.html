@@ -1,7 +1,3 @@
-<mat-grid-list cols="6" rowHeight="100px" class="fleet-notch-group">
-    <mat-grid-tile *ngFor="let fleet of commService.selectedFleets"
-                   [colspan]="getColSpan(fleet)"
-                   class="tile">
-        <app-fleet-notch-display [fleet]="fleet" class="mat-elevation-z8"></app-fleet-notch-display>
-    </mat-grid-tile>
-</mat-grid-list>
+<div class="flex-items-container">
+    <app-fleet-notch-display *ngFor="let fleet of commService.selectedFleets" [fleet]="fleet"></app-fleet-notch-display>
+</div>

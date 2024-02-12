@@ -29,7 +29,6 @@ export class RadialMenuComponent {
     }
 
     onMenuItemOneClick(selected: RadialMenuItem) {
-        console.log("RadialMenuComponent", selected)
         this.menuItemClick.emit(selected);
     }
 }

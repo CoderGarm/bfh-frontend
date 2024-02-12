@@ -51,6 +51,9 @@
 		"version": "Release Version"
 	},
 	"burger-menu": {
+		"discord": {
+			"invite": "Discord Channel"
+		},
 		"external-star-map": "Sternenkarte",
 		"external-star-map-manager": "Kartenkonfiguration",
 		"external-star-map-wiki": "Sternenkarte im Wiki",
@@ -93,8 +96,8 @@
 		"action": {
 			"show-aura": "Reichweitenaura de/aktivieren",
 			"show-bizarro": "Sensordaten de/aktivieren",
-			"show-red-details": "Details Gegnerflotte",
-			"show-green-details": "Details Flotte"
+			"show-green-details": "Details Flotte",
+			"show-red-details": "Details Gegnerflotte"
 		},
 		"tooltip": {
 			"warship-state": {

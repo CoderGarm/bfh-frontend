@@ -51,6 +51,9 @@
 		"version": "Release Version"
 	},
 	"burger-menu": {
+		"discord": {
+			"invite": "Discord Channel"
+		},
 		"external-star-map": "Star map",
 		"external-star-map-manager": "Map configuration",
 		"external-star-map-wiki": "Star map in the wiki",
@@ -93,8 +96,8 @@
 		"action": {
 			"show-aura": "Range Aura de/activate",
 			"show-bizarro": "Sensor Data de/activate",
-			"show-red-details": "Details Opponent Fleet",
-			"show-green-details": "Details Fleet"
+			"show-green-details": "Details Fleet",
+			"show-red-details": "Details Opponent Fleet"
 		},
 		"tooltip": {
 			"warship-state": {

@@ -23,7 +23,7 @@ export class BizarrometerHelper extends BasicViewHelper {
 
         // fixme must be look slightly better
 
-        const auraDistance = Math.max(auraShift.missileForwardShift, auraShift.antiMissileForwardShift);
+        const auraDistance = Math.max(auraShift.missileForwardShift, auraShift.antiMissileForwardShift) * 2;
         let angleFromEnemy: number = Math.ceil(NavigationCalculator.getAngle(enemyPosition, position));
         const placeOnTheLeft: boolean = angleFromEnemy > 180;
 
@@ -35,7 +35,7 @@ export class BizarrometerHelper extends BasicViewHelper {
             .id('bizarro-' + fm.fleet.id)
             .addClass('bizarrometer');
 
-        const fontSize = {size: this.scale(35000)};// fixme scaling is jumpy here, too
+        const fontSize = {size: this.scaleWithDefault(35000, 15000)};// fixme scaling is jumpy here, too
         const unit = this.scaleWithDefault(50000, 15000) * 3;
         const boxWidth = unit * 4;
         const boxHeigth = unit;
@@ -61,7 +61,7 @@ export class BizarrometerHelper extends BasicViewHelper {
             .addClass('lidar-box');
 
         const lidarHeadline = svg.text('LIDAR')
-            .x(<number>lidarBox.x() + (textHeight * 2))
+            .x(<number>lidarBox.x() + (textHeight * 1.4))
             .y(<number>lidarBox.y() + <number>lidarBox.height())
             .font(fontSize)
             .addClass('lidar-headline')

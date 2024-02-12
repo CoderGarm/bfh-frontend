@@ -45,8 +45,8 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
 
     menuItemsModel: RadialMenuItem[] = [];
 
-    protected showRed: boolean = true;
-    protected showGreen: boolean = true;
+    protected showRed: boolean = false;
+    protected showGreen: boolean = false;
 
     constructor() {
         super()

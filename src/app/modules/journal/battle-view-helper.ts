@@ -423,12 +423,15 @@ export class BattleViewHelper extends BizarrometerHelper {
                               missileForwardAngle: number,
                               antiMissileForwardAngle: number,
                               weaponForwardAngle: number) {
-        let antiShipMissileRangeHeightRadiusX: number = 0;
-        let antiShipMissileRangeWidthRadiusY: number = 0;
-        let antiMissileMissileRangeHeightRadiusX: number = 0;
-        let antiMissileMissileRangeWidthRadiusY: number = 0;
-        let weaponRangeHeightRadiusX: number = 0;
-        let weaponRangeWidthRadiusY: number = 0;
+
+        let heightRadiusASM: number = 0;
+        let widthRadiusASM: number = 0;
+
+        let heightRadiusAMM: number = 0;
+        let widthRadiusAMM: number = 0;
+
+        let heightRadiusWeapon: number = 0;
+        let widthRadiusWeapon: number = 0;
 
         if (!this.showAura) {
             return;
@@ -442,32 +445,35 @@ export class BattleViewHelper extends BizarrometerHelper {
             const alignment = aura.alignment;
             switch (alignment) {
                 case "BOW":
-                    antiShipMissileRangeHeightRadiusX += antiShipMissileRange;
-                    antiMissileMissileRangeHeightRadiusX += antiMissileMissileRange;
-                    weaponRangeHeightRadiusX += weaponRange;
+                    heightRadiusASM += antiShipMissileRange;
+                    heightRadiusAMM += antiMissileMissileRange;
+                    heightRadiusWeapon += weaponRange;
                     break;
                 case "STERN":
-                    antiShipMissileRangeHeightRadiusX += antiShipMissileRange;
-                    antiMissileMissileRangeHeightRadiusX += antiMissileMissileRange;
-                    weaponRangeHeightRadiusX += weaponRange;
+                    heightRadiusASM += antiShipMissileRange;
+                    heightRadiusAMM += antiMissileMissileRange;
+                    heightRadiusWeapon += weaponRange;
                     break;
                 case "BROADSIDE":
-                    antiShipMissileRangeWidthRadiusY += antiShipMissileRange;
-                    antiMissileMissileRangeWidthRadiusY += antiMissileMissileRange;
-                    weaponRangeWidthRadiusY += weaponRange;
+                    widthRadiusASM += antiShipMissileRange;
+                    widthRadiusAMM += antiMissileMissileRange;
+                    widthRadiusWeapon += weaponRange;
                     break;
             }
         });
 
         const auraCss = this.isOwnFleetMarker(move.actor) ? 'friendly-aura' : 'enemy-aura';
-        this.createAura(antiShipMissileRangeWidthRadiusY, antiShipMissileRangeHeightRadiusX, missileCenterPos.x, missileCenterPos.y, missileForwardAngle, auraCss, 'missile-aura');
-        this.createAura(antiMissileMissileRangeWidthRadiusY, antiMissileMissileRangeHeightRadiusX, antiMissileCenterPos.x, antiMissileCenterPos.y, antiMissileForwardAngle, auraCss, 'anti-missile-aura');
-        this.createAura(weaponRangeWidthRadiusY, weaponRangeHeightRadiusX, position.x, position.y, weaponForwardAngle, auraCss, 'weapon-aura');
+        this.createAura(widthRadiusASM, heightRadiusASM, missileCenterPos.x, missileCenterPos.y, missileForwardAngle, auraCss, 'missile-aura');
+        this.createAura(widthRadiusAMM, heightRadiusAMM, antiMissileCenterPos.x, antiMissileCenterPos.y, antiMissileForwardAngle, auraCss, 'anti-missile-aura');
+        this.createAura(widthRadiusWeapon, heightRadiusWeapon, position.x, position.y, weaponForwardAngle, auraCss, 'weapon-aura');
     }
 
     private createAura(widthRadius: number, heightRadius: number,
                        cx: number, cy: number, angle: number,
                        auraBaseCss: string, auraSpecificCss: string) {
+
+        // fixme aura should probably be more a trichter
+
         if (widthRadius == 0) {
             return;
         }

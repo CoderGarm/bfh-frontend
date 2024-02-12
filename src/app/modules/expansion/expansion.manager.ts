@@ -84,7 +84,6 @@ export class ExpansionManager extends SubscriptionManager {
         this.pagedStarSystems = this.dataSource.data.filter((u, i) => i >= skip)
             .filter((u, i) => i < this.paginator!.pageSize)
             .map(c => c.starSystem.idStarSystem);
-        console.log(this.pagedStarSystems)
     }
 
     initializePaginator() {
