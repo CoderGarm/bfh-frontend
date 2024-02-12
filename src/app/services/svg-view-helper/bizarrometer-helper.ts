@@ -10,10 +10,16 @@ import {BasicViewHelper} from "./basic-view-helper";
 })
 export class BizarrometerHelper extends BasicViewHelper {
 
+    protected showBizarrometer: boolean = true;
+
     createSVG(position: { x: number; y: number },
               enemyPosition: { x: number; y: number },
               auraShift: { missileForwardShift: number, antiMissileForwardShift: number },
               fm: FleetMarker, parent: G) {
+
+        if (!this.showBizarrometer) {
+            return;
+        }
 
         // fixme must be look slightly better
 

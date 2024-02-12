@@ -61,6 +61,8 @@ export class BattleViewHelper extends BizarrometerHelper {
     hoveredWarship?: AbstractId;
     clickedFleet?: FleetMarker;
 
+    protected showAura: boolean = true;
+
     constructor() {
         super(BattleViewHelper.STANDARD_METRIC, BattleViewHelper.MULTIPLIER);
 
@@ -427,6 +429,10 @@ export class BattleViewHelper extends BizarrometerHelper {
         let antiMissileMissileRangeWidthRadiusY: number = 0;
         let weaponRangeHeightRadiusX: number = 0;
         let weaponRangeWidthRadiusY: number = 0;
+
+        if (!this.showAura) {
+            return;
+        }
 
         move.auraState.auraStates.forEach(aura => {
             const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange);

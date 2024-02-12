@@ -90,6 +90,10 @@
 				"select-user": "Select user to share with"
 			}
 		},
+		"action": {
+			"show-aura": "Range Aura de/activate",
+			"show-bizarro": "Sensor Data de/activate"
+		},
 		"tooltip": {
 			"warship-state": {
 				"active": "Combative",

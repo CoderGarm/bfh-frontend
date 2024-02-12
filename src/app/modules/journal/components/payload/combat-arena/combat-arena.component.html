@@ -14,10 +14,13 @@
                                [clickedFleet]="clickedFleet"></app-fleet-round-state>
     </div>
     <div id="main"></div>
-    <div id="arena">
+    <div id="arena" [cdkContextMenuTriggerFor]="radialMenuTrigger.menu">
         <!-- svg elements will be created programmatically -->
     </div>
     <div class="zoom-scale-container">
         <app-map-zoom-scale [zoomScale]="zoomScale" [width]="viewBoxWidth" [height]="viewBoxHeight"></app-map-zoom-scale>
     </div>
 </div>
+
+
+<app-radial-menu #radialMenuTrigger [menuItems]="menuItemsModel" (menuItemClick)="menuClicked($event)"></app-radial-menu>

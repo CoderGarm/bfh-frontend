@@ -3,6 +3,12 @@ import {BattleReport, Fleet, Planet, StarSystem} from "../../../../../services/s
 import {BattleViewHelper} from "../../../battle-view-helper";
 import {CombatArenaData} from "../../../combat-arena-data";
 import {Text} from "@svgdotjs/svg.js";
+import {RadialMenuItem} from "../../../../shared-module/components/radial-menu-component/radial-menu.component";
+
+enum EArenaMenuItem {
+    AURA = 'AURA',
+    BIZARRO = 'BIZARRO'
+}
 
 @Component({
     selector: 'app-combat-arena',
@@ -35,8 +41,13 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     activeRound?: number;
     private activeRoundInputDefinition: string = "activeRound";
 
+    menuItemsModel: RadialMenuItem[] = [];
+
     constructor() {
         super()
+
+        this.menuItemsModel.push({labelKey: "combat-arena.action.show-aura", menuItemKey: EArenaMenuItem.AURA, disabled: false});
+        this.menuItemsModel.push({labelKey: "combat-arena.action.show-bizarro", menuItemKey: EArenaMenuItem.BIZARRO, disabled: false});
     }
 
     ngAfterViewInit(): void {
@@ -115,5 +126,18 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         }
         this.green = green;
         this.red = red;
+    }
+
+    menuClicked(event: RadialMenuItem) {
+        switch (<EArenaMenuItem><unknown>event.menuItemKey) {
+            case EArenaMenuItem.AURA:
+                this.showAura = !this.showAura;
+                break;
+            case EArenaMenuItem.BIZARRO:
+                this.showBizarrometer = !this.showBizarrometer;
+                break;
+
+        }
+        this.displayActiveRound();
     }
 }

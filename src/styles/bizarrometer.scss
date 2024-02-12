@@ -4,8 +4,8 @@
 .radar-box,
 .ecm-box {
   fill: transparent;
-  stroke: var(--map-text-color);
-  stroke-width: 1px;
+  stroke: var(--required-color);
+  stroke-width: 0.7px;
   vector-effect: non-scaling-stroke;
 }
 

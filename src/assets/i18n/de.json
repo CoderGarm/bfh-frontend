@@ -90,6 +90,10 @@
 				"select-user": "Wähle Spieler zum Teilen des KBs"
 			}
 		},
+		"action": {
+			"show-aura": "Reichweitenaura de/aktivieren",
+			"show-bizarro": "Sensordaten de/aktivieren"
+		},
 		"tooltip": {
 			"warship-state": {
 				"active": "Kampfbereit",
