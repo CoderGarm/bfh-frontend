@@ -7,7 +7,9 @@ import {RadialMenuItem} from "../../../../shared-module/components/radial-menu-c
 
 enum EArenaMenuItem {
     AURA = 'AURA',
-    BIZARRO = 'BIZARRO'
+    BIZARRO = 'BIZARRO',
+    RED_DETAILS = 'RED_DETAILS',
+    GREEN_DETAILS = 'GREEN_DETAILS',
 }
 
 @Component({
@@ -27,8 +29,8 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
 
     planets: Planet[] = [];
 
-    red: Fleet[] = [];
-    green: Fleet[] = [];
+    red?: Fleet;
+    green?: Fleet;
 
     @Input()
     combatArenaData?: CombatArenaData;
@@ -43,11 +45,16 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
 
     menuItemsModel: RadialMenuItem[] = [];
 
+    protected showRed: boolean = true;
+    protected showGreen: boolean = true;
+
     constructor() {
         super()
 
         this.menuItemsModel.push({labelKey: "combat-arena.action.show-aura", menuItemKey: EArenaMenuItem.AURA, disabled: false});
         this.menuItemsModel.push({labelKey: "combat-arena.action.show-bizarro", menuItemKey: EArenaMenuItem.BIZARRO, disabled: false});
+        this.menuItemsModel.push({labelKey: "combat-arena.action.show-red-details", menuItemKey: EArenaMenuItem.RED_DETAILS, disabled: false});
+        this.menuItemsModel.push({labelKey: "combat-arena.action.show-green-details", menuItemKey: EArenaMenuItem.GREEN_DETAILS, disabled: false});
     }
 
     ngAfterViewInit(): void {
@@ -111,21 +118,15 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
     }
 
     private setUpCombat() {
-        const green: Fleet[] = [];
-        const red: Fleet[] = [];
         if (!!this.battleReport) {
-            const userID = this.tokenStorage.getUserID();
             this.battleReport.participatingFleets.forEach(fleet => {
-                const idUser = fleet.owner.idUser;
-                if (idUser === userID) {
-                    green.push(fleet);
+                if (fleet.owner.idUser === this.userId) {
+                    this.green = fleet;
                 } else {
-                    red.push(fleet);
+                    this.red = fleet;
                 }
             });
         }
-        this.green = green;
-        this.red = red;
     }
 
     menuClicked(event: RadialMenuItem) {
@@ -135,6 +136,12 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
                 break;
             case EArenaMenuItem.BIZARRO:
                 this.showBizarrometer = !this.showBizarrometer;
+                break;
+            case EArenaMenuItem.RED_DETAILS:
+                this.showRed = !this.showRed;
+                break;
+            case EArenaMenuItem.GREEN_DETAILS:
+                this.showGreen = !this.showGreen;
                 break;
 
         }

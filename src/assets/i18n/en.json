@@ -92,7 +92,9 @@
 		},
 		"action": {
 			"show-aura": "Range Aura de/activate",
-			"show-bizarro": "Sensor Data de/activate"
+			"show-bizarro": "Sensor Data de/activate",
+			"show-red-details": "Details Opponent Fleet",
+			"show-green-details": "Details Fleet"
 		},
 		"tooltip": {
 			"warship-state": {

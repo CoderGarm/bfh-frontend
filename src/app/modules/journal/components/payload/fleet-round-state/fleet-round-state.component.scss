@@ -2,6 +2,14 @@
   color: var(--map-text-color);
 }
 
+app-icon {
+  margin: 0;
+}
+
+.mat-mdc-subheader {
+  font-size: small;
+}
+
 .flex-items-container {
   flex-flow: unset !important;
 }
@@ -16,7 +24,9 @@
 
 .fleet-round-state-list {
   width: 300px;
-  direction: ltr;
+  height: 500px;
+  max-height: 80%;
+  overflow-y: auto;
 }
 
 .highlight {

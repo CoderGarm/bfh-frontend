@@ -1,17 +1,22 @@
 
-.combat-info-div {
+.left-combat-info-div, .right-combat-info-div {
   position: absolute;
-  top: 10%;
-  height: calc(60%);
-  left: 15px;
+  margin-top: 8%;
   z-index: 1;
+  display: flex;
+}
+
+.left-combat-info-div {
+  left: 15px;
+}
+
+.right-combat-info-div {
+  right: 15px;
 }
 
 app-fleet-round-state {
   height: 50%;
   display: block;
-  overflow: auto;
-  direction: rtl;
 }
 
 .zoom-scale-container {
@@ -25,5 +30,9 @@ app-fleet-round-state {
   & app-map-zoom-scale {
     margin: auto;
   }
+}
+
+.bigger-distance {
+  right: 350px;
 }
 

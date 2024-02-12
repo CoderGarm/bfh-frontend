@@ -1,23 +1,24 @@
 <div class="combat-outline" [class.invertColor]="tokenStorage.isGeorge()">
-    <div class="combat-info-div">
-        <app-fleet-round-state *ngFor="let fleet of green"
-                               [fleet]="fleet"
-                               [combatArenaData]="combatArenaData"
-                               [activeRound]="activeRound"
-                               [hoveredWarship]="hoveredWarship"
-                               [clickedFleet]="clickedFleet"></app-fleet-round-state>
-        <app-fleet-round-state *ngFor="let fleet of red"
-                               [fleet]="fleet"
-                               [combatArenaData]="combatArenaData"
-                               [activeRound]="activeRound"
-                               [hoveredWarship]="hoveredWarship"
-                               [clickedFleet]="clickedFleet"></app-fleet-round-state>
-    </div>
+    <app-fleet-round-state *ngIf="showGreen"
+                           class="left-combat-info-div"
+                           [fleet]="green"
+                           [combatArenaData]="combatArenaData"
+                           [activeRound]="activeRound"
+                           [hoveredWarship]="hoveredWarship"
+                           [clickedFleet]="clickedFleet"></app-fleet-round-state>
+    <app-fleet-round-state *ngIf="showRed"
+                           class="right-combat-info-div"
+                           [fleet]="red"
+                           [combatArenaData]="combatArenaData"
+                           [activeRound]="activeRound"
+                           [hoveredWarship]="hoveredWarship"
+                           [clickedFleet]="clickedFleet"></app-fleet-round-state>
+
     <div id="main"></div>
     <div id="arena" [cdkContextMenuTriggerFor]="radialMenuTrigger.menu">
         <!-- svg elements will be created programmatically -->
     </div>
-    <div class="zoom-scale-container">
+    <div class="zoom-scale-container" [class.bigger-distance]="showRed">
         <app-map-zoom-scale [zoomScale]="zoomScale" [width]="viewBoxWidth" [height]="viewBoxHeight"></app-map-zoom-scale>
     </div>
 </div>

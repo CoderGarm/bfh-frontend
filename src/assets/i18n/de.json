@@ -92,7 +92,9 @@
 		},
 		"action": {
 			"show-aura": "Reichweitenaura de/aktivieren",
-			"show-bizarro": "Sensordaten de/aktivieren"
+			"show-bizarro": "Sensordaten de/aktivieren",
+			"show-red-details": "Details Gegnerflotte",
+			"show-green-details": "Details Flotte"
 		},
 		"tooltip": {
 			"warship-state": {
