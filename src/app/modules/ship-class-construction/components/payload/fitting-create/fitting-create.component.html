@@ -5,12 +5,12 @@
             <input matInput formControlName="scName" autocomplete="off"
                    matTooltip="The class name should contain of between 3 and 30 characters."
                    (change)="setShipClass(shipClassMock)">
-            <mat-error *ngIf="form.get('scName')?.hasError('passPattern')">{{errors.passPattern}} </mat-error>
-            <mat-error *ngIf="form.get('scName')?.hasError('passAlreadyKnown')">{{errors.passAlreadyKnown}} </mat-error>
+            <mat-error *ngIf="form.get('scName')?.hasError('passPattern')">{{ errors.passPattern }}</mat-error>
+            <mat-error *ngIf="form.get('scName')?.hasError('passAlreadyKnown')">{{ errors.passAlreadyKnown }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Designated ship role</mat-label>
-            <mat-select required formControlName="scTypeName" (change)="setShipClass(shipClassMock)">
+            <mat-select [required]="true" formControlName="scTypeName" (change)="setShipClass(shipClassMock)">
                 <mat-option></mat-option>
                 <mat-option *ngFor="let type of shipClassTypes" [value]="type">{{ type.type }} - {{ 'shipyard.hull.type.' + type.typeName | translate }}</mat-option>
             </mat-select>
@@ -23,8 +23,8 @@
             Store ship class
         </button>
     </div>
-    <app-ship-class-svg svgSelector="ship-class-fitting-selection"
-                        [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentOutput"></app-ship-class-svg>
+
+    <app-ship-imager [shipClassType]="shipClassType"></app-ship-imager>
 
     <app-resource-display onlyResources [showTick]="false"
                           [deposit]="resourceDeposit"

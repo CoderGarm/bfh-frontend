@@ -71,6 +71,7 @@ export class FittingCreateComponent extends SubscriptionManager implements After
         ]
     };
 
+    protected shipClassType?: EShipClassType;
 
     constructor(private shipYardApi: ShipyardApiService,
                 private shipyardService: ShipyardEventService,
@@ -93,6 +94,9 @@ export class FittingCreateComponent extends SubscriptionManager implements After
             scName: new UntypedFormControl(),
             scTypeName: new FormControl<EShipClassType | null>(null, Validators.required)
         });
+
+        sub = this.form.controls.scTypeName.valueChanges.subscribe(value => this.shipClassType = value);
+        this.subscriptions.push(sub);
     }
 
     ngAfterViewInit(): void {

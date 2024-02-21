@@ -44,11 +44,6 @@ export class FittingModifyComponent extends SubscriptionManager implements After
     resourceDeposit?: ResourceDeposit;
 
     /**
-     * the css selector which should be used to create the svg div in the svg component
-     */
-    svgSelector: string = "ship-class-fitting-selection";
-
-    /**
      * forwards the weapon alignments by amount to the svg component
      */
     @Output()

@@ -30,6 +30,7 @@ import {ColorSchemeService} from "./services/color-scheme.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {LibraryTabViewComponent} from "./modules/library/orga/library-main-view/library-tab-view.component";
 import {NewspaperComponent} from "./components/newspaper/newspaper.component";
+import {AssetHelper} from "./services/helper/asset.helper";
 
 @Component({
     selector: 'app-root',
@@ -39,6 +40,8 @@ import {NewspaperComponent} from "./components/newspaper/newspaper.component";
 export class AppComponent extends SubscriptionManager implements OnInit {
 
     title: string = 'bfh-fe';
+
+    assetHelper?: AssetHelper;
 
     static CHECK_MESSAGES_INTERVAL_IN_SECONDS: number = 60 * 1000;
 
@@ -273,6 +276,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         const number = this.randomIntFromInterval(AppComponent.IMG_START_NO, AppComponent.IMG_NO);
         const isPng: boolean = number >= 22 && number <= 25;
         const ending: string = isPng ? '.png' : '.jpeg';
-        return 'assets/images/' + number + ending;
+        return 'assets/images/entry/' + number + ending;
     }
 }

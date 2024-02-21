@@ -26,9 +26,7 @@
         </button>
     </div>
 
-    <app-ship-class-svg [isTemplateRenderedInput]="isSelectedOutput" [svgSelector]="svgSelector"
-                        [weaponsAmountByAlignmentInput]="weaponsAmountByAlignmentEmitter"
-                        [shipClass]="shipClass"></app-ship-class-svg>
+    <app-ship-imager [shipClassType]="shipClass?.shipClassType"></app-ship-imager>
 
     <app-resource-display onlyResources [showTick]="false"
                           [deposit]="resourceDeposit"
