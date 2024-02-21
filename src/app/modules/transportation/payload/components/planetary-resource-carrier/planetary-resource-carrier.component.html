@@ -1,0 +1,11 @@
+<div *ngIf="!!planet">
+    <app-resource-display [deposit]="resources" [showTick]="false"></app-resource-display>
+    <div class="flex-items-container">
+        <app-resource-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DEMAND', planet: planet }"
+                              [fetchDataIndicator]="fetchDataIndicator"
+                              (change)="setDemand($event)"></app-resource-carrier>
+        <app-resource-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DELIVERY', planet: planet }"
+                              [fetchDataIndicator]="fetchDataIndicator"
+                              (change)="setDelivery($event)"></app-resource-carrier>
+    </div>
+</div>

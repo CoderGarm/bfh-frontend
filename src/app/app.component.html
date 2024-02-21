@@ -17,7 +17,7 @@
         <app-home *ngIf="displayWelcome()"></app-home>
     </mat-drawer-content>
 </mat-drawer-container>
-<button id="toggle-nav" type="button" mat-button (click)="drawer.toggle()" *ngIf="isLoggedIn">
+<button id="toggle-nav" type="button" mat-button (click)="drawer.toggle(); toggleNavService.navOpened = drawer.opened;" *ngIf="isLoggedIn">
     <mat-icon *ngIf="drawer.opened">switch_right</mat-icon>
     <mat-icon *ngIf="!drawer.opened">switch_left</mat-icon>
 </button>

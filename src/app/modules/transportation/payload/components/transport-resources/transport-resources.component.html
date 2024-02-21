@@ -1,14 +1,19 @@
 <div class="bottom-spacer content-area">
 
-    <mat-button-toggle-group [(ngModel)]="carriageType" (valueChange)="change()">
-        <mat-button-toggle *ngFor="let type of carriageTypes" value="{{ type }}">
-            <span mat-subheader *ngIf="type === 'Resources'">{{ 'tab.transportation.resources' | translate }}</span>
-            <span mat-subheader *ngIf="type === 'Personnel'">{{ 'tab.transportation.humans' | translate }}</span>
-            <span mat-subheader *ngIf="type === 'Ships'">{{ 'tab.transportation.ships' | translate }}</span>
+    <mat-button-toggle-group [class.nav-closed]="!toggleNavService.navOpened">
+        <mat-button-toggle (click)="change(Items.RESOURCES)">
+            <span mat-subheader>{{ 'tab.transportation.resources' | translate }}</span>
+        </mat-button-toggle>
+        <mat-button-toggle (click)=" change(Items.PERSONNEL)">
+            <span mat-subheader>{{ 'tab.transportation.humans' | translate }}</span>
+        </mat-button-toggle>
+        <mat-button-toggle (click)=" change(Items.SHIPS)">
+            <span mat-subheader>{{ 'tab.transportation.ships' | translate }}</span>
         </mat-button-toggle>
     </mat-button-toggle-group>
 
-    <div class="expander-control width-fit-content height-fit-content">
+    <!-- todo i guess no user except george really want this
+    <div class="expander-control width-fit-content height-fit-content" [class.nav-closed]="!toggleNavService.navOpened">
         <div>
             <button mat-icon-button (click)="expandAll()">
                 <mat-icon class="centered-icon">unfold_more</mat-icon>
@@ -20,8 +25,9 @@
             </button>
         </div>
     </div>
+    -->
 
-    <div cdkDropListGroup *ngIf="!showStepper" class="ship-dropbox inner-list">
+    <div cdkDropListGroup [class.invisible]="showStepper" class="ship-dropbox inner-list">
         <div class="fleet-container" *ngFor="let planet of planets">
             <div cdkDropList
                  [cdkDropListData]="mothballByPlanet.get(planet.idPlanet)!"
@@ -57,7 +63,7 @@
         </div>
     </div>
 
-    <mat-accordion multi *ngIf="showStepper">
+    <mat-accordion multi [class.invisible]="!showStepper">
         <mat-expansion-panel *ngFor="let planet of sortedPlanets" class="margin-bottom"
                              (opened)="expandedPlanetId.push(planet.idPlanet)"
                              (closed)="expandedPlanetId.splice(expandedPlanetId.indexOf(planet.idPlanet), 1)"
@@ -74,22 +80,12 @@
 
             <mat-stepper #stepper class="transportation-stepper">
                 <mat-step>
-                    <app-resource-display [deposit]="depositsResources.get(planet.idPlanet)" [showTick]="false"></app-resource-display>
-                    <div class="flex-items-container">
-                        <app-resource-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DEMAND', planet: planet }"
-                                              (change)="setDemand($event)"></app-resource-carrier>
-                        <app-resource-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DELIVERY', planet: planet }"
-                                              (change)="setDelivery($event)"></app-resource-carrier>
-                    </div>
+                    <app-planetary-resource-carrier [planet]="planet"
+                                                    [fetchDataIndicator]="expandedPlanetId.includes(planet.idPlanet) && this.carriageType === Items.RESOURCES"></app-planetary-resource-carrier>
                 </mat-step>
                 <mat-step>
-                    <app-resource-display [deposit]="depositsPopulation.get(planet.idPlanet)" [showTick]="false"></app-resource-display>
-                    <div class="flex-items-container">
-                        <app-humans-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DEMAND', planet: planet }"
-                                            (change)="setHumanDemand($event)"></app-humans-carrier>
-                        <app-humans-carrier [resourceFetchOrder]="{ type: 'TRANSPORTATION_DELIVERY', planet: planet }"
-                                            (change)="setHumanDelivery($event)"></app-humans-carrier>
-                    </div>
+                    <app-planetary-human-carrier [planet]="planet"
+                                                 [fetchDataIndicator]="expandedPlanetId.includes(planet.idPlanet) && this.carriageType === Items.PERSONNEL"></app-planetary-human-carrier>
                 </mat-step>
             </mat-stepper>
         </mat-expansion-panel>

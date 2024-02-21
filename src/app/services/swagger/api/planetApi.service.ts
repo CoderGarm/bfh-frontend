@@ -22,6 +22,7 @@ import { FrontendError } from '../model/frontendError';
 import { Job } from '../model/job';
 import { Orbit } from '../model/orbit';
 import { Planet } from '../model/planet';
+import { PlanetAbstractId } from '../model/planetAbstractId';
 import { ResourceDeposit } from '../model/resourceDeposit';
 import { ShipyardConstructionOrder } from '../model/shipyardConstructionOrder';
 
@@ -360,6 +361,43 @@ export class PlanetApiService {
         ];
 
         return this.httpClient.request<Array<Planet>>('get',`${this.basePath}/api/private/planet/`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all planets which are colonized by a user.
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPlanetByUsersForNaming(observe?: 'body', reportProgress?: boolean): Observable<Array<PlanetAbstractId>>;
+    public getPlanetByUsersForNaming(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PlanetAbstractId>>>;
+    public getPlanetByUsersForNaming(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PlanetAbstractId>>>;
+    public getPlanetByUsersForNaming(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<PlanetAbstractId>>('get',`${this.basePath}/api/private/planet/abstractNaming`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

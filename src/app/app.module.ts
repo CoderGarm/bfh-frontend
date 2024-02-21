@@ -93,6 +93,7 @@ import {PlayerEmbassyService} from "./services/intercom/player-embassy.service";
 import {AllianceEmbassyService} from "./services/intercom/alliance-embassy.service";
 import {NewspaperComponent} from './components/newspaper/newspaper.component';
 import {NewsEntryComponent} from './components/newspaper/news-entry/news-entry.component';
+import {ToggleNavService} from "./services/intercom/toggle-nav.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -194,6 +195,7 @@ export let AppInjector: Injector;
         SnackbarNotificationService,
         SpinnerService,
         DoNotScrollService,
+        ToggleNavService,
         FleetEventService,
         RegisterEventService,
         CurrentTickService,

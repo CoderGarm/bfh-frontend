@@ -1,14 +1,14 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChildren} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges, ViewChildren} from '@angular/core';
 import {SubscriptionManager} from "../../../../../subscription.manager";
-import {AbstractId, EnumValueDto, FleetApiService, Planet, PlanetApiService, ResourceDeposit, WarShip} from "../../../../../services/swagger";
-import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
-import {ResourceHelper} from "../../../../../services/helper/resource.helper";
+import {EnumValueDto, FleetApiService, PlanetAbstractId, WarShip} from "../../../../../services/swagger";
 import {MatStepper} from "@angular/material/stepper";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogConfigHelper} from "../../../../../services/helper/dialog-config.helper";
 import {DialogData} from "../../../../../components/confirmation-dialog/DialogData";
 import {ConfirmDialogComponent} from "../../../../../components/confirmation-dialog/confirm-dialog.component";
+import {ToggleNavService} from "../../../../../services/intercom/toggle-nav.service";
+import {interval} from "rxjs";
 import EDepositTypeEnum = EnumValueDto.EDepositTypeEnum;
 
 export interface CarrierAmount {
@@ -22,7 +22,7 @@ export interface Amount {
 }
 
 export interface ResourceFetchOrder {
-    planet: Planet;
+    planet: PlanetAbstractId;
     type: EDepositTypeEnum;
 }
 
@@ -37,22 +37,14 @@ enum Items {
     templateUrl: './transport-resources.component.html',
     styleUrls: ['./transport-resources.component.scss']
 })
-export class TransportResourcesComponent extends SubscriptionManager implements OnInit, OnChanges {
+export class TransportResourcesComponent extends SubscriptionManager implements OnChanges {
 
     @Input()
-    planets: Planet[] = [];
+    planets: PlanetAbstractId[] = [];
 
-    @Input()
-    depositsResources: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
-
-    @Input()
-    depositsPopulation: Map<number, ResourceDeposit> = new Map<number, ResourceDeposit>();
-
-    @Input()
     mothballByPlanet: Map<number, WarShip[]> = new Map<number, WarShip[]>();
 
-    carriageTypes: string[] = ['Resources', 'Personnel', 'Ships'];
-    carriageType: string = 'Resources';
+    carriageType: Items = Items.RESOURCES;
 
     @ViewChildren('stepper')
     private steppers?: MatStepper[];
@@ -62,12 +54,10 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     expandedPlanetId: number[] = [];
 
     planetsBySystem: Map<number, number[]> = new Map<number, number[]>();
-    sortedPlanetsBySystem: Map<AbstractId, Planet[]> = new Map<AbstractId, Planet[]>();
-    sortedPlanets: Planet[] = [];
+    sortedPlanets: PlanetAbstractId[] = [];
 
-    constructor(private planetService: PlanetApiService,
-                private fleetService: FleetApiService,
-                private snackbar: SnackbarNotificationService,
+    constructor(private fleetService: FleetApiService,
+                public toggleNavService: ToggleNavService,
                 private dialog: MatDialog) {
         super();
     }
@@ -75,7 +65,7 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     ngOnChanges(changes: SimpleChanges): void {
         if (!!changes['planets']) {
             this.planets.forEach(p => {
-                const idStarSystem = p.starSystem.id;
+                const idStarSystem = p.idStarSystem;
                 const idPlanet = p.idPlanet;
                 let planets = this.planetsBySystem.get(idStarSystem);
                 if (!planets) {
@@ -87,77 +77,68 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
 
             this.planetsBySystem.forEach((planetIDs, idStarSystem) => {
                 const planets = this.planets.filter(p => planetIDs.includes(p.idPlanet));
-                const starSystem = planets[0].starSystem;
-                this.sortedPlanetsBySystem.set(starSystem, planets);
                 this.sortedPlanets.push(...planets);
             });
         }
     }
 
-    ngOnInit(): void {
-    }
-
-    setDemand(event: CarrierAmount) {
-        if (this.invalidEvent(event)) {
+    private getMothball() {
+        if (this.planets.length == 0) {
+            this.mothballByPlanet.clear();
+        }
+        if (this.showStepper && this.carriageType != Items.SHIPS) {
             return;
         }
-        let r: ResourceDeposit = ResourceHelper.transformResourceTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
+        const mothballByPlanet: Map<number, WarShip[]> = new Map<number, WarShip[]>();
+        let finished: number = this.planets.length;
+        this.planets.forEach(planet => {
+            let sub = this.fleetService.getPooledWarships(planet.idPlanet)
+                .subscribe(resp => {
+                    resp.forEach(w => {
+                        let idPlanet = planet.idPlanet;
+                        if (!!w.transportJob) {
+                            idPlanet = w.transportJob.to.id;
+                        }
+                        let arr = mothballByPlanet.get(idPlanet);
+                        if (!arr) {
+                            arr = [];
+                        }
+                        arr.push(w);
+                        mothballByPlanet.set(idPlanet, arr);
+                    });
+                    finished--;
+                });
+            this.subscriptions.push(sub);
+        });
+        const source = interval(500);
+        const sub = source.subscribe(() => {
+            if (finished == 0) {
+                this.planets.map(p => {
+                    if (!mothballByPlanet.has(p.idPlanet)) {
+                        mothballByPlanet.set(p.idPlanet, []);
+                    }
+                });
+                this.mothballByPlanet = mothballByPlanet;
+                sub.unsubscribe();
+            }
+        });
         this.subscriptions.push(sub);
+        this.expandedPlanetId = [];
     }
 
-    setDelivery(event: CarrierAmount) {
-        if (this.invalidEvent(event)) {
-            return;
-        }
-        let r: ResourceDeposit = ResourceHelper.transformResourceTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
-        this.subscriptions.push(sub);
-    }
+    change(carriageType: Items) {
 
-    private invalidEvent(event: CarrierAmount) {
-        // don't know why, but a pointer event arrives on de-focusing the input
-        return !('transportations' in event);
-    }
-
-    setHumanDemand(event: CarrierAmount) {
-        if (this.invalidEvent(event)) {
-            return;
-        }
-        let r: ResourceDeposit = ResourceHelper.transformHumanTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDemand(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
-        this.subscriptions.push(sub);
-    }
-
-    setHumanDelivery(event: CarrierAmount) {
-        if (this.invalidEvent(event)) {
-            return;
-        }
-        let r: ResourceDeposit = ResourceHelper.transformHumanTransportationToDeposit(event);
-        let sub = this.planetService.setTransportationDelivery(r, event.idPlanet).subscribe(() => this.snackbar.notifySave());
-        this.subscriptions.push(sub);
-    }
-
-    change() {
-        // a little more complex then necessary, but 2 factors: no setter for selectedIndex and to lazy for enum ordinal
-        const index = this.steppers?.map(a => a.selectedIndex)[0]!;
-        let diff: number;
+        this.carriageType = carriageType;
         if (this.carriageType === Items.RESOURCES) {
-            diff = 0 - index;
             this.showStepper = true;
+            this.steppers?.forEach(a => a.selectedIndex = 0);
         } else if (this.carriageType === Items.PERSONNEL) {
-            diff = 1 - index;
             this.showStepper = true;
+            this.steppers?.forEach(a => a.selectedIndex = 1);
         } else {
             this.showStepper = false;
+            this.getMothball();
             return;
-        }
-        for (let i = 0; i < Math.abs(diff); i++) {
-            if (diff < 0) {
-                this.steppers?.forEach(a => a.previous());
-            } else {
-                this.steppers?.forEach(a => a.next());
-            }
         }
     }
 
@@ -216,4 +197,6 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
     closeAll() {
         this.expandedPlanetId = [];
     }
+
+    protected readonly Items = Items;
 }

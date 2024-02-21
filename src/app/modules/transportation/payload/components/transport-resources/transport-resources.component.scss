@@ -25,22 +25,35 @@ mat-expansion-panel {
   position: relative;
 }
 
+
 .expander-control {
   position: fixed;
   left: calc(120px + 200px);
+
+  &.nav-closed {
+    left: 80px;
+  }
 }
 
 .mat-button-toggle-group {
   transform: rotate(-90deg);
   position: fixed;
   top: 400px;
-  left: 120px;
+  left: calc(120px);
+
+  &.nav-closed {
+    left: -120px;
+  }
 }
 
 .mat-accordion {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+
+.invisible {
+  height: 0 !important;
 }
 
 :host {

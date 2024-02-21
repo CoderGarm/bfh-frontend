@@ -94,6 +94,7 @@ export * from './passiveModuleDescriptor';
 export * from './pirateRaidActionItem';
 export * from './pirateRaidActionItemGroup';
 export * from './planet';
+export * from './planetAbstractId';
 export * from './plannedConstruction';
 export * from './player';
 export * from './populationOverview';

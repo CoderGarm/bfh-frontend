@@ -16,6 +16,9 @@ export class HumansCarrierComponent extends SubscriptionManager implements OnIni
     @Input()
     resourceFetchOrder?: ResourceFetchOrder;
 
+    @Input()
+    fetchDataIndicator: boolean = false;
+
     @Output()
     change: EventEmitter<CarrierAmount> = new EventEmitter();
 
@@ -44,6 +47,8 @@ export class HumansCarrierComponent extends SubscriptionManager implements OnIni
     ngOnChanges(changes: SimpleChanges): void {
         if (!!this.resourceFetchOrder) {
             this.titleKey = this.resourceFetchOrder.type.split('_')[1].toLowerCase();
+        }
+        if (this.fetchDataIndicator) {
             this.fetchData();
         }
     }

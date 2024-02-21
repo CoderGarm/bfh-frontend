@@ -31,6 +31,7 @@ import {MatDrawer} from "@angular/material/sidenav";
 import {LibraryTabViewComponent} from "./modules/library/orga/library-main-view/library-tab-view.component";
 import {NewspaperComponent} from "./components/newspaper/newspaper.component";
 import {AssetHelper} from "./services/helper/asset.helper";
+import {ToggleNavService} from "./services/intercom/toggle-nav.service";
 
 @Component({
     selector: 'app-root',
@@ -81,6 +82,7 @@ export class AppComponent extends SubscriptionManager implements OnInit {
                 protected tutorialScope: TutorialScopeService,
                 private router: Router,
                 public doNotScrollService: DoNotScrollService,
+                public toggleNavService: ToggleNavService,
                 private meta: Meta,
                 private titleService: Title,
                 private authenticationService: AuthenticationService,

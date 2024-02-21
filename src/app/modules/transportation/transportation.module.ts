@@ -5,6 +5,8 @@ import {TransportMainViewComponent} from './orga/transport-tab-view/transport-ma
 import {TransportResourcesComponent} from './payload/components/transport-resources/transport-resources.component';
 import {ResourceCarrierComponent} from './payload/components/transportation-resource-demand/resource-carrier.component';
 import {HumansCarrierComponent} from './payload/components/transportation-humans-demand/humans-carrier.component';
+import {PlanetaryHumanCarrierComponent} from './payload/components/planetary-human-carrier/planetary-human-carrier.component';
+import {PlanetaryResourceCarrierComponent} from "./payload/components/planetary-resource-carrier/planetary-resource-carrier.component";
 
 
 @NgModule({
@@ -13,6 +15,8 @@ import {HumansCarrierComponent} from './payload/components/transportation-humans
         TransportResourcesComponent,
         ResourceCarrierComponent,
         HumansCarrierComponent,
+        PlanetaryResourceCarrierComponent,
+        PlanetaryHumanCarrierComponent,
     ],
     exports: [],
     imports: [
