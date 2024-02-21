@@ -165,6 +165,11 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
         this.dragDisabled = true;
         const warShip = <WarShip>event.item.data;
         const idPlanet = Number.parseFloat(event.container.id);
+        if (event.previousContainer === event.container) {
+            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+            this.dragDisabled = false;
+            return;
+        }
 
         let sub = this.fleetService.getTransferTime(warShip.idWarship, idPlanet).subscribe(resp => {
             const dialogConfig = DialogConfigHelper.createDialog();
@@ -173,22 +178,25 @@ export class TransportResourcesComponent extends SubscriptionManager implements 
                 'This will take ' + resp + ' Ticks.');
             const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
             dialogRef.afterClosed().subscribe(result => {
+                if (event.previousContainer === event.container) {
+                    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+                    this.dragDisabled = false;
+                }
                 if (result) {
-                    if (event.previousContainer === event.container) {
-                        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-                    } else {
-                        transferArrayItem(
-                            event.previousContainer.data,
-                            event.container.data,
-                            event.previousIndex,
-                            event.currentIndex,
-                        );
-                    }
+                    transferArrayItem(
+                        event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex,
+                    );
                     let sub = this.fleetService.transferPooledWarship(warShip.idWarship, idPlanet).subscribe(resp => {
                         warShip.transportJob = resp;
                         setTimeout(() => this.dragDisabled = false, 300);
                     });
                     this.subscriptions.push(sub);
+                } else {
+                    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+                    this.dragDisabled = false;
                 }
             });
         });
