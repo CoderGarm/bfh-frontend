@@ -116,6 +116,8 @@ export class ManualFleetTransportComponent extends SubscriptionManager implement
                 this.usedCapacity += used;
             });
             this.subscriptions.push(sub);
+        } else {
+            this.left = undefined;
         }
         this.fetchPlanetByFleet();
     }
@@ -127,6 +129,8 @@ export class ManualFleetTransportComponent extends SubscriptionManager implement
                 this.rightCopy = ResourceHelper.copy(this.right);
             });
             this.subscriptions.push(sub);
+        } else {
+            this.right = undefined;
         }
     }
 
