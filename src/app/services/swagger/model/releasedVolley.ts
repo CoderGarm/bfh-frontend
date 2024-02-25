@@ -11,7 +11,6 @@
  */
 import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
-import { Distance } from './distance';
 
 /**
  * .
@@ -33,7 +32,6 @@ export interface ReleasedVolley {
      * The amount of missiles in this salvo.
      */
     amountOfShots: number;
-    initialDistance: Distance;
 }
 export namespace ReleasedVolley {
     export type WeaponTypeEnum = 'MISSILE' | 'BEAM' | 'COUNTER_MISSILE' | 'POINT_DEFENSE';

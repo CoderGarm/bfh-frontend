@@ -11,12 +11,12 @@
  */
 import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
-import { Orbit } from './orbit';
+import { Distance } from './distance';
 
 /**
  * .
  */
-export interface MissileMovement { 
+export interface MissileMovement {
     combatRoundKey: CombatRoundKey;
     actor: AbstractId;
     actorOwner: AbstractId;
@@ -29,11 +29,5 @@ export interface MissileMovement {
      * The amount of missiles in this salvo.
      */
     missileAmount: number;
-    /**
-     * The amount of rounds which have to be passed before in range for a hit.
-     */
-    roundsToTravel: number;
-    position: Orbit;
-    lastPosition: Orbit;
-    targetPosition: Orbit;
+    lengthOnTrack: Distance;
 }

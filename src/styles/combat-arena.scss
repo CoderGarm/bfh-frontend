@@ -48,3 +48,9 @@
     stroke-dashoffset: 0;
   }
 }
+
+.missile-salvo-trail {
+  stroke: yellowgreen;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}

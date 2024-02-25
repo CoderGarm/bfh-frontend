@@ -15,14 +15,10 @@ import { CombatRoundKey } from './combatRoundKey';
 /**
  * .
  */
-export interface CounterMissileHit { 
+export interface CounterMissileHit {
     combatRoundKey: CombatRoundKey;
     actor: AbstractId;
     target: AbstractId;
-    /**
-     * The leftover amount of missiles of the given type in the salvo.
-     */
-    remainingMissiles: number;
     /**
      * The UUID of the attacked missile salvo.
      */

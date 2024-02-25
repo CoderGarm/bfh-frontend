@@ -76,7 +76,7 @@ export class CombatArenaComponent extends BattleViewHelper implements AfterViewI
         if (changes[this.battleReportInputDefinition]) {
             this.setUpCombat();
             this.setBattleReport(this.battleReport);
-            this.drawCourses();
+            this.drawFleetCourses();
         }
         if (changes[this.activeRoundInputDefinition]) {
             this.displayActiveRound();

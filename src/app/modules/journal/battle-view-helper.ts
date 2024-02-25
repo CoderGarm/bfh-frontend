@@ -73,37 +73,39 @@ export class BattleViewHelper extends BizarrometerHelper {
         this.battleReport = report;
     }
 
-    protected drawCourses() {
+    protected drawFleetCourses() {
 
         const g = this.getOrCreateFleetConfirmedMoveGroup();
-        Array.from(this.combatArenaData!.maneuvers.values()).map(m => m.maneuverElements
-            .sort((a, b) => a.sequenceNo - b.sequenceNo)
-            .forEach(me => {
+        Array.from(this.combatArenaData!.maneuvers.values())
+            .filter(m => !m.missileSalvo)
+            .map(m => m.maneuverElements
+                .sort((a, b) => a.sequenceNo - b.sequenceNo)
+                .forEach(me => {
 
-                const p1 = me.p1;
-                const cp1 = me.cp1;
-                const cp2 = me.cp2;
-                const p2 = me.p2;
-                const c1: LineCommand = [
-                    'M',
-                    this.convertToStandardMetric(p1.xCoordinate), this.convertToStandardMetric(p1.yCoordinate),
-                ];
-                const c2: CurveCommand = [
-                    'C',
-                    this.convertToStandardMetric(cp1.xCoordinate), this.convertToStandardMetric(cp1.yCoordinate),
-                    this.convertToStandardMetric(cp2.xCoordinate), this.convertToStandardMetric(cp2.yCoordinate),
-                    this.convertToStandardMetric(p2.xCoordinate), this.convertToStandardMetric(p2.yCoordinate)
-                ];
+                    const p1 = me.p1;
+                    const cp1 = me.cp1;
+                    const cp2 = me.cp2;
+                    const p2 = me.p2;
+                    const c1: LineCommand = [
+                        'M',
+                        this.convertToStandardMetric(p1.xCoordinate), this.convertToStandardMetric(p1.yCoordinate),
+                    ];
+                    const c2: CurveCommand = [
+                        'C',
+                        this.convertToStandardMetric(cp1.xCoordinate), this.convertToStandardMetric(cp1.yCoordinate),
+                        this.convertToStandardMetric(cp2.xCoordinate), this.convertToStandardMetric(cp2.yCoordinate),
+                        this.convertToStandardMetric(p2.xCoordinate), this.convertToStandardMetric(p2.yCoordinate)
+                    ];
 
-                const maneuverElementKey = BattleViewHelper.getManeuverElementKey(me);
-                const maneuverCurve = g
-                    .path([c1, c2])
-                    .id(maneuverElementKey)
-                    .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
-                    .addClass(BasicViewHelper.RELATIVE_STROKE);
+                    const maneuverElementKey = BattleViewHelper.getManeuverElementKey(me);
+                    const maneuverCurve = g
+                        .path([c1, c2])
+                        .id(maneuverElementKey)
+                        .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
+                        .addClass(BasicViewHelper.RELATIVE_STROKE);
 
-                this.maneuverPathByIdFleet.set(maneuverElementKey, maneuverCurve);
-            }));
+                    this.maneuverPathByIdFleet.set(maneuverElementKey, maneuverCurve);
+                }));
     }
 
     private static getManeuverElementKey(maneuverElement: ManeuverElement) {
@@ -131,7 +133,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             }
         }
         this.clickedFleet = fleetMarker;
-        console.log(this.clickedFleet) // fixme open details and bizarrometer on click
+        console.log(this.clickedFleet) // todo open details and bizarrometer on click
     }
 
     protected mouseoverForWarship = (event: PointerEvent) => {
@@ -250,10 +252,9 @@ export class BattleViewHelper extends BizarrometerHelper {
     }
 
     private setMissileMovements(volleys: MissileMovement[]) {
-        const baseOrbit = this.createBaseOrbit();
 
         volleys.forEach((volley) => {
-            let missileOutlines: ArrayXY[] = this.defineMissileHullPoints(volley, baseOrbit);
+            let missileOutlines: ArrayXY[] = this.defineMissileHullPoints(volley);
             let missileSalvoID = this.getMissileSalvoID(volley);
             this.createMissileHullOutlinesAndPrint(missileSalvoID, missileOutlines, volley);
         });
@@ -281,8 +282,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             .stroke(stroke);
         this.missileSalvoPolygonsById.set(missileSalvoId, icon);
 
-        let flipX: boolean = volley.lastPosition.xCoordinate.coordinate < volley.position.xCoordinate.coordinate;
-        const xShift: number = icon.width() * (flipX ? -1 : 1);
+        const xShift: number = icon.width();
 
         group.text(missileAmount + '')
             .fill(iconColor)
@@ -291,21 +291,51 @@ export class BattleViewHelper extends BizarrometerHelper {
             .cy(icon.cy())
 
         this.getOrCreateMainSubLayerGroup().add(group);
+        this.createMissileTrail(volley);
     }
 
-    private defineMissileHullPoints(missileMovement: MissileMovement, centerOrbit: Orbit): ArrayXY[] {
+    private createMissileTrail(missileMovement: MissileMovement) {
+
+        // fixme draw bezier only to the current round
+
+        const g = this.getOrCreateMainSubLayerGroup();
+        this.getManeuverElementMissiles(this.combatArenaData!.maneuvers, missileMovement)
+            .sort((a, b) => a.sequenceNo - b.sequenceNo)
+            .forEach(me => {
+
+                const p1 = me.p1;
+                const cp1 = me.cp1;
+                const cp2 = me.cp2;
+                const p2 = me.p2;
+                const c1: LineCommand = [
+                    'M',
+                    this.convertToStandardMetric(p1.xCoordinate), this.convertToStandardMetric(p1.yCoordinate),
+                ];
+                const c2: CurveCommand = [
+                    'C',
+                    this.convertToStandardMetric(cp1.xCoordinate), this.convertToStandardMetric(cp1.yCoordinate),
+                    this.convertToStandardMetric(cp2.xCoordinate), this.convertToStandardMetric(cp2.yCoordinate),
+                    this.convertToStandardMetric(p2.xCoordinate), this.convertToStandardMetric(p2.yCoordinate)
+                ];
+
+                const maneuverElementKey = BattleViewHelper.getManeuverElementKey(me);
+                const maneuverCurve = g
+                    .path([c1, c2])
+                    .id(maneuverElementKey)
+                    .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
+                    .addClass(BasicViewHelper.RELATIVE_STROKE); // fixme use stroke offset + dasharray um darstellen der length?
+
+                this.maneuverPathByIdFleet.set(maneuverElementKey, maneuverCurve);
+            });
+    }
+
+    private defineMissileHullPoints(missileMovement: MissileMovement): ArrayXY[] {
         const missileAmount = missileMovement.missileAmount;
 
-        let lastPosition = missileMovement.lastPosition;
-        let position = missileMovement.position;
+        let x = 0// fixme this.convertToStandardMetric(position.xCoordinate);
+        let y = 0// fixme this.convertToStandardMetric(position.yCoordinate);
 
-        let direction: boolean = lastPosition.xCoordinate.coordinate < position.xCoordinate.coordinate;
-        position = this.modifyOrbit(position, centerOrbit);
-
-        let x = this.convertToStandardMetric(position.xCoordinate);
-        let y = this.convertToStandardMetric(position.yCoordinate);
-
-        return this.createMissileOutlines(x, y, direction, missileAmount);
+        return this.createMissileOutlines(x, y, false, missileAmount);
     }
 
     private createMissileOutlines(x: number, y: number, flip: boolean, missileAmount: number): ArrayXY[] {
@@ -362,7 +392,7 @@ export class BattleViewHelper extends BizarrometerHelper {
         movementActions.forEach((move) => {
             let fleet = move.actor;
             let lengthOnTrack = this.convertToStandardMetric(move.lengthOnTrack);
-            const maneuverElements = this.extractedManeuverElements(maneuvers, fleet);
+            const maneuverElements = this.getManeuverElements(maneuvers, fleet);
 
             let myTrack: Path = this.extractCurrentCurve(maneuverElements, lengthOnTrack)!;
 
@@ -387,7 +417,7 @@ export class BattleViewHelper extends BizarrometerHelper {
 
             const enemyMove = movementActions.find(ma => ma.actor.fleet.id != fleet.fleet.id)!;
             let enemyLengthOnTrack = this.convertToStandardMetric(enemyMove.lengthOnTrack);
-            const enemyManeuverElements = this.extractedManeuverElements(maneuvers, enemyMove.actor);
+            const enemyManeuverElements = this.getManeuverElements(maneuvers, enemyMove.actor);
             let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyLengthOnTrack)!;
 
             const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(lengthOnTrack);
@@ -396,8 +426,13 @@ export class BattleViewHelper extends BizarrometerHelper {
         });
     }
 
-    private extractedManeuverElements(maneuvers: Map<FleetMarker, Maneuver>, fleet: FleetMarker) {
-        const maneuver = Array.from(maneuvers.values()).find(m => m.actor.fleet.id === fleet.fleet.id)!;
+    private getManeuverElements(maneuvers: Map<FleetMarker, Maneuver>, fleet: FleetMarker) {
+        const maneuver = Array.from(maneuvers.values()).find(m => m.actor.fleet.id === fleet.fleet.id && !m.missileSalvo)!;
+        return maneuver.maneuverElements.sort((a, b) => a.sequenceNo - b.sequenceNo);
+    }
+
+    private getManeuverElementMissiles(maneuvers: Map<FleetMarker, Maneuver>, fleet: MissileMovement) {
+        const maneuver = Array.from(maneuvers.values()).find(m => m.missileSalvo === fleet.movingMissileSalvo)!;
         return maneuver.maneuverElements.sort((a, b) => a.sequenceNo - b.sequenceNo);
     }
 
@@ -581,39 +616,6 @@ export class BattleViewHelper extends BizarrometerHelper {
             }
         });
         return warshipsToDisplay;
-    }
-
-    /**
-     * Centers the given orbit to the base orbit - it's a simple galileo transformation.
-     * @private
-     */
-    private modifyOrbit(orbit: Orbit, baseOrbit: Orbit): Orbit {
-        let baseX = this.convertToStandardMetric(baseOrbit.xCoordinate);
-        let baseY = this.convertToStandardMetric(baseOrbit.yCoordinate);
-        let orbX = this.convertToStandardMetric(orbit.xCoordinate);
-        let orbY = this.convertToStandardMetric(orbit.yCoordinate);
-
-        if (baseX == 0 && baseY == 0) {
-            return orbit;
-        }
-
-        return {
-            xCoordinate: {
-                coordinate: (baseX - orbX) + orbX,
-                distanceMetric: this.standardDistanceMetric
-            },
-            yCoordinate: {
-                coordinate: (baseY - orbY) + orbY,
-                distanceMetric: this.standardDistanceMetric
-            }
-        };
-    }
-
-    private createBaseOrbit() {
-        return /*!!this.battleReport ? this.battleReport.battleReportStatistics.orbit!.orbit! :*/ {
-            xCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS},
-            yCoordinate: {coordinate: 0, distanceMetric: DistanceMetricEnum.LS}
-        };
     }
 
     /**

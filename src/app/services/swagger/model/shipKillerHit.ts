@@ -11,7 +11,6 @@
  */
 import { AbstractId } from './abstractId';
 import { CombatRoundKey } from './combatRoundKey';
-import { Distance } from './distance';
 import { HitLog } from './hitLog';
 import { LossRole } from './lossRole';
 
@@ -26,7 +25,6 @@ export interface ShipKillerHit {
      * The UUID of the damage dealer.
      */
     damageDealer: string;
-    distance: Distance;
     /**
      * The result of this salvo.
      */

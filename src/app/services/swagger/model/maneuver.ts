@@ -27,6 +27,10 @@ export interface Maneuver {
     end: CombatRound;
     actor: FleetMarker;
     /**
+     * The UUID of the missile salvo if this maneuver is for it.
+     */
+    missileSalvo?: string;
+    /**
      * The fleet which acts.
      */
     maneuverElements: Array<ManeuverElement>;
