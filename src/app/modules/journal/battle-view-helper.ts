@@ -318,14 +318,19 @@ export class BattleViewHelper extends BizarrometerHelper {
                     this.convertToStandardMetric(p2.xCoordinate), this.convertToStandardMetric(p2.yCoordinate)
                 ];
 
+                const css = this.isOwnUser(missileMovement.actor) ? 'friendly-missile-trail' : 'enemy-missile-trail';
                 const maneuverElementKey = BattleViewHelper.getManeuverElementKey(me);
                 const maneuverCurve = g
                     .path([c1, c2])
                     .id(maneuverElementKey)
-                    .addClass(BasicViewHelper.COURSE_PLOT_MARKER)
-                    .addClass(BasicViewHelper.RELATIVE_STROKE); // fixme use stroke offset + dasharray um darstellen der length?
+                    .addClass(css)
+                    .addClass(BasicViewHelper.MISSILE_TRAIL_MARKER)
+                    .addClass(BasicViewHelper.RELATIVE_STROKE);
 
-                this.maneuverPathByIdFleet.set(maneuverElementKey, maneuverCurve);
+                const length = maneuverCurve.length();
+                const lengthOnTrack = this.convertToStandardMetric(missileMovement.lengthOnTrack); // fixme how to make the trail movement visible?
+
+                maneuverCurve.stroke({dasharray: '' + length + ', ' + (length - lengthOnTrack)});
             });
     }
 

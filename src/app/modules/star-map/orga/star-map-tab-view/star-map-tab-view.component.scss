@@ -93,6 +93,21 @@
   fill: transparent;
 }
 
+.missile-trail {
+  stroke-width: 0.5px;
+  vector-effect: non-scaling-stroke;
+
+  &.friendly-missile-trail {
+    $color: hsl(227, 28%, 53%);
+    stroke: $color;
+  }
+
+  &.enemy-missile-trail {
+    $color: hsl(351, 47%, 55%);
+    stroke: $color;
+  }
+}
+
 .friendly-aura {
 
   &.missile-aura {

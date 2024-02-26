@@ -51,6 +51,7 @@ export class BasicViewHelperData extends SubscriptionManager {
     protected static readonly COURSE_PLOT_MARKER_ID_PREFIX = "course-plot-marker-";
     protected static readonly WAYPOINT_PLOT_MARKER = "waypoint-marker";
     protected static readonly COURSE_PLOT_MARKER = "course-plot";
+    protected static readonly MISSILE_TRAIL_MARKER = "missile-trail";
     protected static readonly STAR_MARKER = "star";
     protected static readonly STAR_COLOR_MARKER = "star-color";
     protected static readonly STAR_IN_SYSTEM_MARKER = "star-in-system";
