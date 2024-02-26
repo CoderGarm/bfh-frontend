@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { AuraState } from './auraState';
-import { CombatRoundKey } from './combatRoundKey';
 import { Distance } from './distance';
 import { FleetMarker } from './fleetMarker';
 
@@ -18,7 +17,10 @@ import { FleetMarker } from './fleetMarker';
  * .
  */
 export interface MovementAction { 
-    combatRoundKey: CombatRoundKey;
+    /**
+     * The round and phase information.
+     */
+    combatRoundKey: number;
     actor: FleetMarker;
     /**
      * The selected movement option for this action.

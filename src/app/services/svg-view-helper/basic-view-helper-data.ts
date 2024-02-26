@@ -327,11 +327,11 @@ export class BasicViewHelperData extends SubscriptionManager {
     }
 
     protected getMissileSalvoID(missileMovement: MissileMovement): string {
-        return BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX + "-" + missileMovement.movingMissileSalvo + "-" + missileMovement.combatRoundKey.combatRound.no;
+        return BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX + "-" + missileMovement.movingMissileSalvo + "-" + missileMovement.combatRoundKey;
     }
 
     protected getMissileSalvoIDByHit(hit: CounterMissileHit): string {
-        return BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX + "-" + hit.attackedMissileSalvo + "-" + hit.combatRoundKey.combatRound.no;
+        return BasicViewHelperData.MISSILE_SALVO_SELECTOR_ID_PREFIX + "-" + hit.attackedMissileSalvo + "-" + hit.combatRoundKey;
     }
 
     protected getCelestialBodyID(orbit: Orbit): string {

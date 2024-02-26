@@ -10,13 +10,15 @@
  * Do not edit the class manually.
  */
 import { AbstractId } from './abstractId';
-import { CombatRoundKey } from './combatRoundKey';
 
 /**
  * .
  */
-export interface CounterMissileHit {
-    combatRoundKey: CombatRoundKey;
+export interface CounterMissileHit { 
+    /**
+     * The round and phase information.
+     */
+    combatRoundKey: number;
     actor: AbstractId;
     target: AbstractId;
     /**

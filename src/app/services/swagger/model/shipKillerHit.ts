@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { AbstractId } from './abstractId';
-import { CombatRoundKey } from './combatRoundKey';
 import { HitLog } from './hitLog';
 import { LossRole } from './lossRole';
 
@@ -18,7 +17,10 @@ import { LossRole } from './lossRole';
  * .
  */
 export interface ShipKillerHit { 
-    combatRoundKey: CombatRoundKey;
+    /**
+     * The round and phase information.
+     */
+    combatRoundKey: number;
     actor: AbstractId;
     target: AbstractId;
     /**

@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { CombatRound } from './combatRound';
-import { CombatRoundKey } from './combatRoundKey';
 import { FleetMarker } from './fleetMarker';
 import { ManeuverElement } from './maneuverElement';
 
@@ -18,7 +17,10 @@ import { ManeuverElement } from './maneuverElement';
  * .
  */
 export interface Maneuver { 
-    combatRoundKey: CombatRoundKey;
+    /**
+     * The round and phase information.
+     */
+    combatRoundKey: number;
     /**
      * The name of the maneuver.
      */

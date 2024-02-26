@@ -1,6 +1,5 @@
 import {
     BattleReport,
-    CombatRound,
     CounterMissileHit,
     Fleet,
     FleetMarker,
@@ -53,67 +52,67 @@ export class CombatArenaData {
     }
 
     private setCounterMissileHitsMapValue(volley: CounterMissileHit) {
-        const combatRound = volley.combatRoundKey.combatRound;
-        let valueMap = this.counterMissileHitsByRound.get(combatRound.no);
+        const combatRound = volley.combatRoundKey;
+        let valueMap = this.counterMissileHitsByRound.get(combatRound);
         if (!valueMap) {
             valueMap = [];
-            this.counterMissileHitsByRound.set(combatRound.no, valueMap);
-            this.adaptCombatRoundRange(combatRound.no);
+            this.counterMissileHitsByRound.set(combatRound, valueMap);
+            this.adaptCombatRoundRange(combatRound);
         }
         valueMap.push(volley);
     }
 
     private setShipKillerHitsMapValue(volley: ShipKillerHit) {
-        const combatRound = volley.combatRoundKey.combatRound;
-        let valueMap = this.shipKillerHitsByRound.get(combatRound.no);
+        const combatRound = volley.combatRoundKey;
+        let valueMap = this.shipKillerHitsByRound.get(combatRound);
         if (!valueMap) {
             valueMap = [];
-            this.shipKillerHitsByRound.set(combatRound.no, valueMap);
-            this.adaptCombatRoundRange(combatRound.no);
+            this.shipKillerHitsByRound.set(combatRound, valueMap);
+            this.adaptCombatRoundRange(combatRound);
         }
         valueMap.push(volley);
         this.setHitLogMapValue(combatRound, volley.hitLogs);
     }
 
-    private setHitLogMapValue(combatRound: CombatRound, volley: HitLog[]) {
+    private setHitLogMapValue(combatRound: number, volley: HitLog[]) {
 
-        let valueMap = this.hitLogsByRound.get(combatRound.no);
+        let valueMap = this.hitLogsByRound.get(combatRound);
         if (!valueMap) {
             valueMap = [];
-            this.hitLogsByRound.set(combatRound.no, valueMap);
-            this.adaptCombatRoundRange(combatRound.no);
+            this.hitLogsByRound.set(combatRound, valueMap);
+            this.adaptCombatRoundRange(combatRound);
         }
         volley.forEach(hitLog => valueMap!.push(hitLog));
     }
 
     private setMissileMovementMapValue(volley: MissileMovement) {
-        const combatRound = volley.combatRoundKey.combatRound;
-        let valueMap = this.missileMovementsByRound.get(combatRound.no);
+        const combatRound = volley.combatRoundKey;
+        let valueMap = this.missileMovementsByRound.get(combatRound);
         if (!valueMap) {
             valueMap = [];
-            this.missileMovementsByRound.set(combatRound.no, valueMap);
-            this.adaptCombatRoundRange(combatRound.no);
+            this.missileMovementsByRound.set(combatRound, valueMap);
+            this.adaptCombatRoundRange(combatRound);
         }
         valueMap.push(volley);
     }
 
     private setReleasedVolleyMapValue(volley: ReleasedVolley) {
-        const combatRound = volley.combatRoundKey.combatRound;
-        let valueMap = this.volleysByRound.get(combatRound.no);
+        const combatRound = volley.combatRoundKey;
+        let valueMap = this.volleysByRound.get(combatRound);
         if (!valueMap) {
             valueMap = [];
-            this.volleysByRound.set(combatRound.no, valueMap);
-            this.adaptCombatRoundRange(combatRound.no);
+            this.volleysByRound.set(combatRound, valueMap);
+            this.adaptCombatRoundRange(combatRound);
         }
         valueMap.push(volley);
     }
 
     private setMovementMapValue(movementAction: MovementAction) {
-        const combatRound = movementAction.combatRoundKey.combatRound;
-        let valueMap = this.movementsByRound.get(combatRound.no);
+        const combatRound = movementAction.combatRoundKey;
+        let valueMap = this.movementsByRound.get(combatRound);
         if (!valueMap) {
             valueMap = [];
-            this.movementsByRound.set(combatRound.no, valueMap);
+            this.movementsByRound.set(combatRound, valueMap);
         }
         valueMap.push(movementAction);
     }
