@@ -9,9 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AbstractId } from './abstractId';
 import { AuraState } from './auraState';
 import { Distance } from './distance';
-import { FleetMarker } from './fleetMarker';
 
 /**
  * .
@@ -21,7 +21,7 @@ export interface MovementAction {
      * The round and phase information.
      */
     combatRoundKey: number;
-    actor: FleetMarker;
+    actor: AbstractId;
     /**
      * The selected movement option for this action.
      */

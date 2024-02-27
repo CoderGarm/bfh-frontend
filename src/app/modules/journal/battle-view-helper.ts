@@ -4,6 +4,7 @@ import {
     BattleReport,
     CounterMissileHit,
     Distance,
+    Fleet,
     FleetMarker,
     FleetOrbit,
     HitLog,
@@ -58,6 +59,9 @@ export class BattleViewHelper extends BizarrometerHelper {
     private missileSalvoPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
     private maneuverPathByIdFleet: Map<string, Path> = new Map<string, Path>();
 
+    private fleetByIdFleet: Map<number, Fleet> = new Map<number, Fleet>();
+    private fleetMarkerByIdFleet: Map<number, FleetMarker> = new Map<number, FleetMarker>();
+
     hoveredWarship?: AbstractId;
     clickedFleet?: FleetMarker;
 
@@ -71,6 +75,32 @@ export class BattleViewHelper extends BizarrometerHelper {
 
     protected setBattleReport(report: BattleReport | undefined) {
         this.battleReport = report;
+
+        this.fleetByIdFleet.clear();
+        this.fleetMarkerByIdFleet.clear();
+        this.battleReport?.participatingFleets.forEach(fleet => {
+            this.fleetByIdFleet.set(fleet.idFleet, fleet);
+            this.fleetMarkerByIdFleet.set(fleet.idFleet, {
+                currentOrbit: fleet.currentOrbit,
+                fleet: {
+                    id: fleet.idFleet,
+                    name: fleet.name
+                },
+                name: fleet.name,
+                orbit: fleet.orbit,
+                owner: {
+                    id: fleet.owner.idUser,
+                    name: fleet.owner.username
+                },
+                ships: [...fleet.ships.map(s => <AbstractId>{
+                    id: s.idWarship,
+                    name: s.name
+                })],
+                hyperPrintSensorValue: 0,
+                move: fleet.move,
+                state: fleet.state
+            });
+        });
     }
 
     protected drawFleetCourses() {
@@ -295,9 +325,6 @@ export class BattleViewHelper extends BizarrometerHelper {
     }
 
     private createMissileTrail(missileMovement: MissileMovement) {
-
-        // fixme draw bezier only to the current round
-
         const g = this.getOrCreateMainSubLayerGroup();
         this.getManeuverElementMissiles(this.combatArenaData!.maneuvers, missileMovement)
             .sort((a, b) => a.sequenceNo - b.sequenceNo)
@@ -327,10 +354,12 @@ export class BattleViewHelper extends BizarrometerHelper {
                     .addClass(BasicViewHelper.MISSILE_TRAIL_MARKER)
                     .addClass(BasicViewHelper.RELATIVE_STROKE);
 
-                const length = maneuverCurve.length();
-                const lengthOnTrack = this.convertToStandardMetric(missileMovement.lengthOnTrack); // fixme how to make the trail movement visible?
-
-                maneuverCurve.stroke({dasharray: '' + length + ', ' + (length - lengthOnTrack)});
+                /* fixme draw curve only up to current position
+                const length = Math.floor(maneuverCurve.length());
+                const lengthOnTrack = Math.floor(this.convertToStandardMetric(missileMovement.lengthOnTrack));
+                const diff = Math.floor(length - lengthOnTrack);
+                maneuverCurve.stroke({dasharray: '' + length, dashoffset: -diff});
+                */
             });
     }
 
@@ -395,7 +424,7 @@ export class BattleViewHelper extends BizarrometerHelper {
                               hitLogsByRound: Map<number, HitLog[]>) {
 
         movementActions.forEach((move) => {
-            let fleet = move.actor;
+            let fleet = this.fleetMarkerByIdFleet.get(move.actor.id)!
             let lengthOnTrack = this.convertToStandardMetric(move.lengthOnTrack);
             const maneuverElements = this.getManeuverElements(maneuvers, fleet);
 
@@ -420,9 +449,9 @@ export class BattleViewHelper extends BizarrometerHelper {
             this.createAuraEllipse(move, missileCenterPos, antiMissileCenterPos, position, missileForwardAngle, antiMissileForwardAngle, angle);
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
 
-            const enemyMove = movementActions.find(ma => ma.actor.fleet.id != fleet.fleet.id)!;
+            const enemyMove = movementActions.find(ma => ma.actor.id != fleet.fleet.id)!;
             let enemyLengthOnTrack = this.convertToStandardMetric(enemyMove.lengthOnTrack);
-            const enemyManeuverElements = this.getManeuverElements(maneuvers, enemyMove.actor);
+            const enemyManeuverElements = this.getManeuverElements(maneuvers, this.fleetMarkerByIdFleet.get(enemyMove.actor.id)!);
             let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyLengthOnTrack)!;
 
             const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(lengthOnTrack);
@@ -477,7 +506,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             return;
         }
 
-        move.auraState.auraStates.forEach(aura => {
+        move.auraState.auraStates.forEach(aura => { // fixme there is still a difference in missile range and the aura which must be explained
             const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange);
             const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange);
             const weaponRange = this.convertToStandardMetric(aura.weaponRange);
@@ -502,7 +531,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             }
         });
 
-        const auraCss = this.isOwnFleetMarker(move.actor) ? 'friendly-aura' : 'enemy-aura';
+        const auraCss = this.isOwnFleetMarker(this.fleetMarkerByIdFleet.get(move.actor.id)!) ? 'friendly-aura' : 'enemy-aura';
         this.createAura(widthRadiusASM, heightRadiusASM, missileCenterPos.x, missileCenterPos.y, missileForwardAngle, auraCss, 'missile-aura');
         this.createAura(widthRadiusAMM, heightRadiusAMM, antiMissileCenterPos.x, antiMissileCenterPos.y, antiMissileForwardAngle, auraCss, 'anti-missile-aura');
         this.createAura(widthRadiusWeapon, heightRadiusWeapon, position.x, position.y, weaponForwardAngle, auraCss, 'weapon-aura');
