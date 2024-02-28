@@ -4,6 +4,7 @@ import {
     BattleReport,
     CounterMissileHit,
     Distance,
+    EnumValueDto,
     Fleet,
     FleetMarker,
     FleetOrbit,
@@ -29,6 +30,7 @@ import {BizarrometerHelper} from "../../services/svg-view-helper/bizarrometer-he
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
+import EWeaponAlignmentEnum = EnumValueDto.EWeaponAlignmentEnum;
 
 export class BattleViewHelper extends BizarrometerHelper {
 
@@ -434,19 +436,10 @@ export class BattleViewHelper extends BizarrometerHelper {
             let lastPosition: { x: number, y: number } = myTrack.pointAt(lengthOnTrack - 1);
             const angle: number = Math.ceil(NavigationCalculator.getAngle(position, lastPosition));
 
-
-            const auraShift: { missileForwardShift: number, antiMissileForwardShift: number } = this.calculateAuraEllipseShift(move);
-            let missileCenterPos: { x: number, y: number } = myTrack.pointAt(lengthOnTrack + auraShift.missileForwardShift);
-            const missileForwardAngle: number = Math.ceil(NavigationCalculator.getAngle(position, missileCenterPos));
-            let antiMissileCenterPos: { x: number, y: number } = myTrack.pointAt(lengthOnTrack + auraShift.missileForwardShift);
-            const antiMissileForwardAngle: number = Math.ceil(NavigationCalculator.getAngle(position, antiMissileCenterPos));
-
-            missileCenterPos = NavigationCalculator.moveAbout(position.x, position.y, missileForwardAngle, auraShift.missileForwardShift);
-            antiMissileCenterPos = NavigationCalculator.moveAbout(position.x, position.y, antiMissileForwardAngle, auraShift.antiMissileForwardShift);
-
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, position, angle);
-            this.createAuraEllipse(move, missileCenterPos, antiMissileCenterPos, position, missileForwardAngle, antiMissileForwardAngle, angle);
+
+            const auraEllipseData = this.createAuraEllipse(move, myTrack, lengthOnTrack, position, angle);
             this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
 
             const enemyMove = movementActions.find(ma => ma.actor.id != fleet.fleet.id)!;
@@ -455,8 +448,9 @@ export class BattleViewHelper extends BizarrometerHelper {
             let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyLengthOnTrack)!;
 
             const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(lengthOnTrack);
-            this.createSVG(position, enemyPosition, auraShift, fleet, this.getOrCreateMainSubLayerGroup());
-
+            if (!!auraEllipseData) {
+                this.createSVG(position, enemyPosition, auraEllipseData, fleet, this.getOrCreateMainSubLayerGroup());
+            }
         });
     }
 
@@ -486,69 +480,61 @@ export class BattleViewHelper extends BizarrometerHelper {
     }
 
     private createAuraEllipse(move: MovementAction,
-                              missileCenterPos: { x: number, y: number },
-                              antiMissileCenterPos: { x: number, y: number },
+                              myTrack: Path,
+                              lengthOnTrack: number,
                               position: { x: number, y: number },
-                              missileForwardAngle: number,
-                              antiMissileForwardAngle: number,
-                              weaponForwardAngle: number) {
+                              weaponForwardAngle: number)
+        : { missileForwardRange: number, missileBackwardRange: number, antiMissileForwardRange: number, antiMissileBackwardRange: number } | undefined {
 
-        let heightRadiusASM: number = 0;
-        let widthRadiusASM: number = 0;
+        const bowAura = move.auraState.auraStates.find(a => a.alignment == EWeaponAlignmentEnum.BOW)!;
+        const missileForwardRange = this.convertToStandardMetric(bowAura.antiShipMissileRange);
+        const antiMissileForwardRange = this.convertToStandardMetric(bowAura.antiMissileMissileRange);
+        const weaponForwardRange = this.convertToStandardMetric(bowAura.weaponRange);
 
-        let heightRadiusAMM: number = 0;
-        let widthRadiusAMM: number = 0;
+        const sternAura = move.auraState.auraStates.find(a => a.alignment == EWeaponAlignmentEnum.STERN)!;
+        const missileBackwardRange = this.convertToStandardMetric(sternAura.antiShipMissileRange);
+        const antiMissileBackwardRange = this.convertToStandardMetric(sternAura.antiMissileMissileRange);
+        const weaponBackwardRange = this.convertToStandardMetric(sternAura.weaponRange);
 
-        let heightRadiusWeapon: number = 0;
-        let widthRadiusWeapon: number = 0;
+        const asmRange = missileForwardRange + missileBackwardRange;
+        const ammRange = antiMissileForwardRange + antiMissileBackwardRange;
+        const weaponRange = weaponForwardRange + weaponBackwardRange;
+
+        const asmDiff = missileForwardRange - missileBackwardRange;
+        const ammDiff = antiMissileForwardRange - antiMissileBackwardRange;
+
+        const missileCenterPos: { x: number, y: number } = myTrack.pointAt(lengthOnTrack + (asmDiff / 2));
+        const antiMissileCenterPos: { x: number, y: number } = myTrack.pointAt(lengthOnTrack + (ammDiff / 2));
+        const missileForwardAngle: number = Math.ceil(NavigationCalculator.getAngle(position, missileCenterPos));
+        const antiMissileForwardAngle: number = Math.ceil(NavigationCalculator.getAngle(position, antiMissileCenterPos));
 
         if (!this.showAura) {
-            return;
+            return undefined;
         }
 
-        move.auraState.auraStates.forEach(aura => { // fixme there is still a difference in missile range and the aura which must be explained
-            const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange);
-            const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange);
-            const weaponRange = this.convertToStandardMetric(aura.weaponRange);
-
-            const alignment = aura.alignment;
-            switch (alignment) {
-                case "BOW":
-                    heightRadiusASM += antiShipMissileRange;
-                    heightRadiusAMM += antiMissileMissileRange;
-                    heightRadiusWeapon += weaponRange;
-                    break;
-                case "STERN":
-                    heightRadiusASM += antiShipMissileRange;
-                    heightRadiusAMM += antiMissileMissileRange;
-                    heightRadiusWeapon += weaponRange;
-                    break;
-                case "BROADSIDE":
-                    widthRadiusASM += antiShipMissileRange;
-                    widthRadiusAMM += antiMissileMissileRange;
-                    widthRadiusWeapon += weaponRange;
-                    break;
-            }
-        });
-
         const auraCss = this.isOwnFleetMarker(this.fleetMarkerByIdFleet.get(move.actor.id)!) ? 'friendly-aura' : 'enemy-aura';
-        this.createAura(widthRadiusASM, heightRadiusASM, missileCenterPos.x, missileCenterPos.y, missileForwardAngle, auraCss, 'missile-aura');
-        this.createAura(widthRadiusAMM, heightRadiusAMM, antiMissileCenterPos.x, antiMissileCenterPos.y, antiMissileForwardAngle, auraCss, 'anti-missile-aura');
-        this.createAura(widthRadiusWeapon, heightRadiusWeapon, position.x, position.y, weaponForwardAngle, auraCss, 'weapon-aura');
+        this.createAura(asmRange / 2, asmRange, missileCenterPos.x, missileCenterPos.y, missileForwardAngle, auraCss, 'missile-aura');
+        this.createAura(ammRange / 2, ammRange, antiMissileCenterPos.x, antiMissileCenterPos.y, antiMissileForwardAngle, auraCss, 'anti-missile-aura');
+        this.createAura(weaponRange / 2, weaponRange, position.x, position.y, weaponForwardAngle, auraCss, 'weapon-aura');
+
+        return {
+            missileForwardRange: missileForwardRange,
+            missileBackwardRange: missileBackwardRange,
+            antiMissileForwardRange: antiMissileForwardRange,
+            antiMissileBackwardRange: antiMissileBackwardRange
+        }
     }
 
-    private createAura(widthRadius: number, heightRadius: number,
+    private createAura(width: number, height: number,
                        cx: number, cy: number, angle: number,
                        auraBaseCss: string, auraSpecificCss: string) {
 
-        // fixme aura should probably be more a trichter
-
-        if (widthRadius == 0) {
-            return;
+        if (width == 0) {
+            return undefined;
         }
 
         const g = this.getOrCreateMainSubLayerGroup();
-        const ellipse = g.ellipse(widthRadius * 2, heightRadius * 2)
+        const ellipse = g.ellipse(width, height)
             .cx(cx)
             .cy(cy)
             .id(auraBaseCss + "-" + auraSpecificCss)
@@ -559,6 +545,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             .rotate(angle, cx, cy);
 
         this.ellipseById.set(ellipse.id(), ellipse);
+        return ellipse;
     }
 
 
@@ -601,32 +588,6 @@ export class BattleViewHelper extends BizarrometerHelper {
             this.getOrCreateMainSubLayerGroup().removeElement(texts[0]);
         }
         ellipse.removeClass('aura-hovered')
-    }
-
-
-    private calculateAuraEllipseShift(move: MovementAction): { missileForwardShift: number, antiMissileForwardShift: number } {
-        let antiShipMissileRangeHeightRadiusX: number = 0;
-        let antiMissileMissileRangeHeightRadiusX: number = 0;
-
-        let missileForwardShift: number = 0;
-        let antiMissileForwardShift: number = 0;
-
-        move.auraState.auraStates.forEach(aura => {
-            const antiShipMissileRange = this.convertToStandardMetric(aura.antiShipMissileRange);
-            const antiMissileMissileRange = this.convertToStandardMetric(aura.antiMissileMissileRange);
-
-            const alignment = aura.alignment;
-            switch (alignment) {
-                case "BOW":
-                    antiShipMissileRangeHeightRadiusX += antiShipMissileRange;
-                    antiMissileMissileRangeHeightRadiusX += antiMissileMissileRange;
-                    missileForwardShift += antiShipMissileRangeHeightRadiusX;
-                    antiMissileForwardShift += antiMissileMissileRangeHeightRadiusX;
-                    break;
-            }
-        });
-
-        return {missileForwardShift: missileForwardShift, antiMissileForwardShift: antiMissileForwardShift}
     }
 
     private getFightingWarships(fleet: FleetMarker, activeRound: number, hitLogsByRound: Map<number, HitLog[]>) {

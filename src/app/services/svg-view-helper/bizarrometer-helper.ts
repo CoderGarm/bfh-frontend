@@ -14,7 +14,7 @@ export class BizarrometerHelper extends BasicViewHelper {
 
     createSVG(position: { x: number; y: number },
               enemyPosition: { x: number; y: number },
-              auraShift: { missileForwardShift: number, antiMissileForwardShift: number },
+              auraShift: { missileForwardRange: number; missileBackwardRange: number; antiMissileForwardRange: number; antiMissileBackwardRange: number },
               fm: FleetMarker, parent: G) {
 
         if (!this.showBizarrometer) {
@@ -23,11 +23,16 @@ export class BizarrometerHelper extends BasicViewHelper {
 
         // fixme must be look slightly better
 
-        const auraDistance = Math.max(auraShift.missileForwardShift, auraShift.antiMissileForwardShift) * 2;
+        // fixme display range info in new block
+        // fixme display missile salvos with flight duration
+
         let angleFromEnemy: number = Math.ceil(NavigationCalculator.getAngle(enemyPosition, position));
         const placeOnTheLeft: boolean = angleFromEnemy > 180;
 
-        const moved = NavigationCalculator.moveAbout(position.x, position.y, angleFromEnemy, auraDistance * 1.5);
+
+        const auraDistance = Math.max(auraShift.missileForwardRange, auraShift.missileBackwardRange);
+
+        const moved = NavigationCalculator.moveAbout(position.x, position.y, angleFromEnemy, auraDistance);
         let x: number = moved.x;
         let y: number = moved.y;
 
