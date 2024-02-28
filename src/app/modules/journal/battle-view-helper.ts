@@ -59,10 +59,10 @@ export class BattleViewHelper extends BizarrometerHelper {
     private latestWarshipPositionById: Map<String, ArrayXY> = new Map<String, ArrayXY>();
     private warshipPolygonById: Map<String, Polygon[]> = new Map<String, Polygon[]>();
     private missileSalvoPolygonsById: Map<String, Polygon> = new Map<String, Polygon>();
-    private maneuverPathByIdFleet: Map<string, Path> = new Map<string, Path>();
 
     private fleetByIdFleet: Map<number, Fleet> = new Map<number, Fleet>();
     private fleetMarkerByIdFleet: Map<number, FleetMarker> = new Map<number, FleetMarker>();
+    private maneuverPathByIdFleet: Map<string, Path> = new Map<string, Path>();
 
     hoveredWarship?: AbstractId;
     clickedFleet?: FleetMarker;
@@ -186,13 +186,20 @@ export class BattleViewHelper extends BizarrometerHelper {
             return;
         }
 
-        const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound)!;
-        if (!!movementByFleet) {
-            this.setFleetsInBattle(movementByFleet, activeRound, this.combatArenaData.maneuvers, this.combatArenaData.hitLogsByRound);
+        let missileMovements: MissileMovement[] = [];
+        const newVar = this.combatArenaData.missileMovementsByRound.get(activeRound);
+        if (!!newVar) {
+            missileMovements.push(...newVar);
         }
-        let missileMovements = this.combatArenaData.missileMovementsByRound.get(activeRound);
         if (!!missileMovements) {
             this.setMissileMovements(missileMovements);
+        }
+        const movementByFleet = this.combatArenaData.movementsByRound.get(activeRound)!;
+        if (!!movementByFleet) {
+            this.setFleetsInBattle(movementByFleet, activeRound,
+                this.combatArenaData.maneuvers,
+                this.combatArenaData.hitLogsByRound,
+                missileMovements);
         }
         let volleys = this.combatArenaData.volleysByRound.get(activeRound);
         if (!!volleys) {
@@ -356,6 +363,8 @@ export class BattleViewHelper extends BizarrometerHelper {
                     .addClass(BasicViewHelper.MISSILE_TRAIL_MARKER)
                     .addClass(BasicViewHelper.RELATIVE_STROKE);
 
+                this.maneuverPathByIdFleet.set(missileMovement.movingMissileSalvo, maneuverCurve);
+
                 /* fixme draw curve only up to current position
                 const length = Math.floor(maneuverCurve.length());
                 const lengthOnTrack = Math.floor(this.convertToStandardMetric(missileMovement.lengthOnTrack));
@@ -423,7 +432,8 @@ export class BattleViewHelper extends BizarrometerHelper {
     private setFleetsInBattle(movementActions: MovementAction[],
                               activeRound: number,
                               maneuvers: Map<FleetMarker, Maneuver>,
-                              hitLogsByRound: Map<number, HitLog[]>) {
+                              hitLogsByRound: Map<number, HitLog[]>,
+                              missileMovements: MissileMovement[]) {
 
         movementActions.forEach((move) => {
             let fleet = this.fleetMarkerByIdFleet.get(move.actor.id)!
@@ -449,7 +459,12 @@ export class BattleViewHelper extends BizarrometerHelper {
 
             const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(lengthOnTrack);
             if (!!auraEllipseData) {
-                this.createSVG(position, enemyPosition, auraEllipseData, fleet, this.getOrCreateMainSubLayerGroup());
+
+                const flyingSalvos: MissileMovement[] = missileMovements.filter(mm => mm.actor.id == fleet.fleet.id);
+                const salvoIDs = flyingSalvos.map(s => s.movingMissileSalvo);
+                const missileManeuvers = Array.from(maneuvers.values()).filter(s => !!s.missileSalvo).filter(m => salvoIDs.includes(m.missileSalvo!));
+
+                this.createSVG(position, enemyPosition, auraEllipseData, fleet, flyingSalvos, missileManeuvers);
             }
         });
     }

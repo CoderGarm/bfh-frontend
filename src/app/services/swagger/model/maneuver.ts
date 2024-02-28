@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CombatRound } from './combatRound';
+import { Distance } from './distance';
 import { FleetMarker } from './fleetMarker';
 import { ManeuverElement } from './maneuverElement';
 
@@ -27,6 +28,7 @@ export interface Maneuver {
     name: string;
     designatedEnd: CombatRound;
     end: CombatRound;
+    totalLength: Distance;
     actor: FleetMarker;
     /**
      * The UUID of the missile salvo if this maneuver is for it.

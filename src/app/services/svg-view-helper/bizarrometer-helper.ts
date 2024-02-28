@@ -1,9 +1,18 @@
-import {FleetMarker} from "../swagger";
-import {G, Line, Rect} from "@svgdotjs/svg.js";
+import {EnumValueDto, FleetMarker, Maneuver, MissileMovement} from "../swagger";
+import {G, Line, Rect, Text} from "@svgdotjs/svg.js";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component} from "@angular/core";
 import {BasicViewHelper} from "./basic-view-helper";
+import {DistancePipe} from "../pipes/distance.pipe";
+import {AppInjector} from "../../app.module";
+import EDistanceMetricsEnum = EnumValueDto.EDistanceMetricsEnum;
 
+interface BizarroBlockContent {
+    x: number,
+    y: number,
+    box: Rect,
+    headline: Text
+}
 
 @Component({
     template: ''
@@ -12,101 +21,118 @@ export class BizarrometerHelper extends BasicViewHelper {
 
     protected showBizarrometer: boolean = true;
 
+    private distancePipe: DistancePipe = AppInjector.get(DistancePipe);
+
     createSVG(position: { x: number; y: number },
               enemyPosition: { x: number; y: number },
               auraShift: { missileForwardRange: number; missileBackwardRange: number; antiMissileForwardRange: number; antiMissileBackwardRange: number },
-              fm: FleetMarker, parent: G) {
+              fm: FleetMarker,
+              flyingSalvos: MissileMovement[],
+              missileManeuvers: Maneuver[]) {
 
         if (!this.showBizarrometer) {
             return;
         }
-
         // fixme must be look slightly better
 
-        // fixme display range info in new block
-        // fixme display missile salvos with flight duration
+        // fixme display range info in new block instead info block position
+        // fixme display info block on the right at full height
 
         let angleFromEnemy: number = Math.ceil(NavigationCalculator.getAngle(enemyPosition, position));
         const placeOnTheLeft: boolean = angleFromEnemy > 180;
 
-
-        const auraDistance = Math.max(auraShift.missileForwardRange, auraShift.missileBackwardRange);
+        const auraDistance = Math.max(auraShift.missileForwardRange, auraShift.missileBackwardRange); // fixme position flipper ist not the best decision
 
         const moved = NavigationCalculator.moveAbout(position.x, position.y, angleFromEnemy, auraDistance);
         let x: number = moved.x;
         let y: number = moved.y;
 
-        const svg = parent.group()
+        const svg = this.getOrCreateMainSubLayerGroup().group()
             .id('bizarro-' + fm.fleet.id)
             .addClass('bizarrometer');
 
-        const fontSize = {size: this.scaleWithDefault(35000, 15000)};// fixme scaling is jumpy here, too
-        const unit = this.scaleWithDefault(50000, 15000) * 3;
+        const fontSize = {size: this.scaleWithDefault(35000, 15000)}; // fixme scaling is jumpy here, too
+        const unit = this.scaleWithDefault(50000, 15000) * 3; // fixme here, too
         const boxWidth = unit * 4;
-        const boxHeigth = unit;
+        const boxHeight = unit;
         const textHeight = unit / 4;
 
-        const headlineBox = svg.rect(boxWidth, textHeight * 2)
-            .x(x - (placeOnTheLeft ? boxWidth : 0))
-            .y(y)
-            .addClass('bizarro-headline-box');
+        x = x - (placeOnTheLeft ? boxWidth : 0);
+        const headlineBlock = this.createHeadlineBlock(svg, x, y, boxWidth, textHeight, fontSize);
 
-        const headlineText = svg.text('Emission Spectra')
-            .cx(<number>headlineBox.cx())
-            .y(<number>headlineBox.y() + textHeight)
-            .font(fontSize)
-            .addClass('bizarro-headline')
-            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+        x = <number>headlineBlock.box.x();
+        y = <number>headlineBlock.box.y() + (<number>headlineBlock.box.height() * 1.1);
+        const lidarBlock = this.createLidarBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize);
 
-        x = <number>headlineBox.x();
-        y = <number>headlineBox.y() + (<number>headlineBox.height() * 1.1);
-        const lidarBox = svg.rect(boxWidth, boxHeigth)
+        x = <number>lidarBlock.box.x();
+        y = <number>lidarBlock.box.y() + (<number>lidarBlock.box.height() * 1.1);
+        const impellerContent = this.createImpellerBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize);
+
+        x = <number>impellerContent.box.x() + (boxWidth / 2);
+        const radarBlock = this.createRadarBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize);
+
+        y = <number>radarBlock.box.y() + (<number>radarBlock.box.height() * 1.1);
+        const ecmBox = this.createEcmBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize);
+
+        x = <number>impellerContent.box.x();
+        y = <number>ecmBox.box.y() + (<number>ecmBox.box.height() * 1.1);
+        this.createInfoBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize, flyingSalvos, missileManeuvers);
+    }
+
+    private createInfoBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number },
+                            flyingSalvos: MissileMovement[], missileManeuvers: Maneuver[]) {
+
+        const salvoStrings = flyingSalvos
+            .sort((a, b) => b.combatRoundKey - a.combatRoundKey)
+            .map(salvo => {
+                const id = salvo.movingMissileSalvo.split('-')[0];
+
+                const maneuverPath = missileManeuvers.find(s => s.missileSalvo == salvo.movingMissileSalvo)!;
+                const distance = this.distancePipe.transform(salvo.lengthOnTrack, EDistanceMetricsEnum.LS);
+                const total = this.distancePipe.transform(maneuverPath.totalLength, EDistanceMetricsEnum.LS);
+                const missileAmount = salvo.missileAmount;
+                return id + ', ' + missileAmount + ' missiles, ' + distance + ' / ' + total
+            });
+
+        const lines = salvoStrings.length;
+        if (lines == 0) {
+            return undefined;
+        }
+        const salvoBlocktextHeight = this.getLineHeight(lines, textHeight);
+        const infoBox = svg.rect(boxWidth, Math.max(boxHeight, salvoBlocktextHeight))
             .x(x)
             .y(y)
-            .addClass('lidar-box');
+            .addClass('info-box');
 
-        const lidarHeadline = svg.text('LIDAR')
-            .x(<number>lidarBox.x() + (textHeight * 1.4))
-            .y(<number>lidarBox.y() + <number>lidarBox.height())
+        const infoHeadline = svg.text('INFO')
+            .x(<number>infoBox.x() + (textHeight * 1.4))
+            .y(<number>infoBox.y() + <number>infoBox.height())
             .font(fontSize)
-            .addClass('lidar-headline')
+            .addClass('info-headline')
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
 
-        this.createLidarBoxSpectrum(lidarBox, textHeight, svg);
+        const smallerTextSize = {size: fontSize.size / 1.5};
+        for (let i = 0; i < lines; i++) {
+            let text = salvoStrings[i];
+            const lineShift = this.getLineHeight(i, textHeight);
 
-        x = <number>lidarBox.x();
-        y = <number>lidarBox.y() + (<number>lidarBox.height() * 1.1);
-        const impellerBox = svg.rect(boxWidth / 2.2, boxHeigth + (boxHeigth * 1.1))
-            .x(x)
-            .y(y)
-            .addClass('impeller-box');
+            svg.text(text)
+                .x(<number>infoBox.x() + (textHeight * 2))
+                .y(<number>infoBox.y() + (boxHeight / 4) + lineShift)
+                .font(smallerTextSize)
+                .addClass('info-line')
+                .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+        }
 
-        const impellerHeadline = svg.text('IMPELLER')
-            .cx(<number>impellerBox.cx())
-            .y(<number>impellerBox.y() + textHeight)
-            .font(fontSize)
-            .addClass('impeller-headline')
-            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+        return {x: x, y: y, box: infoBox, headline: infoHeadline};
+    }
 
-        this.createImpellerBoxSpectrum(impellerBox, textHeight, svg);
+    private getLineHeight(i: number, textHeight: number) {
+        return (i * (textHeight * 1.4));
+    }
 
-        x = <number>impellerBox.x() + (boxWidth / 2);
-        const radarBox = svg.rect(boxWidth / 2, boxHeigth)
-            .x(x)
-            .y(y)
-            .addClass('radar-box');
-
-        const radarHeadline = svg.text('RADAR')
-            .cx(<number>radarBox.cx())
-            .y(<number>radarBox.y() + textHeight)
-            .font(fontSize)
-            .addClass('radar-headline')
-            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
-
-        this.createRadarBoxSpectrum(radarBox, textHeight, svg);
-
-        y = <number>radarBox.y() + (<number>radarBox.height() * 1.1);
-        const ecmBox = svg.rect(boxWidth / 2, boxHeigth)
+    private createEcmBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number }) {
+        const ecmBox = svg.rect(boxWidth / 2, boxHeight)
             .x(x)
             .y(y)
             .addClass('ecm-box');
@@ -119,6 +145,74 @@ export class BizarrometerHelper extends BasicViewHelper {
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
 
         this.createECMBoxSpectrum(ecmBox, textHeight, svg);
+        return {x: x, y: y, box: ecmBox, headline: ecmHeadline};
+    }
+
+    private createRadarBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number }) {
+        const radarBox = svg.rect(boxWidth / 2, boxHeight)
+            .x(x)
+            .y(y)
+            .addClass('radar-box');
+
+        const radarHeadline = svg.text('RADAR')
+            .cx(<number>radarBox.cx())
+            .y(<number>radarBox.y() + textHeight)
+            .font(fontSize)
+            .addClass('radar-headline')
+            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+
+        this.createRadarBoxSpectrum(radarBox, textHeight, svg);
+        return {x: x, y: y, box: radarBox, headline: radarHeadline};
+    }
+
+    private createImpellerBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number }) {
+        const impellerBox = svg.rect(boxWidth / 2.2, boxHeight + (boxHeight * 1.1))
+            .x(x)
+            .y(y)
+            .addClass('impeller-box');
+
+        const impellerHeadline = svg.text('IMPELLER')
+            .cx(<number>impellerBox.cx())
+            .y(<number>impellerBox.y() + textHeight)
+            .font(fontSize)
+            .addClass('impeller-headline')
+            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+
+        this.createImpellerBoxSpectrum(impellerBox, textHeight, svg);
+        return {x: x, y: y, box: impellerBox, headline: impellerHeadline};
+    }
+
+    private createLidarBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number }) {
+
+        const lidarBox = svg.rect(boxWidth, boxHeight)
+            .x(x)
+            .y(y)
+            .addClass('lidar-box');
+
+        const lidarHeadline = svg.text('LIDAR')
+            .x(<number>lidarBox.x() + (textHeight * 1.4))
+            .y(<number>lidarBox.y() + <number>lidarBox.height())
+            .font(fontSize)
+            .addClass('lidar-headline')
+            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+
+        this.createLidarBoxSpectrum(lidarBox, textHeight, svg);
+        return {x: x, y: y, box: lidarBox, headline: lidarHeadline};
+    }
+
+    private createHeadlineBlock(svg: G, x: number, y: number, boxWidth: number, textHeight: number, fontSize: { size: number }): BizarroBlockContent {
+        const headlineBox = svg.rect(boxWidth, textHeight * 2)
+            .x(x)
+            .y(y)
+            .addClass('bizarro-headline-box');
+
+        const headlineText: Text = svg.text('Emission Spectra')
+            .cx(<number>headlineBox.cx())
+            .y(<number>headlineBox.y() + textHeight)
+            .font(fontSize)
+            .addClass('bizarro-headline')
+            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+        return {x: x, y: y, box: headlineBox, headline: headlineText};
     }
 
     private createECMBoxSpectrum(box: Rect, textHeight: number, svg: G) {

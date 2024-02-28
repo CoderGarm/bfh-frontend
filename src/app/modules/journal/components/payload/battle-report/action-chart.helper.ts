@@ -15,10 +15,6 @@ export class ActionChartHelper extends SubscriptionManager {
     protected createActionChart(combatArenaData: CombatArenaData) {
 
         const data = combatArenaData.combatRounds.map(round => {
-            if (round < combatArenaData.combatStartsAtRound || round > combatArenaData.combatEndsAtRound) {
-                return 0;
-            }
-
             let amountOfActions = 0;
             amountOfActions += combatArenaData.movementsByRound.has(round) ? combatArenaData.movementsByRound.get(round)!.length : 0;
             amountOfActions += combatArenaData.missileMovementsByRound.has(round) ? combatArenaData.missileMovementsByRound.get(round)!.length : 0;
