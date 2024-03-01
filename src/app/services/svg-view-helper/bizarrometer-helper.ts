@@ -111,6 +111,13 @@ export class BizarrometerHelper extends BasicViewHelper {
             .addClass('general-info-headline')
             .addClass(BasicViewHelper.TEXT_FILL_MARKER);
 
+        headline.filterWith(function (add) {
+            let blur = add.offset(0, 1).in(add.$sourceAlpha).gaussianBlur(0, 1)
+
+            add.blend(add.$source, blur, 'blur')
+            //fixme experiment with filters https://garden.bradwoods.io/notes/svg/filters#listofprimitives
+        })
+
         this.printInfoTextLines(fontSize, lines, salvoStrings, textHeight, svg, box, boxHeight);
 
         return {x: x, y: y, box: box, headline: headline};
