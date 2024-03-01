@@ -26,7 +26,7 @@ import {NavigationCalculator} from "../../services/helper/navigation-calculator.
 import {CombatArenaData} from "./combat-arena-data";
 import {BasicViewHelperData} from "../../services/svg-view-helper/basic-view-helper-data";
 import {options} from "@svgdotjs/svg.panzoom.js";
-import {BizarrometerHelper} from "../../services/svg-view-helper/bizarrometer-helper";
+import {BizarrometerHelper, SimpleRangeAura} from "../../services/svg-view-helper/bizarrometer-helper";
 import DistanceMetricEnum = Distance.DistanceMetricEnum;
 import WeaponTypeEnum = Launcher.WeaponTypeEnum;
 import ResultEnum = ShipKillerHit.ResultEnum;
@@ -165,7 +165,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             }
         }
         this.clickedFleet = fleetMarker;
-        console.log(this.clickedFleet) // todo open details and bizarrometer on click
+        console.log('clickForFleet', this.clickedFleet) // todo open details and bizarrometer on click
     }
 
     protected mouseoverForWarship = (event: PointerEvent) => {
@@ -464,7 +464,7 @@ export class BattleViewHelper extends BizarrometerHelper {
                 const salvoIDs = flyingSalvos.map(s => s.movingMissileSalvo);
                 const missileManeuvers = Array.from(maneuvers.values()).filter(s => !!s.missileSalvo).filter(m => salvoIDs.includes(m.missileSalvo!));
 
-                this.createSVG(position, enemyPosition, auraEllipseData, fleet, flyingSalvos, missileManeuvers);
+                this.createBizarrometer(position, enemyPosition, auraEllipseData, fleet, flyingSalvos, missileManeuvers);
             }
         });
     }
@@ -498,8 +498,7 @@ export class BattleViewHelper extends BizarrometerHelper {
                               myTrack: Path,
                               lengthOnTrack: number,
                               position: { x: number, y: number },
-                              weaponForwardAngle: number)
-        : { missileForwardRange: number, missileBackwardRange: number, antiMissileForwardRange: number, antiMissileBackwardRange: number } | undefined {
+                              weaponForwardAngle: number): SimpleRangeAura | undefined {
 
         const bowAura = move.auraState.auraStates.find(a => a.alignment == EWeaponAlignmentEnum.BOW)!;
         const missileForwardRange = this.convertToStandardMetric(bowAura.antiShipMissileRange);
@@ -533,10 +532,10 @@ export class BattleViewHelper extends BizarrometerHelper {
         this.createAura(weaponRange / 2, weaponRange, position.x, position.y, weaponForwardAngle, auraCss, 'weapon-aura');
 
         return {
-            missileForwardRange: missileForwardRange,
-            missileBackwardRange: missileBackwardRange,
-            antiMissileForwardRange: antiMissileForwardRange,
-            antiMissileBackwardRange: antiMissileBackwardRange
+            missileForwardRange: bowAura.antiShipMissileRange,
+            missileBackwardRange: sternAura.antiShipMissileRange,
+            antiMissileForwardRange: bowAura.antiMissileMissileRange,
+            antiMissileBackwardRange: sternAura.antiMissileMissileRange
         }
     }
 

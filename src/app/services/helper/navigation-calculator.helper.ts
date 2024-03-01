@@ -298,4 +298,15 @@ export class NavigationCalculator {
         let multiplier = Math.pow(10, precision || 0);
         return Math.round(value * multiplier) / multiplier;
     }
+
+    static getNextSmaller(metric: Distance.DistanceMetricEnum) {
+        const factor = this.distanceMetricValues.get(metric)!;
+        const find = Array.from(this.distanceMetricValues.entries())
+            .sort((a, b) => b[1] - a[1])
+            .find(value => value[1] < factor);
+        if (!!find) {
+            return find[0];
+        }
+        return metric;
+    }
 }

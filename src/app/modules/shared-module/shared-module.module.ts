@@ -36,6 +36,7 @@ import {ColorPickerModule} from "ngx-color-picker";
 import {SafeUrlPipe} from "../../services/pipes/safe-url.pipe";
 import {IconComponent} from "./components/icon/icon.component";
 import {RadialMenuComponent} from "./components/radial-menu-component/radial-menu.component";
+import {DynamicDistancePipe} from "../../services/pipes/dynamic-distance.pipe";
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import {RadialMenuComponent} from "./components/radial-menu-component/radial-men
         NumberShortPipe,
         TimePipe,
         DistancePipe,
+        DynamicDistancePipe,
         MassPipe,
         MissileEndurancePipe,
         AccelerationPipe,
@@ -95,6 +97,7 @@ import {RadialMenuComponent} from "./components/radial-menu-component/radial-men
         NumberShortPipe,
         TimePipe,
         DistancePipe,
+        DynamicDistancePipe,
         MassPipe,
         MissileEndurancePipe,
         AccelerationPipe,

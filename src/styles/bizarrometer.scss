@@ -3,7 +3,8 @@
 .impeller-box,
 .radar-box,
 .ecm-box,
-.info-box {
+.info-box,
+.general-info-box {
   fill: transparent;
   stroke: var(--required-color);
   stroke-width: 0.7px;
@@ -15,7 +16,8 @@
 .impeller-headline,
 .radar-headline,
 .ecm-headline,
-.info-headline {
+.info-headline,
+.general-info-headline {
   text-anchor: middle;
 }
 
@@ -25,7 +27,7 @@
 .bizarro-headline {
 }
 
-.lidar-headline, .info-headline {
+.lidar-headline, .info-headline, .general-info-headline {
   transform: rotate(-90deg);
   transform-box: border-box;
 }
@@ -79,6 +81,10 @@
 
 }
 
-.info-line {
+.general-info-box {
+
+}
+
+.info-text-line {
   text-anchor: start;
 }

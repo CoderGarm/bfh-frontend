@@ -96,6 +96,7 @@ import {NewsEntryComponent} from './components/newspaper/news-entry/news-entry.c
 import {ToggleNavService} from "./services/intercom/toggle-nav.service";
 import {BizarrometerHelper} from "./services/svg-view-helper/bizarrometer-helper";
 import {BattleRegisterService} from "./services/intercom/battle-register.service";
+import {DynamicDistancePipe} from "./services/pipes/dynamic-distance.pipe";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -225,6 +226,7 @@ export let AppInjector: Injector;
         MissileEndurancePipe,
         TimePipe,
         DistancePipe,
+        DynamicDistancePipe,
         MassPipe,
         AccelerationPipe,
         VelocityPipe,
