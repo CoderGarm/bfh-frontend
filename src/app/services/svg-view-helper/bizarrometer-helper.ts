@@ -26,7 +26,7 @@ export class BizarrometerHelper extends BasicViewHelper {
     createSVG(position: { x: number; y: number },
               enemyPosition: { x: number; y: number },
               auraShift: { missileForwardRange: number; missileBackwardRange: number; antiMissileForwardRange: number; antiMissileBackwardRange: number },
-              fm: FleetMarker,
+              fleetMarker: FleetMarker,
               flyingSalvos: MissileMovement[],
               missileManeuvers: Maneuver[]) {
 
@@ -39,16 +39,15 @@ export class BizarrometerHelper extends BasicViewHelper {
         // fixme display info block on the right at full height
 
         let angleFromEnemy: number = Math.ceil(NavigationCalculator.getAngle(enemyPosition, position));
-        const placeOnTheLeft: boolean = angleFromEnemy > 180;
-
-        const auraDistance = Math.max(auraShift.missileForwardRange, auraShift.missileBackwardRange); // fixme position flipper ist not the best decision
+        const placeOnTheLeft: boolean = position.x < enemyPosition.x;
+        const auraDistance = Math.max(auraShift.missileForwardRange, auraShift.missileBackwardRange);
 
         const moved = NavigationCalculator.moveAbout(position.x, position.y, angleFromEnemy, auraDistance);
         let x: number = moved.x;
         let y: number = moved.y;
 
         const svg = this.getOrCreateMainSubLayerGroup().group()
-            .id('bizarro-' + fm.fleet.id)
+            .id('bizarro-' + fleetMarker.fleet.id)
             .addClass('bizarrometer');
 
         const fontSize = {size: this.scaleWithDefault(35000, 15000)}; // fixme scaling is jumpy here, too

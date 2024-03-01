@@ -457,7 +457,7 @@ export class BattleViewHelper extends BizarrometerHelper {
             const enemyManeuverElements = this.getManeuverElements(maneuvers, this.fleetMarkerByIdFleet.get(enemyMove.actor.id)!);
             let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyLengthOnTrack)!;
 
-            const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(lengthOnTrack);
+            const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(enemyLengthOnTrack);
             if (!!auraEllipseData) {
 
                 const flyingSalvos: MissileMovement[] = missileMovements.filter(mm => mm.actor.id == fleet.fleet.id);
