@@ -83,6 +83,10 @@ for filename in ./*; do
   sed -i 's/COUNTERMISSILE/COUNTER_MISSILE/' $filename
   sed -i 's/POINTDEFENSE/POINT_DEFENSE/' $filename
   sed -i 's/WARHARVEST23/WAR_HARVEST_23/' $filename
+  sed -i 's/TOURNAMENTFORHONOR24/TOURNAMENT_FOR_HONOR_24/' $filename
+  sed -i 's/WONFIGHTSV1/WON_FIGHTS_V1/' $filename
+  sed -i 's/WONFIGHTSV3/WON_FIGHTS_V3/' $filename
+  sed -i 's/WONFIGHTSV5/WON_FIGHTS_V5/' $filename
   sed -i 's/GAINEDPLANETS/GAINED_PLANETS/' $filename
   sed -i 's/GAINEDCONSTRUCTIONLEVELS/GAINED_CONSTRUCTION_LEVELS/' $filename
   sed -i 's/FLEETTONNAGELOST/FLEET_TONNAGE_LOST/' $filename

@@ -14,7 +14,7 @@ import { Player } from './player';
 /**
  * .
  */
-export interface EventRanking { 
+export interface EventRanking {
     user: Player;
     /**
      * The events the points are for.
@@ -30,15 +30,19 @@ export interface EventRanking {
     points: number;
 }
 export namespace EventRanking {
-    export type GameEventEnum = 'WAR_HARVEST_23';
+    export type GameEventEnum = 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
     export const GameEventEnum = {
-        WAR_HARVEST_23: 'WAR_HARVEST_23' as GameEventEnum
+        WAR_HARVEST_23: 'WAR_HARVEST_23' as GameEventEnum,
+        TOURNAMENT_FOR_HONOR_24: 'TOURNAMENT_FOR_HONOR_24' as GameEventEnum
     };
-    export type RankingCategoryEnum = 'GAINED_PLANETS' | 'GAINED_CONSTRUCTION_LEVELS' | 'FLEET_TONNAGE_LOST' | 'FLEET_TONNAGE_DESTROYED';
+    export type RankingCategoryEnum = 'GAINED_PLANETS' | 'GAINED_CONSTRUCTION_LEVELS' | 'FLEET_TONNAGE_LOST' | 'FLEET_TONNAGE_DESTROYED' | 'WON_FIGHTS_V1' | 'WON_FIGHTS_V3' | 'WON_FIGHTS_V5';
     export const RankingCategoryEnum = {
         GAINED_PLANETS: 'GAINED_PLANETS' as RankingCategoryEnum,
         GAINED_CONSTRUCTION_LEVELS: 'GAINED_CONSTRUCTION_LEVELS' as RankingCategoryEnum,
         FLEET_TONNAGE_LOST: 'FLEET_TONNAGE_LOST' as RankingCategoryEnum,
-        FLEET_TONNAGE_DESTROYED: 'FLEET_TONNAGE_DESTROYED' as RankingCategoryEnum
+        FLEET_TONNAGE_DESTROYED: 'FLEET_TONNAGE_DESTROYED' as RankingCategoryEnum,
+        WON_FIGHTS_V1: 'WON_FIGHTS_V1' as RankingCategoryEnum,
+        WON_FIGHTS_V3: 'WON_FIGHTS_V3' as RankingCategoryEnum,
+        WON_FIGHTS_V5: 'WON_FIGHTS_V5' as RankingCategoryEnum
     };
 }

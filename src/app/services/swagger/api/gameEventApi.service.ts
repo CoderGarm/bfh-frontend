@@ -60,13 +60,18 @@ export class GameEventApiService {
     /**
      * Get all jobs which finished today.
      * 
+     * @param eGameEvent 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEventRanking(observe?: 'body', reportProgress?: boolean): Observable<Array<EventRanking>>;
-    public getEventRanking(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EventRanking>>>;
-    public getEventRanking(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EventRanking>>>;
-    public getEventRanking(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getEventRanking(eGameEvent: string, observe?: 'body', reportProgress?: boolean): Observable<Array<EventRanking>>;
+    public getEventRanking(eGameEvent: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EventRanking>>>;
+    public getEventRanking(eGameEvent: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EventRanking>>>;
+    public getEventRanking(eGameEvent: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (eGameEvent === null || eGameEvent === undefined) {
+            throw new Error('Required parameter eGameEvent was null or undefined when calling getEventRanking.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -84,7 +89,7 @@ export class GameEventApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<EventRanking>>('get',`${this.basePath}/api/private/game-event/`,
+        return this.httpClient.request<Array<EventRanking>>('get',`${this.basePath}/api/private/game-event/${encodeURIComponent(String(eGameEvent))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

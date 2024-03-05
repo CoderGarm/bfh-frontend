@@ -13,7 +13,7 @@
 /**
  * Only to transfer enum values to the frontend.
  */
-export interface EnumValueDto { 
+export interface EnumValueDto {
     eModuleTypes?: Array<EnumValueDto.EModuleTypesEnum>;
     eDepositType?: Array<EnumValueDto.EDepositTypeEnum>;
     eResourceType?: Array<EnumValueDto.EResourceTypeEnum>;
@@ -43,6 +43,8 @@ export interface EnumValueDto {
     eStarNations?: Array<EnumValueDto.EStarNationsEnum>;
     eJobPriorities?: Array<EnumValueDto.EJobPrioritiesEnum>;
     eTutorialCategories?: Array<EnumValueDto.ETutorialCategoriesEnum>;
+    eGameEvents?: Array<EnumValueDto.EGameEventsEnum>;
+    eRankingCategories?: Array<EnumValueDto.ERankingCategoriesEnum>;
 }
 export namespace EnumValueDto {
     export type EModuleTypesEnum = 'WEAPON' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'FTLPROPULSION' | 'ELECTRONIC_WARFARE';
@@ -294,5 +296,20 @@ export namespace EnumValueDto {
         MISSION: 'MISSION' as ETutorialCategoriesEnum,
         COLONIZATION_INFO: 'COLONIZATION_INFO' as ETutorialCategoriesEnum,
         FLEET_DETACHMENT: 'FLEET_DETACHMENT' as ETutorialCategoriesEnum
+    };
+    export type EGameEventsEnum = 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
+    export const EGameEventsEnum = {
+        WAR_HARVEST_23: 'WAR_HARVEST_23' as EGameEventsEnum,
+        TOURNAMENT_FOR_HONOR_24: 'TOURNAMENT_FOR_HONOR_24' as EGameEventsEnum
+    };
+    export type ERankingCategoriesEnum = 'GAINED_PLANETS' | 'GAINED_CONSTRUCTION_LEVELS' | 'FLEET_TONNAGE_LOST' | 'FLEET_TONNAGE_DESTROYED' | 'WON_FIGHTS_V1' | 'WON_FIGHTS_V3' | 'WON_FIGHTS_V5';
+    export const ERankingCategoriesEnum = {
+        GAINED_PLANETS: 'GAINED_PLANETS' as ERankingCategoriesEnum,
+        GAINED_CONSTRUCTION_LEVELS: 'GAINED_CONSTRUCTION_LEVELS' as ERankingCategoriesEnum,
+        FLEET_TONNAGE_LOST: 'FLEET_TONNAGE_LOST' as ERankingCategoriesEnum,
+        FLEET_TONNAGE_DESTROYED: 'FLEET_TONNAGE_DESTROYED' as ERankingCategoriesEnum,
+        WON_FIGHTS_V1: 'WON_FIGHTS_V1' as ERankingCategoriesEnum,
+        WON_FIGHTS_V3: 'WON_FIGHTS_V3' as ERankingCategoriesEnum,
+        WON_FIGHTS_V5: 'WON_FIGHTS_V5' as ERankingCategoriesEnum
     };
 }

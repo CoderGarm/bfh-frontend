@@ -1,9 +1,10 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {SubscriptionManager} from "../../../../subscription.manager";
-import {EventRanking, GameEventApiService, Player} from "../../../../services/swagger";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
+import {EnumValueDto, EventRanking, GameEventApiService, Player} from "../../../../services/swagger";
+import EGameEventsEnum = EnumValueDto.EGameEventsEnum;
 
 export interface EventPoints {
     rank: number;
@@ -16,11 +17,11 @@ export interface EventPoints {
 }
 
 @Component({
-    selector: 'app-event-points-list',
-    templateUrl: './event-points-list.component.html',
-    styleUrls: ['./event-points-list.component.scss']
+    selector: 'app-war-harvest-24-points',
+    templateUrl: './war-harvest-24-points.component.html',
+    styleUrls: ['./war-harvest-24-points.component.scss']
 })
-export class EventPointsListComponent extends SubscriptionManager implements AfterViewInit {
+export class WarHarvest24PointsComponent extends SubscriptionManager implements AfterViewInit {
 
     displayedColumns: string[] = ['rank', 'name', 'gainedPlanets', 'gainedConstructionLevels', 'fleetTonnageLost', 'fleetTonnageDestroyed'];
     dataSource: MatTableDataSource<EventPoints> = new MatTableDataSource<EventPoints>([]);
@@ -36,7 +37,7 @@ export class EventPointsListComponent extends SubscriptionManager implements Aft
     }
 
     ngAfterViewInit(): void {
-        let sub = this.gameEventApiService.getEventRanking()
+        let sub = this.gameEventApiService.getEventRanking(EGameEventsEnum.WAR_HARVEST_23)
             .subscribe(resp => this.setDatasource(resp));
         this.subscriptions.push(sub);
     }

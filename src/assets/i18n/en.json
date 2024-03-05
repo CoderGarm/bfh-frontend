@@ -645,13 +645,23 @@
 			"ranking": {
 				"title": "Event Ranking"
 			},
+			"tournament": {
+				"category": {
+					"fights-won": "Battles won",
+					"wonV1": "1 vs 1",
+					"wonV3": "3 vs 3",
+					"wonV5": "5 vs 5"
+				},
+				"title": "Tournament 2024"
+			},
 			"war-harvest": {
 				"category": {
 					"fleet-mass-destroyed": "Fleet displacement destroyed (kt)",
 					"fleet-mass-loss": "Fleet displacement lost (kt)",
 					"gained-constructions": "Conquered Construction Levels",
 					"gained-planets": "Conquered Planets"
-				}
+				},
+				"title": "War Harvest 2024"
 			}
 		},
 		"player": {
