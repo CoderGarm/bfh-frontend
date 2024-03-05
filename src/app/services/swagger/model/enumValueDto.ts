@@ -13,7 +13,7 @@
 /**
  * Only to transfer enum values to the frontend.
  */
-export interface EnumValueDto {
+export interface EnumValueDto { 
     eModuleTypes?: Array<EnumValueDto.EModuleTypesEnum>;
     eDepositType?: Array<EnumValueDto.EDepositTypeEnum>;
     eResourceType?: Array<EnumValueDto.EResourceTypeEnum>;
@@ -297,8 +297,9 @@ export namespace EnumValueDto {
         COLONIZATION_INFO: 'COLONIZATION_INFO' as ETutorialCategoriesEnum,
         FLEET_DETACHMENT: 'FLEET_DETACHMENT' as ETutorialCategoriesEnum
     };
-    export type EGameEventsEnum = 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
+    export type EGameEventsEnum = 'SEASON_2' | 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
     export const EGameEventsEnum = {
+        SEASON_2: 'SEASON_2' as EGameEventsEnum,
         WAR_HARVEST_23: 'WAR_HARVEST_23' as EGameEventsEnum,
         TOURNAMENT_FOR_HONOR_24: 'TOURNAMENT_FOR_HONOR_24' as EGameEventsEnum
     };

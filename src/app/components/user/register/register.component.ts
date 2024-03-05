@@ -125,7 +125,9 @@ export class RegisterComponent extends SubscriptionManager {
                     shipPrefix: result.shipPrefix,
                     shipNameTemplates: [],
                     shipNames: [],
-                    textBlocks: {}
+                    textBlocks: {},
+                    participant: [],
+                    winner: []
                 },
                 profilePic: !!result.profilePic ? result.profilePic.replace('.png', '') : 'perspective-dice-six-faces-random'
             };

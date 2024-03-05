@@ -24,12 +24,50 @@
             <div>
                 <mat-list>
                     <mat-list-item>
-                        <span matListItemTitle>{{ PlayerEmbassyService.getPlayerTitle(player) }}</span>
-                        <span matListItemLine>
-                            {{ PlayerEmbassyService.getPlayerName(player) }} {{ PlayerEmbassyService.getPlayersAllianceTag(player) }}
-                        </span>
+                        <div matListItemTitle>{{ PlayerEmbassyService.getPlayerTitle(player) }}</div>
+                        <div matListItemLine>{{ PlayerEmbassyService.getPlayerName(player) }} {{ PlayerEmbassyService.getPlayersAllianceTag(player) }}</div>
                     </mat-list-item>
                 </mat-list>
+            </div>
+            <div class="participation-container">
+                <div>
+                    <div matListItemLine>{{ 'points.event.ranking.winner' | translate }}</div>
+                    <div class="flex-items-from-start-container">
+                        <div *ngFor="let event of player!.rolePlayData.winner" class="event-emblem  text-block" matTooltip="{{ 'points.event.ranking.winner' | translate }}">
+                            <div *ngIf="event == WinnerEnum.WAR_HARVEST_23" class="small-badge-container">
+                                <img src="assets/events/badges/war-harvest/24/war-harvest-24_w.jpeg" alt="the operation emblem" class="small-badge">
+                                {{ 'points.event.war-harvest.title' | translate }}
+                            </div>
+
+                            <div *ngIf="event == WinnerEnum.TOURNAMENT_FOR_HONOR_24" class="small-badge-container">
+                                <img src="assets/events/badges/tournament/24/tournament-24_w.jpeg" alt="the operation emblem" class="small-badge">
+                                {{ 'points.event.tournament.title' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div matListItemLine>{{ 'points.event.ranking.participant' | translate }}</div>
+                    <div class="flex-items-from-start-container">
+                        <div *ngFor="let event of player!.rolePlayData.participant" class="event-emblem text-block">
+                            <div *ngIf="event == ParticipantEnum.WAR_HARVEST_23" class="small-badge-container">
+                                <img src="assets/events/badges/war-harvest/24/war-harvest-24_p.jpeg" alt="the operation emblem" class="small-badge">
+                                {{ 'points.event.war-harvest.title' | translate }}
+                            </div>
+
+                            <div *ngIf="event == ParticipantEnum.TOURNAMENT_FOR_HONOR_24" class="small-badge-container">
+                                <img src="assets/events/badges/tournament/24/tournament-24_p.jpeg" alt="the operation emblem" class="small-badge">
+                                {{ 'points.event.tournament.title' | translate }}
+                            </div>
+
+                            <div *ngIf="event == ParticipantEnum.SEASON_2" class="small-badge-container">
+                                <img src="assets/events/badges/tournament/24/tournament-24_p.jpeg" alt="the operation emblem" class="small-badge">
+                                {{ 'points.event.season.two.title' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

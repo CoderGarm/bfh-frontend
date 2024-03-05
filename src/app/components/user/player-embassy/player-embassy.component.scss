@@ -114,3 +114,29 @@ mat-divider {
   bottom: 10px;
   right: 10px;
 }
+
+.participation-container {
+  margin-left: auto;
+}
+
+.event-emblem {
+  font-size: x-small;
+  height: auto;
+  transition: 2s;
+}
+
+.event-emblem:hover {
+  transform: scale(3) translate(-80px, 55px);
+  position: relative;
+  z-index: 100;
+}
+
+.small-badge-container {
+  width: 150px;
+}
+
+.small-badge {
+  float: left;
+  height: 64px;
+  width: auto;
+}

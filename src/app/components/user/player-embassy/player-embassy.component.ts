@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {SubscriptionManager} from "../../../subscription.manager";
 import {PlayerEmbassyService} from "../../../services/intercom/player-embassy.service";
-import {Player, RPGTextBlocks} from "../../../services/swagger";
+import {EnumValueDto, Player, RolePlayData, RPGTextBlocks} from "../../../services/swagger";
 import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {DomSanitizer} from "@angular/platform-browser";
 import {EditorOption} from "angular-markdown-editor/lib/angular-markdown-editor/models";
@@ -9,6 +9,8 @@ import * as DOMPurify from "dompurify";
 import {MarkdownService} from "ngx-markdown";
 import {EditorInstance} from "angular-markdown-editor";
 import {CdkOverlayOrigin, ConnectionPositionPair} from "@angular/cdk/overlay";
+import WinnerEnum = RolePlayData.WinnerEnum;
+import ParticipantEnum = RolePlayData.ParticipantEnum;
 
 @Component({
     selector: 'app-player-embassy',
@@ -224,4 +226,8 @@ export class PlayerEmbassyComponent extends SubscriptionManager implements OnIni
             this.textMap.set(this.textKeyToEdit, text);
         }
     }
+
+    protected readonly EnumValueDto = EnumValueDto;
+    protected readonly ParticipantEnum = ParticipantEnum;
+    protected readonly WinnerEnum = WinnerEnum;
 }

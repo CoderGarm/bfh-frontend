@@ -175,7 +175,9 @@ export class ShipClassFittingModifyComponent extends ShipClassFittingCreateCompo
                 rolePlayData: {
                     shipNames: [],
                     shipNameTemplates: [],
-                    textBlocks: {}
+                    textBlocks: {},
+                    participant: [],
+                    winner: []
                 }
             },
             shipClassCapabilities: {

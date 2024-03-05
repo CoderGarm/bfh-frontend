@@ -643,7 +643,14 @@
 	"points": {
 		"event": {
 			"ranking": {
-				"title": "Event Ranking"
+				"participant": "Participant",
+				"title": "Event Ranking",
+				"winner": "Winner"
+			},
+			"season": {
+				"two": {
+					"title": "Season 2"
+				}
 			},
 			"tournament": {
 				"category": {

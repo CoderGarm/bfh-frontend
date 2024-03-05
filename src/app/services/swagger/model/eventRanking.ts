@@ -14,7 +14,7 @@ import { Player } from './player';
 /**
  * .
  */
-export interface EventRanking {
+export interface EventRanking { 
     user: Player;
     /**
      * The events the points are for.
@@ -30,8 +30,9 @@ export interface EventRanking {
     points: number;
 }
 export namespace EventRanking {
-    export type GameEventEnum = 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
+    export type GameEventEnum = 'SEASON_2' | 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
     export const GameEventEnum = {
+        SEASON_2: 'SEASON_2' as GameEventEnum,
         WAR_HARVEST_23: 'WAR_HARVEST_23' as GameEventEnum,
         TOURNAMENT_FOR_HONOR_24: 'TOURNAMENT_FOR_HONOR_24' as GameEventEnum
     };

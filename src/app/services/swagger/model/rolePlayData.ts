@@ -36,6 +36,14 @@ export interface RolePlayData {
      */
     shipNames: Array<string>;
     textBlocks: RPGTextBlocks;
+    /**
+     * The participation.
+     */
+    participant: Array<RolePlayData.ParticipantEnum>;
+    /**
+     * The event wins.
+     */
+    winner: Array<RolePlayData.WinnerEnum>;
 }
 export namespace RolePlayData {
     export type ShipNameTemplatesEnum = 'MANTICORE' | 'HAVEN' | 'ANDERMAN' | 'SILESIA' | 'SOLARIAN_LEAGUE';
@@ -45,5 +53,17 @@ export namespace RolePlayData {
         ANDERMAN: 'ANDERMAN' as ShipNameTemplatesEnum,
         SILESIA: 'SILESIA' as ShipNameTemplatesEnum,
         SOLARIAN_LEAGUE: 'SOLARIAN_LEAGUE' as ShipNameTemplatesEnum
+    };
+    export type ParticipantEnum = 'SEASON_2' | 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
+    export const ParticipantEnum = {
+        SEASON_2: 'SEASON_2' as ParticipantEnum,
+        WAR_HARVEST_23: 'WAR_HARVEST_23' as ParticipantEnum,
+        TOURNAMENT_FOR_HONOR_24: 'TOURNAMENT_FOR_HONOR_24' as ParticipantEnum
+    };
+    export type WinnerEnum = 'SEASON_2' | 'WAR_HARVEST_23' | 'TOURNAMENT_FOR_HONOR_24';
+    export const WinnerEnum = {
+        SEASON_2: 'SEASON_2' as WinnerEnum,
+        WAR_HARVEST_23: 'WAR_HARVEST_23' as WinnerEnum,
+        TOURNAMENT_FOR_HONOR_24: 'TOURNAMENT_FOR_HONOR_24' as WinnerEnum
     };
 }

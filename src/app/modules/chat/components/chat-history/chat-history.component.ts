@@ -198,7 +198,9 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                 rolePlayData: {
                     shipNames: [],
                     shipNameTemplates: [],
-                    textBlocks: {}
+                    textBlocks: {},
+                    participant: [],
+                    winner: []
                 }
             },
             sentAt: new Date()
@@ -221,7 +223,9 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                     rolePlayData: {
                         shipNames: [],
                         shipNameTemplates: [],
-                        textBlocks: {}
+                        textBlocks: {},
+                        participant: [],
+                        winner: []
                     }
                 },
                 userTwo: this.selectedUserChatHistoryInput!,
@@ -253,7 +257,9 @@ export class ChatHistoryComponent extends SubscriptionManager implements OnInit,
                     rolePlayData: {
                         shipNames: [],
                         shipNameTemplates: [],
-                        textBlocks: {}
+                        textBlocks: {},
+                        participant: [],
+                        winner: []
                     }
                 },
                 userTwo: this.selectedUserChatHistoryInput,

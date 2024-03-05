@@ -82,6 +82,7 @@ for filename in ./*; do
   sed -i 's/MISSILEFIREPHASE/MISSILE_FIRE_PHASE/' $filename
   sed -i 's/COUNTERMISSILE/COUNTER_MISSILE/' $filename
   sed -i 's/POINTDEFENSE/POINT_DEFENSE/' $filename
+  sed -i 's/SEASON2/SEASON_2/' $filename
   sed -i 's/WARHARVEST23/WAR_HARVEST_23/' $filename
   sed -i 's/TOURNAMENTFORHONOR24/TOURNAMENT_FOR_HONOR_24/' $filename
   sed -i 's/WONFIGHTSV1/WON_FIGHTS_V1/' $filename
