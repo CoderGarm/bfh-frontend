@@ -30,7 +30,7 @@
                 </mat-list>
             </div>
             <div class="participation-container">
-                <div>
+                <div *ngIf="player!.rolePlayData.winner.length > 0">
                     <div matListItemLine>{{ 'points.event.ranking.winner' | translate }}</div>
                     <div class="flex-items-from-start-container">
                         <div *ngFor="let event of player!.rolePlayData.winner" class="event-emblem  text-block" matTooltip="{{ 'points.event.ranking.winner' | translate }}">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div *ngIf="player!.rolePlayData.participant.length > 0">
                     <div matListItemLine>{{ 'points.event.ranking.participant' | translate }}</div>
                     <div class="flex-items-from-start-container">
                         <div *ngFor="let event of player!.rolePlayData.participant" class="event-emblem text-block">

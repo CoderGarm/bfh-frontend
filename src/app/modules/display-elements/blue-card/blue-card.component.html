@@ -3,6 +3,8 @@
     <!-- yeah, transparent background make it looks good -->
     <mat-card-header>
         <ng-content select="[header]"></ng-content>
+        <ng-content select="[maintitle]"></ng-content>
+        <ng-content select="[subtitle]"></ng-content>
     </mat-card-header>
     <mat-card-content>
         <ng-content select="[body]"></ng-content>

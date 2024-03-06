@@ -94,6 +94,7 @@ import {AllianceEmbassyService} from "./services/intercom/alliance-embassy.servi
 import {NewspaperComponent} from './components/newspaper/newspaper.component';
 import {NewsEntryComponent} from './components/newspaper/news-entry/news-entry.component';
 import {ToggleNavService} from "./services/intercom/toggle-nav.service";
+import {BattleRegisterService} from "./services/intercom/battle-register.service";
 
 // AoT requires an exported function for factories
 // noinspection JSUnusedGlobalSymbols
@@ -200,6 +201,7 @@ export let AppInjector: Injector;
         RegisterEventService,
         CurrentTickService,
         PlayerEmbassyService,
+        BattleRegisterService,
         AllianceEmbassyService,
         TypeService,
         {

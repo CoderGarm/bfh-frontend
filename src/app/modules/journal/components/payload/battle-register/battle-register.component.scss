@@ -1,0 +1,56 @@
+@import "src/styles/variables";
+
+.outer {
+  margin: 25px;
+  height: 100%;
+}
+
+.left-full-height, .right-full-height {
+  height: 90%;
+}
+
+.left-inner-container {
+  height: 60%;
+}
+
+.red-box {
+  height: 100%;
+}
+
+.red-box-content {
+  height: 90%;
+}
+
+.right-full-height {
+  float: right;
+  width: 28%;
+}
+
+.left-full-height {
+  float: left;
+  width: 68%;
+}
+
+.register-box {
+  float: right;
+}
+
+.state-container {
+  margin-top: 35px;
+  width: 40%;
+  height: 90%;
+}
+
+app-fleet-round-state, .register-list {
+  display: block;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.register-list {
+  height: 80%;
+}
+
+.search-box {
+  margin-top: 15px;
+}

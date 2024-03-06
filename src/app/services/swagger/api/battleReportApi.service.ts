@@ -19,7 +19,9 @@ import { Observable }                                        from 'rxjs';
 
 import { BattleReport } from '../model/battleReport';
 import { BattleReportStatistics } from '../model/battleReportStatistics';
+import { ChangeSharedBattleReport } from '../model/changeSharedBattleReport';
 import { FrontendError } from '../model/frontendError';
+import { SharedBattleReport } from '../model/sharedBattleReport';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -57,6 +59,93 @@ export class BattleReportApiService {
         return false;
     }
 
+
+    /**
+     * Get all fighting reports for the user.
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changeReportSharings(body?: ChangeSharedBattleReport, observe?: 'body', reportProgress?: boolean): Observable<boolean>;
+    public changeReportSharings(body?: ChangeSharedBattleReport, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<boolean>>;
+    public changeReportSharings(body?: ChangeSharedBattleReport, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<boolean>>;
+    public changeReportSharings(body?: ChangeSharedBattleReport, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<boolean>('put',`${this.basePath}/api/private/report/share`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all fighting reports for the user.
+     * 
+     * @param idBattleReport 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getReportSharings(idBattleReport: number, observe?: 'body', reportProgress?: boolean): Observable<SharedBattleReport>;
+    public getReportSharings(idBattleReport: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SharedBattleReport>>;
+    public getReportSharings(idBattleReport: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SharedBattleReport>>;
+    public getReportSharings(idBattleReport: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (idBattleReport === null || idBattleReport === undefined) {
+            throw new Error('Required parameter idBattleReport was null or undefined when calling getReportSharings.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json',
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<SharedBattleReport>('get',`${this.basePath}/api/private/report/share/${encodeURIComponent(String(idBattleReport))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * Get all fighting reports for the user.
@@ -140,23 +229,13 @@ export class BattleReportApiService {
     /**
      * Get all fighting reports for the user.
      * 
-     * @param page 
-     * @param size 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getReportsWithUserWithPaging(page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<Array<BattleReportStatistics>>;
-    public getReportsWithUserWithPaging(page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<BattleReportStatistics>>>;
-    public getReportsWithUserWithPaging(page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<BattleReportStatistics>>>;
-    public getReportsWithUserWithPaging(page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling getReportsWithUserWithPaging.');
-        }
-
-        if (size === null || size === undefined) {
-            throw new Error('Required parameter size was null or undefined when calling getReportsWithUserWithPaging.');
-        }
+    public getReportsForUser(observe?: 'body', reportProgress?: boolean): Observable<Array<BattleReportStatistics>>;
+    public getReportsForUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<BattleReportStatistics>>>;
+    public getReportsForUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<BattleReportStatistics>>>;
+    public getReportsForUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -174,7 +253,7 @@ export class BattleReportApiService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<BattleReportStatistics>>('get',`${this.basePath}/api/private/report/battle/${encodeURIComponent(String(page))}/${encodeURIComponent(String(size))}`,
+        return this.httpClient.request<Array<BattleReportStatistics>>('get',`${this.basePath}/api/private/report/battle`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

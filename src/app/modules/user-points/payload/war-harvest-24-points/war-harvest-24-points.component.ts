@@ -37,7 +37,7 @@ export class WarHarvest24PointsComponent extends SubscriptionManager implements 
     }
 
     ngAfterViewInit(): void {
-        let sub = this.gameEventApiService.getEventRanking(EGameEventsEnum.WAR_HARVEST_23)
+        let sub = this.gameEventApiService.getRankingForEvent(EGameEventsEnum.WAR_HARVEST_23)
             .subscribe(resp => this.setDatasource(resp));
         this.subscriptions.push(sub);
     }

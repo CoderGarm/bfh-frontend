@@ -75,6 +75,18 @@
 		}
 	},
 	"combat-arena": {
+		"battle-register": {
+			"search-for": "Kampfberichte durchsuchen",
+			"title": "Kampfberichte"
+		},
+		"battle-reports": {
+			"share-dialog": {
+				"for-everyone": "Mit allen teilen",
+				"open": "Kampfberichte teilen",
+				"select-alliance": "Wähle Allianzen zum Teilen des KBs",
+				"select-user": "Wähle Spieler zum Teilen des KBs"
+			}
+		},
 		"tooltip": {
 			"warship-state": {
 				"active": "Kampfbereit",

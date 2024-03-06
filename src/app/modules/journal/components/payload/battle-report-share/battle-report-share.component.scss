@@ -1,0 +1,21 @@
+.outer {
+  padding: 25px;
+  width: 700px;
+  height: 600px;
+}
+
+.flex-items-from-start-container {
+  height: 90%;
+}
+
+.red-box {
+  margin: 15px auto;
+  max-height: 100%;
+  height: fit-content;
+}
+
+.red-box-content {
+  overflow-y: auto;
+  display: block;
+  height: 400px;
+}

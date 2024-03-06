@@ -12,7 +12,7 @@
                  class="ally-icon" alt="img" (click)="embassyService.openEmbassy(alliance)">
 
             <mat-card-title>{{ alliance.name }}</mat-card-title>
-            <mat-card-subtitle>{{ alliance.code }}</mat-card-subtitle>
+            <mat-card-subtitle>[{{ alliance.code }}]</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <p>{{ 'alliance.founder' | translate }}: {{ alliance.founder.username }}</p>

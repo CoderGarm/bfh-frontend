@@ -19,4 +19,15 @@ export class DialogConfigHelper {
         dialogConfig.panelClass = ['player-embassy-mat-dialog-panel', 'mat-elevation-z8'];
         return dialogConfig;
     }
+
+    static createBattleRegisterDialog(): MatDialogConfig {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.height = '85%';
+        dialogConfig.width = '90%';
+        dialogConfig.maxWidth = '1400px';
+        dialogConfig.panelClass = ['battle-register-mat-dialog-panel', 'mat-elevation-z8'];
+        return dialogConfig;
+    }
 }

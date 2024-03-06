@@ -36,7 +36,7 @@ export class Tournament24PointsComponent extends SubscriptionManager implements 
     }
 
     ngAfterViewInit(): void {
-        let sub = this.gameEventApiService.getEventRanking(EGameEventsEnum.TOURNAMENT_FOR_HONOR_24)
+        let sub = this.gameEventApiService.getRankingForEvent(EGameEventsEnum.TOURNAMENT_FOR_HONOR_24)
             .subscribe(resp => this.setDatasource(resp));
         this.subscriptions.push(sub);
     }

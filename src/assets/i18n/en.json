@@ -75,6 +75,18 @@
 		}
 	},
 	"combat-arena": {
+		"battle-register": {
+			"search-for": "Battle report search",
+			"title": "Battle register"
+		},
+		"battle-reports": {
+			"share-dialog": {
+				"for-everyone": "Share with everyone",
+				"open": "Share battle report",
+				"select-alliance": "Select alliance to share with",
+				"select-user": "Select user to share with"
+			}
+		},
 		"tooltip": {
 			"warship-state": {
 				"active": "Combative",

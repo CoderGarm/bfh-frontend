@@ -1,98 +1,11 @@
-<div class="battle-report-info-div">
-    <mat-accordion>
-        <mat-expansion-panel class="margin-bottom transparent-backdrop" expanded>
-            <mat-expansion-panel-header>Battle register</mat-expansion-panel-header>
-            <mat-accordion>
-                <mat-expansion-panel class="margin-bottom"
-                                     *ngFor="let reportStat of battleReports"
-                                     (opened)="setOpened(reportStat)"
-                                     (closed)="setClosed(reportStat)"
-                                     (afterExpand)="setExpanded(true)"
-                                     (afterCollapse)="setExpanded(false)">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Tick # {{reportStat.tick.tickNo}} from {{reportStat.tick.tickStarts | date}}</mat-panel-title>
-                        <mat-panel-description>{{getOrbitRepresentation(reportStat.orbit)}}</mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <div class="info-block">
-                        <div class="left-block">
-                            Participating fleets:<br>
-                            <div *ngFor="let fleet of getFleets(reportStat)">{{fleet.name}} of {{fleet.owner.username}}</div>
-                        </div>
-                        <div class="right-block">
-                            last round was # {{reportStat.lastRound.no}}
-                        </div>
-                    </div>
-                    <div class="data-block">
-                        <div class="left-block bottom">
-                            Lost war ships:<br>
-                            <div *ngFor="let loss of getLosses(reportStat)"
-                                 (mouseover)="showOverlay(reportStat, loss)"
-                                 (mouseleave)="lossReport = undefined"
-                                 cdkOverlayOrigin #trigger="cdkOverlayOrigin"
-                                 class="lost-warship-block">
-                                {{loss.warShipName}} from {{loss.owner.username}}
-                                <app-lost-warship-overlay
-                                        *ngIf="checkDisplayOverlay(reportStat, loss)"
-                                        [openOverlay]="!!lossReport"
-                                        [origin]="trigger"
-                                        [report]="lossReport"
-                                ></app-lost-warship-overlay>
-                            </div>
-                        </div>
-                        <div class="right-block table-block">
-                            <table mat-table matSort [dataSource]="dataSourceCombatStatistics">
-                                <ng-container matColumnDef="Fleet">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fleet</th>
-                                    <td mat-cell *matCellDef="let r"> {{r.fleetName}} </td>
-                                </ng-container>
+<app-combat-arena *ngIf="!!battleRegisterService.currentlyOpenedItem && !!battleRegisterService.combatArenaData && battleRegisterService.combatArenaData.combatRounds.length > 0"
+                  [starSystem]="battleRegisterService.starSystem"
+                  [battleReport]="battleRegisterService.currentlyOpenedItem"
+                  [combatArenaData]="battleRegisterService.combatArenaData"
+                  [activeRound]="battleRegisterService.activeRound"></app-combat-arena>
 
-                                <ng-container matColumnDef="Kills">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Kills</th>
-                                    <td mat-cell *matCellDef="let r"> {{r.kills}} </td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Losses">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Losses</th>
-                                    <td mat-cell *matCellDef="let r"> {{r.losses}} </td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Released missiles">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Released missiles</th>
-                                    <td mat-cell *matCellDef="let r"> {{r.releasedMissiles}} </td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Released beams">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Released beams</th>
-                                    <td mat-cell *matCellDef="let r"> {{r.releasedBeams}} </td>
-                                </ng-container>
-
-                                <tr mat-header-row *matHeaderRowDef="displayedColumnsCombatStatistics"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumnsCombatStatistics;"></tr>
-                            </table>
-                        </div>
-                        <div class="data-block">
-
-                        </div>
-                    </div>
-                </mat-expansion-panel>
-                <mat-paginator [length]="battleReportAmount"
-                               [pageIndex]="pageIndex"
-                               [pageSize]="pageSize"
-                               [pageSizeOptions]="[pageSize, pageSize*2, pageSize*3]"
-                               (page)="fetchByPagination($event)">
-                </mat-paginator>
-            </mat-accordion>
-        </mat-expansion-panel>
-    </mat-accordion>
-</div>
-
-<app-combat-arena *ngIf="!!currentlyOpenedItem && !!combatArenaData && combatArenaData.combatRounds.length > 0"
-                  [starSystem]="starSystem"
-                  [battleReport]="currentlyOpenedItem"
-                  [combatArenaData]="combatArenaData"
-                  [activeRound]="activeRound"></app-combat-arena>
-
-<div class="player-control transparent-backdrop" *ngIf="!!currentlyOpenedItem && !!combatArenaData && combatArenaData.combatRounds.length > 0">
+<div class="player-control transparent-backdrop"
+     *ngIf="!!battleRegisterService.currentlyOpenedItem && !!battleRegisterService.combatArenaData && battleRegisterService.combatArenaData.combatRounds.length > 0">
 
     <mat-slider id="battle-round-stepper"
                 discrete
@@ -101,8 +14,14 @@
                 min="1"
                 [max]="getLastRound()"
                 aria-label="units">
-        <input matSliderThumb (valueChange)="slide($event)" [value]="activeRound">
+        <input matSliderThumb (valueChange)="slide($event)" [value]="battleRegisterService.activeRound">
     </mat-slider>
+
+
+    <button mat-icon-button class="battle-register-btn" (click)="battleRegisterService.openRegister()"
+            matTooltip="{{ 'combat-arena.battle-register.title' | translate }}">
+        <img mat-card-avatar src="assets/icons/misc/database.svg" alt="battle register button">
+    </button>
 
     <div class="center">
         <mat-button-toggle-group>

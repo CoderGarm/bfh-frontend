@@ -1,12 +1,4 @@
-@import "src/app/modules/journal/components/orga/journal-tab-view/journal-tab-view.component";
 @import "src/styles/variables";
-
-.battle-report-info-div {
-  position: fixed;
-  left: 25%;
-  right: 12%;
-  z-index: 2;
-}
 
 .player-control {
   position: fixed;
@@ -23,7 +15,7 @@
 }
 
 .transparent-backdrop {
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .info-block {
@@ -63,4 +55,8 @@ table.mat-mdc-table {
 
 #battle-round-stepper {
   width: 100%;
+}
+
+.battle-register-btn {
+  position: absolute;
 }

@@ -1,0 +1,93 @@
+<div class="outer">
+    <div class="left-full-height">
+        <app-battle-report-statistics-display *ngIf="!!battleRegisterService.currentlyOpenedItem"
+                                              [reportStatistics]="battleRegisterService.currentlyOpenedItem.battleReportStatistics">
+            <button mat-raised-button color="primary" actions
+                    (click)="isOpen = !isOpen" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                {{ 'combat-arena.battle-reports.share-dialog.open' | translate }}
+            </button>
+
+            <ng-template cdkConnectedOverlay (overlayOutsideClick)="isOpen = false" [cdkConnectedOverlayPositions]="position"
+                         [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen">
+                <app-battle-report-share [idBattleReport]="battleRegisterService.currentlyOpenedItem.battleReportStatistics.idBattleReport"></app-battle-report-share>
+            </ng-template>
+        </app-battle-report-statistics-display>
+
+        <div class="flex-items-container left-inner-container">
+
+            <!-- fixme kampfrundenprotokoll statt flottenstatus -->
+
+            <div class="red-box state-container" *ngIf="!!battleRegisterService.currentlyOpenedItem">
+                <div class="red-box-title">
+                    {{ green?.name }}
+                </div>
+                <div class="red-box-content">
+                    <app-fleet-round-state [fleet]="green"
+                                           [combatArenaData]="battleRegisterService.combatArenaData"
+                                           [activeRound]="battleRegisterService.activeRound">
+                    </app-fleet-round-state>
+                </div>
+            </div>
+
+
+            <div class="red-box state-container" *ngIf="!!battleRegisterService.currentlyOpenedItem">
+                <div class="red-box-title">
+                    {{ red?.name }}
+                </div>
+                <div class="red-box-content">
+                    <app-fleet-round-state [fleet]="red"
+                                           [combatArenaData]="battleRegisterService.combatArenaData"
+                                           [activeRound]="battleRegisterService.activeRound">
+                    </app-fleet-round-state>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="right-full-height">
+
+        <div class="red-box register-box">
+            <div class="red-box-title">
+                {{ 'combat-arena.battle-register.title' | translate }}
+            </div>
+            <div class="red-box-content">
+                <form class="search-box">
+                    <mat-form-field class="center-field" appearance="outline">
+                        <mat-label>{{ 'combat-arena.battle-register.search-for' | translate }}</mat-label>
+                        <input matInput
+                               placeholder="#..."
+                               [formControl]="centerFormControl"
+                               matAutocompletePosition="auto"
+                               [matAutocomplete]="auto1"/>
+                        <mat-icon matSuffix (click)="selectedByAutocomplete(undefined); $event.stopPropagation();">clear</mat-icon>
+                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectedByAutocomplete($event)">
+                            <mat-option *ngFor="let reportStat of filteredCenter | async" [value]="reportStat">
+
+                                <span matListItemTitle>Tick # {{ reportStat.tick.tickNo }} from {{ reportStat.tick.tickStarts | date }}</span>
+                                <span matListItemLine>{{ battleRegisterService.getOrbitRepresentation(reportStat.orbit) }}</span>
+                                <span matListItemLine>#{{ reportStat.uuid }}</span>
+
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+
+                <mat-divider></mat-divider>
+
+                <mat-selection-list [multiple]="false" class="register-list">
+                    <mat-list-option *ngFor="let reportStat of battleRegisterService.battleReports" [value]="reportStat" (click)="setOpened(reportStat)">
+
+                        <span matListItemTitle>Tick # {{ reportStat.tick.tickNo }} from {{ reportStat.tick.tickStarts | date }}</span>
+                        <span matListItemLine>{{ battleRegisterService.getOrbitRepresentation(reportStat.orbit) }}</span>
+                        <span matListItemLine>#{{ reportStat.uuid }}</span>
+
+                    </mat-list-option>
+                </mat-selection-list>
+            </div>
+        </div>
+
+    </div>
+</div>
+

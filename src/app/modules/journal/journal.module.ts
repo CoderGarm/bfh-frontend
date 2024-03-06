@@ -12,6 +12,9 @@ import {MissionJournalComponent} from './components/payload/mission-journal/miss
 import {JobOverviewComponent} from './components/payload/job-overview/job-overview.component';
 import {AdvisoryBoardComponent} from './components/payload/advisory-board/advisory-board.component';
 import {NgxSpinnerModule} from "ngx-spinner";
+import {BattleRegisterComponent} from './components/payload/battle-register/battle-register.component';
+import {BattleReportStatisticsDisplayComponent} from './components/payload/battle-report-statistics-display/battle-report-statistics-display.component';
+import {BattleReportShareComponent} from './components/payload/battle-report-share/battle-report-share.component';
 
 
 @NgModule({
@@ -25,6 +28,9 @@ import {NgxSpinnerModule} from "ngx-spinner";
         MissionJournalComponent,
         JobOverviewComponent,
         AdvisoryBoardComponent,
+        BattleRegisterComponent,
+        BattleReportStatisticsDisplayComponent,
+        BattleReportShareComponent,
     ],
     imports: [
         SharedModuleModule,

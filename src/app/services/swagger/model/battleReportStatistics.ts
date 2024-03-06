@@ -21,6 +21,10 @@ export interface BattleReportStatistics {
      * The database id of the report.
      */
     idBattleReport: number;
+    /**
+     * The uid.
+     */
+    uuid: string;
     tick: Tick;
     lastRound: CombatRound;
     orbit: FleetOrbit;

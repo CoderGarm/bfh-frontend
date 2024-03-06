@@ -64,13 +64,13 @@ export class GameEventApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEventRanking(eGameEvent: string, observe?: 'body', reportProgress?: boolean): Observable<Array<EventRanking>>;
-    public getEventRanking(eGameEvent: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EventRanking>>>;
-    public getEventRanking(eGameEvent: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EventRanking>>>;
-    public getEventRanking(eGameEvent: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getRankingForEvent(eGameEvent: string, observe?: 'body', reportProgress?: boolean): Observable<Array<EventRanking>>;
+    public getRankingForEvent(eGameEvent: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<EventRanking>>>;
+    public getRankingForEvent(eGameEvent: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<EventRanking>>>;
+    public getRankingForEvent(eGameEvent: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (eGameEvent === null || eGameEvent === undefined) {
-            throw new Error('Required parameter eGameEvent was null or undefined when calling getEventRanking.');
+            throw new Error('Required parameter eGameEvent was null or undefined when calling getRankingForEvent.');
         }
 
         let headers = this.defaultHeaders;
