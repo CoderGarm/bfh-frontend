@@ -77,7 +77,9 @@
                 <mat-divider></mat-divider>
 
                 <mat-selection-list [multiple]="false" class="register-list">
-                    <mat-list-option *ngFor="let reportStat of battleRegisterService.battleReports" [value]="reportStat" (click)="setOpened(reportStat)">
+                    <mat-list-option *ngFor="let reportStat of battleRegisterService.battleReports"
+                                     [selected]="reportStat.idBattleReport == battleRegisterService.currentlyOpenedItem?.battleReportStatistics?.idBattleReport"
+                                     [value]="reportStat" (click)="setOpened(reportStat)">
 
                         <span matListItemTitle>Tick # {{ reportStat.tick.tickNo }} from {{ reportStat.tick.tickStarts | date }}</span>
                         <span matListItemLine>{{ battleRegisterService.getOrbitRepresentation(reportStat.orbit) }}</span>

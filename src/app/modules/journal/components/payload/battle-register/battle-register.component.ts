@@ -48,8 +48,13 @@ export class BattleRegisterComponent extends SubscriptionManager {
             filterValue = value.toLowerCase();
         } catch (e) {
             filterValue = value;
+            if ('uuid' in (<any>value)) {
+                filterValue = (<any>value).uuid;
+                this.setOpened((<any>value));
+            }
         }
-        return this.battleRegisterService.battleReports!.filter(c => c.uuid.toLowerCase().includes(filterValue));
+        return this.battleRegisterService.battleReports!
+            .filter(c => c.uuid.replaceAll('#', '').toLowerCase().includes(filterValue.replaceAll('#', '')));
     }
 
     private setUpCombat() {
