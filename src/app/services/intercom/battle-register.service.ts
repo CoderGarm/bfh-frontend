@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogConfigHelper} from "../helper/dialog-config.helper";
-import {BattleReport, BattleReportApiService, BattleReportStatistics, FleetOrbit, PlanetApiService, StarSystem} from "../swagger";
+import {BattleReport, BattleReportApiService, BattleReportStatistics, Fleet, FleetOrbit, PlanetApiService, StarSystem} from "../swagger";
 import {Subscription} from "rxjs";
 import {SnackbarNotificationService} from "../snackbar-notification.service";
 import {BattleRegisterComponent} from "../../modules/journal/components/payload/battle-register/battle-register.component";
@@ -32,6 +32,9 @@ export class BattleRegisterService extends ActionChartHelper {
     orbitNames: Map<string, string> = new Map<string, string>();
     activeRoundIndex: number = 0;
     combatRunSubscription?: Subscription;
+
+    red?: Fleet;
+    green?: Fleet;
 
     constructor(private dialog: MatDialog,
                 public notif: SnackbarNotificationService,

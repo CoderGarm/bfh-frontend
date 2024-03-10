@@ -13,21 +13,20 @@
             </ng-template>
         </app-battle-report-statistics-display>
 
-        <div class="flex-items-container left-inner-container">
+        <div class="left-inner-container">
 
-            <!-- fixme kampfrundenprotokoll statt flottenstatus -->
-            <app-fleet-round-state *ngIf="!!battleRegisterService.currentlyOpenedItem"
-                                   [fleet]="green"
-                                   [combatArenaData]="battleRegisterService.combatArenaData"
-                                   [activeRound]="battleRegisterService.activeRound">
-            </app-fleet-round-state>
+            <app-battle-report-combat-log *ngIf="!!battleRegisterService.currentlyOpenedItem"
+                                          [fleet]="battleRegisterService.green"
+                                          [combatArenaData]="battleRegisterService.combatArenaData"
+                                          [activeRound]="battleRegisterService.activeRound">
+            </app-battle-report-combat-log>
 
-            <app-fleet-round-state *ngIf="!!battleRegisterService.currentlyOpenedItem"
-                                   [fleet]="red"
-                                   [combatArenaData]="battleRegisterService.combatArenaData"
-                                   [activeRound]="battleRegisterService.activeRound">
-            </app-fleet-round-state>
 
+            <app-battle-report-combat-log *ngIf="!!battleRegisterService.currentlyOpenedItem"
+                                          [fleet]="battleRegisterService.red"
+                                          [combatArenaData]="battleRegisterService.combatArenaData"
+                                          [activeRound]="battleRegisterService.activeRound">
+            </app-battle-report-combat-log>
         </div>
     </div>
 

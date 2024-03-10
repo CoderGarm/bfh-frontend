@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {BattleRegisterService} from "../../../../../services/intercom/battle-register.service";
-import {BattleReport, BattleReportStatistics, Fleet, ReleasedVolley} from "../../../../../services/swagger";
+import {BattleReport, BattleReportStatistics, ReleasedVolley} from "../../../../../services/swagger";
 import {CombatArenaData} from "../../../combat-arena-data";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {CombatStatistics} from "../../../combat-statistics";
@@ -19,9 +19,6 @@ import {map} from "rxjs/operators";
 export class BattleRegisterComponent extends SubscriptionManager {
 
     isOpen = false;
-
-    red?: Fleet;
-    green?: Fleet;
 
     position: ConnectionPositionPair[] = [
         new ConnectionPositionPair({originX: 'start', originY: 'top'}, {overlayX: 'start', overlayY: 'top'})
@@ -61,10 +58,10 @@ export class BattleRegisterComponent extends SubscriptionManager {
         if (!!this.battleRegisterService.currentlyOpenedItem) {
             const ownFleetPresent = !!this.battleRegisterService.currentlyOpenedItem.participatingFleets.find(f => this.isOwnFleet(f));
             this.battleRegisterService.currentlyOpenedItem.participatingFleets.forEach(fleet => {
-                if (this.isOwnFleet(fleet) || (!ownFleetPresent && !!this.red)) {
-                    this.green = fleet;
+                if (this.isOwnFleet(fleet) || (!ownFleetPresent && !!this.battleRegisterService.red)) {
+                    this.battleRegisterService.green = fleet;
                 } else {
-                    this.red = fleet;
+                    this.battleRegisterService.red = fleet;
                 }
             });
         }
@@ -106,8 +103,8 @@ export class BattleRegisterComponent extends SubscriptionManager {
             this.battleRegisterService.currentlyOpenedItemIndex = undefined;
             this.battleRegisterService.dataSourceCombatStatistics.data = [];
             this.battleRegisterService.starSystem = undefined;
-            this.red = undefined;
-            this.green = undefined;
+            this.battleRegisterService.red = undefined;
+            this.battleRegisterService.green = undefined;
             this.clear();
         }
     }

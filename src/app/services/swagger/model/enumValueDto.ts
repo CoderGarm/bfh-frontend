@@ -106,7 +106,7 @@ export namespace EnumValueDto {
     };
     export type EHitAreaEnum = 'FITTING_AND_HULL' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'ELOKA';
     export const EHitAreaEnum = {
-        FITTINGANDHULL: 'FITTING_AND_HULL' as EHitAreaEnum,
+        FITTING_AND_HULL: 'FITTING_AND_HULL' as EHitAreaEnum,
         ARMOR: 'ARMOR' as EHitAreaEnum,
         SIDEWALL: 'SIDEWALL' as EHitAreaEnum,
         PROPULSION: 'PROPULSION' as EHitAreaEnum,

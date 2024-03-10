@@ -92,6 +92,9 @@ for filename in ./*; do
   sed -i 's/GAINEDCONSTRUCTIONLEVELS/GAINED_CONSTRUCTION_LEVELS/' $filename
   sed -i 's/FLEETTONNAGELOST/FLEET_TONNAGE_LOST/' $filename
   sed -i 's/FLEETTONNAGEDESTROYED/FLEET_TONNAGE_DESTROYED/' $filename
+  sed -i 's/DAMAGEAPPLIED/DAMAGE_APPLIED/' $filename
+  sed -i 's/BURSTONIMPELLERWEDGE/BURST_ON_IMPELLER_WEDGE/' $filename
+  sed -i 's/FITTINGANDHULL/FITTING_AND_HULL/' $filename
 done
 
 cd ../..

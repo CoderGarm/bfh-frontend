@@ -10,6 +10,9 @@
 }
 
 .left-inner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   height: 60%;
   margin-top: 15px;
 }
@@ -24,12 +27,11 @@
 
 .right-full-height {
   float: right;
-  width: 28%;
 }
 
 .left-full-height {
   float: left;
-  width: 68%;
+  width: calc(100% - 350px);
 }
 
 .register-box {

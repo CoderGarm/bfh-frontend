@@ -81,6 +81,12 @@
 		}
 	},
 	"combat-arena": {
+		"action": {
+			"show-aura": "Reichweitenaura de/aktivieren",
+			"show-bizarro": "Sensordaten de/aktivieren",
+			"show-green-details": "Details Flotte",
+			"show-red-details": "Details Gegnerflotte"
+		},
 		"battle-register": {
 			"search-for": "Kampfberichte durchsuchen",
 			"title": "Kampfberichte"
@@ -91,13 +97,51 @@
 				"open": "Kampfberichte teilen",
 				"select-alliance": "Wähle Allianzen zum Teilen des KBs",
 				"select-user": "Wähle Spieler zum Teilen des KBs"
+			},
+			"summarize": {
+				"combat-round": "Kampfrunde",
+				"counter-missile-hit": {
+					"attacked-id": "Angegriffene Salve:",
+					"destroyed": "Zerstört durch Gegenmaßnahmen:",
+					"target": "Angegriffene Salve:",
+					"title": "Raketen Gegenmaßnahmen"
+				},
+				"hit-log": {
+					"attacked-ship": {
+						"name": "Ziel:",
+						"state": {
+							"title": "Status:"
+						}
+					},
+					"result": {
+						"attacked-part": "Zielzone:",
+						"damage-value": "dmg"
+					},
+					"title": "Hit Log"
+				},
+				"loss-role": {
+					"attacked-ship": {
+						"class-name": "Schiffsklasse:",
+						"name": "Ziel:"
+					},
+					"title": "Loss role"
+				},
+				"missile-movement": {
+					"title": "Raketenspuren"
+				},
+				"released-volleys": {
+					"id": "Volley ID:",
+					"target": "Ziel:",
+					"title": "Abgefeuerte Salven"
+				},
+				"ship-killer-hit": {
+					"result": "Resultat:",
+					"target": "Zielflotte:",
+					"title": "Schiffskiller",
+					"volley-id": "Salve:"
+				},
+				"title": "Battle Log"
 			}
-		},
-		"action": {
-			"show-aura": "Reichweitenaura de/aktivieren",
-			"show-bizarro": "Sensordaten de/aktivieren",
-			"show-green-details": "Details Flotte",
-			"show-red-details": "Details Gegnerflotte"
 		},
 		"tooltip": {
 			"warship-state": {

@@ -43,7 +43,7 @@ export interface ShipKillerHit {
 export namespace ShipKillerHit {
     export type ResultEnum = 'DAMAGE_APPLIED' | 'BURST_ON_IMPELLER_WEDGE';
     export const ResultEnum = {
-        DAMAGEAPPLIED: 'DAMAGE_APPLIED' as ResultEnum,
-        BURSTONIMPELLERWEDGE: 'BURST_ON_IMPELLER_WEDGE' as ResultEnum
+        DAMAGE_APPLIED: 'DAMAGE_APPLIED' as ResultEnum,
+        BURST_ON_IMPELLER_WEDGE: 'BURST_ON_IMPELLER_WEDGE' as ResultEnum
     };
 }

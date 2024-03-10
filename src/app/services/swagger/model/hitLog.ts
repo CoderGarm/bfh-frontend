@@ -46,7 +46,7 @@ export interface HitLog {
 export namespace HitLog {
     export type AttackedPartEnum = 'FITTING_AND_HULL' | 'ARMOR' | 'SIDEWALL' | 'PROPULSION' | 'ELOKA';
     export const AttackedPartEnum = {
-        FITTINGANDHULL: 'FITTING_AND_HULL' as AttackedPartEnum,
+        FITTING_AND_HULL: 'FITTING_AND_HULL' as AttackedPartEnum,
         ARMOR: 'ARMOR' as AttackedPartEnum,
         SIDEWALL: 'SIDEWALL' as AttackedPartEnum,
         PROPULSION: 'PROPULSION' as AttackedPartEnum,

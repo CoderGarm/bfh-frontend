@@ -16,6 +16,7 @@ import {NgxEchartsModule} from "ngx-echarts";
 import {BattleRegisterComponent} from './components/payload/battle-register/battle-register.component';
 import {BattleReportStatisticsDisplayComponent} from './components/payload/battle-report-statistics-display/battle-report-statistics-display.component';
 import {BattleReportShareComponent} from './components/payload/battle-report-share/battle-report-share.component';
+import {BattleReportCombatLogComponent} from './components/payload/battle-report-combat-log/battle-report-combat-log.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {BattleReportShareComponent} from './components/payload/battle-report-sha
         BattleRegisterComponent,
         BattleReportStatisticsDisplayComponent,
         BattleReportShareComponent,
+        BattleReportCombatLogComponent,
     ],
     imports: [
         SharedModuleModule,

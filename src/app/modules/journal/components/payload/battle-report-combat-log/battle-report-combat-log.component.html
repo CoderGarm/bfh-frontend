@@ -1,0 +1,81 @@
+<app-red-box titleValue="{{ 'combat-arena.battle-reports.summarize.title' | translate }}">
+    <mat-list class="round-data-list">
+        <mat-list-item *ngIf="roundData.length == 0">
+            <span matListItemTitle>{{ 'combat-arena.battle-reports.summarize.combat-round' | translate }} {{ activeRound }}</span>
+        </mat-list-item>
+
+        <!-- fixme proceed with these information and make the log look better -->
+        <mat-list-item *ngFor="let data of roundData">
+            <span matListItemTitle>{{ data.actor.name }}</span>
+            <span matListItemLine>{{ data.movement.lengthOnTrack | dynamicDistance }} - {{ data.movement.movementType }}</span>
+
+            <mat-list *ngIf="data.volleys.length > 0">
+
+                <div mat-subheader>{{ 'combat-arena.battle-reports.summarize.released-volleys.title' | translate }}</div>
+                <mat-divider></mat-divider>
+                <mat-list-item *ngFor="let volley of data.volleys">
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.released-volleys.id' | translate }} {{ volley.damageDealer }}</span>
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.released-volleys.target' | translate }} {{ getFleetName(volley.target) }}</span>
+                    <span matListItemLine>{{ volley.amountOfShots }} {{ 'enum.name.weaponType.' + volley.weaponType | translate }}</span>
+                </mat-list-item>
+
+                <div mat-subheader *ngIf="data.missileMovements.length > 0">{{ 'combat-arena.battle-reports.summarize.missile-movement.title' | translate }}</div>
+                <mat-divider *ngIf="data.missileMovements.length > 0"></mat-divider>
+                <mat-list-item *ngFor="let volley of data.missileMovements">
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.released-volleys.id' | translate }} {{ volley.movingMissileSalvo }}</span>
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.released-volleys.target' | translate }} {{ getFleetName(volley.target) }}</span>
+                    <span matListItemLine>{{ volley.missileAmount }} {{ 'enum.name.weaponType.' + EWeaponTypeEnum.MISSILE | translate }}</span>
+                </mat-list-item>
+
+                <div mat-subheader *ngIf="data.counterMissileHits.length > 0">{{ 'combat-arena.battle-reports.summarize.counter-missile-hit.title' | translate }}</div>
+                <mat-divider *ngIf="data.counterMissileHits.length > 0"></mat-divider>
+                <mat-list-item *ngFor="let volley of data.counterMissileHits">
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.counter-missile-hit.attacked-id' | translate }} {{ volley.attackedMissileSalvo }}</span>
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.counter-missile-hit.target' | translate }} {{ getFleetName(volley.target) }}</span>
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.counter-missile-hit.destroyed' | translate }} {{ volley.destroyedMissiles }}</span>
+                </mat-list-item>
+
+                <div mat-subheader *ngIf="data.shipKillerHits.length > 0">{{ 'combat-arena.battle-reports.summarize.ship-killer-hit.title' | translate }}</div>
+                <mat-divider *ngIf="data.shipKillerHits.length > 0"></mat-divider>
+                <mat-list-item *ngFor="let volley of data.shipKillerHits">
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.ship-killer-hit.volley-id' | translate }} {{ volley.damageDealer }}</span>
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.ship-killer-hit.target' | translate }} {{ getFleetName(volley.target) }}</span>
+                    <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.ship-killer-hit.result' | translate }} {{ volley.result }}</span>
+
+                    <mat-list>
+                        <div mat-subheader *ngIf="volley.hitLogs.length > 0">{{ 'combat-arena.battle-reports.summarize.hit-log.title' | translate }}</div>
+                        <mat-divider *ngIf="volley.hitLogs.length > 0"></mat-divider>
+                        <mat-list-item *ngFor="let hit of getCompressedHits(volley.hitLogs)">
+
+                            <mat-list>
+                                <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.hit-log.attacked-ship.name' | translate }} {{ getShipName(hit.warShip) }}</span>
+                                <mat-list-item *ngFor="let dmg of hit.attackedPart | keyvalue">
+                                <span matListItemLine>
+                                    {{ 'combat-arena.battle-reports.summarize.hit-log.result.attacked-part' | translate }} {{ dmg.key }}
+                                    - {{ dmg.value }} {{ 'combat-arena.battle-reports.summarize.hit-log.result.damage-value' | translate }}
+                                </span>
+                                </mat-list-item>
+                            </mat-list>
+
+                            <span matListItemLine
+                                  *ngIf="!hit.isAlive">{{ 'combat-arena.battle-reports.summarize.hit-log.attacked-ship.state.title' | translate }} {{ 'combat-arena.tooltip.warship-state.destroyed' | translate }}</span>
+                            <span matListItemLine
+                                  *ngIf="!hit.isFightingCapable">{{ 'combat-arena.battle-reports.summarize.hit-log.attacked-ship.state.title' | translate }} {{ 'combat-arena.tooltip.warship-state.incapacitated' | translate }}</span>
+                        </mat-list-item>
+                    </mat-list>
+
+                    <div mat-subheader *ngIf="(volley.lossesByHit | keyvalue).length > 0">{{ 'combat-arena.battle-reports.summarize.loss-role.title' | translate }}</div>
+                    <mat-divider *ngIf="(volley.lossesByHit | keyvalue).length > 0"></mat-divider>
+                    <mat-list *ngIf="(volley.lossesByHit | keyvalue).length > 0">
+                        <mat-list-item *ngFor="let lossRole of volley.lossesByHit | keyvalue">
+                            <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.loss-role.attacked-ship.name' | translate }} {{ lossRole.value.warShipName }}</span>
+                            <span matListItemLine>{{ 'combat-arena.battle-reports.summarize.loss-role.attacked-ship.class-name' | translate }} {{ lossRole.value.shipClass.name }}</span>
+                        </mat-list-item>
+                    </mat-list>
+
+                </mat-list-item>
+
+            </mat-list>
+        </mat-list-item>
+    </mat-list>
+</app-red-box>

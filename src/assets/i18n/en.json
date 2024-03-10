@@ -81,6 +81,12 @@
 		}
 	},
 	"combat-arena": {
+		"action": {
+			"show-aura": "Range Aura de/activate",
+			"show-bizarro": "Sensor Data de/activate",
+			"show-green-details": "Details Fleet",
+			"show-red-details": "Details Opponent Fleet"
+		},
 		"battle-register": {
 			"search-for": "Battle report search",
 			"title": "Battle register"
@@ -91,13 +97,51 @@
 				"open": "Share battle report",
 				"select-alliance": "Select alliance to share with",
 				"select-user": "Select user to share with"
+			},
+			"summarize": {
+				"combat-round": "Combat round",
+				"counter-missile-hit": {
+					"attacked-id": "Attacked volley:",
+					"destroyed": "Destroyed by Countermeasures:",
+					"target": "Attacked volley:",
+					"title": "Missile countermeasures"
+				},
+				"hit-log": {
+					"attacked-ship": {
+						"name": "Target:",
+						"state": {
+							"title": "State:"
+						}
+					},
+					"result": {
+						"attacked-part": "Hit zone:",
+						"damage-value": "dmg"
+					},
+					"title": "Hit Log"
+				},
+				"loss-role": {
+					"attacked-ship": {
+						"class-name": "Ship class:",
+						"name": "Target:"
+					},
+					"title": "Loss role"
+				},
+				"missile-movement": {
+					"title": "Missile trails"
+				},
+				"released-volleys": {
+					"id": "Volley ID:",
+					"target": "Target:",
+					"title": "Released Volleys"
+				},
+				"ship-killer-hit": {
+					"result": "Result:",
+					"target": "Target fleet:",
+					"title": "Ship killer",
+					"volley-id": "Salvo:"
+				},
+				"title": "Battle Log"
 			}
-		},
-		"action": {
-			"show-aura": "Range Aura de/activate",
-			"show-bizarro": "Sensor Data de/activate",
-			"show-green-details": "Details Fleet",
-			"show-red-details": "Details Opponent Fleet"
 		},
 		"tooltip": {
 			"warship-state": {

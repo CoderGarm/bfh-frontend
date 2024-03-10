@@ -239,7 +239,7 @@ export class BattleViewHelper extends BizarrometerHelper {
 
             let result = hit.result;
             let color = "yellow";
-            if (result === ResultEnum.DAMAGEAPPLIED) {
+            if (result === ResultEnum.DAMAGE_APPLIED) {
                 color = "orange";
             }
 
