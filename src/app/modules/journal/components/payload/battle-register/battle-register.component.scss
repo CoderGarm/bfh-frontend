@@ -11,6 +11,7 @@
 
 .left-inner-container {
   height: 60%;
+  margin-top: 15px;
 }
 
 .red-box {
@@ -35,16 +36,8 @@
   float: right;
 }
 
-.state-container {
-  margin-top: 35px;
-  width: 40%;
-  height: 90%;
-}
-
-app-fleet-round-state, .register-list {
-  display: block;
+.register-list {
   overflow-y: auto;
-  height: 100%;
 }
 
 .register-list {

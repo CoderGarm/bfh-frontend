@@ -12,7 +12,7 @@ export class ActionChartHelper extends SubscriptionManager {
         super();
     }
 
-    protected createActionChart(combatArenaData: CombatArenaData) {
+    createActionChart(combatArenaData: CombatArenaData) {
 
         const data = combatArenaData.combatRounds.map(round => {
             let amountOfActions = 0;

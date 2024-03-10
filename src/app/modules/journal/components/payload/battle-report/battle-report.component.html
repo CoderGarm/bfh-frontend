@@ -7,7 +7,7 @@
 <div class="player-control transparent-backdrop"
      *ngIf="!!battleRegisterService.currentlyOpenedItem && !!battleRegisterService.combatArenaData && battleRegisterService.combatArenaData.combatRounds.length > 0">
 
-    <div echarts [options]="options" class="action-chart"></div>
+    <div echarts [options]="battleRegisterService.options" class="action-chart"></div>
 
     <mat-slider id="battle-round-stepper"
                 discrete

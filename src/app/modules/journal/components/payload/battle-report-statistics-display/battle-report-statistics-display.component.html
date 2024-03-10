@@ -44,12 +44,12 @@
 
                     <ng-container matColumnDef="Kills">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Kills</th>
-                        <td mat-cell *matCellDef="let r"> {{ r.kills }}</td>
+                        <td mat-cell *matCellDef="let r"> {{ r.kills.size }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="Losses">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Losses</th>
-                        <td mat-cell *matCellDef="let r"> {{ r.losses }}</td>
+                        <td mat-cell *matCellDef="let r"> {{ r.losses.size }}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="Released missiles">

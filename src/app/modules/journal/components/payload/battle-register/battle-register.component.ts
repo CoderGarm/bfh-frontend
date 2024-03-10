@@ -94,6 +94,7 @@ export class BattleRegisterComponent extends SubscriptionManager {
         this.setUpCombat();
         this.setCombatStatisticsDataSource();
         this.battleRegisterService.combatArenaData = new CombatArenaData(report);
+        this.battleRegisterService.createActionChart(this.battleRegisterService.combatArenaData);
         this.battleRegisterService.activeRoundIndex = 0;
         this.battleRegisterService.setActiveRound();
         this.battleRegisterService.battleReportsById.set(report.battleReportStatistics.idBattleReport, report);
@@ -124,15 +125,17 @@ export class BattleRegisterComponent extends SubscriptionManager {
             dataByFleet.set(fleet.idFleet, new CombatStatistics(fleet, userID == fleet.owner.idUser))
         );
         report.shipKillerHits.forEach(hit => {
-            hit.hitLogs.forEach(hitLog => {
-                let actorReport = dataByFleet.get(hit.actor.id);
-                let lossRole = hit.lossesByHit[hitLog.combatRoundKey.id];
-                if (!!lossRole) {
-                    let lossRep = dataByFleet.get(lossRole.fleet.id);
-                    lossRep!.losses++;
-                    actorReport!.kills++;
-                }
-            });
+            hit.hitLogs
+                .filter(h => !!h.combatRoundKey.id)
+                .forEach(hitLog => {
+                    let actorReport = dataByFleet.get(hit.actor.id);
+                    let lossRole = hit.lossesByHit[hitLog.combatRoundKey.id!];
+                    if (!!lossRole) {
+                        let lossRep = dataByFleet.get(lossRole.fleet.id);
+                        lossRep!.losses.add(lossRole.warship.id);
+                        actorReport!.kills.add(lossRole.warship.id);
+                    }
+                });
         });
         report.releasedVolleys.forEach(volley => {
             let combatReport = dataByFleet.get(volley.actor.id);

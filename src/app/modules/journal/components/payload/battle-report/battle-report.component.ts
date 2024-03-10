@@ -3,15 +3,13 @@ import {SubscriptionManager} from "../../../../../subscription.manager";
 import {timer} from "rxjs";
 import {MatSlider} from "@angular/material/slider";
 import {BattleRegisterService} from "../../../../../services/intercom/battle-register.service";
-import {DoNotScrollService} from "../../../../../services/intercom/do-not-scroll.service";
-import {ActionChartHelper} from "./action-chart.helper";
 
 @Component({
     selector: 'app-battle-report',
     templateUrl: './battle-report.component.html',
     styleUrls: ['./battle-report.component.scss']
 })
-export class BattleReportComponent extends ActionChartHelper implements AfterViewInit {
+export class BattleReportComponent extends SubscriptionManager implements AfterViewInit {
 
     static path: string = 'battle' // fixme rollback
 

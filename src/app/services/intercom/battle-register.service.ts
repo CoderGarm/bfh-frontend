@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
-import {SubscriptionManager} from "../../subscription.manager";
 import {DialogConfigHelper} from "../helper/dialog-config.helper";
 import {BattleReport, BattleReportApiService, BattleReportStatistics, FleetOrbit, PlanetApiService, StarSystem} from "../swagger";
 import {Subscription} from "rxjs";
@@ -12,9 +11,10 @@ import {CombatReport} from "../../modules/journal/combat-report";
 import {CombatArenaData} from "../../modules/journal/combat-arena-data";
 import {DoNotScrollService} from "./do-not-scroll.service";
 import {SpinnerService} from "../spinner.service";
+import {ActionChartHelper} from "../../modules/journal/components/payload/battle-report/action-chart.helper";
 
 @Injectable()
-export class BattleRegisterService extends SubscriptionManager {
+export class BattleRegisterService extends ActionChartHelper {
 
     displayedColumnsCombatStatistics: string[] = ['Fleet', 'Kills', 'Losses', 'Released missiles', 'Released beams'];
 
@@ -60,9 +60,9 @@ export class BattleRegisterService extends SubscriptionManager {
                 case this.displayedColumnsCombatStatistics[0]:
                     return item.fleetName;
                 case this.displayedColumnsCombatStatistics[1]:
-                    return item.kills;
+                    return item.kills.size;
                 case this.displayedColumnsCombatStatistics[2]:
-                    return item.losses;
+                    return item.losses.size;
                 case this.displayedColumnsCombatStatistics[3]:
                     return item.releasedMissiles;
                 case this.displayedColumnsCombatStatistics[4]:
