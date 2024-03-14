@@ -68,11 +68,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
     @ViewChild('drawer')
     drawer!: MatDrawer;
 
-    private static readonly IMG_START_NO: number = 1;
-    private static readonly IMG_NO: number = 21;
-
-    imageLink: string = '';
-
     constructor(private colorSchemeService: ColorSchemeService,
                 private renderer: Renderer2,
                 private spinnerService: SpinnerService,
@@ -140,8 +135,6 @@ export class AppComponent extends SubscriptionManager implements OnInit {
         if (!this.rememberIgnoreScreenWarning && window.innerWidth <= 800) {
             this.spinner.show('screen-size');
         }
-
-        this.imageLink = this.getImageURL();
     }
 
     private detectDeviceType() {
@@ -267,17 +260,5 @@ export class AppComponent extends SubscriptionManager implements OnInit {
             && !this.router.url.endsWith(LibraryTabViewComponent.path)
             && !this.router.url.endsWith(TakeATourComponent.path)
             ;
-    }
-
-    randomIntFromInterval(min: number, max: number) {
-        // min and max included
-        return Math.floor(Math.random() * (max - min + 1) + min)
-    }
-
-    private getImageURL() {
-        const number = this.randomIntFromInterval(AppComponent.IMG_START_NO, AppComponent.IMG_NO);
-        const isPng: boolean = number >= 22 && number <= 25;
-        const ending: string = isPng ? '.png' : '.jpeg';
-        return 'assets/images/entry/' + number + ending;
     }
 }

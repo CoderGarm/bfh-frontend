@@ -22,3 +22,19 @@ app-population-development {
   // remove number icons of stepper
   display: none !important;
 }
+
+.spinner-img {
+  border-radius: 20%;
+  max-height: 75vh;
+}
+
+.bottom-right {
+  position: absolute;
+  right: 45px;
+  bottom: 45px;
+}
+
+.abstand {
+  height: 80vh;
+  position: relative;
+}

@@ -19,6 +19,7 @@ import {
 } from "../../../../../services/swagger";
 import {SubscriptionManager} from "../../../../../subscription.manager";
 import {CurrentTickService} from "../../../../../services/intercom/current-tick.service";
+import {SpinnerService} from "../../../../../services/spinner.service";
 
 @Component({
     selector: 'app-journal-dashboard',
@@ -61,7 +62,8 @@ export class JournalDashboardComponent extends SubscriptionManager implements On
                 private fleetService: FleetApiService,
                 private journalService: JournalApiService,
                 private resourceService: ResourcesApiService,
-                private marketService: MarketplaceApiService) {
+                private marketService: MarketplaceApiService,
+                protected spinner: SpinnerService) {
         super();
     }
 
