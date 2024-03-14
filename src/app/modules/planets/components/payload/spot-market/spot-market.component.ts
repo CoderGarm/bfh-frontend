@@ -5,8 +5,6 @@ import {CdkOverlayOrigin} from "@angular/cdk/overlay";
 import {TranslateService} from "@ngx-translate/core";
 import {TypeService} from "../../../../../services/type.service";
 import {SnackbarNotificationService} from "../../../../../services/snackbar-notification.service";
-import {interval} from "rxjs";
-import {AppComponent} from "../../../../../app.component";
 import {PlanetsEventService} from "../../../planets-event.service";
 import EResourceTypeEnum = EnumValueDto.EResourceTypeEnum;
 
@@ -58,15 +56,6 @@ export class SpotMarketComponent extends SubscriptionManager {
             this.setUpTradableResources();
         });
         this.subscriptions.push(sub);
-
-
-        if (!this.credits) {
-            throw new Error("Yes but no. Repair me.")
-        }
-        const source = interval(AppComponent.CHECK_MESSAGES_INTERVAL_IN_SECONDS);
-        sub = source.subscribe(() => this.fetchSpotPrices());
-        this.subscriptions.push(sub);
-        this.plantNotifService.getOfferCreatedEmitter().subscribe(() => this.fetchSpotPrices());
     }
 
     private setUpTradableResources() {
@@ -82,10 +71,8 @@ export class SpotMarketComponent extends SubscriptionManager {
         this.tradableResourceTypes.forEach(r => {
             this.activeSpotPriceUpdateByResourceType.set(r.typeName, true);
             let sub = this.marketService.getSpotPrice(r.typeName).subscribe(resp => {
-                setTimeout(() => {
-                    this.spotPriceByResourceType.set(r.typeName, resp);
-                    this.activeSpotPriceUpdateByResourceType.set(r.typeName, false);
-                }, 3000);
+                this.spotPriceByResourceType.set(r.typeName, resp);
+                this.activeSpotPriceUpdateByResourceType.set(r.typeName, false);
             });
             this.subscriptions.push(sub);
         });
