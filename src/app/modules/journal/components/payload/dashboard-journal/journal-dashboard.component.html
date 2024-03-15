@@ -16,8 +16,7 @@
                     </ngx-spinner>
                 </div>
 
-
-                <app-advisory-board [missionResults]="missionResults"></app-advisory-board>
+                <app-advisory-board *ngIf="!spinner.isAdvisorySpinnerActive" [missionResults]="missionResults"></app-advisory-board>
             </ng-template>
         </mat-step>
 
