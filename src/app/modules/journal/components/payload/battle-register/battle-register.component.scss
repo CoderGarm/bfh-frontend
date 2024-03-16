@@ -3,6 +3,8 @@
 .outer {
   margin: 25px;
   height: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .left-full-height, .right-full-height {
@@ -12,7 +14,7 @@
 .left-inner-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   height: 60%;
   margin-top: 15px;
 }
@@ -26,16 +28,13 @@
 }
 
 .right-full-height {
-  float: right;
 }
 
 .left-full-height {
-  float: left;
-  width: calc(100% - 350px);
+  width: calc(100% - 450px);
 }
 
 .register-box {
-  float: right;
 }
 
 .register-list {

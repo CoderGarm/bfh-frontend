@@ -4,7 +4,8 @@
 .radar-box,
 .ecm-box,
 .info-box,
-.general-info-box {
+.range-info-box,
+.fleet-info-box {
   fill: transparent;
   stroke: var(--required-color);
   stroke-width: 0.7px;
@@ -16,24 +17,13 @@
 .impeller-headline,
 .radar-headline,
 .ecm-headline,
-.info-headline,
-.general-info-headline {
+.info-headline {
   text-anchor: middle;
 }
 
-.bizarro-headline-box {
-}
-
-.bizarro-headline {
-}
-
-.lidar-headline, .info-headline, .general-info-headline {
+.lidar-headline, .info-headline {
   transform: rotate(-90deg);
   transform-box: border-box;
-}
-
-.lidar-box {
-
 }
 
 .lidar-line, .impeller-line, .radar-line, .ecm-line {
@@ -41,35 +31,12 @@
   vector-effect: non-scaling-stroke;
 }
 
-.impeller-box {
-
-}
-
-.impeller-headline {
-}
-
 .impeller-line {
   stroke: orange;
 }
 
-.radar-box {
-
-}
-
-.radar-headline {
-
-}
-
 .radar-line {
   stroke: greenyellow;
-}
-
-.ecm-box {
-
-}
-
-.ecm-headline {
-
 }
 
 .ecm-line {
@@ -77,14 +44,11 @@
   stroke-width: 3px;
 }
 
-.info-box {
-
-}
-
-.general-info-box {
-
-}
 
 .info-text-line {
   text-anchor: start;
+}
+
+.foreign-object-table-border {
+  border-color: var(--map-text-color);
 }

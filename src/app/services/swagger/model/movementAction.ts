@@ -10,8 +10,10 @@
  * Do not edit the class manually.
  */
 import { AbstractId } from './abstractId';
+import { Acceleration } from './acceleration';
 import { AuraState } from './auraState';
 import { Distance } from './distance';
+import { Velocity } from './velocity';
 
 /**
  * .
@@ -28,6 +30,8 @@ export interface MovementAction {
     movementType: MovementAction.MovementTypeEnum;
     auraState: AuraState;
     lengthOnTrack: Distance;
+    velocity: Velocity;
+    acceleration: Acceleration;
 }
 export namespace MovementAction {
     export type MovementTypeEnum = 'REDUCE_DISTANCE' | 'INCREASE_DISTANCE' | 'HOLD_DISTANCE' | 'IMPELLER_WEDGE_PROTECTION' | 'OFFENSIVE_ROLL' | 'EVASION_MOVEMENT';

@@ -11,18 +11,18 @@ export class VelocityPipe implements PipeTransform {
     constructor(private numberShort: NumberShortPipe) {
     }
 
-    transform(value: Velocity | undefined, targetDistanceMetric: string, targetTimeMetric: string): string {
-        if (!value) {
+    transform(velocity: Velocity | undefined, targetDistanceMetric: string, targetTimeMetric: string): string {
+        if (!velocity) {
             return "0 m/s";
         }
         const dMetric: DistanceMetricEnum = targetDistanceMetric as keyof typeof DistanceMetricEnum;
         const tMetric: TimeMetricEnum = targetTimeMetric as keyof typeof TimeMetricEnum;
-        const result = NavigationCalculator.convertVelocityToMetric(value, dMetric, tMetric);
+        const result = NavigationCalculator.convertVelocityToMetric(velocity, dMetric, tMetric);
 
         const sol = NavigationCalculator.getSOLinMetric(dMetric, tMetric);
         if ((sol * 0.1) < result) {
             return (result / sol).toFixed(2) + " c";
         }
-        return this.numberShort.transform(result) + ' ' + targetDistanceMetric.toLowerCase() + '/' + targetTimeMetric.toLowerCase();
+        return this.numberShort.transform(result) + ' ' + targetDistanceMetric.toLowerCase() + '/' + targetTimeMetric.toLowerCase().substring(0, 1);
     }
 }

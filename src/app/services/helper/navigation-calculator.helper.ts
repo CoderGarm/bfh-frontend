@@ -100,20 +100,20 @@ export class NavigationCalculator {
         return originalMetricValue! / targetMetricValue!;
     }
 
-    static convertVelocityToMetric(distance: Velocity, dMetric: DistanceMetricEnum, tMetric: TimeMetricEnum): number {
-        if (distance.distanceMetric === dMetric && distance.timeMetric === tMetric) {
-            return distance.value;
+    static convertVelocityToMetric(velocity: Velocity, dMetric: DistanceMetricEnum, tMetric: TimeMetricEnum): number {
+        if (velocity.distanceMetric === dMetric && velocity.timeMetric === tMetric) {
+            return velocity.value;
         }
 
-        const factor = NavigationCalculator.getVelocityConversionFactor(distance, dMetric, tMetric);
-        return distance.value * factor;
+        const factor = NavigationCalculator.getVelocityConversionFactor(velocity, dMetric, tMetric);
+        return velocity.value * factor;
     }
 
-    private static getVelocityConversionFactor(distance: Velocity, dMetric: DistanceMetricEnum, tMetric: TimeMetricEnum) {
-        const tFactor = NavigationCalculator.getTimeConversionFactor(distance.timeMetric, tMetric);
-        const dFactor = NavigationCalculator.getDistanceConversionFactor(distance.distanceMetric, dMetric);
+    private static getVelocityConversionFactor(velocity: Velocity, dMetric: DistanceMetricEnum, tMetric: TimeMetricEnum) {
+        const tFactor = NavigationCalculator.getTimeConversionFactor(velocity.timeMetric, tMetric);
+        const dFactor = NavigationCalculator.getDistanceConversionFactor(velocity.distanceMetric, dMetric);
 
-        return tFactor * dFactor * distance.value;
+        return tFactor * dFactor;
     }
 
     static convertMassToMetric(distance: Mass, targetMetric: MassMetricEnum): number {
@@ -299,7 +299,7 @@ export class NavigationCalculator {
         return Math.round(value * multiplier) / multiplier;
     }
 
-    static getNextSmaller(metric: Distance.DistanceMetricEnum) {
+    static getNextSmallerDistanceMetric(metric: DistanceMetricEnum) {
         const factor = this.distanceMetricValues.get(metric)!;
         const find = Array.from(this.distanceMetricValues.entries())
             .sort((a, b) => b[1] - a[1])

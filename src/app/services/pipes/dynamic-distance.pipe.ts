@@ -20,7 +20,7 @@ export class DynamicDistancePipe implements PipeTransform {
         let result = NavigationCalculator.convertDistanceToMetric(value, metric);
         while (canRun && Math.abs(result) < 1) {
             const input = metric;
-            metric = NavigationCalculator.getNextSmaller(metric);
+            metric = NavigationCalculator.getNextSmallerDistanceMetric(metric);
             if (input === metric) {
                 canRun = false;
             }

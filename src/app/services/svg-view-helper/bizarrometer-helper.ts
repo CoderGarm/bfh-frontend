@@ -1,10 +1,18 @@
-import {Distance, FleetMarker, Maneuver, MissileMovement} from "../swagger";
-import {G, Line, Rect, Text} from "@svgdotjs/svg.js";
+import {Distance, EnumValueDto, FleetMarker, Maneuver, MissileMovement, MovementAction, WarShip} from "../swagger";
+import {G, Line, Rect, SVG, Text} from "@svgdotjs/svg.js";
 import {NavigationCalculator} from "../helper/navigation-calculator.helper";
 import {Component} from "@angular/core";
 import {BasicViewHelper} from "./basic-view-helper";
 import {AppInjector} from "../../app.module";
 import {DynamicDistancePipe} from "../pipes/dynamic-distance.pipe";
+import {AccelerationPipe} from "../pipes/acceleration.pipe";
+import {VelocityPipe} from "../pipes/velocity.pipe";
+import {DistancePipe} from "../pipes/distance.pipe";
+import EDistanceMetricsEnum = EnumValueDto.EDistanceMetricsEnum;
+import ETimeMetricsEnum = EnumValueDto.ETimeMetricsEnum;
+import EAccelerationMetricsEnum = EnumValueDto.EAccelerationMetricsEnum;
+import EShipClassTypeEnum = EnumValueDto.EShipClassTypeEnum;
+import EWeaponTypeEnum = EnumValueDto.EWeaponTypeEnum;
 
 export interface SimpleRangeAura {
     missileForwardRange: Distance,
@@ -27,14 +35,45 @@ export class BizarrometerHelper extends BasicViewHelper {
 
     protected showBizarrometer: boolean = true;
 
-    private distancePipe: DynamicDistancePipe = AppInjector.get(DynamicDistancePipe);
+    private dynamicDistancePipe: DynamicDistancePipe = AppInjector.get(DynamicDistancePipe);
+    private distancePipe: DistancePipe = AppInjector.get(DistancePipe);
+    private accelerationPipe: AccelerationPipe = AppInjector.get(AccelerationPipe);
+    private velocityPipe: VelocityPipe = AppInjector.get(VelocityPipe);
 
-    createBizarrometer(position: { x: number; y: number },
+    private static ORDERED_HULL_TYPES: EShipClassTypeEnum[] = [
+        EShipClassTypeEnum.SDP,
+        EShipClassTypeEnum.CLAC,
+        EShipClassTypeEnum.SD,
+        EShipClassTypeEnum.DN,
+        EShipClassTypeEnum.BCP,
+        EShipClassTypeEnum.BB,
+        EShipClassTypeEnum.BC,
+        EShipClassTypeEnum.CA,
+        EShipClassTypeEnum.CL,
+        EShipClassTypeEnum.DD,
+        EShipClassTypeEnum.FG,
+        EShipClassTypeEnum.VT,
+        EShipClassTypeEnum.LAC,
+        EShipClassTypeEnum.AE,
+        EShipClassTypeEnum.AR,
+        EShipClassTypeEnum.FAT,
+        EShipClassTypeEnum.FR
+    ];
+
+    private static ORDERED_WEAPON_TYPES: EWeaponTypeEnum[] = [
+        EWeaponTypeEnum.MISSILE,
+        EWeaponTypeEnum.BEAM,
+        EWeaponTypeEnum.COUNTER_MISSILE,
+        EWeaponTypeEnum.POINT_DEFENSE
+    ];
+
+    createBizarrometer(move: MovementAction,
+                       activeShips: WarShip[],
+                       inactiveShips: WarShip[],
+                       position: { x: number; y: number },
                        enemyPosition: { x: number; y: number },
                        auraShift: SimpleRangeAura,
-                       fleetMarker: FleetMarker,
-                       flyingSalvos: MissileMovement[],
-                       missileManeuvers: Maneuver[]) {
+                       fleetMarker: FleetMarker, flyingSalvos: MissileMovement[], missileManeuvers: Maneuver[]) {
 
         if (!this.showBizarrometer) {
             return;
@@ -81,46 +120,272 @@ export class BizarrometerHelper extends BasicViewHelper {
 
         x = <number>lidarBlock.box.x();
         y = <number>impellerContent.box.y() + (<number>impellerContent.box.height() * 1.1);
-        const generalInfoBlock = this.createGeneralInfoBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize, auraShift);
+        const fleetInfoBlock = this.createFleetInfoBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize, move);
 
-        y = <number>generalInfoBlock.box.y() + (<number>generalInfoBlock.box.height() * 1.1);
+        x = <number>lidarBlock.box.x();
+        y = <number>fleetInfoBlock.box.y() + (<number>fleetInfoBlock.box.height() * 1.1);
+        const fleetCompositionInfoBlock = this.createFleetCompositionInfoBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize, activeShips, inactiveShips);
+
+        x = <number>lidarBlock.box.x();
+        y = <number>fleetCompositionInfoBlock.box.y() + (<number>fleetCompositionInfoBlock.box.height() * 1.1);
+        const rangeInfoBlock = this.createRangeInfoBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize, auraShift);
+
+        y = <number>rangeInfoBlock.box.y() + (<number>rangeInfoBlock.box.height() * 1.1);
         this.createInfoBlock(svg, x, y, boxWidth, boxHeight, textHeight, fontSize, flyingSalvos, missileManeuvers);
     }
 
-    private createGeneralInfoBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number },
-                                   auraShift: SimpleRangeAura) {
+    private createFleetCompositionInfoBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number },
+                                            activeShips: WarShip[], inactiveShips: WarShip[]) {
 
-        const salvoStrings: string[] = [];
+        let tableStyles: string =
+            "width: 80%;" +
+            "height: PLACYPLACE;" + /* todo height not necessary here? */
+            "margin: auto;" +
+            "border-spacing: " + fontSize.size / 4 + "px;" +
+            "border-collapse: separate;" +
+            "font-size: " + fontSize.size + "px;"
 
-        salvoStrings.push('ASM Front ' + this.distancePipe.transform(auraShift.missileForwardRange));
-        salvoStrings.push('ASM Rear ' + this.distancePipe.transform(auraShift.missileBackwardRange));
-        salvoStrings.push('AMM Front ' + this.distancePipe.transform(auraShift.antiMissileForwardRange));
-        salvoStrings.push('AMM Rear ' + this.distancePipe.transform(auraShift.antiMissileBackwardRange));
+        let platformEntries = 0;
+        let weaponEntries = 0;
+        const activeWarShipsByType: Map<EShipClassTypeEnum, WarShip[]> = BizarrometerHelper.sortWarshipsByHull(activeShips);
+        const inactiveWarShipsByType: Map<EShipClassTypeEnum, WarShip[]> = BizarrometerHelper.sortWarshipsByHull(inactiveShips);
 
-        const lines = salvoStrings.length;
-        const salvoBlocktextHeight = this.getLineHeight(lines, textHeight);
-        const box = svg.rect(boxWidth, Math.max(boxHeight, salvoBlocktextHeight))
+        const borderWidth = fontSize.size / 75;
+        const borderBottom = "border-bottom: solid " + borderWidth + "px;";
+        const borderRight = "border-right: solid " + borderWidth + "px;";
+
+        let table = "<div>";
+
+        const hasShips = activeWarShipsByType.size != 0 || inactiveWarShipsByType.size != 0;
+        if (hasShips) {
+            // first tbody
+            table += "<table style='" + tableStyles + "' class='foreign-object-text'>";
+            table += "<tbody>"
+            table += "<tr>"
+            table += "<td>Platform</td>";
+            table += "<td style='" + borderBottom + "' class='foreign-object-table-border'>Active</td>";
+            table += "<td style='" + borderBottom + "' class='foreign-object-table-border'>Inactive</td>";
+            table += "</tr>"
+
+            BizarrometerHelper.ORDERED_HULL_TYPES.forEach(hullType => {
+                let actives = activeWarShipsByType.get(hullType);
+                let inactives = inactiveWarShipsByType.get(hullType);
+                if (!!actives || !!inactives) {
+                    table += "<tr>"
+                    table += "<td>" + hullType + "</td>";
+
+                    if (!!actives) {
+                        table += "<td>" + actives.length + "</td>";
+                    } else {
+                        table += "<td>-</td>";
+                    }
+
+                    if (!!inactives) {
+                        table += "<td>" + inactives.length + "</td>";
+                    } else {
+                        table += "<td>-</td>";
+                    }
+                    platformEntries++;
+                    table += "</tr>"
+                }
+            });
+            table += "</tbody>"
+            table += "</table>"
+
+            // second tbody
+            table += "<table style='" + tableStyles + "' class='foreign-object-text'>";
+            table += "<tbody>"
+            table += "<tr>"
+            table += "<td>Armament</td>";
+            table += "<td style='" + borderBottom + "' class='foreign-object-table-border'>Active</td>";
+            table += "<td style='" + borderBottom + "' class='foreign-object-table-border'>Inactive</td>";
+            table += "</tr>"
+
+            BizarrometerHelper.ORDERED_WEAPON_TYPES.forEach(weaponType => {
+
+                const activeWeapons = activeShips
+                    .map(ws => ws.shipClass)
+                    .flatMap(s => s.fittings)
+                    .filter(f => weaponType == f.launcher?.weaponType || weaponType == f.weapon?.weaponType)
+                    .map(f => f.amount)
+                    .reduce((sum, current) => sum + current, 0);
+
+                const inactiveWeapons = inactiveShips
+                    .map(ws => ws.shipClass)
+                    .flatMap(s => s.fittings)
+                    .filter(f => weaponType == f.launcher?.weaponType || weaponType == f.weapon?.weaponType)
+                    .map(f => f.amount)
+                    .reduce((sum, current) => sum + current, 0);
+
+                if (activeWeapons > 0 || inactiveWeapons > 0) {
+                    table += "<tr>"
+                    table += "<td>" + weaponType + "</td>";
+
+                    if (!!activeWeapons) {
+                        table += "<td>" + activeWeapons + "</td>";
+                    } else {
+                        table += "<td>-</td>";
+                    }
+
+                    if (!!inactiveWeapons) {
+                        table += "<td>" + inactiveWeapons + "</td>";
+                    } else {
+                        table += "<td>-</td>";
+                    }
+                    weaponEntries++;
+                    table += "</tr>"
+                }
+            });
+            table += "</tbody>"
+            table += "</table>";
+        }
+        table += "</div>";
+
+
+        const entries = platformEntries + weaponEntries;
+        const first = Math.ceil(platformEntries * 100 / entries);
+        const second = 100 - first;
+
+        table = table.replace("PLACYPLACE", first + "%");
+        table = table.replace("PLACYPLACE", second + "%");
+
+        const height = Math.max(boxHeight, this.getLineHeight(entries + 4, textHeight));
+        const box = svg.rect(boxWidth, height)
             .x(x)
             .y(y)
-            .addClass('general-info-box');
+            .addClass('fleet-info-box');
 
-        const headline = svg.text('INFO')
-            .x(<number>box.x() + (textHeight * 1.4))
-            .y(<number>box.y() + <number>box.height())
-            .font(fontSize)
-            .addClass('general-info-headline')
-            .addClass(BasicViewHelper.TEXT_FILL_MARKER);
+        const foreignObject = svg.foreignObject(<number>box.width(), <number>box.height())
+            .x(<number>box.x())
+            .y(<number>box.y())
 
-        headline.filterWith(function (add) {
+        const element = SVG(table);
+        foreignObject.add(element);
+
+        return {x: x, y: y, box: box};
+    }
+
+
+    private static sortWarshipsByHull(warShips: WarShip[]) {
+        const warShipsByType: Map<EShipClassTypeEnum, WarShip[]> = new Map<EShipClassTypeEnum, WarShip[]>();
+
+        warShips?.forEach(warShip => {
+            const key: EShipClassTypeEnum = warShip.shipClass.shipClassType.typeName as keyof typeof EShipClassTypeEnum;
+
+            let warShips: WarShip[] | undefined = warShipsByType.get(key);
+            if (!warShips) {
+                warShips = [warShip];
+            } else {
+                warShips.push(warShip);
+            }
+            warShipsByType.set(key, warShips);
+        });
+        return warShipsByType;
+    }
+
+
+    private createFleetInfoBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number },
+                                 move: MovementAction) {
+
+        let tableStyles: string =
+            "width: 80%;" +
+            "height: 100%;" +
+            "margin: auto;" +
+            "border-spacing: " + fontSize.size / 4 + "px;" +
+            "border-collapse: separate;" +
+            "font-size: " + fontSize.size + "px;"
+
+        const borderWidth = fontSize.size / 75;
+        const borderRight = "border-right: solid " + borderWidth + "px;";
+
+        const table = "<table style='" + tableStyles + "' class='foreign-object-text'>" +
+            "<tbody>" +
+            "<tr>" +
+            "<td style='" + borderRight + "' class='foreign-object-table-border'>Velocity</td>" +
+            "<td>" + this.velocityPipe.transform(move.velocity, EDistanceMetricsEnum.KM, ETimeMetricsEnum.SECOND) + "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='" + borderRight + "' class='foreign-object-table-border'>Acceleration</td>" +
+            "<td>" + this.accelerationPipe.transform(move.acceleration, EAccelerationMetricsEnum.MS2) + "</td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>";
+
+        const height = Math.max(boxHeight, this.getLineHeight(2, textHeight));
+        const box = svg.rect(boxWidth, height)
+            .x(x)
+            .y(y)
+            .addClass('fleet-info-box');
+
+        const foreignObject = svg.foreignObject(<number>box.width(), <number>box.height())
+            .x(<number>box.x())
+            .y(<number>box.y())
+
+        const element = SVG(table);
+        foreignObject.add(element);
+
+        return {x: x, y: y, box: box};
+    }
+
+    private createRangeInfoBlock(svg: G, x: number, y: number, boxWidth: number, boxHeight: number, textHeight: number, fontSize: { size: number },
+                                 auraShift: SimpleRangeAura) {
+
+        let tableStyles: string =
+            "width: 80%;" +
+            "height: 100%;" +
+            "margin: auto;" +
+            "border-spacing: " + fontSize.size / 4 + "px;" +
+            "border-collapse: separate;" +
+            "font-size: " + fontSize.size + "px;"
+
+
+        const borderWidth = fontSize.size / 75;
+        const borderBottom = "border-bottom: solid " + borderWidth + "px;";
+        const borderRight = "border-right: solid " + borderWidth + "px;";
+
+        const table = "<table style='" + tableStyles + "' class='foreign-object-text'>" +
+            "<tbody>" +
+            "<tr>" +
+            "<td style='" + borderBottom + "' class='foreign-object-table-border'>Range</td>" +
+            "<td style='" + borderBottom + "' class='foreign-object-table-border'>Front</td>" +
+            "<td style='" + borderBottom + "' class='foreign-object-table-border'>Rear</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='" + borderRight + "' class='foreign-object-table-border'>ASM</td>" +
+            "<td>" + this.dynamicDistancePipe.transform(auraShift.missileForwardRange) + "</td>" +
+            "<td>" + this.dynamicDistancePipe.transform(auraShift.missileBackwardRange) + "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='" + borderRight + "' class='foreign-object-table-border'>AMM</td>" +
+            "<td>" + this.dynamicDistancePipe.transform(auraShift.antiMissileForwardRange) + "</td>" +
+            "<td>" + this.dynamicDistancePipe.transform(auraShift.antiMissileBackwardRange) + "</td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>";
+
+        const height = Math.max(boxHeight, this.getLineHeight(4, textHeight));
+        const box = svg.rect(boxWidth, height)
+            .x(x)
+            .y(y)
+            .addClass('range-info-box');
+
+        /* fixme use filters
+            headline.filterWith(function (add) {
             let blur = add.offset(0, 1).in(add.$sourceAlpha).gaussianBlur(0, 1)
 
             add.blend(add.$source, blur, 'blur')
             //fixme experiment with filters https://garden.bradwoods.io/notes/svg/filters#listofprimitives
         })
+        */
 
-        this.printInfoTextLines(fontSize, lines, salvoStrings, textHeight, svg, box, boxHeight);
+        const foreignObject = svg.foreignObject(<number>box.width(), <number>box.height())
+            .x(<number>box.x())
+            .y(<number>box.y())
 
-        return {x: x, y: y, box: box, headline: headline};
+        const element = SVG(table);
+        foreignObject.add(element);
+
+        return {x: x, y: y, box: box};
     }
 
     private printInfoTextLines(fontSize: { size: number }, lines: number, salvoStrings: string[], textHeight: number, svg: G, box: Rect, boxHeight: number) {
@@ -147,8 +412,8 @@ export class BizarrometerHelper extends BasicViewHelper {
                 const id = salvo.movingMissileSalvo.split('-')[0];
 
                 const maneuverPath = missileManeuvers.find(s => s.missileSalvo == salvo.movingMissileSalvo)!;
-                const distance = this.distancePipe.transform(salvo.lengthOnTrack);
-                const total = this.distancePipe.transform(maneuverPath.totalLength);
+                const distance = this.dynamicDistancePipe.transform(salvo.lengthOnTrack);
+                const total = this.dynamicDistancePipe.transform(maneuverPath.totalLength);
                 const missileAmount = salvo.missileAmount;
                 return id + ', ' + missileAmount + ' missiles, ' + distance + ' / ' + total
             });

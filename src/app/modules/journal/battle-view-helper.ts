@@ -18,7 +18,8 @@ import {
     Planet,
     ReleasedVolley,
     ShipKillerHit,
-    StarSystem
+    StarSystem,
+    WarShip
 } from "../../services/swagger";
 import {OrbitDefinition} from "../star-map/payload/orbit-definition";
 import {BasicViewHelper} from "../../services/svg-view-helper/basic-view-helper";
@@ -436,9 +437,9 @@ export class BattleViewHelper extends BizarrometerHelper {
                               missileMovements: MissileMovement[]) {
 
         movementActions.forEach((move) => {
-            let fleet = this.fleetMarkerByIdFleet.get(move.actor.id)!
+            let fleetMarker = this.fleetMarkerByIdFleet.get(move.actor.id)!
             let lengthOnTrack = this.convertToStandardMetric(move.lengthOnTrack);
-            const maneuverElements = this.getManeuverElements(maneuvers, fleet);
+            const maneuverElements = this.getManeuverElements(maneuvers, fleetMarker);
 
             let myTrack: Path = this.extractCurrentCurve(maneuverElements, lengthOnTrack)!;
 
@@ -446,13 +447,13 @@ export class BattleViewHelper extends BizarrometerHelper {
             let lastPosition: { x: number, y: number } = myTrack.pointAt(lengthOnTrack - 1);
             const angle: number = Math.ceil(NavigationCalculator.getAngle(position, lastPosition));
 
-            const fightingWarships: AbstractId[] = this.getFightingWarships(fleet, activeRound, hitLogsByRound);
+            const fightingWarships: AbstractId[] = this.getFightingWarships(fleetMarker, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, position, angle);
 
             const auraEllipseData = this.createAuraEllipse(move, myTrack, lengthOnTrack, position, angle);
-            this.createHullOutlinesAndPrint(fleet, fightingWarships, warshipHullPoints);
+            this.createHullOutlinesAndPrint(fleetMarker, fightingWarships, warshipHullPoints);
 
-            const enemyMove = movementActions.find(ma => ma.actor.id != fleet.fleet.id)!;
+            const enemyMove = movementActions.find(ma => ma.actor.id != fleetMarker.fleet.id)!;
             let enemyLengthOnTrack = this.convertToStandardMetric(enemyMove.lengthOnTrack);
             const enemyManeuverElements = this.getManeuverElements(maneuvers, this.fleetMarkerByIdFleet.get(enemyMove.actor.id)!);
             let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyLengthOnTrack)!;
@@ -460,11 +461,14 @@ export class BattleViewHelper extends BizarrometerHelper {
             const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(enemyLengthOnTrack);
             if (!!auraEllipseData) {
 
-                const flyingSalvos: MissileMovement[] = missileMovements.filter(mm => mm.actor.id == fleet.fleet.id);
+                const flyingSalvos: MissileMovement[] = missileMovements.filter(mm => mm.actor.id == fleetMarker.fleet.id);
                 const salvoIDs = flyingSalvos.map(s => s.movingMissileSalvo);
                 const missileManeuvers = Array.from(maneuvers.values()).filter(s => !!s.missileSalvo).filter(m => salvoIDs.includes(m.missileSalvo!));
 
-                this.createBizarrometer(position, enemyPosition, auraEllipseData, fleet, flyingSalvos, missileManeuvers);
+                let fleet = this.fleetByIdFleet.get(move.actor.id)!
+                const activeShips: WarShip[] = fleet.ships.filter(s => !!fightingWarships.find(ws => ws.id == s.idWarship));
+                const inactiveShips: WarShip[] = fleet.ships.filter(s => !activeShips.find(ws => ws.idWarship == s.idWarship));
+                this.createBizarrometer(move, activeShips, inactiveShips, position, enemyPosition, auraEllipseData, fleetMarker, flyingSalvos, missileManeuvers);
             }
         });
     }
