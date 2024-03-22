@@ -30,6 +30,10 @@ export interface MovementAction {
     movementType: MovementAction.MovementTypeEnum;
     auraState: AuraState;
     lengthOnTrack: Distance;
+    /**
+     * The maneuver element on the main track.
+     */
+    maneuverSequenceNo: number;
     velocity: Velocity;
     acceleration: Acceleration;
 }

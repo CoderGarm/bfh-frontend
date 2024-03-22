@@ -440,26 +440,30 @@ export class BattleViewHelper extends BizarrometerHelper {
             let fleetMarker = this.fleetMarkerByIdFleet.get(move.actor.id)!
             let lengthOnTrack = this.convertToStandardMetric(move.lengthOnTrack);
             const maneuverElements = this.getManeuverElements(maneuvers, fleetMarker);
-
-            let myTrack: Path = this.extractCurrentCurve(maneuverElements, lengthOnTrack)!;
+            let myTrack: Path = this.extractCurrentCurve(maneuverElements, move.maneuverSequenceNo);
 
             const position: { x: number, y: number } = myTrack.pointAt(lengthOnTrack);
             let lastPosition: { x: number, y: number } = myTrack.pointAt(lengthOnTrack - 1);
             const angle: number = Math.ceil(NavigationCalculator.getAngle(position, lastPosition));
 
+            console.log(
+                '#', move.combatRoundKey, move.actor.name,
+                'position', position
+            )
+
             const fightingWarships: AbstractId[] = this.getFightingWarships(fleetMarker, activeRound, hitLogsByRound);
             let warshipHullPoints: Array<Array<ArrayXY[]>> = this.defineWarshipHullPoints(fightingWarships, position, angle);
 
-            const auraEllipseData = this.createAuraEllipse(move, myTrack, lengthOnTrack, position, angle);
             this.createHullOutlinesAndPrint(fleetMarker, fightingWarships, warshipHullPoints);
 
-            const enemyMove = movementActions.find(ma => ma.actor.id != fleetMarker.fleet.id)!;
-            let enemyLengthOnTrack = this.convertToStandardMetric(enemyMove.lengthOnTrack);
-            const enemyManeuverElements = this.getManeuverElements(maneuvers, this.fleetMarkerByIdFleet.get(enemyMove.actor.id)!);
-            let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyLengthOnTrack)!;
-
-            const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(enemyLengthOnTrack);
+            const auraEllipseData = this.createAuraEllipse(move, myTrack, lengthOnTrack, position, angle);
             if (!!auraEllipseData) {
+
+                const enemyMove = movementActions.find(ma => ma.actor.id != fleetMarker.fleet.id)!;
+                let enemyLengthOnTrack = this.convertToStandardMetric(enemyMove.lengthOnTrack);
+                const enemyManeuverElements = this.getManeuverElements(maneuvers, this.fleetMarkerByIdFleet.get(enemyMove.actor.id)!);
+                let enemyTrack: Path = this.extractCurrentCurve(enemyManeuverElements, enemyMove.maneuverSequenceNo);
+                const enemyPosition: { x: number, y: number } = enemyTrack.pointAt(enemyLengthOnTrack);
 
                 const flyingSalvos: MissileMovement[] = missileMovements.filter(mm => mm.actor.id == fleetMarker.fleet.id);
                 const salvoIDs = flyingSalvos.map(s => s.movingMissileSalvo);
@@ -483,19 +487,12 @@ export class BattleViewHelper extends BizarrometerHelper {
         return maneuver.maneuverElements.sort((a, b) => a.sequenceNo - b.sequenceNo);
     }
 
-    private extractCurrentCurve(maneuverElements: Array<ManeuverElement>, lengthOnTrack: number) {
-        let lengthToNow: number = 0;
-        let myTrack: Path | undefined;
-        for (let me of maneuverElements) {
-            const curve = this.getManeuverCurveByElement(me);
-            lengthToNow += curve.length();
-            if (lengthToNow >= lengthOnTrack) {
-                // fixme this works only because its the only maneuver element - lengthontrack must be not over total but over the element itself - same for backend
-                myTrack = curve;
-                break;
-            }
+    private extractCurrentCurve(maneuverElements: Array<ManeuverElement>, maneuverSequenceNo: number) {
+        const me = maneuverElements.find(me => me.sequenceNo == maneuverSequenceNo);
+        if (!me) {
+            throw new Error("Path not found for ", me)
         }
-        return myTrack;
+        return this.getManeuverCurveByElement(me);
     }
 
     private createAuraEllipse(move: MovementAction,
@@ -646,11 +643,7 @@ export class BattleViewHelper extends BizarrometerHelper {
         this.setFleetById(fleetSharkID, fleet);
         this.setGroupById(fleetSharkID + BasicViewHelper.GROUP_SELECTOR_SUFFIX, group);
 
-        let userID = this.tokenStorage.getUserID();
-        let fleetSharkColor = this.FLEET_SHARK_COLOR_HOSTILE;
-        if (fleet.owner.id == userID) {
-            fleetSharkColor = this.FLEET_SHARK_COLOR_OWN;
-        }
+        let fleetSharkColor = this.isOwnFleetMarker(fleet) ? this.FLEET_SHARK_COLOR_OWN : this.FLEET_SHARK_COLOR_HOSTILE;
         // sort by is to display the names in a non-permuting way
         warships = warships.sort((a, b) => a.id > b.id ? 1 : -1);
         for (let i = 0; i < warshipHullPoints.length; i++) {

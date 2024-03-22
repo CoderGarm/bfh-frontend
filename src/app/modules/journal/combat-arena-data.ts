@@ -33,7 +33,9 @@ export class CombatArenaData {
         report.counterMissileHits.forEach(rv => this.setCounterMissileHitsMapValue(rv));
         report.participatingFleets.forEach(fleet => this.setShipClasses(fleet));
         report.maneuvers.forEach(m => this.maneuvers.set(m.actor, m));
-        this.mergeCombatRounds();
+        for (let i = 1; i <= report.battleReportStatistics.lastRound.no; i++) {
+            this.combatRounds.push(i); // todo yeah it was stupid from the start on
+        }
     }
 
     private setCounterMissileHitsMapValue(volley: CounterMissileHit) {
@@ -103,13 +105,6 @@ export class CombatArenaData {
             let idShipClass = warShip.shipClass.idShipClass;
             this.shipClasses.set(idShipClass!, warShip.shipClass);
         });
-    }
-
-    private mergeCombatRounds() {
-        const combatRounds: Set<number> = new Set<number>();
-        Array.from(this.movementsByRound.keys()).forEach(cr => combatRounds.add(cr));
-        Array.from(this.volleysByRound.keys()).forEach(cr => combatRounds.add(cr));
-        this.combatRounds = Array.from(combatRounds).sort((a, b) => a - b);
     }
 
 }

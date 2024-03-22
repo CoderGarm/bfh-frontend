@@ -20,11 +20,7 @@ export interface ManeuverElement {
     p1: Orbit;
     cp1: Orbit;
     cp2: Orbit;
-    p2: Orbit;
-    /**
-     * Represented as percent value.
-     */
-    partOfManeuver: number;
+    p2: Orbit;   
     /**
      * The number of planned execution as part of the parent maneuver.
      */
