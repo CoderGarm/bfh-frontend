@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title id="pagetitle"></title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="offline-style.css">
+</head>
+<body data-theme="dark">
+<button class="toggle" onclick="toggleTheme()">🌗 Modus wechseln</button>
+<h1 id="headline"></h1>
+<p id="description"></p>
+<div class="links">
+    <a href="https://github.com/CoderGarm/bfh-frontend" target="_blank">Frontend @ GitHub</a>
+    <a href="https://github.com/CoderGarm/spacebattle" target="_blank">Backend @ GitHub</a>
+    <a href="https://www.reddit.com/r/battleForHonor" target="_blank">Reddit-Community</a>
+    <a href="https://map.battleforhonor.de/" target="_blank">Honorverse Map</a>
+    <a href="https://github.com/CoderGarm/honorverse-map" target="_blank">Honorverse Map @ GitHub</a>
+</div>
+<footer>
+    <script>document.write(new Date().getFullYear())</script>
+    - Karsten Liebscher
+</footer>
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', newTheme);
+    }
+
+    const translations = {
+        de: {
+            pagetitle: "Battle for Honor",
+            headline: "Dieses Projekt ist derzeit offline",
+            description: "Aber keine Sorge – du kannst dir den Code oder die Community trotzdem anschauen:",
+        },
+        en: {
+            pagetitle: "Battle for Honor",
+            headline: "This project is currently offline",
+            description: "No worries – you can still check out the code or the community:",
+        }
+    };
+
+    function detectLanguage() {
+        const lang = navigator.language || navigator.userLanguage;
+        const shortLang = lang.split('-')[0]; // z. B. 'de' aus 'de-DE'
+        return translations[shortLang] ? shortLang : 'en'; // fallback auf Englisch
+    }
+
+    function setLocalizedText() {
+        const lang = detectLanguage();
+        const t = translations[lang];
+        document.getElementById('pagetitle').textContent = t.pagetitle;
+        document.getElementById('headline').textContent = t.headline;
+        document.getElementById('description').textContent = t.description;
+    }
+
+    setLocalizedText();
+</script>
+</body>
+</html>
